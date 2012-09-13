@@ -178,22 +178,25 @@ QString ChangeConnectorMetadataCommand::getParamString() const {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ChangeSvgCommand::ChangeSvgCommand(PEMainWindow * peMainWindow, SketchWidget * sketchWidget, const QString  & oldFilename, const QString & newFilename, QUndoCommand *parent)
+ChangeSvgCommand::ChangeSvgCommand(PEMainWindow * peMainWindow, SketchWidget * sketchWidget, const QString  & oldFilename, const QString & newFilename, 
+            const QString  & oldOriginal, const QString & newOriginal, QUndoCommand *parent)
     : PEBaseCommand(peMainWindow, parent)
 {
  	m_sketchWidget = sketchWidget;
 	m_oldFilename = oldFilename;
 	m_newFilename = newFilename;
+	m_oldOriginal = oldOriginal;
+	m_newOriginal = newOriginal;
 }
 
 void ChangeSvgCommand::undo()
 {
-    m_peMainWindow->changeSvg(m_sketchWidget, m_oldFilename, -1);
+    m_peMainWindow->changeSvg(m_sketchWidget, m_oldFilename, m_oldOriginal, -1);
 }
 
 void ChangeSvgCommand::redo()
 {
-    m_peMainWindow->changeSvg(m_sketchWidget, m_newFilename, 1);
+    m_peMainWindow->changeSvg(m_sketchWidget, m_newFilename, m_newOriginal, 1);
 }
 
 QString ChangeSvgCommand::getParamString() const {

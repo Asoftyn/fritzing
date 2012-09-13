@@ -120,7 +120,7 @@ protected:
 class ChangeSvgCommand : public PEBaseCommand
 {
 public:
-	ChangeSvgCommand(class PEMainWindow *, SketchWidget *, const QString  & oldFilename, const QString & newFilename, QUndoCommand *parent);
+	ChangeSvgCommand(class PEMainWindow *, SketchWidget *, const QString  & oldFilename, const QString & newFilename, const QString & oldOriginal, const QString & newOriginal, QUndoCommand *parent);
 	void undo();
 	void redo();
 
@@ -130,6 +130,8 @@ protected:
 protected:
 	QString m_oldFilename;
 	QString m_newFilename;
+	QString m_oldOriginal;
+	QString m_newOriginal;
 };
 
 /////////////////////////////////////////////

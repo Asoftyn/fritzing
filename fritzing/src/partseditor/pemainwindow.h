@@ -58,7 +58,7 @@ public:
     void changeProperties(const QHash<QString, QString> &, bool updateDisplay);
     void changeMetadata(const QString & name, const QString & value, bool updateDisplay);
     void changeConnectorMetadata(const ConnectorMetadata &, bool updateDisplay);
-    void changeSvg(SketchWidget *, const QString & filename, int changeDirection);
+    void changeSvg(SketchWidget *, const QString & filename, const QString & originalPath, int changeDirection);
     void relocateConnectorSvg(SketchWidget *, const QString & id, const QString & terminalID, const QString & oldGorn, const QString & oldGornTerminal, const QString & newGorn, const QString & newGornTerminal, int changeDirection);
     void moveTerminalPoint(SketchWidget *, const QString & id, QSizeF, QPointF, int changeDirection);
 
@@ -119,6 +119,8 @@ protected:
     void switchedConnector(const QDomElement &, SketchWidget *);
     PEGraphicsItem * makePegi(QSizeF size, QPointF topLeft, ItemBase * itemBase, QDomElement & element);
     QRectF getPixelBounds(FSvgRenderer & renderer, QDomElement & element);
+    bool canSave();
+    bool saveAs(bool overWrite);
 
 protected slots:
     void initZoom();
@@ -154,8 +156,10 @@ protected:
     QHash<ViewLayer::ViewIdentifier, int> m_svgChangeCount;
     QString m_userPartsFolderPath;
     QString m_userPartsFolderSvgPath;
-    bool m_isCore;
-    QMutex m_mutex;
+    bool m_canSave;
+    QString m_originalFzpPath;
+    QString m_originalModuleID;
+    QHash<ViewLayer::ViewIdentifier, QString> m_originalSvgPaths;
 };
 
 #endif /* PEMAINWINDOW_H_ */

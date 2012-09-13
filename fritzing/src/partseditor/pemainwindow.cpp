@@ -27,6 +27,8 @@ $Date$
 /* TO DO ******************************************
 
 	clean up menus
+    
+    update properties and parts db
 
     show in OS button
         test on mac, linux
@@ -41,6 +43,8 @@ $Date$
     connector duplicate op
 
     swap connector metadata op
+
+    don't allow parts editor window to open if editor is already open with a given module id
 
     on svg import detect all connector IDs
         if any are invisible, tell user this is obsolete
@@ -141,6 +145,7 @@ $Date$
             then swap every instance in every open file
             update the database with the new model part
             swap the part in the bin?
+        save undo for swapped part in some location
 
 ***************************************************/
 
@@ -215,6 +220,7 @@ void IconSketchWidget::addViewLayers() {
 PEMainWindow::PEMainWindow(PaletteModel * paletteModel, ReferenceModel * referenceModel, QWidget * parent)
 	: MainWindow(paletteModel, referenceModel, parent)
 {
+    m_canSave = false;
     m_settingsPrefix = "pe/";
     m_guid = FolderUtils::getRandText();
     m_fileIndex = 0;
@@ -383,7 +389,12 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
         originalModelPart = paletteItem->modelPart();
     }
 
-    m_isCore = originalModelPart->isCore();
+    m_originalFzpPath = originalModelPart->path();
+    m_originalModuleID = originalModelPart->moduleID();
+
+    QFileInfo info(originalModelPart->path());
+    //DebugDialog::debug(QString("%1, %2").arg(info.absoluteFilePath()).arg(m_userPartsFolderPath));
+    m_canSave = info.absoluteFilePath().contains(m_userPartsFolderPath);
 
     QFile file(originalModelPart->path());
 	QString errorStr;
@@ -476,6 +487,10 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
     }
 
     reload();
+
+    foreach (ItemBase * itemBase, m_items.values()) {
+        m_originalSvgPaths.insert(itemBase->viewIdentifier(), itemBase->filename());
+    }
 
     switchedConnector(m_peToolView->currentConnector());
 }
@@ -934,7 +949,7 @@ void PEMainWindow::loadImage()
 	}
 
 	if (!newPath.isEmpty()) {
-		ChangeSvgCommand * csc = new ChangeSvgCommand(this, m_currentGraphicsView, itemBase->filename(), newPath, NULL);
+		ChangeSvgCommand * csc = new ChangeSvgCommand(this, m_currentGraphicsView, itemBase->filename(), newPath, m_originalSvgPaths.value(itemBase->viewIdentifier()), newPath, NULL);
         QFileInfo info(origPath);
         csc->setText(QString("Load '%1'").arg(info.fileName()));
         m_undoStack->waitPush(csc, SketchWidget::PropChangeDelay);
@@ -1078,7 +1093,7 @@ QString PEMainWindow::saveSvg(const QString & svg, const QString & newFilePath) 
 	return newFilePath;
 }
 
-void PEMainWindow::changeSvg(SketchWidget * sketchWidget, const QString & filename, int changeDirection) {
+void PEMainWindow::changeSvg(SketchWidget * sketchWidget, const QString & filename, const QString & originalPath, int changeDirection) {
     QDomElement fzpRoot = m_fzpDocument.documentElement();
     QDomElement views = fzpRoot.firstChildElement("views");
     QDomElement view = views.firstChildElement(ViewLayer::viewIdentifierXmlName(sketchWidget->viewIdentifier()));
@@ -1104,6 +1119,8 @@ void PEMainWindow::changeSvg(SketchWidget * sketchWidget, const QString & filena
     updateChangeCount(sketchWidget, changeDirection);
 
     reload();
+
+    this->m_originalSvgPaths.insert(sketchWidget->viewIdentifier(), originalPath);
 }
 
 QString PEMainWindow::saveFzp() {
@@ -1202,7 +1219,6 @@ void PEMainWindow::createFileMenu() {
     m_fileMenu->addAction(m_saveAct);
     m_fileMenu->addAction(m_saveAsAct);
 
-
     m_fileMenu->addSeparator();
     //m_fileMenu->addAction(m_pageSetupAct);
     m_fileMenu->addAction(m_printAct);
@@ -1275,15 +1291,26 @@ void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QStri
 }
 
 bool PEMainWindow::save() {
-    if (m_isCore) {
-        saveAs();
+    if (!canSave()) {
+        return saveAs(false);
     }
 
-    return true;
+    return saveAs(true);
 }
 
 bool PEMainWindow::saveAs() {
+    return saveAs(false);
+}
+
+bool PEMainWindow::saveAs(bool overWrite)
+{
+    if (overWrite) {
+    }
+
     QDomElement fzpRoot = m_fzpDocument.documentElement();
+    QString savedModuleID = fzpRoot.attribute("moduleId");
+    if (overWrite) fzpRoot.setAttribute("moduleId", m_originalModuleID);
+
     QDomElement views = fzpRoot.firstChildElement("views");
 
     QHash<ViewLayer::ViewIdentifier, QString> svgPaths;
@@ -1299,13 +1326,24 @@ bool PEMainWindow::saveAs() {
             // unaltered svg
             continue;
         }
-
         svgPaths.insert(sketchWidget->viewIdentifier(), currentSvgPath);
 
         QString svgPath = makeSvgPath(sketchWidget, false);
+
+        bool svgOverWrite = false;
+        if (overWrite) {
+            QFileInfo info(m_originalSvgPaths.value(sketchWidget->viewIdentifier()));
+            svgOverWrite = info.absolutePath().contains(m_userPartsFolderSvgPath);
+            if (svgOverWrite) {
+                QDir dir = info.absoluteDir();
+                svgPath = dir.dirName() + "/" + info.fileName();
+            }
+        }
+
         layers.setAttribute("image", svgPath);
         QString svg = m_docs.value(sketchWidget->viewIdentifier())->toString();
-        bool result = TextUtils::writeUtf8(m_userPartsFolderSvgPath + svgPath, TextUtils::svgNSOnly(svg));
+        QString actualPath = svgOverWrite ? m_originalSvgPaths.value(sketchWidget->viewIdentifier()) : m_userPartsFolderSvgPath + svgPath; 
+        bool result = TextUtils::writeUtf8(actualPath, TextUtils::svgNSOnly(svg));
         if (!result) {
             // TODO: warn user
         }
@@ -1313,7 +1351,11 @@ bool PEMainWindow::saveAs() {
 
     QDir dir(m_userPartsFolderPath);
     QString fzpPath = dir.absoluteFilePath(QString("%1.fzp").arg(m_guid));   
+    if (overWrite) {
+        fzpPath = m_originalFzpPath;
+    }
     bool result = TextUtils::writeUtf8(fzpPath, TextUtils::svgNSOnly(m_fzpDocument.toString()));
+
 
     // restore the set of working svg files
     foreach (SketchWidget * sketchWidget, sketchWidgets) {
@@ -1325,13 +1367,19 @@ bool PEMainWindow::saveAs() {
         layers.setAttribute("image", svgPath);
     }
 
-
 	QString moduleID = fzpRoot.attribute("moduleId");
+    fzpRoot.setAttribute("moduleId", savedModuleID);
+
     ModelPart * modelPart = m_refModel->retrieveModelPart(moduleID);
     if (modelPart == NULL) {
 	    modelPart = m_refModel->loadPart(fzpPath, true);
         emit addToMyPartsSignal(modelPart);
 	}
+    else {
+        // need to update properties database
+        // need to swap out any existing parts
+        // need to update parts database?
+    }
 
     return result;
 }
@@ -1622,3 +1670,6 @@ QRectF PEMainWindow::getPixelBounds(FSvgRenderer & renderer, QDomElement & eleme
     return bounds;
 }
 
+bool PEMainWindow::canSave() {
+    return m_canSave;
+}
