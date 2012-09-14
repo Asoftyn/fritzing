@@ -34,6 +34,7 @@ $Date$
 #include "../connectors/connectoritem.h"
 #include "../connectors/busshared.h"
 #include "../connectors/connectorshared.h"
+#include "../debugdialog.h"
 
 #include <QCursor>
 #include <QBitmap>

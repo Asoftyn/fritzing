@@ -33,7 +33,6 @@ $Date$
 #include "mainwindow.h"
 #include "../debugdialog.h"
 #include "../waitpushundostack.h"
-#include "../partseditor/partseditormainwindow.h"
 #include "../partseditor/pemainwindow.h"
 #include "../help/aboutbox.h"
 #include "../autoroute/cmrouter/cmrouter.h"
@@ -787,16 +786,6 @@ void MainWindow::createEditMenuActions() {
 }
 
 void MainWindow::createPartMenuActions() {
-	m_createNewPart = new QAction(tr("&New"), this);
-	m_createNewPart->setShortcut(tr("Alt+Ctrl+N"));
-	m_createNewPart->setStatusTip(tr("Create new part"));
-	connect(m_createNewPart, SIGNAL(triggered()), this, SLOT(createNewPart()));
-
-	m_openInPartsEditorAct = new QAction(tr("&Edit"), this);
-	m_openInPartsEditorAct->setShortcut(tr("Ctrl+Return"));
-	m_openInPartsEditorAct->setStatusTip(tr("Open the parts editor on an existing part"));
-	connect(m_openInPartsEditorAct, SIGNAL(triggered()), this, SLOT(openInPartsEditor()));
-
 	m_openInPartsEditorNewAct = new QAction(tr("Edit (new parts editor)"), this);
 	m_openInPartsEditorNewAct->setStatusTip(tr("Open the new parts editor on an existing part"));
 	connect(m_openInPartsEditorNewAct, SIGNAL(triggered()), this, SLOT(openInPartsEditorNew()));
@@ -1195,8 +1184,6 @@ void MainWindow::createPartMenu() {
     m_partMenu = menuBar()->addMenu(tr("&Part"));
     connect(m_partMenu, SIGNAL(aboutToShow()), this, SLOT(updatePartMenu()));
 
-    m_partMenu->addAction(m_createNewPart);
-	m_partMenu->addAction(m_openInPartsEditorAct);
 	m_partMenu->addAction(m_openInPartsEditorNewAct);
 	m_partMenu->addSeparator();
 
@@ -1725,7 +1712,6 @@ void MainWindow::updateItemMenu() {
 
 	// can't open wire in parts editor
 	enabled &= selected != NULL && itemBase != NULL && itemBase->canEditPart();
-	m_openInPartsEditorAct->setEnabled(enabled);
 
 	m_disconnectAllAct->setEnabled(enabled && m_currentGraphicsView->canDisconnectAll() && (itemBase->rightClickedConnector() != NULL));
 
@@ -2002,19 +1988,6 @@ void MainWindow::enableDebug() {
 	}
 }
 
-void MainWindow::createNewPart() {
-	openPartsEditor(NULL);
-}
-
-void MainWindow::openPartsEditor(PaletteItem * paletteItem) {
-	ModelPart* modelPart = paletteItem? paletteItem->modelPart(): NULL;
-	long id = paletteItem? paletteItem->id(): -1;
-	QWidget *partsEditor = getPartsEditor(modelPart, id, paletteItem, NULL);
-	if (partsEditor == NULL) return;
-
-	partsEditor->show();
-	partsEditor->raise();
-}
 
 void MainWindow::openNewPartsEditor(PaletteItem * paletteItem) {
 
@@ -2027,14 +2000,6 @@ void MainWindow::openNewPartsEditor(PaletteItem * paletteItem) {
     connect(peMainWindow, SIGNAL(addToMyPartsSignal(ModelPart *)), this, SLOT(addToMyParts(ModelPart *)));
 }
 
-void MainWindow::getPartsEditorAnd(ModelPart *modelPart, long _id, ItemBase * fromItem, class PartsBinPaletteWidget* requester) {
-    PartsEditorMainWindow* partsEditor = getPartsEditor(modelPart, _id, fromItem, requester);
-	if (partsEditor == NULL) return;
-
-	partsEditor->show();
-	partsEditor->raise();
-}
-
 void MainWindow::getPartsEditorNewAnd(ItemBase * fromItem) 
 {
     PaletteItem * paletteItem = qobject_cast<PaletteItem *>(fromItem);
@@ -2043,90 +2008,11 @@ void MainWindow::getPartsEditorNewAnd(ItemBase * fromItem)
     openNewPartsEditor(paletteItem);
 }
 
-PartsEditorMainWindow* MainWindow::getPartsEditor(ModelPart *modelPart, long _id, ItemBase * fromItem, class PartsBinPaletteWidget* requester) {
-	QMessageBox::StandardButton answer = QMessageBox::question(
-            this,
-            tr("Parts Editor"),
-            tr("A new Parts Editor is under construction. The old Parts Editor is still available, but the code is pretty buggy. So use it at your own risk.\n\n"
-            "For many purposes you can use a Generic IC chip instead (first part in the ICs section of the Parts Bin). "
-            "Drag one into your sketch and from the Inspector change the package: there are SIPs, DIPS, and a set of SMDs. "
-                "Depending on the package you choose, you can also change the chip label, set the number of pins, and change the pin labels."
-                "\n\nOpen the old Parts Editor?"),
-            QMessageBox::Yes | QMessageBox::No,
-            QMessageBox::Yes
-    );
-    // TODO: make button texts translatable
-    if (answer != QMessageBox::Yes) {
-        return NULL;
-    }		
-
-	static long nextId = -1;
-	long id = _id==-1? nextId--: _id;
-
-	PartsEditorMainWindow *mainPartsEditorWindow = new PartsEditorMainWindow(this);
-	if (fromItem != NULL) {
-		ItemBase * ii = m_breadboardGraphicsView->addItemAuxTemp(modelPart, fromItem->viewLayerSpec(), ViewGeometry(), ItemBase::getNextID(), NULL, true, ViewLayer::IconView, true);
-		if (ii != NULL) {
-			m_breadboardGraphicsView->scene()->removeItem(ii);
-			if (!ii->hasCustomSVG()) {
-				delete ii;
-				ii = NULL;
-			}
-		}
-
-		ItemBase * bb = m_breadboardGraphicsView->findItem(_id);
-		if (bb) bb = bb->layerKinChief();
-		if (bb != NULL && !bb->hasCustomSVG()) bb = NULL;
-		ItemBase * ss = m_schematicGraphicsView->findItem(_id);
-		if (ss) ss = ss->layerKinChief();
-		if (ss != NULL && !ss->hasCustomSVG()) ss = NULL;
-		ItemBase * pp = m_pcbGraphicsView->findItem(_id);
-		if (pp) pp = pp->layerKinChief();
-		if (pp != NULL && !pp->hasCustomSVG()) pp = NULL;
-		mainPartsEditorWindow->setViewItems(ii, bb, ss, pp);
-	}
-
-	mainPartsEditorWindow->setup(id, modelPart, (modelPart!=NULL), fromItem);
-
-	connect(mainPartsEditorWindow, SIGNAL(partUpdated(const QString&, long, bool)), this, SLOT(loadPart(const QString&, long, bool)));
-	connect(mainPartsEditorWindow, SIGNAL(closed(long)), this, SLOT(partsEditorClosed(long)));
-	connect(mainPartsEditorWindow, SIGNAL(alienPartUsed()), this, SLOT(acceptAlienFiles()));
-
-	connect(this, SIGNAL(aboutToClose()), mainPartsEditorWindow, SLOT(parentAboutToClose()));
-	connect(mainPartsEditorWindow, SIGNAL(changeActivationSignal(bool, QWidget *)), qApp, SLOT(changeActivation(bool, QWidget *)), Qt::DirectConnection);
-	connect(mainPartsEditorWindow, SIGNAL(destroyed(QObject *)), qApp, SLOT(topLevelWidgetDestroyed(QObject *)));
-
-	m_partsEditorWindows.insert(id, mainPartsEditorWindow);
-	if(requester) m_binsWithPartsEditorRequests.insert(id,requester);
-
-	return mainPartsEditorWindow;
-}
-
-void MainWindow::partsEditorClosed(long id) {
-	m_partsEditorWindows.remove(id);
-	m_binsWithPartsEditorRequests.remove(id);
-}
-
 void MainWindow::openInPartsEditorNew() {
 	if (m_currentGraphicsView == NULL) return;
 
 	PaletteItem *selectedPart = m_currentGraphicsView->getSelectedPart();
 	openNewPartsEditor(selectedPart);
-}
-
-
-
-void MainWindow::openInPartsEditor() {
-	if (m_currentGraphicsView == NULL) return;
-
-	PaletteItem *selectedPart = m_currentGraphicsView->getSelectedPart();
-	PartsEditorMainWindow * window = m_partsEditorWindows.value(selectedPart->id());
-
-	if(window != NULL) {
-		window->raise();
-	} else {
-		openPartsEditor(selectedPart);
-	}
 }
 
 void MainWindow::createNewSketch() {
@@ -3108,7 +2994,6 @@ QMenu *MainWindow::viewItemMenuAux(QMenu* menu) {
 	menu->addAction(m_disconnectAllAct);
 #endif
 	menu->addSeparator();
-	menu->addAction(m_openInPartsEditorAct);
 	menu->addAction(m_openInPartsEditorNewAct);
 	menu->addMenu(m_addToBinMenu);
 	menu->addSeparator();

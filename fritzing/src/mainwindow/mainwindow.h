@@ -124,7 +124,6 @@ public:
 	void showAllFirstTimeHelp(bool show);
 	void enableCheckUpdates(bool enabled);
 
-	void getPartsEditorAnd(ModelPart *modelPart, long id, ItemBase * fromItem, class PartsBinPaletteWidget* requester);
 	void getPartsEditorNewAnd(ItemBase * fromItem);
 	ModelPart *loadPartFromFile(const QString& newPartPath, bool connectorsChanged=false);
 	void addDefaultParts();
@@ -189,7 +188,6 @@ signals:
 public slots:
 	void ensureClosable();
 	ModelPart* loadBundledPart(const QString &fileName, bool addToBin);
-	void partsEditorClosed(long id);
 	void importFilesFromPrevInstall();
 	void acceptAlienFiles();
 	void statusMessage(QString message, int timeout);
@@ -243,8 +241,7 @@ protected slots:
     void updateWireMenu();
     void updateTransformationActions();
 	void updateRecentFileActions();
-    void tabWidget_currentChanged(int index);
-    void createNewPart();
+    virtual void tabWidget_currentChanged(int index);
     void createNewSketch();
     void minimize();
     void toggleToolbar(bool toggle);
@@ -284,16 +281,12 @@ protected slots:
 	void flattenCurve();
 	void disconnectAll();
 
-	void openInPartsEditor();
 	void openInPartsEditorNew();
-	void openPartsEditor(class PaletteItem *);
-	void openNewPartsEditor(PaletteItem *);
+	void openNewPartsEditor(class PaletteItem *);
 
 	void updateZoomSlider(double zoom);
 	void updateZoomOptionsNoMatterWhat(double zoom);
 	void updateViewZoom(double newZoom);
-
-	void loadPart(const QString &newPartPath, long partsEditorId, bool connectorsChanged);
 
 	void setInfoViewOnHover(bool infoViewOnHover);
 	void updateItemMenu();
@@ -491,8 +484,6 @@ protected:
 	QString getBoardSvg(ItemBase * board, int res, LayerList &);
 	QString mergeBoardSvg(QString & svg, ItemBase * board, int res, bool flip, LayerList &);
 
-	bool wannaRestart();
-
 	void updateActiveLayerButtons();
 	int activeLayerIndex();
 	bool hasLinkedProgramFiles(const QString & filename, QStringList & linkedProgramFiles);
@@ -539,7 +530,6 @@ protected:
 	void dockMarginAux(FDockWidget* dock, const QString &name, const QString &style);
     void initStyleSheet();
     virtual QString getStyleSheetSuffix();
-	class PartsEditorMainWindow* getPartsEditor(ModelPart *modelPart, long id, ItemBase * fromItem, class PartsBinPaletteWidget* requester);
 
 protected:
 	static void removeActionsStartingAt(QMenu *menu, int start=0);
@@ -569,9 +559,6 @@ protected:
     QPointer<class SketchModel> m_sketchModel;
     QPointer<class HtmlInfoView> m_infoView;
     QPointer<QToolBar> m_toolbar;
-
-    QHash <long,class PartsEditorMainWindow*> m_partsEditorWindows;
-    QHash <long,class PartsBinPaletteWidget*> m_binsWithPartsEditorRequests;
 
     bool m_closing;
 	bool m_dontClose;
@@ -653,11 +640,9 @@ protected:
 
     // Part Menu
     QMenu *m_partMenu;
-    QAction *m_createNewPart;
 	QAction *m_infoViewOnHoverAction;
 	QAction *m_exportNormalizedSvgAction;
 	QAction *m_exportNormalizedFlattenedSvgAction;
-    QAction *m_openInPartsEditorAct;
     QAction *m_openInPartsEditorNewAct;
     QMenu *m_addToBinMenu;
 
@@ -834,7 +819,6 @@ protected:
 
 
 public:
-	static int RestartNeeded;
 	static int AutosaveTimeoutMinutes;
 	static bool AutosaveEnabled;
 	static QString BackupFolder;

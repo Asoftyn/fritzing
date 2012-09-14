@@ -26,7 +26,7 @@ $Date$
 
 #include "autorouteprogressdialog.h"
 #include "../debugdialog.h"
-#include "../partseditor/zoomcontrols.h"
+#include "zoomcontrols.h"
 
 #include <QLabel>
 #include <QComboBox>

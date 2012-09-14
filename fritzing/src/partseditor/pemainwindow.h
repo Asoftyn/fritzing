@@ -121,6 +121,7 @@ protected:
     QRectF getPixelBounds(FSvgRenderer & renderer, QDomElement & element);
     bool canSave();
     bool saveAs(bool overWrite);
+    void lockChangedAux(bool state, const QList<PEGraphicsItem *> & pegiList); 
 
 protected slots:
     void initZoom();
@@ -131,6 +132,7 @@ protected slots:
     bool save();
     bool saveAs();
     void showInOS();
+    void tabWidget_currentChanged(int index);
 
 protected:
     QDomDocument m_fzpDocument;

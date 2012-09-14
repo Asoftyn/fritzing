@@ -32,7 +32,6 @@ $Date$
 #include "version/version.h"
 #include "dialogs/prefsdialog.h"
 #include "help/helper.h"
-#include "partseditor/partseditormainwindow.h"
 #include "fsvgrenderer.h"
 #include "version/versionchecker.h"
 #include "version/updatedialog.h"
@@ -111,8 +110,6 @@ static QNetworkAccessManager * NetworkAccessManager = NULL;
 #define WIN_DEBUG
 #endif
 #endif
-
-int FApplication::RestartNeeded = 9999;
 
 QSet<QString> InstalledFonts::InstalledFontsList;
 QMultiHash<QString, QString> InstalledFonts::InstalledFontsNameMapper;   // family name to filename; SVG files seem to have to use filename
@@ -239,7 +236,6 @@ void FServerThread::writeResponse(QTcpSocket * socket, int code, const QString &
 FApplication::FApplication( int & argc, char ** argv) : QApplication(argc, argv)
 {
     m_fServer = NULL;
-	MainWindow::RestartNeeded = FApplication::RestartNeeded;
 	m_spaceBarIsPressed = false;
 	m_mousePressed = false;
 	m_referenceModel = NULL;
@@ -457,7 +453,6 @@ bool FApplication::init() {
 	ViewLayer::initNames();
 	Connector::initNames();
 	Helper::initText();
-	PartsEditorMainWindow::initText();
 	BinManager::initNames();
 	PaletteModel::initNames();
 	SvgIconWidget::initNames();
@@ -904,7 +899,7 @@ void FApplication::runKicadSchematicService() {
 	}
 }
 
-int FApplication::startup(bool firstRun)
+int FApplication::startup()
 {
 	//DebugDialog::setEnabled(true);
 
@@ -928,36 +923,28 @@ int FApplication::startup(bool firstRun)
 
 	// DebugDialog::debug("Data Location: "+QDesktopServices::storageLocation(QDesktopServices::DataLocation));
 
-	if(firstRun) {		
-		registerFonts();
+	registerFonts();
 
-		if (m_progressIndex >= 0) splash.showProgress(m_progressIndex, LoadProgressStart);
-		ProcessEventBlocker::processEvents();
+	if (m_progressIndex >= 0) splash.showProgress(m_progressIndex, LoadProgressStart);
+	ProcessEventBlocker::processEvents();
 
-		#ifdef Q_WS_WIN
-			// associate .fz file with fritzing app on windows (xp only--vista is different)
-			// TODO: don't change settings if they're already set?
-			// TODO: only do this at install time?
-			QSettings settings1("HKEY_CLASSES_ROOT\\Fritzing", QSettings::NativeFormat);
-			settings1.setValue(".", "Fritzing Application");
-			foreach (QString extension, fritzingExtensions()) {
-				QSettings settings2("HKEY_CLASSES_ROOT\\" + extension, QSettings::NativeFormat);
-				settings2.setValue(".", "Fritzing");
-			}
-			QSettings settings3("HKEY_CLASSES_ROOT\\Fritzing\\shell\\open\\command", QSettings::NativeFormat);
-			settings3.setValue(".", QString("\"%1\" \"%2\"")
-							   .arg(QDir::toNativeSeparators(QApplication::applicationFilePath()))
-							   .arg("%1") );
-		#endif
+	#ifdef Q_WS_WIN
+		// associate .fz file with fritzing app on windows (xp only--vista is different)
+		// TODO: don't change settings if they're already set?
+		// TODO: only do this at install time?
+		QSettings settings1("HKEY_CLASSES_ROOT\\Fritzing", QSettings::NativeFormat);
+		settings1.setValue(".", "Fritzing Application");
+		foreach (QString extension, fritzingExtensions()) {
+			QSettings settings2("HKEY_CLASSES_ROOT\\" + extension, QSettings::NativeFormat);
+			settings2.setValue(".", "Fritzing");
+		}
+		QSettings settings3("HKEY_CLASSES_ROOT\\Fritzing\\shell\\open\\command", QSettings::NativeFormat);
+		settings3.setValue(".", QString("\"%1\" \"%2\"")
+							.arg(QDir::toNativeSeparators(QApplication::applicationFilePath()))
+							.arg("%1") );
+	#endif
 
-
-		cleanFzzs();
-	} 
-	else 
-	{
-		clearModels();
-		FSvgRenderer::cleanup();
-	}
+	cleanFzzs();
 
 	loadReferenceModel("", false);
 
@@ -1003,7 +990,7 @@ int FApplication::startup(bool firstRun)
 	if (m_progressIndex >= 0) splash.showProgress(m_progressIndex, 0.875);
 
 	DebugDialog::debug("load something");
-	loadSomething(firstRun, prevVersion);
+	loadSomething(prevVersion);
 	m_started = true;
 
 	if (m_progressIndex >= 0) splash.showProgress(m_progressIndex, 0.99);
@@ -1408,12 +1395,11 @@ bool FApplication::notify(QObject *receiver, QEvent *e)
     return false;
 }
 
-void FApplication::loadSomething(bool firstRun, const QString & prevVersion) {
+void FApplication::loadSomething(const QString & prevVersion) {
     // At this point we're trying to determine what sketches to load which are from one of the following sources:
     // Only one of these sources will actually provide sketches to load and they're listed in order of priority:
 
     //		We found sketch backups to recover
-	//		it's a restart (!firstRun)
 	//		there's a previous version (open an empty sketch)
 	//		files were double-clicked
     //		The last opened sketch
@@ -1432,13 +1418,6 @@ void FApplication::loadSomething(bool firstRun, const QString & prevVersion) {
 	}
 
 	DebugDialog::debug(QString("load previous %1").arg(loadPrevious));
-
-	if (!loadPrevious && sketchesToLoad.isEmpty()) {
-		if (!firstRun) {
-			DebugDialog::debug(QString("not first run"));
-			sketchesToLoad = loadLastOpenSketch();
-		}
-	}
 
 	if (!loadPrevious && sketchesToLoad.isEmpty()) {
 		// Check for double-clicked files to load

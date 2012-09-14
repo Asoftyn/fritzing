@@ -35,6 +35,7 @@ $Date$
 #include "moduleidnames.h"
 #include "../svg/groundplanegenerator.h"
 #include "../utils/cursormaster.h"
+#include "../debugdialog.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>

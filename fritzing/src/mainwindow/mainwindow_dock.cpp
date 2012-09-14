@@ -37,6 +37,8 @@ $Date$
 #include "../partsbinpalette/binmanager/binmanager.h"
 #include "../infoview/htmlinfoview.h"
 #include "../dock/layerpalette.h"
+#include "../utils/fileprogressdialog.h"
+#include "../debugdialog.h"
 
 /////////////////////////////////////
 
@@ -249,3 +251,64 @@ void MainWindow::dockMarginAux(FDockWidget* dock, const QString &name, const QSt
 void MainWindow::dontKeepMargins() {
 	m_dontKeepMargins = true;
 }
+
+void MainWindow::initDock() {
+	m_layerPalette = new LayerPalette(this);
+
+	m_infoView = new HtmlInfoView();
+    connect(m_infoView, SIGNAL(clickObsoleteSignal()), this, SLOT(selectAllObsolete()));
+	//DebugDialog::debug("after html view");
+
+	m_binManager = new BinManager(m_refModel, m_infoView, m_undoStack, this);
+    m_binManager->initStandardBins();
+
+	DebugDialog::debug("after creating bins");
+	if (m_fileProgressDialog) {
+		m_fileProgressDialog->setValue(89);
+	}
+}
+
+void MainWindow::moreInitDock() {
+	DebugDialog::debug("create view switcher");
+	m_layerPalette->setShowAllLayersAction(m_showAllLayersAct);
+	m_layerPalette->setHideAllLayersAction(m_hideAllLayersAct);
+
+	m_viewSwitcher = new ViewSwitcher();
+	connect(m_viewSwitcher, SIGNAL(viewSwitched(int)), this, SLOT(viewSwitchedTo(int)));
+	connect(this, SIGNAL(viewSwitched(int)), m_viewSwitcher, SLOT(viewSwitchedTo(int)));
+	m_viewSwitcher->viewSwitchedTo(0);
+
+    createDockWindows();
+
+	if (m_fileProgressDialog) {
+		m_fileProgressDialog->setValue(93);
+	}
+}
+
+
+void MainWindow::saveDocks()
+{
+	for (int i = 0; i < children().count(); i++) {
+		FDockWidget * dock = qobject_cast<FDockWidget *>(children()[i]);
+		if (dock == NULL) continue;
+
+		//DebugDialog::debug(QString("saving dock %1").arg(dock->windowTitle()));
+		dock->saveState();
+
+		if (dock->isFloating() && dock->isVisible()) {
+			//DebugDialog::debug(QString("hiding dock %1").arg(dock->windowTitle()));
+			dock->hide();
+		}
+	}
+}
+
+void MainWindow::restoreDocks() {
+	for (int i = 0; i < children().count(); i++) {
+		FDockWidget * dock = qobject_cast<FDockWidget *>(children()[i]);
+		if (dock == NULL) continue;
+
+		// DebugDialog::debug(QString("restoring dock %1").arg(dock->windowTitle()));
+		dock->restoreState();
+	}
+}
+

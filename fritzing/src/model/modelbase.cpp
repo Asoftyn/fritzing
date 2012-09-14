@@ -51,6 +51,11 @@ ModelBase::ModelBase( bool makeRoot )
 
 ModelBase::~ModelBase() {
 	if (m_root) {
+        ModelPartShared * modelPartShared = m_root->modelPartShared();
+        if (modelPartShared) {
+            m_root->setModelPartShared(NULL);
+            delete modelPartShared;
+        }
 		delete m_root;
 	}
 }

@@ -29,6 +29,7 @@ $Date$
 #include "../items/wire.h"
 #include "../items/jumperitem.h"
 #include "../sketch/sketchwidget.h"
+#include "../debugdialog.h"
 
 #ifdef _MSC_VER 
 #pragma warning(push) 

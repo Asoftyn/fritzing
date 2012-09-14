@@ -290,7 +290,7 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
 		// use a function of the model index to ensure the same parts have the same ID across views
 		long newID = ItemBase::getNextID(mp->modelIndex());
 		if (parentCommand == NULL) {
-			ItemBase * itemBase = addItemAux(mp, viewLayerSpec, viewGeometry, newID, NULL, true, m_viewIdentifier, false);
+			ItemBase * itemBase = addItemAux(mp, viewLayerSpec, viewGeometry, newID, true, m_viewIdentifier, false);
 			if (itemBase != NULL) {
 				if (locked) {
 					itemBase->setMoveLock(true);
@@ -646,7 +646,7 @@ ItemBase * SketchWidget::addItem(const QString & moduleID, ViewLayer::ViewLayerS
 	if (modelPart != NULL) {
 		QApplication::setOverrideCursor(Qt::WaitCursor);
 		statusMessage(tr("loading part"));
-		itemBase = addItem(modelPart, viewLayerSpec, crossViewType, viewGeometry, id, modelIndex, originatingCommand, NULL);
+		itemBase = addItem(modelPart, viewLayerSpec, crossViewType, viewGeometry, id, modelIndex, originatingCommand);
 		statusMessage(tr("done loading"), 2000);
 		QApplication::restoreOverrideCursor();
 	}
@@ -655,7 +655,7 @@ ItemBase * SketchWidget::addItem(const QString & moduleID, ViewLayer::ViewLayerS
 }
 
 
-ItemBase * SketchWidget::addItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec viewLayerSpec, BaseCommand::CrossViewType crossViewType, const ViewGeometry & viewGeometry, long id, long modelIndex, AddDeleteItemCommand * originatingCommand, PaletteItem* partsEditorPaletteItem)
+ItemBase * SketchWidget::addItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec viewLayerSpec, BaseCommand::CrossViewType crossViewType, const ViewGeometry & viewGeometry, long id, long modelIndex, AddDeleteItemCommand * originatingCommand)
 {
 	
 	ItemBase * newItem = NULL;
@@ -679,7 +679,7 @@ ItemBase * SketchWidget::addItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec
 		}
 		if (modelPart == NULL) return NULL;
 	
-		newItem = addItemAux(modelPart, viewLayerSpec, viewGeometry, id, partsEditorPaletteItem, true, m_viewIdentifier, false);
+		newItem = addItemAux(modelPart, viewLayerSpec, viewGeometry, id, true, m_viewIdentifier, false);
 	}
 
 	if (crossViewType == BaseCommand::CrossView) {
@@ -691,17 +691,16 @@ ItemBase * SketchWidget::addItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec
 	return newItem;
 }
 
-ItemBase * SketchWidget::addItemAuxTemp(ModelPart * modelPart, ViewLayer::ViewLayerSpec viewLayerSpec, const ViewGeometry & viewGeometry, long id, PaletteItem* partsEditorPaletteItem, bool doConnectors, ViewLayer::ViewIdentifier viewIdentifier, bool temporary)
+ItemBase * SketchWidget::addItemAuxTemp(ModelPart * modelPart, ViewLayer::ViewLayerSpec viewLayerSpec, const ViewGeometry & viewGeometry, long id,  bool doConnectors, ViewLayer::ViewIdentifier viewIdentifier, bool temporary)
 {
 	modelPart = m_sketchModel->addModelPart(m_sketchModel->root(), modelPart);
 	if (modelPart == NULL) return NULL;   // this is very fucked up
 
-	return addItemAux(modelPart, viewLayerSpec, viewGeometry, id, partsEditorPaletteItem, doConnectors, viewIdentifier, temporary);
+	return addItemAux(modelPart, viewLayerSpec, viewGeometry, id, doConnectors, viewIdentifier, temporary);
 }
 
-ItemBase * SketchWidget::addItemAux(ModelPart * modelPart, ViewLayer::ViewLayerSpec viewLayerSpec, const ViewGeometry & viewGeometry, long id, PaletteItem* partsEditorPaletteItem, bool doConnectors, ViewLayer::ViewIdentifier viewIdentifier, bool temporary)
+ItemBase * SketchWidget::addItemAux(ModelPart * modelPart, ViewLayer::ViewLayerSpec viewLayerSpec, const ViewGeometry & viewGeometry, long id, bool doConnectors, ViewLayer::ViewIdentifier viewIdentifier, bool temporary)
 {
-	Q_UNUSED(partsEditorPaletteItem);
 	if (viewIdentifier == ViewLayer::UnknownView) {
 		viewIdentifier = m_viewIdentifier;
 	}
@@ -1669,7 +1668,7 @@ bool SketchWidget::dragEnterEventAux(QDragEnterEvent *event) {
 		bool doConnectors = true;
 
 		// create temporary item for dragging
-		m_droppingItem = addItemAuxTemp(modelPart, defaultViewLayerSpec(), viewGeometry, fromID, NULL, doConnectors, m_viewIdentifier, true);
+		m_droppingItem = addItemAuxTemp(modelPart, defaultViewLayerSpec(), viewGeometry, fromID, doConnectors, m_viewIdentifier, true);
 
 		QHash<long, ItemBase *> savedItems;
 		QHash<Wire *, ConnectorItem *> savedWires;
@@ -3203,7 +3202,7 @@ void SketchWidget::itemAddedSlot(ModelPart * modelPart, ViewLayer::ViewLayerSpec
 		placePartDroppedInOtherView(modelPart, viewLayerSpec, viewGeometry, id, dropOrigin);
 	}
 	else {
-		addItemAux(modelPart, viewLayerSpec, viewGeometry, id, NULL, true, m_viewIdentifier, false);
+		addItemAux(modelPart, viewLayerSpec, viewGeometry, id, true, m_viewIdentifier, false);
 	}
 }
 
@@ -3215,7 +3214,7 @@ ItemBase * SketchWidget::placePartDroppedInOtherView(ModelPart * modelPart, View
 	QPointF dp = viewGeometry.loc() - from;
 	ViewGeometry vg(viewGeometry);
 	vg.setLoc(to + dp);
-	ItemBase * itemBase = addItemAux(modelPart, viewLayerSpec, vg, id, NULL, true, m_viewIdentifier, false);
+	ItemBase * itemBase = addItemAux(modelPart, viewLayerSpec, vg, id, true, m_viewIdentifier, false);
 	if (m_alignToGrid && (itemBase != NULL)) {
 		alignOneToGrid(itemBase);
 	}
@@ -5844,7 +5843,7 @@ void SketchWidget::checkFit(ModelPart * newModelPart, ItemBase * itemBase, long 
 {
 	if (found.count() == 0) return;
 
-	ItemBase * tempItemBase = addItemAuxTemp(newModelPart, itemBase->viewLayerSpec(), itemBase->getViewGeometry(), newID, NULL, true, m_viewIdentifier, true);
+	ItemBase * tempItemBase = addItemAuxTemp(newModelPart, itemBase->viewLayerSpec(), itemBase->getViewGeometry(), newID, true, m_viewIdentifier, true);
 	if (tempItemBase == NULL) return;			// we're really screwed 
 
 	checkFitAux(tempItemBase, itemBase, newID, found, notFound, m2f, byWire, legs, formerLegs, parentCommand);
@@ -8356,7 +8355,7 @@ Wire * SketchWidget::createTempWireForDragging(Wire * fromWire, ModelPart * wire
 	if (spec == ViewLayer::UnknownSpec) {
 		spec = wireViewLayerSpec(connectorItem);
 	}
-	return qobject_cast<Wire *>(addItemAuxTemp(wireModel, spec, viewGeometry, ItemBase::getNextID(), NULL, true, m_viewIdentifier, true));
+	return qobject_cast<Wire *>(addItemAuxTemp(wireModel, spec, viewGeometry, ItemBase::getNextID(), true, m_viewIdentifier, true));
 }
 
 void SketchWidget::prereleaseTempWireForDragging(Wire*)
@@ -8600,7 +8599,7 @@ VirtualWire * SketchWidget::makeOneRatsnestWire(ConnectorItem * source, Connecto
 	}
 
 	// ratsnest only added to one view
-	ItemBase * newItemBase = addItem(m_refModel->retrieveModelPart(ModuleIDNames::WireModuleIDName), source->attachedTo()->viewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL, NULL);		
+	ItemBase * newItemBase = addItem(m_refModel->retrieveModelPart(ModuleIDNames::WireModuleIDName), source->attachedTo()->viewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);		
 	VirtualWire * wire = qobject_cast<VirtualWire *>(newItemBase);
 	ConnectorItem * connector0 = wire->connector0();
 	source->tempConnectTo(connector0, false);

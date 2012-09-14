@@ -90,7 +90,7 @@ public:
 
 	void pushCommand(QUndoCommand *);
     class WaitPushUndoStack * undoStack();
-    ItemBase * addItem(ModelPart *, ViewLayer::ViewLayerSpec, BaseCommand::CrossViewType, const ViewGeometry &, long id, long modelIndex, AddDeleteItemCommand * originatingCommand, PaletteItem* item);
+    ItemBase * addItem(ModelPart *, ViewLayer::ViewLayerSpec, BaseCommand::CrossViewType, const ViewGeometry &, long id, long modelIndex, AddDeleteItemCommand * originatingCommand);
 	ItemBase * addItem(const QString & moduleID, ViewLayer::ViewLayerSpec, BaseCommand::CrossViewType, const ViewGeometry &, long id, long modelIndex, AddDeleteItemCommand * originatingCommand);
     void deleteItem(long id, bool deleteModelPart, bool doEmit, bool later);
     virtual void deleteItem(ItemBase *, bool deleteModelPart, bool doEmit, bool later);
@@ -172,8 +172,8 @@ public:
 	void noteChanged(ItemBase *, const QString & oldText, const QString &newtext, QSizeF oldSize, QSizeF newSize);
 
 	void setInfoViewOnHover(bool infoViewOnHover);
-	virtual ItemBase * addItemAux(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, PaletteItem * paletteItem, bool doConnectors, ViewLayer::ViewIdentifier, bool temporary);
-	ItemBase * addItemAuxTemp(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, PaletteItem * paletteItem, bool doConnectors, ViewLayer::ViewIdentifier, bool temporary);
+	virtual ItemBase * addItemAux(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, bool doConnectors, ViewLayer::ViewIdentifier, bool temporary);
+	ItemBase * addItemAuxTemp(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, bool doConnectors, ViewLayer::ViewIdentifier, bool temporary);
 
     bool swappingEnabled(ItemBase *);
 

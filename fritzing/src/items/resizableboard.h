@@ -36,6 +36,7 @@ $Date$
 #include <QLabel>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QPushButton>
 
 #include "paletteitem.h"
 

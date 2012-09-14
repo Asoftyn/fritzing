@@ -31,6 +31,7 @@ $Date$
 #include "../utils/graphicsutils.h"
 #include "../svg/svgfilesplitter.h"
 #include "../sketch/infographicsview.h"
+#include "../debugdialog.h"
 
 static QString Copper0LayerTemplate = "";
 static QString JumperWireLayerTemplate = "";

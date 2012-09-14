@@ -44,6 +44,7 @@ TODO:
 #include <QMutexLocker>
 
 #include "peconnectorsview.h"
+#include "../debugdialog.h"
 
 //////////////////////////////////////
 

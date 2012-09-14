@@ -25,7 +25,8 @@ src/autoroute/autorouteprogressdialog.h \
 src/autoroute/autoroutersettingsdialog.h \
 src/autoroute/cmrouter/panelizer.h  \
 src/autoroute/cmrouter/tile.h  \
-src/autoroute/cmrouter/tileutils.h  
+src/autoroute/cmrouter/tileutils.h  \
+src/autoroute/zoomcontrols.h \
  
 SOURCES += \
 src/autoroute/autorouter.cpp \
@@ -36,4 +37,5 @@ src/autoroute/cmrouter/panelizer.cpp  \
 src/autoroute/cmrouter/tile.cpp \
 src/autoroute/cmrouter/DBcell.cpp \
 src/autoroute/cmrouter/search.cpp \
-src/autoroute/cmrouter/search2.cpp   
+src/autoroute/cmrouter/search2.cpp   \
+src/autoroute/zoomcontrols.cpp \

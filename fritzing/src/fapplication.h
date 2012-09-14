@@ -90,7 +90,7 @@ public:
 
 public:
 	bool init();
-	int startup(bool firstRun);
+	int startup();
 	int serviceStartup();
 	void finish();
 	class ReferenceModel * loadReferenceModel(const QString & databaseName, bool fullLoad);
@@ -147,7 +147,7 @@ protected:
 	QList<class MainWindow *> recoverBackups();
 	QList<MainWindow *> loadLastOpenSketch();
 	void doLoadPrevious(MainWindow *);
-	void loadSomething(bool firstRun, const QString & previousVersion);
+	void loadSomething(const QString & previousVersion);
 	void initFilesToLoad();
 	void initBackups();
 	void cleanupBackups();
@@ -198,10 +198,6 @@ protected:
     bool m_panelizerCustom;
     int m_portNumber;
     FServer * m_fServer;
-
-public:
-	static int RestartNeeded;
-
 };
 
 

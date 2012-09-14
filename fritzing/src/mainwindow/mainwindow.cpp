@@ -139,7 +139,6 @@ const QString MainWindow::UntitledSketchName = "Untitled Sketch";
 int MainWindow::UntitledSketchIndex = 1;
 int MainWindow::CascadeFactorX = 21;
 int MainWindow::CascadeFactorY = 19;
-int MainWindow::RestartNeeded = 0;
 
 static const int MainWindowDefaultWidth = 840;
 static const int MainWindowDefaultHeight = 600;
@@ -410,39 +409,6 @@ void MainWindow::initSketchWidgets() {
 
 	if (m_fileProgressDialog) {
 		m_fileProgressDialog->setValue(29);
-	}
-}
-
-void MainWindow::initDock() {
-	m_layerPalette = new LayerPalette(this);
-
-	m_infoView = new HtmlInfoView();
-    connect(m_infoView, SIGNAL(clickObsoleteSignal()), this, SLOT(selectAllObsolete()));
-	//DebugDialog::debug("after html view");
-
-	m_binManager = new BinManager(m_refModel, m_infoView, m_undoStack, this);
-    m_binManager->initStandardBins();
-
-	DebugDialog::debug("after creating bins");
-	if (m_fileProgressDialog) {
-		m_fileProgressDialog->setValue(89);
-	}
-}
-
-void MainWindow::moreInitDock() {
-	DebugDialog::debug("create view switcher");
-	m_layerPalette->setShowAllLayersAction(m_showAllLayersAct);
-	m_layerPalette->setHideAllLayersAction(m_hideAllLayersAct);
-
-	m_viewSwitcher = new ViewSwitcher();
-	connect(m_viewSwitcher, SIGNAL(viewSwitched(int)), this, SLOT(viewSwitchedTo(int)));
-	connect(this, SIGNAL(viewSwitched(int)), m_viewSwitcher, SLOT(viewSwitchedTo(int)));
-	m_viewSwitcher->viewSwitchedTo(0);
-
-    createDockWindows();
-
-	if (m_fileProgressDialog) {
-		m_fileProgressDialog->setValue(93);
 	}
 }
 
@@ -1083,73 +1049,10 @@ void MainWindow::acceptAlienFiles() {
 	m_alienFiles.clear();
 }
 
-void MainWindow::saveDocks()
-{
-	for (int i = 0; i < children().count(); i++) {
-		FDockWidget * dock = qobject_cast<FDockWidget *>(children()[i]);
-		if (dock == NULL) continue;
-
-		//DebugDialog::debug(QString("saving dock %1").arg(dock->windowTitle()));
-		dock->saveState();
-
-		if (dock->isFloating() && dock->isVisible()) {
-			//DebugDialog::debug(QString("hiding dock %1").arg(dock->windowTitle()));
-			dock->hide();
-		}
-	}
-}
-
-void MainWindow::restoreDocks() {
-	for (int i = 0; i < children().count(); i++) {
-		FDockWidget * dock = qobject_cast<FDockWidget *>(children()[i]);
-		if (dock == NULL) continue;
-
-		// DebugDialog::debug(QString("restoring dock %1").arg(dock->windowTitle()));
-		dock->restoreState();
-	}
-}
-
-
 ModelPart *MainWindow::loadPartFromFile(const QString& newPartPath, bool connectorsChanged) {
-	if(connectorsChanged && wannaRestart()) {
-		QApplication::exit(RestartNeeded);
-		return NULL;
-	} else {
-		ModelPart* mp = m_refModel->addPart(newPartPath, true, true);
-		m_refModel->addPart(mp,true);
-		return mp;
-	}
-}
-
-bool MainWindow::wannaRestart() {
-	QMessageBox::StandardButton btn = QMessageBox::question(this,
-		tr("Updating existing part"),
-		tr("Some connectors have changed.\n"
-			"In order to see the changes, you have to restart fritzing.\n"
-			"Do you want to restart now?"
-		),
-		QMessageBox::Yes|QMessageBox::No
-	);
-	bool result = (btn == QMessageBox::Yes);
-	if(result) {
-		m_restarting = true;
-		close();
-		m_restarting = false;
-	}
-	return result;
-}
-
-void MainWindow::loadPart(const QString &newPartPath, long partsEditorId, bool connectorsChanged) {
-	ModelPart * modelPart = loadPartFromFile(newPartPath, connectorsChanged);
-	if(modelPart && modelPart->hasViewIdentifier(ViewLayer::IconView)) {
-		if(m_binsWithPartsEditorRequests.contains(partsEditorId)
-		   && !m_binsWithPartsEditorRequests[partsEditorId]->currentBinIsCore()	) {
-			m_binManager->addPartTo(m_binsWithPartsEditorRequests[partsEditorId],modelPart, true);
-		} else {
-			m_binManager->addNewPart(modelPart);
-		}
-		m_infoView->reloadContent(m_currentGraphicsView);
-	}
+	ModelPart* mp = m_refModel->addPart(newPartPath, true, true);
+	m_refModel->addPart(mp,true);
+	return mp;
 }
 
 bool MainWindow::eventFilter(QObject *object, QEvent *event) {

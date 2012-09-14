@@ -111,19 +111,15 @@ int main(int argc, char *argv[])
 		FApplication * app = new FApplication(argc, argv);
 		if (app->init()) {
 			//DebugDialog::setDebugLevel(DebugDialog::Error);
-			bool firstRun = true;
 			if (app->runAsService()) {
 				// for example: -g C:\Users\jonathan\fritzing2\fz\Test_multiple.fz -go C:\Users\jonathan\fritzing2\fz\gerber
 				result = app->serviceStartup();
 			}
 			else {
-				do {
-					result = app->startup(firstRun);
-					if (result == 0) {
-						result = app->exec();
-						firstRun = false;
-					}
-				} while(result == FApplication::RestartNeeded);
+				result = app->startup();
+				if (result == 0) {
+					result = app->exec();
+				}
 			}
 			app->finish();
 		}

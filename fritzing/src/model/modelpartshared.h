@@ -54,10 +54,10 @@ class ModelPartShared : public QObject
 Q_OBJECT
 public:
 	ModelPartShared();
-	ModelPartShared(QDomDocument *, const QString & path);
+	ModelPartShared(QDomDocument &, const QString & path);
 	~ModelPartShared();
 
-	bool setDomDocument(QDomDocument *);
+	bool setDomDocument(QDomDocument &);
 	//QDomDocument * domDocument();
 
 	void copy(ModelPartShared* other);
@@ -122,7 +122,6 @@ public:
 
 
 	void initConnectors();
-	void resetConnectorsInitialization();
     void setConnectorsInitialized(bool); 
 	ConnectorShared * getConnectorShared(const QString & id);
 	bool ignoreTerminalPoints();
@@ -143,6 +142,7 @@ public:
     void insertBus(class BusShared *);
     void lookForZeroConnector();
     bool hasZeroConnector();
+    void addOwner(QObject *);
 
 protected:
 	void loadTagText(QDomElement parent, QString tagName, QString &field);
@@ -153,6 +153,9 @@ protected:
 	void ensurePartNumberProperty();
     void copyPins(ViewLayer::ViewLayerID from, ViewLayer::ViewLayerID to);
     LayerList viewLayersAux(ViewLayer::ViewIdentifier viewIdentifier, qulonglong (*accessor)(ViewImage *));
+
+protected slots:
+    void removeOwner();
 
 public:
 	static const QString PartNumberPropertyName;
@@ -182,7 +185,6 @@ protected:
 
 	QHash<QString, QPointer<class ConnectorShared> > m_connectorSharedHash;
 	QHash<QString, class BusShared *> m_buses;
-	QList<class ConnectorShared *> m_deletedList;
     QHash<ViewLayer::ViewIdentifier, ViewImage *> m_viewImages;
 
 	bool m_connectorsInitialized;
@@ -192,6 +194,7 @@ protected:
 	bool m_needsCopper1;				// for converting pre-two-layer parts
     qulonglong m_dbid;
     bool m_hasZeroConnector;
+    int m_ownerCount;
 };
 
 class ModelPartSharedRoot : public ModelPartShared

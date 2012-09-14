@@ -38,6 +38,7 @@ $Date$
 #include <QVBoxLayout>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QTextEdit>
 
 #include "../items/itembase.h"
 #include "../items/wire.h"

@@ -20,7 +20,6 @@
 INCLUDEPATH += src/lib/boost_1_43_0
 
 HEADERS += \
-src/utils/abstractimagebutton.h \
 src/utils/abstractstatesbutton.h \
 src/utils/autoclosemessagebox.h \
 src/utils/bendpointaction.h \
@@ -43,7 +42,6 @@ src/utils/folderutils.h \
 src/utils/graphicsutils.h \
 src/utils/graphutils.h \
 src/utils/ratsnestcolors.h \
-src/utils/svgandpartfilepath.h \
 src/utils/textutils.h \
 src/utils/zoomslider.h 
  

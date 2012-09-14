@@ -91,6 +91,13 @@ PaletteModel::PaletteModel(bool makeRoot, bool doInit) : ModelBase( makeRoot ) {
 	}
 }
 
+PaletteModel::~PaletteModel()
+{
+    foreach (ModelPart * modelPart, m_partHash.values()) {
+        delete modelPart;
+    }
+}
+
 void PaletteModel::initParts() {
 	QDir * dir = FolderUtils::getApplicationSubFolder("parts");
 	if (dir == NULL) {
@@ -347,25 +354,22 @@ ModelPart * PaletteModel::loadPart(const QString & path, bool update) {
 	QString moduleID;
     QString title;
 	QString propertiesText;
-	QDomDocument* domDocument = NULL;
 
 	QString errorStr;
 	int errorLine;
 	int errorColumn;
-	domDocument = new QDomDocument();
-
-	if (!domDocument->setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
+	QDomDocument domDocument;
+	if (!domDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
 		QMessageBox::information(NULL, QObject::tr("Fritzing"),
 								QObject::tr("Parse error (2) at line %1, column %2:\n%3\n%4")
 								.arg(errorLine)
 								.arg(errorColumn)
 								.arg(errorStr)
 								.arg(path));
-		delete domDocument;
 		return NULL;
 	}
 
-	QDomElement root = domDocument->documentElement();
+	QDomElement root = domDocument.documentElement();
    	if (root.isNull()) {
 		//QMessageBox::information(NULL, QObject::tr("Fritzing"), QObject::tr("The file is not a Fritzing file (8)."));
    		return NULL;
@@ -582,6 +586,12 @@ void PaletteModel::removeParts() {
 
 void PaletteModel::clearPartHash() {
 	foreach (ModelPart * modelPart, m_partHash.values()) {
+        ModelPartShared * modelPartShared = modelPart->modelPartShared();
+        if (modelPartShared) {
+            modelPart->setModelPartShared(NULL);
+            delete modelPartShared;
+        }
+
 		delete modelPart;
 	}
 	m_partHash.clear();

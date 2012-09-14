@@ -88,18 +88,42 @@ ModelPartShared::ModelPartShared() {
 	m_path = "";
 }
 
-ModelPartShared::ModelPartShared(QDomDocument * domDocument, const QString & path) {
+ModelPartShared::ModelPartShared(QDomDocument & domDocument, const QString & path) {
 	commonInit();
 
 	m_path = path;
 
-	if (domDocument) {
-        setDomDocument(domDocument);
-	}
+    setDomDocument(domDocument);
 }
 
-bool ModelPartShared::setDomDocument(QDomDocument * domDocument) {
-	QDomElement root = domDocument->documentElement();
+void ModelPartShared::commonInit() {
+	m_moduleID = "";
+    m_dbid = 0;
+    m_ownerCount = 0;
+	m_hasZeroConnector = m_flippedSMD = m_connectorsInitialized = m_ignoreTerminalPoints = m_needsCopper1 = false;
+}
+
+ModelPartShared::~ModelPartShared() {
+	foreach (ConnectorShared * connectorShared, m_connectorSharedHash.values()) {
+		delete connectorShared;
+	}
+	m_connectorSharedHash.clear();
+
+	foreach (ViewImage * viewImage, m_viewImages.values()) {
+		delete viewImage;
+	}
+	m_viewImages.clear();
+
+
+	foreach (BusShared * busShared, m_buses.values()) {
+		delete busShared;
+	}
+	m_buses.clear();
+
+}
+
+bool ModelPartShared::setDomDocument(QDomDocument & domDocument) {
+	QDomElement root = domDocument.documentElement();
 	if (root.isNull()) {
 		return false;
 	}
@@ -156,35 +180,6 @@ bool ModelPartShared::setDomDocument(QDomDocument * domDocument) {
 	}
 
     return true;
-}
-
-void ModelPartShared::commonInit() {
-	m_moduleID = "";
-    m_dbid = 0;
-	m_hasZeroConnector = m_flippedSMD = m_connectorsInitialized = m_ignoreTerminalPoints = m_needsCopper1 = false;
-}
-
-ModelPartShared::~ModelPartShared() {
-	foreach (ConnectorShared * connectorShared, m_connectorSharedHash.values()) {
-		delete connectorShared;
-	}
-	m_connectorSharedHash.clear();
-
-	foreach (ViewImage * viewImage, m_viewImages.values()) {
-		delete viewImage;
-	}
-	m_viewImages.clear();
-
-	foreach (ConnectorShared * connectorShared, m_deletedList) {
-		delete connectorShared;
-	}
-	m_deletedList.clear();
-
-	foreach (BusShared * busShared, m_buses.values()) {
-		delete busShared;
-	}
-	m_buses.clear();
-
 }
 
 void ModelPartShared::loadTagText(QDomElement parent, QString tagName, QString &field) {
@@ -352,16 +347,6 @@ void ModelPartShared::setConnectorsShared(QList< QPointer<ConnectorShared> > con
 		ConnectorShared* cs = connectors[i];
 		m_connectorSharedHash[cs->id()] = cs;
 	}
-}
-
-void ModelPartShared::resetConnectorsInitialization() {
-	m_connectorsInitialized = false;
-
-	foreach (ConnectorShared * cs, m_connectorSharedHash.values()) {
-		// due to craziness in the parts editor
-		m_deletedList.append(cs);
-	}
-	m_connectorSharedHash.clear();
 }
 
 void ModelPartShared::setConnectorsInitialized(bool init) {
@@ -756,3 +741,14 @@ bool ModelPartShared::hasZeroConnector() {
     return m_hasZeroConnector;
 }
 
+void ModelPartShared::addOwner(QObject * owner) {
+    m_ownerCount++;
+    connect(owner, SIGNAL(destroyed()), this, SLOT(removeOwner()));
+}
+
+void ModelPartShared::removeOwner() {
+    if (--m_ownerCount == 0) {
+        // DebugDialog::debug(QString("last owner %1").arg(moduleID()));
+        // this->deleteLater();
+    }
+}

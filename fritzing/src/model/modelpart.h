@@ -38,11 +38,11 @@ $Date$
 #include <QHash>
 #include <QList>
 #include <QPointer>
+#include <QSharedPointer>
 
 #include "modelpartshared.h"
 #include "../connectors/connector.h"
 #include "../connectors/bus.h"
-#include "../utils/svgandpartfilepath.h"
 
 class ModelPart : public QObject
 {
@@ -77,7 +77,7 @@ public:
 	Q_DECLARE_FLAGS(LocationFlags, LocationFlag)
 
 public:
-	ModelPart(QDomDocument *, const QString& path, ItemType type);
+	ModelPart(QDomDocument &, const QString& path, ItemType type);
 	ModelPart(ItemType type = ModelPart::Unknown);
 	~ModelPart();
 
@@ -217,7 +217,6 @@ protected:
 	QDomElement m_instanceDomElement;	// only used at load time (so far)
 
 	LocationFlags m_locationFlags;
-	bool m_originalModelPartShared;
 	bool m_indexSynched;
 
 	QString m_instanceTitle;

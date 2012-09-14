@@ -36,6 +36,7 @@ $Date$
 #include "../layerattributes.h"
 #include "moduleidnames.h"
 #include "partlabel.h"
+#include "../debugdialog.h"
 
 #include <qmath.h>
 #include <QRegExpValidator>

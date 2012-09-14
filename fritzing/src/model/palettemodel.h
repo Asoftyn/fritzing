@@ -42,6 +42,7 @@ Q_OBJECT
 public:
 	PaletteModel();
 	PaletteModel(bool makeRoot, bool doInit);
+    ~PaletteModel();
 	ModelPart * retrieveModelPart(const QString & moduleID);
 	virtual bool containsModelPart(const QString & moduleID);
 	virtual ModelPart * loadPart(const QString & path, bool update);

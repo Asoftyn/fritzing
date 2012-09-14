@@ -36,7 +36,6 @@ $Date$
 #include "../model/palettemodel.h"
 #include "../model/modelpart.h"
 #include "../waitpushundostack.h"
-#include "../utils/abstractimagebutton.h"
 #include "../utils/fileprogressdialog.h"
 #include "../utils/bundler.h"
 #include "binmanager/binmanager.h"
@@ -139,7 +138,7 @@ class PartsBinPaletteWidget : public QFrame, public Bundler {
 
 		void afterModelSetted(PaletteModel *model);
 
-		QToolButton* newToolButton(const QString& btnObjName, const QString& imgPath = ___emptyString___, const QString &text = ___emptyString___);
+		QToolButton* newToolButton(const QString& btnObjName, const QString& imgPath, const QString &text);
 
 		bool loadBundledAux(QDir &unzipDir, QList<ModelPart*> mps);
 

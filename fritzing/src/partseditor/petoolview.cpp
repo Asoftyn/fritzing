@@ -286,6 +286,8 @@ double PEToolView::convertUnits(double val)
 }
 
 void PEToolView::initConnectors(QList<QDomElement> & connectorList, bool gotZeroConnector) {
+    m_connectorListWidget->blockSignals(true);
+
     m_gotZeroConnector = gotZeroConnector;
     m_connectorListWidget->clear();  // deletes QListWidgetItems
     m_connectorList = connectorList;
@@ -301,6 +303,9 @@ void PEToolView::initConnectors(QList<QDomElement> & connectorList, bool gotZero
     if (m_connectorListWidget->count() > 0) {
         m_connectorListWidget->setCurrentRow(0);
     }
+
+    m_connectorListWidget->blockSignals(false);
+
 }
 
 void PEToolView::switchConnector(QListWidgetItem * current, QListWidgetItem * previous) {
@@ -357,6 +362,8 @@ void PEToolView::descriptionEntry() {
 
 QDomElement PEToolView::currentConnector() {
     QListWidgetItem * item = m_connectorListWidget->currentItem();
+    if (item == NULL) return QDomElement();
+
     int index = item->data(Qt::UserRole).toInt();
     return m_connectorList.at(index);
 }

@@ -57,15 +57,14 @@ ModelPart::ModelPart(ItemType type)
 	commonInit(type);
 	m_modelPartShared = NULL;
 	m_index = m_nextIndex++;
-	m_originalModelPartShared = false;  // TODO: make this a QSharedPointer
 }
 
-ModelPart::ModelPart(QDomDocument * domDocument, const QString & path, ItemType type)
+ModelPart::ModelPart(QDomDocument & domDocument, const QString & path, ItemType type)
 	: QObject()
 {
 	commonInit(type);
 	m_modelPartShared = new ModelPartShared(domDocument, path);
-	m_originalModelPartShared = true;		// TODO: make this a QSharedPointer
+    m_modelPartShared->addOwner(this);
 }
 
 void ModelPart::commonInit(ItemType type) {
@@ -86,12 +85,6 @@ ModelPart::~ModelPart() {
 			delete list;
 		}
 		delete itih;
-	}
-
-	if (m_originalModelPartShared) {		// TODO: make this a QSharedPointer
-		if (m_modelPartShared) {
-			delete m_modelPartShared;
-		}
 	}
 
 	foreach (Connector * connector, m_connectorHash.values()) {
@@ -153,6 +146,7 @@ void ModelPart::copy(ModelPart * modelPart) {
 
 	m_type = modelPart->itemType();
 	m_modelPartShared = modelPart->modelPartShared();
+    if (m_modelPartShared) m_modelPartShared->addOwner(this);
 	m_locationFlags = modelPart->m_locationFlags;
 }
 
@@ -167,7 +161,7 @@ void ModelPart::copyStuff(ModelPart * modelPart) {
 ModelPartShared * ModelPart::modelPartShared() {
 	if(!m_modelPartShared) {
 		m_modelPartShared = new ModelPartShared();
-		m_originalModelPartShared = true;		// TODO: make this a QSharedPointer
+        m_modelPartShared->addOwner(this);
 	}
 	return m_modelPartShared;
 }
@@ -177,7 +171,8 @@ ModelPartSharedRoot * ModelPart::modelPartSharedRoot() {
 }
 
 void ModelPart::setModelPartShared(ModelPartShared * modelPartShared) {
-	m_modelPartShared = modelPartShared;
+	m_modelPartShared = modelPartShared;    
+    if (modelPartShared) m_modelPartShared->addOwner(this);
 }
 
 void ModelPart::addViewItem(ItemBase * item) {

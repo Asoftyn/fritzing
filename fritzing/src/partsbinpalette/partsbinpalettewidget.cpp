@@ -180,7 +180,7 @@ void PartsBinPaletteWidget::setupHeader()
     QMenu * combinedMenu = m_manager->combinedMenu();
     if (combinedMenu == NULL) return;
 
-	m_combinedBinMenuButton = newToolButton("partsBinCombinedMenuButton");
+	m_combinedBinMenuButton = newToolButton("partsBinCombinedMenuButton", ___emptyString___, ___emptyString___);
 	m_combinedBinMenuButton->setMenu(combinedMenu);
 
 	m_binLabel = new QLabel(this);

@@ -32,7 +32,6 @@ $Date$
 #include "mainwindow.h"
 #include "../debugdialog.h"
 #include "../waitpushundostack.h"
-#include "../partseditor/partseditormainwindow.h"
 #include "../help/aboutbox.h"
 #include "../autoroute/cmrouter/cmrouter.h"
 #include "../autoroute/autorouteprogressdialog.h"

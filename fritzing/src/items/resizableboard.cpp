@@ -35,6 +35,7 @@ $Date$
 #include "../commands.h"
 #include "moduleidnames.h"
 #include "../layerattributes.h"
+#include "../debugdialog.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>

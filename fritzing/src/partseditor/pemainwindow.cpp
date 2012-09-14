@@ -27,6 +27,8 @@ $Date$
 /* TO DO ******************************************
 
 	clean up menus
+
+    fixfonts dialog
     
     show in OS button
         test on mac, linux
@@ -53,6 +55,13 @@ $Date$
     
     move connectors with arrow keys, or typed coordinates
 	drag and drop later
+
+    from partseditorview.cpp
+	    bool fileHasChanged = (m_viewIdentifier == ViewLayer::IconView) ? false : TextUtils::fixPixelDimensionsIn(fileContent);
+	    fileHasChanged |= TextUtils::cleanSodipodi(fileContent);
+	    fileHasChanged |= TextUtils::fixViewboxOrigin(fileContent);
+	    fileHasChanged |= TextUtils::tspanRemove(fileContent);
+	    fileHasChanged |= fixFonts(fileContent,filename,canceled);
 	
     import
         eagle lbr
@@ -231,7 +240,8 @@ PEMainWindow::PEMainWindow(ReferenceModel * referenceModel, QWidget * parent)
     m_fileIndex = 0;
 	m_userPartsFolderPath = FolderUtils::getUserDataStorePath("parts")+"/user/";
 	m_userPartsFolderSvgPath = FolderUtils::getUserDataStorePath("parts")+"/svg/user/";
-
+    m_peToolView = NULL;
+    m_connectorsView = NULL;
 }
 
 PEMainWindow::~PEMainWindow()
@@ -497,7 +507,6 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
         m_originalSvgPaths.insert(itemBase->viewIdentifier(), itemBase->filename());
     }
 
-    switchedConnector(m_peToolView->currentConnector());
 }
 
 bool PEMainWindow::eventFilter(QObject *object, QEvent *event) 
@@ -853,6 +862,8 @@ void PEMainWindow::initConnectors() {
 void PEMainWindow::switchedConnector(const QDomElement & element)
 {
     if (m_currentGraphicsView == NULL) return;
+    if (element.isNull()) return;
+
     switchedConnector(element, m_currentGraphicsView);
 }
 
@@ -896,9 +907,7 @@ void PEMainWindow::switchedConnector(const QDomElement & element, SketchWidget *
         }
     }
     m_peToolView->setLock(gotOne);
-    foreach (PEGraphicsItem * pegi, pegiList) {
-        pegi->setAcceptedMouseButtons(gotOne ? Qt::NoButton : Qt::LeftButton);
-    }
+    lockChangedAux(gotOne, pegiList);
 }
 
 void PEMainWindow::loadImage() 
@@ -1147,16 +1156,16 @@ QString PEMainWindow::saveFzp() {
 
 void PEMainWindow::reload() {
     QString fzpPath = saveFzp();
-    ModelPart * modelPart = new ModelPart(&m_fzpDocument, fzpPath, ModelPart::Part);
+    ModelPart * modelPart = new ModelPart(m_fzpDocument, fzpPath, ModelPart::Part);
 
     long newID = ItemBase::getNextID();
 	ViewGeometry viewGeometry;
 	viewGeometry.setLoc(QPointF(0, 0));
 
-    ItemBase * iconItem = m_iconGraphicsView->addItem(modelPart, m_iconGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL, NULL);
-    ItemBase * breadboardItem = m_breadboardGraphicsView->addItem(modelPart, m_breadboardGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL, NULL);
-    ItemBase * schematicItem = m_schematicGraphicsView->addItem(modelPart, m_schematicGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL, NULL);
-    ItemBase * pcbItem = m_pcbGraphicsView->addItem(modelPart, m_pcbGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL, NULL);
+    ItemBase * iconItem = m_iconGraphicsView->addItem(modelPart, m_iconGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
+    ItemBase * breadboardItem = m_breadboardGraphicsView->addItem(modelPart, m_breadboardGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
+    ItemBase * schematicItem = m_schematicGraphicsView->addItem(modelPart, m_schematicGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
+    ItemBase * pcbItem = m_pcbGraphicsView->addItem(modelPart, m_pcbGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
     m_metadataView->initMetadata(m_fzpDocument);
 
     initConnectors();
@@ -1175,17 +1184,31 @@ void PEMainWindow::reload() {
         item->setMoveLock(true);
     }
 
+    m_breadboardGraphicsView->hideConnectors(true);
+    m_schematicGraphicsView->hideConnectors(true);
+    m_pcbGraphicsView->hideConnectors(true);
+
+    switchedConnector(m_peToolView->currentConnector());
+
     QTimer::singleShot(10, this, SLOT(initZoom()));
 }
 
 void PEMainWindow::lockChanged(bool state) {
+    QList<PEGraphicsItem *> pegiList;
     foreach (QGraphicsItem * item, m_currentGraphicsView->scene()->items()) {
         PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
-        if (pegi) {
-            pegi->setAcceptedMouseButtons(state ? Qt::NoButton : Qt::LeftButton);
-        }
+        if (pegi) pegiList.append(pegi);
+    }
+    lockChangedAux(state, pegiList);
+}
+
+void PEMainWindow::lockChangedAux(bool state, const QList<PEGraphicsItem *> & pegiList) 
+{
+    foreach (PEGraphicsItem * pegi, pegiList) {
+        pegi->setAcceptedMouseButtons(state ? Qt::NoButton : Qt::LeftButton);
     }
 }
+
 
 void PEMainWindow::pegiMouseReleased(PEGraphicsItem * pegi)
 {
@@ -1720,5 +1743,15 @@ QRectF PEMainWindow::getPixelBounds(FSvgRenderer & renderer, QDomElement & eleme
 }
 
 bool PEMainWindow::canSave() {
+
     return m_canSave;
 }
+
+void PEMainWindow::tabWidget_currentChanged(int index) {
+    MainWindow::tabWidget_currentChanged(index);
+
+    if (m_peToolView == NULL) return;
+
+    switchedConnector(m_peToolView->currentConnector());
+}
+
