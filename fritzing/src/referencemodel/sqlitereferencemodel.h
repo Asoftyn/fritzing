@@ -44,6 +44,7 @@ class SqliteReferenceModel : public ReferenceModel {
 		bool loadAll(const QString & databaseName, bool fullLoad);
 		bool loadFromDB(const QString & databaseName);
 		ModelPart *loadPart(const QString & path, bool update);
+		ModelPart *reloadPart(const QString & path, const QString & moduleID);
 
 		ModelPart *retrieveModelPart(const QString &moduleID);
 

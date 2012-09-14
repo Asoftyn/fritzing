@@ -308,7 +308,7 @@ void PCBSketchWidget::addDefaultParts() {
 	viewGeometry.setLoc(QPointF(0, 0));
 
 	// have to put this off until later, because positioning the item doesn't work correctly until the view is visible
-	m_addedDefaultPart = addItem(paletteModel()->retrieveModelPart(ModuleIDNames::TwoSidedRectanglePCBModuleIDName), defaultViewLayerSpec(), BaseCommand::CrossView, viewGeometry, newID, -1, NULL, NULL);
+	m_addedDefaultPart = addItem(refModel()->retrieveModelPart(ModuleIDNames::TwoSidedRectanglePCBModuleIDName), defaultViewLayerSpec(), BaseCommand::CrossView, viewGeometry, newID, -1, NULL, NULL);
 	m_addDefaultParts = true;
 
 	changeBoardLayers(2, true);
@@ -950,7 +950,7 @@ bool PCBSketchWidget::isBoardLayerChange(ItemBase * itemBase, const QString & ne
 		return false;
 	}
 
-	ModelPart * modelPart = paletteModel()->retrieveModelPart(newModuleID);
+	ModelPart * modelPart = refModel()->retrieveModelPart(newModuleID);
 	if (modelPart == NULL) {
 		// shouldn't happen
 		return false;
@@ -1291,7 +1291,7 @@ ItemBase * PCBSketchWidget::addCopperLogoItem(ViewLayer::ViewLayerSpec viewLayer
 	ViewGeometry viewGeometry;
 	viewGeometry.setLoc(QPointF(0, 0));
 	QString moduleID = (viewLayerSpec == ViewLayer::Bottom) ? ModuleIDNames::Copper0LogoTextModuleIDName : ModuleIDNames::Copper1LogoTextModuleIDName;
-	return addItem(paletteModel()->retrieveModelPart(moduleID), viewLayerSpec, BaseCommand::SingleView, viewGeometry, newID, -1, NULL, NULL);
+	return addItem(refModel()->retrieveModelPart(moduleID), viewLayerSpec, BaseCommand::SingleView, viewGeometry, newID, -1, NULL, NULL);
 }
 
 void PCBSketchWidget::updateNet(Wire * wire) {

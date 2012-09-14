@@ -638,10 +638,10 @@ void SketchWidget::setWireExtras(long newID, const QDomElement & extras)
 }
 
 ItemBase * SketchWidget::addItem(const QString & moduleID, ViewLayer::ViewLayerSpec viewLayerSpec, BaseCommand::CrossViewType crossViewType, const ViewGeometry & viewGeometry, long id, long modelIndex,  AddDeleteItemCommand * originatingCommand) {
-	if (m_paletteModel == NULL) return NULL;
+	if (m_refModel == NULL) return NULL;
 
 	ItemBase * itemBase = NULL;
-	ModelPart * modelPart = m_paletteModel->retrieveModelPart(moduleID);
+	ModelPart * modelPart = m_refModel->retrieveModelPart(moduleID);
 
 	if (modelPart != NULL) {
 		QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -1487,7 +1487,7 @@ void SketchWidget::copyAux(QList<ItemBase *> & bases, bool saveBoundingRects)
 void SketchWidget::pasteHeart(QByteArray & itemData, bool seekOutsideConnections) {
 	QList<ModelPart *> modelParts;
 	QHash<QString, QRectF> boundingRects;
-	if (m_sketchModel->paste(m_paletteModel, itemData, modelParts, boundingRects, true)) {
+	if (m_sketchModel->paste(m_refModel, itemData, modelParts, boundingRects, true)) {
 		QRectF r;
 		QRectF boundingRect = boundingRects.value(this->viewName(), r);
 		QList<long> newIDs;
@@ -1648,7 +1648,7 @@ bool SketchWidget::dragEnterEventAux(QDragEnterEvent *event) {
     dataStream >> moduleID >> offset;
 
     moduleID = checkDroppedModuleID(moduleID);
-	ModelPart * modelPart = m_paletteModel->retrieveModelPart(moduleID);
+	ModelPart * modelPart = m_refModel->retrieveModelPart(moduleID);
 	if (modelPart ==  NULL) return false;
 
 	if (!canDropModelPart(modelPart)) return false;
@@ -3186,12 +3186,12 @@ bool SketchWidget::checkMoved()
 	return true;
 }
 
-void SketchWidget::setPaletteModel(PaletteModel * paletteModel) {
-	m_paletteModel = paletteModel;
-}
-
 void SketchWidget::setRefModel(ReferenceModel *refModel) {
 	m_refModel = refModel;
+}
+
+ReferenceModel * SketchWidget::refModel() {
+	return m_refModel;
 }
 
 void SketchWidget::setSketchModel(SketchModel * sketchModel) {
@@ -4275,7 +4275,7 @@ ViewLayer::ViewLayerID SketchWidget::getNoteViewLayerID() {
 
 void SketchWidget::mousePressConnectorEvent(ConnectorItem * connectorItem, QGraphicsSceneMouseEvent * event) {
 
-	ModelPart * wireModel = m_paletteModel->retrieveModelPart(ModuleIDNames::WireModuleIDName);
+	ModelPart * wireModel = m_refModel->retrieveModelPart(ModuleIDNames::WireModuleIDName);
 	if (wireModel == NULL) return;
 
 	m_tempDragWireCommand = m_holdingSelectItemCommand;
@@ -4940,7 +4940,7 @@ void SketchWidget::prepDeleteProps(ItemBase * itemBase, long id, const QString &
 	// this works most of the time, but does not, for example, when a ResizableBoard is swapped for a custom board shape
 
     bool boardToCustomBoard = false;
-	ModelPart * mp = (newModuleID.isEmpty()) ? itemBase->modelPart() : paletteModel()->retrieveModelPart(newModuleID);
+	ModelPart * mp = (newModuleID.isEmpty()) ? itemBase->modelPart() : refModel()->retrieveModelPart(newModuleID);
     if (mp->itemType() == ModelPart::Logo && qobject_cast<Board *>(itemBase) != NULL) {
         boardToCustomBoard = true;
         mp = itemBase->modelPart();
@@ -6126,10 +6126,6 @@ void SketchWidget::changeWireWidth(long wireId, double width) {
 		wire->setWireWidth(width, this, getWireStrokeWidth(wire, width));
 		updateInfoView();
 	}
-}
-
-PaletteModel * SketchWidget::paletteModel() {
-	return m_paletteModel;
 }
 
 bool SketchWidget::swappingEnabled(ItemBase * itemBase) {
@@ -8604,7 +8600,7 @@ VirtualWire * SketchWidget::makeOneRatsnestWire(ConnectorItem * source, Connecto
 	}
 
 	// ratsnest only added to one view
-	ItemBase * newItemBase = addItem(m_paletteModel->retrieveModelPart(ModuleIDNames::WireModuleIDName), source->attachedTo()->viewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL, NULL);		
+	ItemBase * newItemBase = addItem(m_refModel->retrieveModelPart(ModuleIDNames::WireModuleIDName), source->attachedTo()->viewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL, NULL);		
 	VirtualWire * wire = qobject_cast<VirtualWire *>(newItemBase);
 	ConnectorItem * connector0 = wire->connector0();
 	source->tempConnectTo(connector0, false);

@@ -243,7 +243,6 @@ FApplication::FApplication( int & argc, char ** argv) : QApplication(argc, argv)
 	m_spaceBarIsPressed = false;
 	m_mousePressed = false;
 	m_referenceModel = NULL;
-	m_paletteBinModel = NULL;
 	m_started = false;
 	m_updateDialog = NULL;
 	m_lastTopmostWindow = NULL;
@@ -503,10 +502,6 @@ FApplication::~FApplication(void)
 }
 
 void FApplication::clearModels() {
-	if (m_paletteBinModel) {
-		m_paletteBinModel->clearPartHash();
-		delete m_paletteBinModel;
-	}
 	if (m_referenceModel) {
 		m_referenceModel->clearPartHash();
 		delete m_referenceModel;
@@ -649,15 +644,12 @@ ReferenceModel * FApplication::loadReferenceModel(const QString & databaseName, 
         }
     }
 
-	m_paletteBinModel = new PaletteModel(true, false);
-    m_paletteBinModel->setReferenceModel(m_referenceModel);
-	//DebugDialog::debug("after new palette model");
 	return m_referenceModel;
 }
 
 MainWindow * FApplication::openWindowForService(bool lockFiles) {
 	// our MainWindows use WA_DeleteOnClose so this has to be added to the heap (via new) rather than the stack (for local vars)
-	MainWindow * mainWindow = MainWindow::newMainWindow(m_paletteBinModel, m_referenceModel, "", false, lockFiles);   // this is also slow
+	MainWindow * mainWindow = MainWindow::newMainWindow(m_referenceModel, "", false, lockFiles);   // this is also slow
 	mainWindow->setReportMissingModules(false);
     mainWindow->noBackup();
 
@@ -1042,7 +1034,7 @@ void FApplication::finish()
 }
 
 void FApplication::loadNew(QString path) {
-	MainWindow * mw = MainWindow::newMainWindow(m_paletteBinModel, m_referenceModel, path, true, true);
+	MainWindow * mw = MainWindow::newMainWindow(m_referenceModel, path, true, true);
 	if (!mw->loadWhich(path, false, true, "")) {
 		mw->close();
 	}
@@ -1454,7 +1446,7 @@ void FApplication::loadSomething(bool firstRun, const QString & prevVersion) {
 
         foreach (QString filename, m_filesToLoad) {
             DebugDialog::debug(QString("Loading non-service file %1").arg(filename));
-            MainWindow *mainWindow = MainWindow::newMainWindow(m_paletteBinModel, m_referenceModel, filename, true, true);
+            MainWindow *mainWindow = MainWindow::newMainWindow(m_referenceModel, filename, true, true);
             mainWindow->loadWhich(filename, true, true, "");
             sketchesToLoad << mainWindow;
         }
@@ -1469,7 +1461,7 @@ void FApplication::loadSomething(bool firstRun, const QString & prevVersion) {
 	MainWindow * newBlankSketch = NULL;
 	if (sketchesToLoad.isEmpty()) {
 		DebugDialog::debug(QString("create empty sketch"));
-		newBlankSketch = MainWindow::newMainWindow(m_paletteBinModel, m_referenceModel, "", true, true);
+		newBlankSketch = MainWindow::newMainWindow(m_referenceModel, "", true, true);
 		if (newBlankSketch) {
 			// make sure to start an empty sketch with a board
 			newBlankSketch->addDefaultParts();   // do this before call to show()
@@ -1506,7 +1498,7 @@ QList<MainWindow *> FApplication::loadLastOpenSketch() {
 
     DebugDialog::debug(QString("Loading last open sketch %1").arg(lastSketchPath));
     settings.remove("lastOpenSketch");				// clear the preference, in case the load crashes
-    MainWindow *mainWindow = MainWindow::newMainWindow(m_paletteBinModel, m_referenceModel, lastSketchPath, true, true);
+    MainWindow *mainWindow = MainWindow::newMainWindow(m_referenceModel, lastSketchPath, true, true);
     mainWindow->loadWhich(lastSketchPath, true, true, "");
     sketches << mainWindow;
     settings.setValue("lastOpenSketch", lastSketchPath);	// the load works, so restore the preference
@@ -1564,7 +1556,7 @@ QList<MainWindow *> FApplication::recoverBackups()
 			QString fileExt;
 			QString bundledFileName = FolderUtils::getSaveFileName(NULL, tr("Please specify an .fzz file name to save to (cancel will delete the backup)"), originalPath, tr("Fritzing (*%1)").arg(FritzingBundleExtension), &fileExt);
 			if (!bundledFileName.isEmpty()) {
-				MainWindow *currentRecoveredSketch = MainWindow::newMainWindow(m_paletteBinModel, m_referenceModel, originalBaseName, true, true);
+				MainWindow *currentRecoveredSketch = MainWindow::newMainWindow(m_referenceModel, originalBaseName, true, true);
     			currentRecoveredSketch->mainLoad(backupName, bundledFileName);
 				currentRecoveredSketch->saveAsShareable(bundledFileName, true);
 				currentRecoveredSketch->setCurrentFile(bundledFileName, true, true);

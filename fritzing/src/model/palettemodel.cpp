@@ -130,15 +130,6 @@ bool PaletteModel::containsModelPart(const QString & moduleID) {
 	return m_partHash.contains(moduleID);
 }
 
-void PaletteModel::updateOrAddModelPart(const QString & moduleID, ModelPart *newOne) {
-	ModelPart *oldOne = m_partHash.value(moduleID, NULL);
-	if(oldOne) {
-		oldOne->copy(newOne);
-	} else {
-		m_partHash.insert(moduleID, newOne);
-	}
-}
-
 void PaletteModel::loadParts() {
 	QStringList nameFilters;
 	nameFilters << "*" + FritzingPartExtension;

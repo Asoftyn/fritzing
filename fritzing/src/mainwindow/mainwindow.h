@@ -111,7 +111,7 @@ class MainWindow : public FritzingWindow
 {
     Q_OBJECT
 public:
-    MainWindow(class PaletteModel *, class ReferenceModel *refModel, QWidget * parent);
+    MainWindow(class ReferenceModel *refModel, QWidget * parent);
     MainWindow(QFile & fileToLoad);
 	~MainWindow();
 
@@ -128,7 +128,7 @@ public:
 	void getPartsEditorNewAnd(ItemBase * fromItem);
 	ModelPart *loadPartFromFile(const QString& newPartPath, bool connectorsChanged=false);
 	void addDefaultParts();
-    void init(class PaletteModel *, ReferenceModel *refModel, bool lockFiles);
+    void init(ReferenceModel *refModel, bool lockFiles);
 	void showFileProgressDialog(const QString & path);
 	void setFileProgressPath(const QString & path);
 	void clearFileProgressDialog();
@@ -169,10 +169,12 @@ public:
     void exportSvg(double res, bool selectedItems, bool flatten, const QString & filename);
     void setCurrentView(ViewLayer::ViewIdentifier);
     bool usesPart(const QString & moduleID);
+    bool updateParts(const QString & moduleID, QUndoCommand * parentCommand);
+
 
 public:
 	static void initNames();
-	static MainWindow * newMainWindow(PaletteModel * paletteModel, ReferenceModel *refModel, const QString & displayPath, bool showProgress, bool lockFiles);
+	static MainWindow * newMainWindow(ReferenceModel *refModel, const QString & displayPath, bool showProgress, bool lockFiles);
 	static void setAutosavePeriod(int);
 	static void setAutosaveEnabled(bool);
 
@@ -563,7 +565,6 @@ protected:
     QPointer<class MiniViewContainer> m_miniViewContainerPCB;
 	QList <class MiniViewContainer *> m_navigators;
 	QPointer<QStackedWidget> m_tabWidget;
-    QPointer<class PaletteModel> m_paletteModel;
     QPointer<ReferenceModel> m_refModel;
     QPointer<class SketchModel> m_sketchModel;
     QPointer<class HtmlInfoView> m_infoView;

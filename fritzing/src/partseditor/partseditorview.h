@@ -29,6 +29,7 @@ $Date$
 #define PARTSEDITORVIEW_H_
 
 #include "../sketch/sketchwidget.h"
+#include "../model/palettemodel.h"
 #include "partseditorpaletteitem.h"
 #include "partseditorconnectorspaletteitem.h"
 #include "partseditorconnectorsconnectoritem.h"
@@ -87,6 +88,7 @@ class PartsEditorView : public SketchWidget {
 
 		bool connsPosOrSizeChanged();
 		void setViewItem(ItemBase *);
+        void setPaletteModel(PaletteModel *);
 
 	public slots:
 		// general
@@ -253,6 +255,7 @@ protected:
 		QList<QGraphicsItem*> m_fixedToBottomLeftItems;
 		QList<QGraphicsItem*> m_fixedToBottomRightItems;
 		QList<QGraphicsItem*> m_fixedToCenterItems;
+        PaletteModel * m_paletteModel;
 
 	protected:
 		static int ConnDefaultWidth;

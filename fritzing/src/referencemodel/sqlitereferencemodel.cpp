@@ -732,6 +732,17 @@ ModelPart * SqliteReferenceModel::addPart(QString newPartPath, bool addToReferen
 	return PaletteModel::addPart(newPartPath, addToReference, updateIdAlreadyExists);
 }
 
+
+ModelPart * SqliteReferenceModel::reloadPart(const QString & path, const QString & moduleID) {
+    m_partHash.remove(moduleID);
+    ModelPart *modelPart = PaletteModel::loadPart(path, false);
+	if (modelPart == NULL) return modelPart;
+
+	updatePart(modelPart);
+	return modelPart;
+}
+
+
 bool SqliteReferenceModel::updatePart(ModelPart * newModel) {
 	if(m_swappingEnabled) {
 		qulonglong partId = this->partId(newModel->moduleID());

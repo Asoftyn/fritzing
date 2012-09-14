@@ -38,7 +38,7 @@ $Date$
 #include <QTimer>
 
 #include "../items/paletteitem.h"
-#include "../model/palettemodel.h"
+#include "../referencemodel/referencemodel.h"
 #include "../model/sketchmodel.h"
 #include "../viewgeometry.h"
 #include "infographicsview.h"
@@ -110,8 +110,8 @@ public:
     void rotateLeg(long fromID, const QString & connectorID, const QPolygonF &, bool active);   
     void cut();
     void copy();
-    void setPaletteModel(PaletteModel *);
     void setRefModel(class ReferenceModel *refModel);
+    class ReferenceModel * refModel();
     void setSketchModel(SketchModel *);
     void setUndoStack(class WaitPushUndoStack *);
     void clearSelection();
@@ -172,7 +172,6 @@ public:
 	void noteChanged(ItemBase *, const QString & oldText, const QString &newtext, QSizeF oldSize, QSizeF newSize);
 
 	void setInfoViewOnHover(bool infoViewOnHover);
-	PaletteModel * paletteModel();
 	virtual ItemBase * addItemAux(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, PaletteItem * paletteItem, bool doConnectors, ViewLayer::ViewIdentifier, bool temporary);
 	ItemBase * addItemAuxTemp(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, PaletteItem * paletteItem, bool doConnectors, ViewLayer::ViewIdentifier, bool temporary);
 
@@ -598,7 +597,6 @@ protected:
 	};
 
 protected:
-	QPointer<PaletteModel> m_paletteModel;
 	QPointer<class ReferenceModel> m_refModel;
 	QPointer<SketchModel> m_sketchModel;
 	ViewLayer::ViewIdentifier m_viewIdentifier;

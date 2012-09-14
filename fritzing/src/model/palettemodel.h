@@ -43,7 +43,6 @@ public:
 	PaletteModel();
 	PaletteModel(bool makeRoot, bool doInit);
 	ModelPart * retrieveModelPart(const QString & moduleID);
-	void updateOrAddModelPart(const QString & moduleID, ModelPart *modelPart);
 	virtual bool containsModelPart(const QString & moduleID);
 	virtual ModelPart * loadPart(const QString & path, bool update);
 	void clear();

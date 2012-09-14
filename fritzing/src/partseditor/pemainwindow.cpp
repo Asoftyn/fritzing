@@ -157,7 +157,6 @@ $Date$
 #include "pegraphicsitem.h"
 #include "kicadmoduledialog.h"
 #include "../debugdialog.h"
-#include "../model/palettemodel.h"
 #include "../sketch/breadboardsketchwidget.h"
 #include "../sketch/schematicsketchwidget.h"
 #include "../sketch/pcbsketchwidget.h"
@@ -217,8 +216,8 @@ void IconSketchWidget::addViewLayers() {
 
 /////////////////////////////////////////////////////
 
-PEMainWindow::PEMainWindow(PaletteModel * paletteModel, ReferenceModel * referenceModel, QWidget * parent)
-	: MainWindow(paletteModel, referenceModel, parent)
+PEMainWindow::PEMainWindow(ReferenceModel * referenceModel, QWidget * parent)
+	: MainWindow(referenceModel, parent)
 {
     m_gaveSaveWarning = m_canSave = false;
     m_settingsPrefix = "pe/";
@@ -383,7 +382,7 @@ QMenu *PEMainWindow::pcbItemMenu() {
 void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
     ModelPart * originalModelPart = NULL;
     if (paletteItem == NULL) {
-        originalModelPart = m_paletteModel->retrieveModelPart("generic_ic_dip_8_300mil");
+        originalModelPart = m_refModel->retrieveModelPart("generic_ic_dip_8_300mil");
     }
     else {
         originalModelPart = paletteItem->modelPart();
@@ -1422,9 +1421,13 @@ bool PEMainWindow::saveAs(bool overWrite)
         emit addToMyPartsSignal(modelPart);
 	}
     else {
-        // need to update properties database
-        // need to swap out any existing parts
-        // need to update parts database?
+        m_refModel->reloadPart(fzpPath, m_originalModuleID);
+        QUndoStack undoStack;
+        QUndoCommand * parentCommand = new QUndoCommand;
+        foreach (MainWindow * mainWindow, affectedWindows) {
+            mainWindow->updateParts(m_originalModuleID, parentCommand);
+        }
+        undoStack.push(parentCommand);
     }
 
     return result;

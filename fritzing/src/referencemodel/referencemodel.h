@@ -36,6 +36,7 @@ class ReferenceModel : public PaletteModel {
 		virtual bool loadAll(const QString & databaseName, bool fullLoad) = 0;
 		virtual bool loadFromDB(const QString & databaseName) = 0;
 		virtual ModelPart *loadPart(const QString & path, bool update) = 0;
+		virtual ModelPart *reloadPart(const QString & path, const QString & moduleID) = 0;
 
 		virtual ModelPart *retrieveModelPart(const QString &moduleID) = 0;
 

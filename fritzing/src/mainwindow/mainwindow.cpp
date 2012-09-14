@@ -150,7 +150,7 @@ QString MainWindow::BackupFolder;
 
 /////////////////////////////////////////////
 
-MainWindow::MainWindow(PaletteModel * paletteModel, ReferenceModel *refModel, QWidget * parent) :
+MainWindow::MainWindow(ReferenceModel *refModel, QWidget * parent) :
     FritzingWindow(untitledFileName(), untitledFileCount(), fileExtension(), parent)
 {
 	setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
@@ -234,7 +234,6 @@ MainWindow::MainWindow(PaletteModel * paletteModel, ReferenceModel *refModel, QW
 #endif
     m_dontClose = m_closing = false;
 
-	m_paletteModel = paletteModel;
 	m_refModel = refModel;
 	m_sketchModel = new SketchModel(true);
 
@@ -268,8 +267,7 @@ MainWindow::MainWindow(PaletteModel * paletteModel, ReferenceModel *refModel, QW
 			Qt::DirectConnection);
 }
 
-void MainWindow::init(PaletteModel * paletteModel, ReferenceModel *refModel, bool lockFiles) {
-    m_paletteModel = paletteModel;
+void MainWindow::init(ReferenceModel *refModel, bool lockFiles) {
     m_refModel = refModel;
     m_restarting = false;
 
@@ -501,7 +499,6 @@ void MainWindow::showNavigator() {
 }
 
 void MainWindow::initSketchWidget(SketchWidget * sketchWidget) {
-	sketchWidget->setPaletteModel(m_paletteModel);
 	sketchWidget->setSketchModel(m_sketchModel);
 	sketchWidget->setRefModel(m_refModel);
 	sketchWidget->setUndoStack(m_undoStack);
@@ -1266,7 +1263,7 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
         }
 
         QString moduleID = moduleIDFinder.cap(1);
-        ModelPart * mp = m_paletteModel->retrieveModelPart(moduleID);
+        ModelPart * mp = m_refModel->retrieveModelPart(moduleID);
         if (mp == NULL) {
             QDomDocument doc;
             if (!doc.setContent(fzp)) {
@@ -1927,7 +1924,7 @@ void MainWindow::swapSelectedAux(ItemBase * itemBase, const QString & moduleID, 
 
     ViewLayer::ViewLayerSpec viewLayerSpec = itemBase->viewLayerSpec();
     if (m_pcbGraphicsView->boardLayers() == 2) {
-        ModelPart * modelPart = m_paletteModel->retrieveModelPart(moduleID);
+        ModelPart * modelPart = m_refModel->retrieveModelPart(moduleID);
         if (modelPart->flippedSMD()) {
             viewLayerSpec = m_pcbGraphicsView->layerIsActive(ViewLayer::Copper1) ? ViewLayer::ThroughHoleThroughTop_TwoLayers : ViewLayer::ThroughHoleThroughTop_OneLayer;
             if (useViewLayerSpec) viewLayerSpec = overrideViewLayerSpec;
@@ -2017,13 +2014,13 @@ void MainWindow::addDefaultParts() {
 	m_schematicGraphicsView->addDefaultParts();
 }
 
-MainWindow * MainWindow::newMainWindow(PaletteModel * paletteModel, ReferenceModel *refModel, const QString & displayPath, bool showProgress, bool lockFiles) {
-    MainWindow * mw = new MainWindow(paletteModel, refModel, NULL);
+MainWindow * MainWindow::newMainWindow(ReferenceModel *refModel, const QString & displayPath, bool showProgress, bool lockFiles) {
+    MainWindow * mw = new MainWindow(refModel, NULL);
 	if (showProgress) {
 		mw->showFileProgressDialog(displayPath);
 	}
 
-    mw->init(paletteModel, refModel, lockFiles);
+    mw->init(refModel, lockFiles);
 
 	return mw;
 }
@@ -2543,3 +2540,15 @@ bool MainWindow::usesPart(const QString & moduleID) {
 
     return false;
 }
+
+bool MainWindow::updateParts(const QString & moduleID, QUndoCommand * parentCommand) {
+    if (m_currentGraphicsView == NULL) return false;
+
+    foreach (QGraphicsItem * item, m_currentGraphicsView->scene()->items()) {
+        ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
+        if (itemBase != NULL && itemBase->moduleID().compare(moduleID) == 0) {
+            swapSelectedAuxAux(itemBase, moduleID, itemBase->viewLayerSpec(), parentCommand);
+        }
+    }
+}
+

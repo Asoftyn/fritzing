@@ -176,7 +176,6 @@ protected:
 	bool m_mousePressed;
 	QTranslator m_translator;
 	class ReferenceModel * m_referenceModel;
-	class PaletteModel * m_paletteBinModel;
 	bool m_started;
 	QStringList m_filesToLoad;
 	QString m_libPath;

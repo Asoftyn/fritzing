@@ -50,7 +50,7 @@ class PEMainWindow : public MainWindow
 Q_OBJECT
 
 public:
-	PEMainWindow(class PaletteModel * paletteModel, class ReferenceModel * referenceModel, QWidget * parent);
+	PEMainWindow(class ReferenceModel * referenceModel, QWidget * parent);
 	~PEMainWindow();
 
     void setInitialItem(class PaletteItem *);

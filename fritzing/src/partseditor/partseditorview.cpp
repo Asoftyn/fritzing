@@ -1986,3 +1986,8 @@ void PartsEditorView::deleteItem(ItemBase * itemBase, bool deleteModelPart, bool
 	removeIfFixedPos(itemBase);
 	SketchWidget::deleteItem(itemBase, deleteModelPart, doEmit, later);
 }
+
+void PartsEditorView::setPaletteModel(PaletteModel * paletteModel)
+{
+    m_paletteModel = paletteModel;
+}
