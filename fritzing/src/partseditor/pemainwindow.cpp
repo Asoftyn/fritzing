@@ -28,8 +28,6 @@ $Date$
 
 	clean up menus
     
-    update properties and parts db
-
     show in OS button
         test on mac, linux
 
@@ -37,12 +35,16 @@ $Date$
         dialog box always comes up, click to say not next time
 
 	disable dragging wires
+    
+    hide connectors?
 
 	change pin count
 
     connector duplicate op
 
     swap connector metadata op
+
+    delete op
 
     don't allow parts editor window to open if editor is already open with a given module id
 
@@ -59,7 +61,7 @@ $Date$
         gEDA footprint
 
     for schematic view 
-        offer pins, rects, and a selection of standard schematic icons in the parts bin
+        offer lines-or-pins, rects, and a selection of standard schematic icons in the parts bin
 
     for breadboard view
         import 
@@ -74,6 +76,7 @@ $Date$
 
     for svg import check for flaws:
         internal coords
+        internal transforms
         corel draw not saved for presentation
         inkscape not saved as plain
         inkscape scaling?
@@ -107,6 +110,10 @@ $Date$
 
     new schematic layout specs
 
+    need "are you sure" message when you quit without saving
+
+    after "save" need some kind of confirmation
+
     deal with customized svgs
         chip label
         * pin label
@@ -136,16 +143,11 @@ $Date$
     
     how to figure out whether to copy an svg? -- for now copy them all
 
-    is it possible to eliminate the restart?
+    eliminate the restart
        if it's a new part, and we edited it from a sketch
-            swap the original for the new, part is added as usual 
-            does properties db get updated?
+            offer a choice: swap the original for the new, swap all, don't swap
         if it's an edited old part, 
-            before save warn that it is not undoable
-            then swap every instance in every open file
-            update the database with the new model part
             swap the part in the bin?
-        save undo for swapped part in some location
 
 ***************************************************/
 
@@ -177,6 +179,8 @@ $Date$
 #include <QSvgGenerator>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QDesktopServices>
+#include <QUrl>
 
 ////////////////////////////////////////////////////
 
@@ -933,16 +937,23 @@ void PEMainWindow::loadImage()
 	} 
 
     QString newPath = origPath;
-	if (!newPath.endsWith(".svg")) {
+	if (newPath.endsWith(".svg")) {
+        if (newPath.contains(m_userPartsFolderSvgPath)) ;
+        else if (newPath.contains(FolderUtils::getApplicationSubFolderPath("parts"))) ;
+        else {
+            newPath = m_userPartsFolderSvgPath + makeSvgPath(m_currentGraphicsView, true);
+            bool success = QFile::copy(origPath, newPath);
+            if (!success) {
+    		    QMessageBox::warning(NULL, tr("Copy problem"), tr("Unable to make a local copy of: '%1'").arg(origPath));
+            }
+        }
+    }
+    else {
 		try {
 			newPath = createSvgFromImage(newPath);
 		}
 		catch (const QString & msg) {
-    		QMessageBox::warning(
-    			NULL,
-    			tr("Conversion problem"),
-    			tr("Unable to load image file: \n%1").arg(msg)
-    		);
+    		QMessageBox::warning(NULL, tr("Conversion problem"), tr("Unable to load image file: \n%1").arg(msg));
 			return;
 		}
 	}
@@ -1658,21 +1669,9 @@ void PEMainWindow::showInOS(QWidget *parent, const QString &pathIn)
                << QLatin1String("tell application \"Finder\" to activate");
     QProcess::execute("/usr/bin/osascript", scriptArgs);
 #else
-    // we cannot select a file here, because no file browser really supports it...
-    const QFileInfo fileInfo(pathIn);
-    const QString folder = fileInfo.absoluteFilePath();
-    const QString app = Utils::UnixUtils::fileBrowser(Core::ICore::instance()->settings());
-    QProcess browserProc;
-    const QString browserArgs = Utils::UnixUtils::substituteFileBrowserParameters(app, folder);
-    if (debug)
-        qDebug() <<  browserArgs;
-    bool success = browserProc.startDetached(browserArgs);
-    const QString error = QString::fromLocal8Bit(browserProc.readAllStandardError());
-    success = success && error.isEmpty();
-    if (!success)
-        QMessageBox::warning(parent, tr("Fritzing"), tr("File browser Launch failed: %1").arg(error));
-        
+    QDesktopServices::openUrl( QUrl::fromLocalFile( QFileInfo(pathIn).absolutePath() ) );   
 #endif
+
 
 }
 

@@ -2550,5 +2550,7 @@ bool MainWindow::updateParts(const QString & moduleID, QUndoCommand * parentComm
             swapSelectedAuxAux(itemBase, moduleID, itemBase->viewLayerSpec(), parentCommand);
         }
     }
+
+    return true;
 }
 
