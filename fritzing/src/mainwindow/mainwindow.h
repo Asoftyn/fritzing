@@ -168,6 +168,7 @@ public:
     bool hasAnyAlien();
     void exportSvg(double res, bool selectedItems, bool flatten, const QString & filename);
     void setCurrentView(ViewLayer::ViewIdentifier);
+    bool usesPart(const QString & moduleID);
 
 public:
 	static void initNames();

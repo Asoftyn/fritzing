@@ -160,6 +160,7 @@ protected:
     QString m_originalFzpPath;
     QString m_originalModuleID;
     QHash<ViewLayer::ViewIdentifier, QString> m_originalSvgPaths;
+    bool m_gaveSaveWarning;
 };
 
 #endif /* PEMAINWINDOW_H_ */

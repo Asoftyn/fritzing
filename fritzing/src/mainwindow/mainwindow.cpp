@@ -2531,3 +2531,15 @@ void MainWindow::addToMyParts(ModelPart * modelPart)
     if (modelPart != NULL) m_binManager->addToMyParts(modelPart);
 }
 
+bool MainWindow::usesPart(const QString & moduleID) {
+    if (m_currentGraphicsView == NULL) return false;
+
+    foreach (QGraphicsItem * item, m_currentGraphicsView->scene()->items()) {
+        ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
+        if (itemBase != NULL && itemBase->moduleID().compare(moduleID) == 0) {
+            return true;
+        }
+    }
+
+    return false;
+}

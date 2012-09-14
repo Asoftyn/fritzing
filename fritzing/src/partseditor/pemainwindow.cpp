@@ -220,7 +220,7 @@ void IconSketchWidget::addViewLayers() {
 PEMainWindow::PEMainWindow(PaletteModel * paletteModel, ReferenceModel * referenceModel, QWidget * parent)
 	: MainWindow(paletteModel, referenceModel, parent)
 {
-    m_canSave = false;
+    m_gaveSaveWarning = m_canSave = false;
     m_settingsPrefix = "pe/";
     m_guid = FolderUtils::getRandText();
     m_fileIndex = 0;
@@ -1304,12 +1304,58 @@ bool PEMainWindow::saveAs() {
 
 bool PEMainWindow::saveAs(bool overWrite)
 {
-    if (overWrite) {
-    }
-
     QDomElement fzpRoot = m_fzpDocument.documentElement();
     QString savedModuleID = fzpRoot.attribute("moduleId");
-    if (overWrite) fzpRoot.setAttribute("moduleId", m_originalModuleID);
+
+    QList<MainWindow *> affectedWindows;
+    if (overWrite) {
+        fzpRoot.setAttribute("moduleId", m_originalModuleID);
+        foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+            MainWindow *mainWindow = qobject_cast<MainWindow *>(widget);
+		    if (mainWindow == NULL) continue;
+			    
+		    if (qobject_cast<PEMainWindow *>(mainWindow) != NULL) continue;
+
+            if (mainWindow->usesPart(m_originalModuleID)) {
+                affectedWindows.append(mainWindow);
+            }
+	    }
+
+        if (affectedWindows.count() > 0 && !m_gaveSaveWarning) {
+	        QMessageBox messageBox(NULL);
+	        messageBox.setWindowTitle(tr("Sketch Change Warning"));
+            QString message;
+            if (affectedWindows.count() == 1) {
+                message = tr("The open sketch '%1' uses the part you are editing. ").arg(affectedWindows.first()->windowTitle());
+                message += tr("Saving this part will make a change to the sketch that cannot be undone.");
+            }
+            else {
+                message =  tr("The open sketches ");
+                for (int i = 0; i < affectedWindows.count() - 1; i++) {
+                    message += tr("'%1', ").arg(affectedWindows.at(i)->windowTitle());
+                }
+                message += tr("and '%1' ").arg(affectedWindows.last()->windowTitle());
+                message += tr("Saving this part will make a change to these sketches that cannot be undone.");
+
+            }
+            message += tr("\n\nGo ahead and save?");
+
+	        messageBox.setText(message);
+	        messageBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+	        messageBox.setDefaultButton(QMessageBox::Cancel);
+	        messageBox.setIcon(QMessageBox::Warning);
+	        messageBox.setWindowModality(Qt::WindowModal);
+	        messageBox.setButtonText(QMessageBox::Ok, tr("Save"));
+	        messageBox.setButtonText(QMessageBox::Cancel, tr("Cancel"));
+	        QMessageBox::StandardButton answer = (QMessageBox::StandardButton) messageBox.exec();
+
+	        if (answer != QMessageBox::Ok) {
+		        return false;
+	        }
+
+            m_gaveSaveWarning = true;
+        }
+    }
 
     QDomElement views = fzpRoot.firstChildElement("views");
 
