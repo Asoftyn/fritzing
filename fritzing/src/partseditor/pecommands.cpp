@@ -236,7 +236,7 @@ void RelocateConnectorSvgCommand::redo()
 
 QString RelocateConnectorSvgCommand::getParamString() const {
 	return "RelocateConnectorSvgCommand " + 
-        QString(" id:%1, terminalid:%2, oldgorn:%3, oldgornterminal:%4, newgorn:%5, newgornterminal:%6")
+        QString(" vid:%1 id:%2, terminalid:%3, oldgorn:%4, oldgornterminal:%5, newgorn:%6, newgornterminal:%7")
             .arg(m_sketchWidget->viewIdentifier())
             .arg(m_id)
             .arg(m_terminalID)

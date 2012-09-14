@@ -122,6 +122,8 @@ $Date$
         pin header stuff
         pin size
 
+    if svg is loaded with no matching connectors, element lock is correctly unchecked but PEGraphicsItems don't accept mouse events
+
     disable family entry?  should always be "custom_"  + original family (unless it already starts with custom_)
 
     give users a family popup with all family names
@@ -1277,12 +1279,9 @@ void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QStri
         newGornTerminalElement = TextUtils::findElementWithAttribute(root, "gorn", newGornTerminal);
     }
 
-    if (oldGornElement.isNull()) return;
-    if (newGornElement.isNull()) return;
-
-    oldGornElement.setAttribute("id", "");
+    if (!oldGornElement.isNull()) oldGornElement.setAttribute("id", "");
     if (!oldGornTerminalElement.isNull()) oldGornTerminalElement.setAttribute("id", "");
-    newGornElement.setAttribute("id", id);
+    if (!newGornElement.isNull()) newGornElement.setAttribute("id", id);
     if (!newGornTerminalElement.isNull()) newGornTerminalElement.setAttribute("id", terminalID);
 
     foreach (QGraphicsItem * item, sketchWidget->scene()->items()) {
@@ -1293,7 +1292,9 @@ void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QStri
         if (element.attribute("gorn").compare(newGorn) == 0) {
             pegi->setHighlighted(true);
             switchedConnector(m_peToolView->currentConnector(), sketchWidget);
-            break;
+        }
+        else if (element.attribute("gorn").compare(oldGorn) == 0) {
+            pegi->showTerminalPoint(false);         // if newGorn is empty as a redo when the original relocate started with no connector in the svg file
         }
     }
 
