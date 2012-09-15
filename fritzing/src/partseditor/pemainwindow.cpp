@@ -30,6 +30,12 @@ $Date$
     ///////////////////////////////// first release ///////////////////////////////
 
 	    clean up menus
+
+        if you select a pin with no connector element, hide the cross-hair on the pin that was last selected
+
+        crash when swapping part during save
+        
+        not saveing metadata and crashed when saving the description
   
         show in OS button
             test on mac, linux
@@ -202,6 +208,10 @@ $Date$
 ////////////////////////////////////////////////////
 
 bool GotZeroConnector = false;
+
+static const int IconViewIndex = 3;
+static const int MetadataViewIndex = 4;
+static const int ConnectorsViewIndex = 5;
 
 static QHash<ViewLayer::ViewIdentifier, int> ZList;
 
@@ -441,7 +451,9 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
         author = m_fzpDocument.createElement("author");
         fzpRoot.appendChild(author);
     }
-    TextUtils::replaceChildText(m_fzpDocument, author, QString(getenvUser()));
+    if (author.text().isEmpty()) {
+        TextUtils::replaceChildText(m_fzpDocument, author, QString(getenvUser()));
+    }
     QDomElement date = fzpRoot.firstChildElement("date");
     if (date.isNull()) {
         date = m_fzpDocument.createElement("date");
@@ -540,7 +552,7 @@ void PEMainWindow::initZoom() {
 }
 
 void PEMainWindow::setTitle() {
-    QString title = tr("New Parts Editor");
+    QString title = tr("Friting (New) Parts Editor");
     QString partTitle = "";
     if (m_items.count() > 0) {
         partTitle = m_items.values().at(0)->title();
@@ -549,7 +561,13 @@ void PEMainWindow::setTitle() {
         }
     }
 
-	setWindowTitle(QString("%1%2%3").arg(title).arg(partTitle).arg(QtFunkyPlaceholder));
+    QString viewName;
+    if (m_currentGraphicsView) viewName = m_currentGraphicsView->viewName();
+    else if (m_tabWidget->currentIndex() == IconViewIndex) viewName = tr("Icon View");
+    else if (m_tabWidget->currentIndex() == MetadataViewIndex) viewName = tr("Metadata View");
+    else if (m_tabWidget->currentIndex() == ConnectorsViewIndex) viewName = tr("Connectors View");
+
+	setWindowTitle(QString("%1%2 [%3]%4").arg(title).arg(partTitle).arg(viewName).arg(QtFunkyPlaceholder));
 }
 
 void PEMainWindow::createViewMenuActions() {
@@ -590,15 +608,15 @@ void PEMainWindow::createViewMenu() {
 }
 
 void PEMainWindow::showMetadataView() {
-    this->m_tabWidget->setCurrentIndex(4);
+    this->m_tabWidget->setCurrentIndex(MetadataViewIndex);
 }
 
 void PEMainWindow::showConnectorsView() {
-    this->m_tabWidget->setCurrentIndex(5);
+    this->m_tabWidget->setCurrentIndex(ConnectorsViewIndex);
 }
 
 void PEMainWindow::showIconView() {
-    this->m_tabWidget->setCurrentIndex(3);
+    this->m_tabWidget->setCurrentIndex(IconViewIndex);
 }
 
 void PEMainWindow::metadataChanged(const QString & name, const QString & value)
@@ -1825,9 +1843,11 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
 
     switchedConnector(m_peToolView->currentConnector());
 
-    bool enabled = index <= 2;
+    bool enabled = index < IconViewIndex;
     m_peToolView->setEnabled(enabled);
     if (!enabled) m_peToolView->clearTexts();
+
+    if (m_currentGraphicsView == NULL) setTitle();
 }
 
 void PEMainWindow::backupSketch()
