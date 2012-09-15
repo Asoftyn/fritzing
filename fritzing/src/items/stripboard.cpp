@@ -51,10 +51,12 @@ $Date$
 static QCursor * SpotFaceCutterCursor = NULL;
 static QCursor * MagicWandCursor = NULL;
 
-static bool ShiftDown;
+static bool ShiftDown = false;
 static QPointF OriginalShiftPos;
+static bool ShiftX = false;
+static bool ShiftY = false;
 static bool SpaceBarWasPressed = false;
-
+static const double MinMouseMove = 2;
 
 /////////////////////////////////////////////////////////////////////
 
@@ -134,8 +136,8 @@ void Stripbit::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	if (event->modifiers() & Qt::ShiftModifier) {
-		DebugDialog::debug("got shift down");
 		ShiftDown = true;
+        ShiftX = ShiftY = false;
 		OriginalShiftPos = event->scenePos();
 	}
 
@@ -169,19 +171,30 @@ void Stripbit::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	Stripbit * other = NULL;
 	QPointF p = event->scenePos();
 	if (ShiftDown) {
-		if (qAbs(p.x() - OriginalShiftPos.x()) >= qAbs(p.y() - OriginalShiftPos.y())) {
+		if (ShiftX) {
 			// moving along x, constrain y
 			p.setY(OriginalShiftPos.y());
 		}
-		else {
+		else if (ShiftY) {
 			// moving along y, constrain x
 			p.setX(OriginalShiftPos.x());
 		}
+        else {
+            double dx = qAbs(p.x() - OriginalShiftPos.x());
+            double dy = qAbs(p.y() - OriginalShiftPos.y());
+            if (dx - dy > MinMouseMove) {
+                ShiftX = true;
+            }
+            else if (dy - dx > MinMouseMove) {
+                ShiftY = true;
+            }
+        }
 	}
 
 
 	if (!ShiftDown && (event->modifiers() & Qt::ShiftModifier)) {
 		ShiftDown = true;
+        ShiftX = ShiftY = false;
 		OriginalShiftPos = event->scenePos();
 	}
 

@@ -27,6 +27,7 @@ $Date$
 
 #include "pegraphicsitem.h"
 #include "../debugdialog.h"
+#include "../sketch/infographicsview.h"
 
 #include <QBrush>
 #include <QColor>
@@ -36,6 +37,12 @@ $Date$
 static QVector<qreal> Dashes;
 static const int DashLength = 3;
 
+static bool ShiftDown = false;
+static QPointF OriginalShiftPos;
+static bool ShiftX = false;
+static bool ShiftY = false;
+static bool SpaceBarWasPressed = false;
+static const double MinMouseMove = 2;
 
 PEGraphicsItem::PEGraphicsItem(double x, double y, double w, double h) : QGraphicsRectItem(x, y, w, h) {
     if (Dashes.isEmpty()) {
@@ -208,11 +215,28 @@ QPointF PEGraphicsItem::pendingTerminalPoint() {
 }
 
 void PEGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent * event) {
-    // block QGraphicsRectItem::mousePressEvent so mouseReleaseEvent will get triggered
     m_dragTerminalPoint = false;
+
+	InfoGraphicsView * infoGraphicsView = InfoGraphicsView::getInfoGraphicsView(this);
+	if (infoGraphicsView != NULL && infoGraphicsView->spaceBarIsPressed()) {
+		event->ignore();
+		return;
+	}
+		
+	if (!event->buttons() && Qt::LeftButton) {
+		event->ignore();
+		return;
+	}
+
     if (m_showTerminalPoint) {
         QPointF p = event->pos();
-        if (qAbs(p.x() - m_terminalPoint.x()) <= 2 && qAbs(p.y() - m_terminalPoint.y()) <= 2) {
+	    if (event->modifiers() & Qt::ShiftModifier) {
+		    ShiftDown = true;
+            ShiftX = ShiftY = false;
+		    OriginalShiftPos = p;
+	    }
+
+        if (qAbs(p.x() - m_terminalPoint.x()) <= MinMouseMove && qAbs(p.y() - m_terminalPoint.y()) <= MinMouseMove) {
             m_dragTerminalPoint = true;
             m_terminalPointOrigin = m_terminalPoint;
             m_dragTerminalOrigin = event->pos();
@@ -223,7 +247,38 @@ void PEGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent * event) {
 void PEGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event) {
     if (!m_dragTerminalPoint) return;
 
-    QPointF newTerminalPoint = m_terminalPointOrigin + event->pos() - m_dragTerminalOrigin;
+    if (ShiftDown && !(event->modifiers() & Qt::ShiftModifier)) {
+		ShiftDown = false;
+	}
+	QPointF p = event->pos();
+	if (ShiftDown) {
+		if (ShiftX) {
+			// moving along x, constrain y
+			p.setY(OriginalShiftPos.y());
+		}
+		else if (ShiftY) {
+			// moving along y, constrain x
+			p.setX(OriginalShiftPos.x());
+		}
+        else {
+            double dx = qAbs(p.x() - OriginalShiftPos.x());
+            double dy = qAbs(p.y() - OriginalShiftPos.y());
+            if (dx - dy > MinMouseMove) {
+                ShiftX = true;
+            }
+            else if (dy - dx > MinMouseMove) {
+                ShiftY = true;
+            }
+        }
+	}
+	else if (event->modifiers() & Qt::ShiftModifier) {
+		ShiftDown = true;
+        ShiftX = ShiftY = false;
+        OriginalShiftPos = event->pos();
+	}
+
+
+    QPointF newTerminalPoint = m_terminalPointOrigin + p - m_dragTerminalOrigin;
     if (newTerminalPoint.x() < 0) newTerminalPoint.setX(0);
     else if (newTerminalPoint.x() > rect().width()) newTerminalPoint.setX(rect().width());
     if (newTerminalPoint.y() < 0) newTerminalPoint.setY(0);
