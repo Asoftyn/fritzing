@@ -41,6 +41,8 @@ $Date$
     hide connectors?
 
 	change pin count
+        when the count is smaller give user a choice to truncate or delete individually
+        add individual delete buttons to connectorsview
 
     connector duplicate op
 
@@ -234,6 +236,8 @@ void IconSketchWidget::addViewLayers() {
 PEMainWindow::PEMainWindow(ReferenceModel * referenceModel, QWidget * parent)
 	: MainWindow(referenceModel, parent)
 {
+    m_autosaveTimer.stop();
+    disconnect(&m_autosaveTimer, SIGNAL(timeout()), this, SLOT(backupSketch()));
     m_gaveSaveWarning = m_canSave = false;
     m_settingsPrefix = "pe/";
     m_guid = FolderUtils::getRandText();
@@ -507,6 +511,7 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
         m_originalSvgPaths.insert(itemBase->viewIdentifier(), itemBase->filename());
     }
 
+    setTitle();
 }
 
 bool PEMainWindow::eventFilter(QObject *object, QEvent *event) 
@@ -526,7 +531,16 @@ void PEMainWindow::initZoom() {
 }
 
 void PEMainWindow::setTitle() {
-    setWindowTitle(tr("New Parts Editor"));
+    QString title = tr("New Parts Editor");
+    QString partTitle = "";
+    if (m_items.count() > 0) {
+        partTitle = m_items.values().at(0)->title();
+        if (!partTitle.isEmpty()) {
+            title.append(": ");
+        }
+    }
+
+	setWindowTitle(QString("%1%2%3").arg(title).arg(partTitle).arg(QtFunkyPlaceholder));
 }
 
 void PEMainWindow::createViewMenuActions() {
@@ -1465,6 +1479,9 @@ bool PEMainWindow::saveAs(bool overWrite)
         undoStack.push(parentCommand);
     }
 
+	m_autosaveNeeded = false;
+    m_undoStack->setClean();
+
     return result;
 }
 
@@ -1755,3 +1772,6 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
     switchedConnector(m_peToolView->currentConnector());
 }
 
+void PEMainWindow::backupSketch()
+{
+}

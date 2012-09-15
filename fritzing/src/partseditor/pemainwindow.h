@@ -133,6 +133,7 @@ protected slots:
     bool saveAs();
     void showInOS();
     void tabWidget_currentChanged(int index);
+    void backupSketch();
 
 protected:
     QDomDocument m_fzpDocument;

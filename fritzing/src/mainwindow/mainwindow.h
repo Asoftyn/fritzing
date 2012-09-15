@@ -351,7 +351,7 @@ protected slots:
 	void updateLayerMenuSlot();
 	bool save();
 	bool saveAs();
-	void backupSketch();
+	virtual void backupSketch();
 	void undoStackCleanChanged(bool isClean);
 	void autosaveNeeded(int index = 0);
 	void firstTimeHelpHidden();
