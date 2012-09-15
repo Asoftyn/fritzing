@@ -83,6 +83,22 @@ protected:
 
 /////////////////////////////////////////////
 
+class RemoveConnectorsCommand : public PEBaseCommand
+{
+public:
+	RemoveConnectorsCommand(class PEMainWindow *, QList<ConnectorMetadata *> &, QUndoCommand *parent);
+	void undo();
+	void redo();
+
+protected:
+	QString getParamString() const;
+
+protected:
+	QList<ConnectorMetadata *> m_cmdList;
+};
+
+/////////////////////////////////////////////
+
 class ChangeTagsCommand : public PEBaseCommand
 {
 public:

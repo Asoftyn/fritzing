@@ -26,131 +26,144 @@ $Date$
 
 /* TO DO ******************************************
 
-	clean up menus
 
-    fixfonts dialog
-    
-    show in OS button
-        test on mac, linux
+    ///////////////////////////////// first release ///////////////////////////////
 
-	first time help?
-        dialog box always comes up, click to say not next time
+	    clean up menus
+  
+        show in OS button
+            test on mac, linux
 
-	disable dragging wires
-    
-    hide connectors
-        need to show again during bus mode
+	    first time help?
+            dialog box always comes up, click to say not next time
 
-	change pin count
-        when the count is smaller give user a choice to truncate or delete individually
-        add individual delete buttons to connectorsview
+	    disable dragging wires    
+            hide connectors
+            need to show again during bus mode
 
-    connector duplicate op
+	    change pin count
+            when the count is smaller give user a choice to truncate or delete individually
+            add individual delete button to petoolview
 
-    swap connector metadata op
+        don't allow parts editor window to open if editor is already open with a given module id
 
-    delete op
+        on svg import detect all connector IDs
+            if any are invisible, tell user this is obsolete
 
-    don't allow parts editor window to open if editor is already open with a given module id
-
-    on svg import detect all connector IDs
-        if any are invisible, tell user this is obsolete
-    
-    move connectors with arrow keys, or typed coordinates
-	drag and drop later
-
-    from partseditorview.cpp
-	    bool fileHasChanged = (m_viewIdentifier == ViewLayer::IconView) ? false : TextUtils::fixPixelDimensionsIn(fileContent);
-	    fileHasChanged |= TextUtils::cleanSodipodi(fileContent);
-	    fileHasChanged |= TextUtils::fixViewboxOrigin(fileContent);
-	    fileHasChanged |= TextUtils::tspanRemove(fileContent);
-	    fileHasChanged |= fixFonts(fileContent,filename,canceled);
+        from partseditorview.cpp
+	        bool fileHasChanged = (m_viewIdentifier == ViewLayer::IconView) ? false : TextUtils::fixPixelDimensionsIn(fileContent);
+	        fileHasChanged |= TextUtils::cleanSodipodi(fileContent);
+	        fileHasChanged |= TextUtils::fixViewboxOrigin(fileContent);
+	        fileHasChanged |= TextUtils::tspanRemove(fileContent);
+	        fileHasChanged |= fixFonts(fileContent,filename,canceled);
 	
-    import
-        eagle lbr
-        eagle brd
-        kicad footprint and mod?
-        gEDA footprint
+        import
+            kicad footprint
+            gEDA footprint
 
-    for schematic view 
-        offer lines-or-pins, rects, and a selection of standard schematic icons in the parts bin
+        allow but discourage png imports
 
-    for breadboard view
-        import 
-        generate ICs, dips, sips, breakouts
+        for svg import check for flaws:
+            internal coords
+            internal transforms
+            corel draw not saved for presentation
+            inkscape not saved as plain
+            inkscape scaling?
+            illustrator px
+            <gradient>, <pattern>, <marker>, <tspan>, etc.
+            pcb view missing layers
+            multiple connector or terminal ids
 
-    for pcb view
-        pads, pins (circle, rect, oblong), holes
-        lines and curves?
-        import silkscreen
+        smd vs. tht
 
-    allow but discourage png imports
+        buses 
+            connect bus by drawing a wire
+            can this be modal? i.e. turn bus mode on and off
 
-    for svg import check for flaws:
-        internal coords
-        internal transforms
-        corel draw not saved for presentation
-        inkscape not saved as plain
-        inkscape scaling?
-        illustrator px
-        <gradient>, <pattern>, <marker>, <tspan>, etc.
-        pcb view missing layers
-        multiple connector or terminal ids
+        bendable legs
 
-    smd vs. tht
+        set flippable
 
-    hybrids
+        zoom slider is not correctly synchronized with actual zoom level
 
-    buses 
-        connect bus by drawing a wire
-        can this be modal? i.e. turn bus mode on and off
+        need "are you sure" message when you quit without saving
 
-    bendable legs
+        after "save" need some kind of confirmation
+            change to window title is enough?
 
-    flip and rotate?
+        deal with customized svgs
+            chip label
+            * pin label
+            * resistance
+            * led color
+            pin header stuff
+            pin size
 
-    set flippable
+        keep family as is, but force users to put in a unique variant
+            don't allow blank
+            check db for already used
+            fill in with guid
 
-    zoom slider is not correctly synchronized with actual zoom level
+        delete all unused svg and fzp files when finished
 
-    terminal points
-        drag it directly
+        only allow appropriate file to be loaded for appropriate view (.mod, .fp, etc.)
 
-    undo/redo as xml file: use index + guid for uniqueness
+        sort connector list alphabetically or numerically
 
-    taxonomy entry like tag entry?
+        if pcb image has no layers complain directly
 
-    new schematic layout specs
+    ////////////////////////////// second release /////////////////////////////////
 
-    need "are you sure" message when you quit without saving
+        connector duplicate op
 
-    after "save" need some kind of confirmation
-        change to window title is enough?
+        add layers:  put everything in silkscreen, then give copper1, copper0 checkbox
+            what about breadboardbreadboard or other odd layers?
 
-    deal with customized svgs
-        chip label
-        * pin label
-        * resistance
-        * led color
-        pin header stuff
-        pin size
+        swap connector metadata op
 
-    keep family as is, but force users to put in a unique variant
-
-    give users a family popup with all family names
-        ditto for other properties
-
-    matrix problem with move and duplicate (i.e. if element inherits a matrix from far above)
-        even a problem when inserting hole, pad, or pin
-        eliminate internal transforms, then insert inverted matrix, then use untransformed coords based on viewbox
-            
-    delete all unused svg and fzp files when finished
-
-    only allow appropriate file to be loaded for appropriate view (.mod, .fp, etc.)
-
-    kicad schematic does not match our schematic
+        delete op
     
-    sort connector list alphabetically or numerically
+        move connectors with arrow keys, or typed coordinates
+	    drag and drop later
+
+        import
+            eagle lbr
+            eagle brd
+            kicad mod?
+
+
+        for schematic view 
+            offer lines-or-pins, rects, and a selection of standard schematic icons in the parts bin
+
+        for breadboard view
+            import 
+            generate ICs, dips, sips, breakouts
+
+        for pcb view
+            pads, pins (circle, rect, oblong), holes
+            lines and curves?
+            import silkscreen
+
+        hybrids
+
+        flip and rotate?
+
+
+        undo/redo as xml file: use index + guid for uniqueness
+
+        taxonomy entry like tag entry?
+
+        new schematic layout specs
+
+        give users a family popup with all family names
+            ditto for other properties
+
+        matrix problem with move and duplicate (i.e. if element inherits a matrix from far above)
+            even a problem when inserting hole, pad, or pin
+            eliminate internal transforms, then insert inverted matrix, then use untransformed coords based on viewbox
+            
+
+        kicad schematic does not match our schematic
 
 
 ***************************************************/
@@ -268,19 +281,23 @@ void PEMainWindow::initSketchWidgets()
 {
     MainWindow::initSketchWidgets();
 
-    m_docs.insert(m_breadboardGraphicsView->viewIdentifier(), &m_breadboardDocument);
-    m_docs.insert(m_schematicGraphicsView->viewIdentifier(), &m_schematicDocument);
-    m_docs.insert(m_pcbGraphicsView->viewIdentifier(), &m_pcbDocument);
 
-    m_breadboardGraphicsView->setAcceptWheelEvents(false);
-    m_schematicGraphicsView->setAcceptWheelEvents(false);
-    m_pcbGraphicsView->setAcceptWheelEvents(false);
 
 	m_iconGraphicsView = new IconSketchWidget(ViewLayer::IconView, this);
 	initSketchWidget(m_iconGraphicsView);
 	m_iconWidget = new SketchAreaWidget(m_iconGraphicsView,this);
 	m_tabWidget->addWidget(m_iconWidget);
     initSketchWidget(m_iconGraphicsView);
+
+    m_docs.insert(m_breadboardGraphicsView->viewIdentifier(), &m_breadboardDocument);
+    m_docs.insert(m_schematicGraphicsView->viewIdentifier(), &m_schematicDocument);
+    m_docs.insert(m_pcbGraphicsView->viewIdentifier(), &m_pcbDocument);
+    m_docs.insert(m_iconGraphicsView->viewIdentifier(), &m_iconDocument);
+
+    m_breadboardGraphicsView->setAcceptWheelEvents(false);
+    m_schematicGraphicsView->setAcceptWheelEvents(false);
+    m_pcbGraphicsView->setAcceptWheelEvents(false);
+    m_iconGraphicsView->setAcceptWheelEvents(false);
 
     m_metadataView = new PEMetadataView(this);
 	SketchAreaWidget * sketchAreaWidget = new SketchAreaWidget(m_metadataView, this);
@@ -293,6 +310,7 @@ void PEMainWindow::initSketchWidgets()
 	sketchAreaWidget = new SketchAreaWidget(m_connectorsView, this);
 	m_tabWidget->addWidget(sketchAreaWidget);
     connect(m_connectorsView, SIGNAL(connectorMetadataChanged(const ConnectorMetadata *)), this, SLOT(connectorMetadataChanged(const ConnectorMetadata *)), Qt::DirectConnection);
+    connect(m_connectorsView, SIGNAL(removedConnectors(QList<ConnectorMetadata *> &)), this, SLOT(removedConnectors(QList<ConnectorMetadata *> &)), Qt::DirectConnection);
 
     m_svgChangeCount.insert(m_breadboardGraphicsView->viewIdentifier(), 0);
     m_svgChangeCount.insert(m_schematicGraphicsView->viewIdentifier(), 0);
@@ -716,11 +734,38 @@ QHash<QString, QString> PEMainWindow::getOldProperties()
     return oldProperties;
 }
 
+void PEMainWindow::removedConnectors(QList<ConnectorMetadata *> & cmdList)
+{
+    QList<QDomElement> connectors;
+
+    foreach (ConnectorMetadata * cmd, cmdList) {
+        int index;
+        QDomElement connector = findConnector(cmd->connectorID, index);
+        if (connector.isNull()) return;
+
+        cmd->index = index;
+        connectors.append(connector);
+    }
+
+    RemoveConnectorsCommand * rcc = new RemoveConnectorsCommand(this, cmdList, NULL);
+    QString message;
+    if (cmdList.count() == 1) {
+        message = tr("Remove connector");
+    }
+    else {
+        message = tr("Remove %1 connectors").arg(cmdList.count());
+    }
+    rcc->setText(message);
+    m_undoStack->waitPush(rcc, SketchWidget::PropChangeDelay);
+}
+
+
 void PEMainWindow::connectorMetadataChanged(const ConnectorMetadata * cmd)
 {
     ConnectorMetadata oldcmd;
 
-    QDomElement connector = findConnector(cmd->connectorID);
+    int index;
+    QDomElement connector = findConnector(cmd->connectorID, index);
     if (connector.isNull()) return;
 
     oldcmd.connectorID = connector.attribute("id");
@@ -738,16 +783,18 @@ void PEMainWindow::connectorMetadataChanged(const ConnectorMetadata * cmd)
     m_undoStack->waitPush(ccmc, SketchWidget::PropChangeDelay);
 }
 
-QDomElement PEMainWindow::findConnector(const QString & id) 
+QDomElement PEMainWindow::findConnector(const QString & id, int & index) 
 {
     QDomElement root = m_fzpDocument.documentElement();
     QDomElement connectors = root.firstChildElement("connectors");
     QDomElement connector = connectors.firstChildElement("connector");
+    index = 0;
     while (!connector.isNull()) {
         if (id.compare(connector.attribute("id")) == 0) {
             return connector;
         }
         connector = connector.nextSiblingElement("connector");
+        index++;
     }
 
     return QDomElement();
@@ -755,7 +802,8 @@ QDomElement PEMainWindow::findConnector(const QString & id)
 
 
 void PEMainWindow::changeConnectorMetadata(const ConnectorMetadata & cmd, bool updateDisplay) {
-    QDomElement connector = findConnector(cmd.connectorID);
+    int index;
+    QDomElement connector = findConnector(cmd.connectorID, index);
     if (connector.isNull()) return;
 
     changeConnectorElement(connector, cmd);
@@ -1178,6 +1226,7 @@ void PEMainWindow::reload() {
     initSvgTree(breadboardItem, m_breadboardDocument);
     initSvgTree(schematicItem, m_schematicDocument);
     initSvgTree(pcbItem, m_pcbDocument);
+    initSvgTree(iconItem, m_iconDocument);  // TODO: full svg tree not necessary here, but need the icon document
 
     m_items.insert(m_iconGraphicsView->viewIdentifier(), iconItem);
     m_items.insert(m_breadboardGraphicsView->viewIdentifier(), breadboardItem);
@@ -1423,8 +1472,8 @@ bool PEMainWindow::saveAs(bool overWrite)
             // unaltered svg
             continue;
         }
-        svgPaths.insert(sketchWidget->viewIdentifier(), currentSvgPath);
 
+        svgPaths.insert(sketchWidget->viewIdentifier(), currentSvgPath);
         QString svgPath = makeSvgPath(sketchWidget, false);
 
         bool svgOverWrite = false;
@@ -1775,8 +1824,31 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
     if (m_peToolView == NULL) return;
 
     switchedConnector(m_peToolView->currentConnector());
+
+    bool enabled = index <= 2;
+    m_peToolView->setEnabled(enabled);
+    if (!enabled) m_peToolView->clearTexts();
 }
 
 void PEMainWindow::backupSketch()
 {
 }
+
+void PEMainWindow::removeConnectors(QList<ConnectorMetadata *> & cmdList) 
+{
+    foreach (ConnectorMetadata * cmd, cmdList) {
+        int index;
+        QDomElement connector = findConnector(cmd->connectorID, index);
+        if (connector.isNull()) continue;
+
+        connector.parentNode().removeChild(connector);
+
+    }
+
+    initConnectors();
+}
+
+void PEMainWindow::addConnectors(QList<ConnectorMetadata *> & cmdList) 
+{
+}
+

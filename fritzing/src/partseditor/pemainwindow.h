@@ -61,6 +61,8 @@ public:
     void changeSvg(SketchWidget *, const QString & filename, const QString & originalPath, int changeDirection);
     void relocateConnectorSvg(SketchWidget *, const QString & id, const QString & terminalID, const QString & oldGorn, const QString & oldGornTerminal, const QString & newGorn, const QString & newGornTerminal, int changeDirection);
     void moveTerminalPoint(SketchWidget *, const QString & id, QSizeF, QPointF, int changeDirection);
+    void removeConnectors(QList<ConnectorMetadata *> &);
+    void addConnectors(QList<ConnectorMetadata *> &);
 
 signals:
     void addToMyPartsSignal(ModelPart *);
@@ -70,6 +72,7 @@ public slots:
     void propertiesChanged(const QHash<QString, QString> &);
     void tagsChanged(const QStringList &);
     void connectorMetadataChanged(const struct ConnectorMetadata *);
+    void removedConnectors(QList<ConnectorMetadata *> &);
     void highlightSlot(class PEGraphicsItem *);
     void pegiMouseReleased(class PEGraphicsItem *);
     void pegiTerminalPointMoved(class PEGraphicsItem *, QPointF);
@@ -102,7 +105,7 @@ protected:
     void createViewMenuActions();
     void createViewMenu();
     QHash<QString, QString> getOldProperties();
-    QDomElement findConnector(const QString & id);
+    QDomElement findConnector(const QString & id, int & index);
     void changeConnectorElement(QDomElement & connector, const ConnectorMetadata & cmd);
     void initSvgTree(ItemBase *, QDomDocument &);
     void initConnectors();

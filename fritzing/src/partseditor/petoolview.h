@@ -63,6 +63,7 @@ public:
     QDomElement currentConnector();
     void setTerminalPointCoords(QPointF);
     void setTerminalPointLimits(QSizeF);
+    void clearTexts();
 
 signals:
     void switchedConnector(const QDomElement &);

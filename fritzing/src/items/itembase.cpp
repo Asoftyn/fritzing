@@ -1358,19 +1358,28 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewIdenti
 QString ItemBase::getSvgFilename(ModelPart * modelPart, const QString & baseName) 
 {
 	QStringList tempPaths;
-	QString postfix = +"/"+ ItemBase::SvgFilesDir +"/%1/"+ baseName;
+	QString postfix = "/"+ ItemBase::SvgFilesDir +"/%1/"+ baseName;
     QString userStore = FolderUtils::getUserDataStorePath("parts")+postfix;
+    QString pfPath = PartFactory::folderPath() + postfix;
 	if(!modelPart->path().isEmpty()) {
 		QDir dir(modelPart->path());			// is a path to a filename
 		dir.cdUp();									// lop off the filename
 		dir.cdUp();									// parts root
-		tempPaths << dir.absolutePath() + "/" + ItemBase::SvgFilesDir +"/%1/" + baseName;
+		tempPaths << dir.absolutePath() + postfix;
 		tempPaths << FolderUtils::getApplicationSubFolderPath("parts")+postfix;    // some svgs may still be in the fritzing parts folder, though the other svgs are in the user folder
         if (tempPaths.at(0).compare(userStore) != 0) {
             tempPaths << userStore;
         }
+        if (tempPaths.at(0).compare(pfPath) != 0) {
+            tempPaths << pfPath;
+        }
+        //DebugDialog::debug("temp path");
+        //foreach (QString tempPath, tempPaths) {
+        //    DebugDialog::debug(tempPath);
+        //}
     } 
-	else { // for fake models
+	else {
+        DebugDialog::debug("modelPart with no path--this shouldn't happen");
 		tempPaths << FolderUtils::getApplicationSubFolderPath("parts")+postfix;
 		tempPaths << userStore;
 	}

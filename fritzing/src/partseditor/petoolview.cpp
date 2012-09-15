@@ -101,25 +101,25 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
     QFrame * boundsFrame = new QFrame;
     QHBoxLayout * boundsLayout = new QHBoxLayout;
 
-    label = new QLabel("x");
+    label = new QLabel("x:");
     boundsLayout->addWidget(label);
     m_x = new QLabel;
     boundsLayout->addWidget(m_x);
     boundsLayout->addSpacing(TheSpacing);
 
-    label = new QLabel("y");
+    label = new QLabel("y:");
     boundsLayout->addWidget(label);
     m_y = new QLabel;
     boundsLayout->addWidget(m_y);
     boundsLayout->addSpacing(TheSpacing);
 
-    label = new QLabel(tr("width"));
+    label = new QLabel(tr("width:"));
     boundsLayout->addWidget(label);
     m_width = new QLabel;
     boundsLayout->addWidget(m_width);
     boundsLayout->addSpacing(TheSpacing);
 
-    label = new QLabel(tr("height"));
+    label = new QLabel(tr("height:"));
     boundsLayout->addWidget(label);
     m_height = new QLabel;
     boundsLayout->addWidget(m_height);
@@ -300,6 +300,7 @@ void PEToolView::initConnectors(QList<QDomElement> & connectorList, bool gotZero
 
     if (m_connectorListWidget->count() > 0) {
         m_connectorListWidget->setCurrentRow(0);
+        switchConnector(m_connectorListWidget->currentItem(), NULL);
     }
 
     m_connectorListWidget->blockSignals(false);
@@ -397,4 +398,13 @@ void PEToolView::terminalPointEntry()
 
 void PEToolView::getSpinAmountSlot(double & d) {
     emit getSpinAmount(d);
+}
+
+void PEToolView::clearTexts()
+{
+    QList<QLabel *> labels;
+    labels <<  m_svgElement << m_height << m_width << m_x << m_y;
+    foreach (QLabel * label, labels) {
+        label->setText("");
+    }
 }

@@ -175,6 +175,35 @@ QString ChangeConnectorMetadataCommand::getParamString() const {
             .arg(m_newcm.connectorName)
         ;
 }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+RemoveConnectorsCommand::RemoveConnectorsCommand(PEMainWindow * peMainWindow, QList<ConnectorMetadata *> & cmdList, QUndoCommand *parent)
+    : PEBaseCommand(peMainWindow, parent)
+{
+	foreach (ConnectorMetadata * cmd, cmdList) {
+        ConnectorMetadata * newCmd = new ConnectorMetadata;
+        *newCmd = *cmd;
+        m_cmdList.append(newCmd);
+    }
+}
+
+void RemoveConnectorsCommand::undo()
+{
+    m_peMainWindow->addConnectors(m_cmdList);
+}
+
+void RemoveConnectorsCommand::redo()
+{
+
+    m_peMainWindow->removeConnectors(m_cmdList);
+}
+
+QString RemoveConnectorsCommand::getParamString() const {
+	return "RemoveConnectorsCommand " + 
+        QString(" count:%1")
+            .arg(m_cmdList.count())
+        ;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

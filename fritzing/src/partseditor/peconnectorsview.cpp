@@ -44,7 +44,10 @@ TODO:
 #include <QMutexLocker>
 
 #include "peconnectorsview.h"
+#include "hashpopulatewidget.h"
 #include "../debugdialog.h"
+
+const static int Spacing = 15;
 
 //////////////////////////////////////
 
@@ -107,6 +110,7 @@ void PEConnectorsView::initConnectors(QList<QDomElement> & connectorList, bool g
         mainLayout->addWidget(widget);
     }
 
+    mainLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding));
     m_mainFrame->setLayout(mainLayout);
 
     this->setWidget(m_mainFrame);
@@ -170,8 +174,16 @@ void PEConnectorsView::connectorCountEntry() {
 
 QWidget * PEConnectorsView::makeConnectorForm(const QDomElement & connector, bool gotZeroConnector, int index, QObject * slotHolder, bool alternating) {
     QFrame * frame = new QFrame();
-    if (alternating) frame->setObjectName(index % 2 == 0 ? "NewPartsEditorConnector0Frame" : "NewPartsEditorConnector1Frame");
+    if (alternating) {
+        frame->setObjectName(index % 2 == 0 ? "NewPartsEditorConnector0Frame" : "NewPartsEditorConnector1Frame");
+    }
+    else {
+        frame->setObjectName("NewPartsEditorConnectorFrame");
+    }
     QVBoxLayout * mainLayout = new QVBoxLayout();
+    mainLayout->setMargin(0);
+	mainLayout->setContentsMargins(0, 0, 0, 0);
+	mainLayout->setSpacing(0);
 
     QFrame * nameFrame = new QFrame();
     QHBoxLayout * nameLayout = new QHBoxLayout();
@@ -192,7 +204,7 @@ QWidget * PEConnectorsView::makeConnectorForm(const QDomElement & connector, boo
 	numberLabel->setObjectName("NewPartsEditorLabel");
     numberLabel->setStatusTip(tr("Connector number"));
     nameLayout->addWidget(numberLabel);
-    nameLayout->addSpacing(10);
+    nameLayout->addSpacing(Spacing);
 
     QLabel * justLabel = new QLabel(tr("<b>Type:</b>"));
 	justLabel->setObjectName("NewPartsEditorLabel");
@@ -228,7 +240,7 @@ QWidget * PEConnectorsView::makeConnectorForm(const QDomElement & connector, boo
     nameLayout->addWidget(radioButton);
     radioButton->setProperty("index", index);
     radioButton->setProperty("type", "radio");
-    nameLayout->addSpacing(10);
+    nameLayout->addSpacing(Spacing);
 
     justLabel = new QLabel(tr("<b>Name:</b>"));
 	justLabel->setObjectName("NewPartsEditorLabel");
@@ -244,6 +256,12 @@ QWidget * PEConnectorsView::makeConnectorForm(const QDomElement & connector, boo
     nameEdit->setProperty("type", "name");
     nameEdit->setProperty("id", connector.attribute("id"));
     nameLayout->addWidget(nameEdit);
+    nameLayout->addSpacing(Spacing);
+
+    HashRemoveButton * hashRemoveButton = new HashRemoveButton(NULL, NULL, NULL);
+    hashRemoveButton->setProperty("index", index);
+	connect(hashRemoveButton, SIGNAL(clicked(HashRemoveButton *)), slotHolder, SLOT(removeConnector()));
+    nameLayout->addWidget(hashRemoveButton);
 
     nameFrame->setLayout(nameLayout);
     mainLayout->addWidget(nameFrame);
@@ -272,13 +290,34 @@ QWidget * PEConnectorsView::makeConnectorForm(const QDomElement & connector, boo
     return frame;
 }
 
+void PEConnectorsView::removeConnector() {
+    bool ok;
+    int senderIndex = sender()->property("index").toInt(&ok);
+    if (!ok) return;
+
+    ConnectorMetadata cmd;
+    if (!fillInMetadata(senderIndex, cmd)) return;
+
+    QList<ConnectorMetadata *> cmdList;
+    cmdList.append(&cmd);
+    emit removedConnectors(cmdList);
+}
+
+
 void PEConnectorsView::changeConnector() {
     bool ok;
     int senderIndex = sender()->property("index").toInt(&ok);
     if (!ok) return;
 
     ConnectorMetadata cmd;
+    if (!fillInMetadata(senderIndex, cmd)) return;
 
+    emit connectorMetadataChanged(&cmd);
+}
+
+bool PEConnectorsView::fillInMetadata(int senderIndex, ConnectorMetadata & cmd)
+{
+    bool result = false;
     QList<QWidget *> widgets = m_mainFrame->findChildren<QWidget *>();
     foreach (QWidget * widget, widgets) {
         bool ok;
@@ -294,6 +333,7 @@ void PEConnectorsView::changeConnector() {
 
             cmd.connectorName = lineEdit->text();
             cmd.connectorID = widget->property("id").toString();
+            result = true;
         }
         else if (type == "radio") {
             QRadioButton * radioButton = qobject_cast<QRadioButton *>(widget);
@@ -310,6 +350,5 @@ void PEConnectorsView::changeConnector() {
         }
 
     }
-
-    emit connectorMetadataChanged(&cmd);
+    return result;   
 }

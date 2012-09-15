@@ -1,11 +1,23 @@
 /* new parts editor  */
 
 #NewPartsEditorConnector0Frame {
-	background-color: #dddddd;
+	background-color: #cccccc;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
 }
 
-#NewPartsEditorConnector0Frame {
-	background-color: #ffffff;
+#NewPartsEditorConnector1Frame {
+	background-color: #eeeeee;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+
+#NewPartsEditorConnectorFrame {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
 }
 
 QSplitter::handle {

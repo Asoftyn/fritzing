@@ -51,6 +51,7 @@ struct ConnectorMetadata {
     QString connectorName;
     QString connectorDescription;
     QString connectorID;
+    int index;
 };
 
 class PEConnectorsView : public QScrollArea
@@ -67,15 +68,18 @@ public:
 
 signals:
     void connectorMetadataChanged(const ConnectorMetadata *);
+    void removedConnectors(QList<ConnectorMetadata *> &);
 
 protected slots:
     void nameEntry();
     void descriptionEntry();
     void typeEntry();
     void connectorCountEntry();
+    void removeConnector();
 
 protected:
     void changeConnector();
+    bool fillInMetadata(int senderIndex, ConnectorMetadata & cmd);
 
 protected:
     QPointer<QFrame> m_mainFrame;

@@ -57,15 +57,15 @@ class HashLineEdit : public QLineEdit {
 class HashRemoveButton : public BaseRemoveButton {
 	Q_OBJECT
 	public:
-		HashRemoveButton(HashLineEdit* label, HashLineEdit* value, QWidget *parent)
+		HashRemoveButton(QWidget* label, QWidget* value, QWidget *parent)
 			: BaseRemoveButton(parent)
 		{
 			m_label = label;
 			m_value = value;
 		}
 
-		HashLineEdit *label() {return m_label;}
-		HashLineEdit *value() {return m_value;}
+		QWidget *label() {return m_label;}
+		QWidget *value() {return m_value;}
 
 	signals:
 		void clicked(HashRemoveButton*);
@@ -74,8 +74,8 @@ class HashRemoveButton : public BaseRemoveButton {
 		void clicked() {
 			emit clicked(this);
 		}
-		HashLineEdit *m_label;
-		HashLineEdit *m_value;
+		QWidget *m_label;
+		QWidget *m_value;
 };
 
 class HashPopulateWidget : public QFrame {
