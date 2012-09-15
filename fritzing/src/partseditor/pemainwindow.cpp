@@ -38,7 +38,8 @@ $Date$
 
 	disable dragging wires
     
-    hide connectors?
+    hide connectors
+        need to show again during bus mode
 
 	change pin count
         when the count is smaller give user a choice to truncate or delete individually
@@ -124,6 +125,7 @@ $Date$
     need "are you sure" message when you quit without saving
 
     after "save" need some kind of confirmation
+        change to window title is enough?
 
     deal with customized svgs
         chip label
@@ -133,14 +135,10 @@ $Date$
         pin header stuff
         pin size
 
-    if svg is loaded with no matching connectors, element lock is correctly unchecked but PEGraphicsItems don't accept mouse events
-
-    disable family entry?  should always be "custom_"  + original family (unless it already starts with custom_)
+    keep family as is, but force users to put in a unique variant
 
     give users a family popup with all family names
         ditto for other properties
-
-    force a new variant property to distinguish this part from any others for swapping?
 
     matrix problem with move and duplicate (i.e. if element inherits a matrix from far above)
         even a problem when inserting hole, pad, or pin
@@ -151,16 +149,9 @@ $Date$
     only allow appropriate file to be loaded for appropriate view (.mod, .fp, etc.)
 
     kicad schematic does not match our schematic
-
-    move contrib pcb files to obsolete
     
-    how to figure out whether to copy an svg? -- for now copy them all
+    sort connector list alphabetically or numerically
 
-    eliminate the restart
-       if it's a new part, and we edited it from a sketch
-            offer a choice: swap the original for the new, swap all, don't swap
-        if it's an edited old part, 
-            swap the part in the bin?
 
 ***************************************************/
 
@@ -1535,7 +1526,7 @@ void PEMainWindow::terminalPointChanged(const QString & coord, double value)
         p.setX(qMax(0.0, qMin(value, pegi->rect().width())));
     }
     else {
-        p.setY(qMax(0.0, qMin(value, pegi->rect().width())));
+        p.setY(qMax(0.0, qMin(value, pegi->rect().height())));
     }
     
     terminalPointChangedAux(pegi, p);

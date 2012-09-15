@@ -92,13 +92,11 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
     m_svgElement->setMaximumWidth(400);
     m_connectorInfoLayout->addWidget(m_svgElement);
 
-    m_elementLock = new QCheckBox(tr("SVG Element Locked"));
+    m_elementLock = new QCheckBox(tr("Connector SVG Locked"));
     m_elementLock->setChecked(true);
     m_elementLock->setToolTip(tr("Unlock to modify the current connector's location"));
     connect(m_elementLock, SIGNAL(clicked(bool)), this, SLOT(lockChangedSlot(bool)));
     m_connectorInfoLayout->addWidget(m_elementLock);
-
-
 
     QFrame * boundsFrame = new QFrame;
     QHBoxLayout * boundsLayout = new QHBoxLayout;
