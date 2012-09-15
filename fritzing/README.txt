@@ -34,7 +34,7 @@ either on your own, or with the help of a manufacturer.
 
 To launch Fritzing: 
 	on Mac, double-click the Fritzing application
-	on Linux, double-click fritzing.sh, or try ./fritzing.sh in your shell window
+	on Linux, double-click Fritzing, or try ./Fritzing in your shell window
 	on Windows, double-click fritzing.exe
 
 
