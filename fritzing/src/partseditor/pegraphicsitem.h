@@ -43,6 +43,7 @@ public:
 	void hoverLeaveEvent(QGraphicsSceneHoverEvent *);
     void wheelEvent(QGraphicsSceneWheelEvent *);
 	void mousePressEvent(QGraphicsSceneMouseEvent *);
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *);
     void setHighlighted(bool);
     bool highlighted();
@@ -61,6 +62,8 @@ public:
 signals:
     void highlightSignal(PEGraphicsItem *);
     void mouseReleased(PEGraphicsItem *);
+    void terminalPointMoved(PEGraphicsItem *, QPointF);
+    void terminalPointChanged(PEGraphicsItem *, QPointF before, QPointF after);
 
 protected:
     bool m_highlighted;
@@ -69,6 +72,9 @@ protected:
     bool m_showTerminalPoint;
     QPointF m_terminalPoint;
     QPointF m_pendingTerminalPoint;
+    bool m_dragTerminalPoint;
+    QPointF m_dragTerminalOrigin;
+    QPointF m_terminalPointOrigin;
 };
 
 #endif /* PEGRAPHICSITEM_H_ */

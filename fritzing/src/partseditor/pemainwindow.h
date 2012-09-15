@@ -72,6 +72,8 @@ public slots:
     void connectorMetadataChanged(const struct ConnectorMetadata *);
     void highlightSlot(class PEGraphicsItem *);
     void pegiMouseReleased(class PEGraphicsItem *);
+    void pegiTerminalPointMoved(class PEGraphicsItem *, QPointF);
+    void pegiTerminalPointChanged(class PEGraphicsItem *, QPointF before, QPointF after);
     void switchedConnector(const QDomElement &);
     void terminalPointChanged(const QString & how);
     void terminalPointChanged(const QString & coord, double value);
@@ -114,7 +116,7 @@ protected:
     QDomElement getConnectorPElement(const QDomElement & element, SketchWidget * sketchWidget);
     void updateChangeCount(SketchWidget * sketchWidget, int changeDirection);
     class PEGraphicsItem * findConnectorItem();
-    void terminalPointChangedAux(PEGraphicsItem * pegi, QPointF p);
+    void terminalPointChangedAux(PEGraphicsItem * pegi, QPointF before, QPointF after);
     void showInOS(QWidget *parent, const QString &pathIn);
     void switchedConnector(const QDomElement &, SketchWidget *);
     PEGraphicsItem * makePegi(QSizeF size, QPointF topLeft, ItemBase * itemBase, QDomElement & element);

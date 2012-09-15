@@ -1214,6 +1214,18 @@ void PEMainWindow::lockChangedAux(bool state, const QList<PEGraphicsItem *> & pe
     }
 }
 
+void PEMainWindow::pegiTerminalPointMoved(PEGraphicsItem * pegi, QPointF p)
+{
+    // called while terminal point is being dragged, no need for an undo operation
+
+    Q_UNUSED(pegi);
+    m_peToolView->setTerminalPointCoords(p);
+}
+
+void PEMainWindow::pegiTerminalPointChanged(PEGraphicsItem * pegi, QPointF before, QPointF after)
+{
+    terminalPointChangedAux(pegi, before, after);
+}
 
 void PEMainWindow::pegiMouseReleased(PEGraphicsItem * pegi)
 {
@@ -1511,7 +1523,7 @@ void PEMainWindow::terminalPointChanged(const QString & how) {
     else if (how == "W") {
         p.setX(0);
     }
-    terminalPointChangedAux(pegi, p);
+    terminalPointChangedAux(pegi, pegi->terminalPoint(), p);
 
     // TODO: UndoCommand which changes fzp xml and svg xml
 }
@@ -1529,21 +1541,21 @@ void PEMainWindow::terminalPointChanged(const QString & coord, double value)
         p.setY(qMax(0.0, qMin(value, pegi->rect().height())));
     }
     
-    terminalPointChangedAux(pegi, p);
+    terminalPointChangedAux(pegi, pegi->terminalPoint(), p);
     // TODO: UndoCommand which changes fzp xml and svg xml
 }
 
-void PEMainWindow::terminalPointChangedAux(PEGraphicsItem * pegi, QPointF p)
+void PEMainWindow::terminalPointChangedAux(PEGraphicsItem * pegi, QPointF before, QPointF after)
 {
-    if (pegi->pendingTerminalPoint() == p) {
+    if (pegi->pendingTerminalPoint() == after) {
         return;
     }
 
-    pegi->setPendingTerminalPoint(p);
+    pegi->setPendingTerminalPoint(after);
 
     QDomElement currentConnectorElement = m_peToolView->currentConnector();
 
-    MoveTerminalPointCommand * mtpc = new MoveTerminalPointCommand(this, this->m_currentGraphicsView, currentConnectorElement.attribute("id"), pegi->rect().size(), pegi->terminalPoint(), p, NULL);
+    MoveTerminalPointCommand * mtpc = new MoveTerminalPointCommand(this, this->m_currentGraphicsView, currentConnectorElement.attribute("id"), pegi->rect().size(), before, after, NULL);
     mtpc->setText(tr("Move terminal point"));
     m_undoStack->waitPush(mtpc, SketchWidget::PropChangeDelay);
 }
@@ -1726,6 +1738,8 @@ PEGraphicsItem * PEMainWindow::makePegi(QSizeF size, QPointF topLeft, ItemBase *
     pegiItem->setOffset(topLeft);
     connect(pegiItem, SIGNAL(highlightSignal(PEGraphicsItem *)), this, SLOT(highlightSlot(PEGraphicsItem *)));
     connect(pegiItem, SIGNAL(mouseReleased(PEGraphicsItem *)), this, SLOT(pegiMouseReleased(PEGraphicsItem *)));
+    connect(pegiItem, SIGNAL(terminalPointMoved(PEGraphicsItem *, QPointF)), this, SLOT(pegiTerminalPointMoved(PEGraphicsItem *, QPointF)));
+    connect(pegiItem, SIGNAL(terminalPointChanged(PEGraphicsItem *, QPointF, QPointF)), this, SLOT(pegiTerminalPointChanged(PEGraphicsItem *, QPointF, QPointF)));
     return pegiItem;
 }
 

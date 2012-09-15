@@ -207,10 +207,41 @@ QPointF PEGraphicsItem::pendingTerminalPoint() {
     return m_pendingTerminalPoint;
 }
 
-void PEGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *) {
+void PEGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent * event) {
     // block QGraphicsRectItem::mousePressEvent so mouseReleaseEvent will get triggered
+    m_dragTerminalPoint = false;
+    if (m_showTerminalPoint) {
+        QPointF p = event->pos();
+        if (qAbs(p.x() - m_terminalPoint.x()) <= 2 && qAbs(p.y() - m_terminalPoint.y()) <= 2) {
+            m_dragTerminalPoint = true;
+            m_terminalPointOrigin = m_terminalPoint;
+            m_dragTerminalOrigin = event->pos();
+        }
+    }
 }
 
+void PEGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event) {
+    if (!m_dragTerminalPoint) return;
+
+    QPointF newTerminalPoint = m_terminalPointOrigin + event->pos() - m_dragTerminalOrigin;
+    if (newTerminalPoint.x() < 0) newTerminalPoint.setX(0);
+    else if (newTerminalPoint.x() > rect().width()) newTerminalPoint.setX(rect().width());
+    if (newTerminalPoint.y() < 0) newTerminalPoint.setY(0);
+    else if (newTerminalPoint.y() > rect().height()) newTerminalPoint.setY(rect().height());
+    m_terminalPoint = newTerminalPoint;
+    emit terminalPointMoved(this, newTerminalPoint);
+    update();
+}
+
+
 void PEGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *) {
-    emit mouseReleased(this);
+    if (m_dragTerminalPoint) {
+        m_dragTerminalPoint = false;
+        if (m_terminalPointOrigin != m_terminalPoint) {
+            emit terminalPointChanged(this, m_terminalPointOrigin, m_terminalPoint);
+        }
+    }
+    else {
+        emit mouseReleased(this);
+    }
 }
