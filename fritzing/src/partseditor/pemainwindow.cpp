@@ -35,7 +35,7 @@ $Date$
 
         crash when swapping part during save
         
-        not saveing metadata and crashed when saving the description
+        crashed when saving the description
   
         show in OS button
             test on mac, linux
@@ -979,6 +979,12 @@ void PEMainWindow::switchedConnector(const QDomElement & element, SketchWidget *
     }
     m_peToolView->setLock(gotOne);
     lockChangedAux(gotOne, pegiList);
+    if (!gotOne) {
+        foreach (PEGraphicsItem * pegi, pegiList) {
+            pegi->showTerminalPoint(false);
+            pegi->setHighlighted(false);        
+        }
+    }
 }
 
 void PEMainWindow::loadImage() 
