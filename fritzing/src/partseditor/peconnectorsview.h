@@ -67,7 +67,7 @@ public:
     static QWidget * makeConnectorForm(const QDomElement & connector, bool gotZeroConnector, int index, QObject * slotHolder, bool alternating);
 
 signals:
-    void connectorMetadataChanged(const ConnectorMetadata *);
+    void connectorMetadataChanged(ConnectorMetadata *);
     void removedConnectors(QList<ConnectorMetadata *> &);
 
 protected slots:

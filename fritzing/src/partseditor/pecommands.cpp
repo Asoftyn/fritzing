@@ -146,16 +146,16 @@ QString ChangePropertiesCommand::getParamString() const {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ChangeConnectorMetadataCommand::ChangeConnectorMetadataCommand(PEMainWindow * peMainWindow, const ConnectorMetadata  & oldValue, const ConnectorMetadata & newValue, QUndoCommand *parent)
+ChangeConnectorMetadataCommand::ChangeConnectorMetadataCommand(PEMainWindow * peMainWindow, ConnectorMetadata  * oldValue, ConnectorMetadata * newValue, QUndoCommand *parent)
     : PEBaseCommand(peMainWindow, parent)
 {
-	m_oldcm = oldValue;
-	m_newcm = newValue;
+	m_oldcm = *oldValue;
+	m_newcm = *newValue;
 }
 
 void ChangeConnectorMetadataCommand::undo()
 {
-    m_peMainWindow->changeConnectorMetadata(m_oldcm, true);
+    m_peMainWindow->changeConnectorMetadata(&m_oldcm, true);
 }
 
 void ChangeConnectorMetadataCommand::redo()
@@ -164,7 +164,7 @@ void ChangeConnectorMetadataCommand::redo()
         m_skipFirstRedo = false;
     }
     else {
-        m_peMainWindow->changeConnectorMetadata(m_newcm, true);
+        m_peMainWindow->changeConnectorMetadata(&m_newcm, true);
     }
 }
 
@@ -177,31 +177,28 @@ QString ChangeConnectorMetadataCommand::getParamString() const {
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-RemoveConnectorsCommand::RemoveConnectorsCommand(PEMainWindow * peMainWindow, QList<ConnectorMetadata *> & cmdList, QUndoCommand *parent)
+RemoveConnectorsCommand::RemoveConnectorsCommand(PEMainWindow * peMainWindow, const QString & oldFzpFile, const QString & newFzpFile, QUndoCommand *parent)
     : PEBaseCommand(peMainWindow, parent)
 {
-	foreach (ConnectorMetadata * cmd, cmdList) {
-        ConnectorMetadata * newCmd = new ConnectorMetadata;
-        *newCmd = *cmd;
-        m_cmdList.append(newCmd);
-    }
+	m_oldFzpFile = oldFzpFile;
+    m_newFzpFile = newFzpFile;
 }
 
 void RemoveConnectorsCommand::undo()
 {
-    m_peMainWindow->addConnectors(m_cmdList);
+    m_peMainWindow->restoreFzp(m_oldFzpFile);
 }
 
 void RemoveConnectorsCommand::redo()
 {
-
-    m_peMainWindow->removeConnectors(m_cmdList);
+    m_peMainWindow->restoreFzp(m_newFzpFile);
 }
 
 QString RemoveConnectorsCommand::getParamString() const {
 	return "RemoveConnectorsCommand " + 
-        QString(" count:%1")
-            .arg(m_cmdList.count())
+        QString(" old:%1 new:%2")
+            .arg(m_oldFzpFile)
+            .arg(m_newFzpFile)
         ;
 }
 

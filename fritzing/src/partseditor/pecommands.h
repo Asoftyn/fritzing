@@ -69,7 +69,7 @@ protected:
 class ChangeConnectorMetadataCommand : public PEBaseCommand
 {
 public:
-	ChangeConnectorMetadataCommand(class PEMainWindow *, const ConnectorMetadata & oldcm, const ConnectorMetadata & newcm, QUndoCommand *parent);
+	ChangeConnectorMetadataCommand(class PEMainWindow *, ConnectorMetadata * oldcm, ConnectorMetadata * newcm, QUndoCommand *parent);
 	void undo();
 	void redo();
 
@@ -86,7 +86,7 @@ protected:
 class RemoveConnectorsCommand : public PEBaseCommand
 {
 public:
-	RemoveConnectorsCommand(class PEMainWindow *, QList<ConnectorMetadata *> &, QUndoCommand *parent);
+	RemoveConnectorsCommand(class PEMainWindow *, const QString & oldFzpFile, const QString & newFzpFile, QUndoCommand *parent);
 	void undo();
 	void redo();
 
@@ -94,7 +94,8 @@ protected:
 	QString getParamString() const;
 
 protected:
-	QList<ConnectorMetadata *> m_cmdList;
+	QString m_oldFzpFile;
+    QString m_newFzpFile;
 };
 
 /////////////////////////////////////////////

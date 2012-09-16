@@ -310,7 +310,7 @@ void PEMainWindow::initSketchWidgets()
     m_connectorsView = new PEConnectorsView(this);
 	sketchAreaWidget = new SketchAreaWidget(m_connectorsView, this);
 	m_tabWidget->addWidget(sketchAreaWidget);
-    connect(m_connectorsView, SIGNAL(connectorMetadataChanged(const ConnectorMetadata *)), this, SLOT(connectorMetadataChanged(const ConnectorMetadata *)), Qt::DirectConnection);
+    connect(m_connectorsView, SIGNAL(connectorMetadataChanged(ConnectorMetadata *)), this, SLOT(connectorMetadataChanged(ConnectorMetadata *)), Qt::DirectConnection);
     connect(m_connectorsView, SIGNAL(removedConnectors(QList<ConnectorMetadata *> &)), this, SLOT(removedConnectors(QList<ConnectorMetadata *> &)), Qt::DirectConnection);
 
     m_svgChangeCount.insert(m_breadboardGraphicsView->viewIdentifier(), 0);
@@ -425,15 +425,7 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
     //DebugDialog::debug(QString("%1, %2").arg(info.absoluteFilePath()).arg(m_userPartsFolderPath));
     m_canSave = info.absoluteFilePath().contains(m_userPartsFolderPath);
 
-    QFile file(originalModelPart->path());
-	QString errorStr;
-	int errorLine;
-	int errorColumn;
-	bool result = m_fzpDocument.setContent(&file, &errorStr, &errorLine, &errorColumn);
-	if (!result) {
-        QMessageBox::critical(NULL, tr("Parts Editor"), QString("Unable to load fzp from %1").arg(originalModelPart->path()));
-		return;
-	}
+    if (!loadFzp(originalModelPart->path())) return;
 
     QDomElement fzpRoot = m_fzpDocument.documentElement();
     QDomElement views = fzpRoot.firstChildElement("views");
@@ -501,7 +493,7 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
 		QSizeF size = itemBase->size();
 		svg = TextUtils::makeSVGHeader(GraphicsUtils::SVGDPI, GraphicsUtils::StandardFritzingDPI, size.width(), size.height()) + svg + "</svg>";
         QString svgPath = makeSvgPath(sketchWidget, true);
-        result = TextUtils::writeUtf8(m_userPartsFolderSvgPath + svgPath, TextUtils::svgNSOnly(svg));
+        bool result = TextUtils::writeUtf8(m_userPartsFolderSvgPath + svgPath, TextUtils::svgNSOnly(svg));
         if (!result) {
             QMessageBox::critical(NULL, tr("Parts Editor"), QString("Unable to write svg to  %1").arg(svgPath));
 		    return;
@@ -737,33 +729,7 @@ QHash<QString, QString> PEMainWindow::getOldProperties()
     return oldProperties;
 }
 
-void PEMainWindow::removedConnectors(QList<ConnectorMetadata *> & cmdList)
-{
-    QList<QDomElement> connectors;
-
-    foreach (ConnectorMetadata * cmd, cmdList) {
-        int index;
-        QDomElement connector = findConnector(cmd->connectorID, index);
-        if (connector.isNull()) return;
-
-        cmd->index = index;
-        connectors.append(connector);
-    }
-
-    RemoveConnectorsCommand * rcc = new RemoveConnectorsCommand(this, cmdList, NULL);
-    QString message;
-    if (cmdList.count() == 1) {
-        message = tr("Remove connector");
-    }
-    else {
-        message = tr("Remove %1 connectors").arg(cmdList.count());
-    }
-    rcc->setText(message);
-    m_undoStack->waitPush(rcc, SketchWidget::PropChangeDelay);
-}
-
-
-void PEMainWindow::connectorMetadataChanged(const ConnectorMetadata * cmd)
+void PEMainWindow::connectorMetadataChanged(ConnectorMetadata * cmd)
 {
     ConnectorMetadata oldcmd;
 
@@ -779,10 +745,10 @@ void PEMainWindow::connectorMetadataChanged(const ConnectorMetadata * cmd)
     QDomElement description = connector.firstChildElement("description");
     oldcmd.connectorDescription = description.text();
 
-    ChangeConnectorMetadataCommand * ccmc = new ChangeConnectorMetadataCommand(this, oldcmd, *cmd, NULL);
+    ChangeConnectorMetadataCommand * ccmc = new ChangeConnectorMetadataCommand(this, &oldcmd, cmd, NULL);
     ccmc->setText(tr("Change connector %1").arg(cmd->connectorName));
     ccmc->setSkipFirstRedo();
-    changeConnectorElement(connector, *cmd);
+    changeConnectorElement(connector, cmd);
     m_undoStack->waitPush(ccmc, SketchWidget::PropChangeDelay);
 }
 
@@ -804,9 +770,9 @@ QDomElement PEMainWindow::findConnector(const QString & id, int & index)
 }
 
 
-void PEMainWindow::changeConnectorMetadata(const ConnectorMetadata & cmd, bool updateDisplay) {
+void PEMainWindow::changeConnectorMetadata(ConnectorMetadata * cmd, bool updateDisplay) {
     int index;
-    QDomElement connector = findConnector(cmd.connectorID, index);
+    QDomElement connector = findConnector(cmd->connectorID, index);
     if (connector.isNull()) return;
 
     changeConnectorElement(connector, cmd);
@@ -815,15 +781,22 @@ void PEMainWindow::changeConnectorMetadata(const ConnectorMetadata & cmd, bool u
     }
 }
 
-void PEMainWindow::changeConnectorElement(QDomElement & connector, const ConnectorMetadata & cmd)
+void PEMainWindow::changeConnectorElement(QDomElement & connector, ConnectorMetadata * cmd)
 {
-    connector.setAttribute("name", cmd.connectorName);
+    connector.setAttribute("name", cmd->connectorName);
+    connector.setAttribute("id", cmd->connectorID);
     QString type = "male";
-    if (cmd.connectorType == Connector::Female) type = "female";
-    else if (cmd.connectorType == Connector::Pad) type = "pad";
+    if (cmd->connectorType == Connector::Female) type = "female";
+    else if (cmd->connectorType == Connector::Pad) type = "pad";
     connector.setAttribute("type", type);
+    TextUtils::replaceElementChildText(m_fzpDocument, connector, "description", cmd->connectorDescription);
+
+#ifndef QT_NO_DEBUG
     QDomElement description = connector.firstChildElement("description");
-    TextUtils::replaceElementChildText(m_fzpDocument, connector, "description", cmd.connectorDescription);
+    QString text = description.text();
+    DebugDialog::debug(QString("description %1").arg(text));
+#endif
+
 }
 
 void PEMainWindow::initSvgTree(ItemBase * itemBase, QDomDocument & domDocument) 
@@ -1217,7 +1190,7 @@ QString PEMainWindow::saveFzp() {
 }
 
 void PEMainWindow::reload() {
-    QString fzpPath = saveFzp();
+    QString fzpPath = saveFzp();   // needs a document somewhere to set up connectors--not part of the undo stack
     ModelPart * modelPart = new ModelPart(m_fzpDocument, fzpPath, ModelPart::Part);
 
     long newID = ItemBase::getNextID();
@@ -1845,52 +1818,42 @@ void PEMainWindow::backupSketch()
 {
 }
 
-void PEMainWindow::removeConnectors(QList<ConnectorMetadata *> & cmdList) 
+void PEMainWindow::removedConnectors(QList<ConnectorMetadata *> & cmdList)
 {
+    QList<QDomElement> connectors;
+
     foreach (ConnectorMetadata * cmd, cmdList) {
         int index;
         QDomElement connector = findConnector(cmd->connectorID, index);
-        if (connector.isNull()) continue;
+        if (connector.isNull()) return;
 
-        connector.parentNode().removeChild(connector);
-
+        cmd->index = index;
+        connectors.append(connector);
     }
 
-    killPegi();
-    reload();
+    QString originalPath = saveFzp();
+
+    foreach (QDomElement connector, connectors) {
+        connector.parentNode().removeChild(connector);
+    }
+
+    QString newPath = saveFzp();
+
+    RemoveConnectorsCommand * rcc = new RemoveConnectorsCommand(this, originalPath, newPath, NULL);
+    QString message;
+    if (cmdList.count() == 1) {
+        message = tr("Remove connector");
+    }
+    else {
+        message = tr("Remove %1 connectors").arg(cmdList.count());
+    }
+    rcc->setText(message);
+    m_undoStack->waitPush(rcc, SketchWidget::PropChangeDelay);
 }
 
-void PEMainWindow::addConnectors(QList<ConnectorMetadata *> & cmdList) 
+void PEMainWindow::restoreFzp(const QString & fzpPath) 
 {
-    QDomElement root = m_fzpDocument.documentElement();
-    QDomElement connectors = root.firstChildElement("connectors");
-    if (connectors.isNull()) {
-        // we are in big trouble: tell the user
-        return;
-    }
-
-    foreach (ConnectorMetadata * cmd, cmdList) {
-        QDomElement newConnector = m_fzpDocument.createElement("connector");
-
-        int ix = 0;
-        bool gotOne = false;
-        QDomElement connector = connectors.firstChildElement("connector");
-        while (!connector.isNull()) {
-            if (ix++ == cmd->index) {
-                // insert before
-                connectors.insertBefore(newConnector, connector);
-                gotOne = true;
-                break;
-            }
-
-            connector = connector.nextSiblingElement("connector");
-        }
-        if (!gotOne) {
-            // goes at the end
-            connectors.appendChild(newConnector);
-        }
-        changeConnectorElement(newConnector, *cmd);
-    }
+    if (!loadFzp(fzpPath)) return;
 
     killPegi();
     reload();
@@ -1931,3 +1894,18 @@ void PEMainWindow::killPegi() {
         }
     }   
 }
+
+bool PEMainWindow::loadFzp(const QString & path) {
+    QFile file(path);
+	QString errorStr;
+	int errorLine;
+	int errorColumn;
+	bool result = m_fzpDocument.setContent(&file, &errorStr, &errorLine, &errorColumn);
+	if (!result) {
+        QMessageBox::critical(NULL, tr("Parts Editor"), QString("Unable to load fzp from %1").arg(path));
+		return false;
+	}
+
+    return true;
+}
+

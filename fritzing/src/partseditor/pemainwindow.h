@@ -57,12 +57,11 @@ public:
     void changeTags(const QStringList &, bool updateDisplay);
     void changeProperties(const QHash<QString, QString> &, bool updateDisplay);
     void changeMetadata(const QString & name, const QString & value, bool updateDisplay);
-    void changeConnectorMetadata(const ConnectorMetadata &, bool updateDisplay);
+    void changeConnectorMetadata(ConnectorMetadata *, bool updateDisplay);
     void changeSvg(SketchWidget *, const QString & filename, const QString & originalPath, int changeDirection);
     void relocateConnectorSvg(SketchWidget *, const QString & id, const QString & terminalID, const QString & oldGorn, const QString & oldGornTerminal, const QString & newGorn, const QString & newGornTerminal, int changeDirection);
     void moveTerminalPoint(SketchWidget *, const QString & id, QSizeF, QPointF, int changeDirection);
-    void removeConnectors(QList<ConnectorMetadata *> &);
-    void addConnectors(QList<ConnectorMetadata *> &);
+    void restoreFzp(const QString & filename);
 
 signals:
     void addToMyPartsSignal(ModelPart *);
@@ -71,7 +70,7 @@ public slots:
     void metadataChanged(const QString & name, const QString & value);
     void propertiesChanged(const QHash<QString, QString> &);
     void tagsChanged(const QStringList &);
-    void connectorMetadataChanged(const struct ConnectorMetadata *);
+    void connectorMetadataChanged(struct ConnectorMetadata *);
     void removedConnectors(QList<ConnectorMetadata *> &);
     void highlightSlot(class PEGraphicsItem *);
     void pegiMouseReleased(class PEGraphicsItem *);
@@ -106,7 +105,7 @@ protected:
     void createViewMenu();
     QHash<QString, QString> getOldProperties();
     QDomElement findConnector(const QString & id, int & index);
-    void changeConnectorElement(QDomElement & connector, const ConnectorMetadata & cmd);
+    void changeConnectorElement(QDomElement & connector, ConnectorMetadata *);
     void initSvgTree(ItemBase *, QDomDocument &);
     void initConnectors();
     QString createSvgFromImage(const QString &origFilePath);
@@ -130,6 +129,7 @@ protected:
     void setBeforeClosingText(const QString & filename, QMessageBox & messageBox);
     QString getPartTitle();
     void killPegi();
+    bool loadFzp(const QString & path);
 
 protected slots:
     void initZoom();
