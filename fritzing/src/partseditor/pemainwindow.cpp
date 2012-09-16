@@ -312,12 +312,12 @@ void PEMainWindow::initSketchWidgets()
 	m_tabWidget->addWidget(sketchAreaWidget);
     connect(m_connectorsView, SIGNAL(connectorMetadataChanged(ConnectorMetadata *)), this, SLOT(connectorMetadataChanged(ConnectorMetadata *)), Qt::DirectConnection);
     connect(m_connectorsView, SIGNAL(removedConnectors(QList<ConnectorMetadata *> &)), this, SLOT(removedConnectors(QList<ConnectorMetadata *> &)), Qt::DirectConnection);
+    connect(m_connectorsView, SIGNAL(connectorCountChanged(int)), this, SLOT(connectorCountChanged(int)));
 
     m_svgChangeCount.insert(m_breadboardGraphicsView->viewIdentifier(), 0);
     m_svgChangeCount.insert(m_schematicGraphicsView->viewIdentifier(), 0);
     m_svgChangeCount.insert(m_pcbGraphicsView->viewIdentifier(), 0);
     m_svgChangeCount.insert(m_iconGraphicsView->viewIdentifier(), 0);
-
 }
 
 void PEMainWindow::initDock()
@@ -1922,3 +1922,29 @@ bool PEMainWindow::loadFzp(const QString & path) {
     return true;
 }
 
+void PEMainWindow::connectorCountChanged(int newCount) {
+    QList<QDomElement> connectorList;
+    QDomElement root = m_fzpDocument.documentElement();
+    QDomElement connectors = root.firstChildElement("connectors");
+    QDomElement connector = connectors.firstChildElement("connector");
+    while (!connector.isNull()) {
+        connectorList.append(connector);
+        connector = connector.nextSiblingElement();
+    }
+
+    if (newCount == connectorList.count()) return;
+
+    if (newCount < connectorList.count()) {
+        qSort(connectorList.begin(), connectorList.end(), byID);
+        QList<QDomElement> toDelete;
+        for (int i = newCount; i < connectorList.count(); i++) {
+            toDelete.append(connectorList.at(i));
+        }
+
+        removedConnectorsAux(toDelete);
+        return;
+    }
+
+    // add connectors here
+
+}

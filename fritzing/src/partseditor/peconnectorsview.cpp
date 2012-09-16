@@ -130,46 +130,17 @@ void PEConnectorsView::descriptionEntry() {
 
 void PEConnectorsView::connectorCountEntry() {
     if (!m_mutex.tryLock(1)) return;            // need the mutex because multiple editingFinished() signals can be triggered more-or-less at once
+   
+    QLineEdit * lineEdit = qobject_cast<QLineEdit *>(sender());
+    if (lineEdit != NULL) {
+        int newCount = lineEdit->text().toInt();
+        if (newCount != m_connectorCount) {
+            m_connectorCount = newCount;
+            emit connectorCountChanged(newCount);
+        }
+    }
 
     m_mutex.unlock();
-    // TODO: this unlock is a little unsafe: another editingFinished command could come through right now
-    // do we just need to block signals?
-    QMutexLocker locker(&m_mutex);
-
-    QLineEdit * lineEdit = qobject_cast<QLineEdit *>(sender());
-    if (lineEdit == NULL) return;
-
-    int newCount = lineEdit->text().toInt();
-    if (newCount == m_connectorCount) return;
-
-    QString message;
-    if (newCount < m_connectorCount) {
-        message = tr("Connectors will be removed from the end of the list, so you may lose some work. ");
-    }
-    else {
-        message = tr("Connectors will be added the end of the list. ");
-    }
-    message += tr("Rather than changing the number of connectors here, "
-                    "it may be better to begin with a part that already has the right number of connectors.\n\n");
-    message += tr("Change to %n connectors?", "", newCount);
-
-
-	QMessageBox messageBox(NULL);
-	messageBox.setWindowTitle(tr("Change Connectors Warning"));
-	messageBox.setText(message);
-	messageBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-	messageBox.setDefaultButton(QMessageBox::Cancel);
-	messageBox.setIcon(QMessageBox::Warning);
-	messageBox.setWindowModality(Qt::WindowModal);
-	messageBox.setButtonText(QMessageBox::Ok, tr("Change Connector Count"));
-	messageBox.setButtonText(QMessageBox::Cancel, tr("Cancel"));
-	QMessageBox::StandardButton answer = (QMessageBox::StandardButton) messageBox.exec();
-
-	if (answer != QMessageBox::Ok) {
-        lineEdit->setText(QString::number(m_connectorCount));
-		return;
-	}
-
 }
 
 QWidget * PEConnectorsView::makeConnectorForm(const QDomElement & connector, bool gotZeroConnector, int index, QObject * slotHolder, bool alternating) {
@@ -188,27 +159,30 @@ QWidget * PEConnectorsView::makeConnectorForm(const QDomElement & connector, boo
     QFrame * nameFrame = new QFrame();
     QHBoxLayout * nameLayout = new QHBoxLayout();
 
-    QString id("    ");
-    int ix = IntegerFinder.indexIn(connector.attribute("id"));
-    if (ix >= 0) {
-        if (gotZeroConnector) {
-            int cid = IntegerFinder.cap(0).toInt();
-            id = QString::number(cid + 1);
-        }
-        else {
-            id = IntegerFinder.cap(0);
-        }
-    }
-
-    QLabel * numberLabel = new QLabel("<b>" + id + ".</b>");
-	numberLabel->setObjectName("NewPartsEditorLabel");
-    numberLabel->setStatusTip(tr("Connector number"));
-    nameLayout->addWidget(numberLabel);
-    nameLayout->addSpacing(Spacing);
-
-    QLabel * justLabel = new QLabel(tr("<b>Type:</b>"));
+    QLabel * justLabel = new QLabel(tr("<b>id:</b>"));
 	justLabel->setObjectName("NewPartsEditorLabel");
     nameLayout->addWidget(justLabel);
+
+    justLabel = new QLabel(connector.attribute("id"));
+	justLabel->setObjectName("NewPartsEditorLabel");
+    nameLayout->addWidget(justLabel);
+    nameLayout->addSpacing(Spacing);
+
+    justLabel = new QLabel(tr("<b>Name:</b>"));
+	justLabel->setObjectName("NewPartsEditorLabel");
+    nameLayout->addWidget(justLabel);
+
+    QLineEdit * nameEdit = new QLineEdit();
+    nameEdit->setText(connector.attribute("name"));
+	connect(nameEdit, SIGNAL(editingFinished()), slotHolder, SLOT(nameEntry()));
+	nameEdit->setObjectName("NewPartsEditorLineEdit");
+    nameEdit->setStatusTip(tr("Set the connectors's title"));
+    nameEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+    nameEdit->setProperty("index", index);
+    nameEdit->setProperty("type", "name");
+    nameEdit->setProperty("id", connector.attribute("id"));
+    nameLayout->addWidget(nameEdit);
+    nameLayout->addSpacing(Spacing);
 
     Connector::ConnectorType ctype = Connector::Male;
     if (connector.attribute("type").compare("female", Qt::CaseInsensitive) == 0) ctype = Connector::Female;
@@ -240,22 +214,6 @@ QWidget * PEConnectorsView::makeConnectorForm(const QDomElement & connector, boo
     nameLayout->addWidget(radioButton);
     radioButton->setProperty("index", index);
     radioButton->setProperty("type", "radio");
-    nameLayout->addSpacing(Spacing);
-
-    justLabel = new QLabel(tr("<b>Name:</b>"));
-	justLabel->setObjectName("NewPartsEditorLabel");
-    nameLayout->addWidget(justLabel);
-
-    QLineEdit * nameEdit = new QLineEdit();
-    nameEdit->setText(connector.attribute("name"));
-	connect(nameEdit, SIGNAL(editingFinished()), slotHolder, SLOT(nameEntry()));
-	nameEdit->setObjectName("NewPartsEditorLineEdit");
-    nameEdit->setStatusTip(tr("Set the connectors's title"));
-    nameEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-    nameEdit->setProperty("index", index);
-    nameEdit->setProperty("type", "name");
-    nameEdit->setProperty("id", connector.attribute("id"));
-    nameLayout->addWidget(nameEdit);
     nameLayout->addSpacing(Spacing);
 
     HashRemoveButton * hashRemoveButton = new HashRemoveButton(NULL, NULL, NULL);

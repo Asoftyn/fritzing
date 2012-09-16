@@ -82,6 +82,7 @@ public slots:
     void terminalPointChanged(const QString & coord, double value);
     void getSpinAmount(double & amount);
     void lockChanged(bool);
+    void connectorCountChanged(int);
 
 protected:
 	void closeEvent(QCloseEvent * event);

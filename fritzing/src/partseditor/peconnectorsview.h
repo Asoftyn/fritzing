@@ -69,6 +69,7 @@ public:
 signals:
     void connectorMetadataChanged(ConnectorMetadata *);
     void removedConnectors(QList<ConnectorMetadata *> &);
+    void connectorCountChanged(int);
 
 protected slots:
     void nameEntry();
