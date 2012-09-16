@@ -77,6 +77,7 @@ public slots:
     void pegiTerminalPointMoved(class PEGraphicsItem *, QPointF);
     void pegiTerminalPointChanged(class PEGraphicsItem *, QPointF before, QPointF after);
     void switchedConnector(const QDomElement &);
+    void removedConnector(const QDomElement &);
     void terminalPointChanged(const QString & how);
     void terminalPointChanged(const QString & coord, double value);
     void getSpinAmount(double & amount);
@@ -130,6 +131,7 @@ protected:
     QString getPartTitle();
     void killPegi();
     bool loadFzp(const QString & path);
+    void removedConnectorsAux(QList<QDomElement> & connectors);
 
 protected slots:
     void initZoom();

@@ -337,6 +337,7 @@ void PEMainWindow::moreInitDock()
     connect(m_peToolView, SIGNAL(terminalPointChanged(const QString &)), this, SLOT(terminalPointChanged(const QString &)));
     connect(m_peToolView, SIGNAL(terminalPointChanged(const QString &, double)), this, SLOT(terminalPointChanged(const QString &, double)));
     connect(m_peToolView, SIGNAL(switchedConnector(const QDomElement &)), this, SLOT(switchedConnector(const QDomElement &)));
+    connect(m_peToolView, SIGNAL(removedConnector(const QDomElement &)), this, SLOT(removedConnector(const QDomElement &)));
     connect(m_peToolView, SIGNAL(lockChanged(bool)), this, SLOT(lockChanged(bool)));
     makeDock(tr("Tools"), m_peToolView, DockMinWidth, DockMinHeight);
     m_peToolView->setMinimumSize(DockMinWidth, DockMinHeight);
@@ -1818,6 +1819,13 @@ void PEMainWindow::backupSketch()
 {
 }
 
+void PEMainWindow::removedConnector(const QDomElement & element)
+{
+    QList<QDomElement> connectors;
+    connectors.append(element);
+    removedConnectorsAux(connectors);
+}
+
 void PEMainWindow::removedConnectors(QList<ConnectorMetadata *> & cmdList)
 {
     QList<QDomElement> connectors;
@@ -1831,6 +1839,11 @@ void PEMainWindow::removedConnectors(QList<ConnectorMetadata *> & cmdList)
         connectors.append(connector);
     }
 
+    removedConnectorsAux(connectors);
+}
+
+void PEMainWindow::removedConnectorsAux(QList<QDomElement> & connectors)
+{
     QString originalPath = saveFzp();
 
     foreach (QDomElement connector, connectors) {
@@ -1841,11 +1854,11 @@ void PEMainWindow::removedConnectors(QList<ConnectorMetadata *> & cmdList)
 
     RemoveConnectorsCommand * rcc = new RemoveConnectorsCommand(this, originalPath, newPath, NULL);
     QString message;
-    if (cmdList.count() == 1) {
+    if (connectors.count() == 1) {
         message = tr("Remove connector");
     }
     else {
-        message = tr("Remove %1 connectors").arg(cmdList.count());
+        message = tr("Remove %1 connectors").arg(connectors.count());
     }
     rcc->setText(message);
     m_undoStack->waitPush(rcc, SketchWidget::PropChangeDelay);

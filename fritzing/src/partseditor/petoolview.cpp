@@ -408,3 +408,13 @@ void PEToolView::clearTexts()
         label->setText("");
     }
 }
+
+void PEToolView::removeConnector() {
+    QListWidgetItem * item = m_connectorListWidget->currentItem();
+    if (item == NULL) return;
+
+    int index = item->data(Qt::UserRole).toInt();
+    QDomElement element = m_connectorList.at(index);
+    emit removedConnector(element);
+
+}

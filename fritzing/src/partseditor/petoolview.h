@@ -67,6 +67,7 @@ public:
 
 signals:
     void switchedConnector(const QDomElement &);
+    void removedConnector(const QDomElement &);
     void lockChanged(bool);
     void terminalPointChanged(const QString & how);
     void terminalPointChanged(const QString & coord, double value);
@@ -82,7 +83,7 @@ protected slots:
     void buttonChangeTerminalPoint();
     void terminalPointEntry();
     void getSpinAmountSlot(double &);
-
+    void removeConnector();
 
 protected:
     QString convertUnitsStr(double);
