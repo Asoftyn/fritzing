@@ -882,44 +882,60 @@ void TextUtils::gWrap(QDomDocument & domDocument, const QHash<QString, QString> 
 	}
 }
 
-
-bool TextUtils::noPattern(QString &svg) {
-	if (!svg.contains("<pattern")) return false;
+bool TextUtils::fixMuch(QString &svg)
+{
+    bool result = false;
 
 	QDomDocument svgDom;
 	QString errorMsg;
 	int errorLine;
 	int errorCol;
 	if(!svgDom.setContent(svg, true, &errorMsg, &errorLine, &errorCol)) {
-		return false;
+		return result;
 	}
 
-	QDomNodeList nodeList = svgDom.elementsByTagName("pattern");
-    for (int i = 0; i < nodeList.count(); i++) {
-        QDomNode pattern = nodeList.at(i);
+    QStringList strings;
+    strings << "pattern" << "marker" << "clipPath";
+    foreach (QString string, strings) {
+        if (svg.contains("<" + string)) {
+            result |= noPatternAux(svgDom, string);
+        }
+    }
 
-        pattern.parentNode().removeChild(pattern);
-	}
+    if (svg.contains("<use")) {
+        result |= noUseAux(svgDom);
+    }
 
-    svg = removeXMLEntities(svgDom.toString());
-	return true;
+    if (svg.contains("<tspan")) {
+        result |= tspanRemoveAux(svgDom);
+    }
+
+    QDomElement root = svgDom.documentElement();
+    result |= elevateTransform(root);
+
+    if (result) {
+        svg = removeXMLEntities(svgDom.toString());
+    }
+
+    return result;
 }
 
 
-bool TextUtils::tspanRemove(QString &svg) {
-	if (!svg.contains("<tspan")) return false;
-
-	// TODO: if the <text> element has its own text node, this will be ordered first, even if the text node occurs after one or more <tspan> elements
-	// this is a very unlikely occurrence, so fixing it is very low priority.
-
-	QDomDocument svgDom;
-	QString errorMsg;
-	int errorLine;
-	int errorCol;
-	if(!svgDom.setContent(svg, true, &errorMsg, &errorLine, &errorCol)) {
-		return false;
+bool TextUtils::noPatternAux(QDomDocument & svgDom, const QString & tag) 
+{
+    bool result = false;
+	QDomNodeList nodeList = svgDom.elementsByTagName(tag);
+    for (int i = 0; i < nodeList.count(); i++) {
+        QDomNode pattern = nodeList.at(i);
+        pattern.parentNode().removeChild(pattern);
+        result = true;
 	}
+    return result;
+}
 
+
+bool TextUtils::tspanRemoveAux(QDomDocument & svgDom)
+{
 	QList<QDomElement> texts;
 	QDomNodeList textNodeList = svgDom.elementsByTagName("text");
     for (int i = 0; i < textNodeList.count(); i++) {
@@ -929,6 +945,8 @@ bool TextUtils::tspanRemove(QString &svg) {
 
 		texts.append(text);
 	}
+
+    if (texts.count() == 0) return false;
 
 	foreach (QDomElement text, texts) {
 		QDomElement g = svgDom.createElement("g");
@@ -952,20 +970,11 @@ bool TextUtils::tspanRemove(QString &svg) {
 		}
 	}
 
-	svg = removeXMLEntities(svgDom.toString());
 	return true;
 }
 
-bool TextUtils::noUse(QString &svg) {
-	if (!svg.contains("<use")) return false;
-
-	QDomDocument svgDom;
-	QString errorMsg;
-	int errorLine;
-	int errorCol;
-	if (!svgDom.setContent(svg, true, &errorMsg, &errorLine, &errorCol)) {
-		return false;
-	}
+bool TextUtils::noUseAux(QDomDocument & svgDom)
+{
 
     QDomElement root = svgDom.documentElement();
     if (root.isNull()) return false;
@@ -982,6 +991,8 @@ bool TextUtils::noUse(QString &svg) {
 
 		uses.append(use);
 	}
+
+    if (uses.count() == 0) return false;
 
 	foreach (QDomElement use, uses) {
 		QString transform = use.attribute("transform");
@@ -1005,7 +1016,6 @@ bool TextUtils::noUse(QString &svg) {
         copy.setAttribute("id", id);
 	}
 
-	svg = removeXMLEntities(svgDom.toString());
 	return true;
 }
 
@@ -1439,23 +1449,25 @@ void TextUtils::gornTreeAux(QDomElement & root) {
     }
 }
 
-void TextUtils::elevateTransform(QDomElement & root) {
+bool TextUtils::elevateTransform(QDomElement & root) {
+    bool result = false;
     if (root.hasChildNodes()) {
         QDomElement child = root.firstChildElement();
         while (!child.isNull()) {
             QDomElement next = child.nextSiblingElement();
-            elevateTransform(child);
+            result |= elevateTransform(child);
             child = next;
         }
-        return;
+        return result;
     }
 
     QString transform = root.attribute("transform");
-    if (transform.isEmpty()) return;
+    if (transform.isEmpty()) return result;
 
     root.removeAttribute("transform");
     QDomElement g = root.ownerDocument().createElement("g");
     g.setAttribute("transform", transform);
     root.parentNode().insertBefore(g, root);
     g.appendChild(root);
+    return true;
 }

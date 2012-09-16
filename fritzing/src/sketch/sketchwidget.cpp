@@ -6943,16 +6943,7 @@ QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QSizeF & 
 			QString itemSvg = itemBase->retrieveSvg(itemBase->viewLayerID(), svgHash, blackOnly, dpi);
 			if (itemSvg.isEmpty()) continue;
 
-            if (itemSvg.contains("<use")) {
-                TextUtils::noUse(itemSvg);
-            }
-
-            if (itemSvg.contains("<pattern")) {
-                TextUtils::noPattern(itemSvg);
-            }
-
-
-            // TODO: gradient, other cleaning?
+            TextUtils::fixMuch(itemSvg);
 
 			foreach (ConnectorItem * ci, itemBase->cachedConnectorItems()) {
 				if (!ci->hasRubberBandLeg()) continue;

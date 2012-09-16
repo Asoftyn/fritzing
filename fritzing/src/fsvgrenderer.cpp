@@ -145,23 +145,8 @@ QByteArray FSvgRenderer::loadAux(const QByteArray & theContents, const QString &
 		//DebugDialog::debug("inkscape " + filename);
 	}
 
-	if (cleanContents.contains("<tspan")) {
-		QString string(cleanContents);
-		TextUtils::tspanRemove(string);
-		cleanContents = string.toUtf8();
-		cleaned = true;
-	}
-
-	if (cleanContents.contains("<use")) {
-		QString string(cleanContents);
-		TextUtils::noUse(string);
-		cleanContents = string.toUtf8();
-		cleaned = true;
-	}
-
-	if (cleanContents.contains("<pattern")) {
-		QString string(cleanContents);
-		TextUtils::noPattern(string);
+    QString string(cleanContents);
+    if (TextUtils::fixMuch(string)) {
 		cleanContents = string.toUtf8();
 		cleaned = true;
 	}

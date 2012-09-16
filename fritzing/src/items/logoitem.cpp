@@ -295,7 +295,7 @@ void LogoItem::loadImage(const QString & fileName, bool addName)
 		TextUtils::cleanSodipodi(svg);
 		TextUtils::fixPixelDimensionsIn(svg);
 		TextUtils::fixViewboxOrigin(svg);
-		TextUtils::tspanRemove(svg);
+		TextUtils::fixMuch(svg);
 
 		QString errorStr;
 		int errorLine;

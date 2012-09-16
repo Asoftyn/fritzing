@@ -82,15 +82,14 @@ void SvgFlattener::unRotateChild(QDomElement & element, QMatrix transform) {
 
     if(!element.hasChildNodes()) {
 
-		double scale = qMin(qAbs(transform.m11()), qAbs(transform.m22()));
-		if (scale != 1 && transform.m21() == 0 && transform.m12() == 0) {
-			QString sw = element.attribute("stroke-width");
-			if (!sw.isEmpty()) {
-				bool ok;
-				double strokeWidth = sw.toDouble(&ok);
-				if (ok) {
-					element.setAttribute("stroke-width", QString::number(strokeWidth * scale));
-				}
+		QString sw = element.attribute("stroke-width");
+		if (!sw.isEmpty()) {
+			bool ok;
+			double strokeWidth = sw.toDouble(&ok);
+			if (ok) {
+                QLineF line(0, 0, strokeWidth, 0);
+                QLineF newLine = transform.map(line);
+				element.setAttribute("stroke-width", newLine.length());
 			}
 		}
 
@@ -147,9 +146,13 @@ void SvgFlattener::unRotateChild(QDomElement & element, QMatrix transform) {
         else if(tag == "circle"){
             float cx = element.attribute("cx").toFloat();
             float cy = element.attribute("cy").toFloat();
+            float r = element.attribute("r").toFloat();
             QPointF point = transform.map(QPointF(cx,cy));
             element.setAttribute("cx", point.x());
             element.setAttribute("cy", point.y());
+            QLineF line(0, 0, r, 0);
+            QLineF newLine = transform.map(line);
+            element.setAttribute("r", newLine.length());
         }
         else if(tag == "line") {
             float x1 = element.attribute("x1").toFloat();

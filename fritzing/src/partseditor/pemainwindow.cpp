@@ -42,8 +42,6 @@ $Date$
             hide connectors
             need to show again during bus mode
 
-	    change pin count
-
         don't allow parts editor window to open if editor is already open with a given module id
 
         on svg import detect all connector IDs
@@ -812,12 +810,15 @@ void PEMainWindow::initSvgTree(ItemBase * itemBase, QDomDocument & domDocument)
 
     ZList.insert(itemBase->viewIdentifier(), 5000);
 
-    QDomElement root = domDocument.documentElement();
-    TextUtils::elevateTransform(root);
-    TextUtils::gornTree(domDocument);   
 
     FSvgRenderer renderer;
-    renderer.loadSvg(domDocument.toByteArray(), "", false);
+    QByteArray rendered = renderer.loadSvg(domDocument.toByteArray(), "", false);
+    if (!domDocument.setContent(rendered, true, &errorStr, &errorLine, &errorColumn)) {
+		DebugDialog::debug(QString("unable to parse svg (2): %1 %2 %3").arg(errorStr).arg(errorLine).arg(errorColumn));
+        return;
+	}
+
+    TextUtils::gornTree(domDocument);   
 
     QList<QDomElement> traverse;
     traverse << domDocument.documentElement();

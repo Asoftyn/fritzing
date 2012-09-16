@@ -82,9 +82,6 @@ public:
 	static QString svgNSOnly(QString svgContent);
 	static QString killXMLNS(QString svgContent);
 	static void gWrap(QDomDocument & domDocument, const QHash<QString, QString> & attributes);
-	static bool tspanRemove(QString &svg);
-	static bool noUse(QString &svg);
-	static bool noPattern(QString &svg);
 	static void slamStrokeAndFill(QDomElement &, const QString & stroke, const QString & strokeWidth, const QString & fill);
 	static QString slamStrokeAndFill(const QString & svg, const QString & stroke, const QString & strokeWidth, const QString & fill);
 	static QString incrementTemplate(const QString & filename, int pins, double unitIncrement, MultiplyPinFunction, CopyPinFunction, void * userData);
@@ -113,7 +110,8 @@ public:
 	static QSizeF parseForWidthAndHeight(QXmlStreamReader &);
 	static QSizeF parseForWidthAndHeight(const QString & svg);
     static void gornTree(QDomDocument &);
-    static void elevateTransform(QDomElement &);
+    static bool elevateTransform(QDomElement &);
+    static bool fixMuch(QString &svg);
 
 public:
 	static const QRegExp FindWhitespace;
@@ -136,6 +134,9 @@ protected:
 	static void initPowerPrefixes();
 	static QDomElement copyText(QDomDocument & svgDom, QDomElement & parent, QDomElement & text, const QString & defaultX, const QString & defaultY, bool copyAttributes);
     static void gornTreeAux(QDomElement &);
+    static bool noPatternAux(QDomDocument & svgDom, const QString & tag);
+    static bool noUseAux(QDomDocument & svgDom);
+    static bool tspanRemoveAux(QDomDocument & svgDom);
 };
 
 #endif
