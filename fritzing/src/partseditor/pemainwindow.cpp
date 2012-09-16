@@ -43,8 +43,6 @@ $Date$
             need to show again during bus mode
 
 	    change pin count
-            when the count is smaller give user a choice to truncate or delete individually
-            add individual delete button to petoolview
 
         don't allow parts editor window to open if editor is already open with a given module id
 
@@ -81,10 +79,6 @@ $Date$
             connect bus by drawing a wire
             can this be modal? i.e. turn bus mode on and off
 
-        bendable legs
-
-        set flippable
-
         zoom slider is not correctly synchronized with actual zoom level
 
         after "save" need some kind of confirmation
@@ -107,13 +101,17 @@ $Date$
 
         only allow appropriate file to be loaded for appropriate view (.mod, .fp, etc.)
 
-        sort connector list alphabetically or numerically
-
         if pcb image has no layers complain directly
 
     ////////////////////////////// second release /////////////////////////////////
 
-	    first time help?
+        sort connector list alphabetically or numerically?
+
+        bendable legs
+
+        set flippable
+        
+        first time help?
             dialog box always comes up, click to say not next time
 
         connector duplicate op
@@ -220,9 +218,9 @@ bool byID(QDomElement & c1, QDomElement & c2)
     int c1id = -1;
     int c2id = -1;
 	int ix = IntegerFinder.indexIn(c1.attribute("id"));
-    if (ix > 0) c1id = IntegerFinder.cap(0).toInt();
+    if (ix >= 0) c1id = IntegerFinder.cap(0).toInt();
     ix = IntegerFinder.indexIn(c2.attribute("id"));
-    if (ix > 0) c2id = IntegerFinder.cap(0).toInt();
+    if (ix >= 0) c2id = IntegerFinder.cap(0).toInt();
 
     if (c1id == 0 || c2id == 0) GotZeroConnector = true;
 	
@@ -1852,7 +1850,7 @@ void PEMainWindow::removedConnectorsAux(QList<QDomElement> & connectors)
 
     QString newPath = saveFzp();
 
-    RemoveConnectorsCommand * rcc = new RemoveConnectorsCommand(this, originalPath, newPath, NULL);
+    ChangeFzpCommand * cfc = new ChangeFzpCommand(this, originalPath, newPath, NULL);
     QString message;
     if (connectors.count() == 1) {
         message = tr("Remove connector");
@@ -1860,8 +1858,8 @@ void PEMainWindow::removedConnectorsAux(QList<QDomElement> & connectors)
     else {
         message = tr("Remove %1 connectors").arg(connectors.count());
     }
-    rcc->setText(message);
-    m_undoStack->waitPush(rcc, SketchWidget::PropChangeDelay);
+    cfc->setText(message);
+    m_undoStack->waitPush(cfc, SketchWidget::PropChangeDelay);
 }
 
 void PEMainWindow::restoreFzp(const QString & fzpPath) 
@@ -1945,6 +1943,40 @@ void PEMainWindow::connectorCountChanged(int newCount) {
         return;
     }
 
-    // add connectors here
+    // add connectors 
+    int id = 0;
+    foreach (QDomElement connector, connectorList) {
+    	int ix = IntegerFinder.indexIn(connector.attribute("id"));
+        if (ix >= 0) {
+            int candidate = IntegerFinder.cap(0).toInt();
+            if (candidate > id) id = candidate;
+        }
+    }
 
+    QString originalPath = saveFzp();
+
+    for (int i = connectorList.count(); i < newCount; i++) {
+        id++;
+        QDomElement element = m_fzpDocument.createElement("connector");
+        connectors.appendChild(element);
+        element.setAttribute("type", "male");
+        element.setAttribute("name", QString("pin %1").arg(id));
+        element.setAttribute("id", QString("connector%1").arg(id));
+    }
+
+    QString newPath = saveFzp();
+
+    ChangeFzpCommand * cfc = new ChangeFzpCommand(this, originalPath, newPath, NULL);
+    QString message;
+    if (newCount - connectorList.count() == 1) {
+        message = tr("Add connector");
+    }
+    else {
+        message = tr("Add %1 connectors").arg(newCount - connectorList.count());
+    }
+    cfc->setText(message);
+    m_undoStack->waitPush(cfc, SketchWidget::PropChangeDelay);
 }
+
+
+

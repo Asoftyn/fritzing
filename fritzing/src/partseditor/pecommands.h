@@ -83,10 +83,10 @@ protected:
 
 /////////////////////////////////////////////
 
-class RemoveConnectorsCommand : public PEBaseCommand
+class ChangeFzpCommand : public PEBaseCommand
 {
 public:
-	RemoveConnectorsCommand(class PEMainWindow *, const QString & oldFzpFile, const QString & newFzpFile, QUndoCommand *parent);
+	ChangeFzpCommand(class PEMainWindow *, const QString & oldFzpFile, const QString & newFzpFile, QUndoCommand *parent);
 	void undo();
 	void redo();
 

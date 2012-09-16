@@ -177,25 +177,25 @@ QString ChangeConnectorMetadataCommand::getParamString() const {
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-RemoveConnectorsCommand::RemoveConnectorsCommand(PEMainWindow * peMainWindow, const QString & oldFzpFile, const QString & newFzpFile, QUndoCommand *parent)
+ChangeFzpCommand::ChangeFzpCommand(PEMainWindow * peMainWindow, const QString & oldFzpFile, const QString & newFzpFile, QUndoCommand *parent)
     : PEBaseCommand(peMainWindow, parent)
 {
 	m_oldFzpFile = oldFzpFile;
     m_newFzpFile = newFzpFile;
 }
 
-void RemoveConnectorsCommand::undo()
+void ChangeFzpCommand::undo()
 {
     m_peMainWindow->restoreFzp(m_oldFzpFile);
 }
 
-void RemoveConnectorsCommand::redo()
+void ChangeFzpCommand::redo()
 {
     m_peMainWindow->restoreFzp(m_newFzpFile);
 }
 
-QString RemoveConnectorsCommand::getParamString() const {
-	return "RemoveConnectorsCommand " + 
+QString ChangeFzpCommand::getParamString() const {
+	return "ChangeFzpCommand " + 
         QString(" old:%1 new:%2")
             .arg(m_oldFzpFile)
             .arg(m_newFzpFile)
