@@ -58,6 +58,10 @@ PEGraphicsItem::PEGraphicsItem(double x, double y, double w, double h) : QGraphi
     setBrush(QBrush(QColor(0, 0, 255)));
 }
 
+PEGraphicsItem::~PEGraphicsItem() {
+    m_element.clear();
+}
+
 void PEGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent *) {
 	setHighlighted(true);
 }

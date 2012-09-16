@@ -31,17 +31,12 @@ $Date$
 
 	    clean up menus
 
-        if you select a pin with no connector element, hide the cross-hair on the pin that was last selected
-
         crash when swapping part during save
         
         crashed when saving the description
   
         show in OS button
             test on mac, linux
-
-	    first time help?
-            dialog box always comes up, click to say not next time
 
 	    disable dragging wires    
             hide connectors
@@ -92,8 +87,6 @@ $Date$
 
         zoom slider is not correctly synchronized with actual zoom level
 
-        need "are you sure" message when you quit without saving
-
         after "save" need some kind of confirmation
             change to window title is enough?
 
@@ -120,10 +113,15 @@ $Date$
 
     ////////////////////////////// second release /////////////////////////////////
 
+	    first time help?
+            dialog box always comes up, click to say not next time
+
         connector duplicate op
 
         add layers:  put everything in silkscreen, then give copper1, copper0 checkbox
             what about breadboardbreadboard or other odd layers?
+            if you click something as a connector, automatically move it into copper
+                how to distinguish between both and top--default to both, let user set "pad"
 
         swap connector metadata op
 
@@ -265,19 +263,14 @@ PEMainWindow::PEMainWindow(ReferenceModel * referenceModel, QWidget * parent)
 PEMainWindow::~PEMainWindow()
 {
     // PEGraphicsItems are still holding QDomElement so delete them before m_fzpDocument is deleted
-    QList<SketchWidget *> sketchWidgets;
-    sketchWidgets << m_breadboardGraphicsView << m_schematicGraphicsView << m_pcbGraphicsView;
-    foreach (SketchWidget * sketchWidget, sketchWidgets) {
-        foreach (QGraphicsItem * item, sketchWidget->scene()->items()) {
-            PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
-            if (pegi) delete pegi;
-        }
-    }   
+    killPegi();
 }
 
 void PEMainWindow::closeEvent(QCloseEvent *event) {
-    Q_UNUSED(event);
-
+    if (!beforeClosing(true)) {
+        event->ignore();
+        return;
+    }
 
 	QSettings settings;
 	settings.setValue(m_settingsPrefix + "state",saveState());
@@ -290,8 +283,6 @@ void PEMainWindow::initLockedFiles(bool) {
 void PEMainWindow::initSketchWidgets()
 {
     MainWindow::initSketchWidgets();
-
-
 
 	m_iconGraphicsView = new IconSketchWidget(ViewLayer::IconView, this);
 	initSketchWidget(m_iconGraphicsView);
@@ -553,13 +544,7 @@ void PEMainWindow::initZoom() {
 
 void PEMainWindow::setTitle() {
     QString title = tr("Friting (New) Parts Editor");
-    QString partTitle = "";
-    if (m_items.count() > 0) {
-        partTitle = m_items.values().at(0)->title();
-        if (!partTitle.isEmpty()) {
-            title.append(": ");
-        }
-    }
+    QString partTitle = getPartTitle();
 
     QString viewName;
     if (m_currentGraphicsView) viewName = m_currentGraphicsView->viewName();
@@ -567,7 +552,7 @@ void PEMainWindow::setTitle() {
     else if (m_tabWidget->currentIndex() == MetadataViewIndex) viewName = tr("Metadata View");
     else if (m_tabWidget->currentIndex() == ConnectorsViewIndex) viewName = tr("Connectors View");
 
-	setWindowTitle(QString("%1%2 [%3]%4").arg(title).arg(partTitle).arg(viewName).arg(QtFunkyPlaceholder));
+	setWindowTitle(QString("%1: %2 [%3]%4").arg(title).arg(partTitle).arg(viewName).arg(QtFunkyPlaceholder));
 }
 
 void PEMainWindow::createViewMenuActions() {
@@ -1871,10 +1856,78 @@ void PEMainWindow::removeConnectors(QList<ConnectorMetadata *> & cmdList)
 
     }
 
-    initConnectors();
+    killPegi();
+    reload();
 }
 
 void PEMainWindow::addConnectors(QList<ConnectorMetadata *> & cmdList) 
 {
+    QDomElement root = m_fzpDocument.documentElement();
+    QDomElement connectors = root.firstChildElement("connectors");
+    if (connectors.isNull()) {
+        // we are in big trouble: tell the user
+        return;
+    }
+
+    foreach (ConnectorMetadata * cmd, cmdList) {
+        QDomElement newConnector = m_fzpDocument.createElement("connector");
+
+        int ix = 0;
+        bool gotOne = false;
+        QDomElement connector = connectors.firstChildElement("connector");
+        while (!connector.isNull()) {
+            if (ix++ == cmd->index) {
+                // insert before
+                connectors.insertBefore(newConnector, connector);
+                gotOne = true;
+                break;
+            }
+
+            connector = connector.nextSiblingElement("connector");
+        }
+        if (!gotOne) {
+            // goes at the end
+            connectors.appendChild(newConnector);
+        }
+        changeConnectorElement(newConnector, *cmd);
+    }
+
+    killPegi();
+    reload();
 }
 
+void PEMainWindow::setBeforeClosingText(const QString & filename, QMessageBox & messageBox)
+{
+    Q_UNUSED(filename);
+
+    QString partTitle = getPartTitle();
+    messageBox.setWindowTitle(tr("Save \"%1\"").arg(partTitle));
+    messageBox.setText(tr("Do you want to save the changes you made in the part \"%1\"?").arg(partTitle));
+    messageBox.setInformativeText(tr("Your changes will be lost if you don't save them."));
+}
+
+QString PEMainWindow::getPartTitle() {
+    QString partTitle = tr("untitled part");
+    QDomElement root = m_fzpDocument.documentElement();
+    QDomElement title = root.firstChildElement("title");
+    QString candidate = title.text();
+    if (!candidate.isEmpty()) return candidate;
+
+    if (m_items.count() > 0) {
+        candidate = m_items.values().at(0)->title();
+        if (!candidate.isEmpty()) return candidate;
+    }
+
+    return partTitle;
+}
+
+void PEMainWindow::killPegi() {
+    QList<SketchWidget *> sketchWidgets;
+    sketchWidgets << m_breadboardGraphicsView << m_schematicGraphicsView << m_pcbGraphicsView << m_iconGraphicsView;
+    foreach (SketchWidget * sketchWidget, sketchWidgets) {
+        foreach (QGraphicsItem * item, sketchWidget->scene()->items()) {
+            PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
+            if (pegi) delete pegi;
+        }
+    }   
+}

@@ -38,6 +38,7 @@ class PEGraphicsItem : public QObject, public QGraphicsRectItem
     Q_OBJECT
 public:
 	PEGraphicsItem(double x, double y, double width, double height);
+	~PEGraphicsItem();
 
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *);
 	void hoverLeaveEvent(QGraphicsSceneHoverEvent *);

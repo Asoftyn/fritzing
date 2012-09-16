@@ -207,12 +207,9 @@ bool FritzingWindow::beforeClosing(bool showCancel) {
 
 QMessageBox::StandardButton FritzingWindow::beforeClosingMessage(const QString & filename, bool showCancel) 
 {
-	QString basename = QFileInfo(filename).baseName();
 
     QMessageBox messageBox(this);
-    messageBox.setWindowTitle(tr("Save \"%1\"").arg(basename));
-    messageBox.setText(tr("Do you want to save the changes you made in the document \"%1\"?").arg(basename));
-    messageBox.setInformativeText(tr("Your changes will be lost if you don't save them."));
+    setBeforeClosingText(filename, messageBox);
     QMessageBox::StandardButtons buttons = QMessageBox::Save | QMessageBox::Discard;
     if (showCancel) {
         buttons |= QMessageBox::Cancel;
@@ -234,6 +231,14 @@ QMessageBox::StandardButton FritzingWindow::beforeClosingMessage(const QString &
     messageBox.button(QMessageBox::Discard)->setShortcut(tr("Ctrl+D"));
 
 	return (QMessageBox::StandardButton) messageBox.exec();
+}
+
+void FritzingWindow::setBeforeClosingText(const QString & filename, QMessageBox & messageBox)
+{
+	QString basename = QFileInfo(filename).baseName();
+    messageBox.setWindowTitle(tr("Save \"%1\"").arg(basename));
+    messageBox.setText(tr("Do you want to save the changes you made in the document \"%1\"?").arg(basename));
+    messageBox.setInformativeText(tr("Your changes will be lost if you don't save them."));
 }
 
 void FritzingWindow::setReadOnly(bool readOnly) {

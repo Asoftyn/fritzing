@@ -127,6 +127,9 @@ protected:
     bool canSave();
     bool saveAs(bool overWrite);
     void lockChangedAux(bool state, const QList<PEGraphicsItem *> & pegiList); 
+    void setBeforeClosingText(const QString & filename, QMessageBox & messageBox);
+    QString getPartTitle();
+    void killPegi();
 
 protected slots:
     void initZoom();
