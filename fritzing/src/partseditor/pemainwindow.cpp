@@ -100,9 +100,13 @@ $Date$
 
     ////////////////////////////// second release /////////////////////////////////
 
+        dump old parts editor resources
+
         sort connector list alphabetically or numerically?
 
         bendable legs
+
+        hidden views (i.e. view-specific parts)
 
         set flippable
         
@@ -288,10 +292,12 @@ void PEMainWindow::initSketchWidgets()
     m_docs.insert(m_pcbGraphicsView->viewIdentifier(), &m_pcbDocument);
     m_docs.insert(m_iconGraphicsView->viewIdentifier(), &m_iconDocument);
 
-    m_breadboardGraphicsView->setAcceptWheelEvents(false);
-    m_schematicGraphicsView->setAcceptWheelEvents(false);
-    m_pcbGraphicsView->setAcceptWheelEvents(false);
-    m_iconGraphicsView->setAcceptWheelEvents(false);
+    m_sketchWidgets << m_breadboardGraphicsView << m_schematicGraphicsView << m_pcbGraphicsView << m_iconGraphicsView;
+    foreach (SketchWidget * sketchWidget, m_sketchWidgets) {
+        sketchWidget->setAcceptWheelEvents(false);
+        m_svgChangeCount.insert(sketchWidget->viewIdentifier(), 0);
+        m_everZoomed.insert(sketchWidget->viewIdentifier(), true);
+    }
 
     m_metadataView = new PEMetadataView(this);
 	SketchAreaWidget * sketchAreaWidget = new SketchAreaWidget(m_metadataView, this);
@@ -306,11 +312,6 @@ void PEMainWindow::initSketchWidgets()
     connect(m_connectorsView, SIGNAL(connectorMetadataChanged(ConnectorMetadata *)), this, SLOT(connectorMetadataChanged(ConnectorMetadata *)), Qt::DirectConnection);
     connect(m_connectorsView, SIGNAL(removedConnectors(QList<ConnectorMetadata *> &)), this, SLOT(removedConnectors(QList<ConnectorMetadata *> &)), Qt::DirectConnection);
     connect(m_connectorsView, SIGNAL(connectorCountChanged(int)), this, SLOT(connectorCountChanged(int)));
-
-    m_svgChangeCount.insert(m_breadboardGraphicsView->viewIdentifier(), 0);
-    m_svgChangeCount.insert(m_schematicGraphicsView->viewIdentifier(), 0);
-    m_svgChangeCount.insert(m_pcbGraphicsView->viewIdentifier(), 0);
-    m_svgChangeCount.insert(m_iconGraphicsView->viewIdentifier(), 0);
 }
 
 void PEMainWindow::initDock()
@@ -467,9 +468,7 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
         TextUtils::replaceChildText(m_fzpDocument, prop, family);
     }
 
-    QList<SketchWidget *> sketchWidgets;
-    sketchWidgets << m_breadboardGraphicsView << m_schematicGraphicsView << m_pcbGraphicsView << m_iconGraphicsView;
-    foreach (SketchWidget * sketchWidget, sketchWidgets) {
+    foreach (SketchWidget * sketchWidget, m_sketchWidgets) {
         ItemBase * itemBase = originalModelPart->viewItem(sketchWidget->viewIdentifier());
         if (itemBase == NULL) continue;
         if (!itemBase->hasCustomSVG()) continue;
@@ -523,10 +522,12 @@ void PEMainWindow::initHelper()
 }
 
 void PEMainWindow::initZoom() {
-    m_breadboardGraphicsView->fitInWindow();
-    m_schematicGraphicsView->fitInWindow();
-    m_pcbGraphicsView->fitInWindow();
-    m_iconGraphicsView->fitInWindow();
+    if (m_currentGraphicsView) {
+        if (!m_everZoomed.value(m_currentGraphicsView->viewIdentifier())) {
+            m_everZoomed.insert(m_currentGraphicsView->viewIdentifier(), true);
+            m_currentGraphicsView->fitInWindow();
+        }
+    }
 }
 
 void PEMainWindow::setTitle() {
@@ -1218,12 +1219,14 @@ void PEMainWindow::reload() {
         item->setMoveLock(true);
     }
 
-    m_breadboardGraphicsView->hideConnectors(true);
-    m_schematicGraphicsView->hideConnectors(true);
-    m_pcbGraphicsView->hideConnectors(true);
+    foreach (SketchWidget * sketchWidget, m_sketchWidgets) {
+        sketchWidget->hideConnectors(true);
+        m_everZoomed.insert(sketchWidget->viewIdentifier(), false);
+    }
 
     switchedConnector(m_peToolView->currentConnector());
 
+    // processeventblocker might be enough
     QTimer::singleShot(10, this, SLOT(initZoom()));
 }
 
@@ -1441,9 +1444,7 @@ bool PEMainWindow::saveAs(bool overWrite)
 
     QHash<ViewLayer::ViewIdentifier, QString> svgPaths;
 
-    QList<SketchWidget *> sketchWidgets;
-    sketchWidgets << m_breadboardGraphicsView << m_schematicGraphicsView << m_pcbGraphicsView << m_iconGraphicsView;
-    foreach (SketchWidget * sketchWidget, sketchWidgets) {
+    foreach (SketchWidget * sketchWidget, m_sketchWidgets) {
         QDomElement view = views.firstChildElement(ViewLayer::viewIdentifierXmlName(sketchWidget->viewIdentifier()));
         QDomElement layers = view.firstChildElement("layers");
 
@@ -1484,7 +1485,7 @@ bool PEMainWindow::saveAs(bool overWrite)
 
 
     // restore the set of working svg files
-    foreach (SketchWidget * sketchWidget, sketchWidgets) {
+    foreach (SketchWidget * sketchWidget, m_sketchWidgets) {
         QString svgPath = svgPaths.value(sketchWidget->viewIdentifier());
         if (svgPath.isEmpty()) continue;
 
@@ -1809,7 +1810,14 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
     m_peToolView->setEnabled(enabled);
     if (!enabled) m_peToolView->clearTexts();
 
-    if (m_currentGraphicsView == NULL) setTitle();
+    if (m_currentGraphicsView == NULL) {
+        // update title when switching to connector and metadata view
+        setTitle();
+    }
+    else {
+        // processeventblocker might be enough
+        QTimer::singleShot(10, this, SLOT(initZoom()));
+    }
 }
 
 void PEMainWindow::backupSketch()
@@ -1895,9 +1903,7 @@ QString PEMainWindow::getPartTitle() {
 }
 
 void PEMainWindow::killPegi() {
-    QList<SketchWidget *> sketchWidgets;
-    sketchWidgets << m_breadboardGraphicsView << m_schematicGraphicsView << m_pcbGraphicsView << m_iconGraphicsView;
-    foreach (SketchWidget * sketchWidget, sketchWidgets) {
+    foreach (SketchWidget * sketchWidget, m_sketchWidgets) {
         foreach (QGraphicsItem * item, sketchWidget->scene()->items()) {
             PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
             if (pegi) delete pegi;

@@ -183,14 +183,6 @@
         <file>resources/images/itemselection/crosshairHandlerActive.png</file>
         <file>resources/images/itemselection/crosshairHandlerHover.png</file>
         <file>resources/images/itemselection/crosshairHandlerNormal.png</file>
-        <file>resources/images/itemselection/selectionRingBottom.png</file>
-        <file>resources/images/itemselection/selectionRingBottomLeft.png</file>
-        <file>resources/images/itemselection/selectionRingBottomRight.png</file>
-        <file>resources/images/itemselection/selectionRingLeft.png</file>
-        <file>resources/images/itemselection/selectionRingRight.png</file>
-        <file>resources/images/itemselection/selectionRingTop.png</file>
-        <file>resources/images/itemselection/selectionRingTopLeft.png</file>
-        <file>resources/images/itemselection/selectionRingTopRight.png</file>
 	
         <file>resources/parts/core/wire.fzp</file>
         <file>resources/parts/core/cmRuler.fzp</file>

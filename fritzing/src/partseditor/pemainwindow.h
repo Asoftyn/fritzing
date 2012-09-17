@@ -169,6 +169,8 @@ protected:
     QHash<ViewLayer::ViewIdentifier, ItemBase *> m_items;
     QHash<ViewLayer::ViewIdentifier, QDomDocument *> m_docs;
     QHash<ViewLayer::ViewIdentifier, int> m_svgChangeCount;
+    QHash<ViewLayer::ViewIdentifier, bool> m_everZoomed;
+    QList<SketchWidget *> m_sketchWidgets;
     QString m_userPartsFolderPath;
     QString m_userPartsFolderSvgPath;
     bool m_canSave;
