@@ -164,6 +164,7 @@ protected:
     class PEMetadataView * m_metadataView;
     class PEConnectorsView * m_connectorsView;
     class PEToolView * m_peToolView;
+    class PESvgView * m_peSvgView;
     QString m_guid;
     int m_fileIndex;
     QHash<ViewLayer::ViewIdentifier, ItemBase *> m_items;

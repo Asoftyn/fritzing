@@ -43,16 +43,7 @@ $Date$
 #include "../items/itembase.h"
 #include "../items/wire.h"
 #include "../connectors/connectoritem.h"
-#include "../connectors/connector.h"
 #include "../referencemodel/referencemodel.h"
-
-struct ConnectorMetadata {
-    Connector::ConnectorType connectorType;
-    QString connectorName;
-    QString connectorDescription;
-    QString connectorID;
-    int index;
-};
 
 class PEConnectorsView : public QScrollArea
 {
@@ -61,14 +52,11 @@ public:
 	PEConnectorsView(QWidget * parent = 0);
 	~PEConnectorsView();
 
-    void initConnectors(QList<QDomElement> & connectorList, bool gotZeroConnector);
-
-public:
-    static QWidget * makeConnectorForm(const QDomElement & connector, bool gotZeroConnector, int index, QObject * slotHolder, bool alternating);
+    void initConnectors(QList<QDomElement> & connectorList);
 
 signals:
-    void connectorMetadataChanged(ConnectorMetadata *);
-    void removedConnectors(QList<ConnectorMetadata *> &);
+    void connectorMetadataChanged(struct ConnectorMetadata *);
+    void removedConnectors(QList<struct ConnectorMetadata *> &);
     void connectorCountChanged(int);
 
 protected slots:

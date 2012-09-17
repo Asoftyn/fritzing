@@ -44,10 +44,9 @@ TODO:
 #include <QMutexLocker>
 
 #include "peconnectorsview.h"
+#include "peutils.h"
 #include "hashpopulatewidget.h"
 #include "../debugdialog.h"
-
-const static int Spacing = 15;
 
 //////////////////////////////////////
 
@@ -69,7 +68,7 @@ PEConnectorsView::~PEConnectorsView() {
 
 }
 
-void PEConnectorsView::initConnectors(QList<QDomElement> & connectorList, bool gotZeroConnector) 
+void PEConnectorsView::initConnectors(QList<QDomElement> & connectorList) 
 {
     if (m_mainFrame) {
         this->setWidget(NULL);
@@ -106,7 +105,7 @@ void PEConnectorsView::initConnectors(QList<QDomElement> & connectorList, bool g
 
     int ix = 0;
     foreach (QDomElement connector, connectorList) {
-        QWidget * widget = makeConnectorForm(connector, gotZeroConnector, ix++, this, true);
+        QWidget * widget = PEUtils::makeConnectorForm(connector, ix++, this, true);
         mainLayout->addWidget(widget);
     }
 
@@ -141,111 +140,6 @@ void PEConnectorsView::connectorCountEntry() {
     }
 
     m_mutex.unlock();
-}
-
-QWidget * PEConnectorsView::makeConnectorForm(const QDomElement & connector, bool gotZeroConnector, int index, QObject * slotHolder, bool alternating) {
-    QFrame * frame = new QFrame();
-    if (alternating) {
-        frame->setObjectName(index % 2 == 0 ? "NewPartsEditorConnector0Frame" : "NewPartsEditorConnector1Frame");
-    }
-    else {
-        frame->setObjectName("NewPartsEditorConnectorFrame");
-    }
-    QVBoxLayout * mainLayout = new QVBoxLayout();
-    mainLayout->setMargin(0);
-	mainLayout->setContentsMargins(0, 0, 0, 0);
-	mainLayout->setSpacing(0);
-
-    QFrame * nameFrame = new QFrame();
-    QHBoxLayout * nameLayout = new QHBoxLayout();
-
-    QLabel * justLabel = new QLabel(tr("<b>id:</b>"));
-	justLabel->setObjectName("NewPartsEditorLabel");
-    nameLayout->addWidget(justLabel);
-
-    justLabel = new QLabel(connector.attribute("id"));
-	justLabel->setObjectName("NewPartsEditorLabel");
-    nameLayout->addWidget(justLabel);
-    nameLayout->addSpacing(Spacing);
-
-    justLabel = new QLabel(tr("<b>Name:</b>"));
-	justLabel->setObjectName("NewPartsEditorLabel");
-    nameLayout->addWidget(justLabel);
-
-    QLineEdit * nameEdit = new QLineEdit();
-    nameEdit->setText(connector.attribute("name"));
-	connect(nameEdit, SIGNAL(editingFinished()), slotHolder, SLOT(nameEntry()));
-	nameEdit->setObjectName("NewPartsEditorLineEdit");
-    nameEdit->setStatusTip(tr("Set the connectors's title"));
-    nameEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-    nameEdit->setProperty("index", index);
-    nameEdit->setProperty("type", "name");
-    nameEdit->setProperty("id", connector.attribute("id"));
-    nameLayout->addWidget(nameEdit);
-    nameLayout->addSpacing(Spacing);
-
-    Connector::ConnectorType ctype = Connector::Male;
-    if (connector.attribute("type").compare("female", Qt::CaseInsensitive) == 0) ctype = Connector::Female;
-    else if (connector.attribute("type").compare("pad", Qt::CaseInsensitive) == 0) ctype = Connector::Pad;
-
-    QRadioButton * radioButton = new QRadioButton(MaleSymbolString); 
-	connect(radioButton, SIGNAL(clicked()), slotHolder, SLOT(typeEntry()));
-    radioButton->setObjectName("NewPartsEditorRadio");
-    if (ctype == Connector::Male) radioButton->setChecked(true); 
-    radioButton->setProperty("value", Connector::Male);
-    radioButton->setProperty("index", index);
-    radioButton->setProperty("type", "radio");
-    nameLayout->addWidget(radioButton);
-
-    radioButton = new QRadioButton(FemaleSymbolString); 
-	connect(radioButton, SIGNAL(clicked()), slotHolder, SLOT(typeEntry()));
-    radioButton->setObjectName("NewPartsEditorRadio");
-    if (ctype == Connector::Female) radioButton->setChecked(true); 
-    radioButton->setProperty("value", Connector::Female);
-    radioButton->setProperty("index", index);
-    radioButton->setProperty("type", "radio");
-    nameLayout->addWidget(radioButton);
-
-    radioButton = new QRadioButton(tr("SMD-pad")); 
-	connect(radioButton, SIGNAL(clicked()), slotHolder, SLOT(typeEntry()));
-    radioButton->setObjectName("NewPartsEditorRadio");
-    if (ctype == Connector::Pad) radioButton->setChecked(true); 
-    radioButton->setProperty("value", Connector::Pad);
-    nameLayout->addWidget(radioButton);
-    radioButton->setProperty("index", index);
-    radioButton->setProperty("type", "radio");
-    nameLayout->addSpacing(Spacing);
-
-    HashRemoveButton * hashRemoveButton = new HashRemoveButton(NULL, NULL, NULL);
-    hashRemoveButton->setProperty("index", index);
-	connect(hashRemoveButton, SIGNAL(clicked(HashRemoveButton *)), slotHolder, SLOT(removeConnector()));
-    nameLayout->addWidget(hashRemoveButton);
-
-    nameFrame->setLayout(nameLayout);
-    mainLayout->addWidget(nameFrame);
-
-    QFrame * descriptionFrame = new QFrame();
-    QHBoxLayout * descriptionLayout = new QHBoxLayout();
-
-    justLabel = new QLabel(tr("<b>Description:</b>"));
-	justLabel->setObjectName("NewPartsEditorLabel");
-    descriptionLayout->addWidget(justLabel);
-
-    QLineEdit * descriptionEdit = new QLineEdit();
-    QDomElement description = connector.firstChildElement("description");
-    descriptionEdit->setText(description.text());
-	connect(descriptionEdit, SIGNAL(editingFinished()), slotHolder, SLOT(descriptionEntry()));
-	descriptionEdit->setObjectName("NewPartsEditorLineEdit");
-    descriptionEdit->setStatusTip(tr("Set the connectors's description"));
-    descriptionEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-    descriptionEdit->setProperty("index", index);
-    descriptionEdit->setProperty("type", "description");
-    descriptionLayout->addWidget(descriptionEdit);
-
-    descriptionFrame->setLayout(descriptionLayout);
-    mainLayout->addWidget(descriptionFrame);
-    frame->setLayout(mainLayout);
-    return frame;
 }
 
 void PEConnectorsView::removeConnector() {

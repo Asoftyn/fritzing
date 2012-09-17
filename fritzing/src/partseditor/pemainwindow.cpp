@@ -62,8 +62,7 @@ $Date$
             connect bus by drawing a wire
             can this be modal? i.e. turn bus mode on and off
 
-        after "save" need some kind of confirmation
-            change to window title is enough?
+        after "save" change to window title is enough?
 
         deal with customized svgs
             chip label
@@ -93,11 +92,19 @@ $Date$
 
         connector locations are not updating properly when a part in the sketch is edited
 
-        mouse wheel seems to be missing obvious targets--is changing the z-order the problem
+        mouse wheel shouldn't circle
+
+        leaves should be on top of svg tree
+
+        allow blank new part?
+
+        split feedback about current svg object into separate palette
+
+        move lock to top of group
 
     ////////////////////////////// second release /////////////////////////////////
 
-        show in OS button onlx shows folder and not file in linux
+        show in OS button only shows folder and not file in linux
 
         smd vs. tht
             after it's all over remove copper0 if part is all smd
@@ -188,6 +195,7 @@ $Date$
 #include "peconnectorsview.h"
 #include "pecommands.h"
 #include "petoolview.h"
+#include "pesvgview.h"
 #include "pegraphicsitem.h"
 #include "kicadmoduledialog.h"
 #include "../debugdialog.h"
@@ -268,6 +276,7 @@ PEMainWindow::PEMainWindow(ReferenceModel * referenceModel, QWidget * parent)
 	m_userPartsFolderPath = FolderUtils::getUserDataStorePath("parts")+"/user/";
 	m_userPartsFolderSvgPath = FolderUtils::getUserDataStorePath("parts")+"/svg/user/";
     m_peToolView = NULL;
+    m_peSvgView = NULL;
     m_connectorsView = NULL;
 }
 
@@ -340,6 +349,10 @@ void PEMainWindow::moreInitDock()
     static int MinHeight = 75;
     static int DefaultHeight = 100;
 
+    m_peSvgView = new PESvgView();
+    makeDock(tr("SVG"), m_peSvgView, DockMinWidth, DockMinHeight);
+    m_peSvgView->setMinimumSize(DockMinWidth, DockMinHeight);
+
     m_peToolView = new PEToolView();
     connect(m_peToolView, SIGNAL(getSpinAmount(double &)), this, SLOT(getSpinAmount(double &)), Qt::DirectConnection);
     connect(m_peToolView, SIGNAL(terminalPointChanged(const QString &)), this, SLOT(terminalPointChanged(const QString &)));
@@ -347,7 +360,7 @@ void PEMainWindow::moreInitDock()
     connect(m_peToolView, SIGNAL(switchedConnector(const QDomElement &)), this, SLOT(switchedConnector(const QDomElement &)));
     connect(m_peToolView, SIGNAL(removedConnector(const QDomElement &)), this, SLOT(removedConnector(const QDomElement &)));
     connect(m_peToolView, SIGNAL(lockChanged(bool)), this, SLOT(lockChanged(bool)));
-    makeDock(tr("Tools"), m_peToolView, DockMinWidth, DockMinHeight);
+    makeDock(tr("Connectors"), m_peToolView, DockMinWidth, DockMinHeight);
     m_peToolView->setMinimumSize(DockMinWidth, DockMinHeight);
 
 	QDockWidget * dockWidget = makeDock(BinManager::Title, m_binManager, MinHeight, DefaultHeight);
@@ -887,6 +900,9 @@ void PEMainWindow::highlightSlot(PEGraphicsItem * pegi) {
     if (m_peToolView) {
         m_peToolView->highlightElement(pegi);
     }
+    if (m_peSvgView) {
+        m_peSvgView->highlightElement(pegi);
+    }
 }
 
 void PEMainWindow::initConnectors() {
@@ -901,8 +917,8 @@ void PEMainWindow::initConnectors() {
 
     qSort(connectorList.begin(), connectorList.end(), byID);
 
-    m_connectorsView->initConnectors(connectorList, GotZeroConnector);
-    m_peToolView->initConnectors(connectorList, GotZeroConnector);
+    m_connectorsView->initConnectors(connectorList);
+    m_peToolView->initConnectors(connectorList);
 }
 
 void PEMainWindow::switchedConnector(const QDomElement & element)
@@ -1823,7 +1839,7 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
 
     bool enabled = index < IconViewIndex;
     m_peToolView->setEnabled(enabled);
-    if (!enabled) m_peToolView->clearTexts();
+    if (!enabled) m_peSvgView->clearTexts();
 
     if (m_currentGraphicsView == NULL) {
         // update title when switching to connector and metadata view
@@ -1831,7 +1847,7 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
     }
     else {
         // processeventblocker might be enough
-        m_peToolView->setFilename(m_originalSvgPaths.value(m_currentGraphicsView->viewIdentifier()));
+        m_peSvgView->setFilename(m_originalSvgPaths.value(m_currentGraphicsView->viewIdentifier()));
         QTimer::singleShot(10, this, SLOT(initZoom()));
     }
 }

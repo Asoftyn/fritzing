@@ -58,13 +58,11 @@ public:
 	~PEToolView();
 
     void highlightElement(class PEGraphicsItem *);
-    void initConnectors(QList<QDomElement> & connectorList, bool gotZeroConnector);
+    void initConnectors(QList<QDomElement> & connectorList);
     void setLock(bool);
     QDomElement currentConnector();
     void setTerminalPointCoords(QPointF);
     void setTerminalPointLimits(QSizeF);
-    void clearTexts();
-    void setFilename(const QString &);
 
 signals:
     void switchedConnector(const QDomElement &);
@@ -75,7 +73,6 @@ signals:
     void getSpinAmount(double &);
 
 protected slots:
-    void changeUnits();
     void switchConnector(QListWidgetItem * current, QListWidgetItem * previous);
     void lockChangedSlot(bool);
     void descriptionEntry();
@@ -87,29 +84,20 @@ protected slots:
     void removeConnector();
 
 protected:
-    QString convertUnitsStr(double);
-    double convertUnits(double);
     void enableChanges(bool);
 
 protected:
-    QLabel * m_svgElement;
-    QLabel * m_height;
-    QLabel * m_width;
-    QLabel * m_x;
-    QLabel * m_y;
-    QLabel * m_filename;
     QListWidget * m_connectorListWidget;
     QList<QPushButton *> m_buttons;
-    QString m_units;
     class PEGraphicsItem * m_pegi;
     QList<QDomElement> m_connectorList;
     QGroupBox * m_connectorInfoGroupBox;
     QBoxLayout * m_connectorInfoLayout;
     QWidget * m_connectorInfoWidget;
-    bool m_gotZeroConnector;
     QCheckBox * m_elementLock;
     QDoubleSpinBox * m_terminalPointX;
     QDoubleSpinBox * m_terminalPointY;
+    QLabel * m_units;
 };
 
 #endif
