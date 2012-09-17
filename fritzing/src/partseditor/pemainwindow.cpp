@@ -74,8 +74,6 @@ $Date$
             connect bus by drawing a wire
             can this be modal? i.e. turn bus mode on and off
 
-        zoom slider is not correctly synchronized with actual zoom level
-
         after "save" need some kind of confirmation
             change to window title is enough?
 
@@ -99,6 +97,8 @@ $Date$
         if pcb image has no layers complain directly
 
     ////////////////////////////// second release /////////////////////////////////
+
+        force an export etchable svg to make sure the part is right?
 
         dump old parts editor resources
 
@@ -1004,6 +1004,35 @@ void PEMainWindow::loadImage()
 	}
 
 	if (!newPath.isEmpty()) {
+        QFile file(newPath);
+	    QString errorStr;
+	    int errorLine;
+	    int errorColumn;
+        QDomDocument doc;
+	    bool result = doc.setContent(&file, &errorStr, &errorLine, &errorColumn);
+        if (!result) {
+    		QMessageBox::warning(NULL, tr("SVG problem"), tr("Unable to parse '%1': %2 line:%3 column:%4").arg(origPath).arg(errorStr).arg(errorLine).arg(errorColumn));
+            return;
+        }
+
+        if (m_currentGraphicsView == m_pcbGraphicsView) {
+            QDomElement root = doc.documentElement();
+            QDomElement check = TextUtils::findElementWithAttribute(root, "id", "copper1");
+            if (check.isNull()) {
+                check = TextUtils::findElementWithAttribute(root, "id", "copper0");
+            }
+            if (check.isNull()) {
+                QString message = tr("There are no copper layers defined in: %1. ").arg(origPath) +
+                                tr("See <a href=\"http://fritzing.org/learning/tutorials/creating-custom-parts/providing-part-graphics/\">this explanation</a>.") +
+                                tr("\n\nThis will not be a problem in the next release of the Parts Editor, but for now please modify the file according to the instructions in the link.")                         
+                 ;
+                
+    		    QMessageBox::warning(NULL, tr("SVG problem"), message);
+                return;
+            }
+        }
+
+
 		ChangeSvgCommand * csc = new ChangeSvgCommand(this, m_currentGraphicsView, itemBase->filename(), newPath, m_originalSvgPaths.value(itemBase->viewIdentifier()), newPath, NULL);
         QFileInfo info(origPath);
         csc->setText(QString("Load '%1'").arg(info.fileName()));
