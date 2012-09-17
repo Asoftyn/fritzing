@@ -85,6 +85,17 @@ $Date$
 
         multiple matching connector id--trash any other matching id
 
+        don't allow empty family
+
+        bug when saving after changing kingbright schematic (editing from search bin)
+
+        no way to restore parts bin once it has been closed
+            no parts bin in first release
+
+        filename of current file in toolview
+
+        connector locations are not updating properly when a part in the sketch is edited
+
     ////////////////////////////// second release /////////////////////////////////
 
         smd vs. tht
@@ -491,14 +502,14 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
         QString svgPath = makeSvgPath(sketchWidget, true);
         bool result = TextUtils::writeUtf8(m_userPartsFolderSvgPath + svgPath, TextUtils::svgNSOnly(svg));
         if (!result) {
-            QMessageBox::critical(NULL, tr("Parts Editor"), QString("Unable to write svg to  %1").arg(svgPath));
+            QMessageBox::critical(NULL, tr("Parts Editor"), tr("Unable to write svg to  %1").arg(svgPath));
 		    return;
         }
 
         QDomElement view = views.firstChildElement(ViewLayer::viewIdentifierXmlName(sketchWidget->viewIdentifier()));
         QDomElement layers = view.firstChildElement("layers");
         if (layers.isNull()) {
-            QMessageBox::critical(NULL, tr("Parts Editor"), QString("Unable to parse fzp file  %1").arg(originalModelPart->path()));
+            QMessageBox::critical(NULL, tr("Parts Editor"), tr("Unable to parse fzp file  %1").arg(originalModelPart->path()));
 		    return;
         }
 
@@ -875,6 +886,18 @@ void PEMainWindow::highlightSlot(PEGraphicsItem * pegi) {
     if (m_peToolView) {
         m_peToolView->highlightElement(pegi);
     }
+
+    if (m_currentGraphicsView == NULL) return;
+
+    int z = ZList.value(m_currentGraphicsView->viewIdentifier());
+    foreach (QGraphicsItem * item, pegi->scene()->items()) {
+        PEGraphicsItem * otherPegi = dynamic_cast<PEGraphicsItem *>(item);
+        if (otherPegi == NULL) continue;
+
+        otherPegi->setZValue(z);
+    }
+
+    pegi->setZValue(z + 1);
 }
 
 void PEMainWindow::initConnectors() {
@@ -1764,7 +1787,7 @@ PEGraphicsItem * PEMainWindow::makePegi(QSizeF size, QPointF topLeft, ItemBase *
     PEGraphicsItem * pegiItem = new PEGraphicsItem(0, 0, size.width(), size.height());
     pegiItem->setPos(itemBase->pos() + topLeft);
     int z = ZList.value(itemBase->viewIdentifier());
-    ZList.insert(itemBase->viewIdentifier(), z + 1);
+    //ZList.insert(itemBase->viewIdentifier(), z + 1);
     pegiItem->setZValue(z);
     itemBase->scene()->addItem(pegiItem);
     pegiItem->setElement(element);
@@ -1819,6 +1842,7 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
     }
     else {
         // processeventblocker might be enough
+        m_peToolView->setFilename(m_originalSvgPaths.value(m_currentGraphicsView->viewIdentifier()));
         QTimer::singleShot(10, this, SLOT(initZoom()));
     }
 }

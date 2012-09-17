@@ -463,7 +463,7 @@ void HtmlInfoView::setContent()
 }
 
 QSize HtmlInfoView::sizeHint() const {
-	return QSize(DockDefaultWidth, InfoViewDefaultHeight);
+	return QSize(DockWidthDefault, InfoViewHeightDefault);
 }
 
 void HtmlInfoView::setCurrentItem(ItemBase * item) {

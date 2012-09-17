@@ -30,6 +30,7 @@ $Date$
 #include <QFormLayout>
 #include <QLineEdit>
 #include <QTextEdit>
+#include <QMessageBox>
 
 #include "pemetadataview.h"
 #include "hashpopulatewidget.h"
@@ -93,6 +94,12 @@ void PEMetadataView::labelEntry() {
 }
 
 void PEMetadataView::familyEntry() {
+    if (m_familyEdit->text().isEmpty()) {
+        m_familyEdit->setText(tr("'family' must not be blank"));
+        QMessageBox::warning(NULL, tr("Parts Editor"), tr("All parts must have a 'family' property."));
+        return;
+    }
+
     emit metadataChanged("family", m_familyEdit->text());
 }
 

@@ -161,7 +161,7 @@ void PartsBinPaletteWidget::cleanup() {
 
 
 QSize PartsBinPaletteWidget::sizeHint() const {
-	return QSize(DockDefaultWidth, PartsBinDefaultHeight);
+	return QSize(DockWidthDefault, PartsBinHeightDefault);
 }
 
 QString PartsBinPaletteWidget::title() const {

@@ -64,6 +64,7 @@ public:
     void setTerminalPointCoords(QPointF);
     void setTerminalPointLimits(QSizeF);
     void clearTexts();
+    void setFilename(const QString &);
 
 signals:
     void switchedConnector(const QDomElement &);
@@ -96,6 +97,7 @@ protected:
     QLabel * m_width;
     QLabel * m_x;
     QLabel * m_y;
+    QLabel * m_filename;
     QListWidget * m_connectorListWidget;
     QList<QPushButton *> m_buttons;
     QString m_units;

@@ -69,6 +69,9 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
     QFrame * connectorsFrame = new QFrame;
     QVBoxLayout * connectorsLayout = new QVBoxLayout;
 
+    m_filename = new QLabel();
+    connectorsLayout->addWidget(m_filename);
+
     QLabel * label = new QLabel(tr("Connector List"));
     connectorsLayout->addWidget(label);
 
@@ -417,4 +420,8 @@ void PEToolView::removeConnector() {
     QDomElement element = m_connectorList.at(index);
     emit removedConnector(element);
 
+}
+
+void PEToolView::setFilename(const QString & filename) {
+    m_filename->setText(filename);
 }

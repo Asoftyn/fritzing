@@ -1049,12 +1049,6 @@ void MainWindow::acceptAlienFiles() {
 	m_alienFiles.clear();
 }
 
-ModelPart *MainWindow::loadPartFromFile(const QString& newPartPath, bool connectorsChanged) {
-	ModelPart* mp = m_refModel->addPart(newPartPath, true, true);
-	m_refModel->addPart(mp,true);
-	return mp;
-}
-
 bool MainWindow::eventFilter(QObject *object, QEvent *event) {
 	if (object == this &&
 		(event->type() == QEvent::KeyPress

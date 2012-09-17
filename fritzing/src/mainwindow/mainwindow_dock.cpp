@@ -80,9 +80,9 @@ void MainWindow::createDockWindows()
 	//m_viewSwitcher->setStyleSheet("background-color: blue;");
 #endif
 
-	makeDock(BinManager::Title, m_binManager, PartsBinMinHeight, PartsBinDefaultHeight/*, Qt::LeftDockWidgetArea*/);
+	makeDock(BinManager::Title, m_binManager, PartsBinMinHeight, PartsBinHeightDefault/*, Qt::LeftDockWidgetArea*/);
 
-    makeDock(tr("Inspector"), m_infoView, InfoViewMinHeight, InfoViewDefaultHeight);
+    makeDock(tr("Inspector"), m_infoView, InfoViewMinHeight, InfoViewHeightDefault);
 
 	makeDock(tr("Undo History"), m_undoView, UndoHistoryMinHeight, UndoHistoryDefaultHeight)->hide();
     m_undoView->setMinimumSize(DockMinWidth, UndoHistoryMinHeight);
@@ -148,7 +148,7 @@ FDockWidget *MainWindow::dockIt(FDockWidget* dock, int dockMinHeight, int dockDe
 
     dock->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	dock->setMinimumSize(DockMinWidth, dockMinHeight);
-	dock->resize(DockDefaultWidth, dockDefaultHeight);
+	dock->resize(DockWidthDefault, dockDefaultHeight);
 	connect(dock, SIGNAL(dockChangeActivationSignal(bool, QWidget *)), this, SLOT(dockChangeActivation(bool, QWidget *)));
 	connect(dock, SIGNAL(destroyed(QObject *)), qApp, SLOT(topLevelWidgetDestroyed(QObject *)));
     connect(dock, SIGNAL(dockChangeActivationSignal(bool, QWidget *)), qApp, SLOT(changeActivation(bool, QWidget *)), Qt::DirectConnection);

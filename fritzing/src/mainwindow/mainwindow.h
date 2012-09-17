@@ -125,7 +125,6 @@ public:
 	void enableCheckUpdates(bool enabled);
 
 	void getPartsEditorNewAnd(ItemBase * fromItem);
-	ModelPart *loadPartFromFile(const QString& newPartPath, bool connectorsChanged=false);
 	void addDefaultParts();
     void init(ReferenceModel *refModel, bool lockFiles);
 	void showFileProgressDialog(const QString & path);
