@@ -31,6 +31,7 @@ $Date$
 #include <QMessageBox>
 #include <QVector>
 #include <QSqlResult>
+#include <limits>
 
 #include "sqlitereferencemodel.h"
 #include "../debugdialog.h"
@@ -40,7 +41,10 @@ $Date$
 #include "../connectors/busshared.h"
 #include "../utils/folderutils.h"
 
+
 #define MAX_CONN_TRIES 3
+
+static const qulonglong NO_ID = std::numeric_limits<qulonglong>::max();
 
 void debugError(bool result, QSqlQuery & query) {
     if (result) return;
@@ -746,7 +750,7 @@ ModelPart * SqliteReferenceModel::reloadPart(const QString & path, const QString
 bool SqliteReferenceModel::updatePart(ModelPart * newModel) {
 	if(m_swappingEnabled) {
 		qulonglong partId = this->partId(newModel->moduleID());
-		if(partId != -1) {
+		if(partId != NO_ID) {
 			removePart(partId);
 			removeProperties(partId);
 			return addPartAux(newModel, false);
@@ -1021,11 +1025,11 @@ bool SqliteReferenceModel::swapEnabled() {
 }
 
 bool SqliteReferenceModel::containsModelPart(const QString & moduleID) {
-	return partId(moduleID) != -1;
+	return partId(moduleID) != NO_ID;
 }
 
 qulonglong SqliteReferenceModel::partId(QString moduleID) {
-	qulonglong partId = -1;
+	qulonglong partId = NO_ID;
 
 	QSqlQuery query;
 	query.prepare(
