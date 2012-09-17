@@ -204,6 +204,7 @@ public slots:
     void swapBoardImageSlot(SketchWidget * sketchWidget, ItemBase * itemBase, const QString & filename, const QString & moduleID, bool addName);
 	void updateTraceMenu();
 	void updateFileMenu();
+    void showStatusMessage(const QString &);
 
 protected slots:
 	void mainLoad();

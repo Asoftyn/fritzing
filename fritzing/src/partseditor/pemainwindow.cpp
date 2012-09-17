@@ -50,6 +50,7 @@ $Date$
 	
         for svg import check for flaws:
             internal coords
+                em, ex, px, pt, pc, cm, mm, in
             corel draw not saved for presentation
             inkscape not saved as plain
             illustrator px
@@ -57,6 +58,8 @@ $Date$
             multiple connector or terminal ids
 
         smd vs. tht
+            disable pad for throughhole parts, disable m/f for smd parts
+            for now don't allow mixing
 
         buses 
             connect bus by drawing a wire
@@ -83,6 +86,12 @@ $Date$
         multiple matching connector id--trash any other matching id
 
     ////////////////////////////// second release /////////////////////////////////
+
+        smd vs. tht
+            after it's all over remove copper0 if part is all smd
+            split copper0 and copper1
+            allow mixed tht/smd parts in fritzing but for now disable flipsmd
+            allow smd with holes to flip?
 
         import
             kicad sch files

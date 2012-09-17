@@ -868,7 +868,7 @@ void MainWindow::tabWidget_currentChanged(int index) {
 	}
 
 	QStatusBar *sb = statusBar();
-	connect(sb, SIGNAL(messageChanged(const QString &)), m_statusBar, SLOT(showMessage(const QString &)));
+	connect(sb, SIGNAL(messageChanged(const QString &)), this, SLOT(showStatusMessage(const QString &)));
 	widgetParent->addStatusBar(m_statusBar);
 	if(sb != m_statusBar) sb->hide();
 
@@ -2457,3 +2457,18 @@ bool MainWindow::updateParts(const QString & moduleID, QUndoCommand * parentComm
     return true;
 }
 
+void MainWindow::showStatusMessage(const QString & message)
+{
+    if (sender() == m_statusBar) {
+        return;
+    }
+
+    if (message == m_statusBar->currentMessage()) {
+        return;
+    }
+
+    DebugDialog::debug("show message " + message);
+    m_statusBar->blockSignals(true);
+    m_statusBar->showMessage(message);
+    m_statusBar->blockSignals(false);
+}
