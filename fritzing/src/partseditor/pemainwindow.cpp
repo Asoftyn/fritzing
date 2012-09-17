@@ -87,20 +87,18 @@ $Date$
 
         no way to restore parts bin once it has been closed
             no parts bin in first release
+            need window menu
 
         filename of current file in toolview
 
         connector locations are not updating properly when a part in the sketch is edited
 
-        mouse wheel shouldn't circle
-
         leaves should be on top of svg tree
 
         allow blank new part?
 
-        split feedback about current svg object into separate palette
-
-        move lock to top of group
+        lock should lock all fields
+            click should not restore lock state
 
     ////////////////////////////// second release /////////////////////////////////
 
@@ -835,7 +833,8 @@ void PEMainWindow::initSvgTree(ItemBase * itemBase, QDomDocument & domDocument)
         return;
 	}
 
-    ZList.insert(itemBase->viewIdentifier(), 5000);
+
+    int z = 5000;
 
 
     FSvgRenderer tempRenderer;
@@ -853,6 +852,7 @@ void PEMainWindow::initSvgTree(ItemBase * itemBase, QDomDocument & domDocument)
     QList<QDomElement> traverse;
     traverse << domDocument.documentElement();
     while (traverse.count() > 0) {
+        ZList.insert(itemBase->viewIdentifier(), z++);
         QList<QDomElement> next;
         foreach (QDomElement element, traverse) {
             QString tagName = element.tagName();
@@ -865,7 +865,6 @@ void PEMainWindow::initSvgTree(ItemBase * itemBase, QDomDocument & domDocument)
             else if (tagName.compare("line") == 0);
             else if (tagName.compare("polyline") == 0);
             else if (tagName.compare("polygon") == 0);
-            else if (tagName.compare("use") == 0);
             else if (tagName.compare("text") == 0);
             else continue;
 
@@ -1728,10 +1727,12 @@ void PEMainWindow::moveTerminalPoint(SketchWidget * sketchWidget, const QString 
 
         svgConnectorElement.parentNode().insertAfter(terminalElement, svgConnectorElement);
 
+        double oldZ = connectorPegi->zValue() + 1;
         foreach (PEGraphicsItem * pegi, pegiList) {
             QDomElement pegiElement = pegi->element();
             if (pegiElement.attribute("id").compare(terminalID) == 0) {
                 DebugDialog::debug("old pegi location", pegi->pos());
+                oldZ = pegi->zValue();
                 pegiList.removeOne(pegi);
                 delete pegi;
                 break;
@@ -1742,6 +1743,7 @@ void PEMainWindow::moveTerminalPoint(SketchWidget * sketchWidget, const QString 
         double invdy = dy * size.height() / svgBounds.height();
         QPointF topLeft = connectorPegi->offset() + p - QPointF(invdx, invdy);
         PEGraphicsItem * pegi = makePegi(QSizeF(invdx * 2, invdy * 2), topLeft, m_items.value(sketchWidget->viewIdentifier()), terminalElement);
+        pegi->setZValue(oldZ);
         DebugDialog::debug("new pegi location", pegi->pos());
         updateChangeCount(sketchWidget, changeDirection);
     }
@@ -1792,7 +1794,6 @@ PEGraphicsItem * PEMainWindow::makePegi(QSizeF size, QPointF topLeft, ItemBase *
     PEGraphicsItem * pegiItem = new PEGraphicsItem(0, 0, size.width(), size.height());
     pegiItem->setPos(itemBase->pos() + topLeft);
     int z = ZList.value(itemBase->viewIdentifier());
-    //ZList.insert(itemBase->viewIdentifier(), z + 1);
     pegiItem->setZValue(z);
     itemBase->scene()->addItem(pegiItem);
     pegiItem->setElement(element);

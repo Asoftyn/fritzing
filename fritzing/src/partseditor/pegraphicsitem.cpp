@@ -104,12 +104,20 @@ void PEGraphicsItem::wheelEvent(QGraphicsSceneWheelEvent * event) {
     }
 
     ix += steps;
-    while (ix < 0) {
-        ix += items.count();
-    }
-    ix = ix % items.count();
+
+    // wrap
+    //while (ix < 0) {
+    //    ix += items.count();
+    //}
+    //ix = ix % items.count();
+
+    // don't wrap
+    if (ix < 0) ix = 0;
+    else if (ix >= items.count()) ix = items.count() - 1;
     
-    items.at(ix)->setHighlighted(true);
+    if (!items.at(ix)->highlighted()) {
+        items.at(ix)->setHighlighted(true);
+    }
 }
 
 void PEGraphicsItem::setHighlighted(bool highlighted) {
