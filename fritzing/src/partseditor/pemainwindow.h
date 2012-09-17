@@ -62,6 +62,7 @@ public:
     void relocateConnectorSvg(SketchWidget *, const QString & id, const QString & terminalID, const QString & oldGorn, const QString & oldGornTerminal, const QString & newGorn, const QString & newGornTerminal, int changeDirection);
     void moveTerminalPoint(SketchWidget *, const QString & id, QSizeF, QPointF, int changeDirection);
     void restoreFzp(const QString & filename);
+    bool editsModuleID(const QString &);
 
 signals:
     void addToMyPartsSignal(ModelPart *);

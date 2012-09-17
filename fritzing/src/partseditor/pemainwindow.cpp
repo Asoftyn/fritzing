@@ -42,8 +42,6 @@ $Date$
             hide connectors
             need to show again during bus mode
 
-        don't allow parts editor window to open if editor is already open with a given module id
-
         on svg import detect all connector IDs
             if any are invisible, tell user this is obsolete
 
@@ -51,7 +49,6 @@ $Date$
 	        bool fileHasChanged = (m_viewIdentifier == ViewLayer::IconView) ? false : TextUtils::fixPixelDimensionsIn(fileContent);
 	        fileHasChanged |= TextUtils::cleanSodipodi(fileContent);
 	        fileHasChanged |= TextUtils::fixViewboxOrigin(fileContent);
-	        fileHasChanged |= TextUtils::tspanRemove(fileContent);
 	        fileHasChanged |= fixFonts(fileContent,filename,canceled);
 	
         import
@@ -67,7 +64,7 @@ $Date$
             inkscape not saved as plain
             inkscape scaling?
             illustrator px
-            <gradient>, <pattern>, <marker>, <tspan>, etc.
+            <gradient>, etc.
             pcb view missing layers
             multiple connector or terminal ids
 
@@ -409,6 +406,7 @@ QMenu *PEMainWindow::pcbItemMenu() {
 void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
     ModelPart * originalModelPart = NULL;
     if (paletteItem == NULL) {
+        // this shouldn't happen
         originalModelPart = m_refModel->retrieveModelPart("generic_ic_dip_8_300mil");
     }
     else {
@@ -1979,5 +1977,8 @@ void PEMainWindow::connectorCountChanged(int newCount) {
     m_undoStack->waitPush(cfc, SketchWidget::PropChangeDelay);
 }
 
+bool PEMainWindow::editsModuleID(const QString & moduleID) {
+    return (m_originalModuleID.compare(moduleID) == 0);
+}
 
 

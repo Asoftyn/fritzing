@@ -1989,12 +1989,23 @@ void MainWindow::enableDebug() {
 }
 
 
-void MainWindow::openNewPartsEditor(PaletteItem * paletteItem) {
+void MainWindow::openNewPartsEditor(PaletteItem * paletteItem) 
+{
+    foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+        PEMainWindow * peMainWindow = qobject_cast<PEMainWindow *>(widget);
+		if (peMainWindow == NULL) continue;		    
+		    
+        if (peMainWindow->editsModuleID(paletteItem->moduleID())) {
+            if (peMainWindow->isMinimized()) peMainWindow->showNormal();
+            else peMainWindow->show();
+	        peMainWindow->raise();
+            return;
+        }
+    }
 
-    PEMainWindow *peMainWindow = new PEMainWindow(m_refModel, NULL);
+    PEMainWindow * peMainWindow = new PEMainWindow(m_refModel, NULL);
     peMainWindow->init(m_refModel, NULL);
     peMainWindow->setInitialItem(paletteItem);
-
 	peMainWindow->show();
 	peMainWindow->raise();
     connect(peMainWindow, SIGNAL(addToMyPartsSignal(ModelPart *)), this, SLOT(addToMyParts(ModelPart *)));
