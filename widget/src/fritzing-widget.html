@@ -12,11 +12,7 @@
 <script type="text/javascript" src="../lib/jquery.svg.package-1.4.4/jquery.svganim.js"></script>
 <script type="text/javascript" src="../lib/talos-jquery-svgpan-7883f4e/jquery-svgpan.js"></script>
 <style type="text/css">
-	div#svgload {
-		width: 420px;
-		height: 370px;
-	}
-	
+
 	.tab {
 		//width:100%;
 		padding: .5em;
@@ -29,19 +25,29 @@
 		border-width: 1px;
 		border-color: #FFFFFF;
 		cursor: pointer;
-		//font-family: 'OCRA', sans-serif;
+		position:relative;
+		top: 420px;
+		z-index:10;
 	}
 	
 	#svgframe {
+		//position:absolute;
 		border:3px #52001c solid;
 		background-color: #EFEFEF; 
 		width: 420px;
 		height: 420px;
+		//z-index:-1;
+	}
+	
+	.hasSVG {
+		position:absolute;
+		z-index:-3;
+		font-family: 'OCRA', sans-serif;
 	}
 	
 	text {
 		//font-family: 'Droid Sans', sans-serif; font-weight: 400;
-		//font-family: 'OCRA', sans-serif;
+		font-family: 'OCRA', sans-serif;
 	}
 
 	.tooltip{
@@ -76,6 +82,7 @@ selectionBox.id = "selectionBox";
 $(document).ready(function() {
 	init();
 	loadSVG("Countdown_bb2.svg");
+	//window.setTimeout(initTooltip, 1000);
 	initTooltip();
 });
 
@@ -102,7 +109,7 @@ var showTooltip = function showTooltip(evt, hoverBox) {
 	}
 	
 	tooltip.text(id);
-	console.log("id: " + id);
+	//console.log("id: " + id);
 }
 
 var hideTooltip = function hideTooltip()
@@ -114,7 +121,7 @@ var hideTooltip = function hideTooltip()
 
 var init = function init() {
 	$(".tab").on("click",function(evt) {
-		log(this + "clicked!");
+		//console.log(this + "clicked!");
 		var view = this.getAttribute("view");
 		if (view !== null) {
 			loadSVG(view);
@@ -123,7 +130,7 @@ var init = function init() {
 }
 
 var loadSVG = function loadSVG(path) {
-	log("load svg: " + path);
+	//console.log("load svg: " + path);
 	var svg = $("#svgContainer").svg('get');
 	if (svg !== null) {
 		$("#svgContainer").svg('destroy');
@@ -134,20 +141,24 @@ var loadSVG = function loadSVG(path) {
 }
 
 var setupInteraction = function setupInteraction() {
+	$("svg").svgPan('viewport');
+	$(".hasSVG").on("mousemove", handleSelectionMoveWheel);
+	if ($.browser.webkit) {
+        window.addEventListener('mousewheel', handleSelectionMoveWheel, true); // Chrome/Safari
+    } else {
+        window.addEventListener('DOMMouseScroll', handleSelectionMoveWheel, true); // Others
+    }
 	$("g").each(function() {
-		$(this).on("mousewheel ", handleMouseWheel);
-		$(this).on("mousemove ", handleMouseMove);
+		if ($.browser.webkit) {
+			$(this).on("mousewheel", handleMouseWheel);
+		}else {
+			$(this).on("DOMMouseScroll", handleMouseWheel);
+		}
+		$(this).on("mousemove", handleMouseMove);
 		$(this).on("mouseenter", handleMouseIn);
 		$(this).on("mouseleave", handleMouseOut);
 		$(this).on("click", handleClick);
 	});
-	$("svg").svgPan('viewport');
-	$(".hasSVG").on("mousemove", handleSelectionMoveWheel);
-	if ($.browser.webkit) {
-        window.addEventListener('mousewheel', handleSelectionMoveWheel, false); // Chrome/Safari
-    } else {
-        window.addEventListener('DOMMouseScroll', handleSelectionMoveWheel, false); // Others
-    }
 }
 
 var handleSelectionMoveWheel = function handleSelectionMoveWheel(evt) {
@@ -155,18 +166,18 @@ var handleSelectionMoveWheel = function handleSelectionMoveWheel(evt) {
 }
 
 var handleMouseIn = function handleMouseIn(evt) {
-	updateBox(evt,hoverBox,false);
+	updateBox(evt,hoverBox);
 	showTooltip(evt,hoverBox);
 }
 var handleMouseOut = function handleMouseOut(evt) {
-	updateBox(evt,hoverBox,false);
+	updateBox(evt,hoverBox);
 	hideTooltip();
 }
 var handleMouseMove = function handleMouseMove(evt) {
-	updateBox(evt,hoverBox,false);
+	updateBox(evt,hoverBox);
 }
 var handleMouseWheel = function handleMouseWheel(evt) {
-	updateBox(evt,hoverBox,false);
+	updateBox(evt,hoverBox);
 }
 
 var handleHoverOut = function handleHoverOut(evt) {
@@ -174,7 +185,7 @@ var handleHoverOut = function handleHoverOut(evt) {
 }
 
 var handleClick = function handleClick(evt) {
-	log(this.id + " clicked!");
+	//console.log(this.id + " clicked!");
 	updateBox(evt,selectionBox);
 }
 
@@ -182,8 +193,8 @@ var updateBox = function updateBox(evt,bb) {
 	clearBoundingBox(evt,bb);
 	bb.targetElement = evt.target;
 	if(!bb.targetElement.getBBox) {
-	if(bb.targetElement.correspondingUseElement)
-		bb.targetElement = bb.targetElement.correspondingUseElement;
+		if(bb.targetElement.correspondingUseElement)
+			bb.targetElement = bb.targetElement.correspondingUseElement;
 	}
 	bb.bbox = bb.targetElement.getBBox();
 	//var svg = $("#svgContainer").svg('get');
@@ -217,16 +228,12 @@ var clearBoundingBox = function clearBoundingBox(evt,bb) {
 	bb.bbox = null;
 }
 
-var log = function log(msg) {
-	console.log(msg);
-}
-
 </script>
 <div id = "tooltip" class = "tooltip" position = "absolute">Tooltip content</div>
 <div id = "svgContainer" style="width: 420px; height: 420px;"></div>
 <div id = "breadboard" class = "tab" view = "Countdown_bb2.svg" >breadboard</div>
 <div id = "pcb" class = "tab" view = "Countdown_pcb2.svg" >PCB</div>
-<div id = "schematic" class = "tab" view = "Countdown_pcb2.svg" >schematic</div>
+<div id = "schematic" class = "tab" view = "Countdown_schem2.svg" >schematic</div>
 <div id = "code" class = "tab" >Code</div>
 </body>
 </html>
