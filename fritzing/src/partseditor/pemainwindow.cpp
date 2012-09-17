@@ -48,13 +48,6 @@ $Date$
 	        fileHasChanged |= TextUtils::fixViewboxOrigin(fileContent);
 	        fileHasChanged |= fixFonts(fileContent,filename,canceled);
 	
-        import
-            kicad footprint
-            gEDA footprint
-            only allow appropriate file to be loaded for appropriate view (.mod, .fp, etc.)
-
-        allow but discourage png imports
-
         for svg import check for flaws:
             internal coords
             corel draw not saved for presentation
@@ -90,6 +83,9 @@ $Date$
         multiple matching connector id--trash any other matching id
 
     ////////////////////////////// second release /////////////////////////////////
+
+        import
+            kicad sch files
 
         on svg import detect all connector IDs
             if any are invisible, tell user this is obsolete
@@ -997,6 +993,16 @@ void PEMainWindow::loadImage()
         }
     }
     else {
+        if (origPath.endsWith("png") || origPath.endsWith("jpg") || origPath.endsWith("jpeg")) {
+                QString message = tr("You may use a PNG or JPG image to construct your part, but it is better to use an SVG. ") +
+                                tr("PNG and JPG images retain their nature as bitmaps and do not look good when scaled--") +                        
+                                tr("so for Fritzing parts it is best to use PNG and JPG only as placeholders.")                       
+                 ;
+                
+    		    QMessageBox::information(NULL, tr("Use of PNG and JPG discouraged"), message);
+
+        }
+
 		try {
 			newPath = createSvgFromImage(newPath);
 		}
@@ -1027,7 +1033,7 @@ void PEMainWindow::loadImage()
             if (check.isNull()) {
                 QString message = tr("There are no copper layers defined in: %1. ").arg(origPath) +
                                 tr("See <a href=\"http://fritzing.org/learning/tutorials/creating-custom-parts/providing-part-graphics/\">this explanation</a>.") +
-                                tr("\n\nThis will not be a problem in the next release of the Parts Editor, ") +
+                                tr("<br/><br/>This will not be a problem in the next release of the Parts Editor, ") +
                                 tr("but for now please modify the file according to the instructions in the link.")                         
                  ;
                 
@@ -1106,52 +1112,7 @@ QString PEMainWindow::createSvgFromImage(const QString &origFilePath) {
 		return saveSvg(svg, newFilePath);
 	}
 
-	// deal with png, jpg, etc.:
-
-
-/* %1=witdh in mm
- * %2=height in mm
- * %3=width in local coords
- * %4=height in local coords
- * %5=binary data
- */
-/*	QString svgTemplate =
-"<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n"
-"	<svg width='%1mm' height='%2mm' viewBox='0 0 %3 %4' xmlns='http://www.w3.org/2000/svg'\n"
-"		xmlns:xlink='http://www.w3.org/1999/xlink' version='1.2' baseProfile='tiny'>\n"
-"		<g fill='none' stroke='black' vector-effect='non-scaling-stroke' stroke-width='1'\n"
-"			fill-rule='evenodd' stroke-linecap='square' stroke-linejoin='bevel' >\n"
-"			<image x='0' y='0' width='%3' height='%4'\n"
-"				xlink:href='data:image/png;base64,%5' />\n"
-"		</g>\n"
-"	</svg>";
-
-	QPixmap pixmap(origFilePath);
-	QByteArray bytes;
-	QBuffer buffer(&bytes);
-	buffer.open(QIODevice::WriteOnly);
-	pixmap.save(&buffer,"png"); // writes pixmap into bytes in PNG format
-
-	QString svgDom = svgTemplate
-		.arg(pixmap.widthMM()).arg(pixmap.heightMM())
-		.arg(pixmap.width()).arg(pixmap.height())
-		.arg(QString("data:image/png;base64,%2").arg(QString(bytes.toBase64())));
-
-	QFile destFile(newFilePath);
-	if(!destFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		QMessageBox::information(NULL, "", "file not created");
-		if(!destFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-				QMessageBox::information(NULL, "", "file not created 2");
-			}
-	}
-	QTextStream out(&destFile);
-	out << svgDom;
-	destFile.close();
-	qDebug() << newFilePath;
-	bool existsResult = QFileInfo(newFilePath).exists();
-	Q_ASSERT(existsResult);
-*/
-
+	// deal with png, jpg:
 	QImage img(origFilePath);
 	QSvgGenerator svgGenerator;
 	svgGenerator.setResolution(90);
