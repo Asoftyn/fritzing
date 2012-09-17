@@ -42,9 +42,6 @@ $Date$
             hide connectors
             need to show again during bus mode
 
-        on svg import detect all connector IDs
-            if any are invisible, tell user this is obsolete
-
         from partseditorview.cpp
 	        bool fileHasChanged = (m_viewIdentifier == ViewLayer::IconView) ? false : TextUtils::fixPixelDimensionsIn(fileContent);
 	        fileHasChanged |= TextUtils::cleanSodipodi(fileContent);
@@ -54,18 +51,16 @@ $Date$
         import
             kicad footprint
             gEDA footprint
+            only allow appropriate file to be loaded for appropriate view (.mod, .fp, etc.)
 
         allow but discourage png imports
 
         for svg import check for flaws:
             internal coords
-            internal transforms
             corel draw not saved for presentation
             inkscape not saved as plain
-            inkscape scaling?
             illustrator px
             <gradient>, etc.
-            pcb view missing layers
             multiple connector or terminal ids
 
         smd vs. tht
@@ -92,11 +87,14 @@ $Date$
 
         delete all unused svg and fzp files when finished
 
-        only allow appropriate file to be loaded for appropriate view (.mod, .fp, etc.)
-
-        if pcb image has no layers complain directly
+        multiple matching connector id--trash any other matching id
 
     ////////////////////////////// second release /////////////////////////////////
+
+        on svg import detect all connector IDs
+            if any are invisible, tell user this is obsolete
+
+        bury connectors behind other connectors
 
         force an export etchable svg to make sure the part is right?
 
@@ -148,7 +146,6 @@ $Date$
         hybrids
 
         flip and rotate?
-
 
         undo/redo as xml file: use index + guid for uniqueness
 
@@ -801,8 +798,9 @@ void PEMainWindow::initSvgTree(ItemBase * itemBase, QDomDocument & domDocument)
     int errorLine;
     int errorColumn;
 
+    QDomDocument doc;
     QFile file(itemBase->filename());
-    if (!domDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
+    if (!doc.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
 		DebugDialog::debug(QString("unable to parse svg: %1 %2 %3").arg(errorStr).arg(errorLine).arg(errorColumn));
         return;
 	}
@@ -810,14 +808,17 @@ void PEMainWindow::initSvgTree(ItemBase * itemBase, QDomDocument & domDocument)
     ZList.insert(itemBase->viewIdentifier(), 5000);
 
 
-    FSvgRenderer renderer;
-    QByteArray rendered = renderer.loadSvg(domDocument.toByteArray(), "", false);
+    FSvgRenderer tempRenderer;
+    QByteArray rendered = tempRenderer.loadSvg(doc.toByteArray(), "", false);
+    // cleans up the svg
     if (!domDocument.setContent(rendered, true, &errorStr, &errorLine, &errorColumn)) {
 		DebugDialog::debug(QString("unable to parse svg (2): %1 %2 %3").arg(errorStr).arg(errorLine).arg(errorColumn));
         return;
 	}
 
-    TextUtils::gornTree(domDocument);   
+    TextUtils::gornTree(domDocument);  
+    FSvgRenderer renderer;
+    renderer.loadSvg(domDocument.toByteArray(), "", false);
 
     QList<QDomElement> traverse;
     traverse << domDocument.documentElement();
@@ -961,10 +962,12 @@ void PEMainWindow::loadImage()
 		imageFiles = tr("Image Files (%1 %2 %3);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3)%4%5");
 	}
 
+    /*
 	if (m_currentGraphicsView->viewIdentifier() == ViewLayer::SchematicView) {
 		extras[0] = "*.lib";
 		imageFiles = tr("Image & Footprint Files (%1 %2 %3 %4);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3);;Kicad Schematic Files (%4)%5");   // 
 	}
+    */
 
     QString initialPath = FolderUtils::openSaveFolder();
     ItemBase * itemBase = m_items.value(m_currentGraphicsView->viewIdentifier(), NULL);
@@ -1024,7 +1027,8 @@ void PEMainWindow::loadImage()
             if (check.isNull()) {
                 QString message = tr("There are no copper layers defined in: %1. ").arg(origPath) +
                                 tr("See <a href=\"http://fritzing.org/learning/tutorials/creating-custom-parts/providing-part-graphics/\">this explanation</a>.") +
-                                tr("\n\nThis will not be a problem in the next release of the Parts Editor, but for now please modify the file according to the instructions in the link.")                         
+                                tr("\n\nThis will not be a problem in the next release of the Parts Editor, ") +
+                                tr("but for now please modify the file according to the instructions in the link.")                         
                  ;
                 
     		    QMessageBox::warning(NULL, tr("SVG problem"), message);

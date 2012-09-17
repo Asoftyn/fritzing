@@ -1441,8 +1441,9 @@ void TextUtils::gornTreeAux(QDomElement & root) {
     int index = 0;
     while (!child.isNull()) {
         QString oldid = child.attribute("id");
-        child.setAttribute("id", QString("%1.%2").arg(prefix).arg(index++));
-        child.setAttribute("gorn", QString("%1.%2").arg(prefix).arg(index++));
+        QString newid = QString("%1.%2").arg(prefix).arg(index++);
+        child.setAttribute("id", newid);
+        child.setAttribute("gorn", newid);
         if (!oldid.isEmpty()) child.setAttribute("oldid", oldid);
         gornTreeAux(child);
         child = child.nextSiblingElement();
