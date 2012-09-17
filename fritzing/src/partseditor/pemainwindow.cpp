@@ -35,9 +35,6 @@ $Date$
         
         crashed when saving the description
   
-        show in OS button
-            test on mac, linux
-
 	    disable dragging wires    
             hide connectors
             need to show again during bus mode
@@ -96,7 +93,11 @@ $Date$
 
         connector locations are not updating properly when a part in the sketch is edited
 
+        mouse wheel seems to be missing obvious targets--is changing the z-order the problem
+
     ////////////////////////////// second release /////////////////////////////////
+
+        show in OS button onlx shows folder and not file in linux
 
         smd vs. tht
             after it's all over remove copper0 if part is all smd
@@ -886,18 +887,6 @@ void PEMainWindow::highlightSlot(PEGraphicsItem * pegi) {
     if (m_peToolView) {
         m_peToolView->highlightElement(pegi);
     }
-
-    if (m_currentGraphicsView == NULL) return;
-
-    int z = ZList.value(m_currentGraphicsView->viewIdentifier());
-    foreach (QGraphicsItem * item, pegi->scene()->items()) {
-        PEGraphicsItem * otherPegi = dynamic_cast<PEGraphicsItem *>(item);
-        if (otherPegi == NULL) continue;
-
-        otherPegi->setZValue(z);
-    }
-
-    pegi->setZValue(z + 1);
 }
 
 void PEMainWindow::initConnectors() {

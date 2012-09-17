@@ -219,6 +219,11 @@ QPointF PEGraphicsItem::pendingTerminalPoint() {
 }
 
 void PEGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent * event) {
+    if (!m_highlighted) {
+		event->ignore();
+		return;
+    }
+
     m_dragTerminalPoint = false;
 
 	InfoGraphicsView * infoGraphicsView = InfoGraphicsView::getInfoGraphicsView(this);
