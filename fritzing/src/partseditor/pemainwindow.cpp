@@ -100,12 +100,13 @@ $Date$
 
         connector locations are not updating properly when a part in the sketch is edited
 
-        leaves should be on top of svg tree
+        leaves should be on top of svg tree (partly done)
 
         allow blank new part?
 
         lock should lock all fields
-            click should not restore lock state
+
+        check all MainWindow * casts
 
     ////////////////////////////// second release /////////////////////////////////
 
@@ -388,6 +389,7 @@ void PEMainWindow::createActions()
     createEditMenuActions();
     createViewMenuActions();
     createHelpMenuActions();
+    createWindowMenuActions();
 }
 
 void PEMainWindow::createMenus()
@@ -395,6 +397,7 @@ void PEMainWindow::createMenus()
     createFileMenu();
     createEditMenu();
     createViewMenu();
+    createWindowMenu();
     createHelpMenu();
 }
 
@@ -551,6 +554,7 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
     }
 
     setTitle();
+    createRaiseWindowActions();
 }
 
 bool PEMainWindow::eventFilter(QObject *object, QEvent *event) 
@@ -2124,4 +2128,16 @@ QString PEMainWindow::getSvgReferenceFile(const QString & filename) {
 QString PEMainWindow::makeDesc(const QString & referenceFile) 
 {
     return QString("\n<desc><%2>%1</%2></desc>\n").arg(referenceFile).arg(ReferenceFileString);
+}
+
+void PEMainWindow::updateWindowMenu() {
+}
+
+void PEMainWindow::updateRaiseWindowAction() {
+    QString title = tr("Fritzing (New) Parts Editor");
+    QString partTitle = getPartTitle();
+	QString actionText = QString("%1: %2").arg(title).arg(partTitle);
+	m_raiseWindowAct->setText(actionText);
+	m_raiseWindowAct->setToolTip(actionText);
+	m_raiseWindowAct->setStatusTip("raise \""+actionText+"\" window");
 }

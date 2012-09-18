@@ -255,7 +255,7 @@ protected slots:
 	void openExamples();
 	void openPartsReference();
 	void visitFritzingDotOrg();
-	void updateWindowMenu();
+	virtual void updateWindowMenu();
 	void pageSetup();
 	void sendToBack();
 	void sendBackward();
@@ -388,6 +388,7 @@ protected:
     virtual void createActions();
     void createFileMenuActions();
     void createExportActions();
+    void createRaiseWindowActions();
     void createOrderFabAct();
     void createOpenExampleMenu();
     void populateMenuFromXMLFile(QMenu *parentMenu, QStringList &actionsTracker, const QString &folderPath, const QString &indexFileName);
@@ -464,7 +465,7 @@ protected:
 	SketchAreaWidget *currentSketchArea();
 	const QString fritzingTitle();
 
-	void updateRaiseWindowAction();
+	virtual void updateRaiseWindowAction();
 
 	void moveEvent(QMoveEvent * event);
 	bool event(QEvent *);

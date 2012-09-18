@@ -137,6 +137,7 @@ protected:
     QString getFzpReferenceFile();
     QString getSvgReferenceFile(const QString & filename);
     QString makeDesc(const QString & referenceFile);
+    void updateRaiseWindowAction();
 
 protected slots:
     void initZoom();
@@ -149,6 +150,7 @@ protected slots:
     void showInOS();
     void tabWidget_currentChanged(int index);
     void backupSketch();
+    void updateWindowMenu();
 
 protected:
     QDomDocument m_fzpDocument;

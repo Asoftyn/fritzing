@@ -161,7 +161,7 @@ MainWindow::MainWindow(ReferenceModel *refModel, QWidget * parent) :
 	m_dontKeepMargins = true;
 
     m_settingsPrefix = "main/";
-    m_showPartsBinIconViewAct = m_showAllLayersAct = m_hideAllLayersAct = m_showInViewHelpAct = m_rotate90cwAct = m_showBreadboardAct = m_showSchematicAct = m_showPCBAct = NULL;
+    m_raiseWindowAct = m_showPartsBinIconViewAct = m_showAllLayersAct = m_hideAllLayersAct = m_showInViewHelpAct = m_rotate90cwAct = m_showBreadboardAct = m_showSchematicAct = m_showPCBAct = NULL;
     m_windowMenu = m_pcbTraceMenu = m_schematicTraceMenu= m_breadboardTraceMenu = m_viewMenu = NULL;
     m_miniViewContainerBreadboard = NULL;
     m_infoView = NULL;

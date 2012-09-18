@@ -493,10 +493,7 @@ void MainWindow::tipsAndTricks()
 
 void MainWindow::createActions()
 {
-	m_raiseWindowAct = new QAction(m_fwFilename, this);
-	m_raiseWindowAct->setCheckable(true);
-	connect( m_raiseWindowAct, SIGNAL(triggered()), this, SLOT(raiseAndActivate()));
-	updateRaiseWindowAction();
+    createRaiseWindowActions();
 
     createFileMenuActions();
     createEditMenuActions();
@@ -505,6 +502,13 @@ void MainWindow::createActions()
     createWindowMenuActions();
     createHelpMenuActions();
 	createTraceMenuActions();
+}
+
+void MainWindow::createRaiseWindowActions() {
+	m_raiseWindowAct = new QAction(m_fwFilename, this);
+	m_raiseWindowAct->setCheckable(true);
+	connect( m_raiseWindowAct, SIGNAL(triggered()), this, SLOT(raiseAndActivate()));
+	updateRaiseWindowAction();
 }
 
 void MainWindow::createFileMenuActions() {
@@ -2107,8 +2111,10 @@ void MainWindow::updateWindowMenu() {
 		if (mainWindow == NULL) continue;
 
 		QAction *action = mainWindow->raiseWindowAction();
-		action->setChecked(action == m_raiseWindowAct);
-		m_windowMenu->addAction(action);
+        if (action != NULL) {
+		    action->setChecked(action == m_raiseWindowAct);
+		    m_windowMenu->addAction(action);
+        }
 	}
 
 	//m_windowMenu->addSeparator();
