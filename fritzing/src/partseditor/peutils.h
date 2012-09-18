@@ -46,6 +46,7 @@ class PEUtils
 public:
 	static QString convertUnitsStr(double val);
 	static double convertUnits(double val);
+	static double unconvertUnits(double val);
     static QWidget * makeConnectorForm(const QDomElement & connector, int index, QObject * slotHolder, bool alternating);
 
 

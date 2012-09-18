@@ -96,9 +96,9 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
     QHBoxLayout * posRadioLayout = new QHBoxLayout;
 
     QList<QString> positionNames;
-    positionNames << "Center" << "N" << "E" << "S" << "W";
+    positionNames << "Center"  << "W" << "N" << "S" << "E";
     QList<QString> trPositionNames;
-    trPositionNames << tr("Center") << tr("N") << tr("E") << tr("S") << tr("W");
+    trPositionNames << tr("Center") << tr("W") << tr("N") << tr("S") << tr("E");
     for (int i = 0; i < positionNames.count(); i++) {
         QPushButton * button = new QPushButton(trPositionNames.at(i));
         button->setProperty("how", positionNames.at(i));
@@ -135,7 +135,7 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
     posNumberLayout->addWidget(m_terminalPointY);
     connect(m_terminalPointY, SIGNAL(getSpinAmount(double &)), this, SLOT(getSpinAmountSlot(double &)), Qt::DirectConnection);
     connect(m_terminalPointY, SIGNAL(valueChanged(double)), this, SLOT(terminalPointEntry()));
-    connect(m_terminalPointY, SIGNAL(valueChanged(double)), this, SLOT(terminalPointEntry()));
+    connect(m_terminalPointY, SIGNAL(valueChanged(const QString &)), this, SLOT(terminalPointEntry()));
 
     posNumberLayout->addSpacing(PEUtils::Spacing);
 
@@ -295,10 +295,10 @@ void PEToolView::buttonChangeTerminalPoint() {
 void PEToolView::terminalPointEntry()
 {
     if (sender() == m_terminalPointX) {
-        emit terminalPointChanged("x", m_terminalPointX->value());
+        emit terminalPointChanged("x", PEUtils::unconvertUnits(m_terminalPointX->value()));
     }
     else if (sender() == m_terminalPointY) {
-       emit terminalPointChanged("y", m_terminalPointY->value());
+       emit terminalPointChanged("y", PEUtils::unconvertUnits(m_terminalPointY->value()));
     }
 }
 

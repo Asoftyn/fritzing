@@ -59,6 +59,18 @@ double PEUtils::convertUnits(double val)
     return val;
 }
 
+double PEUtils::unconvertUnits(double val)
+{
+    if (Units.compare("in") == 0) {
+        return val * GraphicsUtils::SVGDPI;
+    }
+    else if (Units.compare("mm") == 0) {
+        return val * GraphicsUtils::SVGDPI / 25.4;
+    }
+
+    return val;
+}
+
 QWidget * PEUtils::makeConnectorForm(const QDomElement & connector, int index, QObject * slotHolder, bool alternating)
 {
     QFrame * frame = new QFrame();
