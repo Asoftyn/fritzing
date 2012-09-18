@@ -169,17 +169,6 @@
     </message>
 </context>
 <context>
-    <name>AbstractEditableLabelWidget</name>
-    <message>
-        <source>Accept</source>
-        <translation>Aceitar</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancelar</translation>
-    </message>
-</context>
-<context>
     <name>AutorouteProgressDialog</name>
     <message>
         <source>Cancel</source>
@@ -332,14 +321,6 @@
         <translation>Mostrar os componentes como ícones</translation>
     </message>
     <message>
-        <source>New Part...</source>
-        <translation>Novo Componente...</translation>
-    </message>
-    <message>
-        <source>Edit Part...</source>
-        <translation>Editar Componente...</translation>
-    </message>
-    <message>
         <source>Export Part...</source>
         <translation>Exportar Componente...</translation>
     </message>
@@ -397,6 +378,10 @@
     </message>
     <message>
         <source>Fritzing Files (*%1 *%2 *%3);;Fritzing Part (*%1);;Fritzing Bin (*%2);;Fritzing Shareable Bin (*%3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Part (new parts editor)...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -573,113 +558,6 @@ Nota: Os componentes %n não estão totalmente dentro da placa.</numerusform>
     </message>
 </context>
 <context>
-    <name>ConnectorsInfoWidget</name>
-    <message>
-        <source>Mismatching Connector IDs</source>
-        <translation>Os IDs dos Conectores não correspondem</translation>
-    </message>
-    <message>
-        <source>List of Connectors</source>
-        <translation>Lista de Conectores</translation>
-    </message>
-    <message>
-        <source>Loading connectors...</source>
-        <translation>Carregando conectores...</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t fix connector</source>
-        <translation>Impossível reparar o conector</translation>
-    </message>
-    <message>
-        <source>Please, first load an image in each view,
-in order to fix this connector</source>
-        <translation>Por favor, primeiro carregue uma imagem em cada vista,
-antes de reparar este conector</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t add connector</source>
-        <translation>Não foi possível adicionar conector</translation>
-    </message>
-    <message>
-        <source>Please, first load an image in each view,
-before adding any connectors</source>
-        <translation>Por favor, primeiro carregue uma imagem em cada vista,
-antes de adicionar algum conector</translation>
-    </message>
-</context>
-<context>
-    <name>ConnectorsView</name>
-    <message>
-        <source>This is where you edit the connector metadata for the part</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>number of connectors:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change Connectors Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change Connector Count</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
-    </message>
-    <message>
-        <source>Connector number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Type:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SMD-pad</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Name:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set the connectors&apos;s title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set the connectors&apos;s description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connectors will be removed from the end of the list, so you may lose some work. </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connectors will be added the end of the list. </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rather than changing the number of connectors here, it may be better to begin with a part that already has the right number of connectors.
-
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <source>Change to %n connectors?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-</context>
-<context>
     <name>DebugDialog</name>
     <message>
         <source>for debugging</source>
@@ -752,31 +630,6 @@ Nota: Pode importar posteriormente usando o menu de acção &quot;Ajuda&quot; -&
     <message>
         <source>Fritzing (*%1)</source>
         <translation type="unfinished">Fritzing (*%1)</translation>
-    </message>
-</context>
-<context>
-    <name>FixFontsDialog</name>
-    <message>
-        <source>Unavailable fonts</source>
-        <translation>Tipo de letra não disponível</translation>
-    </message>
-    <message>
-        <source>-- ignore --</source>
-        <translation>-- ignorar --</translation>
-    </message>
-    <message>
-        <source>One or more fonts used in this SVG file are not available in Fritzing.
-Please select one of the Fritzing fonts to replace them:</source>
-        <translation>Uma ou mais tipos de letra utilizados neste ficheiro SVG não se encontram disponíveis no Fritzing.
-Por favor seleccione um dos tipos de letra do Fritzing para o substituir:</translation>
-    </message>
-    <message>
-        <source>Replace </source>
-        <translation>Substituir </translation>
-    </message>
-    <message>
-        <source>with </source>
-        <translation>com </translation>
     </message>
 </context>
 <context>
@@ -1384,10 +1237,6 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation>Carregando %1 (Esquema)</translation>
     </message>
     <message>
-        <source>&amp;New</source>
-        <translation>&amp;Novo</translation>
-    </message>
-    <message>
         <source>Create a new sketch</source>
         <translation>Criar um novo sketch</translation>
     </message>
@@ -1554,18 +1403,6 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
     <message>
         <source>Show the application&apos;s about box</source>
         <translation>Mostrar a caixa &quot;sobre&quot; da aplicação</translation>
-    </message>
-    <message>
-        <source>Alt+Ctrl+N</source>
-        <translation>Alt+Ctrl+N</translation>
-    </message>
-    <message>
-        <source>Create new part</source>
-        <translation>Criar um novo componente</translation>
-    </message>
-    <message>
-        <source>Ctrl+Return</source>
-        <translation>Ctrl+Return</translation>
     </message>
     <message>
         <source>Update InfoView on hover</source>
@@ -2060,16 +1897,6 @@ Estamos a trabalhar para evitar esta mensagem, e apenas deixar-te escolher entre
     <message>
         <source>Share</source>
         <translation>partilhar</translation>
-    </message>
-    <message>
-        <source>Updating existing part</source>
-        <translation>Actualizar componente existente</translation>
-    </message>
-    <message>
-        <source>Some connectors have changed.
-In order to see the changes, you have to restart fritzing.
-Do you want to restart now?</source>
-        <translation>Algumas ligações mudaram.Para ver as mudanças,tens de reiniciar o Fritzing.Queres reiniciar agora?</translation>
     </message>
     <message>
         <source>Share online...</source>
@@ -2706,10 +2533,6 @@ Would you like to convert &apos;%1&apos; to the .fzz format now or open it read-
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Parts Editor</source>
-        <translation type="unfinished">Editar componentes</translation>
-    </message>
-    <message>
         <source>Choose Ground Fill Seed(s)...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2918,14 +2741,6 @@ Would you like to convert &apos;%1&apos; to the .fzz format now or open it read-
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>A new Parts Editor is under construction. The old Parts Editor is still available, but the code is pretty buggy. So use it at your own risk.
-
-For many purposes you can use a Generic IC chip instead (first part in the ICs section of the Parts Bin). Drag one into your sketch and from the Inspector change the package: there are SIPs, DIPS, and a set of SMDs. Depending on the package you choose, you can also change the chip label, set the number of pins, and change the pin labels.
-
-Open the old Parts Editor?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Revert?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2961,10 +2776,6 @@ Go ahead and revert?</source>
     </message>
     <message>
         <source>There are no unrouted connections in this view.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the parts editor on an existing part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3018,96 +2829,6 @@ Go ahead and revert?</source>
     <message>
         <source>Couldn&apos;t get the dock widget</source>
         <translation type="unfinished">Impossível de obter o dock widget</translation>
-    </message>
-</context>
-<context>
-    <name>MetadataView</name>
-    <message>
-        <source>This is where you edit the metadata for the part ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Date</source>
-        <translation type="unfinished">Data</translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s author</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation type="unfinished">Autor</translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s description--you can use simple html (as defined by Qt&apos;s Rich Text)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished">Descrição</translation>
-    </message>
-    <message>
-        <source>Set the default part label prefix</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="unfinished">Etiqueta</translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s family--what other parts is this part related to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Family</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Properties</source>
-        <translation type="unfinished">Propriedades</translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s tags</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tags</source>
-        <translation type="unfinished">Tags</translation>
-    </message>
-</context>
-<context>
-    <name>MismatchingConnectorWidget</name>
-    <message>
-        <source>In </source>
-        <translation>Em</translation>
-    </message>
-    <message>
-        <source>and </source>
-        <translation>e </translation>
-    </message>
-    <message>
-        <source>view only</source>
-        <translation>Ver apenas</translation>
-    </message>
-    <message>
-        <source>fix this!</source>
-        <translation>Corrigir isto!</translation>
     </message>
 </context>
 <context>
@@ -3246,14 +2967,21 @@ Razão: %2 (código do erro %3)</translation>
     </message>
 </context>
 <context>
+    <name>PEConnectorsView</name>
+    <message>
+        <source>This is where you edit the connector metadata for the part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>number of connectors:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PEMainWindow</name>
     <message>
         <source>Parts Editor</source>
         <translation type="unfinished">Editar componentes</translation>
-    </message>
-    <message>
-        <source>New Parts Editor</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Show Icon</source>
@@ -3308,10 +3036,6 @@ Razão: %2 (código do erro %3)</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Tools</source>
-        <translation type="unfinished">Ferramentas</translation>
-    </message>
-    <message>
         <source>Change description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3319,15 +3043,353 @@ Razão: %2 (código do erro %3)</translation>
         <source>Change connector %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>SVG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connectors</source>
+        <translation type="unfinished">Conectores</translation>
+    </message>
+    <message>
+        <source>Open a file to use as a part image.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show in Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On the desktop, open the folder containing the current svg file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to write svg to  %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to parse fzp file  %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Friting (New) Parts Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icon View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Metadata View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connectors View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image &amp; Footprint Files (%1 %2 %3 %4 %5);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3);;gEDA Footprint Files (%4);;Kicad Module Files (%5)</source>
+        <translation type="unfinished">Imagem e Ficheiros Footprint  (%1 %2 %3 %4 %5);;Ficheiros SVG (%1);;Ficheiros JPEG (%2);;Ficheiros PNG (%3);;Ficheiros Footprintg EDA (%4);;Ficheiros de Módulo Kicad (%5)</translation>
+    </message>
+    <message>
+        <source>Image Files (%1 %2 %3);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3)%4%5</source>
+        <translation type="unfinished">Ficheiros de Imagem (%1 %2 %3);;Ficheiros SVG (%1);;Ficheiros JPEG (%2);;Ficheiros PNG (%3)%4%5</translation>
+    </message>
+    <message>
+        <source>Open Image</source>
+        <translation type="unfinished">Abrir Imagem</translation>
+    </message>
+    <message>
+        <source>Copy problem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to make a local copy of: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You may use a PNG or JPG image to construct your part, but it is better to use an SVG. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PNG and JPG images retain their nature as bitmaps and do not look good when scaled--</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>so for Fritzing parts it is best to use PNG and JPG only as placeholders.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use of PNG and JPG discouraged</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conversion problem</source>
+        <translation type="unfinished">Problema de conversão</translation>
+    </message>
+    <message>
+        <source>Unable to load image file: 
+%1</source>
+        <translation type="unfinished">Impossível carregar o ficheiro de imagem: 
+%1</translation>
+    </message>
+    <message>
+        <source>SVG problem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to parse &apos;%1&apos;: %2 line:%3 column:%4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are no copper layers defined in: %1. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>See &lt;a href=&quot;http://fritzing.org/learning/tutorials/creating-custom-parts/providing-part-graphics/&quot;&gt;this explanation&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;br/&gt;This will not be a problem in the next release of the Parts Editor, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>but for now please modify the file according to the instructions in the link.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no schematics found in %1</source>
+        <translation type="unfinished">não foram encontrados esquemas em %1</translation>
+    </message>
+    <message>
+        <source>schematic part</source>
+        <translation type="unfinished">componente do esquema</translation>
+    </message>
+    <message>
+        <source>no footprints found in %1</source>
+        <translation type="unfinished">não foram encontradas footprints em %1</translation>
+    </message>
+    <message>
+        <source>unable to open temp file %1</source>
+        <translation type="unfinished">impossível abrir o ficheiro temporário %1</translation>
+    </message>
+    <message>
+        <source>Relocate connector %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation type="unfinished">&amp;Ficheiro</translation>
+    </message>
+    <message>
+        <source>Sketch Change Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The open sketch &apos;%1&apos; uses the part you are editing. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving this part will make a change to the sketch that cannot be undone.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The open sketches </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;%1&apos;, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and &apos;%1&apos; </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving this part will make a change to these sketches that cannot be undone.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+
+Go ahead and save?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished">Guardar</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>Move terminal point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove connector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove %1 connectors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save &quot;%1&quot;</source>
+        <translation type="unfinished">Guardar &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>Do you want to save the changes you made in the part &quot;%1&quot;?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your changes will be lost if you don&apos;t save them.</source>
+        <translation type="unfinished">As tuas modificações vão ser perdidas se não as guardares.</translation>
+    </message>
+    <message>
+        <source>untitled part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add connector</source>
+        <translation type="unfinished">Adicionar um conector</translation>
+    </message>
+    <message>
+        <source>Add %1 connectors</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PEMetadataView</name>
+    <message>
+        <source>&apos;family&apos; must not be blank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Parts Editor</source>
+        <translation type="unfinished">Editar componentes</translation>
+    </message>
+    <message>
+        <source>All parts must have a &apos;family&apos; property.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This is where you edit the metadata for the part ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation type="unfinished">Data</translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="unfinished">Autor</translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s description--you can use simple html (as defined by Qt&apos;s Rich Text)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished">Descrição</translation>
+    </message>
+    <message>
+        <source>Set the default part label prefix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished">Etiqueta</translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s family--what other parts is this part related to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Family</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Properties</source>
+        <translation type="unfinished">Propriedades</translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tags</source>
+        <translation type="unfinished">Tags</translation>
+    </message>
+</context>
+<context>
+    <name>PESvgView</name>
+    <message>
+        <source>width:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>height:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PEToolView</name>
     <message>
-        <source>width</source>
-        <translation type="unfinished">largura</translation>
+        <source>Connector List</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>height</source>
+        <source>Connector Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlock to modify the current connector&apos;s information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>N</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connector %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3647,263 +3709,6 @@ Razão: %2 (código do erro %3)</translation>
     <message>
         <source>Select a color for this icon</source>
         <translation>Seleccionar uma cor para este ícone</translation>
-    </message>
-</context>
-<context>
-    <name>PartsEditorMainWindow</name>
-    <message>
-        <source>Untitled Part</source>
-        <translation>Componente sem nome</translation>
-    </message>
-    <message>
-        <source>Please find a name for me!</source>
-        <translation>Por favor encontre um nome para mim!</translation>
-    </message>
-    <message>
-        <source>Please provide a label</source>
-        <translation>Por favor coloque uma etiqueta</translation>
-    </message>
-    <message>
-        <source>You could tell a little bit about this part</source>
-        <translation>Pode-nos dizer um pouco sobre este componente</translation>
-    </message>
-    <message>
-        <source>Please classify this part</source>
-        <translation>Por favor classifique este componente</translation>
-    </message>
-    <message>
-        <source>You can add your tags to make searching easier</source>
-        <translation>Você pode adicionar tags para tornar a pesquisa mais fácil</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;created by&lt;/i&gt; %1 &lt;i&gt;on&lt;/i&gt; %2</source>
-        <translation>&lt;i&gt;criado por&lt;/i&gt; %1 &lt;i&gt;em&lt;/i&gt; %2</translation>
-    </message>
-    <message>
-        <source>Parts Editor</source>
-        <translation>Editar componentes</translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation>Etiqueta</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation>Descrição</translation>
-    </message>
-    <message>
-        <source>Properties</source>
-        <translation>Propriedades</translation>
-    </message>
-    <message>
-        <source>Tags</source>
-        <translation>Tags</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation>Autor</translation>
-    </message>
-    <message>
-        <source>Created/Updated on</source>
-        <translation>Criado/Actualizado em</translation>
-    </message>
-    <message>
-        <source>Specifications</source>
-        <translation>Especificações</translation>
-    </message>
-    <message>
-        <source>Connectors</source>
-        <translation>Conectores</translation>
-    </message>
-    <message>
-        <source>save as new part</source>
-        <translation>Guardar um novo componente</translation>
-    </message>
-    <message>
-        <source>save</source>
-        <translation>Guardar</translation>
-    </message>
-    <message>
-        <source>cancel</source>
-        <translation>Cancelar</translation>
-    </message>
-    <message>
-        <source>Save as new part</source>
-        <translation>Guardar um novo componente</translation>
-    </message>
-    <message>
-        <source>There&apos;s already a file with this name.
-Please, specify a new filename</source>
-        <translation>Já existe um ficheiro com este nome.
-Por favor, especifique um novo nome para o ficheiro</translation>
-    </message>
-    <message>
-        <source>Fritzing</source>
-        <translation>Fritzing</translation>
-    </message>
-    <message>
-        <source>Cannot write file %1:
-%2.</source>
-        <translation>Não foi possível escrever no ficheiro %1:
-%2.</translation>
-    </message>
-    <message>
-        <source>Saved &apos;%1&apos;</source>
-        <translation>Guardado &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>%1 %2</source>
-        <translation>%1 %2</translation>
-    </message>
-    <message>
-        <source>Icon needed</source>
-        <translation>Necessário ícone</translation>
-    </message>
-    <message>
-        <source>Please, provide an icon image for this part</source>
-        <translation>Por favor, forneça um ícone para este componente</translation>
-    </message>
-    <message>
-        <source>close</source>
-        <translation>Fechar</translation>
-    </message>
-    <message>
-        <source>Load icon..</source>
-        <translation>Carragar ícone..</translation>
-    </message>
-    <message>
-        <source>Updating existing part</source>
-        <translation>Actualizar um componente existente</translation>
-    </message>
-    <message>
-        <source>Fritzing Parts (*%1)</source>
-        <translation>Componentes Fritzing (*%1)</translation>
-    </message>
-    <message>
-        <source>Error! Cannot load part.
-</source>
-        <translation>Erro! Componente não pode ser carregado.
-</translation>
-    </message>
-</context>
-<context>
-    <name>PartsEditorView</name>
-    <message>
-        <source>Open Image</source>
-        <translation>Abrir Imagem</translation>
-    </message>
-    <message>
-        <source>Parts Editor: couldn&apos;t save terminal point for connector %1 in %2 view</source>
-        <translation>Editor de componentes: impossível gravar o ponto terminal do conector %1 na vista %2</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t open svg file</source>
-        <translation>Impossível de abrir o ficheiro svg</translation>
-    </message>
-    <message>
-        <source>The file couldn&apos;t be opened. If this file defines its dimensions 
-in non-real-world units (e.g. pixels), then they won&apos;t be translated 
-into real life ones.
-Malformed font-family definitions won&apos;t be fixed either.</source>
-        <translation>O ficheiro não pode ser aberto. Se o ficheiro definir as dimensões 
-em unidades não-reais (p.ex. pixeis), essas unidades não vão ser convertidas 
-em unidades &quot;reais&quot;.
-Tipos de letra incorrectos também não vão ser corrigidas.</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t write into file</source>
-        <translation>Impossível escrever no ficheiro</translation>
-    </message>
-    <message>
-        <source>This file needs to be fixed to fit fritzing needs, but it couldn&apos;t
-be written.
-Fritzing is not compatible with this kind of svg files. Please 
-check your permissions, and try again.
-
-More information at http://fritzing.org/using-svg-images-new-parts/</source>
-        <translation>Este ficheiro necessita de ser reparado para satisfazer os requisitos do Fritzing, mas não
-pode ser modificado.
-O Fritzing não é compatível com este tipo de ficheiro svg. Por favor
-verifique as suas permissões e tente novamente.
-
-Mais informações consulte o site  http://fritzing.org/using-svg-images-new-parts/</translation>
-    </message>
-    <message>
-        <source>Image &amp; Footprint Files (%1 %2 %3 %4 %5);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3);;gEDA Footprint Files (%4);;Kicad Module Files (%5)</source>
-        <translation>Imagem e Ficheiros Footprint  (%1 %2 %3 %4 %5);;Ficheiros SVG (%1);;Ficheiros JPEG (%2);;Ficheiros PNG (%3);;Ficheiros Footprintg EDA (%4);;Ficheiros de Módulo Kicad (%5)</translation>
-    </message>
-    <message>
-        <source>Conversion problem</source>
-        <translation>Problema de conversão</translation>
-    </message>
-    <message>
-        <source>Unable to load image file: 
-%1</source>
-        <translation>Impossível carregar o ficheiro de imagem: 
-%1</translation>
-    </message>
-    <message>
-        <source>no footprints found in %1</source>
-        <translation>não foram encontradas footprints em %1</translation>
-    </message>
-    <message>
-        <source>unable to open temp file %1</source>
-        <translation>impossível abrir o ficheiro temporário %1</translation>
-    </message>
-    <message>
-        <source>no schematics found in %1</source>
-        <translation>não foram encontrados esquemas em %1</translation>
-    </message>
-    <message>
-        <source>schematic part</source>
-        <translation>componente do esquema</translation>
-    </message>
-    <message>
-        <source>Image Files (%1 %2 %3);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3)%4%5</source>
-        <translation>Ficheiros de Imagem (%1 %2 %3);;Ficheiros SVG (%1);;Ficheiros JPEG (%2);;Ficheiros PNG (%3)%4%5</translation>
-    </message>
-    <message>
-        <source>Image &amp; Footprint Files (%1 %2 %3 %4);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3);;Kicad Schematic Files (%4)%5</source>
-        <translation>Imagem e Ficheiros Footprint (%1 %2 %3 %4);;Ficheiros SVG (%1);;Ficheiros JPEG (%2);;Ficheiros PNG (%3);;Ficheiros de esquema Kicad (%4)%5</translation>
-    </message>
-</context>
-<context>
-    <name>PartsEditorViewsWidget</name>
-    <message>
-        <source>Show Anchor Points</source>
-        <translation>Mostrar os pntos de Anchor</translation>
-    </message>
-    <message>
-        <source>Please refer to the &lt;a style=&apos;color: #52182C&apos; href=&apos;http://fritzing.org/learning/tutorials/creating-custom-parts/&apos;&gt;guidelines&lt;/a&gt; before modifying or creating parts</source>
-        <translation>Por favor consulte as &lt;a style=&apos;color: #52182C&apos; href=&apos;http://fritzing.org/learning/tutorials/creating-custom-parts/&apos;&gt; instruções&lt;/a&gt; antes de modificar ou criar componentes</translation>
-    </message>
-    <message>
-        <source>What does this
-part look like on
-the breadboard?</source>
-        <translation>Como é que este componente
-é quando visto
-numa breadboard?</translation>
-    </message>
-    <message>
-        <source>What does this
-part look like in
-a schematic view?</source>
-        <translation>Como é que este componente
-é quando visto
-num esquema?</translation>
-    </message>
-    <message>
-        <source>What does this
-part look like in
-the PCB view?</source>
-        <translation>Como é que este componente
-é quando visto
-numa PCB (Placa de Circuito Impresso)?</translation>
-    </message>
-    <message>
-        <source>Load image..</source>
-        <translation>Carregar imagem..</translation>
     </message>
 </context>
 <context>
@@ -4420,32 +4225,12 @@ tecla shift troca o eixo de scroll</translation>
         <translation>O componente &apos;%1&apos; em &apos;%2&apos; não tem uma identificação de módulo única &apos;%3&apos;.</translation>
     </message>
     <message>
-        <source>Add connector</source>
-        <translation>Adicionar um conector</translation>
-    </message>
-    <message>
         <source>a label</source>
         <translation>uma etiqueta</translation>
     </message>
     <message>
         <source>a value</source>
         <translation>um valor</translation>
-    </message>
-    <message>
-        <source>no name yet</source>
-        <translation>Não possuí um nome ainda</translation>
-    </message>
-    <message>
-        <source>no description yet</source>
-        <translation>não foi adicionada nenhuma descrição ainda</translation>
-    </message>
-    <message>
-        <source>Accept</source>
-        <translation>Aceitar</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancelar</translation>
     </message>
     <message>
         <source>PCB View</source>
@@ -4740,10 +4525,6 @@ já se encontrava lá, não vais adicionar outravez, Ok?!?</translation>
         <translation>Silkscreen Inferior (Etiqueta dos Componentes)</translation>
     </message>
     <message>
-        <source>The file %1 is not a Fritzing file (7).</source>
-        <translation>O ficheiro %1 não é um ficheiro Fritzing (7).</translation>
-    </message>
-    <message>
         <source>Sorry, Fritzing can&apos;t yet handle both pins and pads together (in %1 in %2)</source>
         <translation>Desculpa,o Fritzing ainda não pode lidar com pinos e pads em simultâneo (em %1 e em %2)</translation>
     </message>
@@ -4924,10 +4705,6 @@ já se encontrava lá, não vais adicionar outravez, Ok?!?</translation>
         <translation>falha a exportar o ficheiro de máscara (1)</translation>
     </message>
     <message>
-        <source>%1 file export failure (2)</source>
-        <translation>%1 falha ao exportar o ficheiro (2)</translation>
-    </message>
-    <message>
         <source>mask export failure</source>
         <translation>falha ao exportar a máscara</translation>
     </message>
@@ -5060,6 +4837,34 @@ já se encontrava lá, não vais adicionar outravez, Ok?!?</translation>
     </message>
     <message>
         <source>Icon View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;id:&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Name:&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the connectors&apos;s title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMD-pad</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Description:&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the connectors&apos;s description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 file export failure (2): %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5256,17 +5061,6 @@ já se encontrava lá, não vais adicionar outravez, Ok?!?</translation>
     <message>
         <source>selected color (%1)</source>
         <translation>Cor seleccionada (%1)</translation>
-    </message>
-</context>
-<context>
-    <name>SingleConnectorInfoWidget</name>
-    <message>
-        <source>Name: </source>
-        <translation>Nome: </translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation>Descrição: </translation>
     </message>
 </context>
 <context>
@@ -5784,6 +5578,10 @@ Note: you can also trigger this display by mousing down on the routing status te
     </message>
     <message>
         <source>Slovak - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bengali - %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

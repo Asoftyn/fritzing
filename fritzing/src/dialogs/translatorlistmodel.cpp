@@ -101,6 +101,9 @@ TranslatorListModel::TranslatorListModel(QFileInfoList & fileInfoList, QObject* 
 		ushort t14[] = { 0x53, 0x6C, 0x6F, 0x76, 0x65, 0x6E, 0x010D, 0x69, 0x6E, 0x61, 0};
 		m_languages.insert("slovak", tr("Slovak - %1").arg(QString::fromUtf16(t14)));
 
+        ushort t15[] = { 0x09AC,  0x09BE,   0x0982,   0x09B2,   0x09BE, 0 };
+        m_languages.insert("bengali", tr("Bengali - %1").arg(QString::fromUtf16(t15)));
+
 
         // More languages written in their own language can be found
         // at http://www.mozilla.com/en-US/firefox/all.html 

@@ -169,17 +169,6 @@
     </message>
 </context>
 <context>
-    <name>AbstractEditableLabelWidget</name>
-    <message>
-        <source>Accept</source>
-        <translation>承認</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>キャンセル</translation>
-    </message>
-</context>
-<context>
     <name>AutorouteProgressDialog</name>
     <message>
         <source>Cancel</source>
@@ -334,14 +323,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New Part...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Part...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Export Part...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -399,6 +380,10 @@
     </message>
     <message>
         <source>Fritzing Files (*%1 *%2 *%3);;Fritzing Part (*%1);;Fritzing Bin (*%2);;Fritzing Shareable Bin (*%3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Part (new parts editor)...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -567,110 +552,6 @@ Note: %n parts are not located entirely on the board.</source>
     </message>
 </context>
 <context>
-    <name>ConnectorsInfoWidget</name>
-    <message>
-        <source>Mismatching Connector IDs</source>
-        <translation>コネクタIDが一致しません</translation>
-    </message>
-    <message>
-        <source>List of Connectors</source>
-        <translation>コネクタ一覧</translation>
-    </message>
-    <message>
-        <source>Loading connectors...</source>
-        <translation>コネクタを読み込んでいます...</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t fix connector</source>
-        <translation>固定コネクタを追加できません</translation>
-    </message>
-    <message>
-        <source>Please, first load an image in each view,
-in order to fix this connector</source>
-        <translation>このコネクタを固定するためにイメージを読みこんでください</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t add connector</source>
-        <translation>コネクタを追加できません</translation>
-    </message>
-    <message>
-        <source>Please, first load an image in each view,
-before adding any connectors</source>
-        <translation>コネクタを追加する前にイメージを読み込んでください</translation>
-    </message>
-</context>
-<context>
-    <name>ConnectorsView</name>
-    <message>
-        <source>This is where you edit the connector metadata for the part</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>number of connectors:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change Connectors Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change Connector Count</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished">キャンセル</translation>
-    </message>
-    <message>
-        <source>Connector number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Type:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SMD-pad</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Name:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set the connectors&apos;s title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set the connectors&apos;s description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connectors will be removed from the end of the list, so you may lose some work. </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connectors will be added the end of the list. </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rather than changing the number of connectors here, it may be better to begin with a part that already has the right number of connectors.
-
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <source>Change to %n connectors?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
-</context>
-<context>
     <name>DebugDialog</name>
     <message>
         <source>for debugging</source>
@@ -742,31 +623,6 @@ Note: You can import them later using the &quot;Help&quot; &gt; &quot;Import par
     <message>
         <source>Fritzing (*%1)</source>
         <translation type="unfinished">Fritzing (*%1)</translation>
-    </message>
-</context>
-<context>
-    <name>FixFontsDialog</name>
-    <message>
-        <source>Unavailable fonts</source>
-        <translation>利用できないフォント</translation>
-    </message>
-    <message>
-        <source>-- ignore --</source>
-        <translation>-- 無視 --</translation>
-    </message>
-    <message>
-        <source>One or more fonts used in this SVG file are not available in Fritzing.
-Please select one of the Fritzing fonts to replace them:</source>
-        <translation>1つ以上の利用できないフォントがSVGファイルで使われています
-Fritzingのフォントを指定してください:</translation>
-    </message>
-    <message>
-        <source>Replace </source>
-        <translation>置換</translation>
-    </message>
-    <message>
-        <source>with </source>
-        <translation>一緒に </translation>
     </message>
 </context>
 <context>
@@ -1364,10 +1220,6 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation>loading %1 (回路図)</translation>
     </message>
     <message>
-        <source>&amp;New</source>
-        <translation>新規作成(&amp;N)</translation>
-    </message>
-    <message>
         <source>Create a new sketch</source>
         <translation>スケッチを新規作成</translation>
     </message>
@@ -1534,18 +1386,6 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
     <message>
         <source>Show the application&apos;s about box</source>
         <translation>アプリケーションのバージョン情報を表示</translation>
-    </message>
-    <message>
-        <source>Alt+Ctrl+N</source>
-        <translation>Alt+Ctrl+N</translation>
-    </message>
-    <message>
-        <source>Create new part</source>
-        <translation>パーツの新規作成</translation>
-    </message>
-    <message>
-        <source>Ctrl+Return</source>
-        <translation>Ctrl+Return</translation>
     </message>
     <message>
         <source>Update InfoView on hover</source>
@@ -2052,18 +1892,6 @@ We&apos;re working to avoid this message, and only let you choose between proper
     <message>
         <source>Share</source>
         <translation>公開</translation>
-    </message>
-    <message>
-        <source>Updating existing part</source>
-        <translation>既存パーツを更新</translation>
-    </message>
-    <message>
-        <source>Some connectors have changed.
-In order to see the changes, you have to restart fritzing.
-Do you want to restart now?</source>
-        <translation>いくつかのコネクタが変更されています.
-この変更を反映するために fritzing の再起動が必要です.
-いますぐ再起動しますか?</translation>
     </message>
     <message>
         <source>Share online...</source>
@@ -2696,10 +2524,6 @@ Would you like to convert &apos;%1&apos; to the .fzz format now or open it read-
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Parts Editor</source>
-        <translation type="unfinished">パーツエディター</translation>
-    </message>
-    <message>
         <source>Choose Ground Fill Seed(s)...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2908,14 +2732,6 @@ Would you like to convert &apos;%1&apos; to the .fzz format now or open it read-
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>A new Parts Editor is under construction. The old Parts Editor is still available, but the code is pretty buggy. So use it at your own risk.
-
-For many purposes you can use a Generic IC chip instead (first part in the ICs section of the Parts Bin). Drag one into your sketch and from the Inspector change the package: there are SIPs, DIPS, and a set of SMDs. Depending on the package you choose, you can also change the chip label, set the number of pins, and change the pin labels.
-
-Open the old Parts Editor?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Revert?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2951,10 +2767,6 @@ Go ahead and revert?</source>
     </message>
     <message>
         <source>There are no unrouted connections in this view.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the parts editor on an existing part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2995,7 +2807,7 @@ Go ahead and revert?</source>
     </message>
     <message>
         <source>PCB</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">プリント基板</translation>
     </message>
     <message>
         <source>Navigator</source>
@@ -3008,97 +2820,6 @@ Go ahead and revert?</source>
     <message>
         <source>Couldn&apos;t get the dock widget</source>
         <translation type="unfinished">ドックウィジットを取得できません</translation>
-    </message>
-</context>
-<context>
-    <name>MetadataView</name>
-    <message>
-        <source>This is where you edit the metadata for the part ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s author</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation type="unfinished">作者</translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s description--you can use simple html (as defined by Qt&apos;s Rich Text)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished">詳細</translation>
-    </message>
-    <message>
-        <source>Set the default part label prefix</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="unfinished">ラベル</translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s family--what other parts is this part related to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Family</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Properties</source>
-        <translation type="unfinished">プロパティ</translation>
-    </message>
-    <message>
-        <source>Set the part&apos;s tags</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tags</source>
-        <translation type="unfinished">タグ</translation>
-    </message>
-</context>
-<context>
-    <name>MismatchingConnectorWidget</name>
-    <message>
-        <source>In </source>
-        <translation>中に</translation>
-    </message>
-    <message>
-        <source>and </source>
-        <translation>と </translation>
-    </message>
-    <message>
-        <source>view only</source>
-        <translation>ビューのみ</translation>
-    </message>
-    <message>
-        <source>fix this!</source>
-        <translatorcomment>debug用?</translatorcomment>
-        <translation>直しておいてよ!</translation>
     </message>
 </context>
 <context>
@@ -3236,14 +2957,21 @@ Reason: %2 (errcode %3)</source>
     </message>
 </context>
 <context>
+    <name>PEConnectorsView</name>
+    <message>
+        <source>This is where you edit the connector metadata for the part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>number of connectors:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PEMainWindow</name>
     <message>
         <source>Parts Editor</source>
         <translation type="unfinished">パーツエディター</translation>
-    </message>
-    <message>
-        <source>New Parts Editor</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Show Icon</source>
@@ -3298,10 +3026,6 @@ Reason: %2 (errcode %3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Change description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3309,15 +3033,352 @@ Reason: %2 (errcode %3)</source>
         <source>Change connector %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>SVG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connectors</source>
+        <translation type="unfinished">コネクター</translation>
+    </message>
+    <message>
+        <source>Open a file to use as a part image.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show in Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On the desktop, open the folder containing the current svg file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to write svg to  %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to parse fzp file  %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Friting (New) Parts Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icon View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Metadata View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connectors View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image &amp; Footprint Files (%1 %2 %3 %4 %5);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3);;gEDA Footprint Files (%4);;Kicad Module Files (%5)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image Files (%1 %2 %3);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3)%4%5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Image</source>
+        <translation type="unfinished">イメージを開く</translation>
+    </message>
+    <message>
+        <source>Copy problem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to make a local copy of: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You may use a PNG or JPG image to construct your part, but it is better to use an SVG. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PNG and JPG images retain their nature as bitmaps and do not look good when scaled--</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>so for Fritzing parts it is best to use PNG and JPG only as placeholders.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use of PNG and JPG discouraged</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conversion problem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to load image file: 
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG problem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to parse &apos;%1&apos;: %2 line:%3 column:%4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are no copper layers defined in: %1. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>See &lt;a href=&quot;http://fritzing.org/learning/tutorials/creating-custom-parts/providing-part-graphics/&quot;&gt;this explanation&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;br/&gt;This will not be a problem in the next release of the Parts Editor, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>but for now please modify the file according to the instructions in the link.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no schematics found in %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>schematic part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no footprints found in %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unable to open temp file %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Relocate connector %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation type="unfinished">ファイル(&amp;F)</translation>
+    </message>
+    <message>
+        <source>Sketch Change Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The open sketch &apos;%1&apos; uses the part you are editing. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving this part will make a change to the sketch that cannot be undone.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The open sketches </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;%1&apos;, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and &apos;%1&apos; </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving this part will make a change to these sketches that cannot be undone.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+
+Go ahead and save?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished">保存</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">キャンセル</translation>
+    </message>
+    <message>
+        <source>Move terminal point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove connector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove %1 connectors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save &quot;%1&quot;</source>
+        <translation type="unfinished">保存 &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>Do you want to save the changes you made in the part &quot;%1&quot;?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your changes will be lost if you don&apos;t save them.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>untitled part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add connector</source>
+        <translation type="unfinished">コネクターを追加</translation>
+    </message>
+    <message>
+        <source>Add %1 connectors</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PEMetadataView</name>
+    <message>
+        <source>&apos;family&apos; must not be blank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Parts Editor</source>
+        <translation type="unfinished">パーツエディター</translation>
+    </message>
+    <message>
+        <source>All parts must have a &apos;family&apos; property.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This is where you edit the metadata for the part ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="unfinished">作者</translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s description--you can use simple html (as defined by Qt&apos;s Rich Text)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished">詳細</translation>
+    </message>
+    <message>
+        <source>Set the default part label prefix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished">ラベル</translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s family--what other parts is this part related to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Family</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Properties</source>
+        <translation type="unfinished">プロパティ</translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tags</source>
+        <translation type="unfinished">タグ</translation>
+    </message>
+</context>
+<context>
+    <name>PESvgView</name>
+    <message>
+        <source>width:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>height:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PEToolView</name>
     <message>
-        <source>width</source>
-        <translation type="unfinished">幅</translation>
+        <source>Connector List</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>height</source>
+        <source>Connector Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlock to modify the current connector&apos;s information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>N</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connector %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3637,259 +3698,6 @@ Reason: %2 (errcode %3)</source>
     <message>
         <source>Select a color for this icon</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PartsEditorMainWindow</name>
-    <message>
-        <source>Untitled Part</source>
-        <translation>無題のパーツ</translation>
-    </message>
-    <message>
-        <source>Please find a name for me!</source>
-        <translation>部品に名前をつけてください!</translation>
-    </message>
-    <message>
-        <source>Please provide a label</source>
-        <translation>ラベルを付けてください</translation>
-    </message>
-    <message>
-        <source>You could tell a little bit about this part</source>
-        <translation>このパーツについて説明してください</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;created by&lt;/i&gt; %1 &lt;i&gt;on&lt;/i&gt; %2</source>
-        <translation>&lt;i&gt;制作者&lt;/i&gt; %1 &lt;i&gt;日時&lt;/i&gt; %2</translation>
-    </message>
-    <message>
-        <source>Parts Editor</source>
-        <translation>パーツエディター</translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation>ラベル</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation>詳細</translation>
-    </message>
-    <message>
-        <source>Properties</source>
-        <translation>プロパティ</translation>
-    </message>
-    <message>
-        <source>Tags</source>
-        <translation>タグ</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation>作者</translation>
-    </message>
-    <message>
-        <source>Created/Updated on</source>
-        <translation>作成／アップデート日時</translation>
-    </message>
-    <message>
-        <source>Specifications</source>
-        <translation>詳細</translation>
-    </message>
-    <message>
-        <source>Connectors</source>
-        <translation>コネクター</translation>
-    </message>
-    <message>
-        <source>save as new part</source>
-        <translation>新しいパーツとして保存</translation>
-    </message>
-    <message>
-        <source>save</source>
-        <translation>保存</translation>
-    </message>
-    <message>
-        <source>cancel</source>
-        <translation>キャンセル</translation>
-    </message>
-    <message>
-        <source>Save as new part</source>
-        <translation>新しいパーツとして保存</translation>
-    </message>
-    <message>
-        <source>Fritzing</source>
-        <translation>Fritzing</translation>
-    </message>
-    <message>
-        <source>Cannot write file %1:
-%2.</source>
-        <translation>ファイル %1:%2
-に書き込めません.</translation>
-    </message>
-    <message>
-        <source>Saved &apos;%1&apos;</source>
-        <translation>&quot;%1&quot;を保存</translation>
-    </message>
-    <message>
-        <source>%1 %2</source>
-        <translation>%1 %2</translation>
-    </message>
-    <message>
-        <source>Icon needed</source>
-        <translation>アイコンが必要です</translation>
-    </message>
-    <message>
-        <source>Please, provide an icon image for this part</source>
-        <translation>このパーツのアイコン画像を用意してください</translation>
-    </message>
-    <message>
-        <source>Please classify this part</source>
-        <translation>このパーツを分類してください</translation>
-    </message>
-    <message>
-        <source>You can add your tags to make searching easier</source>
-        <translation>タグを追加すると検索が容易になります</translation>
-    </message>
-    <message>
-        <source>There&apos;s already a file with this name.
-Please, specify a new filename</source>
-        <translation>同じ名前のファイルが存在します
-別のファイル名を入力してください</translation>
-    </message>
-    <message>
-        <source>close</source>
-        <translation>閉じる</translation>
-    </message>
-    <message>
-        <source>Load icon..</source>
-        <translation>アイコンの読み込み ..</translation>
-    </message>
-    <message>
-        <source>Updating existing part</source>
-        <translation>既存パーツの更新</translation>
-    </message>
-    <message>
-        <source>Fritzing Parts (*%1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error! Cannot load part.
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PartsEditorView</name>
-    <message>
-        <source>Open Image</source>
-        <translation>イメージを開く</translation>
-    </message>
-    <message>
-        <source>Parts Editor: couldn&apos;t save terminal point for connector %1 in %2 view</source>
-        <translation>パーツエディタ: %2 ビューのターミナルポイント %1 を保存できません</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t open svg file</source>
-        <translation>SVG ファイルを開けません</translation>
-    </message>
-    <message>
-        <source>The file couldn&apos;t be opened. If this file defines its dimensions 
-in non-real-world units (e.g. pixels), then they won&apos;t be translated 
-into real life ones.
-Malformed font-family definitions won&apos;t be fixed either.</source>
-        <translation>ファイルを開くことができませんでした。 もし単位がPC固有の物(例:ピクセル数)だったときは
-現実世界の単位に数値を変換してください。
-Fritzingは非対応のフォントも修正できません。</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t write into file</source>
-        <translation>ファイルに書けません</translation>
-    </message>
-    <message>
-        <source>This file needs to be fixed to fit fritzing needs, but it couldn&apos;t
-be written.
-Fritzing is not compatible with this kind of svg files. Please 
-check your permissions, and try again.
-
-More information at http://fritzing.org/using-svg-images-new-parts/</source>
-        <translation>このファイルは fritzing で読み込めるように修正しなければなりませんが、
-Fritzingの互換性のため svg 用として書き込むことが出ませんでした。
-あなたの権限を確認してから再度お試しください。
-
-追加情報は  http://fritzing.org/using-svg-images-new-parts/ にあります</translation>
-    </message>
-    <message>
-        <source>Image &amp; Footprint Files (%1 %2 %3 %4 %5);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3);;gEDA Footprint Files (%4);;Kicad Module Files (%5)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Conversion problem</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to load image file: 
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>no footprints found in %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unable to open temp file %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>no schematics found in %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>schematic part</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Image Files (%1 %2 %3);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3)%4%5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Image &amp; Footprint Files (%1 %2 %3 %4);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3);;Kicad Schematic Files (%4)%5</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PartsEditorViewsWidget</name>
-    <message>
-        <source>Show Anchor Points</source>
-        <translation>アンカーポイントを表示</translation>
-    </message>
-    <message>
-        <source>Please refer to the &lt;a style=&apos;color: #52182C&apos; href=&apos;http://fritzing.org/learning/tutorials/creating-custom-parts/&apos;&gt;guidelines&lt;/a&gt; before modifying or creating parts</source>
-        <translation>パーツを変更または作成する前に &lt;a style=&apos;color: #52182C&apos; href=&apos;http://fritzing.org/learning/tutorials/creating-custom-parts/&apos;&gt;ガイドライン&lt;/a&gt;を参照してください</translation>
-    </message>
-    <message>
-        <source>What does this
-part look like on
-the breadboard?</source>
-        <translation>このパーツは
-ブレッドボードで
-どのように表示されますか?</translation>
-    </message>
-    <message>
-        <source>What does this
-part look like in
-a schematic view?</source>
-        <translation>このパーツは
-回路図ビューで
-どのように表示されますか?</translation>
-    </message>
-    <message>
-        <source>What does this
-part look like in
-the PCB view?</source>
-        <translation>このパーツは
-プリント基板ビューで
-どのように表示されますか?</translation>
-    </message>
-    <message>
-        <source>Load image..</source>
-        <translation>画像の読込み.</translation>
     </message>
 </context>
 <context>
@@ -4402,32 +4210,12 @@ shift key swaps scroll axis</source>
         <translation>id&apos;%3&apos;モジュールの&apos;%2&apos;内にパーツ&apos;%1&apos;が見つかりません.</translation>
     </message>
     <message>
-        <source>Add connector</source>
-        <translation>コネクターを追加</translation>
-    </message>
-    <message>
         <source>a label</source>
         <translation>ラベル</translation>
     </message>
     <message>
         <source>a value</source>
         <translation>値</translation>
-    </message>
-    <message>
-        <source>no name yet</source>
-        <translation>まだ名前がありません</translation>
-    </message>
-    <message>
-        <source>no description yet</source>
-        <translation>まだ説明がありません</translation>
-    </message>
-    <message>
-        <source>Accept</source>
-        <translation>承認</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>キャンセル</translation>
     </message>
     <message>
         <source>PCB View</source>
@@ -4721,10 +4509,6 @@ is already there, we won&apos;t add it again, right?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The file %1 is not a Fritzing file (7).</source>
-        <translation type="unfinished">ファイル %1 はFritzingファイルではありません (4). {1 ?} {7)?}</translation>
-    </message>
-    <message>
         <source>Sorry, Fritzing can&apos;t yet handle both pins and pads together (in %1 in %2)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4905,10 +4689,6 @@ is already there, we won&apos;t add it again, right?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 file export failure (2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>mask export failure</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5041,6 +4821,34 @@ is already there, we won&apos;t add it again, right?</source>
     </message>
     <message>
         <source>Icon View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;id:&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Name:&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the connectors&apos;s title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMD-pad</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Description:&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the connectors&apos;s description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 file export failure (2): %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5237,17 +5045,6 @@ is already there, we won&apos;t add it again, right?</source>
     <message>
         <source>selected color (%1)</source>
         <translation>選択色 (%1)</translation>
-    </message>
-</context>
-<context>
-    <name>SingleConnectorInfoWidget</name>
-    <message>
-        <source>Name: </source>
-        <translation>名前:</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation>説明:</translation>
     </message>
 </context>
 <context>
@@ -5761,6 +5558,10 @@ Note: you can also trigger this display by mousing down on the routing status te
     </message>
     <message>
         <source>Slovak - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bengali - %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
