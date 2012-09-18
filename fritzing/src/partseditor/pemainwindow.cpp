@@ -83,13 +83,18 @@ $Date$
 
         don't allow empty family
 
+        no PEGraphics item for svg
+
+        keep originating file in fzp/svg and use it for naming
+            display in pesvgview
+
         bug when saving after changing kingbright schematic (editing from search bin)
 
         no way to restore parts bin once it has been closed
             no parts bin in first release
             need window menu
 
-        filename of current file in toolview
+        changed terminal points sometimes not being saved
 
         connector locations are not updating properly when a part in the sketch is edited
 
@@ -855,13 +860,19 @@ void PEMainWindow::initSvgTree(ItemBase * itemBase, QDomDocument & domDocument)
         ZList.insert(itemBase->viewIdentifier(), z++);
         QList<QDomElement> next;
         foreach (QDomElement element, traverse) {
+            bool isG = false;
+            bool isSvg = false;
             QString tagName = element.tagName();
             if      (tagName.compare("rect") == 0);
-            else if (tagName.compare("g") == 0);
+            else if (tagName.compare("g") == 0) {
+                isG = true;
+            }
+            else if (tagName.compare("svg") == 0) {
+                isSvg = true;
+            }
             else if (tagName.compare("circle") == 0);
             else if (tagName.compare("ellipse") == 0);
             else if (tagName.compare("path") == 0);
-            else if (tagName.compare("svg") == 0);
             else if (tagName.compare("line") == 0);
             else if (tagName.compare("polyline") == 0);
             else if (tagName.compare("polygon") == 0);
@@ -869,6 +880,12 @@ void PEMainWindow::initSvgTree(ItemBase * itemBase, QDomDocument & domDocument)
             else continue;
 
             QRectF bounds = getPixelBounds(renderer, element);
+            if (isSvg) {                
+                bounds.setWidth(0);             // skip top level element
+            }
+            else if (isG) {
+                // skip if it's too high up in the hierarchy?
+            }
 
             // known Qt bug: boundsOnElement returns zero width and height for text elements.
             if (bounds.width() > 0 && bounds.height() > 0) {
@@ -925,10 +942,10 @@ void PEMainWindow::switchedConnector(const QDomElement & element)
     if (m_currentGraphicsView == NULL) return;
     if (element.isNull()) return;
 
-    switchedConnector(element, m_currentGraphicsView);
+    switchedConnector(element, m_currentGraphicsView, true);
 }
 
-void PEMainWindow::switchedConnector(const QDomElement & element, SketchWidget * sketchWidget)
+void PEMainWindow::switchedConnector(const QDomElement & element, SketchWidget * sketchWidget, bool lock)
 {
     QString id, terminalID;
     if (!getConnectorIDs(element, sketchWidget, id, terminalID)) return;
@@ -967,8 +984,12 @@ void PEMainWindow::switchedConnector(const QDomElement & element, SketchWidget *
             break;
         }
     }
-    m_peToolView->setLock(gotOne);
-    lockChangedAux(gotOne, pegiList);
+
+
+    if (lock) {
+        m_peToolView->setLock(gotOne);
+        lockChangedAux(gotOne, pegiList);
+    }
     if (!gotOne) {
         foreach (PEGraphicsItem * pegi, pegiList) {
             pegi->showTerminalPoint(false);
@@ -1393,7 +1414,8 @@ void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QStri
         QDomElement element = pegi->element();
         if (element.attribute("gorn").compare(newGorn) == 0) {
             pegi->setHighlighted(true);
-            switchedConnector(m_peToolView->currentConnector(), sketchWidget);
+            switchedConnector(m_peToolView->currentConnector(), sketchWidget, false);
+
         }
         else if (element.attribute("gorn").compare(oldGorn) == 0) {
             pegi->showTerminalPoint(false);         // if newGorn is empty as a redo when the original relocate started with no connector in the svg file

@@ -123,7 +123,7 @@ protected:
     class PEGraphicsItem * findConnectorItem();
     void terminalPointChangedAux(PEGraphicsItem * pegi, QPointF before, QPointF after);
     void showInOS(QWidget *parent, const QString &pathIn);
-    void switchedConnector(const QDomElement &, SketchWidget *);
+    void switchedConnector(const QDomElement &, SketchWidget *, bool lock);
     PEGraphicsItem * makePegi(QSizeF size, QPointF topLeft, ItemBase * itemBase, QDomElement & element);
     QRectF getPixelBounds(FSvgRenderer & renderer, QDomElement & element);
     bool canSave();
