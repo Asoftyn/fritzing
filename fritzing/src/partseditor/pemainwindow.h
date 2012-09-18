@@ -112,7 +112,7 @@ protected:
     void initSvgTree(ItemBase *, QDomDocument &);
     void initConnectors();
     QString createSvgFromImage(const QString &origFilePath);
-    QString makeSvgPath(SketchWidget * sketchWidget, bool useIndex);
+    QString makeSvgPath(const QString & referenceFile, SketchWidget * sketchWidget, bool useIndex);
     QString saveSvg(const QString & svg, const QString & newFilePath);
     QString saveFzp();
     void reload();
@@ -134,6 +134,9 @@ protected:
     void killPegi();
     bool loadFzp(const QString & path);
     void removedConnectorsAux(QList<QDomElement> & connectors);
+    QString getFzpReferenceFile();
+    QString getSvgReferenceFile(const QString & filename);
+    QString makeDesc(const QString & referenceFile);
 
 protected slots:
     void initZoom();

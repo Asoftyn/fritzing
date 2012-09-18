@@ -81,6 +81,8 @@ $Date$
 
         multiple matching connector id--trash any other matching id
 
+        viewswitcher
+
         don't allow empty family
 
         no PEGraphics item for svg
@@ -228,6 +230,8 @@ $Date$
 ////////////////////////////////////////////////////
 
 bool GotZeroConnector = false;
+
+static const QString ReferenceFileString("referenceFile");
 
 static const int IconViewIndex = 3;
 static const int MetadataViewIndex = 4;
@@ -454,6 +458,10 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
     if (!loadFzp(originalModelPart->path())) return;
 
     QDomElement fzpRoot = m_fzpDocument.documentElement();
+    QString referenceFile = fzpRoot.attribute(ReferenceFileString);
+    if (referenceFile.isEmpty()) {
+        fzpRoot.setAttribute(ReferenceFileString, info.fileName());
+    }
     QDomElement views = fzpRoot.firstChildElement("views");
     QDomElement author = fzpRoot.firstChildElement("author");
     if (author.isNull()) {
@@ -514,9 +522,12 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
             continue;
         }
 
+        QString referenceFile = getSvgReferenceFile(itemBase->filename());
 		QSizeF size = itemBase->size();
-		svg = TextUtils::makeSVGHeader(GraphicsUtils::SVGDPI, GraphicsUtils::StandardFritzingDPI, size.width(), size.height()) + svg + "</svg>";
-        QString svgPath = makeSvgPath(sketchWidget, true);
+        QString header = TextUtils::makeSVGHeader(GraphicsUtils::SVGDPI, GraphicsUtils::StandardFritzingDPI, size.width(), size.height());
+        header += makeDesc(referenceFile);
+		svg = header + svg + "</svg>";
+        QString svgPath = makeSvgPath(referenceFile, sketchWidget, true);
         bool result = TextUtils::writeUtf8(m_userPartsFolderSvgPath + svgPath, TextUtils::svgNSOnly(svg));
         if (!result) {
             QMessageBox::critical(NULL, tr("Parts Editor"), tr("Unable to write svg to  %1").arg(svgPath));
@@ -561,7 +572,7 @@ void PEMainWindow::initZoom() {
 }
 
 void PEMainWindow::setTitle() {
-    QString title = tr("Friting (New) Parts Editor");
+    QString title = tr("Fritzing (New) Parts Editor");
     QString partTitle = getPartTitle();
 
     QString viewName;
@@ -581,14 +592,14 @@ void PEMainWindow::createViewMenuActions() {
 	m_showIconAct->setStatusTip(tr("Show the icon view"));
 	connect(m_showIconAct, SIGNAL(triggered()), this, SLOT(showIconView()));
 
-	m_showMetadataViewAct = new QAction(tr("Show Metatdata"), this);
+	m_showMetadataViewAct = new QAction(tr("Show Metadata"), this);
 	m_showMetadataViewAct->setShortcut(tr("Ctrl+5"));
 	m_showMetadataViewAct->setStatusTip(tr("Show the metadata view"));
 	connect(m_showMetadataViewAct, SIGNAL(triggered()), this, SLOT(showMetadataView()));
 
     m_showConnectorsViewAct = new QAction(tr("Show Connectors"), this);
 	m_showConnectorsViewAct->setShortcut(tr("Ctrl+6"));
-	m_showConnectorsViewAct->setStatusTip(tr("Show the connector metatdata in a list view"));
+	m_showConnectorsViewAct->setStatusTip(tr("Show the connector metadata in a list view"));
 	connect(m_showConnectorsViewAct, SIGNAL(triggered()), this, SLOT(showConnectorsView()));
 
 }
@@ -985,7 +996,6 @@ void PEMainWindow::switchedConnector(const QDomElement & element, SketchWidget *
         }
     }
 
-
     if (lock) {
         m_peToolView->setLock(gotOne);
         lockChangedAux(gotOne, pegiList);
@@ -1037,12 +1047,15 @@ void PEMainWindow::loadImage()
 		return; // Cancel pressed
 	} 
 
+    bool saveReferenceFile = true;
     QString newPath = origPath;
+    QString referenceFile = QFileInfo(origPath).fileName();
 	if (newPath.endsWith(".svg")) {
-        if (newPath.contains(m_userPartsFolderSvgPath)) ;
-        else if (newPath.contains(FolderUtils::getApplicationSubFolderPath("parts"))) ;
+        if (newPath.contains(m_userPartsFolderSvgPath)) saveReferenceFile = false;
+        else if (newPath.contains(FolderUtils::getApplicationSubFolderPath("parts"))) saveReferenceFile = false;
         else {
-            newPath = m_userPartsFolderSvgPath + makeSvgPath(m_currentGraphicsView, true);
+            // from outside the ecosystem
+            newPath = m_userPartsFolderSvgPath + makeSvgPath(referenceFile, m_currentGraphicsView, true);
             bool success = QFile::copy(origPath, newPath);
             if (!success) {
     		    QMessageBox::warning(NULL, tr("Copy problem"), tr("Unable to make a local copy of: '%1'").arg(origPath));
@@ -1061,7 +1074,7 @@ void PEMainWindow::loadImage()
         }
 
 		try {
-			newPath = createSvgFromImage(newPath);
+			newPath = createSvgFromImage(origPath);
 		}
 		catch (const QString & msg) {
     		QMessageBox::warning(NULL, tr("Conversion problem"), tr("Unable to load image file: \n%1").arg(msg));
@@ -1099,6 +1112,21 @@ void PEMainWindow::loadImage()
             }
         }
 
+        if (saveReferenceFile) {
+            QDomElement root = doc.documentElement();
+            QDomElement desc = root.firstChildElement("desc");
+            if (desc.isNull()) {
+                desc = doc.createElement("desc");
+                root.appendChild(desc);
+            }
+            QDomElement referenceFile = desc.firstChildElement(ReferenceFileString);
+            if (referenceFile.isNull()) {
+                referenceFile = doc.createElement(ReferenceFileString);
+                desc.appendChild(referenceFile);
+            }
+            TextUtils::replaceChildText(doc, desc, QFileInfo(origPath).fileName());
+            TextUtils::writeUtf8(newPath, TextUtils::svgNSOnly(doc.toString()));
+        }
 
 		ChangeSvgCommand * csc = new ChangeSvgCommand(this, m_currentGraphicsView, itemBase->filename(), newPath, m_originalSvgPaths.value(itemBase->viewIdentifier()), newPath, NULL);
         QFileInfo info(origPath);
@@ -1108,8 +1136,8 @@ void PEMainWindow::loadImage()
 }
 
 QString PEMainWindow::createSvgFromImage(const QString &origFilePath) {
-
-	QString newFilePath = m_userPartsFolderSvgPath + makeSvgPath(m_currentGraphicsView, true);
+    QString referenceFile = QFileInfo(origFilePath).fileName();
+	QString newFilePath = m_userPartsFolderSvgPath + makeSvgPath(referenceFile, m_currentGraphicsView, true);
 	if (origFilePath.endsWith(".fp")) {
 		// this is a geda footprint file
 		GedaElement2Svg geda;
@@ -1184,12 +1212,14 @@ QString PEMainWindow::createSvgFromImage(const QString &origFilePath) {
 	return newFilePath;
 }
 
-QString PEMainWindow::makeSvgPath(SketchWidget * sketchWidget, bool useIndex)
+QString PEMainWindow::makeSvgPath(const QString & referenceFile, SketchWidget * sketchWidget, bool useIndex)
 {
+    QString rf = referenceFile;
+    if (!rf.isEmpty()) rf += "_";
     QString viewName = ViewLayer::viewIdentifierNaturalName(sketchWidget->viewIdentifier());
     QString indexString;
     if (useIndex) indexString = QString("_%3").arg(m_fileIndex++);
-    return QString("%1/%2_%1%3.svg").arg(viewName).arg(m_guid).arg(indexString);
+    return QString("%1/%2%3_%1%4.svg").arg(viewName).arg(rf).arg(m_guid).arg(indexString);
 }
 
 QString PEMainWindow::saveSvg(const QString & svg, const QString & newFilePath) {
@@ -1233,7 +1263,7 @@ QString PEMainWindow::saveFzp() {
     QDir dir = QDir::temp();
     dir.mkdir(m_guid);
     dir.cd(m_guid);
-    QString fzpPath = dir.absoluteFilePath(QString("%1_%2.fzp").arg(m_guid).arg(m_fileIndex++));   
+    QString fzpPath = dir.absoluteFilePath(QString("%1%2_%3.fzp").arg(getFzpReferenceFile()).arg(m_guid).arg(m_fileIndex++));   
     DebugDialog::debug("temp path " + fzpPath);
     TextUtils::writeUtf8(fzpPath, TextUtils::svgNSOnly(m_fzpDocument.toString()));
     return fzpPath;
@@ -1440,7 +1470,7 @@ bool PEMainWindow::saveAs() {
 bool PEMainWindow::saveAs(bool overWrite)
 {
     QDomElement fzpRoot = m_fzpDocument.documentElement();
-    QString savedModuleID = fzpRoot.attribute("moduleId");
+    QString workingModuleID = fzpRoot.attribute("moduleId");
 
     QList<MainWindow *> affectedWindows;
     if (overWrite) {
@@ -1506,8 +1536,21 @@ bool PEMainWindow::saveAs(bool overWrite)
             continue;
         }
 
+        QString referenceFile;
+        QString svg = m_docs.value(sketchWidget->viewIdentifier())->toString();
+        if (!svg.contains(ReferenceFileString)) {
+            referenceFile = getSvgReferenceFile(m_originalSvgPaths.value(sketchWidget->viewIdentifier()));
+            int ix = svg.indexOf("<svg");
+            if (ix >= 0) {
+                int jx = svg.indexOf(">", ix);
+                if (jx > ix) {
+                    svg.insert(jx + 1, makeDesc(referenceFile));
+                }
+            }
+        }
+
         svgPaths.insert(sketchWidget->viewIdentifier(), currentSvgPath);
-        QString svgPath = makeSvgPath(sketchWidget, false);
+        QString svgPath = makeSvgPath(referenceFile, sketchWidget, false);
 
         bool svgOverWrite = false;
         if (overWrite) {
@@ -1520,7 +1563,7 @@ bool PEMainWindow::saveAs(bool overWrite)
         }
 
         layers.setAttribute("image", svgPath);
-        QString svg = m_docs.value(sketchWidget->viewIdentifier())->toString();
+
         QString actualPath = svgOverWrite ? m_originalSvgPaths.value(sketchWidget->viewIdentifier()) : m_userPartsFolderSvgPath + svgPath; 
         bool result = TextUtils::writeUtf8(actualPath, TextUtils::svgNSOnly(svg));
         if (!result) {
@@ -1529,12 +1572,18 @@ bool PEMainWindow::saveAs(bool overWrite)
     }
 
     QDir dir(m_userPartsFolderPath);
-    QString fzpPath = dir.absoluteFilePath(QString("%1.fzp").arg(m_guid));   
+    QString fzpPath = dir.absoluteFilePath(QString("%1%2.fzp").arg(getFzpReferenceFile()).arg(m_guid));   
     if (overWrite) {
         fzpPath = m_originalFzpPath;
     }
     bool result = TextUtils::writeUtf8(fzpPath, TextUtils::svgNSOnly(m_fzpDocument.toString()));
 
+    if (!overWrite) {
+        m_originalFzpPath = fzpPath;
+        m_originalModuleID = fzpRoot.attribute("moduleId");
+    }
+
+    QString savedModuleID = fzpRoot.attribute("moduleId");
 
     // restore the set of working svg files
     foreach (SketchWidget * sketchWidget, m_sketchWidgets) {
@@ -1546,10 +1595,10 @@ bool PEMainWindow::saveAs(bool overWrite)
         layers.setAttribute("image", svgPath);
     }
 
-	QString moduleID = fzpRoot.attribute("moduleId");
-    fzpRoot.setAttribute("moduleId", savedModuleID);
+    // restores the temporary fzp state
+    fzpRoot.setAttribute("moduleId", workingModuleID);
 
-    ModelPart * modelPart = m_refModel->retrieveModelPart(moduleID);
+    ModelPart * modelPart = m_refModel->retrieveModelPart(savedModuleID);
     if (modelPart == NULL) {
 	    modelPart = m_refModel->loadPart(fzpPath, true);
         emit addToMyPartsSignal(modelPart);
@@ -1563,6 +1612,7 @@ bool PEMainWindow::saveAs(bool overWrite)
         }
         undoStack.push(parentCommand);
     }
+
 
 	m_autosaveNeeded = false;
     m_undoStack->setClean();
@@ -2039,7 +2089,39 @@ void PEMainWindow::connectorCountChanged(int newCount) {
 }
 
 bool PEMainWindow::editsModuleID(const QString & moduleID) {
+    // only to detect whether a user tries to open the parts editor on the same part twice
     return (m_originalModuleID.compare(moduleID) == 0);
 }
 
+QString PEMainWindow::getFzpReferenceFile() {
+    QString referenceFile = m_fzpDocument.documentElement().attribute(ReferenceFileString);
+    if (!referenceFile.isEmpty()) referenceFile += "_";
+    return referenceFile;
+}
 
+QString PEMainWindow::getSvgReferenceFile(const QString & filename) {
+    QFileInfo info(filename);
+    QString referenceFile = info.fileName();
+
+    QFile file(filename);
+    if (file.open(QFile::ReadOnly)) {
+        QString svg = file.readAll();
+        int ix = svg.indexOf("<" + ReferenceFileString + ">");
+        if (ix >= 0) {
+            int jx = svg.indexOf(">", ix);
+            if (jx > ix) {
+                int kx = svg.indexOf("<");
+                if (kx > jx) {
+                    referenceFile = svg.mid(jx + 1, kx - jx - 1);
+                }
+            }
+        }
+    }
+
+    return referenceFile;
+}
+
+QString PEMainWindow::makeDesc(const QString & referenceFile) 
+{
+    return QString("\n<desc><%2>%1</%2></desc>\n").arg(referenceFile).arg(ReferenceFileString);
+}

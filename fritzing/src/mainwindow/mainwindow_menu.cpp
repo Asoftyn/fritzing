@@ -2731,7 +2731,7 @@ void MainWindow::importFilesFromPrevInstall() {
 	if(!QFileInfo(prevInstallPath+"/parts").exists()) {
 		QMessageBox::critical(
 			this, QObject::tr("Fritzing"),
-			tr("The folder \"%1\" isn't a Friting installation folder").arg(prevInstallPath));
+			tr("The folder \"%1\" isn't a Fritzing installation folder").arg(prevInstallPath));
 		return;
 	}
 

@@ -500,7 +500,7 @@ void PartsBinPaletteWidget::load(const QString &filename, QWidget * progressTarg
 	    DebugDialog::debug(QString("done loading bin '%1'").arg(name));
 
 	    if (!result) {
-		    QMessageBox::warning(NULL, QObject::tr("Fritzing"), QObject::tr("Friting cannot load the parts bin"));
+		    QMessageBox::warning(NULL, QObject::tr("Fritzing"), QObject::tr("Fritzing cannot load the parts bin"));
 	    }
 	    else {
 		    m_fileName = filename;
