@@ -39,6 +39,10 @@ $Date$
             hide connectors
             need to show again during bus mode
 
+		delete key in connector list goes boom!
+
+		need a way to go from rect back to pin
+
         from partseditorview.cpp
 	        bool fileHasChanged = (m_viewIdentifier == ViewLayer::IconView) ? false : TextUtils::fixPixelDimensionsIn(fileContent);
 	        fileHasChanged |= TextUtils::cleanSodipodi(fileContent);
@@ -77,7 +81,7 @@ $Date$
             check db for already used
             fill in with guid
 
-        delete all unused svg and fzp files when finished
+        delete all unused svg when finished?
 
         multiple matching connector id--trash any other matching id
 
@@ -85,16 +89,10 @@ $Date$
 
         don't allow empty family
 
-        no PEGraphics item for svg
-
         keep originating file in fzp/svg and use it for naming
             display in pesvgview
 
-        bug when saving after changing kingbright schematic (editing from search bin)
-
-        no way to restore parts bin once it has been closed
-            no parts bin in first release
-            need window menu
+        no parts bin in first release
 
         changed terminal points sometimes not being saved
 
@@ -109,6 +107,10 @@ $Date$
         check all MainWindow * casts
 
     ////////////////////////////// second release /////////////////////////////////
+
+		use the actual svg shape instead of rectangles
+
+		delete temp files after crash
 
         show in OS button only shows folder and not file in linux
 
@@ -292,6 +294,13 @@ PEMainWindow::~PEMainWindow()
 {
     // PEGraphicsItems are still holding QDomElement so delete them before m_fzpDocument is deleted
     killPegi();
+
+	// kill temp files
+	foreach (QString string, m_toDelete) {
+		QFile::remove(string);
+	}
+	QDir dir = QDir::temp();
+    dir.rmdir(m_guid);
 }
 
 void PEMainWindow::closeEvent(QCloseEvent *event) {
@@ -531,7 +540,7 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
         header += makeDesc(referenceFile);
 		svg = header + svg + "</svg>";
         QString svgPath = makeSvgPath(referenceFile, sketchWidget, true);
-        bool result = TextUtils::writeUtf8(m_userPartsFolderSvgPath + svgPath, TextUtils::svgNSOnly(svg));
+        bool result = writeXml(m_userPartsFolderSvgPath + svgPath, svg, true);
         if (!result) {
             QMessageBox::critical(NULL, tr("Parts Editor"), tr("Unable to write svg to  %1").arg(svgPath));
 		    return;
@@ -1129,7 +1138,7 @@ void PEMainWindow::loadImage()
                 desc.appendChild(referenceFile);
             }
             TextUtils::replaceChildText(doc, desc, QFileInfo(origPath).fileName());
-            TextUtils::writeUtf8(newPath, TextUtils::svgNSOnly(doc.toString()));
+            writeXml(newPath, doc.toString(), true);
         }
 
 		ChangeSvgCommand * csc = new ChangeSvgCommand(this, m_currentGraphicsView, itemBase->filename(), newPath, m_originalSvgPaths.value(itemBase->viewIdentifier()), newPath, NULL);
@@ -1227,7 +1236,7 @@ QString PEMainWindow::makeSvgPath(const QString & referenceFile, SketchWidget * 
 }
 
 QString PEMainWindow::saveSvg(const QString & svg, const QString & newFilePath) {
-    if (!TextUtils::writeUtf8(newFilePath, TextUtils::svgNSOnly(svg))) {
+    if (!writeXml(newFilePath, svg, true)) {
         throw tr("unable to open temp file %1").arg(newFilePath);
     }
 	return newFilePath;
@@ -1269,7 +1278,7 @@ QString PEMainWindow::saveFzp() {
     dir.cd(m_guid);
     QString fzpPath = dir.absoluteFilePath(QString("%1%2_%3.fzp").arg(getFzpReferenceFile()).arg(m_guid).arg(m_fileIndex++));   
     DebugDialog::debug("temp path " + fzpPath);
-    TextUtils::writeUtf8(fzpPath, TextUtils::svgNSOnly(m_fzpDocument.toString()));
+    writeXml(fzpPath, m_fzpDocument.toString(), true);
     return fzpPath;
 }
 
@@ -1326,9 +1335,8 @@ void PEMainWindow::lockChanged(bool state) {
 
 void PEMainWindow::lockChangedAux(bool state, const QList<PEGraphicsItem *> & pegiList) 
 {
-    foreach (PEGraphicsItem * pegi, pegiList) {
-        pegi->setAcceptedMouseButtons(state ? Qt::NoButton : Qt::LeftButton);
-    }
+	Q_UNUSED(pegiList);
+	m_currentGraphicsView->hideConnectors(!state);
 }
 
 void PEMainWindow::pegiTerminalPointMoved(PEGraphicsItem * pegi, QPointF p)
@@ -1346,6 +1354,27 @@ void PEMainWindow::pegiTerminalPointChanged(PEGraphicsItem * pegi, QPointF befor
 
 void PEMainWindow::pegiMouseReleased(PEGraphicsItem * pegi)
 {
+	if (m_peToolView->locked()) {
+		// change pin selection 
+
+		QString id = pegi->element().attribute("id");
+		if (id.isEmpty()) return;
+
+		QDomElement root = m_fzpDocument.documentElement();
+		QDomElement connectors = root.firstChildElement("connectors");
+		QDomElement connector = connectors.firstChildElement("connector");
+		while (!connector.isNull()) {
+			QDomElement p = this->getConnectorPElement(connector, m_currentGraphicsView);
+			if (p.attribute("svgId") == id || p.attribute("terminalId") == id) {
+				m_peToolView->setCurrentConnector(connector);
+				return;
+			}
+			connector = connector.nextSiblingElement("connector");
+		}
+
+		return;
+	}
+
     QString newGorn = pegi->element().attribute("gorn");
     QDomDocument * doc = m_docs.value(m_currentGraphicsView->viewIdentifier());
     QDomElement root = doc->documentElement();
@@ -1569,7 +1598,7 @@ bool PEMainWindow::saveAs(bool overWrite)
         layers.setAttribute("image", svgPath);
 
         QString actualPath = svgOverWrite ? m_originalSvgPaths.value(sketchWidget->viewIdentifier()) : m_userPartsFolderSvgPath + svgPath; 
-        bool result = TextUtils::writeUtf8(actualPath, TextUtils::svgNSOnly(svg));
+        bool result = writeXml(actualPath, svg, false);
         if (!result) {
             // TODO: warn user
         }
@@ -1580,7 +1609,7 @@ bool PEMainWindow::saveAs(bool overWrite)
     if (overWrite) {
         fzpPath = m_originalFzpPath;
     }
-    bool result = TextUtils::writeUtf8(fzpPath, TextUtils::svgNSOnly(m_fzpDocument.toString()));
+    bool result = writeXml(fzpPath, m_fzpDocument.toString(), false);
 
     if (!overWrite) {
         m_originalFzpPath = fzpPath;
@@ -2140,4 +2169,15 @@ void PEMainWindow::updateRaiseWindowAction() {
 	m_raiseWindowAct->setText(actionText);
 	m_raiseWindowAct->setToolTip(actionText);
 	m_raiseWindowAct->setStatusTip("raise \""+actionText+"\" window");
+}
+
+bool PEMainWindow::writeXml(const QString & path, const QString & xml, bool temp)
+{
+	bool result = TextUtils::writeUtf8(path, TextUtils::svgNSOnly(xml));
+	if (result) {
+		if (temp) m_toDelete.append(path);
+		else m_toDelete.removeAll(path);
+	}
+
+	return result;
 }

@@ -138,6 +138,7 @@ protected:
     QString getSvgReferenceFile(const QString & filename);
     QString makeDesc(const QString & referenceFile);
     void updateRaiseWindowAction();
+	bool writeXml(const QString & path, const QString & text, bool temp);
 
 protected slots:
     void initZoom();
@@ -184,6 +185,7 @@ protected:
     QString m_originalModuleID;
     QHash<ViewLayer::ViewIdentifier, QString> m_originalSvgPaths;
     bool m_gaveSaveWarning;
+	QStringList m_toDelete;
 };
 
 #endif /* PEMAINWINDOW_H_ */

@@ -60,7 +60,9 @@ public:
     void highlightElement(class PEGraphicsItem *);
     void initConnectors(QList<QDomElement> & connectorList);
     void setLock(bool);
+	bool locked();
     QDomElement currentConnector();
+	void setCurrentConnector(const QDomElement &);
     void setTerminalPointCoords(QPointF);
     void setTerminalPointLimits(QSizeF);
 

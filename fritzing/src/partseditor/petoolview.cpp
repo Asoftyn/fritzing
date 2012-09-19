@@ -249,6 +249,12 @@ void PEToolView::setLock(bool lock) {
     }
 }
 
+bool PEToolView::locked() {
+    if (m_elementLock == NULL) return true;
+
+    return m_elementLock->isChecked();
+}
+
 void PEToolView::lockChangedSlot(bool state)
 {
     enableChanges(!state);
@@ -263,6 +269,17 @@ void PEToolView::typeEntry() {
 
 void PEToolView::descriptionEntry() {
 
+}
+
+void PEToolView::setCurrentConnector(const QDomElement & newConnector) {
+	for (int ix = 0; ix < m_connectorListWidget->count(); ix++) {
+		int index = m_connectorListWidget->item(ix)->data(Qt::UserRole).toInt();
+		QDomElement connector = m_connectorList.at(index);
+		if (connector.attribute("id") == newConnector.attribute("id")) {
+			m_connectorListWidget->setCurrentRow(index);
+			return;
+		}
+	}
 }
 
 QDomElement PEToolView::currentConnector() {

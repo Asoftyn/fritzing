@@ -51,7 +51,7 @@ PEGraphicsItem::PEGraphicsItem(double x, double y, double w, double h) : QGraphi
 
     m_terminalPoint = QPointF(w / 2, h / 2);
     m_showTerminalPoint = false;
-	setAcceptedMouseButtons(Qt::NoButton);
+	setAcceptedMouseButtons(Qt::LeftButton);
 	setAcceptHoverEvents(true);
     //setFlag(QGraphicsItem::ItemIsSelectable, true );
     setHighlighted(false);
@@ -228,6 +228,7 @@ QPointF PEGraphicsItem::pendingTerminalPoint() {
 
 void PEGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent * event) {
     if (!m_highlighted) {
+		// allows to click through to next layer
 		event->ignore();
 		return;
     }
@@ -258,7 +259,10 @@ void PEGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent * event) {
             m_terminalPointOrigin = m_terminalPoint;
             m_dragTerminalOrigin = event->pos();
         }
+
+		return;
     }
+
 }
 
 void PEGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event) {
