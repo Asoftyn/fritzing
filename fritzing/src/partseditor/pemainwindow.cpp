@@ -41,7 +41,7 @@ $Date$
 
 		delete key in connector list goes boom!
 
-		need a way to go from rect back to pin
+		fix bendpoint cursor when hovering over a wire
 
         from partseditorview.cpp
 	        bool fileHasChanged = (m_viewIdentifier == ViewLayer::IconView) ? false : TextUtils::fixPixelDimensionsIn(fileContent);
@@ -61,12 +61,14 @@ $Date$
         smd vs. tht
             disable pad for throughhole parts, disable m/f for smd parts
             for now don't allow mixing
+			test that it works at all
 
         buses 
             connect bus by drawing a wire
             can this be modal? i.e. turn bus mode on and off
-
-        after "save" change to window title is enough?
+			secondary representation (list view)
+				allow to delete bus, delete nodemember, add nodemember using right-click for now
+				hide bus list if there are no buses
 
         deal with customized svgs
             chip label
@@ -79,9 +81,7 @@ $Date$
         keep family as is, but force users to put in a unique variant
             don't allow blank
             check db for already used
-            fill in with guid
-
-        delete all unused svg when finished?
+            fill in with guid			
 
         multiple matching connector id--trash any other matching id
 
@@ -232,6 +232,7 @@ $Date$
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QUrl>
+#include <limits>
 
 ////////////////////////////////////////////////////
 
@@ -347,6 +348,7 @@ void PEMainWindow::initSketchWidgets()
 		sketchWidget->setChainDrag(false);				// no bendpoints
         m_svgChangeCount.insert(sketchWidget->viewIdentifier(), 0);
         m_everZoomed.insert(sketchWidget->viewIdentifier(), true);
+		connect(sketchWidget, SIGNAL(newWireSignal(Wire *)), this, SLOT(newWireSlot(Wire *)));
     }
 
     m_metadataView = new PEMetadataView(this);
@@ -1330,9 +1332,10 @@ void PEMainWindow::reload() {
     m_items.insert(m_schematicGraphicsView->viewIdentifier(), schematicItem);
     m_items.insert(m_pcbGraphicsView->viewIdentifier(), pcbItem);
 
-    foreach (ItemBase * item, m_items.values()) {
+    foreach (ItemBase * itemBase, m_items.values()) {
         // TODO: may have to revisit this and move all pegi items
-        item->setMoveLock(true);
+        itemBase->setMoveLock(true);
+		itemBase->setAcceptsMousePressLegEvent(false);
     }
 
     foreach (SketchWidget * sketchWidget, m_sketchWidgets.values()) {
@@ -1376,28 +1379,36 @@ void PEMainWindow::pegiTerminalPointChanged(PEGraphicsItem * pegi, QPointF befor
     terminalPointChangedAux(pegi, before, after);
 }
 
-void PEMainWindow::pegiMouseReleased(PEGraphicsItem * pegi)
+void PEMainWindow::pegiMousePressed(PEGraphicsItem * pegi, bool & locked)
 {
-	if (m_peToolView->locked()) {
-		// change pin selection 
+	locked = m_peToolView->locked();
+	if (!locked) return;
 
-		QString id = pegi->element().attribute("id");
-		if (id.isEmpty()) return;
+	QString id = pegi->element().attribute("id");
+	if (id.isEmpty()) return;
 
-		QDomElement root = m_fzpDocument.documentElement();
-		QDomElement connectors = root.firstChildElement("connectors");
-		QDomElement connector = connectors.firstChildElement("connector");
-		while (!connector.isNull()) {
-			QDomElement p = this->getConnectorPElement(connector, m_currentGraphicsView);
-			if (p.attribute("svgId") == id || p.attribute("terminalId") == id) {
-				m_peToolView->setCurrentConnector(connector);
-				return;
-			}
-			connector = connector.nextSiblingElement("connector");
-		}
-
+	if (m_peToolView->currentConnector().attribute("id").compare(id) == 0) {
+		// already there
 		return;
 	}
+
+	// if a connector has been clicked, make it the current connector
+	QDomElement root = m_fzpDocument.documentElement();
+	QDomElement connectors = root.firstChildElement("connectors");
+	QDomElement connector = connectors.firstChildElement("connector");
+	while (!connector.isNull()) {
+		QDomElement p = this->getConnectorPElement(connector, m_currentGraphicsView);
+		if (p.attribute("svgId") == id || p.attribute("terminalId") == id) {
+			m_peToolView->setCurrentConnector(connector);
+			return;
+		}
+		connector = connector.nextSiblingElement("connector");
+	}
+}
+
+void PEMainWindow::pegiMouseReleased(PEGraphicsItem * pegi)
+{
+	if (m_peToolView->locked()) return;
 
     QString newGorn = pegi->element().attribute("gorn");
     QDomDocument * doc = m_docs.value(m_currentGraphicsView->viewIdentifier());
@@ -1929,6 +1940,7 @@ PEGraphicsItem * PEMainWindow::makePegi(QSizeF size, QPointF topLeft, ItemBase *
     pegiItem->setOffset(topLeft);
     connect(pegiItem, SIGNAL(highlightSignal(PEGraphicsItem *)), this, SLOT(highlightSlot(PEGraphicsItem *)));
     connect(pegiItem, SIGNAL(mouseReleased(PEGraphicsItem *)), this, SLOT(pegiMouseReleased(PEGraphicsItem *)));
+    connect(pegiItem, SIGNAL(mousePressed(PEGraphicsItem *, bool &)), this, SLOT(pegiMousePressed(PEGraphicsItem *, bool &)), Qt::DirectConnection);
     connect(pegiItem, SIGNAL(terminalPointMoved(PEGraphicsItem *, QPointF)), this, SLOT(pegiTerminalPointMoved(PEGraphicsItem *, QPointF)));
     connect(pegiItem, SIGNAL(terminalPointChanged(PEGraphicsItem *, QPointF, QPointF)), this, SLOT(pegiTerminalPointChanged(PEGraphicsItem *, QPointF, QPointF)));
     return pegiItem;
@@ -2282,64 +2294,158 @@ void PEMainWindow::deleteBusConnection() {
 	if (bus == NULL) return;
 	
 	QUndoCommand * parentCommand = new QUndoCommand();
-	ConnectorItem * forText = NULL;
-	if (ends.at(0)->connectedToItems().count() == 1) {
-		forText = ends.at(0);
-		new RemoveBusConnectorCommand(this, bus->id(), ends.at(0)->connectorSharedID(), parentCommand);
+	new RemoveBusConnectorCommand(this, bus->id(), ends.at(0)->connectorSharedID(), false, parentCommand);
+	new RemoveBusConnectorCommand(this, bus->id(), ends.at(1)->connectorSharedID(), false, parentCommand);
+	if (ends.at(0)->connectedToItems().count() > 1) {
+		// restore it
+		new RemoveBusConnectorCommand(this, bus->id(), ends.at(0)->connectorSharedID(), true, parentCommand);
 	}
-	if (ends.at(1)->connectedToItems().count() == 1) {
-		if (forText == NULL) forText = ends.at(1);
-		new RemoveBusConnectorCommand(this, bus->id(), ends.at(1)->connectorSharedID(), parentCommand);
+	if (ends.at(1)->connectedToItems().count() > 1) {
+		// restore it
+		new RemoveBusConnectorCommand(this, bus->id(), ends.at(1)->connectorSharedID(), true, parentCommand);
 	}
 
-	parentCommand->setText(tr("Remove connector '%1' from bus '%2'").arg(forText->connectorSharedName()).arg(bus->id()));
+	parentCommand->setText(tr("Remove connector from bus '%2'").arg(bus->id()));
 	m_undoStack->waitPush(parentCommand, SketchWidget::PropChangeDelay);
+}
+
+void PEMainWindow::newWireSlot(Wire * wire) {
+	disconnect(wire, 0, m_sketchWidgets.value(wire->viewIdentifier()), 0);
+	connect(wire, SIGNAL(wireChangedSignal(Wire*, const QLineF & , const QLineF & , QPointF, QPointF, ConnectorItem *, ConnectorItem *)	),
+			this, SLOT(wireChangedSlot(Wire*, const QLineF & , const QLineF & , QPointF, QPointF, ConnectorItem *, ConnectorItem *)),
+			Qt::DirectConnection);		// DirectConnection means call the slot directly like a subroutine, without waiting for a thread or queue
+}
+
+void PEMainWindow::wireChangedSlot(Wire* wire, const QLineF &, const QLineF &, QPointF, QPointF, ConnectorItem * fromOnWire, ConnectorItem * to) {
+	wire->deleteLater();
+
+	if (to == NULL) return;
+
+	ConnectorItem * from = wire->otherConnector(fromOnWire)->firstConnectedToIsh();
+	if (from == NULL) return;
+
+	QDomElement root = m_fzpDocument.documentElement();
+	QDomElement buses = root.firstChildElement("buses");
+	QString busID;
+
+	Bus * bus = from->bus();
+	if (bus == NULL) {
+		bus = to->bus();
+	}
+	if (bus == NULL) {
+		int theMax = std::numeric_limits<int>::max(); 
+		for (int ix = 1; ix < theMax; ix++) {
+			QString candidate = QString("bus%1").arg(ix);
+			QDomElement busElement = findBus(buses, candidate);
+			if (busElement.isNull()) {
+				busID = candidate;
+				break;
+			}
+		}
+	}
+	else {
+		QDomElement busElement = findBus(buses, bus->id());
+		if (busElement.isNull()) {
+			QMessageBox::critical(NULL, tr("Parts Editor"), tr("Buses are very broken."));
+			return;
+		}
+	}
+
+	QString fromBusID = findNodeMember(buses, from->connectorSharedID());
+	QString toBusID = findNodeMember(buses, to->connectorSharedID());
+	QUndoCommand * parentCommand = new QUndoCommand(tr("Add bus connection from '%1' to '%2'").arg(from->connectorSharedName()).arg(to->connectorSharedName()));
+	if (!fromBusID.isEmpty()) {
+		// changing the bus for this nodeMember
+		new RemoveBusConnectorCommand(this, fromBusID, from->connectorSharedID(), false, parentCommand);
+	}
+	if (!toBusID.isEmpty()) {
+		// changing the bus for this nodeMember
+		new RemoveBusConnectorCommand(this, toBusID, to->connectorSharedID(), false, parentCommand);
+	}
+	new RemoveBusConnectorCommand(this, busID, from->connectorSharedID(), true, parentCommand);
+	new RemoveBusConnectorCommand(this, busID, to->connectorSharedID(), true, parentCommand);
+	m_undoStack->waitPush(parentCommand, SketchWidget::PropChangeDelay);
+}
+
+QDomElement PEMainWindow::findBus(const QDomElement & buses, const QString & id)
+{
+	QDomElement busElement = buses.firstChildElement("bus");
+	while (!busElement.isNull()) {
+		if (busElement.attribute("id").compare(id) == 0) {
+			return busElement;
+		}
+		busElement = busElement.nextSiblingElement("bus");
+	}
+
+	return QDomElement();
+}
+
+QString PEMainWindow::findNodeMember(const QDomElement & buses, const QString & connectorID)
+{
+	QDomElement bus = buses.firstChildElement("bus");
+	while (!bus.isNull()) {
+		QDomElement nodeMember = bus.firstChildElement("nodeMember");
+		while (!nodeMember.isNull()) {
+			if (nodeMember.attribute("connectorId").compare(connectorID) == 0) {
+				return bus.attribute("id");
+			}
+			nodeMember = nodeMember.nextSiblingElement("nodeMember");
+		}
+		bus = bus.nextSiblingElement("bus");
+	}
+
+	return "";
 }
 
 void PEMainWindow::addBusConnector(const QString & busID, const QString & connectorID)
 {
+	// called from command object
+	removeBusConnector(busID, connectorID);			// keep the dom very clean
+
 	QDomElement root = m_fzpDocument.documentElement();
 	QDomElement buses = root.firstChildElement("buses");
-	QDomElement bus = buses.firstChildElement("bus");
-	while (!bus.isNull()) {
-		if (bus.attribute("id").compare(busID) == 0) {
-			QDomElement nodeMember = bus.firstChildElement("nodeMember");
-			while (!nodeMember.isNull()) {
-				if (nodeMember.attribute("connectorId").compare(connectorID) == 0) {
-					// already exists 
-					return;
-				}
-				nodeMember = nodeMember.nextSiblingElement("nodeMember");
-			}
-
-			nodeMember = m_fzpDocument.createElement("nodeMember");
-			nodeMember.setAttribute("connectorId", connectorID);
-			bus.appendChild(nodeMember);
-			displayBuses();
-			return;
-		}
-		bus = bus.nextSiblingElement("bus");
+	if (buses.isNull()) {
+		m_fzpDocument.createElement("buses");
+		root.appendChild(buses);
 	}
 
+	QDomElement theBusElement = findBus(buses, busID);
+	if (theBusElement.isNull()) {
+		theBusElement = m_fzpDocument.createElement("bus");
+		theBusElement.setAttribute("id", busID);
+		buses.appendChild(theBusElement);
+	}
+
+	QDomElement nodeMember = m_fzpDocument.createElement("nodeMember");
+	nodeMember.setAttribute("connectorId", connectorID);
+	theBusElement.appendChild(nodeMember);
+	displayBuses();
 }
 
 void PEMainWindow::removeBusConnector(const QString & busID, const QString & connectorID)
 {
+	// called from command object
+	// for the sake of cleaning, deletes all matching nodeMembers so be careful about the order of deletion and addition within the same parentCommand
+	Q_UNUSED(busID);
 	QDomElement root = m_fzpDocument.documentElement();
 	QDomElement buses = root.firstChildElement("buses");
 	QDomElement bus = buses.firstChildElement("bus");
+	QList<QDomElement> toDelete;
 	while (!bus.isNull()) {
-		if (bus.attribute("id").compare(busID) == 0) {
-			QDomElement nodeMember = bus.firstChildElement("nodeMember");
-			while (!nodeMember.isNull()) {
-				if (nodeMember.attribute("connectorId").compare(connectorID) == 0) {
-					bus.removeChild(nodeMember);
-					displayBuses();
-					return;
-				}
-				nodeMember = nodeMember.nextSiblingElement("nodeMember");
+		QDomElement nodeMember = bus.firstChildElement("nodeMember");
+		while (!nodeMember.isNull()) {
+			if (nodeMember.attribute("connectorId").compare(connectorID) == 0) {
+				toDelete.append(nodeMember);
 			}
+			nodeMember = nodeMember.nextSiblingElement("nodeMember");
 		}
 		bus = bus.nextSiblingElement("bus");
 	}
+
+	foreach (QDomElement element, toDelete) {
+		element.parentNode().removeChild(element);
+	}
+
+	displayBuses();
 }
+

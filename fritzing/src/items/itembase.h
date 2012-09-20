@@ -260,6 +260,8 @@ public:
 	virtual void mouseMoveConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
 	virtual void mouseReleaseConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
 	virtual bool acceptsMousePressConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
+	virtual bool acceptsMousePressLegEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
+	virtual void setAcceptsMousePressLegEvent(bool);
 	virtual bool acceptsMouseDoubleClickConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
 	virtual bool acceptsMouseMoveConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
 	virtual bool acceptsMouseReleaseConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
@@ -342,6 +344,7 @@ protected:
 	QGraphicsSvgItem * m_moveLockItem;
 	QGraphicsSvgItem * m_stickyItem;
     FSvgRenderer * m_fsvgRenderer;
+	bool m_acceptsMousePressLegEvent;
        
  protected:
 	static long nextID;

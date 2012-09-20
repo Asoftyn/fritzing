@@ -145,6 +145,8 @@ ItemBase::ItemBase( ModelPart* modelPart, ViewLayer::ViewIdentifier viewIdentifi
 {
     m_fsvgRenderer = NULL;
 
+	m_acceptsMousePressLegEvent = true;
+
     //DebugDialog::debug(QString("itembase %1 %2").arg(id).arg((long) static_cast<QGraphicsItem *>(this), 0, 16));
 	m_hasRubberBandLeg = m_moveLock = m_hoverEnterSpaceBarWasPressed = m_spaceBarWasPressed = false;
 
@@ -474,6 +476,14 @@ bool ItemBase::filterMousePressConnectorEvent(ConnectorItem *, QGraphicsSceneMou
 
 bool ItemBase::acceptsMousePressConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *) {
 	return true;
+}
+
+bool ItemBase::acceptsMousePressLegEvent(ConnectorItem *, QGraphicsSceneMouseEvent *) {
+	return m_acceptsMousePressLegEvent;
+}
+
+void ItemBase::setAcceptsMousePressLegEvent(bool b) {
+	m_acceptsMousePressLegEvent = b;
 }
 
 bool ItemBase::acceptsMouseReleaseConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *) {

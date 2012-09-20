@@ -227,21 +227,30 @@ QPointF PEGraphicsItem::pendingTerminalPoint() {
 }
 
 void PEGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent * event) {
-    if (!m_highlighted) {
+    m_dragTerminalPoint = false;
+
+	if (!m_highlighted) {
 		// allows to click through to next layer
 		event->ignore();
 		return;
     }
 
-    m_dragTerminalPoint = false;
+	if (!event->buttons() && Qt::LeftButton) {
+		event->ignore();
+		return;
+	}
+
+
 
 	InfoGraphicsView * infoGraphicsView = InfoGraphicsView::getInfoGraphicsView(this);
 	if (infoGraphicsView != NULL && infoGraphicsView->spaceBarIsPressed()) {
 		event->ignore();
 		return;
 	}
-		
-	if (!event->buttons() && Qt::LeftButton) {
+
+	bool locked;
+	emit mousePressed(this, locked);
+	if (locked) {
 		event->ignore();
 		return;
 	}
@@ -262,7 +271,6 @@ void PEGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent * event) {
 
 		return;
     }
-
 }
 
 void PEGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event) {
@@ -318,6 +326,7 @@ void PEGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *) {
         }
     }
     else {
+		// relocate the connector
         emit mouseReleased(this);
     }
 }

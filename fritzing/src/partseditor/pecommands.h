@@ -196,7 +196,7 @@ protected:
 class RemoveBusConnectorCommand : public PEBaseCommand
 {
 public:
-	RemoveBusConnectorCommand(class PEMainWindow *, const QString  & busID, const QString & connectorID, QUndoCommand *parent);
+	RemoveBusConnectorCommand(class PEMainWindow *, const QString  & busID, const QString & connectorID, bool inverted, QUndoCommand *parent);
 	void undo();
 	void redo();
 
@@ -206,6 +206,7 @@ protected:
 protected:
 	QString m_busID;
 	QString m_connectorID;
+	bool m_inverted;
 };
 
 /////////////////////////////////////////////

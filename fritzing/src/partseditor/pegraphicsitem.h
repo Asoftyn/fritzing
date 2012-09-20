@@ -62,6 +62,7 @@ public:
 
 signals:
     void highlightSignal(PEGraphicsItem *);
+    void mousePressed(PEGraphicsItem *, bool & locked);
     void mouseReleased(PEGraphicsItem *);
     void terminalPointMoved(PEGraphicsItem *, QPointF);
     void terminalPointChanged(PEGraphicsItem *, QPointF before, QPointF after);

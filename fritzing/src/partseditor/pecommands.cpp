@@ -310,28 +310,32 @@ QString MoveTerminalPointCommand::getParamString() const {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-RemoveBusConnectorCommand::RemoveBusConnectorCommand(PEMainWindow * peMainWindow, const QString & busID, const QString  & connectorID, QUndoCommand *parent)
+RemoveBusConnectorCommand::RemoveBusConnectorCommand(PEMainWindow * peMainWindow, const QString & busID, const QString  & connectorID, bool inverted, QUndoCommand *parent)
     : PEBaseCommand(peMainWindow, parent)
 {
  	m_busID = busID;
 	m_connectorID = connectorID;
+	m_inverted = inverted;
 }
 
 void RemoveBusConnectorCommand::undo()
 {
-    m_peMainWindow->addBusConnector(m_busID, m_connectorID);
+	if (m_inverted) m_peMainWindow->removeBusConnector(m_busID, m_connectorID);
+    else m_peMainWindow->addBusConnector(m_busID, m_connectorID);
 }
 
 void RemoveBusConnectorCommand::redo()
 {
-    m_peMainWindow->removeBusConnector(m_busID, m_connectorID);
+	if (m_inverted) m_peMainWindow->addBusConnector(m_busID, m_connectorID);
+    else m_peMainWindow->removeBusConnector(m_busID, m_connectorID);
 }
 
 QString RemoveBusConnectorCommand::getParamString() const {
 	return "RemoveBusConnectorCommand " + 
-        QString(" busID:%1, connectorID:%2")
+        QString(" busID:%1, connectorID:%2 inv:%3")
             .arg(m_busID)
             .arg(m_connectorID)
+			.arg(m_inverted);
         ;
 }
 

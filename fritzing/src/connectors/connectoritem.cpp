@@ -844,7 +844,7 @@ void ConnectorItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 		connectorItem->showEqualPotential(true);
 	}
 	
-	if (m_rubberBandLeg) {
+	if (m_rubberBandLeg && this->m_attachedTo != NULL && m_attachedTo->acceptsMousePressLegEvent(this, event)) {
 		if (legMousePressEvent(event)) return;
 	}
 

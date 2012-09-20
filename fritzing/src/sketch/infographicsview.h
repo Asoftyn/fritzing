@@ -108,6 +108,7 @@ public:
 	virtual void changeWireColor(const QString newColor);
 	virtual void swap(const QString & family, const QString & prop, QMap<QString, QString> & propsMap, ItemBase *);
     virtual void resolveTemporary(bool, ItemBase *);
+	virtual void newWire(Wire *);
 
 	void setActiveWire(Wire *);
 	void setActiveConnectorItem(ConnectorItem *);
@@ -124,6 +125,7 @@ signals:
 	void changePinLabelsSignal(ItemBase *, bool singleRow);
 	void setActiveWireSignal(Wire *);
 	void setActiveConnectorItemSignal(ConnectorItem *);
+	void newWireSignal(Wire *);
 
 public:
 	static InfoGraphicsView * getInfoGraphicsView(QGraphicsItem *);

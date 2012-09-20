@@ -1550,19 +1550,7 @@ void Wire::addedToScene(bool temporary) {
 	InfoGraphicsView * infoGraphicsView = InfoGraphicsView::getInfoGraphicsView(this);
 	if (infoGraphicsView == NULL) return;
 
-	bool succeeded = connect(this, SIGNAL(wireChangedSignal(Wire*, const QLineF & , const QLineF & , QPointF, QPointF, ConnectorItem *, ConnectorItem *)	),
-			infoGraphicsView, SLOT(wireChangedSlot(Wire*, const QLineF & , const QLineF & , QPointF, QPointF, ConnectorItem *, ConnectorItem *)),
-			Qt::DirectConnection);		// DirectConnection means call the slot directly like a subroutine, without waiting for a thread or queue
-	succeeded = connect(this, SIGNAL(wireChangedCurveSignal(Wire*, const Bezier *, const Bezier *, bool)),
-			infoGraphicsView, SLOT(wireChangedCurveSlot(Wire*, const Bezier *, const Bezier *, bool)),
-			Qt::DirectConnection);		// DirectConnection means call the slot directly like a subroutine, without waiting for a thread or queue
-	succeeded = succeeded && connect(this, SIGNAL(wireSplitSignal(Wire*, QPointF, QPointF, const QLineF & )),
-			infoGraphicsView, SLOT(wireSplitSlot(Wire*, QPointF, QPointF, const QLineF & )));
-	succeeded = succeeded && connect(this, SIGNAL(wireJoinSignal(Wire*, ConnectorItem *)),
-			infoGraphicsView, SLOT(wireJoinSlot(Wire*, ConnectorItem*)));
-	if (!succeeded) {
-		DebugDialog::debug("wire signal connect failed");
-	}
+	infoGraphicsView->newWire(this);
 }
 
 void Wire::setConnectorDimensions(double width, double height) 

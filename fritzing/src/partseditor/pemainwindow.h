@@ -76,6 +76,7 @@ public slots:
     void connectorMetadataChanged(struct ConnectorMetadata *);
     void removedConnectors(QList<ConnectorMetadata *> &);
     void highlightSlot(class PEGraphicsItem *);
+    void pegiMousePressed(class PEGraphicsItem *, bool & locked);
     void pegiMouseReleased(class PEGraphicsItem *);
     void pegiTerminalPointMoved(class PEGraphicsItem *, QPointF);
     void pegiTerminalPointChanged(class PEGraphicsItem *, QPointF before, QPointF after);
@@ -87,6 +88,8 @@ public slots:
     void lockChanged(bool);
     void connectorCountChanged(int);
 	void deleteBusConnection();
+	void newWireSlot(Wire *);
+	void wireChangedSlot(class Wire*, const QLineF & oldLine, const QLineF & newLine, QPointF oldPos, QPointF newPos, ConnectorItem * from, ConnectorItem * to);
 
 protected:
 	void closeEvent(QCloseEvent * event);
@@ -143,6 +146,9 @@ protected:
     void updateRaiseWindowAction();
 	bool writeXml(const QString & path, const QString & text, bool temp);
 	void displayBuses();
+	QDomElement findBus(const QDomElement &, const QString &);
+	QString findNodeMember(const QDomElement & buses, const QString & connectorID);
+
 
 protected slots:
     void initZoom();
