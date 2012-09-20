@@ -34,8 +34,6 @@ $Date$
         crash when swapping part during save
         
         crashed when saving the description
-  
-		delete key in connector list goes boom!
 
 		fix bendpoint cursor when hovering over a wire
 
