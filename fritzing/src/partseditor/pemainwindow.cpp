@@ -2305,6 +2305,7 @@ void PEMainWindow::deleteBusConnection() {
 }
 
 void PEMainWindow::newWireSlot(Wire * wire) {
+	wire->setDisplayBendpointCursor(false);
 	disconnect(wire, 0, m_sketchWidgets.value(wire->viewIdentifier()), 0);
 	connect(wire, SIGNAL(wireChangedSignal(Wire*, const QLineF & , const QLineF & , QPointF, QPointF, ConnectorItem *, ConnectorItem *)	),
 			this, SLOT(wireChangedSlot(Wire*, const QLineF & , const QLineF & , QPointF, QPointF, ConnectorItem *, ConnectorItem *)),
@@ -2321,6 +2322,11 @@ void PEMainWindow::wireChangedSlot(Wire* wire, const QLineF &, const QLineF &, Q
 
 	QDomElement root = m_fzpDocument.documentElement();
 	QDomElement buses = root.firstChildElement("buses");
+	if (buses.isNull()) {
+		buses = m_fzpDocument.createElement("buses");
+		root.appendChild(buses);
+	}
+
 	QString busID;
 
 	Bus * bus = from->bus();
@@ -2422,6 +2428,7 @@ void PEMainWindow::removeBusConnector(const QString & busID, const QString & con
 	// called from command object
 	// for the sake of cleaning, deletes all matching nodeMembers so be careful about the order of deletion and addition within the same parentCommand
 	Q_UNUSED(busID);
+
 	QDomElement root = m_fzpDocument.documentElement();
 	QDomElement buses = root.firstChildElement("buses");
 	QDomElement bus = buses.firstChildElement("bus");

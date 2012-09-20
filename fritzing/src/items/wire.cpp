@@ -140,7 +140,7 @@ Wire::Wire( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier,  co
 	: ItemBase(modelPart, viewIdentifier, viewGeometry, id, itemMenu)
 {
 	m_bezier = NULL;
-	m_canHaveCurve = true;
+	m_displayBendpointCursor = m_canHaveCurve = true;
 	m_hoverStrokeWidth = DefaultHoverStrokeWidth;
 	m_connector0 = m_connector1 = NULL;
 	m_partLabel = initLabel ? new PartLabel(this, NULL) : NULL;
@@ -1739,7 +1739,7 @@ void Wire::updateCursor(Qt::KeyboardModifiers modifiers)
 	else if (infoGraphicsView != NULL && infoGraphicsView->curvyWiresIndicated(modifiers)) {
 		CursorMaster::instance()->addCursor(this, *CursorMaster::MakeCurveCursor);
 	}
-	else {
+	else if (m_displayBendpointCursor) {
 		CursorMaster::instance()->addCursor(this, *CursorMaster::NewBendpointCursor);
 	}
 }
@@ -1756,4 +1756,8 @@ ViewLayer::ViewIdentifier Wire::useViewIdentifierForPixmap(ViewLayer::ViewIdenti
     }
 
     return ViewLayer::UnknownView;
+}
+
+void Wire::setDisplayBendpointCursor(bool dbc) {
+	m_displayBendpointCursor = dbc;
 }

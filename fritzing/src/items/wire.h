@@ -159,6 +159,7 @@ public:
 	bool hasShadow();
 	bool canChainMultiple();
 	void cursorKeyEvent(Qt::KeyboardModifiers modifiers);
+	void setDisplayBendpointCursor(bool);
 
 protected slots:
 	void colorEntry(const QString & text);
@@ -239,6 +240,7 @@ protected:
 	double m_hoverStrokeWidth;
 	bool m_canHaveCurve;
 	class Bezier * m_bezier;
+	bool m_displayBendpointCursor;
 
 public:
 	static QStringList colorNames;
