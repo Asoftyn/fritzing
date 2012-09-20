@@ -35,10 +35,6 @@ $Date$
         
         crashed when saving the description
   
-	    disable dragging wires    
-            hide connectors
-            need to show again during bus mode
-
 		delete key in connector list goes boom!
 
 		fix bendpoint cursor when hovering over a wire
@@ -62,13 +58,6 @@ $Date$
             disable pad for throughhole parts, disable m/f for smd parts
             for now don't allow mixing
 			test that it works at all
-
-        buses 
-            connect bus by drawing a wire
-            can this be modal? i.e. turn bus mode on and off
-			secondary representation (list view)
-				allow to delete bus, delete nodemember, add nodemember using right-click for now
-				hide bus list if there are no buses
 
         deal with customized svgs
             chip label
@@ -107,6 +96,11 @@ $Date$
         check all MainWindow * casts
 
     ////////////////////////////// second release /////////////////////////////////
+
+        buses 
+			secondary representation (list view)
+				allow to delete bus, delete nodemember, add nodemember using right-click for now
+				hide bus list if there are no buses
 
 		use the actual svg shape instead of rectangles
 
@@ -409,7 +403,7 @@ void PEMainWindow::createActions()
 
     createEditMenuActions();
 
-	m_deleteBusConnectionAct = new WireAction(tr("Delete Bus Connection"), this);
+	m_deleteBusConnectionAct = new WireAction(tr("Remove Internal Connection"), this);
 	connect(m_deleteBusConnectionAct, SIGNAL(triggered()), this, SLOT(deleteBusConnection()));
 
     createViewMenuActions();
@@ -448,7 +442,7 @@ void PEMainWindow::connectPairs() {
 }
 
 QMenu *PEMainWindow::breadboardWireMenu() {
-	QMenu *menu = new QMenu(QObject::tr("Bus"), this);
+	QMenu *menu = new QMenu(QObject::tr("Internal Connections"), this);
 	menu->addAction(m_deleteBusConnectionAct);
     connect( menu, SIGNAL(aboutToShow()), this, SLOT(updateWireMenu()));
 	return menu;
@@ -2294,10 +2288,13 @@ void PEMainWindow::deleteBusConnection() {
 	if (bus == NULL) return;
 	
 	QUndoCommand * parentCommand = new QUndoCommand();
+	QStringList names;
+	names << ends.at(0)->connectorSharedName() << ends.at(1)->connectorSharedName() ;
 	new RemoveBusConnectorCommand(this, bus->id(), ends.at(0)->connectorSharedID(), false, parentCommand);
 	new RemoveBusConnectorCommand(this, bus->id(), ends.at(1)->connectorSharedID(), false, parentCommand);
 	if (ends.at(0)->connectedToItems().count() > 1) {
 		// restore it
+		names.removeAt(0);
 		new RemoveBusConnectorCommand(this, bus->id(), ends.at(0)->connectorSharedID(), true, parentCommand);
 	}
 	if (ends.at(1)->connectedToItems().count() > 1) {
@@ -2305,7 +2302,7 @@ void PEMainWindow::deleteBusConnection() {
 		new RemoveBusConnectorCommand(this, bus->id(), ends.at(1)->connectorSharedID(), true, parentCommand);
 	}
 
-	parentCommand->setText(tr("Remove connector from bus '%2'").arg(bus->id()));
+	parentCommand->setText(tr("Remove internal connection from '%1'").arg(names.at(0)));
 	m_undoStack->waitPush(parentCommand, SketchWidget::PropChangeDelay);
 }
 
@@ -2335,7 +2332,7 @@ void PEMainWindow::wireChangedSlot(Wire* wire, const QLineF &, const QLineF &, Q
 	if (bus == NULL) {
 		int theMax = std::numeric_limits<int>::max(); 
 		for (int ix = 1; ix < theMax; ix++) {
-			QString candidate = QString("bus%1").arg(ix);
+			QString candidate = QString("internal%1").arg(ix);
 			QDomElement busElement = findBus(buses, candidate);
 			if (busElement.isNull()) {
 				busID = candidate;
@@ -2346,14 +2343,14 @@ void PEMainWindow::wireChangedSlot(Wire* wire, const QLineF &, const QLineF &, Q
 	else {
 		QDomElement busElement = findBus(buses, bus->id());
 		if (busElement.isNull()) {
-			QMessageBox::critical(NULL, tr("Parts Editor"), tr("Buses are very broken."));
+			QMessageBox::critical(NULL, tr("Parts Editor"), tr("Internal connections are very messed up."));
 			return;
 		}
 	}
 
 	QString fromBusID = findNodeMember(buses, from->connectorSharedID());
 	QString toBusID = findNodeMember(buses, to->connectorSharedID());
-	QUndoCommand * parentCommand = new QUndoCommand(tr("Add bus connection from '%1' to '%2'").arg(from->connectorSharedName()).arg(to->connectorSharedName()));
+	QUndoCommand * parentCommand = new QUndoCommand(tr("Add internal connection from '%1' to '%2'").arg(from->connectorSharedName()).arg(to->connectorSharedName()));
 	if (!fromBusID.isEmpty()) {
 		// changing the bus for this nodeMember
 		new RemoveBusConnectorCommand(this, fromBusID, from->connectorSharedID(), false, parentCommand);
