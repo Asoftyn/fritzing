@@ -222,6 +222,9 @@ $Date$
 #include "../svg/kicadmodule2svg.h"
 #include "../svg/kicadschematic2svg.h"
 #include "../sketchtoolbutton.h"
+#include "../items/virtualwire.h"
+#include "../connectors/connectoritem.h"
+#include "../connectors/bus.h"
 
 #include <QApplication>
 #include <QSvgGenerator>
@@ -241,6 +244,8 @@ static const int MetadataViewIndex = 4;
 static const int ConnectorsViewIndex = 5;
 
 static QHash<ViewLayer::ViewIdentifier, int> ZList;
+const static int PegiZ = 5000;
+const static int RatZ = 6000;
 
 static long FakeGornSiblingNumber = 0;
 
@@ -332,9 +337,14 @@ void PEMainWindow::initSketchWidgets()
     m_docs.insert(m_pcbGraphicsView->viewIdentifier(), &m_pcbDocument);
     m_docs.insert(m_iconGraphicsView->viewIdentifier(), &m_iconDocument);
 
-    m_sketchWidgets << m_breadboardGraphicsView << m_schematicGraphicsView << m_pcbGraphicsView << m_iconGraphicsView;
+    m_sketchWidgets.insert(m_breadboardGraphicsView->viewIdentifier(), m_breadboardGraphicsView);
+    m_sketchWidgets.insert(m_schematicGraphicsView->viewIdentifier(), m_schematicGraphicsView);
+    m_sketchWidgets.insert(m_pcbGraphicsView->viewIdentifier(), m_pcbGraphicsView);
+    m_sketchWidgets.insert(m_iconGraphicsView->viewIdentifier(), m_iconGraphicsView);
+	
     foreach (SketchWidget * sketchWidget, m_sketchWidgets) {
         sketchWidget->setAcceptWheelEvents(false);
+		sketchWidget->setChainDrag(false);				// no bendpoints
         m_svgChangeCount.insert(sketchWidget->viewIdentifier(), 0);
         m_everZoomed.insert(sketchWidget->viewIdentifier(), true);
     }
@@ -396,6 +406,10 @@ void PEMainWindow::createActions()
 	connect(m_showInOSAct, SIGNAL(triggered()), this, SLOT(showInOS()));
 
     createEditMenuActions();
+
+	m_deleteBusConnectionAct = new WireAction(tr("Delete Bus Connection"), this);
+	connect(m_deleteBusConnectionAct, SIGNAL(triggered()), this, SLOT(deleteBusConnection()));
+
     createViewMenuActions();
     createHelpMenuActions();
     createWindowMenuActions();
@@ -424,10 +438,18 @@ void PEMainWindow::connectPairs() {
 	succeeded =  succeeded && connect(m_pcbGraphicsView, SIGNAL(cursorLocationSignal(double, double)), this, SLOT(cursorLocationSlot(double, double)));
 	succeeded =  succeeded && connect(m_breadboardGraphicsView, SIGNAL(cursorLocationSignal(double, double)), this, SLOT(cursorLocationSlot(double, double)));
 	succeeded =  succeeded && connect(m_schematicGraphicsView, SIGNAL(cursorLocationSignal(double, double)), this, SLOT(cursorLocationSlot(double, double)));
+
+	connect(m_breadboardGraphicsView, SIGNAL(setActiveWireSignal(Wire *)), this, SLOT(setActiveWire(Wire *)));
+	connect(m_schematicGraphicsView, SIGNAL(setActiveWireSignal(Wire *)), this, SLOT(setActiveWire(Wire *)));
+	connect(m_pcbGraphicsView, SIGNAL(setActiveWireSignal(Wire *)), this, SLOT(setActiveWire(Wire *)));
+
 }
 
 QMenu *PEMainWindow::breadboardWireMenu() {
-    return NULL;
+	QMenu *menu = new QMenu(QObject::tr("Bus"), this);
+	menu->addAction(m_deleteBusConnectionAct);
+    connect( menu, SIGNAL(aboutToShow()), this, SLOT(updateWireMenu()));
+	return menu;
 }
     
 QMenu *PEMainWindow::breadboardItemMenu() {
@@ -435,7 +457,7 @@ QMenu *PEMainWindow::breadboardItemMenu() {
 }
 
 QMenu *PEMainWindow::schematicWireMenu() {
-    return NULL;
+    return breadboardWireMenu();
 }
     
 QMenu *PEMainWindow::schematicItemMenu() {
@@ -443,7 +465,7 @@ QMenu *PEMainWindow::schematicItemMenu() {
 }
 
 QMenu *PEMainWindow::pcbWireMenu() {
-    return NULL;
+    return breadboardWireMenu();
 }
     
 QMenu *PEMainWindow::pcbItemMenu() {
@@ -863,7 +885,7 @@ void PEMainWindow::initSvgTree(ItemBase * itemBase, QDomDocument & domDocument)
 	}
 
 
-    int z = 5000;
+    int z = PegiZ;
 
 
     FSvgRenderer tempRenderer;
@@ -1313,12 +1335,14 @@ void PEMainWindow::reload() {
         item->setMoveLock(true);
     }
 
-    foreach (SketchWidget * sketchWidget, m_sketchWidgets) {
+    foreach (SketchWidget * sketchWidget, m_sketchWidgets.values()) {
         sketchWidget->hideConnectors(true);
         m_everZoomed.insert(sketchWidget->viewIdentifier(), false);
     }
 
     switchedConnector(m_peToolView->currentConnector());
+
+	displayBuses();
 
     // processeventblocker might be enough
     QTimer::singleShot(10, this, SLOT(initZoom()));
@@ -1559,7 +1583,7 @@ bool PEMainWindow::saveAs(bool overWrite)
 
     QHash<ViewLayer::ViewIdentifier, QString> svgPaths;
 
-    foreach (SketchWidget * sketchWidget, m_sketchWidgets) {
+    foreach (SketchWidget * sketchWidget, m_sketchWidgets.values()) {
         QDomElement view = views.firstChildElement(ViewLayer::viewIdentifierXmlName(sketchWidget->viewIdentifier()));
         QDomElement layers = view.firstChildElement("layers");
 
@@ -1619,7 +1643,7 @@ bool PEMainWindow::saveAs(bool overWrite)
     QString savedModuleID = fzpRoot.attribute("moduleId");
 
     // restore the set of working svg files
-    foreach (SketchWidget * sketchWidget, m_sketchWidgets) {
+    foreach (SketchWidget * sketchWidget, m_sketchWidgets.values()) {
         QString svgPath = svgPaths.value(sketchWidget->viewIdentifier());
         if (svgPath.isEmpty()) continue;
 
@@ -2041,7 +2065,7 @@ QString PEMainWindow::getPartTitle() {
 }
 
 void PEMainWindow::killPegi() {
-    foreach (SketchWidget * sketchWidget, m_sketchWidgets) {
+    foreach (SketchWidget * sketchWidget, m_sketchWidgets.values()) {
         foreach (QGraphicsItem * item, sketchWidget->scene()->items()) {
             PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
             if (pegi) delete pegi;
@@ -2180,4 +2204,142 @@ bool PEMainWindow::writeXml(const QString & path, const QString & xml, bool temp
 	}
 
 	return result;
+}
+
+void PEMainWindow::displayBuses() {
+	QList<Wire *> toDelete;
+	foreach (SketchWidget * sketchWidget, m_sketchWidgets.values()) {
+		foreach (QGraphicsItem * item, sketchWidget->scene()->items()) {
+			Wire * wire = dynamic_cast<Wire *>(item);
+			if (wire == NULL) continue;
+
+			toDelete << wire;
+		}
+	}
+
+	foreach (Wire * wire, toDelete) {
+		delete wire;
+	}
+
+	QDomElement root = m_fzpDocument.documentElement();
+	QDomElement buses = root.firstChildElement("buses");
+	QDomElement bus = buses.firstChildElement("bus");
+	while (!bus.isNull()) {
+		QDomElement nodeMember = bus.firstChildElement("nodeMember");
+		QSet<QString> connectorIDs;
+		while (!nodeMember.isNull()) {
+			QString connectorID = nodeMember.attribute("connectorId");
+			if (!connectorID.isEmpty()) {
+				connectorIDs.insert(connectorID);
+			}
+			nodeMember = nodeMember.nextSiblingElement("nodeMember");
+		}
+
+		foreach (ViewLayer::ViewIdentifier viewIdentifier, m_sketchWidgets.keys()) {
+			SketchWidget * sketchWidget = m_sketchWidgets.value(viewIdentifier);
+			ItemBase * itemBase = m_items.value(viewIdentifier);
+			QList<ConnectorItem *> connectorItems;
+			foreach (QString connectorID, connectorIDs) {
+				ConnectorItem * connectorItem = itemBase->findConnectorItemWithSharedID(connectorID, itemBase->viewLayerSpec());
+				if (connectorItem) connectorItems.append(connectorItem);
+			}
+			for (int i = 0; i < connectorItems.count() - 1; i++) {
+				ConnectorItem * c1 = connectorItems.at(i);
+				ConnectorItem * c2 = connectorItems.at(i + 1);
+				Wire * wire = sketchWidget->makeOneRatsnestWire(c1, c2, false, QColor(0, 255, 0), true);
+				wire->setZValue(RatZ);
+			}
+		}
+
+		bus = bus.nextSiblingElement("bus");
+	}
+}
+
+void PEMainWindow::updateWireMenu() {
+	// assumes update wire menu is only called when right-clicking a wire
+	// and that wire is cached by the menu in Wire::mousePressEvent
+
+	Wire * wire = m_activeWire;
+	m_activeWire = NULL;
+
+	m_deleteBusConnectionAct->setWire(wire);
+	m_deleteBusConnectionAct->setEnabled(true);
+}
+
+void PEMainWindow::deleteBusConnection() {
+	WireAction * wireAction = qobject_cast<WireAction *>(sender());
+	if (wireAction == NULL) return;
+
+	Wire * wire = wireAction->wire();
+	if (wire == NULL) return;
+
+	QList<Wire *> wires;
+	QList<ConnectorItem *> ends;
+	wire->collectChained(wires, ends);
+	if (ends.count() != 2) return;
+
+	Bus * bus = ends.at(0)->bus();
+	if (bus == NULL) return;
+	
+	QUndoCommand * parentCommand = new QUndoCommand();
+	ConnectorItem * forText = NULL;
+	if (ends.at(0)->connectedToItems().count() == 1) {
+		forText = ends.at(0);
+		new RemoveBusConnectorCommand(this, bus->id(), ends.at(0)->connectorSharedID(), parentCommand);
+	}
+	if (ends.at(1)->connectedToItems().count() == 1) {
+		if (forText == NULL) forText = ends.at(1);
+		new RemoveBusConnectorCommand(this, bus->id(), ends.at(1)->connectorSharedID(), parentCommand);
+	}
+
+	parentCommand->setText(tr("Remove connector '%1' from bus '%2'").arg(forText->connectorSharedName()).arg(bus->id()));
+	m_undoStack->waitPush(parentCommand, SketchWidget::PropChangeDelay);
+}
+
+void PEMainWindow::addBusConnector(const QString & busID, const QString & connectorID)
+{
+	QDomElement root = m_fzpDocument.documentElement();
+	QDomElement buses = root.firstChildElement("buses");
+	QDomElement bus = buses.firstChildElement("bus");
+	while (!bus.isNull()) {
+		if (bus.attribute("id").compare(busID) == 0) {
+			QDomElement nodeMember = bus.firstChildElement("nodeMember");
+			while (!nodeMember.isNull()) {
+				if (nodeMember.attribute("connectorId").compare(connectorID) == 0) {
+					// already exists 
+					return;
+				}
+				nodeMember = nodeMember.nextSiblingElement("nodeMember");
+			}
+
+			nodeMember = m_fzpDocument.createElement("nodeMember");
+			nodeMember.setAttribute("connectorId", connectorID);
+			bus.appendChild(nodeMember);
+			displayBuses();
+			return;
+		}
+		bus = bus.nextSiblingElement("bus");
+	}
+
+}
+
+void PEMainWindow::removeBusConnector(const QString & busID, const QString & connectorID)
+{
+	QDomElement root = m_fzpDocument.documentElement();
+	QDomElement buses = root.firstChildElement("buses");
+	QDomElement bus = buses.firstChildElement("bus");
+	while (!bus.isNull()) {
+		if (bus.attribute("id").compare(busID) == 0) {
+			QDomElement nodeMember = bus.firstChildElement("nodeMember");
+			while (!nodeMember.isNull()) {
+				if (nodeMember.attribute("connectorId").compare(connectorID) == 0) {
+					bus.removeChild(nodeMember);
+					displayBuses();
+					return;
+				}
+				nodeMember = nodeMember.nextSiblingElement("nodeMember");
+			}
+		}
+		bus = bus.nextSiblingElement("bus");
+	}
 }

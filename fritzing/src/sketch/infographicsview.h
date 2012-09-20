@@ -81,7 +81,7 @@ public:
 
 	int boardLayers();
 	virtual void setBoardLayers(int, bool redraw);
-	virtual class VirtualWire * makeOneRatsnestWire(ConnectorItem * source, ConnectorItem * dest, bool routed, QColor);
+	virtual class VirtualWire * makeOneRatsnestWire(ConnectorItem * source, ConnectorItem * dest, bool routed, QColor, bool force);
 	virtual void getRatsnestColor(QColor &);
 
 	virtual void changeBus(ItemBase *, bool connec, const QString & oldBust, const QString & newBus, QList<ConnectorItem *> &, const QString & message);

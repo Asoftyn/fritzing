@@ -961,6 +961,8 @@ void SketchWidget::deleteSelected(Wire * wire) {
 			itemBases.insert(itemBase);
 		}
 	}
+	
+	if (itemBases.count() == 0) return;
 
 	// assumes ratsnest is not mixed with other itembases
 	bool rats = true;
@@ -8569,12 +8571,12 @@ void SketchWidget::getRatsnestColor(QColor & color)
 	color = RatsnestColors::netColor(m_viewIdentifier);
 }
 
-VirtualWire * SketchWidget::makeOneRatsnestWire(ConnectorItem * source, ConnectorItem * dest, bool routed, QColor color) {
+VirtualWire * SketchWidget::makeOneRatsnestWire(ConnectorItem * source, ConnectorItem * dest, bool routed, QColor color, bool force) {
 	if (source->attachedTo() == dest->attachedTo()) {
 		if (source == dest) return NULL;
 
 		if (source->bus() == dest->bus() && dest->bus() != NULL) {
-			return NULL;				// don't draw a wire within the same part on the same bus
+			if (!force) return NULL;				// don't draw a wire within the same part on the same bus
 		}
 	}
 	

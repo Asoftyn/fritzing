@@ -30,10 +30,6 @@ $Date$
 #include "connectoritem.h"
 #include "../model/modelpart.h"
 
-
-QHash<QString, QPointer<Bus> > Bus::___emptyBusList___;
-
-
 Bus::Bus(BusShared * busShared, ModelPart * modelPart) : QObject()
 {
 	m_busShared = busShared;

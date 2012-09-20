@@ -309,3 +309,30 @@ QString MoveTerminalPointCommand::getParamString() const {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+RemoveBusConnectorCommand::RemoveBusConnectorCommand(PEMainWindow * peMainWindow, const QString & busID, const QString  & connectorID, QUndoCommand *parent)
+    : PEBaseCommand(peMainWindow, parent)
+{
+ 	m_busID = busID;
+	m_connectorID = connectorID;
+}
+
+void RemoveBusConnectorCommand::undo()
+{
+    m_peMainWindow->addBusConnector(m_busID, m_connectorID);
+}
+
+void RemoveBusConnectorCommand::redo()
+{
+    m_peMainWindow->removeBusConnector(m_busID, m_connectorID);
+}
+
+QString RemoveBusConnectorCommand::getParamString() const {
+	return "RemoveBusConnectorCommand " + 
+        QString(" busID:%1, connectorID:%2")
+            .arg(m_busID)
+            .arg(m_connectorID)
+        ;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////

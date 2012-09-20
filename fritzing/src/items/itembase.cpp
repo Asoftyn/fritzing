@@ -632,10 +632,15 @@ bool ItemBase::getRatsnest() {
 	return m_viewGeometry.getRatsnest();
 }
 
-const QHash<QString, QPointer<Bus> > & ItemBase::buses() {
-	if (m_modelPart != NULL) return m_modelPart->buses();
+QList<Bus *> ItemBase::buses() {
+	QList<Bus *> busList;
+	if (m_modelPart == NULL) return busList;
 
-	return Bus::___emptyBusList___;
+	foreach (Bus * bus, m_modelPart->buses().values()) {
+		busList.append(bus);
+	}
+
+	return busList;
 }
 
 void ItemBase::busConnectorItems(class Bus * bus, QList<class ConnectorItem *> & items) {

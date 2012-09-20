@@ -105,7 +105,7 @@ public:
 	virtual void updateConnections();
 	virtual const QString & title() const;
 	bool getRatsnest();
-	const QHash<QString, QPointer<class Bus> > & buses();
+	QList<class Bus *> buses();
 	int itemType() const;					// wanted this to return ModelPart::ItemType but couldn't figure out how to get it to compile
 	virtual bool isSticky();
 	virtual bool isBaseSticky();

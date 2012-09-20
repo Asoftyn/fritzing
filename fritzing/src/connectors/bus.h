@@ -47,10 +47,6 @@ public:
 	class ModelPart * modelPart();
 	const QList<Connector *> & connectors() const;
 	
-public:
-	static QHash<QString, QPointer<Bus> > ___emptyBusList___;
-
-	
 protected:
 
 	QList<class Connector *> m_connectors;

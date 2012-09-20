@@ -767,7 +767,7 @@ void MainWindow::createEditMenuActions() {
 		m_deleteAct->setShortcut(QKeySequence::Delete);
 	#endif
 	m_deleteWireAct = new WireAction(m_deleteAct);
-	m_deleteWireAct->setText("&Delete Wire");
+	m_deleteWireAct->setText(tr("&Delete Wire"));
 	connect(m_deleteWireAct, SIGNAL(triggered()), this, SLOT(doDelete()));
 
 	m_selectAllAct = new QAction(tr("&Select All"), this);

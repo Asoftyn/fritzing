@@ -238,7 +238,7 @@ protected slots:
     void updateEditMenu();
     void updateLayerMenu(bool resetLayout = false);
     void updatePartMenu();
-    void updateWireMenu();
+    virtual void updateWireMenu();
     void updateTransformationActions();
 	void updateRecentFileActions();
     virtual void tabWidget_currentChanged(int index);

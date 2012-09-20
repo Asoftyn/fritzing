@@ -63,6 +63,8 @@ public:
     void moveTerminalPoint(SketchWidget *, const QString & id, QSizeF, QPointF, int changeDirection);
     void restoreFzp(const QString & filename);
     bool editsModuleID(const QString &);
+	void addBusConnector(const QString & busID, const QString & connectorID);
+	void removeBusConnector(const QString & busID, const QString & connectorID);
 
 signals:
     void addToMyPartsSignal(ModelPart *);
@@ -84,6 +86,7 @@ public slots:
     void getSpinAmount(double & amount);
     void lockChanged(bool);
     void connectorCountChanged(int);
+	void deleteBusConnection();
 
 protected:
 	void closeEvent(QCloseEvent * event);
@@ -139,6 +142,7 @@ protected:
     QString makeDesc(const QString & referenceFile);
     void updateRaiseWindowAction();
 	bool writeXml(const QString & path, const QString & text, bool temp);
+	void displayBuses();
 
 protected slots:
     void initZoom();
@@ -152,6 +156,7 @@ protected slots:
     void tabWidget_currentChanged(int index);
     void backupSketch();
     void updateWindowMenu();
+    void updateWireMenu();
 
 protected:
     QDomDocument m_fzpDocument;
@@ -164,6 +169,7 @@ protected:
     QAction * m_showConnectorsViewAct;
     QAction * m_showIconAct;
     QAction * m_showInOSAct;
+	class WireAction * m_deleteBusConnectionAct;
 
 	QPointer<SketchAreaWidget> m_iconWidget;
 	QPointer<class IconSketchWidget> m_iconGraphicsView;
@@ -177,7 +183,7 @@ protected:
     QHash<ViewLayer::ViewIdentifier, QDomDocument *> m_docs;
     QHash<ViewLayer::ViewIdentifier, int> m_svgChangeCount;
     QHash<ViewLayer::ViewIdentifier, bool> m_everZoomed;
-    QList<SketchWidget *> m_sketchWidgets;
+    QHash<ViewLayer::ViewIdentifier, SketchWidget *> m_sketchWidgets;
     QString m_userPartsFolderPath;
     QString m_userPartsFolderSvgPath;
     bool m_canSave;

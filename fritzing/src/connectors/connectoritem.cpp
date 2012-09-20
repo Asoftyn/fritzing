@@ -1844,7 +1844,7 @@ void ConnectorItem::displayRatsnest(QList<ConnectorItem *> & partConnectorItems,
 
 	foreach (ConnectorItem * key, result.uniqueKeys()) {
 		foreach (ConnectorItem * value, result.values(key)) {
-			VirtualWire * vw = infoGraphicsView->makeOneRatsnestWire(key, value, false, color);
+			VirtualWire * vw = infoGraphicsView->makeOneRatsnestWire(key, value, false, color, false);
 			if (vw) {
 				vw->setColorWasNamed(colorWasNamed);
 			}
