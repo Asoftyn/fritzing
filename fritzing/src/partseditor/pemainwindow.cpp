@@ -35,8 +35,6 @@ $Date$
         
         crashed when saving the description
 
-		fix bendpoint cursor when hovering over a wire
-
         from partseditorview.cpp
 	        bool fileHasChanged = (m_viewIdentifier == ViewLayer::IconView) ? false : TextUtils::fixPixelDimensionsIn(fileContent);
 	        fileHasChanged |= TextUtils::cleanSodipodi(fileContent);
@@ -56,14 +54,7 @@ $Date$
             disable pad for throughhole parts, disable m/f for smd parts
             for now don't allow mixing
 			test that it works at all
-
-        deal with customized svgs
-            chip label
-            * pin label
-            * resistance
-            * led color
-            pin header stuff
-            pin size
+			what happens if you open an smd placed on the bottom layer?
 
         keep family as is, but force users to put in a unique variant
             don't allow blank
@@ -72,9 +63,7 @@ $Date$
 
         multiple matching connector id--trash any other matching id
 
-        viewswitcher
-
-        don't allow empty family
+        viewswitcher?
 
         keep originating file in fzp/svg and use it for naming
             display in pesvgview
@@ -507,32 +496,20 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
     TextUtils::replaceChildText(m_fzpDocument, date, QDate::currentDate().toString());
 
     fzpRoot.setAttribute("moduleId", m_guid);
-    QString family = originalModelPart->family();
-    if (family.isEmpty()) {
-        family = m_guid;
-    }
-    else if (!family.startsWith("custom_")) {
-        family = "custom_" + family;
-    }
-    QDomElement properties = fzpRoot.firstChildElement("properties");
-    QDomElement prop = properties.firstChildElement("property");
-    bool gotProp = false;
-    while (!prop.isNull()) {
-        QString name = prop.attribute("name");
-        if (name.compare("hole size", Qt::CaseInsensitive) == 0) {
-            gotProp = true;
-            TextUtils::replaceChildText(m_fzpDocument, prop, family);
-            break;
-        }
 
-        prop = prop.nextSiblingElement("property");
-    }
-    if (!gotProp) {
-        QDomElement prop = m_fzpDocument.createElement("property");
-        properties.appendChild(prop);
-        prop.setAttribute("name", "family");
-        TextUtils::replaceChildText(m_fzpDocument, prop, family);
-    }
+	QDomElement properties = fzpRoot.firstChildElement("properties");
+	QHash<QString,QString> props = originalModelPart->properties();
+	foreach (QString key, props.keys()) {
+		replaceProperty(key, props.value(key), properties);
+	}
+	foreach (QByteArray byteArray, originalModelPart->dynamicPropertyNames()) {
+		replaceProperty(byteArray, originalModelPart->property(byteArray).toString(), properties);
+	}
+
+
+
+
+	// make sure local props are copied
 
     foreach (SketchWidget * sketchWidget, m_sketchWidgets) {
         ItemBase * itemBase = originalModelPart->viewItem(sketchWidget->viewIdentifier());
@@ -2449,5 +2426,24 @@ void PEMainWindow::removeBusConnector(const QString & busID, const QString & con
 	}
 
 	displayBuses();
+}
+
+void PEMainWindow::replaceProperty(const QString & key, const QString & value, QDomElement & properties)
+{
+    QDomElement prop = properties.firstChildElement("property");
+    while (!prop.isNull()) {
+        QString name = prop.attribute("name");
+        if (name.compare(key, Qt::CaseInsensitive) == 0) {
+            TextUtils::replaceChildText(m_fzpDocument, prop, value);
+            return;
+        }
+
+        prop = prop.nextSiblingElement("property");
+    }
+    
+	prop = m_fzpDocument.createElement("property");
+    properties.appendChild(prop);
+    prop.setAttribute("name", key);
+    TextUtils::replaceChildText(m_fzpDocument, prop, value);
 }
 

@@ -148,6 +148,7 @@ protected:
 	void displayBuses();
 	QDomElement findBus(const QDomElement &, const QString &);
 	QString findNodeMember(const QDomElement & buses, const QString & connectorID);
+	void replaceProperty(const QString & key, const QString & value, QDomElement & properties);
 
 
 protected slots:
