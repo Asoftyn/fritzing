@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<site>
+    <property name="title">Fritzing</property>
+    <property name="description">From prototype to product</property>
+    
+    <!-- Check out Products/CMFPlone/profiles/default for examples -->
+</site>

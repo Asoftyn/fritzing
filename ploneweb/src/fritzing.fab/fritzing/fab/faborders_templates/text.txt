@@ -1,0 +1,10 @@
+- need an easy way to update the dates (submission/production)
+___________________________________________
+
+vertical layout, in the right column on the front page
+Photo: Breadboard>Firtzing Breadboard>Fritzing PCB>PCB
+___________________________________________
+
+FAQ:
+- How do you measure the size of the board?
+- What does the sanity check do?

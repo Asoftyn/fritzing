@@ -1,0 +1,4 @@
+<object name="portal_types">
+ <object name="fritzing.projects.project" meta_type="Dexterity FTI" />
+ <object name="fritzing.projects.projectfolder" meta_type="Dexterity FTI" />
+</object>

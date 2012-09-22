@@ -1,0 +1,15 @@
+README.txt
+setup.cfg
+setup.py
+fritzing/__init__.py
+fritzing.policy.egg-info/PKG-INFO
+fritzing.policy.egg-info/SOURCES.txt
+fritzing.policy.egg-info/dependency_links.txt
+fritzing.policy.egg-info/entry_points.txt
+fritzing.policy.egg-info/namespace_packages.txt
+fritzing.policy.egg-info/not-zip-safe
+fritzing.policy.egg-info/requires.txt
+fritzing.policy.egg-info/top_level.txt
+fritzing/policy/__init__.py
+fritzing/policy/testing.py
+fritzing/policy/tests.py

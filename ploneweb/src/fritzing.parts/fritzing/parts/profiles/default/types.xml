@@ -1,0 +1,4 @@
+<object name="portal_types">
+ <object name="fritzing.parts.part" meta_type="Dexterity FTI" />
+ <object name="fritzing.parts.partfolder" meta_type="Dexterity FTI" />
+</object>

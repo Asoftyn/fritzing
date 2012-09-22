@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<metadata>
+  <version>1</version>
+  <dependencies>
+    <dependency>profile-fritzing.projects:default</dependency>
+    <dependency>profile-fritzing.parts:default</dependency>
+  </dependencies>
+</metadata>
