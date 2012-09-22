@@ -86,7 +86,7 @@ bool SvgFileSplitter::splitString(QString & contents, const QString & elementID)
 	contents.replace('\r', ' ');
 
 	// get rid of inkscape stuff too
-	contents.remove(TextUtils::SodipodiDetector);
+	TextUtils::cleanSodipodi(contents);
 
 	QString errorStr;
 	int errorLine;

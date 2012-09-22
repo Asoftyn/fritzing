@@ -42,7 +42,8 @@ const QString TextUtils::CreatedWithFritzingString("Created with Fritzing (http:
 const QString TextUtils::CreatedWithFritzingXmlComment("<!-- " + CreatedWithFritzingString + " -->\n");
 
 const QRegExp TextUtils::FindWhitespace("[\\s]+");
-const QRegExp TextUtils::SodipodiDetector("((inkscape)|(sodipodi)):[^=\\s]+=\"([^\"\\\\]*(\\\\.[^\"\\\\]*)*)\"");
+static const QRegExp SodipodiAttributeDetector("(inkscape|sodipodi):[^=\\s]+=\"([^\"\\\\]*(\\\\.[^\"\\\\]*)*)\"");
+static const QRegExp SodipodiElementDetector("</{0,1}(inkscape|sodipodi):[^>]+>");
 const QString TextUtils::SMDFlipSuffix("___");
 
 const QString TextUtils::RegexFloatDetector = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
@@ -103,29 +104,40 @@ QSet<QString> TextUtils::getRegexpCaptures(const QString &pattern, const QString
 double TextUtils::convertToInches(const QString & s, bool * ok, bool isIllustrator) {
 	QString string = s;
 	double divisor = 1.0;
+	int chop = 2;
 	if (string.endsWith("cm", Qt::CaseInsensitive)) {
 		divisor = 2.54;
-		string.chop(2);
 	}
 	else if (string.endsWith("mm", Qt::CaseInsensitive)) {
 		divisor = 25.4;
-		string.chop(2);
 	}
 	else if (string.endsWith("in", Qt::CaseInsensitive)) {
 		divisor = 1.0;
-		string.chop(2);
 	}
 	else if (string.endsWith("px", Qt::CaseInsensitive)) {
 		divisor = isIllustrator? 72.0: 90.0;
-		string.chop(2);
 	}
 	else if (string.endsWith("mil", Qt::CaseInsensitive)) {
 		divisor = 1000.0;
-		string.chop(3);
+		chop = 3;
+	}
+	else if (string.endsWith("pt", Qt::CaseInsensitive)) {
+		divisor = 72.0;
+	}
+	else if (string.endsWith("pc", Qt::CaseInsensitive)) {
+		divisor = 6.0;
 	}
 	else {
+		for (int ix = string.count() - 1; ix >= 0; ix--) {
+			if (string.at(ix).isDigit()) break;
+			
+			string.chop(1);
+		}
 		divisor = 90.0;			// default to Qt's standard internal units if all else fails
+		chop = 0;
 	}
+
+	if (chop) string.chop(chop);
 
 	bool fine;
 	double result = string.toDouble(&fine);
@@ -395,22 +407,9 @@ bool TextUtils::cleanSodipodi(QString &content)
 	// clean out sodipodi stuff
 	// TODO: don't bother with the core parts
 	int l1 = content.length();
-	content.remove(SodipodiDetector);
+	content.remove(SodipodiElementDetector);
+	content.remove(SodipodiAttributeDetector);
 	if (content.length() != l1) {
-		/*
-		QFileInfo f(filename);
-		QString p = f.absoluteFilePath();
-		p.remove(':');
-		p.remove('/');
-		p.remove('\\');
-		QFile fi(QCoreApplication::applicationDirPath() + p);
-		bool ok = fi.open(QFile::WriteOnly);
-		if (ok) {
-			QTextStream out(&fi);
-   			out << str;
-			fi.close();
-		}
-		*/
 		return true;
 	}
 	return false;
@@ -882,9 +881,70 @@ void TextUtils::gWrap(QDomDocument & domDocument, const QHash<QString, QString> 
 	}
 }
 
+bool TextUtils::fixInternalUnits(QString & svg) 
+{
+	// float detector is a little weak
+	static QRegExp findInternalUnits("[\"']([\\d,\\.]+)(px|mm|cm|in|pt|pc)[\"']");
+	static QRegExp findStrokeWidth("stroke-width:([\\d,\\.]+)(px|mm|cm|in|pt|pc)");
+
+	int sw = 0;
+	int iu = 0;
+	int jx = svg.indexOf("<svg");
+	if (jx >= 0) {
+		sw = iu = svg.indexOf(">", jx + 4);
+	}
+
+	bool firstTime = true;
+	QSizeF size;
+	QRectF viewBox;
+	bool result = false;
+	while (true) {
+		iu = findInternalUnits.indexIn(svg, iu);
+		if (iu < 0) break;
+
+		result = true;
+		if (firstTime) {
+			// assumes width dpi = height dpi
+			size = parseForWidthAndHeight(svg, viewBox);
+			if (size.width() == 0) {
+				// svg is messed up
+				return false;
+			}
+		}
+
+		QString old = findInternalUnits.cap(1) + findInternalUnits.cap(2); 
+		double in = convertToInches(old);
+		double replacement = in * viewBox.width() / size.width();
+		svg.replace(iu + 1, old.length(), QString::number(replacement));
+	}
+
+	while (true) {
+		sw = findStrokeWidth.indexIn(svg, sw);
+		if (sw < 0) break;
+
+		result = true;
+		if (firstTime) {
+			// assumes width dpi = height dpi
+			size = parseForWidthAndHeight(svg, viewBox);
+			if (size.width() == 0) {
+				// svg is messed up
+				return false;
+			}
+		}
+
+		QString old = findStrokeWidth.cap(1) + findStrokeWidth.cap(2); 
+		double in = convertToInches(old);
+		double replacement = in * viewBox.width() / size.width();
+		svg.replace(sw + 13, old.length(), QString::number(replacement));
+	}
+
+	return result;
+}
+
 bool TextUtils::fixMuch(QString &svg)
 {
-    bool result = false;
+    bool result = cleanSodipodi(svg);
+	result |= fixInternalUnits(svg);
 
 	QDomDocument svgDom;
 	QString errorMsg;
@@ -912,6 +972,7 @@ bool TextUtils::fixMuch(QString &svg)
 
     QDomElement root = svgDom.documentElement();
     result |= elevateTransform(root);
+
 
     if (result) {
         svg = removeXMLEntities(svgDom.toString());
@@ -1383,15 +1444,22 @@ int TextUtils::getPinsAndSpacing(const QString & expectedFileName, QString & spa
 
 QSizeF TextUtils::parseForWidthAndHeight(const QString & svg)
 {
-	QXmlStreamReader streamReader(svg);
-    return parseForWidthAndHeight(streamReader);
+	QRectF viewBox;
+    return parseForWidthAndHeight(svg, viewBox);
 }
 
-QSizeF TextUtils::parseForWidthAndHeight(QXmlStreamReader & svg)
+QSizeF TextUtils::parseForWidthAndHeight(const QString & svg, QRectF & viewBox)
+{
+	QXmlStreamReader streamReader(svg);
+    return parseForWidthAndHeight(streamReader, viewBox);
+}
+
+QSizeF TextUtils::parseForWidthAndHeight(QXmlStreamReader & svg, QRectF & viewBox)
 {
     svg.setNamespaceProcessing(false);
 
-	QSizeF size(0,0);
+	QSizeF size(0, 0);
+	viewBox.setRect(0, 0, 0, 0);
 
 	bool isIllustrator = false;
 	bool bad = false;
@@ -1417,6 +1485,22 @@ QSizeF TextUtils::parseForWidthAndHeight(QXmlStreamReader & svg)
 
 				size.setWidth(w);
 				size.setHeight(h);
+				viewBox.setRect(0, 0, w, h);
+
+				QString vb = svg.attributes().value("viewBox").toString();
+				QStringList vbs = vb.split(QRegExp(",| "));
+				if (vbs.count() == 4) {
+					bool ok = false;
+					double d[4];
+					for (int i = 0; i < 4; i++) {
+						d[i] = vbs.at(i).toDouble(&ok);
+						if (!ok) break;
+					}
+					if (ok) {
+						viewBox.setRect(d[0], d[1], d[2], d[3]);
+					}
+				}
+
 				return size;
 			}
 			break;		

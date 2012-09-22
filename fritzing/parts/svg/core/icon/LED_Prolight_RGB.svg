@@ -2,11 +2,10 @@
 <!-- Generator: Adobe Illustrator 14.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 43363)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1"
-	 id="svg2" xmlns:svg="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="56.693px"
-	 height="56.693px" viewBox="0 0 56.693 56.693" enable-background="new 0 0 56.693 56.693" xml:space="preserve">
-<sodipodi:namedview  id="base" units="in" pagecolor="#ffffff" showgrid="false" showguides="true" borderopacity="1.0" bordercolor="#666666">
-	</sodipodi:namedview>
+	 xmlns:svg="http://www.w3.org/2000/svg"  
+	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="56.693px"
+	 height="56.693px" viewBox="0 0 56.693 56.693" xml:space="preserve">
+
 <path id="PCB" fill="#201D18" d="M13.952,15.502l2.926-5.068l1.181,2.045c0,0,2.786,4.843,7.58,2.074
 	c4.795-2.769,2.098-7.662,2.098-7.662l-1.18-2.045l5.893-0.002l10.357-0.017l5.853,0.001l-1.18,2.044c0,0-2.801,4.833,1.992,7.602
 	c4.795,2.769,7.682-2.016,7.682-2.016l1.185-2.043l2.946,5.103l5.192,8.961l2.925,5.069h-2.36c0,0-5.585-0.01-5.585,5.527

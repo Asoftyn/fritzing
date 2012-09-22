@@ -531,6 +531,11 @@ protected:
 	void dockMarginAux(FDockWidget* dock, const QString &name, const QString &style);
     void initStyleSheet();
     virtual QString getStyleSheetSuffix();
+	virtual QWidget * createTabWidget();
+	virtual void addTab(QWidget * widget, const QString & label);
+	virtual int currentTabIndex();
+	virtual void setCurrentTabIndex(int);
+	virtual QWidget * currentTabWidget();
 
 protected:
 	static void removeActionsStartingAt(QMenu *menu, int start=0);
@@ -555,7 +560,7 @@ protected:
     QPointer<class MiniViewContainer> m_miniViewContainerSchematic;
     QPointer<class MiniViewContainer> m_miniViewContainerPCB;
 	QList <class MiniViewContainer *> m_navigators;
-	QPointer<QStackedWidget> m_tabWidget;
+	QPointer<QWidget> m_tabWidget;
     QPointer<ReferenceModel> m_refModel;
     QPointer<class SketchModel> m_sketchModel;
     QPointer<class HtmlInfoView> m_infoView;

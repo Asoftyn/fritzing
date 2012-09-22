@@ -123,17 +123,16 @@ QByteArray FSvgRenderer::loadAux(const QByteArray & theContents, const QString &
 	if (TextUtils::isIllustratorFile(cleanContents)) {
 		QString string(cleanContents);
 
+#ifndef QT_NO_DEBUG
 		if (string.contains("sodipodi") || string.contains("inkscape")) {
 			// if svg has both Illustrator and Inkscape crap then converting back and forth between strings and QDomDocument
 			// in FixPixelDimensionsIn() can result in invalid xml
-			TextUtils::cleanSodipodi(string);
-#ifndef QT_NO_DEBUG
+
 			if (!filename.contains("icon", Qt::CaseInsensitive)) {
 				DebugDialog::debug("Illustrator and inkscape:" + filename);
 			}
-#endif
 		}
-
+#endif
 		//DebugDialog::debug("Illustrator " + filename);
 		if (TextUtils::fixPixelDimensionsIn(string)) {
 			cleaned = true;
@@ -141,9 +140,6 @@ QByteArray FSvgRenderer::loadAux(const QByteArray & theContents, const QString &
 		}
 	}
 	
-	if (cleanContents.contains("sodipodi") || cleanContents.contains("inkscape")) {
-		//DebugDialog::debug("inkscape " + filename);
-	}
 
     QString string(cleanContents);
     if (TextUtils::fixMuch(string)) {
@@ -259,7 +255,8 @@ bool FSvgRenderer::determineDefaultSize(QXmlStreamReader & xml)
 
 QSizeF FSvgRenderer::parseForWidthAndHeight(QXmlStreamReader & xml)
 {
-    QSizeF size = TextUtils::parseForWidthAndHeight(xml);
+	QRectF viewBox;
+    QSizeF size = TextUtils::parseForWidthAndHeight(xml, viewBox);
     if (size.width() != 0 && size.height() != 0) return size;
 
 	QIODevice * device = xml.device();

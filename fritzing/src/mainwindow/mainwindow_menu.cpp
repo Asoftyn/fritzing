@@ -235,7 +235,7 @@ void MainWindow::revert() {
     mw->clearFileProgressDialog();   
 
     // TODO: restore zoom, scroll, etc. for each view
-    mw->m_tabWidget->setCurrentIndex(this->m_tabWidget->currentIndex());
+    mw->setCurrentTabIndex(currentTabIndex());
 
     this->setCloseSilently(true);
     this->close();
@@ -1932,16 +1932,16 @@ void MainWindow::actualSize() {
 }
 
 void MainWindow::showBreadboardView() {
-	this->m_tabWidget->setCurrentIndex(0);
+	setCurrentTabIndex(0);
 }
 
 void MainWindow::showSchematicView() {
-	this->m_tabWidget->setCurrentIndex(1);
+	setCurrentTabIndex(1);
 
 }
 
 void MainWindow::showPCBView() {
-	this->m_tabWidget->setCurrentIndex(2);
+	setCurrentTabIndex(2);
 }
 
 void MainWindow::setCurrentView(ViewLayer::ViewIdentifier viewIdentifier)

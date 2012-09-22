@@ -292,7 +292,11 @@ void LogoItem::loadImage(const QString & fileName, bool addName)
 			return;
 		}
 
-		TextUtils::cleanSodipodi(svg);
+		if (svg.contains("coreldraw", Qt::CaseInsensitive) && svg.contains("cdata", Qt::CaseInsensitive)) {
+			unableToLoad(fileName, tr("because this appears to be a SVG file exported from CorelDRAW without choosing the 'presentation attributes' setting"));
+			return;
+		}
+
 		TextUtils::fixPixelDimensionsIn(svg);
 		TextUtils::fixViewboxOrigin(svg);
 		TextUtils::fixMuch(svg);

@@ -149,6 +149,11 @@ protected:
 	QDomElement findBus(const QDomElement &, const QString &);
 	QString findNodeMember(const QDomElement & buses, const QString & connectorID);
 	void replaceProperty(const QString & key, const QString & value, QDomElement & properties);
+	QWidget * createTabWidget();
+	void addTab(QWidget * widget, const QString & label);
+	int currentTabIndex();
+	void setCurrentTabIndex(int);
+	QWidget * currentTabWidget();
 
 
 protected slots:

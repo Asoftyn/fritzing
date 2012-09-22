@@ -37,14 +37,10 @@ $Date$
 
         from partseditorview.cpp
 	        bool fileHasChanged = (m_viewIdentifier == ViewLayer::IconView) ? false : TextUtils::fixPixelDimensionsIn(fileContent);
-	        fileHasChanged |= TextUtils::cleanSodipodi(fileContent);
 	        fileHasChanged |= TextUtils::fixViewboxOrigin(fileContent);
 	        fileHasChanged |= fixFonts(fileContent,filename,canceled);
 	
         for svg import check for flaws:
-            internal coords
-                em, ex, px, pt, pc, cm, mm, in
-            corel draw not saved for presentation
             inkscape not saved as plain
             illustrator px
             <gradient>, etc.
@@ -64,6 +60,7 @@ $Date$
         multiple matching connector id--trash any other matching id
 
         viewswitcher?
+			normal tabs
 
         keep originating file in fzp/svg and use it for naming
             display in pesvgview
@@ -81,6 +78,8 @@ $Date$
         lock should lock all fields
 
         check all MainWindow * casts
+
+		really darken unused docks
 
     ////////////////////////////// second release /////////////////////////////////
 
@@ -311,7 +310,7 @@ void PEMainWindow::initSketchWidgets()
 	m_iconGraphicsView = new IconSketchWidget(ViewLayer::IconView, this);
 	initSketchWidget(m_iconGraphicsView);
 	m_iconWidget = new SketchAreaWidget(m_iconGraphicsView,this);
-	m_tabWidget->addWidget(m_iconWidget);
+	addTab(m_iconWidget, tr("Icon"));
     initSketchWidget(m_iconGraphicsView);
 
     m_docs.insert(m_breadboardGraphicsView->viewIdentifier(), &m_breadboardDocument);
@@ -334,14 +333,14 @@ void PEMainWindow::initSketchWidgets()
 
     m_metadataView = new PEMetadataView(this);
 	SketchAreaWidget * sketchAreaWidget = new SketchAreaWidget(m_metadataView, this);
-	m_tabWidget->addWidget(sketchAreaWidget);
+	addTab(sketchAreaWidget, tr("Metadata"));
     connect(m_metadataView, SIGNAL(metadataChanged(const QString &, const QString &)), this, SLOT(metadataChanged(const QString &, const QString &)));
     connect(m_metadataView, SIGNAL(tagsChanged(const QStringList &)), this, SLOT(tagsChanged(const QStringList &)));
     connect(m_metadataView, SIGNAL(propertiesChanged(const QHash<QString, QString> &)), this, SLOT(propertiesChanged(const QHash<QString, QString> &)));
 
     m_connectorsView = new PEConnectorsView(this);
 	sketchAreaWidget = new SketchAreaWidget(m_connectorsView, this);
-	m_tabWidget->addWidget(sketchAreaWidget);
+	addTab(sketchAreaWidget, tr("Connectors"));
     connect(m_connectorsView, SIGNAL(connectorMetadataChanged(ConnectorMetadata *)), this, SLOT(connectorMetadataChanged(ConnectorMetadata *)), Qt::DirectConnection);
     connect(m_connectorsView, SIGNAL(removedConnectors(QList<ConnectorMetadata *> &)), this, SLOT(removedConnectors(QList<ConnectorMetadata *> &)), Qt::DirectConnection);
     connect(m_connectorsView, SIGNAL(connectorCountChanged(int)), this, SLOT(connectorCountChanged(int)));
@@ -583,9 +582,9 @@ void PEMainWindow::setTitle() {
 
     QString viewName;
     if (m_currentGraphicsView) viewName = m_currentGraphicsView->viewName();
-    else if (m_tabWidget->currentIndex() == IconViewIndex) viewName = tr("Icon View");
-    else if (m_tabWidget->currentIndex() == MetadataViewIndex) viewName = tr("Metadata View");
-    else if (m_tabWidget->currentIndex() == ConnectorsViewIndex) viewName = tr("Connectors View");
+    else if (currentTabIndex() == IconViewIndex) viewName = tr("Icon View");
+    else if (currentTabIndex() == MetadataViewIndex) viewName = tr("Metadata View");
+    else if (currentTabIndex() == ConnectorsViewIndex) viewName = tr("Connectors View");
 
 	setWindowTitle(QString("%1: %2 [%3]%4").arg(title).arg(partTitle).arg(viewName).arg(QtFunkyPlaceholder));
 }
@@ -628,15 +627,15 @@ void PEMainWindow::createViewMenu() {
 }
 
 void PEMainWindow::showMetadataView() {
-    this->m_tabWidget->setCurrentIndex(MetadataViewIndex);
+    setCurrentTabIndex(MetadataViewIndex);
 }
 
 void PEMainWindow::showConnectorsView() {
-    this->m_tabWidget->setCurrentIndex(ConnectorsViewIndex);
+    setCurrentTabIndex(ConnectorsViewIndex);
 }
 
 void PEMainWindow::showIconView() {
-    this->m_tabWidget->setCurrentIndex(IconViewIndex);
+    setCurrentTabIndex(IconViewIndex);
 }
 
 void PEMainWindow::metadataChanged(const QString & name, const QString & value)
@@ -1083,13 +1082,23 @@ void PEMainWindow::loadImage()
 			newPath = createSvgFromImage(origPath);
 		}
 		catch (const QString & msg) {
-    		QMessageBox::warning(NULL, tr("Conversion problem"), tr("Unable to load image file: \n%1").arg(msg));
+    		QMessageBox::warning(NULL, tr("Conversion problem"), tr("Unable to load image file '%1': \n\n%2").arg(newPath).arg(msg));
 			return;
 		}
 	}
 
 	if (!newPath.isEmpty()) {
         QFile file(newPath);
+		if (file.open(QFile::ReadOnly)) {
+			QString svg = file.readAll();
+			if (svg.contains("coreldraw", Qt::CaseInsensitive) && svg.contains("cdata", Qt::CaseInsensitive)) {
+    			QMessageBox::warning(NULL, tr("Conversion problem"), tr("The SVG file '%1' appears to have been exported from CorelDRAW without choosing the 'presentation attributes' setting. ").arg(newPath) +
+																	 tr("Please re-export the SVG file using that setting, and try loading again."));
+				return;
+			}
+			file.close();
+		}
+
 	    QString errorStr;
 	    int errorLine;
 	    int errorColumn;
@@ -2447,3 +2456,22 @@ void PEMainWindow::replaceProperty(const QString & key, const QString & value, Q
     TextUtils::replaceChildText(m_fzpDocument, prop, value);
 }
 
+QWidget * PEMainWindow::createTabWidget() {
+	return new QTabWidget(this);
+}
+
+void PEMainWindow::addTab(QWidget * widget, const QString & label) {
+	qobject_cast<QTabWidget *>(m_tabWidget)->addTab(widget, label);
+}
+
+int PEMainWindow::currentTabIndex() {
+	return qobject_cast<QTabWidget *>(m_tabWidget)->currentIndex();
+}
+
+void PEMainWindow::setCurrentTabIndex(int index) {
+	qobject_cast<QTabWidget *>(m_tabWidget)->setCurrentIndex(index);
+}
+
+QWidget * PEMainWindow::currentTabWidget() {
+	return qobject_cast<QTabWidget *>(m_tabWidget)->currentWidget();
+}

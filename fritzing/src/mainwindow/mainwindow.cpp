@@ -236,10 +236,6 @@ MainWindow::MainWindow(ReferenceModel *refModel, QWidget * parent) :
 	m_refModel = refModel;
 	m_sketchModel = new SketchModel(true);
 
-	m_tabWidget = new QStackedWidget(this); //   FTabWidget(this);
-	m_tabWidget->setObjectName("sketch_tabs");
-
-	setCentralWidget(m_tabWidget);
 
 	QShortcut * shortcut = new QShortcut(QKeySequence(tr("Ctrl+R", "Rotate Clockwise")), this);
 	connect(shortcut, SIGNAL(activated()), this, SLOT(rotateIncCW()));
@@ -266,7 +262,33 @@ MainWindow::MainWindow(ReferenceModel *refModel, QWidget * parent) :
 			Qt::DirectConnection);
 }
 
+QWidget * MainWindow::createTabWidget() {
+	return new QStackedWidget(this);
+}
+
+void MainWindow::addTab(QWidget * widget, const QString & label) {
+	Q_UNUSED(label);
+	qobject_cast<QStackedWidget *>(m_tabWidget)->addWidget(widget);
+}
+
+int MainWindow::currentTabIndex() {
+	return qobject_cast<QStackedWidget *>(m_tabWidget)->currentIndex();
+}
+
+void MainWindow::setCurrentTabIndex(int index) {
+	qobject_cast<QStackedWidget *>(m_tabWidget)->setCurrentIndex(index);
+}
+
+QWidget * MainWindow::currentTabWidget() {
+	return qobject_cast<QStackedWidget *>(m_tabWidget)->currentWidget();
+}
+
 void MainWindow::init(ReferenceModel *refModel, bool lockFiles) {
+
+	m_tabWidget = createTabWidget(); //   FTabWidget(this);
+	m_tabWidget->setObjectName("sketch_tabs");
+	setCentralWidget(m_tabWidget);
+
     m_refModel = refModel;
     m_restarting = false;
 
@@ -387,7 +409,7 @@ void MainWindow::initSketchWidgets() {
 	m_breadboardGraphicsView = new BreadboardSketchWidget(ViewLayer::BreadboardView, this);
 	initSketchWidget(m_breadboardGraphicsView);
 	m_breadboardWidget = new SketchAreaWidget(m_breadboardGraphicsView,this);
-	m_tabWidget->addWidget(m_breadboardWidget);
+	addTab(m_breadboardWidget, tr("Breadboard"));
 
 	if (m_fileProgressDialog) {
 		m_fileProgressDialog->setValue(11);
@@ -396,7 +418,7 @@ void MainWindow::initSketchWidgets() {
 	m_schematicGraphicsView = new SchematicSketchWidget(ViewLayer::SchematicView, this);
 	initSketchWidget(m_schematicGraphicsView);
 	m_schematicWidget = new SketchAreaWidget(m_schematicGraphicsView, this);
-	m_tabWidget->addWidget(m_schematicWidget);
+	addTab(m_schematicWidget, tr("Schematic"));
 
 	if (m_fileProgressDialog) {
 		m_fileProgressDialog->setValue(20);
@@ -405,7 +427,7 @@ void MainWindow::initSketchWidgets() {
 	m_pcbGraphicsView = new PCBSketchWidget(ViewLayer::PCBView, this);
 	initSketchWidget(m_pcbGraphicsView);
 	m_pcbWidget = new SketchAreaWidget(m_pcbGraphicsView, this);
-	m_tabWidget->addWidget(m_pcbWidget);
+	addTab(m_pcbWidget, tr("PCB"));
 
 	if (m_fileProgressDialog) {
 		m_fileProgressDialog->setValue(29);
@@ -858,7 +880,7 @@ void MainWindow::createStatusBar()
 }
 
 void MainWindow::tabWidget_currentChanged(int index) {
-	SketchAreaWidget * widgetParent = dynamic_cast<SketchAreaWidget *>(m_tabWidget->currentWidget());
+	SketchAreaWidget * widgetParent = dynamic_cast<SketchAreaWidget *>(currentTabWidget());
 	if (widgetParent == NULL) return;
 
 	m_currentWidget = widgetParent;
@@ -935,7 +957,7 @@ void MainWindow::tabWidget_currentChanged(int index) {
 		    m_showInViewHelpAct->setChecked(false);
 	    }
 	    else {
-		    m_showInViewHelpAct->setChecked(m_helper->helpVisible(m_tabWidget->currentIndex()));
+		    m_showInViewHelpAct->setChecked(m_helper->helpVisible(currentTabIndex()));
 	    }
     }
 
@@ -1525,14 +1547,14 @@ void MainWindow::currentNavigatorChanged(MiniViewContainer * miniView)
 	int index = m_navigators.indexOf(miniView);
 	if (index < 0) return;
 
-	int oldIndex = m_tabWidget->currentIndex();
+	int oldIndex = currentTabIndex();
 	if (oldIndex == index) return;
 
-	this->m_tabWidget->setCurrentIndex(index);
+	setCurrentTabIndex(index);
 }
 
 void MainWindow::viewSwitchedTo(int viewIndex) {
-	m_tabWidget->setCurrentIndex(viewIndex);
+	setCurrentTabIndex(viewIndex);
 }
 
 const QString MainWindow::fritzingTitle() {
@@ -1617,14 +1639,14 @@ void MainWindow::showInViewHelp() {
 		return;
 	}
 
-	bool toggle = !m_helper->helpVisible(m_tabWidget->currentIndex());
+	bool toggle = !m_helper->helpVisible(currentTabIndex());
 	showAllFirstTimeHelp(toggle);
 
 	/*
-	m_helper->toggleHelpVisibility(m_tabWidget->currentIndex());
+	m_helper->toggleHelpVisibility(currentTabIndex());
 	*/
 
-	m_showInViewHelpAct->setChecked(m_helper->helpVisible(m_tabWidget->currentIndex()));
+	m_showInViewHelpAct->setChecked(m_helper->helpVisible(currentTabIndex()));
 }
 
 

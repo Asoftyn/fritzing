@@ -107,15 +107,15 @@ public:
 	static void expandAndFillAux(QDomElement &, const QString & color, double expandBy);
     static bool writeUtf8(const QString & fileName, const QString & text);
     static int getPinsAndSpacing(const QString & expectedFileName, QString & spacingString);
-	static QSizeF parseForWidthAndHeight(QXmlStreamReader &);
+	static QSizeF parseForWidthAndHeight(QXmlStreamReader &, QRectF & viewBox);
+	static QSizeF parseForWidthAndHeight(const QString & svg, QRectF & viewBox);
 	static QSizeF parseForWidthAndHeight(const QString & svg);
     static void gornTree(QDomDocument &);
     static bool elevateTransform(QDomElement &);
     static bool fixMuch(QString &svg);
-
+	static bool fixInternalUnits(QString & svg);
 public:
 	static const QRegExp FindWhitespace;
-	static const QRegExp SodipodiDetector;
 	static const QString SMDFlipSuffix;
 	static const QString MicroSymbol;
 	static const QString PowerPrefixesString;
@@ -137,6 +137,7 @@ protected:
     static bool noPatternAux(QDomDocument & svgDom, const QString & tag);
     static bool noUseAux(QDomDocument & svgDom);
     static bool tspanRemoveAux(QDomDocument & svgDom);
+
 };
 
 #endif
