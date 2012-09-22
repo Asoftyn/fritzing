@@ -20,21 +20,20 @@
 	border: 0px;
 }
 
+
+#PESvgView {
+	background-color: #000000;
+	color: #000000;
+}
+
+#PEToolView {
+	background-color: #000000;
+	color: #000000;
+}
+
 QSplitter::handle {
      height: 4px;
      width: 4px;
      color: #666666;
      background-color: #666666;
 } 
-
-/* this separates palettes from each other and is movable */
-PEMainWindow::separator {
-	background-color: #666666;
-}
-
-PEMainWindow {
-	/* layout here */
-
-	/* styling there */
-	background-color: #afafb4;
-}

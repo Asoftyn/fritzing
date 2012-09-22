@@ -46,7 +46,7 @@ public:
 	~PESvgView();
 
     void highlightElement(class PEGraphicsItem *);
-    void clearTexts();
+	void setChildrenVisible(bool vis);
     void setFilename(const QString &);
 
 protected:

@@ -29,12 +29,14 @@ $Date$
 #include "pegraphicsitem.h"
 #include "../utils/textutils.h"
 #include "../utils/graphicsutils.h"
+#include "../debugdialog.h"
 
 #include <QHBoxLayout>
 #include <QTextStream>
 #include <QSplitter>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QFile>
 
 //////////////////////////////////////
 
@@ -55,6 +57,13 @@ void PEDoubleSpinBox::stepBy(int steps)
 PEToolView::PEToolView(QWidget * parent) : QWidget(parent) 
 {
     this->setObjectName("PEToolView");
+
+    QFile styleSheet(":/resources/styles/newpartseditor.qss");
+    if (!styleSheet.open(QIODevice::ReadOnly)) {
+        DebugDialog::debug("Unable to open :/resources/styles/newpartseditor.qss");
+    } else {
+    	this->setStyleSheet(styleSheet.readAll());
+    }
 
     m_pegi = NULL;
 
@@ -334,3 +343,9 @@ void PEToolView::removeConnector() {
 
 }
 
+void PEToolView::setChildrenVisible(bool vis)
+{
+	foreach (QWidget * widget, findChildren<QWidget *>()) {
+		widget->setVisible(vis);
+	}
+}

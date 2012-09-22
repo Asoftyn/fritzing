@@ -65,6 +65,7 @@ public:
 	void setCurrentConnector(const QDomElement &);
     void setTerminalPointCoords(QPointF);
     void setTerminalPointLimits(QSizeF);
+	void setChildrenVisible(bool vis);
 
 signals:
     void switchedConnector(const QDomElement &);

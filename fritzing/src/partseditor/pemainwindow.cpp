@@ -41,9 +41,6 @@ $Date$
 	        fileHasChanged |= fixFonts(fileContent,filename,canceled);
 	
         for svg import check for flaws:
-            inkscape not saved as plain
-            illustrator px
-            <gradient>, etc.
             multiple connector or terminal ids
 
         smd vs. tht
@@ -58,9 +55,6 @@ $Date$
             fill in with guid			
 
         multiple matching connector id--trash any other matching id
-
-        viewswitcher?
-			normal tabs
 
         keep originating file in fzp/svg and use it for naming
             display in pesvgview
@@ -1958,8 +1952,8 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
     switchedConnector(m_peToolView->currentConnector());
 
     bool enabled = index < IconViewIndex;
-    m_peToolView->setEnabled(enabled);
-    if (!enabled) m_peSvgView->clearTexts();
+	m_peSvgView->setChildrenVisible(enabled);
+	m_peToolView->setChildrenVisible(enabled);
 
     if (m_currentGraphicsView == NULL) {
         // update title when switching to connector and metadata view

@@ -29,12 +29,14 @@ $Date$
 #include "peutils.h"
 #include "../utils/textutils.h"
 #include "../utils/graphicsutils.h"
+#include "../debugdialog.h"
 
 #include <QHBoxLayout>
 #include <QTextStream>
 #include <QSplitter>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QFile>
 
 //////////////////////////////////////
 
@@ -43,9 +45,15 @@ PESvgView::PESvgView(QWidget * parent) : QWidget(parent)
 {
     this->setObjectName("PESvgView");
 
-    m_pegi = NULL;
+    QFile styleSheet(":/resources/styles/newpartseditor.qss");
+    if (!styleSheet.open(QIODevice::ReadOnly)) {
+        DebugDialog::debug("Unable to open :/resources/styles/newpartseditor.qss");
+    } else {
+    	this->setStyleSheet(styleSheet.readAll());
+    }
 
-    
+    m_pegi = NULL;
+  
     QVBoxLayout * mainLayout = new QVBoxLayout;
 
     m_filename = new QLabel();
@@ -143,13 +151,11 @@ void PESvgView::highlightElement(PEGraphicsItem * pegi) {
 
 }
 
-void PESvgView::clearTexts()
+void PESvgView::setChildrenVisible(bool vis)
 {
-    QList<QLabel *> labels;
-    labels <<  m_svgElement << m_height << m_width << m_x << m_y;
-    foreach (QLabel * label, labels) {
-        label->setText("");
-    }
+	foreach (QWidget * widget, findChildren<QWidget *>()) {
+		widget->setVisible(vis);
+	}
 }
 
 void PESvgView::setFilename(const QString & filename) {
