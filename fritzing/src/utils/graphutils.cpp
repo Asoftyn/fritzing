@@ -294,6 +294,7 @@ void GraphUtils::minCut(QList<ConnectorItem *> & connectorItems, QList<SketchWid
 
 	// if color_map parameter not specified, colors are not set
     long flow = edmonds_karp_max_flow(g, s, t, color_map(color)); 
+	Q_UNUSED(flow);
 	//DebugDialog::debug(QString("flow %1, s%2, t%3").arg(flow).arg(index(s)).arg(index(t)));
 	//for (int i = 0; i < verts.count(); ++i) {
 	//	DebugDialog::debug(QString("index %1 %2").arg(index(verts[i])).arg(color(verts[i])));

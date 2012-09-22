@@ -991,7 +991,7 @@ bool SqliteReferenceModel::insertConnectorLayer(const SvgIdLayer * svgIdLayer, q
 	return true;
 }
 
-QStringList SqliteReferenceModel::values(const QString &family, const QString &propName, bool distinct) {
+QStringList SqliteReferenceModel::propValues(const QString &family, const QString &propName, bool distinct) {
 	QStringList retval;
 
 	QSqlQuery query;

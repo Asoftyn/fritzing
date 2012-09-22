@@ -110,8 +110,8 @@ public:
     void rotateLeg(long fromID, const QString & connectorID, const QPolygonF &, bool active);   
     void cut();
     void copy();
-    void setRefModel(class ReferenceModel *refModel);
-    class ReferenceModel * refModel();
+    void setReferenceModel(class ReferenceModel *referenceModel);
+    class ReferenceModel * referenceModel();
     void setSketchModel(SketchModel *);
     void setUndoStack(class WaitPushUndoStack *);
     void clearSelection();
@@ -597,7 +597,7 @@ protected:
 	};
 
 protected:
-	QPointer<class ReferenceModel> m_refModel;
+	QPointer<class ReferenceModel> m_referenceModel;
 	QPointer<SketchModel> m_sketchModel;
 	ViewLayer::ViewIdentifier m_viewIdentifier;
 	class WaitPushUndoStack * m_undoStack;

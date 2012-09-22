@@ -38,7 +38,7 @@ class PartsBinPaletteWidget;
 class PartsBinView {
 
 	public:
-		PartsBinView(ReferenceModel *refModel, PartsBinPaletteWidget *parent);
+		PartsBinView(ReferenceModel *referenceModel, PartsBinPaletteWidget *parent);
 		virtual ~PartsBinView();				// removes compiler warnings
 
 		virtual void setPaletteModel(PaletteModel * model, bool clear = false);
@@ -79,7 +79,7 @@ class PartsBinView {
 		static QHash<QString, QString> TranslatedCategoryNames;
 
 	protected:
-		ReferenceModel *m_refModel;
+		ReferenceModel *m_referenceModel;
 		PartsBinPaletteWidget *m_parent;
 
 		QHash<QString /*moduleId*/,ModelPart*> m_partHash;

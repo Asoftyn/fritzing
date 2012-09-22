@@ -103,7 +103,7 @@ QString BinManager::CurrentBinStyle = "background-color: black;";
 
 QHash<QString, QString> BinManager::StandardBinIcons;
 
-BinManager::BinManager(class ReferenceModel *refModel, class HtmlInfoView *infoView, WaitPushUndoStack *undoStack, MainWindow* parent)
+BinManager::BinManager(class ReferenceModel *referenceModel, class HtmlInfoView *infoView, WaitPushUndoStack *undoStack, MainWindow* parent)
 	: QFrame(parent)
 {
 	BinManager::Title = tr("Parts");
@@ -111,7 +111,7 @@ BinManager::BinManager(class ReferenceModel *refModel, class HtmlInfoView *infoV
     m_combinedMenu = NULL;
     m_showListViewAction = m_showIconViewAction = NULL;
 
-	m_refModel = refModel;
+	m_referenceModel = referenceModel;
 	m_infoView = infoView;
 	m_undoStack = undoStack;
 	m_defaultSaveFolder = FolderUtils::getUserDataStorePath("bins");
@@ -454,7 +454,7 @@ PartsBinPaletteWidget* BinManager::openCoreBinIn() {
 }
 
 PartsBinPaletteWidget* BinManager::newBin() {
-	PartsBinPaletteWidget* bin = new PartsBinPaletteWidget(m_refModel, m_infoView, m_undoStack,this);
+	PartsBinPaletteWidget* bin = new PartsBinPaletteWidget(m_referenceModel, m_infoView, m_undoStack,this);
 	connect(
 		bin, SIGNAL(fileNameUpdated(PartsBinPaletteWidget*, const QString&, const QString&)),
 		this, SLOT(updateFileName(PartsBinPaletteWidget*, const QString&, const QString&))
@@ -786,10 +786,10 @@ void BinManager::search(const QString & searchText) {
 
     FileProgressDialog progress(tr("Searching..."), 0, this);
     progress.setIncValueMod(10);
-    connect(m_refModel, SIGNAL(addSearchMaximum(int)), &progress, SLOT(addMaximum(int)));
-    connect(m_refModel, SIGNAL(incSearch()), &progress, SLOT(incValue()));
+    connect(m_referenceModel, SIGNAL(addSearchMaximum(int)), &progress, SLOT(addMaximum(int)));
+    connect(m_referenceModel, SIGNAL(incSearch()), &progress, SLOT(incValue()));
 
-    QList<ModelPart *> modelParts = m_refModel->search(searchText, false);
+    QList<ModelPart *> modelParts = m_referenceModel->search(searchText, false);
 
     progress.setIncValueMod(1);
     searchBin->removeParts();
@@ -837,10 +837,10 @@ void BinManager::updateBinCombinedMenu(PartsBinPaletteWidget * bin) {
 	m_renameBinAction->setEnabled(bin->canClose());
 	m_closeBinAction->setEnabled(bin->canClose());
 	m_deleteBinAction->setEnabled(bin->canClose());
-	ModelPart *mp = bin->selectedModelPart();
-	bool enabled = (mp != NULL);
-	m_editPartNewAction->setEnabled(enabled);
-	m_exportPartAction->setEnabled(enabled && !mp->isCore());
+	ItemBase *itemBase = bin->selectedItemBase();
+	bool enabled = (itemBase != NULL);
+	m_editPartNewAction->setEnabled(enabled && itemBase->canEditPart());
+	m_exportPartAction->setEnabled(enabled && !itemBase->modelPart()->isCore());
 	m_removePartAction->setEnabled(enabled && bin->allowsChanges());
 }
 
@@ -996,7 +996,7 @@ void BinManager::renameBin() {
 
 	if (!currentBin()->allowsChanges()) {
 		// TODO: disable menu item instead
-		QMessageBox::warning(NULL, tr("Read-only bin"), tr("This bin cannot be renamed."));
+		QMessageBox::warning(this, tr("Read-only bin"), tr("This bin cannot be renamed."));
 		return;
 	}
 

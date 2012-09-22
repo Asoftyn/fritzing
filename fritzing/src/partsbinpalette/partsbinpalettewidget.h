@@ -44,7 +44,7 @@ class PartsBinPaletteWidget : public QFrame, public Bundler {
 	Q_OBJECT
 
 	public:
-		PartsBinPaletteWidget(class ReferenceModel *refModel, class HtmlInfoView *infoView, WaitPushUndoStack *undoStack, class BinManager* manager);
+		PartsBinPaletteWidget(class ReferenceModel *referenceModel, class HtmlInfoView *infoView, WaitPushUndoStack *undoStack, class BinManager* manager);
 		~PartsBinPaletteWidget();
 
 		QSize sizeHint() const;
@@ -146,7 +146,7 @@ class PartsBinPaletteWidget : public QFrame, public Bundler {
 
 	protected:
 		PaletteModel *m_model;
-		ReferenceModel *m_refModel;
+		ReferenceModel *m_referenceModel;
 		bool m_canDeleteModel;
 		bool m_orderHasChanged;
 

@@ -28,7 +28,6 @@ $Date$
 
 #include <QFileInfo>
 #include <QMessageBox>
-#include <QCloseEvent>
 #include <QFileDialog>
 #include <QIcon>
 #include <QAction>
@@ -187,8 +186,12 @@ bool FritzingWindow::alreadyHasExtension(const QString &fileName, const QString 
 	}
 }
 
+bool FritzingWindow::anyModified() {
+	return isWindowModified();
+}
+
 bool FritzingWindow::beforeClosing(bool showCancel) {
-	if (this->isWindowModified()) {
+	if (anyModified()) {
 		QMessageBox::StandardButton reply = beforeClosingMessage(m_fwFilename, showCancel);
      	if (reply == QMessageBox::Save) {
      		return save();

@@ -61,7 +61,7 @@ struct BinLocation {
 class BinManager : public QFrame {
 	Q_OBJECT
 	public:
-		BinManager(class ReferenceModel *refModel, class HtmlInfoView *infoView, class WaitPushUndoStack *undoStack, MainWindow* parent);
+		BinManager(class ReferenceModel *referenceModel, class HtmlInfoView *infoView, class WaitPushUndoStack *undoStack, MainWindow* parent);
 		virtual ~BinManager();
 
         void initStandardBins();
@@ -166,7 +166,7 @@ class BinManager : public QFrame {
 
 
 protected:
-		ReferenceModel *m_refModel;
+		ReferenceModel *m_referenceModel;
 
 		HtmlInfoView *m_infoView;
 		WaitPushUndoStack *m_undoStack;

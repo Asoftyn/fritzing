@@ -149,7 +149,7 @@ QString MainWindow::BackupFolder;
 
 /////////////////////////////////////////////
 
-MainWindow::MainWindow(ReferenceModel *refModel, QWidget * parent) :
+MainWindow::MainWindow(ReferenceModel *referenceModel, QWidget * parent) :
     FritzingWindow(untitledFileName(), untitledFileCount(), fileExtension(), parent)
 {
 	setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
@@ -162,7 +162,7 @@ MainWindow::MainWindow(ReferenceModel *refModel, QWidget * parent) :
 
     m_settingsPrefix = "main/";
     m_raiseWindowAct = m_showPartsBinIconViewAct = m_showAllLayersAct = m_hideAllLayersAct = m_showInViewHelpAct = m_rotate90cwAct = m_showBreadboardAct = m_showSchematicAct = m_showPCBAct = NULL;
-    m_windowMenu = m_pcbTraceMenu = m_schematicTraceMenu= m_breadboardTraceMenu = m_viewMenu = NULL;
+    m_partMenu = m_windowMenu = m_pcbTraceMenu = m_schematicTraceMenu = m_breadboardTraceMenu = m_viewMenu = NULL;
     m_miniViewContainerBreadboard = NULL;
     m_infoView = NULL;
     m_addedToTemp = false;
@@ -233,7 +233,7 @@ MainWindow::MainWindow(ReferenceModel *refModel, QWidget * parent) :
 #endif
     m_dontClose = m_closing = false;
 
-	m_refModel = refModel;
+	m_referenceModel = referenceModel;
 	m_sketchModel = new SketchModel(true);
 
 
@@ -283,13 +283,13 @@ QWidget * MainWindow::currentTabWidget() {
 	return qobject_cast<QStackedWidget *>(m_tabWidget)->currentWidget();
 }
 
-void MainWindow::init(ReferenceModel *refModel, bool lockFiles) {
+void MainWindow::init(ReferenceModel *referenceModel, bool lockFiles) {
 
 	m_tabWidget = createTabWidget(); //   FTabWidget(this);
 	m_tabWidget->setObjectName("sketch_tabs");
 	setCentralWidget(m_tabWidget);
 
-    m_refModel = refModel;
+    m_referenceModel = referenceModel;
     m_restarting = false;
 
 	if (m_fileProgressDialog) {
@@ -390,6 +390,27 @@ void MainWindow::init(ReferenceModel *refModel, bool lockFiles) {
 
 }
 
+MainWindow::~MainWindow()
+{
+    // Delete backup of this sketch if one exists.
+    QFile::remove(m_backupFileNameAndPath);	
+	
+	delete m_sketchModel;
+
+	dontKeepMargins();
+	m_setUpDockManagerTimer.stop();
+
+	foreach (LinkedFile * linkedFile, m_linkedProgramFiles) {
+		delete linkedFile;
+	}
+	m_linkedProgramFiles.clear();
+
+	if (!m_fzzFolder.isEmpty()) {
+		LockManager::releaseLockedFiles(m_fzzFolder, m_fzzFiles);
+		FolderUtils::rmdir(m_fzzFolder);
+	}
+}	
+
 void MainWindow::initHelper() {
     m_helper = new Helper(this, true);
 }
@@ -460,27 +481,7 @@ void MainWindow::initMenus() {
 }
 
 
-
-MainWindow::~MainWindow()
-{
-    // Delete backup of this sketch if one exists.
-    QFile::remove(m_backupFileNameAndPath);	
-	
-	delete m_sketchModel;
-
-	dontKeepMargins();
-	m_setUpDockManagerTimer.stop();
-
-	foreach (LinkedFile * linkedFile, m_linkedProgramFiles) {
-		delete linkedFile;
-	}
-	m_linkedProgramFiles.clear();
-
-	if (!m_fzzFolder.isEmpty()) {
-		LockManager::releaseLockedFiles(m_fzzFolder, m_fzzFiles);
-		FolderUtils::rmdir(m_fzzFolder);
-	}
-}					   
+				   
 
 void MainWindow::showNavigator() {
 	m_navigatorDock->setFloating(false);
@@ -488,7 +489,7 @@ void MainWindow::showNavigator() {
 
 void MainWindow::initSketchWidget(SketchWidget * sketchWidget) {
 	sketchWidget->setSketchModel(m_sketchModel);
-	sketchWidget->setRefModel(m_refModel);
+	sketchWidget->setReferenceModel(m_referenceModel);
 	sketchWidget->setUndoStack(m_undoStack);
 	sketchWidget->setChainDrag(true);			// enable bend points
 	sketchWidget->initGrid();
@@ -1018,7 +1019,6 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 	*/
 
 	m_closing = true;
-	emit aboutToClose();
 
 	int count = 0;
 	foreach (QWidget *widget, QApplication::topLevelWidgets()) {
@@ -1182,7 +1182,7 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
         }
 
         QString moduleID = moduleIDFinder.cap(1);
-        ModelPart * mp = m_refModel->retrieveModelPart(moduleID);
+        ModelPart * mp = m_referenceModel->retrieveModelPart(moduleID);
         if (mp == NULL) {
             QDomDocument doc;
             if (!doc.setContent(fzp)) {
@@ -1317,7 +1317,7 @@ void MainWindow::saveBundledPart(const QString &moduleId) {
 		modIdToExport = mp->moduleID();
 	} else {
 		modIdToExport = moduleId;
-		mp = m_refModel->retrieveModelPart(moduleId);
+		mp = m_referenceModel->retrieveModelPart(moduleId);
 	}
 	QString partTitle = mp->title();
 
@@ -1453,7 +1453,7 @@ ModelPart* MainWindow::copyToPartsFolder(const QFileInfo& file, bool addToBin, b
 			m_alienPartsMsg = tr("Do you want to keep the imported parts?");
 		}
 	}
-	ModelPart *mp = m_refModel->loadPart(destFilePath, true);
+	ModelPart *mp = m_referenceModel->loadPart(destFilePath, true);
 	mp->setAlien(true);
 
 	if(addToBin) {
@@ -1718,9 +1718,9 @@ void MainWindow::swapSelectedMap(const QString & family, const QString & prop, Q
 	}
 
 	if (!generatedModuleID.isEmpty()) {
-		ModelPart * modelPart = m_refModel->retrieveModelPart(generatedModuleID);
+		ModelPart * modelPart = m_referenceModel->retrieveModelPart(generatedModuleID);
 		if (modelPart == NULL) {
-			if (!m_refModel->genFZP(generatedModuleID, m_refModel)) {
+			if (!m_referenceModel->genFZP(generatedModuleID, m_referenceModel)) {
 				return;
 			}
 		}
@@ -1735,11 +1735,11 @@ void MainWindow::swapSelectedMap(const QString & family, const QString & prop, Q
 
 	foreach (QString key, currPropsMap.keys()) {
 		QString value = currPropsMap.value(key);
-		m_refModel->recordProperty(key, value);
+		m_referenceModel->recordProperty(key, value);
 	}
 
-	QString moduleID = m_refModel->retrieveModuleIdWith(family, prop, true);
-	bool exactMatch = m_refModel->lastWasExactMatch();
+	QString moduleID = m_referenceModel->retrieveModuleIdWith(family, prop, true);
+	bool exactMatch = m_referenceModel->lastWasExactMatch();
 
 	if(moduleID.isEmpty()) {
         if (prop.compare("layer") == 0 && itemBase->modelPart()->flippedSMD()) {
@@ -1843,7 +1843,7 @@ void MainWindow::swapSelectedAux(ItemBase * itemBase, const QString & moduleID, 
 
     ViewLayer::ViewLayerSpec viewLayerSpec = itemBase->viewLayerSpec();
     if (m_pcbGraphicsView->boardLayers() == 2) {
-        ModelPart * modelPart = m_refModel->retrieveModelPart(moduleID);
+        ModelPart * modelPart = m_referenceModel->retrieveModelPart(moduleID);
         if (modelPart->flippedSMD()) {
             viewLayerSpec = m_pcbGraphicsView->layerIsActive(ViewLayer::Copper1) ? ViewLayer::ThroughHoleThroughTop_TwoLayers : ViewLayer::ThroughHoleThroughTop_OneLayer;
             if (useViewLayerSpec) viewLayerSpec = overrideViewLayerSpec;
@@ -1933,13 +1933,13 @@ void MainWindow::addDefaultParts() {
 	m_schematicGraphicsView->addDefaultParts();
 }
 
-MainWindow * MainWindow::newMainWindow(ReferenceModel *refModel, const QString & displayPath, bool showProgress, bool lockFiles) {
-    MainWindow * mw = new MainWindow(refModel, NULL);
+MainWindow * MainWindow::newMainWindow(ReferenceModel *referenceModel, const QString & displayPath, bool showProgress, bool lockFiles) {
+    MainWindow * mw = new MainWindow(referenceModel, NULL);
 	if (showProgress) {
 		mw->showFileProgressDialog(displayPath);
 	}
 
-    mw->init(refModel, lockFiles);
+    mw->init(referenceModel, lockFiles);
 
 	return mw;
 }
@@ -2239,7 +2239,7 @@ void MainWindow::routingStatusLabelMouse(QMouseEvent*, bool show) {
 	}
 
     if (!show && toShow.count() == 0) {
-            QMessageBox::information(NULL, tr("Unrouted connections"), 
+            QMessageBox::information(this, tr("Unrouted connections"), 
             tr("There are no unrouted connections in this view."));
     }
 }
@@ -2483,7 +2483,7 @@ void MainWindow::showStatusMessage(const QString & message)
         return;
     }
 
-    DebugDialog::debug("show message " + message);
+    //DebugDialog::debug("show message " + message);
     m_statusBar->blockSignals(true);
     m_statusBar->showMessage(message);
     m_statusBar->blockSignals(false);

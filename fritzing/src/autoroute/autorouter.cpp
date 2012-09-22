@@ -77,7 +77,7 @@ TraceWire * Autorouter::drawOneTrace(QPointF fromPos, QPointF toPos, double widt
 	QLineF line(0, 0, toPos.x() - fromPos.x(), toPos.y() - fromPos.y());
 	viewGeometry.setLine(line);
 
-	ItemBase * trace = m_sketchWidget->addItem(m_sketchWidget->refModel()->retrieveModelPart(ModuleIDNames::WireModuleIDName), 
+	ItemBase * trace = m_sketchWidget->addItem(m_sketchWidget->referenceModel()->retrieveModelPart(ModuleIDNames::WireModuleIDName), 
 		                                 viewLayerSpec, BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
 	if (trace == NULL) {
 		// we're in trouble

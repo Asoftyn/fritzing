@@ -199,7 +199,7 @@ void MainWindow::mainLoadAux(const QString & fileName)
 
     file.close();
 
-    MainWindow* mw = newMainWindow(m_refModel, fileName, true, true);
+    MainWindow* mw = newMainWindow(m_referenceModel, fileName, true, true);
 	mw->loadWhich(fileName, true, true, "");
     mw->clearFileProgressDialog();
 	closeIfEmptySketch(mw);
@@ -219,7 +219,7 @@ void MainWindow::revert() {
         return;
     }	
 
-    MainWindow* mw = newMainWindow( m_refModel, fileName(), true, true);
+    MainWindow* mw = newMainWindow( m_referenceModel, fileName(), true, true);
     mw->setGeometry(this->geometry());
 
     QFileInfo info(fileName());
@@ -345,7 +345,7 @@ void MainWindow::mainLoad(const QString & fileName, const QString & displayName)
 				this, SLOT(loadedViewsSlot(ModelBase *, QDomElement &)), Qt::DirectConnection);
 	connect(m_sketchModel, SIGNAL(loadedRoot(const QString &, ModelBase *, QDomElement &)),
 				this, SLOT(loadedRootSlot(const QString &, ModelBase *, QDomElement &)), Qt::DirectConnection);
-	m_sketchModel->load(fileName, m_refModel, modelParts);
+	m_sketchModel->load(fileName, m_referenceModel, modelParts);
 	DebugDialog::debug("core loaded");
 	disconnect(m_sketchModel, SIGNAL(loadedViews(ModelBase *, QDomElement &)),
 				this, SLOT(loadedViewsSlot(ModelBase *, QDomElement &)));
@@ -422,7 +422,7 @@ void MainWindow::pasteAux(bool pasteInPlace)
     QByteArray itemData = mimeData->data("application/x-dnditemsdata");
 	QList<ModelPart *> modelParts;
 	QHash<QString, QRectF> boundingRects;
-	if (m_sketchModel->paste(m_refModel, itemData, modelParts, boundingRects, false)) {
+	if (m_sketchModel->paste(m_referenceModel, itemData, modelParts, boundingRects, false)) {
 		QUndoCommand * parentCommand = new QUndoCommand("Paste");
 
 		QRectF r;
@@ -1539,6 +1539,7 @@ void MainWindow::updateWireMenu() {
 
 void MainWindow::updatePartMenu() {
 	if (m_currentGraphicsView == NULL) return;
+	if (m_partMenu == NULL) return;
 
 	ItemCount itemCount = m_currentGraphicsView->calcItemCount();
 
@@ -1621,12 +1622,15 @@ void MainWindow::updatePartMenu() {
             }
         }
 
+
+		m_openInPartsEditorNewAct->setEnabled(itemBase->canEditPart());
         m_stickyAct->setVisible(itemBase->isBaseSticky());
 	    m_stickyAct->setEnabled(true);
 	    m_stickyAct->setChecked(itemBase->isBaseSticky() && itemBase->isLocalSticky());
 	}
     else {
         m_stickyAct->setVisible(false);
+		m_openInPartsEditorNewAct->setEnabled(false);
     }
     m_convertToBendpointAct->setEnabled(ctbpEnabled);
     m_convertToBendpointAct->setVisible(ctbpVisible);
@@ -2007,8 +2011,8 @@ void MainWindow::openNewPartsEditor(PaletteItem * paletteItem)
         }
     }
 
-    PEMainWindow * peMainWindow = new PEMainWindow(m_refModel, NULL);
-    peMainWindow->init(m_refModel, NULL);
+    PEMainWindow * peMainWindow = new PEMainWindow(m_referenceModel, NULL);
+    peMainWindow->init(m_referenceModel, NULL);
     peMainWindow->setInitialItem(paletteItem);
 	peMainWindow->show();
 	peMainWindow->raise();
@@ -2031,7 +2035,7 @@ void MainWindow::openInPartsEditorNew() {
 }
 
 void MainWindow::createNewSketch() {
-    MainWindow* mw = newMainWindow(m_refModel, "", true, true);
+    MainWindow* mw = newMainWindow(m_referenceModel, "", true, true);
     mw->move(x()+CascadeFactorX,y()+CascadeFactorY);
 	ProcessEventBlocker::processEvents();
 
@@ -2274,7 +2278,7 @@ void MainWindow::openRecentOrExampleFile() {
 			return;
 		}
 
-		MainWindow* mw = newMainWindow(m_refModel, action->data().toString(), true, true);
+		MainWindow* mw = newMainWindow(m_referenceModel, action->data().toString(), true, true);
 		bool readOnly = m_openExampleActions.contains(action->text());
 		mw->setReadOnly(readOnly);
 		mw->loadWhich(filename,!readOnly,!readOnly,"");
@@ -2809,12 +2813,12 @@ void MainWindow::groundFillAux(bool fillGroundTraces, ViewLayer::ViewLayerID vie
     int boardCount;
     ItemBase * board = m_pcbGraphicsView->findSelectedBoard(boardCount);
     if (boardCount == 0) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Your sketch does not have a board yet!  Please add a PCB in order to use ground or copper fill."));
         return;
     }
     if (board == NULL) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Please select a PCB--copper fill only works for one board at a time."));
         return;
     }
@@ -2840,12 +2844,12 @@ void MainWindow::removeGroundFill(ViewLayer::ViewLayerID viewLayerID, QUndoComma
     int boardCount;
     ItemBase * board = m_pcbGraphicsView->findSelectedBoard(boardCount);
     if (boardCount == 0) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Your sketch does not have a board yet!  Please add a PCB in order to remove copper fill."));
         return;
     }
     if (board == NULL) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Please select a PCB--ground fill operations only work on a one board at a time."));
         return;
     }
@@ -3309,7 +3313,7 @@ ModelPart * MainWindow::findReplacedby(ModelPart * originalModelPart) {
 			return ((newModelPart == originalModelPart) ? NULL : newModelPart);
 		}
 
-		ModelPart * tempModelPart = this->m_refModel->retrieveModelPart(newModuleID);
+		ModelPart * tempModelPart = this->m_referenceModel->retrieveModelPart(newModuleID);
 		if (tempModelPart == NULL) {
 			// something's screwy
 			return NULL;
@@ -3622,12 +3626,12 @@ void MainWindow::designRulesCheck()
         int boardCount;
 		board = pcbSketchWidget->findSelectedBoard(boardCount);
         if (boardCount == 0) {
-            QMessageBox::critical(NULL, tr("Fritzing"),
+            QMessageBox::critical(this, tr("Fritzing"),
                        tr("Your sketch does not have a board yet! DRC only works with a PCB."));
             return;
         }
         if (board == NULL) {
-            QMessageBox::critical(NULL, tr("Fritzing"),
+            QMessageBox::critical(this, tr("Fritzing"),
                        tr("Please select a PCB. DRC only works on one board at a time."));
             return;
         }
@@ -3733,12 +3737,12 @@ void MainWindow::setGroundFillSeeds() {
     int boardCount;
     ItemBase * board = m_pcbGraphicsView->findSelectedBoard(boardCount);
     if (boardCount == 0) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Your sketch does not have a board yet! Please add a PCB in order to use copper fill operations."));
         return;
     }
     if (board == NULL) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Please select a PCB. Copper fill operations only work on one board at a time."));
         return;
     }
@@ -3750,12 +3754,12 @@ void MainWindow::clearGroundFillSeeds() {
     int boardCount;
     ItemBase * board = m_pcbGraphicsView->findSelectedBoard(boardCount);
     if (boardCount == 0) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Your sketch does not have a board yet! Please add a PCB in order to use copper fill operations."));
         return;
     }
     if (board == NULL) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Please select a PCB. Copper fill operations only work on one board at a time."));
         return;
     }

@@ -251,12 +251,12 @@ void PCBSketchWidget::selectAllXTraces(bool autoroutable, const QString & cmdTex
         int boardCount;
         ItemBase * board = findSelectedBoard(boardCount);
         if (boardCount == 0  && autorouteTypePCB()) {
-            QMessageBox::critical(NULL, tr("Fritzing"),
+            QMessageBox::critical(this, tr("Fritzing"),
                        tr("Your sketch does not have a board yet! Please add a PCB in order to use this selection operation."));
             return;
         }
         if (board == NULL) {
-            QMessageBox::critical(NULL, tr("Fritzing"),
+            QMessageBox::critical(this, tr("Fritzing"),
                        tr("Please click on a PCB first--this selection operation only works for one board at a time."));
             return;
         }
@@ -308,7 +308,7 @@ void PCBSketchWidget::addDefaultParts() {
 	viewGeometry.setLoc(QPointF(0, 0));
 
 	// have to put this off until later, because positioning the item doesn't work correctly until the view is visible
-	m_addedDefaultPart = addItem(refModel()->retrieveModelPart(ModuleIDNames::TwoSidedRectanglePCBModuleIDName), defaultViewLayerSpec(), BaseCommand::CrossView, viewGeometry, newID, -1, NULL);
+	m_addedDefaultPart = addItem(referenceModel()->retrieveModelPart(ModuleIDNames::TwoSidedRectanglePCBModuleIDName), defaultViewLayerSpec(), BaseCommand::CrossView, viewGeometry, newID, -1, NULL);
 	m_addDefaultParts = true;
 
 	changeBoardLayers(2, true);
@@ -950,7 +950,7 @@ bool PCBSketchWidget::isBoardLayerChange(ItemBase * itemBase, const QString & ne
 		return false;
 	}
 
-	ModelPart * modelPart = refModel()->retrieveModelPart(newModuleID);
+	ModelPart * modelPart = referenceModel()->retrieveModelPart(newModuleID);
 	if (modelPart == NULL) {
 		// shouldn't happen
 		return false;
@@ -1291,7 +1291,7 @@ ItemBase * PCBSketchWidget::addCopperLogoItem(ViewLayer::ViewLayerSpec viewLayer
 	ViewGeometry viewGeometry;
 	viewGeometry.setLoc(QPointF(0, 0));
 	QString moduleID = (viewLayerSpec == ViewLayer::Bottom) ? ModuleIDNames::Copper0LogoTextModuleIDName : ModuleIDNames::Copper1LogoTextModuleIDName;
-	return addItem(refModel()->retrieveModelPart(moduleID), viewLayerSpec, BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
+	return addItem(referenceModel()->retrieveModelPart(moduleID), viewLayerSpec, BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
 }
 
 void PCBSketchWidget::updateNet(Wire * wire) {
@@ -1467,12 +1467,12 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 	ItemBase * board = findSelectedBoard(boardCount);
     // barf an error if there's no board
     if (boardCount == 0) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Your sketch does not have a board yet!  Please add a PCB in order to use copper fill."));
         return false;
     }
     if (board == NULL) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("%1 Fill: please select the board you want to apply fill to.").arg(fillGroundTraces ? tr("Ground") : tr("Copper")));
         return false;
     }
@@ -1501,7 +1501,7 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 	bool empty;
 	QString boardSvg = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, boardImageSize, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
 	if (boardSvg.isEmpty()) {
-        QMessageBox::critical(NULL, tr("Fritzing"), tr("Fritzing error: unable to render board svg (1)."));
+        QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to render board svg (1)."));
 		return false;
 	}
 
@@ -1516,7 +1516,7 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 	    svg0 = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, copperImageSize, board, GraphicsUtils::StandardFritzingDPI, false, true, empty);
 	    if (fillGroundTraces) showGroundTraces(seeds, true);
 	    if (svg0.isEmpty()) {
-            QMessageBox::critical(NULL, tr("Fritzing"), tr("Fritzing error: unable to render copper svg (1)."));
+            QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to render copper svg (1)."));
 		    return false;
 	    }
     }
@@ -1530,7 +1530,7 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 		svg1 = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, copperImageSize, board, GraphicsUtils::StandardFritzingDPI, false, true, empty);
 		if (fillGroundTraces) showGroundTraces(seeds, true);
 		if (svg1.isEmpty()) {
-			QMessageBox::critical(NULL, tr("Fritzing"), tr("Fritzing error: unable to render copper svg (1)."));
+			QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to render copper svg (1)."));
 			return false;
 		}
 	}
@@ -1552,7 +1552,7 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 	    bool result = gpg0.generateGroundPlane(boardSvg, boardImageSize, svg0, copperImageSize, exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */,
 											    ViewLayer::Copper0Color);
 	    if (result == false) {
-            QMessageBox::critical(NULL, tr("Fritzing"), tr("Fritzing error: unable to write copper fill (1)."));
+            QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to write copper fill (1)."));
 		    return false;
 	    }
     }
@@ -1570,7 +1570,7 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 		bool result = gpg1.generateGroundPlane(boardSvg, boardImageSize, svg1, copperImageSize, exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */,
 												ViewLayer::Copper1Color);
 		if (result == false) {
-			QMessageBox::critical(NULL, tr("Fritzing"), tr("Fritzing error: unable to write copper fill (2)."));
+			QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to write copper fill (2)."));
 			return false;
 		}
 	}
@@ -1609,19 +1609,19 @@ QString PCBSketchWidget::generateCopperFillUnit(ItemBase * itemBase, QPointF whe
 	ItemBase * board = findSelectedBoard(boardCount);
     // barf an error if there's no board
     if (boardCount == 0) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Your sketch does not have a board yet!  Please add a PCB in order to use copper fill."));
         return "";
     }
     if (board == NULL) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Copper fill: please select only the board you want to fill."));
         return "";
     }
 
 	QRectF bsbr = board->sceneBoundingRect();
 	if (!bsbr.contains(whereToStart)) {
-        QMessageBox::critical(NULL, tr("Fritzing"), tr("Unable to create copper fill--probably the part wasn't dropped onto the PCB."));
+        QMessageBox::critical(this, tr("Fritzing"), tr("Unable to create copper fill--probably the part wasn't dropped onto the PCB."));
 		return "";
 	}
 
@@ -1631,7 +1631,7 @@ QString PCBSketchWidget::generateCopperFillUnit(ItemBase * itemBase, QPointF whe
 	bool empty;
 	QString boardSvg = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, boardImageSize, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
 	if (boardSvg.isEmpty()) {
-        QMessageBox::critical(NULL, tr("Fritzing"), tr("Fritzing error: unable to render board svg (1)."));
+        QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to render board svg (1)."));
 		return "";
 	}
 
@@ -1652,7 +1652,7 @@ QString PCBSketchWidget::generateCopperFillUnit(ItemBase * itemBase, QPointF whe
 	QString svg = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, copperImageSize, board, GraphicsUtils::StandardFritzingDPI, false, true, empty);
 	itemBase->setVisible(vis);
 	if (svg.isEmpty()) {
-        QMessageBox::critical(NULL, tr("Fritzing"), tr("Fritzing error: unable to render copper svg (1)."));
+        QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to render copper svg (1)."));
 		return "";
 	}
 
@@ -1668,7 +1668,7 @@ QString PCBSketchWidget::generateCopperFillUnit(ItemBase * itemBase, QPointF whe
 												color, whereToStart);
 
 	if (result == false || gpg.newSVGs().count() < 1) {
-        QMessageBox::critical(NULL, tr("Fritzing"), tr("Unable to create copper fill--possibly the part was dropped onto another part or wire rather than the actual PCB."));
+        QMessageBox::critical(this, tr("Fritzing"), tr("Unable to create copper fill--possibly the part was dropped onto another part or wire rather than the actual PCB."));
 		return "";
 	}
 
@@ -2198,12 +2198,12 @@ int PCBSketchWidget::selectAllItemType(ModelPart::ItemType itemType, const QStri
     int boardCount;
     ItemBase * board = findSelectedBoard(boardCount);
     if (boardCount == 0  && autorouteTypePCB()) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Your sketch does not have a board yet!  Please add a PCB in order to use this selection operation."));
         return 0;
     }
     if (board == NULL) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Please click on a PCB first--this selection operation only works for one board at a time."));
         return 0;
     }
@@ -2227,12 +2227,12 @@ void PCBSketchWidget::selectAllWires(ViewGeometry::WireFlag flag)
     int boardCount;
     ItemBase * board = findSelectedBoard(boardCount);
     if (boardCount == 0  && autorouteTypePCB()) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Your sketch does not have a board yet!  Please add a PCB in order to use this selection operation."));
         return;
     }
     if (board == NULL) {
-        QMessageBox::critical(NULL, tr("Fritzing"),
+        QMessageBox::critical(this, tr("Fritzing"),
                    tr("Please click on a PCB first--this selection operation only works for one board at a time."));
         return;
     }
@@ -2401,7 +2401,7 @@ void PCBSketchWidget::convertToBendpoint() {
     }
 
     if (copper0Only && copper1Only) {
-        QMessageBox::warning(NULL, tr("Fritzing"),
+        QMessageBox::warning(this, tr("Fritzing"),
               tr("Unable to convert this via to a bendpoint because it is connected to a part that is only on the bottom layer and another part that is only on the top layer."));
         return;
     }

@@ -123,7 +123,6 @@ SketchMainHelpPrivate::SketchMainHelpPrivate (
 }
 
 void SketchMainHelpPrivate::doClose() {
-	emit aboutToClose();
 	m_parent->doClose();
 }
 

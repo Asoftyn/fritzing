@@ -54,6 +54,10 @@ public:
 	~PEMetadataView();
 
     void initMetadata(const QDomDocument &);
+	void resetProperty(const QString & name, const QString & value);
+	QString family();
+	QString variant();
+	bool anyModified();
 
 signals:
     void metadataChanged(const QString & name, const QString & value);
@@ -66,6 +70,7 @@ protected slots:
     void descriptionEntry();
     void labelEntry();
     void familyEntry();
+    void variantEntry();
     void dateEntry();
     void propertiesEntry();
     void tagsEntry();
@@ -75,6 +80,7 @@ protected:
     QPointer<QLineEdit> m_dateEdit;
     QPointer<QLineEdit> m_authorEdit;
     QPointer<QLineEdit> m_familyEdit;
+    QPointer<QLineEdit> m_variantEdit;
     QPointer<QLineEdit> m_labelEdit;
     QPointer<QTextEdit> m_descriptionEdit;
     QPointer<class HashPopulateWidget> m_propertiesEdit;

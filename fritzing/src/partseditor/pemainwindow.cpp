@@ -31,7 +31,17 @@ $Date$
 
 	    clean up menus
 
+		editing parts that are not visible in certain views
+			the parts are showing up anyway
+			after you save the part, you can drag it into any view
+
+		why isn't swapping available when a part has multiple variant values?
+
         crash when swapping part during save
+
+		crash and other weird behaviors when close button triggers focusOutEvent
+
+		don't show part labels 
         
         crashed when saving the description
 
@@ -48,11 +58,6 @@ $Date$
             for now don't allow mixing
 			test that it works at all
 			what happens if you open an smd placed on the bottom layer?
-
-        keep family as is, but force users to put in a unique variant
-            don't allow blank
-            check db for already used
-            fill in with guid			
 
         multiple matching connector id--trash any other matching id
 
@@ -73,7 +78,9 @@ $Date$
 
         check all MainWindow * casts
 
-		really darken unused docks
+        first time help?
+
+		don't allow 'family' or 'variant' property in property list editor
 
     ////////////////////////////// second release /////////////////////////////////
 
@@ -83,6 +90,8 @@ $Date$
 				hide bus list if there are no buses
 
 		use the actual svg shape instead of rectangles
+
+		properties and tags entries allow duplicates
 
 		delete temp files after crash
 
@@ -95,12 +104,13 @@ $Date$
             allow smd with holes to flip?
 
         import
-            kicad sch files
+            kicad sch files?
 
         on svg import detect all connector IDs
             if any are invisible, tell user this is obsolete
 
         bury connectors behind other connectors
+			can already be done
 
         force an export etchable svg to make sure the part is right?
 
@@ -114,15 +124,13 @@ $Date$
 
         set flippable
         
-        first time help?
-            dialog box always comes up, click to say not next time
-
         connector duplicate op
 
         add layers:  put everything in silkscreen, then give copper1, copper0 checkbox
             what about breadboardbreadboard or other odd layers?
             if you click something as a connector, automatically move it into copper
                 how to distinguish between both and top--default to both, let user set "pad"
+			setting layer for top level group sets all children?
 
         swap connector metadata op
 
@@ -134,8 +142,6 @@ $Date$
         import
             eagle lbr
             eagle brd
-            kicad mod?
-
 
         for schematic view 
             offer lines-or-pins, rects, and a selection of standard schematic icons in the parts bin
@@ -151,9 +157,7 @@ $Date$
 
         hybrids
 
-        flip and rotate?
-
-        undo/redo as xml file: use index + guid for uniqueness
+        flip and rotate images w/in the view?
 
         taxonomy entry like tag entry?
 
@@ -166,7 +170,6 @@ $Date$
             even a problem when inserting hole, pad, or pin
             eliminate internal transforms, then insert inverted matrix, then use untransformed coords based on viewbox
             
-
         kicad schematic does not match our schematic
 
 
@@ -257,6 +260,7 @@ void IconSketchWidget::addViewLayers() {
 PEMainWindow::PEMainWindow(ReferenceModel * referenceModel, QWidget * parent)
 	: MainWindow(referenceModel, parent)
 {
+	m_closeOK = 0;
     m_autosaveTimer.stop();
     disconnect(&m_autosaveTimer, SIGNAL(timeout()), this, SLOT(backupSketch()));
     m_gaveSaveWarning = m_canSave = false;
@@ -283,7 +287,18 @@ PEMainWindow::~PEMainWindow()
     dir.rmdir(m_guid);
 }
 
-void PEMainWindow::closeEvent(QCloseEvent *event) {
+void PEMainWindow::closeEvent(QCloseEvent *event) 
+{
+	if (m_metadataView->family().isEmpty()) {
+        event->ignore();
+        return;
+	}
+
+	if (m_metadataView->variant().isEmpty()) {
+        event->ignore();
+        return;
+	}
+
     if (!beforeClosing(true)) {
         event->ignore();
         return;
@@ -292,6 +307,8 @@ void PEMainWindow::closeEvent(QCloseEvent *event) {
 	QSettings settings;
 	settings.setValue(m_settingsPrefix + "state",saveState());
 	settings.setValue(m_settingsPrefix + "geometry",saveGeometry());
+
+	QMainWindow::closeEvent(event);
 }
 
 void PEMainWindow::initLockedFiles(bool) {
@@ -328,21 +345,21 @@ void PEMainWindow::initSketchWidgets()
     m_metadataView = new PEMetadataView(this);
 	SketchAreaWidget * sketchAreaWidget = new SketchAreaWidget(m_metadataView, this);
 	addTab(sketchAreaWidget, tr("Metadata"));
-    connect(m_metadataView, SIGNAL(metadataChanged(const QString &, const QString &)), this, SLOT(metadataChanged(const QString &, const QString &)));
-    connect(m_metadataView, SIGNAL(tagsChanged(const QStringList &)), this, SLOT(tagsChanged(const QStringList &)));
-    connect(m_metadataView, SIGNAL(propertiesChanged(const QHash<QString, QString> &)), this, SLOT(propertiesChanged(const QHash<QString, QString> &)));
+    connect(m_metadataView, SIGNAL(metadataChanged(const QString &, const QString &)), this, SLOT(metadataChanged(const QString &, const QString &)), Qt::DirectConnection);
+    connect(m_metadataView, SIGNAL(tagsChanged(const QStringList &)), this, SLOT(tagsChanged(const QStringList &)), Qt::DirectConnection);
+    connect(m_metadataView, SIGNAL(propertiesChanged(const QHash<QString, QString> &)), this, SLOT(propertiesChanged(const QHash<QString, QString> &)), Qt::DirectConnection);
 
     m_connectorsView = new PEConnectorsView(this);
 	sketchAreaWidget = new SketchAreaWidget(m_connectorsView, this);
 	addTab(sketchAreaWidget, tr("Connectors"));
     connect(m_connectorsView, SIGNAL(connectorMetadataChanged(ConnectorMetadata *)), this, SLOT(connectorMetadataChanged(ConnectorMetadata *)), Qt::DirectConnection);
     connect(m_connectorsView, SIGNAL(removedConnectors(QList<ConnectorMetadata *> &)), this, SLOT(removedConnectors(QList<ConnectorMetadata *> &)), Qt::DirectConnection);
-    connect(m_connectorsView, SIGNAL(connectorCountChanged(int)), this, SLOT(connectorCountChanged(int)));
+    connect(m_connectorsView, SIGNAL(connectorCountChanged(int)), this, SLOT(connectorCountChanged(int)), Qt::DirectConnection);
 }
 
 void PEMainWindow::initDock()
 {
-    m_binManager = new BinManager(m_refModel, NULL, m_undoStack, this);
+    m_binManager = new BinManager(m_referenceModel, NULL, m_undoStack, this);
     m_binManager->openBin(":/resources/bins/pe.fzb");
     m_binManager->hideTabBar();
 }
@@ -449,10 +466,11 @@ QMenu *PEMainWindow::pcbItemMenu() {
 }
 
 void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
+
     ModelPart * originalModelPart = NULL;
     if (paletteItem == NULL) {
         // this shouldn't happen
-        originalModelPart = m_refModel->retrieveModelPart("generic_ic_dip_8_300mil");
+        originalModelPart = m_referenceModel->retrieveModelPart("generic_ic_dip_8_300mil");
     }
     else {
         originalModelPart = paletteItem->modelPart();
@@ -491,16 +509,34 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
     fzpRoot.setAttribute("moduleId", m_guid);
 
 	QDomElement properties = fzpRoot.firstChildElement("properties");
+	if (properties.isNull()) {
+		properties = m_fzpDocument.createElement("properties");
+		fzpRoot.appendChild(properties);
+	}
 	QHash<QString,QString> props = originalModelPart->properties();
 	foreach (QString key, props.keys()) {
 		replaceProperty(key, props.value(key), properties);
 	}
+	// record "local" properties
 	foreach (QByteArray byteArray, originalModelPart->dynamicPropertyNames()) {
 		replaceProperty(byteArray, originalModelPart->property(byteArray).toString(), properties);
 	}
 
-
-
+	QDomElement family = TextUtils::findElementWithAttribute(properties, "name", "family");
+	if (family.isNull()) {
+		replaceProperty("family", m_guid, properties);
+	}
+	QDomElement variant = TextUtils::findElementWithAttribute(properties, "name", "variant");
+	if (variant.isNull()) {
+		QStringList variants = m_referenceModel->propValues(family.text(), "variant", true);
+		int theMax = std::numeric_limits<int>::max(); 
+		QString candidate;
+		for (int i = 1; i < theMax; i++) {
+			candidate = QString("variant %1").arg(i);
+			if (!variants.contains(candidate, Qt::CaseInsensitive)) break;
+		}
+		replaceProperty("variant", candidate, properties);
+	}
 
 	// make sure local props are copied
 
@@ -550,11 +586,6 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
 
     setTitle();
     createRaiseWindowActions();
-}
-
-bool PEMainWindow::eventFilter(QObject *object, QEvent *event) 
-{
-	return QMainWindow::eventFilter(object, event);
 }
 
 void PEMainWindow::initHelper()
@@ -632,19 +663,42 @@ void PEMainWindow::showIconView() {
     setCurrentTabIndex(IconViewIndex);
 }
 
+void PEMainWindow::changeSpecialProperty(const QString & name, const QString & value)
+{
+    QHash<QString, QString> oldProperties = getOldProperties();
+
+	if (value.isEmpty()) {
+		QMessageBox::warning(NULL, tr("Blank not allowed"), tr("The value of '%1' can not be blank.").arg(name));
+		m_metadataView->resetProperty(name, value);
+		return;
+	}
+
+    QHash<QString, QString> newProperties(oldProperties);
+    newProperties.insert(name, value);
+    
+    ChangePropertiesCommand * cpc = new ChangePropertiesCommand(this, oldProperties, newProperties, NULL);
+    cpc->setText(tr("Change %1 to %2").arg(name).arg(value));
+    cpc->setSkipFirstRedo();
+    changeProperties(newProperties, false);
+    m_undoStack->waitPush(cpc, SketchWidget::PropChangeDelay);
+}
+
 void PEMainWindow::metadataChanged(const QString & name, const QString & value)
 {
     if (name.compare("family") == 0) {
-        QHash<QString, QString> oldProperties = getOldProperties();
-        QHash<QString, QString> newProperties(oldProperties);
-        newProperties.insert("family", value);
-    
-        ChangePropertiesCommand * cpc = new ChangePropertiesCommand(this, oldProperties, newProperties, NULL);
-        cpc->setText(tr("Change family to %1").arg(value));
-        cpc->setSkipFirstRedo();
-        changeProperties(newProperties, false);
-        m_undoStack->waitPush(cpc, SketchWidget::PropChangeDelay);
+		changeSpecialProperty(name, value);
+        return;
+    }
 
+    if (name.compare("variant") == 0) {
+		QString family = m_metadataView->family();
+		QStringList variants = m_referenceModel->propValues(family, "variant", true);
+		if (variants.contains(value, Qt::CaseInsensitive)) {
+			QMessageBox::warning(NULL, tr("Must be unique"), tr("Variant '%1' is in use. The variant name must be unique.").arg(value));
+			return;
+		}
+
+		changeSpecialProperty(name, value);
         return;
     }
 
@@ -715,7 +769,18 @@ void PEMainWindow::changeTags(const QStringList & newTags, bool updateDisplay)
 }
 
 void PEMainWindow::propertiesChanged(const QHash<QString, QString> & newProperties)
-{
+{	
+	QStringList keys = newProperties.keys();
+	if (keys.contains("family", Qt::CaseInsensitive)) {
+		QMessageBox::warning(NULL, tr("Duplicate problem"), tr("Duplicate 'family' property not allowed"));
+		return;
+	}
+
+	if (keys.contains("variant", Qt::CaseInsensitive)) {
+		QMessageBox::warning(NULL, tr("Duplicate problem"), tr("Duplicate 'variant' property not allowed"));
+		return;
+	}
+
     // called from metadataView
     QHash<QString, QString> oldProperties = getOldProperties();
 
@@ -1290,7 +1355,10 @@ void PEMainWindow::reload() {
     ItemBase * breadboardItem = m_breadboardGraphicsView->addItem(modelPart, m_breadboardGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
     ItemBase * schematicItem = m_schematicGraphicsView->addItem(modelPart, m_schematicGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
     ItemBase * pcbItem = m_pcbGraphicsView->addItem(modelPart, m_pcbGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
-    m_metadataView->initMetadata(m_fzpDocument);
+    
+	// make sure m_fzpDocument has a variant property
+	
+	m_metadataView->initMetadata(m_fzpDocument);
 
     initConnectors();
 
@@ -1527,7 +1595,7 @@ bool PEMainWindow::saveAs(bool overWrite)
 	    }
 
         if (affectedWindows.count() > 0 && !m_gaveSaveWarning) {
-	        QMessageBox messageBox(NULL);
+	        QMessageBox messageBox(this);
 	        messageBox.setWindowTitle(tr("Sketch Change Warning"));
             QString message;
             if (affectedWindows.count() == 1) {
@@ -1638,13 +1706,13 @@ bool PEMainWindow::saveAs(bool overWrite)
     // restores the temporary fzp state
     fzpRoot.setAttribute("moduleId", workingModuleID);
 
-    ModelPart * modelPart = m_refModel->retrieveModelPart(savedModuleID);
+    ModelPart * modelPart = m_referenceModel->retrieveModelPart(savedModuleID);
     if (modelPart == NULL) {
-	    modelPart = m_refModel->loadPart(fzpPath, true);
+	    modelPart = m_referenceModel->loadPart(fzpPath, true);
         emit addToMyPartsSignal(modelPart);
 	}
     else {
-        m_refModel->reloadPart(fzpPath, m_originalModuleID);
+        m_referenceModel->reloadPart(fzpPath, m_originalModuleID);
         QUndoStack undoStack;
         QUndoCommand * parentCommand = new QUndoCommand;
         foreach (MainWindow * mainWindow, affectedWindows) {
@@ -2468,4 +2536,26 @@ void PEMainWindow::setCurrentTabIndex(int index) {
 
 QWidget * PEMainWindow::currentTabWidget() {
 	return qobject_cast<QTabWidget *>(m_tabWidget)->currentWidget();
+}
+
+bool PEMainWindow::event(QEvent * e) {
+	if (e->type() == QEvent::Close) {
+		if (m_closeOK <= 0) {
+			e->ignore();
+			QApplication::processEvents();
+			QTimer::singleShot(SketchWidget::PropChangeDelay + 1, this, SLOT(closeLater()));
+		}
+	}
+
+	return MainWindow::event(e);
+}
+
+bool PEMainWindow::anyModified() {
+	return MainWindow::anyModified() || m_connectorsView->anyModified() || m_metadataView->anyModified();
+}
+
+void PEMainWindow::closeLater() {
+	m_closeOK++;
+	close();
+	m_closeOK--;
 }

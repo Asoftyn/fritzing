@@ -62,7 +62,7 @@ static QHash<QString, PaletteModel *> PaletteBinModels;
 
 //////////////////////////////////////////////
 
-PartsBinPaletteWidget::PartsBinPaletteWidget(ReferenceModel *refModel, HtmlInfoView *infoView, WaitPushUndoStack *undoStack, BinManager* manager) :
+PartsBinPaletteWidget::PartsBinPaletteWidget(ReferenceModel *referenceModel, HtmlInfoView *infoView, WaitPushUndoStack *undoStack, BinManager* manager) :
 	QFrame(manager)
 {
     m_binLabel = NULL;
@@ -79,7 +79,7 @@ PartsBinPaletteWidget::PartsBinPaletteWidget(ReferenceModel *refModel, HtmlInfoV
 
 	m_manager = manager;
 
-	m_refModel = refModel;
+	m_referenceModel = referenceModel;
 	m_canDeleteModel = false;
 	m_orderHasChanged = false;
 
@@ -88,10 +88,10 @@ PartsBinPaletteWidget::PartsBinPaletteWidget(ReferenceModel *refModel, HtmlInfoV
 	m_undoStack = new WaitPushUndoStack(this);
 	connect(m_undoStack, SIGNAL(cleanChanged(bool)), this, SLOT(undoStackCleanChanged(bool)) );
 
-	m_iconView = new PartsBinIconView(m_refModel, this);
+	m_iconView = new PartsBinIconView(m_referenceModel, this);
 	m_iconView->setInfoView(infoView);
 
-	m_listView = new PartsBinListView(m_refModel, this);
+	m_listView = new PartsBinListView(m_referenceModel, this);
 	m_listView->setInfoView(infoView);
 
 	m_stackedWidget = new QStackedWidget(this);
@@ -496,7 +496,7 @@ void PartsBinPaletteWidget::load(const QString &filename, QWidget * progressTarg
 		    connect(m_listView, SIGNAL(settingItem()), progressTarget, SLOT(settingItemSlot()));
 	    }
 	    DebugDialog::debug(QString("loading bin '%1'").arg(name));
-	    bool result = paletteBinModel->load(filename, m_refModel);
+	    bool result = paletteBinModel->load(filename, m_referenceModel);
 	    DebugDialog::debug(QString("done loading bin '%1'").arg(name));
 
 	    if (!result) {
@@ -606,7 +606,7 @@ bool PartsBinPaletteWidget::hasAlienParts() {
 }
 
 void PartsBinPaletteWidget::addPart(const QString& moduleID, int position) {
-	ModelPart *modelPart = m_refModel->retrieveModelPart(moduleID);
+	ModelPart *modelPart = m_referenceModel->retrieveModelPart(moduleID);
 	addPart(modelPart, position);
 }
 
@@ -645,7 +645,7 @@ void PartsBinPaletteWidget::setInfoViewOnHover(bool infoViewOnHover) {
 void PartsBinPaletteWidget::addPartCommand(const QString& moduleID) {
 	/*bool updating = alreadyIn(moduleID);
 
-	QString partTitle = m_refModel->partTitle(moduleID);
+	QString partTitle = m_referenceModel->partTitle(moduleID);
 	if(partTitle.isEmpty()) partTitle = moduleID;
 
 	QString undoStackMsg;

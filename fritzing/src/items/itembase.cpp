@@ -1644,7 +1644,7 @@ QStringList ItemBase::collectValues(const QString & family, const QString & prop
 	QStringList values = CachedValues.value(family + prop, QStringList());
 	if (values.count() > 0) return values;
 
-	values = TheReferenceModel->values(family, prop);
+	values = TheReferenceModel->propValues(family, prop, true);
 
 	// sort values numerically
 	NumberMatcherValues.clear();

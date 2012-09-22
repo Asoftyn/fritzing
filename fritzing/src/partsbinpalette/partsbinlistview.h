@@ -37,7 +37,7 @@ $Date$
 class PartsBinListView : public QListWidget, public PartsBinView {
 	Q_OBJECT
 	public:
-		PartsBinListView(ReferenceModel* refModel, PartsBinPaletteWidget *parent);
+		PartsBinListView(ReferenceModel* referenceModel, PartsBinPaletteWidget *parent);
 		~PartsBinListView();
 		void setInfoView(class HtmlInfoView *);
         void removePart(const QString &moduleID);

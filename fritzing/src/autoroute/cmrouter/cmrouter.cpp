@@ -3314,7 +3314,7 @@ bool CMRouter::addJumperItem(PriorityQueue<PathUnit *> & p1, PriorityQueue<PathU
 
 	long newID = ItemBase::getNextID();
 	ViewGeometry viewGeometry;
-	ItemBase * itemBase = m_sketchWidget->addItem(m_sketchWidget->refModel()->retrieveModelPart(ModuleIDNames::JumperModuleIDName), 
+	ItemBase * itemBase = m_sketchWidget->addItem(m_sketchWidget->referenceModel()->retrieveModelPart(ModuleIDNames::JumperModuleIDName), 
 												  m_specHash.value(nearest1->plane), BaseCommand::CrossView, viewGeometry, newID, -1, NULL);
 	if (itemBase == NULL) {
 		return NULL;
@@ -4317,7 +4317,7 @@ Via * CMRouter::makeVia(PathUnit * pathUnit) {
 	ViewGeometry viewGeometry;
 	viewGeometry.setLoc(QPointF(tileToReal(cx - tHalfWidth) - Hole::OffsetPixels, tileToReal(cy - tHalfHeight) - Hole::OffsetPixels));
 
-	ItemBase * itemBase = m_sketchWidget->addItem(m_sketchWidget->refModel()->retrieveModelPart(ModuleIDNames::ViaModuleIDName), 
+	ItemBase * itemBase = m_sketchWidget->addItem(m_sketchWidget->referenceModel()->retrieveModelPart(ModuleIDNames::ViaModuleIDName), 
 										m_specHash.value(pathUnit->plane), BaseCommand::CrossView, viewGeometry, newID, -1, NULL);
 
 	//DebugDialog::debug(QString("back from adding via %1").arg((long) itemBase, 0, 16));

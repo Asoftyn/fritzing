@@ -259,7 +259,7 @@ void MainWindow::initDock() {
     connect(m_infoView, SIGNAL(clickObsoleteSignal()), this, SLOT(selectAllObsolete()));
 	//DebugDialog::debug("after html view");
 
-	m_binManager = new BinManager(m_refModel, m_infoView, m_undoStack, this);
+	m_binManager = new BinManager(m_referenceModel, m_infoView, m_undoStack, this);
     m_binManager->initStandardBins();
 
 	DebugDialog::debug("after creating bins");

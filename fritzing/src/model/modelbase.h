@@ -42,15 +42,15 @@ public:
 	ModelPartSharedRoot * rootModelPartShared();
 	virtual ModelPart* retrieveModelPart(const QString & moduleID);
 	virtual ModelPart * addModelPart(ModelPart * parent, ModelPart * copyChild);
-	virtual bool load(const QString & fileName, ModelBase* refModel, QList<ModelPart *> & modelParts);
+	virtual bool load(const QString & fileName, ModelBase* referenceModel, QList<ModelPart *> & modelParts);
 	void save(const QString & fileName, bool asPart);
 	void save(const QString & fileName, class QXmlStreamWriter &, bool asPart);
 	virtual ModelPart * addPart(QString newPartPath, bool addToReference);
 	virtual bool addPart(ModelPart * modelPart, bool update);
 	virtual ModelPart * addPart(QString newPartPath, bool addToReference, bool updateIdAlreadyExists);
-	bool paste(ModelBase * refModel, QByteArray & data, QList<ModelPart *> & modelParts, QHash<QString, QRectF> & boundingRects, bool preserveIndex);
+	bool paste(ModelBase * referenceModel, QByteArray & data, QList<ModelPart *> & modelParts, QHash<QString, QRectF> & boundingRects, bool preserveIndex);
 	void setReportMissingModules(bool);
-	ModelPart * genFZP(const QString & moduleID, ModelBase * refModel);
+	ModelPart * genFZP(const QString & moduleID, ModelBase * referenceModel);
 	const QString & fritzingVersion();
     void setReferenceModel(ModelBase *);
 

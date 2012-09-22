@@ -51,7 +51,7 @@ class ReferenceModel : public PaletteModel {
 		virtual void recordProperty(const QString &name, const QString &value) = 0;
 		virtual QString retrieveModuleIdWith(const QString &family, const QString &propertyName, bool closestMatch) = 0;
 		virtual QString retrieveModuleId(const QString &family, const QMultiHash<QString /*name*/, QString /*value*/> &properties, const QString &propertyName, bool closestMatch) = 0;
-		virtual QStringList values(const QString &family, const QString &propName, bool distinct=true) = 0;
+		virtual QStringList propValues(const QString &family, const QString &propName, bool distinct) = 0;
 		virtual bool lastWasExactMatch() = 0;
 };
 

@@ -35,17 +35,6 @@ $Date$
 #include "pemetadataview.h"
 #include "hashpopulatewidget.h"
 
-
-//////////////////////////////////////
-
-/****************************************
-
-TODO:
-
-    don't allow users to enter "family" into properties
-
-****************************************/
-
 //////////////////////////////////////
 
 FocusOutTextEdit::FocusOutTextEdit(QWidget * parent) : QTextEdit(parent)
@@ -94,13 +83,11 @@ void PEMetadataView::labelEntry() {
 }
 
 void PEMetadataView::familyEntry() {
-    if (m_familyEdit->text().isEmpty()) {
-        m_familyEdit->setText(tr("'family' must not be blank"));
-        QMessageBox::warning(NULL, tr("Parts Editor"), tr("All parts must have a 'family' property."));
-        return;
-    }
-
     emit metadataChanged("family", m_familyEdit->text());
+}
+
+void PEMetadataView::variantEntry() {
+    emit metadataChanged("variant", m_variantEdit->text());
 }
 
 void PEMetadataView::dateEntry() {
@@ -141,6 +128,7 @@ void PEMetadataView::initMetadata(const QDomDocument & doc)
     }
 
     QString family;
+    QString variant;
 
     QHash<QString, QString> propertyHash;    
     QDomElement properties = root.firstChildElement("properties");
@@ -149,7 +137,10 @@ void PEMetadataView::initMetadata(const QDomDocument & doc)
         QString name = prop.attribute("name");
         QString value = prop.text();
         if (name.compare("family", Qt::CaseInsensitive) == 0) {
-            family = value;;
+            family = value;
+        }
+        else if (name.compare("variant", Qt::CaseInsensitive) == 0) {
+            variant = value;
         }
         else {
             propertyHash.insert(name, value);
@@ -212,8 +203,14 @@ void PEMetadataView::initMetadata(const QDomDocument & doc)
 	connect(m_familyEdit, SIGNAL(editingFinished()), this, SLOT(familyEntry()));
 	m_familyEdit->setObjectName("PartsEditorLineEdit");
     m_familyEdit->setStatusTip(tr("Set the part's family--what other parts is this part related to"));
-    m_familyEdit->setEnabled(false);
     formLayout->addRow(tr("Family"), m_familyEdit);
+
+    m_variantEdit = new QLineEdit();
+    m_variantEdit->setText(variant);
+	connect(m_variantEdit, SIGNAL(editingFinished()), this, SLOT(variantEntry()));
+	m_variantEdit->setObjectName("PartsEditorLineEdit");
+    m_variantEdit->setStatusTip(tr("Set the part's variant--this makes it unique from all other parts in the same family"));
+    formLayout->addRow(tr("Variant"), m_variantEdit);
 
     m_propertiesEdit = new HashPopulateWidget("", propertyHash, readOnlyKeys, false, this);
 	m_propertiesEdit->setObjectName("PartsEditorPropertiesEdit");
@@ -231,4 +228,31 @@ void PEMetadataView::initMetadata(const QDomDocument & doc)
     m_mainFrame->setLayout(mainLayout);
 
     this->setWidget(m_mainFrame);
+}
+
+void PEMetadataView::resetProperty(const QString & name, const QString & value)
+{
+	if (name == "family") m_familyEdit->setText(value);
+	else if (name == "variant") m_variantEdit->setText(value);
+}
+
+QString PEMetadataView::family() {
+	return m_familyEdit->text();
+}
+
+QString PEMetadataView::variant() {
+	return m_variantEdit->text();
+}
+
+bool PEMetadataView::anyModified() {
+	QList<QLineEdit *> lineEdits = m_mainFrame->findChildren<QLineEdit *>();
+	foreach (QLineEdit * lineEdit, lineEdits) {
+		if (lineEdit->isModified()) return true;
+	}
+	QList<QTextEdit *> textEdits = m_mainFrame->findChildren<QTextEdit *>();
+	foreach (QTextEdit * textEdit, textEdits) {
+		if (textEdit->document()->isModified()) return true;
+	}
+
+	return false;
 }

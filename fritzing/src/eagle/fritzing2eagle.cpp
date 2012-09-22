@@ -31,7 +31,6 @@ $Date$
 #include <QChar>
 #include <QTime>
 #include <QKeyEvent>
-#include <QCloseEvent>
 #include <QScrollBar>
 #include <QMessageBox>
 

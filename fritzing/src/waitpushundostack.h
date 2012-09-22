@@ -43,7 +43,9 @@ public:
     void resolveTemporary();
     void deleteTemporary();
     void deleteTimer(QTimer *);
+    void addTimer(QTimer *);
 	void push(QUndoCommand *);
+	bool hasTimers();
 
 #ifndef QT_NO_DEBUG
 public:
@@ -58,6 +60,7 @@ protected:
 
 protected:
 	QList<QTimer *> m_deadTimers;
+	QList<QTimer *> m_liveTimers;
 	QMutex m_mutex;
     QUndoCommand * m_temporary;
 };

@@ -69,8 +69,8 @@ ModelPart * ModelBase::retrieveModelPart(const QString & /* moduleID */)  {
 }
 
 // loads a model from an fz file--assumes a reference model exists with all parts
-bool ModelBase::load(const QString & fileName, ModelBase * refModel, QList<ModelPart *> & modelParts) {
-	m_referenceModel = refModel;
+bool ModelBase::load(const QString & fileName, ModelBase * referenceModel, QList<ModelPart *> & modelParts) {
+	m_referenceModel = referenceModel;
 
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
@@ -405,9 +405,9 @@ void ModelBase::save(const QString & fileName, QXmlStreamWriter & streamWriter, 
     }
 }
 
-bool ModelBase::paste(ModelBase * refModel, QByteArray & data, QList<ModelPart *> & modelParts, QHash<QString, QRectF> & boundingRects, bool preserveIndex)
+bool ModelBase::paste(ModelBase * referenceModel, QByteArray & data, QList<ModelPart *> & modelParts, QHash<QString, QRectF> & boundingRects, bool preserveIndex)
 {
-	m_referenceModel = refModel;
+	m_referenceModel = referenceModel;
 
 	QDomDocument domDocument;
 	QString errorStr;
@@ -513,11 +513,11 @@ void ModelBase::setReportMissingModules(bool b) {
 	m_reportMissingModules = b;
 }
 
-ModelPart * ModelBase::genFZP(const QString & moduleID, ModelBase * refModel) {
+ModelPart * ModelBase::genFZP(const QString & moduleID, ModelBase * referenceModel) {
 	QString path = PartFactory::getFzpFilename(moduleID);
 	if (path.isEmpty()) return NULL;
 
-	ModelPart* mp = refModel->addPart(path, true, true);
+	ModelPart* mp = referenceModel->addPart(path, true, true);
 	if (mp) mp->setCore(true);
 	return mp;
 }

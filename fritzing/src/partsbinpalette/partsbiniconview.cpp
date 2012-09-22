@@ -41,8 +41,8 @@ $Date$
 
 #define ICON_SPACING 2
 
-PartsBinIconView::PartsBinIconView(ReferenceModel* refModel, PartsBinPaletteWidget *parent)
-    : InfoGraphicsView((QWidget*)parent), PartsBinView(refModel, parent)
+PartsBinIconView::PartsBinIconView(ReferenceModel* referenceModel, PartsBinPaletteWidget *parent)
+    : InfoGraphicsView((QWidget*)parent), PartsBinView(referenceModel, parent)
 {
 	setAcceptWheelEvents(false);
     setFrameStyle(QFrame::Raised | QFrame::StyledPanel);
@@ -215,7 +215,7 @@ int PartsBinIconView::setItemAux(ModelPart * modelPart, int position) {
 			    QHash<QString,QString> properties = modelPart->properties();
 			    QString family = properties.value("family", "").toLower();
 			    foreach (QString key, properties.keys()) {
-				    QStringList values = m_refModel->values(family, key);
+				    QStringList values = m_referenceModel->propValues(family, key, true);
 				    if (values.length() > 1) {
 					    plural = ItemBase::Plural;
 					    break;

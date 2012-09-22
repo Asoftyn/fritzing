@@ -77,6 +77,7 @@ protected:
 	void createCloseAction();
 
 	void setReadOnly(bool readOnly);
+	virtual bool anyModified();
 
 protected:
 	class WaitPushUndoStack * m_undoStack;

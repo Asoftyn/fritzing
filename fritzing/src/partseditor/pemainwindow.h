@@ -93,6 +93,7 @@ public slots:
 
 protected:
 	void closeEvent(QCloseEvent * event);
+	bool event(QEvent *);
     void initLockedFiles(bool lockFiles);
     void initSketchWidgets();
     void initDock();
@@ -108,7 +109,6 @@ protected:
 	QMenu *pcbWireMenu();
 	QMenu *schematicWireMenu();
 	QMenu *breadboardWireMenu();
-    bool eventFilter(QObject *obj, QEvent *event);
 	void setTitle();
     void createViewMenuActions();
     void createViewMenu();
@@ -154,7 +154,8 @@ protected:
 	int currentTabIndex();
 	void setCurrentTabIndex(int);
 	QWidget * currentTabWidget();
-
+	void changeSpecialProperty(const QString & name, const QString & value);
+	bool anyModified();
 
 protected slots:
     void initZoom();
@@ -169,6 +170,7 @@ protected slots:
     void backupSketch();
     void updateWindowMenu();
     void updateWireMenu();
+	void closeLater();
 
 protected:
     QDomDocument m_fzpDocument;
@@ -204,6 +206,7 @@ protected:
     QHash<ViewLayer::ViewIdentifier, QString> m_originalSvgPaths;
     bool m_gaveSaveWarning;
 	QStringList m_toDelete;
+	int m_closeOK;
 };
 
 #endif /* PEMAINWINDOW_H_ */

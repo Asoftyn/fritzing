@@ -38,7 +38,7 @@ $Date$
 QHash<QString, QString> PartsBinView::TranslatedCategoryNames;
 QHash<QString, ItemBase *> PartsBinView::ItemBaseHash;
 
-PartsBinView::PartsBinView(ReferenceModel *refModel, PartsBinPaletteWidget *parent) {
+PartsBinView::PartsBinView(ReferenceModel *referenceModel, PartsBinPaletteWidget *parent) {
 	if (TranslatedCategoryNames.count() == 0) {
 		TranslatedCategoryNames.insert("Basic", QObject::tr("Basic"));
 		TranslatedCategoryNames.insert("Input", QObject::tr("Input"));
@@ -57,7 +57,7 @@ PartsBinView::PartsBinView(ReferenceModel *refModel, PartsBinPaletteWidget *pare
 		TranslatedCategoryNames.insert("Sensors",  QObject::tr("Sensors"));
 	}
 
-	m_refModel = refModel;
+	m_referenceModel = referenceModel;
 	m_parent = parent;
 }
 
@@ -208,7 +208,7 @@ void PartsBinView::dropEventAux(QDropEvent* event, bool justAppend) {
 		QPointF offset;
 		dataStream >> moduleID >> offset;
 
-		ModelPart * mp = m_refModel->retrieveModelPart(moduleID);
+		ModelPart * mp = m_referenceModel->retrieveModelPart(moduleID);
 		m_parent->copyFilesToContrib(mp, ItemDrag::originator());
 		if(mp) {
 			if(m_parent->contains(moduleID)) {

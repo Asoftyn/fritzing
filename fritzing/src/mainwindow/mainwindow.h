@@ -111,7 +111,7 @@ class MainWindow : public FritzingWindow
 {
     Q_OBJECT
 public:
-    MainWindow(class ReferenceModel *refModel, QWidget * parent);
+    MainWindow(class ReferenceModel *referenceModel, QWidget * parent);
     MainWindow(QFile & fileToLoad);
 	~MainWindow();
 
@@ -126,7 +126,7 @@ public:
 
 	void getPartsEditorNewAnd(ItemBase * fromItem);
 	void addDefaultParts();
-    void init(ReferenceModel *refModel, bool lockFiles);
+    void init(ReferenceModel *referenceModel, bool lockFiles);
 	void showFileProgressDialog(const QString & path);
 	void setFileProgressPath(const QString & path);
 	void clearFileProgressDialog();
@@ -172,13 +172,12 @@ public:
 
 public:
 	static void initNames();
-	static MainWindow * newMainWindow(ReferenceModel *refModel, const QString & displayPath, bool showProgress, bool lockFiles);
+	static MainWindow * newMainWindow(ReferenceModel *referenceModel, const QString & displayPath, bool showProgress, bool lockFiles);
 	static void setAutosavePeriod(int);
 	static void setAutosaveEnabled(bool);
 
 signals:
 	void alienPartsDismissed();
-	void aboutToClose();
 	void viewSwitched(int);
 	void mainWindowMoved(QWidget *);
 	void changeActivationSignal(bool activate, QWidget * originator);
@@ -561,7 +560,7 @@ protected:
     QPointer<class MiniViewContainer> m_miniViewContainerPCB;
 	QList <class MiniViewContainer *> m_navigators;
 	QPointer<QWidget> m_tabWidget;
-    QPointer<ReferenceModel> m_refModel;
+    QPointer<ReferenceModel> m_referenceModel;
     QPointer<class SketchModel> m_sketchModel;
     QPointer<class HtmlInfoView> m_infoView;
     QPointer<QToolBar> m_toolbar;

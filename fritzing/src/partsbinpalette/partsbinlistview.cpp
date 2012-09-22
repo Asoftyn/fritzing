@@ -41,8 +41,8 @@ $Date$
 static const QColor SectionHeaderBackgroundColor(128, 128, 128);
 static const QColor SectionHeaderForegroundColor(32, 32, 32);
 
-PartsBinListView::PartsBinListView(ReferenceModel* refModel, PartsBinPaletteWidget *parent)
-	: QListWidget((QWidget *) parent), PartsBinView(refModel, parent)
+PartsBinListView::PartsBinListView(ReferenceModel* referenceModel, PartsBinPaletteWidget *parent)
+	: QListWidget((QWidget *) parent), PartsBinView(referenceModel, parent)
 {
 	m_infoView = NULL;
 	m_hoverItem = NULL;

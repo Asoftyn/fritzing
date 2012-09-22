@@ -53,6 +53,7 @@ public:
 	~PEConnectorsView();
 
     void initConnectors(QList<QDomElement> & connectorList);
+	bool anyModified();
 
 signals:
     void connectorMetadataChanged(struct ConnectorMetadata *);

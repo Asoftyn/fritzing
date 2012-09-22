@@ -34,8 +34,9 @@ $Date$
 
 CommandTimer::CommandTimer(QUndoCommand * command, int delayMS, WaitPushUndoStack * undoStack) : QTimer()
 {
-	m_command = command;
 	m_undoStack = undoStack;
+	m_command = command;
+	m_undoStack->addTimer(this);
 	setSingleShot(true);
 	setInterval(delayMS);
 	connect(this, SIGNAL(timeout()), this, SLOT(timedout()));
@@ -107,6 +108,17 @@ void WaitPushUndoStack::clearDeadTimers() {
 void WaitPushUndoStack::deleteTimer(QTimer * timer) {
 	QMutexLocker locker(&m_mutex);
 	m_deadTimers.append(timer);
+	m_liveTimers.removeOne(timer);
+}
+
+void WaitPushUndoStack::addTimer(QTimer * timer) {
+	QMutexLocker locker(&m_mutex);
+	m_liveTimers.append(timer);
+}
+
+bool WaitPushUndoStack::hasTimers() {
+	QMutexLocker locker(&m_mutex);
+	return m_liveTimers.count() > 0;
 }
 
 void WaitPushUndoStack::resolveTemporary() {
