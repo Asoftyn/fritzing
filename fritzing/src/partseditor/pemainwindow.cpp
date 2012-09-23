@@ -37,9 +37,9 @@ $Date$
 
 		crash and other weird behaviors when close button doesn't focusOutEvent
 			watch all views for who is in focus
-			deal with QTextEdit
 			what about spinner text
 			check for empty family, empty variant, unique variant, no variant or family in properties
+			check for changed entries in before emitting events in connectors view, tool view, hashwidget
         
         crashed when saving the description
 
@@ -76,6 +76,8 @@ $Date$
 
 		don't allow 'family' or 'variant' property in property list editor
 			add check to closeEvent()
+
+		peToolView: connector nameEntry, typeEntry, descriptionEntry not hooked up
 
     ////////////////////////////// second release /////////////////////////////////
 
@@ -1478,7 +1480,30 @@ void PEMainWindow::lockChanged(bool state) {
 
 void PEMainWindow::lockChangedAux(bool state, const QList<PEGraphicsItem *> & pegiList) 
 {
-	Q_UNUSED(pegiList);
+	if (state) {
+		// make sure all connectors are assigned before allowing bus drawing
+		QDomElement root = m_fzpDocument.documentElement();
+		QDomElement connectors = root.firstChildElement("connectors");
+		QDomElement connector = connectors.firstChildElement("connector");
+		while (!connector.isNull()) {
+			QDomElement p = this->getConnectorPElement(connector, m_currentGraphicsView);
+			QString id = p.attribute("svgId");
+			bool gotOne = false;
+			foreach (PEGraphicsItem * pegi, pegiList) {
+				QDomElement pegiElement = pegi->element();
+				if (pegiElement.attribute("id").compare(id) == 0) {
+					gotOne = true;
+					break;
+				}
+			}
+			if (!gotOne) {
+				state = false;
+				break;
+			}
+			connector = connector.nextSiblingElement("connector");
+		}	
+	}
+
 	m_currentGraphicsView->hideConnectors(!state);
 }
 

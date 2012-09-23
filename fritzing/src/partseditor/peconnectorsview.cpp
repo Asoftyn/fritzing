@@ -115,7 +115,10 @@ void PEConnectorsView::initConnectors(QList<QDomElement> & connectorList)
 }
 
 void PEConnectorsView::nameEntry() {
-    changeConnector();
+	QLineEdit * lineEdit = qobject_cast<QLineEdit *>(sender());
+	if (lineEdit != NULL && lineEdit->isModified()) {
+		changeConnector();
+	}
 }
 
 void PEConnectorsView::typeEntry() {
@@ -123,14 +126,17 @@ void PEConnectorsView::typeEntry() {
 }
 
 void PEConnectorsView::descriptionEntry() {
-    changeConnector();
+	QLineEdit * lineEdit = qobject_cast<QLineEdit *>(sender());
+	if (lineEdit != NULL && lineEdit->isModified()) {
+		changeConnector();
+	}
 }
 
 void PEConnectorsView::connectorCountEntry() {
     if (!m_mutex.tryLock(1)) return;            // need the mutex because multiple editingFinished() signals can be triggered more-or-less at once
    
     QLineEdit * lineEdit = qobject_cast<QLineEdit *>(sender());
-    if (lineEdit != NULL) {
+    if (lineEdit != NULL && lineEdit->isModified()) {
         int newCount = lineEdit->text().toInt();
         if (newCount != m_connectorCount) {
             m_connectorCount = newCount;

@@ -277,7 +277,6 @@ void PEToolView::typeEntry() {
 }
 
 void PEToolView::descriptionEntry() {
-
 }
 
 void PEToolView::setCurrentConnector(const QDomElement & newConnector) {

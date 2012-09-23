@@ -202,11 +202,8 @@ void PEMetadataView::initMetadata(const QDomDocument & doc)
     formLayout->addRow(tr("Author"), m_authorEdit);
 
     m_descriptionEdit = new FocusOutTextEdit();
-	qDebug() << "mod1" << m_descriptionEdit->document()->isModified();
     m_descriptionEdit->setText(descr.text());
-	qDebug() << "mod2" << m_descriptionEdit->document()->isModified();
 	m_descriptionEdit->document()->setModified(false);
-	qDebug() << "mod3" << m_descriptionEdit->document()->isModified();
 	connect(m_descriptionEdit, SIGNAL(focusOut()), this, SLOT(descriptionEntry()));
 	m_descriptionEdit->setObjectName("PartsEditorTextEdit");
     m_descriptionEdit->setStatusTip(tr("Set the part's description--you can use simple html (as defined by Qt's Rich Text)"));
