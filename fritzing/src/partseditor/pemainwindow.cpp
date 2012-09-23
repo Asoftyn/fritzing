@@ -31,17 +31,15 @@ $Date$
 
 	    clean up menus
 
-		editing parts that are not visible in certain views
-			the parts are showing up anyway
-			after you save the part, you can drag it into any view
-
 		why isn't swapping available when a part has multiple variant values?
 
         crash when swapping part during save
 
-		crash and other weird behaviors when close button triggers focusOutEvent
-
-		don't show part labels 
+		crash and other weird behaviors when close button doesn't focusOutEvent
+			watch all views for who is in focus
+			deal with QTextEdit
+			what about spinner text
+			check for empty family, empty variant, unique variant, no variant or family in properties
         
         crashed when saving the description
 
@@ -64,25 +62,26 @@ $Date$
         keep originating file in fzp/svg and use it for naming
             display in pesvgview
 
-        no parts bin in first release
-
         changed terminal points sometimes not being saved
 
         connector locations are not updating properly when a part in the sketch is edited
 
         leaves should be on top of svg tree (partly done)
 
-        allow blank new part?
-
         lock should lock all fields
 
         check all MainWindow * casts
 
-        first time help?
+        first time help--trigger html page
 
 		don't allow 'family' or 'variant' property in property list editor
+			add check to closeEvent()
 
     ////////////////////////////// second release /////////////////////////////////
+
+        allow blank new part?
+
+		restore parts bin
 
         buses 
 			secondary representation (list view)
@@ -202,6 +201,7 @@ $Date$
 #include "../items/virtualwire.h"
 #include "../connectors/connectoritem.h"
 #include "../connectors/bus.h"
+#include <QtDebug>
 
 #include <QApplication>
 #include <QSvgGenerator>
@@ -260,8 +260,7 @@ void IconSketchWidget::addViewLayers() {
 PEMainWindow::PEMainWindow(ReferenceModel * referenceModel, QWidget * parent)
 	: MainWindow(referenceModel, parent)
 {
-	m_closeOK = 0;
-    m_autosaveTimer.stop();
+	m_autosaveTimer.stop();
     disconnect(&m_autosaveTimer, SIGNAL(timeout()), this, SLOT(backupSketch()));
     m_gaveSaveWarning = m_canSave = false;
     m_settingsPrefix = "pe/";
@@ -289,14 +288,68 @@ PEMainWindow::~PEMainWindow()
 
 void PEMainWindow::closeEvent(QCloseEvent *event) 
 {
-	if (m_metadataView->family().isEmpty()) {
+	qDebug() << "close event";
+
+	if (m_inFocusWidgets.count() > 0) {
+		bool gotOne = false;
+		// should only be one in-focus widget
+		foreach (QWidget * widget, m_inFocusWidgets) {
+			QLineEdit * lineEdit = qobject_cast<QLineEdit *>(widget);
+			if (lineEdit) {
+				if (lineEdit->isModified()) {
+					lineEdit->clearFocus();
+					gotOne = true;
+				}
+			}
+			else {
+				QTextEdit * textEdit = qobject_cast<QTextEdit *>(widget);
+				if (textEdit) {
+					if (textEdit->document()->isModified()) {
+						textEdit->clearFocus();
+						gotOne = true;
+					}
+				}
+			}
+		}
+		if (gotOne) {
+			event->ignore();
+			QMessageBox::information(NULL, tr("Processing"), tr("Fritzing is still processing the current input--plase click 'close' again."));
+			return;
+		}
+	}
+
+	QString family = m_metadataView->family();
+	if (family.isEmpty()) {
+		QMessageBox::warning(NULL, tr("Blank not allowed"), tr("The part's 'family' (metadata) can not be blank."));
         event->ignore();
         return;
 	}
 
-	if (m_metadataView->variant().isEmpty()) {
+	QString variant = m_metadataView->variant();
+	if (variant.isEmpty()) {
+		QMessageBox::warning(NULL, tr("Blank not allowed"), tr("The part's 'variant' (metadata) can not be blank."));
         event->ignore();
         return;
+	}
+
+	QStringList variants = m_referenceModel->propValues(family, "variant", true);
+	if (variants.contains(variant, Qt::CaseInsensitive)) {
+		QMessageBox::warning(NULL, tr("Must be unique"), tr("Variant '%1' is in use. A part's variant must be unique within a family.").arg(variant));
+        event->ignore();
+		return;
+	}
+
+	QStringList keys = m_metadataView->properties().keys();
+	if (keys.contains("family", Qt::CaseInsensitive)) {
+		QMessageBox::warning(NULL, tr("Duplicate problem"), tr("Duplicate 'family' property not allowed"));
+        event->ignore();
+		return;
+	}
+
+	if (keys.contains("variant", Qt::CaseInsensitive)) {
+		QMessageBox::warning(NULL, tr("Duplicate problem"), tr("Duplicate 'variant' property not allowed"));
+        event->ignore();
+		return;
 	}
 
     if (!beforeClosing(true)) {
@@ -359,9 +412,9 @@ void PEMainWindow::initSketchWidgets()
 
 void PEMainWindow::initDock()
 {
-    m_binManager = new BinManager(m_referenceModel, NULL, m_undoStack, this);
-    m_binManager->openBin(":/resources/bins/pe.fzb");
-    m_binManager->hideTabBar();
+    //m_binManager = new BinManager(m_referenceModel, NULL, m_undoStack, this);
+    //m_binManager->openBin(":/resources/bins/pe.fzb");
+    //m_binManager->hideTabBar();
 }
 
 void PEMainWindow::moreInitDock()
@@ -383,8 +436,8 @@ void PEMainWindow::moreInitDock()
     makeDock(tr("Connectors"), m_peToolView, DockMinWidth, DockMinHeight);
     m_peToolView->setMinimumSize(DockMinWidth, DockMinHeight);
 
-	QDockWidget * dockWidget = makeDock(BinManager::Title, m_binManager, MinHeight, DefaultHeight);
-    dockWidget->resize(0, 0);
+	//QDockWidget * dockWidget = makeDock(BinManager::Title, m_binManager, MinHeight, DefaultHeight);
+    //dockWidget->resize(0, 0);
 }
 
 void PEMainWindow::createActions()
@@ -578,7 +631,7 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
         layers.setAttribute("image", svgPath);
     }
 
-    reload();
+    reload(true);
 
     foreach (ItemBase * itemBase, m_items.values()) {
         m_originalSvgPaths.insert(itemBase->viewIdentifier(), itemBase->filename());
@@ -586,6 +639,7 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
 
     setTitle();
     createRaiseWindowActions();
+
 }
 
 void PEMainWindow::initHelper()
@@ -685,7 +739,9 @@ void PEMainWindow::changeSpecialProperty(const QString & name, const QString & v
 
 void PEMainWindow::metadataChanged(const QString & name, const QString & value)
 {
-    if (name.compare("family") == 0) {
+	qDebug() << "metadata changed";
+
+	if (name.compare("family") == 0) {
 		changeSpecialProperty(name, value);
         return;
     }
@@ -708,6 +764,8 @@ void PEMainWindow::metadataChanged(const QString & name, const QString & value)
     QDomElement root = m_fzpDocument.documentElement();
     QDomElement element = root.firstChildElement(name);
     QString oldValue = element.text();
+	if (oldValue == value) return;
+
     ChangeMetadataCommand * cmc = new ChangeMetadataCommand(this, name, oldValue, value, NULL);
     cmc->setText(menuText);
     cmc->setSkipFirstRedo();
@@ -730,6 +788,7 @@ void PEMainWindow::changeMetadata(const QString & name, const QString & value, b
 
 void PEMainWindow::tagsChanged(const QStringList & newTags)
 {
+
     // called from metadataView
     QDomElement root = m_fzpDocument.documentElement();
     QDomElement tags = root.firstChildElement("tags");
@@ -770,6 +829,8 @@ void PEMainWindow::changeTags(const QStringList & newTags, bool updateDisplay)
 
 void PEMainWindow::propertiesChanged(const QHash<QString, QString> & newProperties)
 {	
+	qDebug() << "properties changed";
+
 	QStringList keys = newProperties.keys();
 	if (keys.contains("family", Qt::CaseInsensitive)) {
 		QMessageBox::warning(NULL, tr("Duplicate problem"), tr("Duplicate 'family' property not allowed"));
@@ -1328,7 +1389,7 @@ void PEMainWindow::changeSvg(SketchWidget * sketchWidget, const QString & filena
 
     updateChangeCount(sketchWidget, changeDirection);
 
-    reload();
+    reload(false);
 
     this->m_originalSvgPaths.insert(sketchWidget->viewIdentifier(), originalPath);
 }
@@ -1343,7 +1404,9 @@ QString PEMainWindow::saveFzp() {
     return fzpPath;
 }
 
-void PEMainWindow::reload() {
+void PEMainWindow::reload(bool firstTime) {
+	Q_UNUSED(firstTime);
+
     QString fzpPath = saveFzp();   // needs a document somewhere to set up connectors--not part of the undo stack
     ModelPart * modelPart = new ModelPart(m_fzpDocument, fzpPath, ModelPart::Part);
 
@@ -1361,6 +1424,19 @@ void PEMainWindow::reload() {
 	m_metadataView->initMetadata(m_fzpDocument);
 
     initConnectors();
+
+	QList<QWidget *> widgets;
+	widgets << m_metadataView << m_peToolView << m_connectorsView;
+	foreach (QWidget * widget, widgets) {
+		QList<QLineEdit *> lineEdits = widget->findChildren<QLineEdit *>();
+		foreach (QLineEdit * lineEdit, lineEdits) {
+			lineEdit->installEventFilter(this);
+		}
+		QList<QTextEdit *> textEdits = widget->findChildren<QTextEdit *>();
+		foreach (QTextEdit * textEdit, textEdits) {
+			textEdit->installEventFilter(this);
+		}
+	}
 
     initSvgTree(breadboardItem, m_breadboardDocument);
     initSvgTree(schematicItem, m_schematicDocument);
@@ -2088,7 +2164,7 @@ void PEMainWindow::restoreFzp(const QString & fzpPath)
     if (!loadFzp(fzpPath)) return;
 
     killPegi();
-    reload();
+    reload(false);
 }
 
 void PEMainWindow::setBeforeClosingText(const QString & filename, QMessageBox & messageBox)
@@ -2540,22 +2616,56 @@ QWidget * PEMainWindow::currentTabWidget() {
 
 bool PEMainWindow::event(QEvent * e) {
 	if (e->type() == QEvent::Close) {
-		if (m_closeOK <= 0) {
-			e->ignore();
-			QApplication::processEvents();
-			QTimer::singleShot(SketchWidget::PropChangeDelay + 1, this, SLOT(closeLater()));
-		}
+		//qDebug() << "event close";
+		//if (m_inFocusWidgets.count() > 0) {
+		//	e->ignore();
+		//	qDebug() << "bail in focus";
+		//	return true;
+		//}
 	}
 
 	return MainWindow::event(e);
 }
 
-bool PEMainWindow::anyModified() {
-	return MainWindow::anyModified() || m_connectorsView->anyModified() || m_metadataView->anyModified();
+bool PEMainWindow::eventFilter(QObject *object, QEvent *event)
+{
+	//qDebug() << "event" << event->type();
+    if (event->type() == QEvent::FocusIn) {
+        QLineEdit * lineEdit = qobject_cast<QLineEdit *>(object);
+		if (lineEdit != NULL) {
+			if (lineEdit->window() == this) {
+				qDebug() << "inc focus";
+				m_inFocusWidgets << lineEdit;
+			}
+		}
+		else {
+			QTextEdit * textEdit = qobject_cast<QTextEdit *>(object);
+			if (textEdit != NULL && textEdit->window() == this) {
+				qDebug() << "inc focus";
+				m_inFocusWidgets << textEdit;
+			}
+		}
+    }
+    if (event->type() == QEvent::FocusOut) {
+        QLineEdit * lineEdit = qobject_cast<QLineEdit *>(object);
+		if (lineEdit != NULL) {
+			if (lineEdit->window() == this) {
+				qDebug() << "dec focus";
+				m_inFocusWidgets.removeOne(lineEdit);
+			}
+		}
+		else {
+			QTextEdit * textEdit = qobject_cast<QTextEdit *>(object);
+			if (textEdit != NULL && textEdit->window() == this) {
+				qDebug() << "inc focus";
+				m_inFocusWidgets.removeOne(textEdit);
+			}
+		}
+    }
+    return false;
 }
 
-void PEMainWindow::closeLater() {
-	m_closeOK++;
+void PEMainWindow::closeLater()
+{
 	close();
-	m_closeOK--;
 }

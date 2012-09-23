@@ -121,7 +121,7 @@ protected:
     QString makeSvgPath(const QString & referenceFile, SketchWidget * sketchWidget, bool useIndex);
     QString saveSvg(const QString & svg, const QString & newFilePath);
     QString saveFzp();
-    void reload();
+    void reload(bool firstTime);
     void createFileMenu();
     bool getConnectorIDs(const QDomElement & element, SketchWidget * sketchWidget, QString & id, QString & terminalID);
     QDomElement getConnectorPElement(const QDomElement & element, SketchWidget * sketchWidget);
@@ -155,7 +155,7 @@ protected:
 	void setCurrentTabIndex(int);
 	QWidget * currentTabWidget();
 	void changeSpecialProperty(const QString & name, const QString & value);
-	bool anyModified();
+	bool eventFilter(QObject *, QEvent *);
 
 protected slots:
     void initZoom();
@@ -206,7 +206,7 @@ protected:
     QHash<ViewLayer::ViewIdentifier, QString> m_originalSvgPaths;
     bool m_gaveSaveWarning;
 	QStringList m_toDelete;
-	int m_closeOK;
+	QList< QPointer<QWidget> > m_inFocusWidgets;
 };
 
 #endif /* PEMAINWINDOW_H_ */

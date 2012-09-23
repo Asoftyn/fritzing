@@ -31,6 +31,7 @@ $Date$
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QMessageBox>
+#include <QtDebug>
 
 #include "pemetadataview.h"
 #include "hashpopulatewidget.h"
@@ -48,7 +49,7 @@ FocusOutTextEdit::~FocusOutTextEdit()
 
 void FocusOutTextEdit::focusOutEvent(QFocusEvent * e) {
 	QTextEdit::focusOutEvent(e);
-    if (isUndoRedoEnabled()) {
+    if (document()->isModified()) {
         emit focusOut();
     }
 }
@@ -67,27 +68,39 @@ PEMetadataView::~PEMetadataView() {
 }
 
 void PEMetadataView::titleEntry() {
-    emit metadataChanged("title", m_titleEdit->text());
+	if (m_titleEdit->isModified()) {
+		emit metadataChanged("title", m_titleEdit->text());
+	}
 }
 
 void PEMetadataView::authorEntry() {
-    emit metadataChanged("author", m_authorEdit->text());
+	if (m_authorEdit->isModified()) {
+		emit metadataChanged("author", m_authorEdit->text());
+	}	
 }
 
 void PEMetadataView::descriptionEntry() {
-    emit metadataChanged("description", m_descriptionEdit->toHtml());
+	if (m_descriptionEdit->document()->isModified()) {
+		emit metadataChanged("description", m_descriptionEdit->toHtml());
+	}
 }
 
 void PEMetadataView::labelEntry() {
-    emit metadataChanged("label", m_labelEdit->text());
+	if (m_labelEdit->isModified()) {
+		emit metadataChanged("label", m_labelEdit->text());
+	}
 }
 
 void PEMetadataView::familyEntry() {
-    emit metadataChanged("family", m_familyEdit->text());
+	if (m_familyEdit->isModified()) {
+		emit metadataChanged("family", m_familyEdit->text());
+	}
 }
 
 void PEMetadataView::variantEntry() {
-    emit metadataChanged("variant", m_variantEdit->text());
+	if (m_variantEdit->isModified()) {
+		emit metadataChanged("variant", m_variantEdit->text());
+	}
 }
 
 void PEMetadataView::dateEntry() {
@@ -95,6 +108,10 @@ void PEMetadataView::dateEntry() {
 
 void PEMetadataView::propertiesEntry() {
     emit propertiesChanged(m_propertiesEdit->hash());
+}
+
+const QHash<QString, QString> & PEMetadataView::properties() {
+    return m_propertiesEdit->hash();
 }
 
 void PEMetadataView::tagsEntry() {
@@ -185,7 +202,11 @@ void PEMetadataView::initMetadata(const QDomDocument & doc)
     formLayout->addRow(tr("Author"), m_authorEdit);
 
     m_descriptionEdit = new FocusOutTextEdit();
+	qDebug() << "mod1" << m_descriptionEdit->document()->isModified();
     m_descriptionEdit->setText(descr.text());
+	qDebug() << "mod2" << m_descriptionEdit->document()->isModified();
+	m_descriptionEdit->document()->setModified(false);
+	qDebug() << "mod3" << m_descriptionEdit->document()->isModified();
 	connect(m_descriptionEdit, SIGNAL(focusOut()), this, SLOT(descriptionEntry()));
 	m_descriptionEdit->setObjectName("PartsEditorTextEdit");
     m_descriptionEdit->setStatusTip(tr("Set the part's description--you can use simple html (as defined by Qt's Rich Text)"));
@@ -244,15 +265,3 @@ QString PEMetadataView::variant() {
 	return m_variantEdit->text();
 }
 
-bool PEMetadataView::anyModified() {
-	QList<QLineEdit *> lineEdits = m_mainFrame->findChildren<QLineEdit *>();
-	foreach (QLineEdit * lineEdit, lineEdits) {
-		if (lineEdit->isModified()) return true;
-	}
-	QList<QTextEdit *> textEdits = m_mainFrame->findChildren<QTextEdit *>();
-	foreach (QTextEdit * textEdit, textEdits) {
-		if (textEdit->document()->isModified()) return true;
-	}
-
-	return false;
-}

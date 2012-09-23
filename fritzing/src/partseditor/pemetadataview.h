@@ -57,7 +57,7 @@ public:
 	void resetProperty(const QString & name, const QString & value);
 	QString family();
 	QString variant();
-	bool anyModified();
+	const QHash<QString, QString> & properties();
 
 signals:
     void metadataChanged(const QString & name, const QString & value);

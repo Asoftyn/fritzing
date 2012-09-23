@@ -203,13 +203,3 @@ bool PEConnectorsView::fillInMetadata(int senderIndex, ConnectorMetadata & cmd)
     }
     return result;   
 }
-
-
-bool PEConnectorsView::anyModified() {
-	QList<QLineEdit *> lineEdits = m_mainFrame->findChildren<QLineEdit *>();
-	foreach (QLineEdit * lineEdit, lineEdits) {
-		if (lineEdit->isModified()) return true;
-	}
-
-	return false;
-}
