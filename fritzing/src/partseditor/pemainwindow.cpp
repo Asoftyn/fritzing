@@ -37,9 +37,6 @@ $Date$
 
 		crash and other weird behaviors when close button doesn't focusOutEvent
 			what about spinner text
-			check for empty family, empty variant, unique variant, no variant or family in properties
-			check for changed entries in before emitting events in connectors view, tool view, hashwidget
-			give option to close without saving in close event messages
         
         crashed when saving the description
 
@@ -48,7 +45,6 @@ $Date$
         from partseditorview.cpp
 	        bool fileHasChanged = (m_viewIdentifier == ViewLayer::IconView) ? false : TextUtils::fixPixelDimensionsIn(fileContent);
 	        fileHasChanged |= TextUtils::fixViewboxOrigin(fileContent);
-	        fileHasChanged |= fixFonts(fileContent,filename,canceled);
 	
         for svg import check for flaws:
             multiple connector or terminal ids
@@ -75,9 +71,6 @@ $Date$
         check all MainWindow * casts
 
         first time help--trigger html page
-
-		don't allow 'family' or 'variant' property in property list editor
-			add check to closeEvent()
 
 		peToolView: connector nameEntry, typeEntry, descriptionEntry not hooked up
 
@@ -205,8 +198,9 @@ $Date$
 #include "../items/virtualwire.h"
 #include "../connectors/connectoritem.h"
 #include "../connectors/bus.h"
-#include <QtDebug>
+#include "../installedfonts.h"
 
+#include <QtDebug>
 #include <QApplication>
 #include <QSvgGenerator>
 #include <QMenuBar>
@@ -1202,14 +1196,47 @@ void PEMainWindow::loadImage()
     QString newPath = origPath;
     QString referenceFile = QFileInfo(origPath).fileName();
 	if (newPath.endsWith(".svg")) {
-        if (newPath.contains(m_userPartsFolderSvgPath)) saveReferenceFile = false;
+		QFile origFile(origPath);
+		if (!origFile.open(QFile::ReadOnly)) {
+    		QMessageBox::warning(NULL, tr("Conversion problem"), tr("Unable to load '%1'").arg(origPath));
+			return;
+		}
+
+		QString svg = origFile.readAll();
+		origFile.close();
+		if (svg.contains("coreldraw", Qt::CaseInsensitive) && svg.contains("cdata", Qt::CaseInsensitive)) {
+    		QMessageBox::warning(NULL, tr("Conversion problem"), 
+				tr("The SVG file '%1' appears to have been exported from CorelDRAW without the 'presentation attributes' setting. ").arg(origPath) +
+				tr("Please re-export the SVG file using that setting, and try loading again.")
+			);
+			return;
+		}
+
+		if (newPath.contains(m_userPartsFolderSvgPath)) saveReferenceFile = false;
         else if (newPath.contains(FolderUtils::getApplicationSubFolderPath("parts"))) saveReferenceFile = false;
-        else {
-            // from outside the ecosystem
+
+		QStringList availFonts = InstalledFonts::InstalledFontsList.toList();
+		if (availFonts.count() > 0) {
+			QString destFont = availFonts.at(0);
+			foreach (QString f, availFonts) {
+				if (f.contains("droid", Qt::CaseInsensitive)) {
+					destFont = f;
+					break;
+				}
+			}
+			if (TextUtils::fixFonts(svg, destFont)) {
+    			QMessageBox::information(NULL, tr("Fonts"), 
+					tr("Fritzing currently only supports OCRA and Droid fonts--these have been substituted in for the fonts in '%1'").arg(origPath));
+				saveReferenceFile = true;
+			}
+		}
+		if (saveReferenceFile) {
+            // from outside the Fritzing ecosystem or we needed to fix the fonts
             newPath = m_userPartsFolderSvgPath + makeSvgPath(referenceFile, m_currentGraphicsView, true);
-            bool success = QFile::copy(origPath, newPath);
+            bool success = TextUtils::writeUtf8(newPath, svg);
             if (!success) {
     		    QMessageBox::warning(NULL, tr("Copy problem"), tr("Unable to make a local copy of: '%1'").arg(origPath));
+				return;
             }
         }
     }
@@ -1235,16 +1262,6 @@ void PEMainWindow::loadImage()
 
 	if (!newPath.isEmpty()) {
         QFile file(newPath);
-		if (file.open(QFile::ReadOnly)) {
-			QString svg = file.readAll();
-			if (svg.contains("coreldraw", Qt::CaseInsensitive) && svg.contains("cdata", Qt::CaseInsensitive)) {
-    			QMessageBox::warning(NULL, tr("Conversion problem"), tr("The SVG file '%1' appears to have been exported from CorelDRAW without choosing the 'presentation attributes' setting. ").arg(newPath) +
-																	 tr("Please re-export the SVG file using that setting, and try loading again."));
-				return;
-			}
-			file.close();
-		}
-
 	    QString errorStr;
 	    int errorLine;
 	    int errorColumn;

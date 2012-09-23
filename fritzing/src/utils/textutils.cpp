@@ -29,6 +29,7 @@ $Date$
 
 #include "textutils.h"
 #include "misc.h"
+#include "../installedfonts.h"
 //#include "../debugdialog.h"
 
 #include <QRegExp>
@@ -60,6 +61,95 @@ const QString TextUtils::AdobeIllustratorIdentifier = "Generator: Adobe Illustra
 QList<QString> PowerPrefixes;
 QList<double> PowerPrefixValues;
 const QString TextUtils::PowerPrefixesString = QString("pnmkMGTu\\x%1").arg(MicroSymbolCode, 4, 16, QChar('0'));
+
+typedef QHash<QString /*brokenFont*/, QString /*replacementFont*/> FixedFontsHash;
+
+//////////////////////////////////////////////
+
+QSet<QString> getAttrFontFamilies(const QString &fileContent) {
+	/*
+	 * font-family defined as attr example:
+
+<text xmlns="http://www.w3.org/2000/svg" font-family="DroidSans"
+id="text2732" transform="matrix(1 0 0 1 32.2012 236.969)"
+font-size="9.9771" >A0</text>
+
+	 */
+
+	static QString pattern = "font-family\\s*=\\s*\"([^\"]*)\"";
+	return TextUtils::getRegexpCaptures(pattern,fileContent);
+}
+
+QSet<QString> getFontFamiliesInsideStyleTag(const QString &fileContent) {
+	/*
+	 * regexp: font-family\s*:\s*(.|[^;"]*).*"
+	 * font-family defined in a style attr example:
+
+style="font-size:9;-inkscape-font-specification:Droid Sans;font-family:Droid Sans;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+
+style="font-size:144px;font-style:normal;font-weight:normal;line-height:100%;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans" x="18.000002"
+
+	 */
+
+	static QString pattern = "font-family\\s*:\\s*([^;\"]*)";
+	return TextUtils::getRegexpCaptures(pattern,fileContent);
+}
+
+
+FixedFontsHash fixFontsMapping(const QSet<QString> fontsTofix) {
+	FixedFontsHash retval;
+
+	QSet<QString> tempFontsToFix;
+	tempFontsToFix = fontsTofix - InstalledFonts::InstalledFontsList;
+	foreach (QString fontFileName, InstalledFonts::InstalledFontsNameMapper.values()) {
+		// SVG uses filename which may not match family name (e.g. "DroidSans" and "Droid Sans")
+		tempFontsToFix.remove(fontFileName);
+	}
+
+	QStringList availFonts = InstalledFonts::InstalledFontsList.toList();
+	if (availFonts.count() == 0) return retval;	
+
+	foreach (QString broken, tempFontsToFix) {
+		retval.insert(broken, availFonts.at(0));
+	}
+
+	return retval;
+}
+
+bool removeFontFamilySingleQuotes(QString &fileContent) {
+	static QString pattern = "font-family=\"('[^']*')\"";
+	QSet<QString> wrongFontFamilies = TextUtils::getRegexpCaptures(pattern, fileContent);
+
+	foreach(QString ff, wrongFontFamilies) {
+		QString wrongFF = ff;
+		QString fixedFF = ff.remove('\'');
+		fileContent.replace(wrongFF,fixedFF);
+	}
+
+	return wrongFontFamilies.size() > 0;
+}
+
+bool fixUnavailableFontFamilies(QString &fileContent, const QString & destFont) {
+	QSet<QString> definedFFs;
+	definedFFs.unite(getAttrFontFamilies(fileContent));
+	definedFFs.unite(getFontFamiliesInsideStyleTag(fileContent));
+
+	//FixedFontsHash fixedFonts = fixFontsMapping(definedFFs);
+	FixedFontsHash fixedFonts;
+	foreach (QString broken, definedFFs) {
+		fixedFonts.insert(broken, destFont);
+	}
+
+	foreach(QString oldF, fixedFonts.keys()) {
+		QString newF = fixedFonts[oldF];
+		fileContent.replace(oldF,newF);
+	}
+
+	return fixedFonts.size() > 0;
+}
+
+///////////////////////////////////////
+
 
 void TextUtils::findElementsWithAttribute(QDomElement & element, const QString & att, QList<QDomElement> & elements) {
 	if (!element.attribute(att).isEmpty()) {
@@ -1556,3 +1646,11 @@ bool TextUtils::elevateTransform(QDomElement & root) {
     g.appendChild(root);
     return true;
 }
+
+bool TextUtils::fixFonts(QString & svg, const QString & destFont) {
+	bool changed = removeFontFamilySingleQuotes(svg);
+	changed |= fixUnavailableFontFamilies(svg, destFont);
+
+	return changed;
+}
+

@@ -37,7 +37,6 @@ $Date$
 typedef QString (*CopyPinFunction)(int pin, const QString & argString, void * userData);
 typedef QString (*MultiplyPinFunction)(int pin, double increment, double value);
 
-
 class TextUtils
 {
 
@@ -114,6 +113,8 @@ public:
     static bool elevateTransform(QDomElement &);
     static bool fixMuch(QString &svg);
 	static bool fixInternalUnits(QString & svg);
+	static bool fixFonts(QString & svg, const QString & destFont);
+
 public:
 	static const QRegExp FindWhitespace;
 	static const QString SMDFlipSuffix;
