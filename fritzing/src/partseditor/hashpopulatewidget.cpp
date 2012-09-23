@@ -47,7 +47,7 @@ HashLineEdit::HashLineEdit(const QString &text, bool defaultValue, QWidget *pare
 
 QString HashLineEdit::textIfSetted() {
 	if(m_isDefaultValue && !hasChanged()) {
-		return ___emptyString___;
+		return "";
 	} else {
 		return text();
 	}
@@ -129,24 +129,27 @@ HashRemoveButton *HashPopulateWidget::createRemoveButton(HashLineEdit* label, Ha
 }
 
 const QHash<QString,QString> &HashPopulateWidget::hash() {
+	static QHash<QString,QString> theHash;
+
+	theHash.clear();
 	for(int i=1 /*i==0 is title*/; i < gridLayout()->rowCount() /*last one is always an empty one*/; i++) {
-		QString label = ___emptyString___;
+		QString label;
 		HashLineEdit *labelEdit = lineEditAt(i,0);
 		if(labelEdit) {
 			label = labelEdit->textIfSetted();
 		}
 
-		QString value = ___emptyString___;
+		QString value;
 		HashLineEdit *valueEdit = lineEditAt(i,1);
 		if(valueEdit) {
 			value = valueEdit->textIfSetted();
 		}
 
 		if(!label.isEmpty() /*&& !value.isEmpty()*/) {
-			m_hash[label] = value;
+			theHash.insert(label, value);
 		}
 	}
-	return m_hash;
+	return theHash;
 }
 
 HashLineEdit* HashPopulateWidget::lineEditAt(int row, int col) {

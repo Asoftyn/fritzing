@@ -36,12 +36,14 @@ $Date$
         crash when swapping part during save
 
 		crash and other weird behaviors when close button doesn't focusOutEvent
-			watch all views for who is in focus
 			what about spinner text
 			check for empty family, empty variant, unique variant, no variant or family in properties
 			check for changed entries in before emitting events in connectors view, tool view, hashwidget
+			give option to close without saving in close event messages
         
         crashed when saving the description
+
+		don't allow buses until all pins are assigned: check this works
 
         from partseditorview.cpp
 	        bool fileHasChanged = (m_viewIdentifier == ViewLayer::IconView) ? false : TextUtils::fixPixelDimensionsIn(fileContent);
@@ -292,6 +294,8 @@ void PEMainWindow::closeEvent(QCloseEvent *event)
 {
 	qDebug() << "close event";
 
+	QString message;
+
 	if (m_inFocusWidgets.count() > 0) {
 		bool gotOne = false;
 		// should only be one in-focus widget
@@ -314,47 +318,67 @@ void PEMainWindow::closeEvent(QCloseEvent *event)
 			}
 		}
 		if (gotOne) {
-			event->ignore();
-			QMessageBox::information(NULL, tr("Processing"), tr("Fritzing is still processing the current input--plase click 'close' again."));
-			return;
+			message =  tr("There is one last edit still pending.");
 		}
 	}
 
 	QString family = m_metadataView->family();
-	if (family.isEmpty()) {
-		QMessageBox::warning(NULL, tr("Blank not allowed"), tr("The part's 'family' (metadata) can not be blank."));
-        event->ignore();
-        return;
-	}
-
 	QString variant = m_metadataView->variant();
-	if (variant.isEmpty()) {
-		QMessageBox::warning(NULL, tr("Blank not allowed"), tr("The part's 'variant' (metadata) can not be blank."));
-        event->ignore();
-        return;
+
+	if (message.isEmpty()) {
+		if (family.isEmpty()) {
+			message = tr("'family'can not be blank.");
+		}
 	}
 
-	QStringList variants = m_referenceModel->propValues(family, "variant", true);
-	if (variants.contains(variant, Qt::CaseInsensitive)) {
-		QMessageBox::warning(NULL, tr("Must be unique"), tr("Variant '%1' is in use. A part's variant must be unique within a family.").arg(variant));
-        event->ignore();
-		return;
+	if (message.isEmpty()) {
+		if (variant.isEmpty()) {
+			message = tr("'variant' can not be blank.");
+		}
+	}
+
+	if (message.isEmpty()) {
+		QStringList variants = m_referenceModel->propValues(family, "variant", true);
+		if (variants.contains(variant, Qt::CaseInsensitive)) {
+			message = tr("Variant '%1' is in use. A part's variant must be unique within a family.").arg(variant);
+		}
 	}
 
 	QStringList keys = m_metadataView->properties().keys();
-	if (keys.contains("family", Qt::CaseInsensitive)) {
-		QMessageBox::warning(NULL, tr("Duplicate problem"), tr("Duplicate 'family' property not allowed"));
-        event->ignore();
-		return;
+
+	if (message.isEmpty()) {
+		if (keys.contains("family", Qt::CaseInsensitive)) {
+			message = tr("Duplicate 'family' property not allowed");
+		}
 	}
 
-	if (keys.contains("variant", Qt::CaseInsensitive)) {
-		QMessageBox::warning(NULL, tr("Duplicate problem"), tr("Duplicate 'variant' property not allowed"));
-        event->ignore();
-		return;
+	if (message.isEmpty()) {
+		if (keys.contains("variant", Qt::CaseInsensitive)) {
+			message = tr("Duplicate 'variant' property not allowed");
+		}
 	}
 
-    if (!beforeClosing(true)) {
+	if (!message.isEmpty()) {
+	    QMessageBox messageBox(this);
+	    messageBox.setWindowTitle(tr("Close without saving?"));
+
+        message += tr("\n\nDo you want to keep working or close without saving?");
+
+	    messageBox.setText(message);
+	    messageBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+	    messageBox.setDefaultButton(QMessageBox::Cancel);
+	    messageBox.setIcon(QMessageBox::Warning);
+	    messageBox.setWindowModality(Qt::WindowModal);
+	    messageBox.setButtonText(QMessageBox::Ok, tr("Close without saving"));
+	    messageBox.setButtonText(QMessageBox::Cancel, tr("Keep working"));
+	    QMessageBox::StandardButton answer = (QMessageBox::StandardButton) messageBox.exec();
+
+	    if (answer != QMessageBox::Ok) {
+			event->ignore();
+		    return;
+	    }
+	}
+	else if (!beforeClosing(true)) {
         event->ignore();
         return;
     }

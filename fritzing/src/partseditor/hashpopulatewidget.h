@@ -99,8 +99,6 @@ class HashPopulateWidget : public QFrame {
 		QGridLayout* gridLayout();
 		HashRemoveButton *createRemoveButton(HashLineEdit* label, HashLineEdit* value);
 
-		QHash<QString,QString> m_hash;
-
 		HashLineEdit *m_lastLabel;
 		HashLineEdit *m_lastValue;
 
