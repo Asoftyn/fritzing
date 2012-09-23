@@ -52,13 +52,12 @@ $Date$
         smd vs. tht
             disable pad for throughhole parts, disable m/f for smd parts
             for now don't allow mixing
-			test that it works at all
 			what happens if you open an smd placed on the bottom layer?
 
         multiple matching connector id--trash any other matching id
 
         keep originating file in fzp/svg and use it for naming
-            display in pesvgview
+            needs updated when the part is first loaded or the svg is changed thereafter
 
         changed terminal points sometimes not being saved
 
@@ -2171,8 +2170,14 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
     }
     else {
         // processeventblocker might be enough
-        m_peSvgView->setFilename(m_originalSvgPaths.value(m_currentGraphicsView->viewIdentifier()));
-        QTimer::singleShot(10, this, SLOT(initZoom()));
+	
+		ItemBase * itemBase = m_items.value(m_currentGraphicsView->viewIdentifier(), NULL);
+		if (itemBase != NULL) {
+			QString referenceFile = getSvgReferenceFile(itemBase->filename());
+			if (referenceFile.isEmpty()) referenceFile = itemBase->filename();
+			m_peSvgView->setFilename(referenceFile);
+			QTimer::singleShot(10, this, SLOT(initZoom()));
+		}
     }
 }
 
