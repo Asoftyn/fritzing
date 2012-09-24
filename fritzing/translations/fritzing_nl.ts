@@ -1069,6 +1069,10 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <source>for unknown reasons--possibly the image file is corrupted</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>because this appears to be a SVG file exported from CorelDRAW without choosing the &apos;presentation attributes&apos; setting</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -1958,10 +1962,6 @@ Wij werken er momenteel aan om dit bericht te vermijden en je te laten kiezen tu
         <translation>Kies a.u.b. de vorige Fritzing map...</translation>
     </message>
     <message>
-        <source>The folder &quot;%1&quot; isn&apos;t a Friting installation folder</source>
-        <translation>De map &quot;%1&quot; is geen Fritzing installatie map</translation>
-    </message>
-    <message>
         <source>You will have to restart Fritzing in order to use the imported parts</source>
         <translation>U moet Fritzing herstarten om de geïmporteerde componenten te kunnen gebruiken</translation>
     </message>
@@ -2824,6 +2824,22 @@ Go ahead and revert?</source>
         <source>Couldn&apos;t get the dock widget</source>
         <translation type="unfinished">Fout bij ophalen dock widget</translation>
     </message>
+    <message>
+        <source>&amp;Delete Wire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Parts Editor Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display Parts Editor help in a browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The folder &quot;%1&quot; isn&apos;t a Fritzing installation folder</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ModelBase</name>
@@ -2990,10 +3006,6 @@ Reden : %2 (errcode %3)</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show Metatdata</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ctrl+5</source>
         <translation type="unfinished">Ctrl+5</translation>
     </message>
@@ -3008,14 +3020,6 @@ Reden : %2 (errcode %3)</translation>
     <message>
         <source>Ctrl+6</source>
         <translation type="unfinished">Ctrl+6</translation>
-    </message>
-    <message>
-        <source>Show the connector metatdata in a list view</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change family to %1</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Change %1 to &apos;%2&apos;</source>
@@ -3063,10 +3067,6 @@ Reden : %2 (errcode %3)</translation>
     </message>
     <message>
         <source>Unable to parse fzp file  %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Friting (New) Parts Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3119,11 +3119,6 @@ Reden : %2 (errcode %3)</translation>
     </message>
     <message>
         <source>Conversion problem</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to load image file: 
-%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3252,21 +3247,137 @@ Go ahead and save?</source>
         <source>Add %1 connectors</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>There is one last edit still pending.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;family&apos;can not be blank.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;variant&apos; can not be blank.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variant &apos;%1&apos; is in use. A part&apos;s variant must be unique within a family.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate &apos;family&apos; property not allowed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate &apos;variant&apos; property not allowed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close without saving?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+
+Do you want to keep working or close without saving?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close without saving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep working</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icon</source>
+        <translation type="unfinished">Icoon</translation>
+    </message>
+    <message>
+        <source>Metadata</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove Internal Connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fritzing (New) Parts Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Metadata</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show the connector metadata in a list view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blank not allowed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The value of &apos;%1&apos; can not be blank.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change %1 to %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Must be unique</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variant &apos;%1&apos; is in use. The variant name must be unique.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate problem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to load &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The SVG file &apos;%1&apos; appears to have been exported from CorelDRAW without the &apos;presentation attributes&apos; setting. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please re-export the SVG file using that setting, and try loading again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fritzing currently only supports OCRA and Droid fonts--these have been substituted in for the fonts in &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to load image file &apos;%1&apos;: 
+
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove internal connection from &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal connections are very messed up.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add internal connection from &apos;%1&apos; to &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PEMetadataView</name>
-    <message>
-        <source>&apos;family&apos; must not be blank</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Parts Editor</source>
-        <translation type="unfinished">componenten editor</translation>
-    </message>
-    <message>
-        <source>All parts must have a &apos;family&apos; property.</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>This is where you edit the metadata for the part ...</source>
         <translation type="unfinished"></translation>
@@ -3334,6 +3445,14 @@ Go ahead and save?</source>
     <message>
         <source>Tags</source>
         <translation type="unfinished">Tags</translation>
+    </message>
+    <message>
+        <source>Set the part&apos;s variant--this makes it unique from all other parts in the same family</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variant</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4143,10 +4262,6 @@ shift key swaps scroll axis</source>
         <translation>Fritzing</translation>
     </message>
     <message>
-        <source>Friting cannot load the parts bin</source>
-        <translation>Fritzing kan de componenten mand niet laden</translation>
-    </message>
-    <message>
         <source>&lt;font face=&apos;Lucida Grande, Tahoma, Sans Serif&apos; size=&apos;2&apos; color=&apos;#eaf4ed&apos;&gt;&amp;#169; 2007-%1 Fachhochschule Potsdam&lt;/font&gt;</source>
         <translation>&lt;font face=&apos;Lucida Grande, Tahoma, Sans Serif size=&apos;2&apos; color=&apos;#eaf4ed&apos;&gt;&amp;#169; 2007-%1 Fachhochschule Potsdam&lt;/font&gt;</translation>
     </message>
@@ -4853,6 +4968,14 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de componenten wi
     </message>
     <message>
         <source>%1 file export failure (2): %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fritzing cannot load the parts bin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal Connections</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
