@@ -271,12 +271,27 @@ void PEToolView::lockChangedSlot(bool state)
 }
 
 void PEToolView::nameEntry() {
+	changeConnector();
 }
 
 void PEToolView::typeEntry() {
+	changeConnector();
 }
 
 void PEToolView::descriptionEntry() {
+	changeConnector();
+}
+
+void PEToolView::changeConnector() {
+	QListWidgetItem * item = m_connectorListWidget->currentItem();
+    if (item == NULL) return;
+
+    int index = item->data(Qt::UserRole).toInt();
+
+    ConnectorMetadata cmd;
+    if (!PEUtils::fillInMetadata(index, this, cmd)) return;
+
+    emit connectorMetadataChanged(&cmd);
 }
 
 void PEToolView::setCurrentConnector(const QDomElement & newConnector) {

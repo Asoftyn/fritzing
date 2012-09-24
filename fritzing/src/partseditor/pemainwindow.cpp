@@ -29,16 +29,13 @@ $Date$
 
     ///////////////////////////////// first release ///////////////////////////////
 
-	    clean up menus
-
-		why isn't swapping available when a part has multiple variant values?
-
         crash when swapping part during save
-
-		crash and other weird behaviors when close button doesn't focusOutEvent
-			what about spinner text
         
         crashed when saving the description
+
+        changed terminal points sometimes not being saved
+
+        connector locations are not updating properly when a part in the sketch is edited
 
 		don't allow buses until all pins are assigned: check this works
 
@@ -59,10 +56,6 @@ $Date$
         keep originating file in fzp/svg and use it for naming
             needs updated when the part is first loaded or the svg is changed thereafter
 
-        changed terminal points sometimes not being saved
-
-        connector locations are not updating properly when a part in the sketch is edited
-
         leaves should be on top of svg tree (partly done)
 
         lock should lock all fields
@@ -71,9 +64,15 @@ $Date$
 
         first time help--trigger html page
 
-		peToolView: connector nameEntry, typeEntry, descriptionEntry not hooked up
+	    clean up menus
+			test everything visible works
+
+		why isn't swapping available when a family has new parts with multiple variant values?
 
     ////////////////////////////// second release /////////////////////////////////
+
+		restore editable pin labels functionality
+			requires storing labels in the part rather than in the sketch
 
         allow blank new part?
 
@@ -452,6 +451,7 @@ void PEMainWindow::moreInitDock()
     connect(m_peToolView, SIGNAL(switchedConnector(const QDomElement &)), this, SLOT(switchedConnector(const QDomElement &)));
     connect(m_peToolView, SIGNAL(removedConnector(const QDomElement &)), this, SLOT(removedConnector(const QDomElement &)));
     connect(m_peToolView, SIGNAL(lockChanged(bool)), this, SLOT(lockChanged(bool)));
+    connect(m_peToolView, SIGNAL(connectorMetadataChanged(ConnectorMetadata *)), this, SLOT(connectorMetadataChanged(ConnectorMetadata *)), Qt::DirectConnection);
     makeDock(tr("Connectors"), m_peToolView, DockMinWidth, DockMinHeight);
     m_peToolView->setMinimumSize(DockMinWidth, DockMinHeight);
 
@@ -592,6 +592,12 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
 	// record "local" properties
 	foreach (QByteArray byteArray, originalModelPart->dynamicPropertyNames()) {
 		replaceProperty(byteArray, originalModelPart->property(byteArray).toString(), properties);
+	}
+
+	// for now kill editable pin labels, otherwise the saved part will try to use the labels that are only found in the sketch
+	QDomElement epl = TextUtils::findElementWithAttribute(properties, "name", "editable pin labels");
+	if (!epl.isNull()) {
+		TextUtils::replaceChildText(m_fzpDocument, epl, "false");
 	}
 
 	QDomElement family = TextUtils::findElementWithAttribute(properties, "name", "family");

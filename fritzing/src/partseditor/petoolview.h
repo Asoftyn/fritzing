@@ -74,6 +74,7 @@ signals:
     void terminalPointChanged(const QString & how);
     void terminalPointChanged(const QString & coord, double value);
     void getSpinAmount(double &);
+    void connectorMetadataChanged(struct ConnectorMetadata *);
 
 protected slots:
     void switchConnector(QListWidgetItem * current, QListWidgetItem * previous);
@@ -88,6 +89,7 @@ protected slots:
 
 protected:
     void enableChanges(bool);
+	void changeConnector();
 
 protected:
     QListWidget * m_connectorListWidget;

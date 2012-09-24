@@ -69,7 +69,6 @@ protected slots:
 
 protected:
     void changeConnector();
-    bool fillInMetadata(int senderIndex, ConnectorMetadata & cmd);
 
 protected:
     QPointer<QFrame> m_mainFrame;

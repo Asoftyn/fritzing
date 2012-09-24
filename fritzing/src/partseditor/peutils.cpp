@@ -176,3 +176,41 @@ QWidget * PEUtils::makeConnectorForm(const QDomElement & connector, int index, Q
     frame->setLayout(mainLayout);
     return frame;
 }
+
+bool PEUtils::fillInMetadata(int senderIndex, QWidget * parent, ConnectorMetadata & cmd)
+{
+    bool result = false;
+    QList<QWidget *> widgets = parent->findChildren<QWidget *>();
+    foreach (QWidget * widget, widgets) {
+        bool ok;
+        int index = widget->property("index").toInt(&ok);
+        if (!ok) continue;
+
+        if (index != senderIndex) continue;
+
+        QString type = widget->property("type").toString();
+        if (type == "name") {
+            QLineEdit * lineEdit = qobject_cast<QLineEdit *>(widget);
+            if (lineEdit == NULL) continue;
+
+            cmd.connectorName = lineEdit->text();
+            cmd.connectorID = widget->property("id").toString();
+            result = true;
+        }
+        else if (type == "radio") {
+            QRadioButton * radioButton = qobject_cast<QRadioButton *>(widget);
+            if (radioButton == NULL) continue;
+            if (!radioButton->isChecked()) continue;
+
+            cmd.connectorType = (Connector::ConnectorType) radioButton->property("value").toInt();
+        }
+        else if (type == "description") {
+            QLineEdit * lineEdit = qobject_cast<QLineEdit *>(widget);
+            if (lineEdit == NULL) continue;
+
+            cmd.connectorDescription = lineEdit->text();
+        }
+
+    }
+    return result;   
+}
