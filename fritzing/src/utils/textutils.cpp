@@ -96,7 +96,7 @@ style="font-size:144px;font-style:normal;font-weight:normal;line-height:100%;fil
 }
 
 
-FixedFontsHash fixFontsMapping(const QSet<QString> fontsTofix) {
+FixedFontsHash fixFontsMapping(const QSet<QString> fontsTofix, const QString & destFont) {
 	FixedFontsHash retval;
 
 	QSet<QString> tempFontsToFix;
@@ -106,11 +106,8 @@ FixedFontsHash fixFontsMapping(const QSet<QString> fontsTofix) {
 		tempFontsToFix.remove(fontFileName);
 	}
 
-	QStringList availFonts = InstalledFonts::InstalledFontsList.toList();
-	if (availFonts.count() == 0) return retval;	
-
 	foreach (QString broken, tempFontsToFix) {
-		retval.insert(broken, availFonts.at(0));
+		retval.insert(broken, destFont);
 	}
 
 	return retval;
@@ -134,12 +131,7 @@ bool fixUnavailableFontFamilies(QString &fileContent, const QString & destFont) 
 	definedFFs.unite(getAttrFontFamilies(fileContent));
 	definedFFs.unite(getFontFamiliesInsideStyleTag(fileContent));
 
-	//FixedFontsHash fixedFonts = fixFontsMapping(definedFFs);
-	FixedFontsHash fixedFonts;
-	foreach (QString broken, definedFFs) {
-		fixedFonts.insert(broken, destFont);
-	}
-
+	FixedFontsHash fixedFonts = fixFontsMapping(definedFFs, destFont);
 	foreach(QString oldF, fixedFonts.keys()) {
 		QString newF = fixedFonts[oldF];
 		fileContent.replace(oldF,newF);
