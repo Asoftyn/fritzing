@@ -58,8 +58,6 @@ $Date$
 
         leaves should be on top of svg tree (partly done)
 
-        lock should lock all fields
-
         check all MainWindow * casts
 
         first time help--trigger html page

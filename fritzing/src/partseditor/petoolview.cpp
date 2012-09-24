@@ -195,6 +195,9 @@ void PEToolView::enableChanges(bool enabled)
     foreach (QPushButton * button, m_buttons) button->setEnabled(enabled);
     m_terminalPointX->setEnabled(enabled);
     m_terminalPointY->setEnabled(enabled);
+	if (m_connectorInfoWidget) {
+		m_connectorInfoWidget->setEnabled(enabled);
+	}
 
 }
 
