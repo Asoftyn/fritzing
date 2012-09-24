@@ -53,9 +53,6 @@ $Date$
 
         multiple matching connector id--trash any other matching id
 
-        keep originating file in fzp/svg and use it for naming
-            needs updated when the part is first loaded or the svg is changed thereafter
-
         leaves should be on top of svg tree (partly done)
 
         check all MainWindow * casts
@@ -675,6 +672,13 @@ void PEMainWindow::initZoom() {
             m_everZoomed.insert(m_currentGraphicsView->viewIdentifier(), true);
             m_currentGraphicsView->fitInWindow();
         }
+		
+		ItemBase * itemBase = m_items.value(m_currentGraphicsView->viewIdentifier(), NULL);
+		if (itemBase) {
+			QString referenceFile = getSvgReferenceFile(itemBase->filename());
+			if (referenceFile.isEmpty()) referenceFile = itemBase->filename();
+			m_peSvgView->setFilename(referenceFile);
+		}
     }
 }
 
@@ -1511,6 +1515,8 @@ void PEMainWindow::reload(bool firstTime) {
 
     // processeventblocker might be enough
     QTimer::singleShot(10, this, SLOT(initZoom()));
+
+
 }
 
 void PEMainWindow::lockChanged(bool state) {
@@ -2173,13 +2179,9 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
         setTitle();
     }
     else {
-        // processeventblocker might be enough
-	
+        // processeventblocker might be enough	
 		ItemBase * itemBase = m_items.value(m_currentGraphicsView->viewIdentifier(), NULL);
 		if (itemBase != NULL) {
-			QString referenceFile = getSvgReferenceFile(itemBase->filename());
-			if (referenceFile.isEmpty()) referenceFile = itemBase->filename();
-			m_peSvgView->setFilename(referenceFile);
 			QTimer::singleShot(10, this, SLOT(initZoom()));
 		}
     }

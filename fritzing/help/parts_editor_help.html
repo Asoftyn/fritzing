@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+    <title>Parts Editor Help</title>
+  </head>
+  <body>
+    <div class="moz-text-html" lang="x-western">
+      <div class="moz-cite-prefix"><br>
+        Hi Shunichi,<br>
+        <br>
+        Yes, the new Parts Editor code is already in the trunk. It is
+        changing very fast right now, so you might want to update your
+        build every day or so to get the most recent version.&nbsp; If
+        you have already gotten the code from googlecode, make sure it's
+        the most recent update (rev 6246).<br>
+        <br>
+        The new approach is very different from the old Parts Editor, so
+        let me try to briefly outline it here.&nbsp; <br>
+        <br>
+        In the new parts editor, you must always start with an existing
+        part.&nbsp; It is best to find a part that already has the right
+        number of pins. I think I count 44 pins on the breadboard
+        drawing you sent, so you might start out by dragging a Generic
+        IC part from the parts bin into an empty sketch window.&nbsp;
+        Then use the Inspector to change the number of pins to 44 (or
+        whatever is the correct even number).&nbsp; <br>
+        <br>
+        -- if the number of pins is odd, then change the Generic IC to a
+        SIP by using the popup under "package" in the Inspector and then
+        set the pin count.<br>
+        <br>
+        Once you've got the Generic IC part ready, then open the new
+        Parts Editor with a right-click on the part (choose the Edit
+        option), or use the Edit option under the Part menu&nbsp; (Part
+        &gt; Edit).&nbsp; <br>
+        <br>
+        The new Parts Editor no longer tries to display everything in a
+        single view.&nbsp; Instead, it works like the sketch window,
+        where there are multiple tabs, but only one tab is visible at a
+        time.&nbsp; In the new Parts Editor there are 6 tabs: breadboard
+        view, schematic view, pcb view, icon view, part metadata view,
+        and connectors view.&nbsp; You can use the View menu or shortcut
+        keys to switch between views.<br>
+        <br>
+        To load the four SVGs for your part, go to the appropriate view,
+        and use File &gt; Open.<br>
+        <br>
+        -- load your original SVG files, and not the ones that have come
+        through the old Parts Editor.&nbsp; <br>
+        <br>
+        -- for PCB view, please use the attached file.&nbsp; If you open
+        up that SVG file with a text editor you can see how I
+        reorganized it to have separate copper and silkscreen
+        layers.&nbsp; An upcoming version of the parts editor will give
+        you a way to manage this directly.&nbsp; You may want to resize
+        the copper rings or change the thickness ("stroke-width")--I
+        would recommend using a text editor rather than Illustrator, but
+        either way make sure the circles remain hollow by leaving the
+        "fill" attribute as "none".<br>
+        <br>
+        So now you should have 4 SVGs in 4 views.&nbsp; <br>
+        <br>
+        -- I would do a Save at this point, and in general I would save
+        pretty often because the code is not stable.<br>
+        <br>
+        You can go into the 5th view and add metadata and/or go into the
+        6th view and fill in the connector info.&nbsp; Note that you can
+        save your work at any point--unlike the old Parts Editor, the
+        window will stay open until you close it yourself.<br>
+        <br>
+        -- in connectors view, do not try to delete a connector or
+        change the number of pins.&nbsp; This isn't working yet.<br>
+        <br>
+        Next you need to associate the pins with their locations. Go to
+        one of the views, for example breadboard view.&nbsp; In the
+        Tools widget at the upper right, you will see a list of
+        connectors.&nbsp; Choose one.&nbsp; Now with the mouse navigate
+        over the image at the right until you are hovering over the
+        location of that pin. You will see an area highlighted in blue.
+        If the area is too big, use the mouse wheel--that will scroll
+        through the all the SVG shapes that lie beneath the mouse
+        position. When the right size rectangle show up, click it.&nbsp;
+        This means you have associated that SVG shape with that pin. <br>
+        <br>
+        Here is an image to show what I mean:<br>
+        <br>
+        <img src="images/associate_pin_3.png" alt="associating pin 3 to
+          an svg region" height="796" width="856"><br>
+        <br>
+        I have selected Pin3 in the list widget at the upper right. My
+        mouse is hovering over B2 so it is highlighted in blue.&nbsp;
+        When I click on the highlight, that associates the blue area
+        with Pin3, and you see a cross-hair.<br>
+        <br>
+        <img src="images/click_pin_3.png" alt="setting pin 3's svg
+          location" height="796" width="856"><br>
+        <br>
+        The cross-hair is the location of the "anchor point" or
+        "terminal point"--where a wire will actually attach to the
+        connector.&nbsp; In PCB and Breadboard view this is usually the
+        center of the circle so you don't have to do any thing
+        else.&nbsp; But in schematic view this is usually near the end
+        of the connector.&nbsp; To adjust the terminal point, uncheck
+        the "Connector SVG Lock" checkbox in the Tools widget. Now you
+        can use the spinners in the Tool view to adjust the terminal
+        point, or you can just click in the middle of the cross-hair and
+        drag the terminal point to where you want it to go.&nbsp; Here
+        is an example from schematic view:<br>
+        <br>
+        <img src="images/schematic.png" alt="now for schematic view"
+          height="796" width="856"><br>
+        <br>
+        Once you are happy with the terminal point location you can
+        check the SVG Connector Locked checkbox.&nbsp; This will keep
+        you from clicking on something you didn't mean to.&nbsp; <br>
+        <br>
+        -- the undo implementation is working, so if you make an error,
+        you can undo it.<br>
+        <br>
+        Buses &lt;TBD&gt;<br>
+      </div>
+    </div>
+  </body>
+</html>
