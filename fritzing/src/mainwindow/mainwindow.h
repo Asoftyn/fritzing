@@ -254,6 +254,7 @@ protected slots:
 	void openExamples();
 	void openPartsReference();
 	void visitFritzingDotOrg();
+	void partsEditorHelp();
 	virtual void updateWindowMenu();
 	void pageSetup();
 	void sendToBack();
@@ -756,6 +757,7 @@ protected:
     QAction *m_reportBugAct;
 	QAction *m_enableDebugAct;
     QAction *m_importFilesFromPrevInstallAct;
+	QAction *m_partsEditorHelpAct;
 
 	// Wire Color Menu
 	QMenu * m_wireColorMenu;

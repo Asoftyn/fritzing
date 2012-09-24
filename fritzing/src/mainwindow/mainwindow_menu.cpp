@@ -1088,6 +1088,12 @@ void MainWindow::createHelpMenuActions() {
 	m_importFilesFromPrevInstallAct = new QAction(tr("&Import parts and bins from old version..."), this);
 	m_importFilesFromPrevInstallAct->setStatusTip(tr("Import parts and bins from previous installation"));
 	connect(m_importFilesFromPrevInstallAct, SIGNAL(triggered()), this, SLOT(importFilesFromPrevInstall()));
+
+	m_partsEditorHelpAct = new QAction(tr("Parts Editor Help"), this);
+	m_partsEditorHelpAct->setStatusTip(tr("Display Parts Editor help in a browser"));
+	connect(m_partsEditorHelpAct, SIGNAL(triggered(bool)), this, SLOT(partsEditorHelp()));
+
+
 }
 
 void MainWindow::createMenus()
@@ -1333,6 +1339,8 @@ void MainWindow::createHelpMenu()
     m_helpMenu->addAction(m_openHelpAct);
     m_helpMenu->addAction(m_examplesAct);
     m_helpMenu->addAction(m_partsRefAct);
+	m_helpMenu->addSeparator();
+    m_helpMenu->addAction(m_partsEditorHelpAct);
 	m_helpMenu->addSeparator();
 	m_helpMenu->addAction(m_checkForUpdatesAct);
 	m_helpMenu->addAction(m_importFilesFromPrevInstallAct);
@@ -1986,6 +1994,16 @@ void MainWindow::visitFritzingDotOrg() {
 void MainWindow::reportBug() {
 	 QDesktopServices::openUrl(QString("http://code.google.com/p/fritzing/issues"));
 }
+
+void MainWindow::partsEditorHelp() {
+	QDir * dir = FolderUtils::getApplicationSubFolder("help");
+	QString path = dir->absoluteFilePath("parts_editor_help.html");
+	if (QFileInfo(path).exists()) {
+		QDesktopServices::openUrl(QString("file:///%1").arg(path));
+	}
+}
+
+
 
 void MainWindow::enableDebug() {
 	DebugDialog::setEnabled(m_enableDebugAct->isChecked());
