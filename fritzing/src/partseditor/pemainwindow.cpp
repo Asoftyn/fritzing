@@ -2784,19 +2784,19 @@ bool PEMainWindow::eventFilter(QObject *object, QEvent *event)
 			case QEvent::MouseButtonPress:
 				clearPickMode();
 				{
-				QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-				m_useNextPick = (mouseEvent->button() == Qt::LeftButton);
+					QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+					m_useNextPick = (mouseEvent->button() == Qt::LeftButton);
 				}
 				QTimer::singleShot(1, this, SLOT(resetNextPick()));
-				return true;
+				break;
 
 			case QEvent::ApplicationActivate:
 			case QEvent::ApplicationDeactivate:
-			case QEvent::NonClientAreaMouseButtonPress:
 			case QEvent::WindowActivate:
 			case QEvent::WindowDeactivate:
+			case QEvent::NonClientAreaMouseButtonPress:
 				clearPickMode();
-				return true;
+				break;
 
 			case QEvent::KeyPress:
 			{

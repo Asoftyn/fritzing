@@ -15,7 +15,7 @@
         editor like Inkscape, Illustrator, or CorelDRAW. In the next
         phase we hope to eliminate much of this requirement.<br>
         <br>
-        <b>How to start</b><br>
+        <big><big><b>How to start</b></big></big><br>
         <br>
         The new approach is very different from that of the old Parts
         Editor, and explaining the difference is the purpose of this
@@ -34,7 +34,7 @@
         sketch; choosing 'Edit' from the Part menu; right clicking a
         part in the Parts Bin; or using the Parts Bin drop down menu.<br>
         <br>
-        <b>Six views</b><br>
+        <big><big><b>Six views</b></big></big><br>
         <br>
         The new Parts Editor no longer tries to display everything in a
         single view.&nbsp; Instead, it works like the sketch window
@@ -46,8 +46,8 @@
         enter the part's title, author, and other properties; and the
         Connectors view is for the connector metadata--but you can also
         use it to add and remove connectors.<br>
-        <br>
-        <b>SVG prep; other filetypes</b><br>
+        <big><big><br>
+            <b>SVG prep; other filetypes</b></big></big><br>
         <br>
         To load the SVGs for your part, go to the appropriate view, and
         use File &gt; Open. As before, you can load SVGs, gEDA .fp
@@ -95,14 +95,14 @@
         </blockquote>
         <tt>&lt;/svg&gt;</tt><br>
         <br>
-        <b>Save and undo</b><br>
+        <big><big><b>Save and undo</b></big></big><br>
         <br>
         The next big differences from the old Parts Editor are that you
         can save your changes at any point and keep working, and undo is
         always available, even for unloading (and reloading) view
         images.<br>
-        <br>
-        <b>Associating a connector to its SVG counterpart</b><br>
+        <big><big><br>
+            <b>Associating a connector with its SVG counterpart</b></big></big><br>
         <br>
         The next task will be to&nbsp; associate each pin with its
         counterpart in the SVG for a given view. This is handled very
@@ -122,6 +122,8 @@
         Next we load the new breadboard image using File &gt;
         Open.&nbsp; In the Tools widget at the upper right, you see a
         list of connectors. Choose one to make it the <b>current </b>or
+
+
         <b>active</b> <b>connector</b>. If it has already been
         associated with an SVG element, that element will display a
         marquee highlight. Since we are just starting out, we will
@@ -130,18 +132,19 @@
         <br>
         <img alt="pin 1" src="images/pin1.png" height="350" width="539"><br>
         <br>
-        To do the actual association click the "Select connector
-        graphic" button. This basically puts you in a "mode" that lasts
-        until the next time you mouse down. If you want to escape the
-        mode, click anywhere outside the part or use the escape key. You
-        can only make the association when you are in this mode (this
-        keeps you from accidentally reassociating a pin later). Now move
-        your mouse over the SVG. As you do so, various elements will
-        highlight. It is most likely the case that any given mouse
-        location could refer to multiple SVG elements (or groups). Use
-        the mouse wheel to highlight other elements above or below the
-        currently highlighted one in the z-order. Here are three
-        highlights from the same mouse position, using the mouse wheel:<br>
+        To create the actual association click the "Select connector
+        graphic" button over in the Connectors widget. This basically
+        puts you in a "mode" that lasts until the next time you mouse
+        down. If you want to escape the mode, click anywhere outside the
+        part or use the escape key. You can only make the association
+        when you are in this mode (this keeps you from accidentally
+        reassociating a pin later). Now move your mouse over the SVG. As
+        you do so, various elements will highlight. It is most likely
+        the case that any given mouse location could refer to multiple
+        SVG elements (or groups). Use the mouse wheel to highlight other
+        elements above or below the currently highlighted one in the
+        z-order. Here are three highlights from the same mouse position,
+        using the mouse wheel:<br>
         <br>
         <img alt="highlight1" src="images/highlight1.png" height="161"
           width="348"><br>
@@ -157,40 +160,93 @@
         center. The terminal point is the place where a wire attaches to
         the connector.<br>
         <br>
-        <img alt="assoc1" src="images/assoc1.PNG" height="161"
+        <img alt="assoc1" src="images/assoc1.png" height="161"
           width="349"><br>
         <br>
         After associating pin2 and pin3 we have:<br>
         <br>
-        <img alt="pin3" src="images/pin3.PNG" height="160" width="347"><br>
+        <img alt="pin3" src="images/pin3.png" height="160" width="347"><br>
+        <br>
+        <big><big><b>Adjusting terminal points</b></big></big><br>
         <br>
         In PCB and Breadboard view the terminal point is usually the
         center of the connector so you don't have to do any thing
         else.&nbsp; But in schematic view the terminal point is usually
-        near the end of the connector.&nbsp; To adjust the terminal
-        point, uncheck the "Connector SVG Lock" checkbox in the Tools
-        widget. Now you can use the spinners in the Tool view to adjust
-        the terminal point, or you can just click in the middle of the
-        cross-hair and drag the terminal point to where you want it to
-        go.&nbsp; Here is an example from schematic view:<br>
+        near the end of the connector. So let's go to schematic
+        view.&nbsp; We start with the original SVG image. Note how the
+        connectors are already showing their anchor points. Pin3 is the
+        current connector.<br>
         <br>
-        <img src="images/schematic.png" alt="now for schematic view"
-          height="796" width="856"><br>
+        <img alt="schematic" src="images/schematic1.png" height="573"
+          width="718"><br>
         <br>
-        Once you are happy with the terminal point location you can
-        check the SVG Connector Locked checkbox.&nbsp; This will keep
-        you from clicking on something you didn't mean to.&nbsp; <br>
+        Now we load the new schematic image and start associating pins.<br>
         <br>
-        -- the undo implementation is working, so if you make an error,
-        you can undo it.<br>
+        <img alt="schematic2" src="images/schematic2.png" height="640"
+          width="519"><br>
         <br>
-        Buses &lt;TBD&gt;<br>
+        Here is what the Connectors widget looks like with pin3 as the
+        current connector:<br>
         <br>
-        clicking on a sketch part will be updated<br>
+        <img alt="tools1" src="images/tools1.png" height="557"
+          width="421"><br>
         <br>
-        show in folder<br>
+        You can use the buttons or spinners to adjust the terminal
+        point. Here is a close up after hitting the W button, and
+        clicking the X spinner twice. <br>
         <br>
-        what happens when you save (part is updated, myparts bin)<br>
+        <img alt="schematic3" src="images/schematic3.png" height="492"
+          width="536"><br>
+        <br>
+        You can also drag the terminal point directly by mousing down on
+        it when its SVG element is highlighted.<br>
+        <big><big><br>
+            Setting internal connections</big> </big><br>
+        <br>
+        An internal connection is when a two or more connectors in a
+        part are already connected, for example the GND connectors on
+        the Arduino UNO. You can edit internal connections by clicking
+        on the "Set internal connections" checkbox in the Connectors
+        widget--it's right at the top (you can see it two images back).
+        Since we are talking about the Arduino UNO, here is what it
+        looks like when Set internal connections is checked:<br>
+        <br>
+        <img alt="bus1" src="images/bus1.png" height="270" width="517"><br>
+        <br>
+        The green lines represent the internal connections. To remove an
+        internal connection, right-click the line and choose "Remove
+        internal connection". To add a new connection, just drag a line
+        out from one connector to another.<br>
+        <br>
+        <big><big>When you save</big></big><br>
+        <br>
+        If you start with a core part (i.e. a part from the Fritzing
+        distro), saving is equivalent to "Save As". A new part will be
+        created in your local storage area (see below) and added to the
+        "My Parts" Bin. If you are editing a part that was in a sketch,
+        the part will be updated whenever you save. If you want the new
+        part to display in the My Parts Bin the next time you run
+        Fritzing, remember to save the bin (use the drop down menu at
+        the upper left of the bin).<br>
+        <br>
+        On Windows the local storage folder is something like
+        C:\Users\[username]\AppData\Roaming\Fritzing\parts\user\, and
+        SVGs are stored in
+        C:\Users\[username]\AppData\Roaming\Fritzing\parts\svg\user\. On
+        Linux and Mac this would be ~/.config/Fritzing/parts/user/ and
+        ~/.config/Fritzing/parts/svg/user/. To view the current SVG
+        image on the desktop, choose File &gt; Show in Folder. On Mac
+        and Windows this will open a folder on your desktop with the SVG
+        file selected. Under Linux you get the folder but no file
+        selection (if anyone has advice about how to get the latter to
+        work, we would be grateful).<br>
+        <br>
+        <big><big>Bye for now</big></big><br>
+        <br>
+        That's pretty much the phase one story. We hope you like what
+        you've seen. Stay tuned for phase two.<br>
+        <br>
+        <br>
       </div>
     </div>
   </body>
