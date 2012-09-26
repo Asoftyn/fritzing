@@ -38,7 +38,7 @@ $Date$
 		ask to copy connectors when the same image is loaded into a second view
 			hidden views (i.e. view-specific parts)
 
-		* bus drawing fails when drawing from a connector that already is wired to another connector
+		escape key to exit pick mode
 
 		what happens if you pick the same rect for multiple connectors
 
@@ -2788,7 +2788,7 @@ bool PEMainWindow::eventFilter(QObject *object, QEvent *event)
 				m_useNextPick = (mouseEvent->button() == Qt::LeftButton);
 				}
 				QTimer::singleShot(1, this, SLOT(resetNextPick()));
-				break;
+				return true;
 
 			case QEvent::ApplicationActivate:
 			case QEvent::ApplicationDeactivate:
@@ -2796,8 +2796,18 @@ bool PEMainWindow::eventFilter(QObject *object, QEvent *event)
 			case QEvent::WindowActivate:
 			case QEvent::WindowDeactivate:
 				clearPickMode();
-				break;
+				return true;
+
+			case QEvent::KeyPress:
+			{
+				QKeyEvent * kevent = static_cast<QKeyEvent *>(event);
+				if (kevent->key() == Qt::Key_Escape) {
+					clearPickMode();
+					return true;
+				}
+			}
 		}
+
 		return false;
 	}
 
