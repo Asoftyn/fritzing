@@ -213,6 +213,8 @@ public:
 	bool resetRenderer(const QString & svg, QString & newSvg);
     void getPixmaps(QPixmap * &, QPixmap * &, QPixmap * &, bool swappingEnabled, QSize);
     class FSvgRenderer * setUpImage(class ModelPart * modelPart, ViewLayer::ViewIdentifier, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, class LayerAttributes &, QString & error);
+	void showConnectors(const QStringList &);
+	void setItemIsSelectable(bool selectable);
 
 public:
 	virtual void getConnectedColor(ConnectorItem *, QBrush * &, QPen * &, double & opacity, double & negativePenWidth, bool & negativeOffsetRect);

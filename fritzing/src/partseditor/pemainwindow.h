@@ -64,7 +64,7 @@ public:
     void restoreFzp(const QString & filename);
     bool editsModuleID(const QString &);
 	void addBusConnector(const QString & busID, const QString & connectorID);
-	void removeBusConnector(const QString & busID, const QString & connectorID);
+	void removeBusConnector(const QString & busID, const QString & connectorID, bool display);
 
 signals:
     void addToMyPartsSignal(ModelPart *);
@@ -76,7 +76,7 @@ public slots:
     void connectorMetadataChanged(struct ConnectorMetadata *);
     void removedConnectors(QList<ConnectorMetadata *> &);
     void highlightSlot(class PEGraphicsItem *);
-    void pegiMousePressed(class PEGraphicsItem *, bool & locked);
+    void pegiMousePressed(class PEGraphicsItem *, bool & ignore);
     void pegiMouseReleased(class PEGraphicsItem *);
     void pegiTerminalPointMoved(class PEGraphicsItem *, QPointF);
     void pegiTerminalPointChanged(class PEGraphicsItem *, QPointF before, QPointF after);
@@ -85,7 +85,8 @@ public slots:
     void terminalPointChanged(const QString & how);
     void terminalPointChanged(const QString & coord, double value);
     void getSpinAmount(double & amount);
-    void lockChanged(bool);
+    void pickModeChanged(bool);
+    void busModeChanged(bool);
     void connectorCountChanged(int);
 	void deleteBusConnection();
 	void newWireSlot(Wire *);
@@ -115,26 +116,25 @@ protected:
     QHash<QString, QString> getOldProperties();
     QDomElement findConnector(const QString & id, int & index);
     void changeConnectorElement(QDomElement & connector, ConnectorMetadata *);
-    void initSvgTree(ItemBase *, QDomDocument &);
+    void initSvgTree(SketchWidget *, ItemBase *, QDomDocument &);
     void initConnectors();
     QString createSvgFromImage(const QString &origFilePath);
     QString makeSvgPath(const QString & referenceFile, SketchWidget * sketchWidget, bool useIndex);
-    QString saveSvg(const QString & svg, const QString & newFilePath);
+    QString saveSvg(QString & svg, const QString & newFilePath);
     QString saveFzp();
     void reload(bool firstTime);
     void createFileMenu();
-    bool getConnectorIDs(const QDomElement & element, SketchWidget * sketchWidget, QString & id, QString & terminalID);
+    bool getConnectorSvgIDs(const QDomElement & element, SketchWidget * sketchWidget, QString & id, QString & terminalID);
     QDomElement getConnectorPElement(const QDomElement & element, SketchWidget * sketchWidget);
     void updateChangeCount(SketchWidget * sketchWidget, int changeDirection);
     class PEGraphicsItem * findConnectorItem();
     void terminalPointChangedAux(PEGraphicsItem * pegi, QPointF before, QPointF after);
     void showInOS(QWidget *parent, const QString &pathIn);
-    void switchedConnector(const QDomElement &, SketchWidget *, bool lock);
+    void switchedConnector(const QDomElement &, SketchWidget *);
     PEGraphicsItem * makePegi(QSizeF size, QPointF topLeft, ItemBase * itemBase, QDomElement & element);
     QRectF getPixelBounds(FSvgRenderer & renderer, QDomElement & element);
     bool canSave();
     bool saveAs(bool overWrite);
-    void lockChangedAux(bool state, const QList<PEGraphicsItem *> & pegiList); 
     void setBeforeClosingText(const QString & filename, QMessageBox & messageBox);
     QString getPartTitle();
     void killPegi();
@@ -147,7 +147,7 @@ protected:
 	bool writeXml(const QString & path, const QString & text, bool temp);
 	void displayBuses();
 	QDomElement findBus(const QDomElement &, const QString &);
-	QString findNodeMember(const QDomElement & buses, const QString & connectorID);
+	QDomElement findNodeMemberBus(const QDomElement & buses, const QString & connectorID);
 	void replaceProperty(const QString & key, const QString & value, QDomElement & properties);
 	QWidget * createTabWidget();
 	void addTab(QWidget * widget, const QString & label);
@@ -156,6 +156,10 @@ protected:
 	QWidget * currentTabWidget();
 	void changeSpecialProperty(const QString & name, const QString & value);
 	bool eventFilter(QObject *, QEvent *);
+	void relocateConnector(PEGraphicsItem * pegi);
+	void clearPickMode();
+	void deleteBuses();
+	QList<PEGraphicsItem *> getPegiList(SketchWidget *);
 
 protected slots:
     void initZoom();
@@ -171,6 +175,7 @@ protected slots:
     void updateWindowMenu();
     void updateWireMenu();
 	void closeLater();
+	void resetNextPick();
 
 protected:
     QDomDocument m_fzpDocument;
@@ -205,8 +210,11 @@ protected:
     QString m_originalModuleID;
     QHash<ViewLayer::ViewIdentifier, QString> m_originalSvgPaths;
     bool m_gaveSaveWarning;
-	QStringList m_toDelete;
+	QStringList m_filesToDelete;
 	QList< QPointer<QWidget> > m_inFocusWidgets;
+	bool m_inPickMode;
+	bool m_useNextPick;
 };
+
 
 #endif /* PEMAINWINDOW_H_ */

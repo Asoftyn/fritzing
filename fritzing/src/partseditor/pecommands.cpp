@@ -320,14 +320,14 @@ RemoveBusConnectorCommand::RemoveBusConnectorCommand(PEMainWindow * peMainWindow
 
 void RemoveBusConnectorCommand::undo()
 {
-	if (m_inverted) m_peMainWindow->removeBusConnector(m_busID, m_connectorID);
+	if (m_inverted) m_peMainWindow->removeBusConnector(m_busID, m_connectorID, true);
     else m_peMainWindow->addBusConnector(m_busID, m_connectorID);
 }
 
 void RemoveBusConnectorCommand::redo()
 {
 	if (m_inverted) m_peMainWindow->addBusConnector(m_busID, m_connectorID);
-    else m_peMainWindow->removeBusConnector(m_busID, m_connectorID);
+    else m_peMainWindow->removeBusConnector(m_busID, m_connectorID, true);
 }
 
 QString RemoveBusConnectorCommand::getParamString() const {

@@ -2119,3 +2119,15 @@ ViewLayer::ViewIdentifier ItemBase::useViewIdentifierForPixmap(ViewLayer::ViewId
 
 void ItemBase::makeLocalModifications(QByteArray &, const QString &) {
 }
+
+void ItemBase::showConnectors(const QStringList & connectorIDs) {
+	foreach (ConnectorItem * connectorItem, cachedConnectorItems()) {
+		if (connectorIDs.contains(connectorItem->connectorSharedID())) {
+			connectorItem->setVisible(true);
+		}
+	}
+}
+
+void ItemBase::setItemIsSelectable(bool selectable) {
+	setFlag(QGraphicsItem::ItemIsSelectable, selectable);
+}

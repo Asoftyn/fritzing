@@ -59,18 +59,19 @@ public:
 
     void highlightElement(class PEGraphicsItem *);
     void initConnectors(QList<QDomElement> & connectorList);
-    void setLock(bool);
-	bool locked();
+	bool busMode();
     QDomElement currentConnector();
 	void setCurrentConnector(const QDomElement &);
     void setTerminalPointCoords(QPointF);
     void setTerminalPointLimits(QSizeF);
 	void setChildrenVisible(bool vis);
+    void enableConnectorChanges(bool enableTerminalPoint, bool enablePick);
 
 signals:
     void switchedConnector(const QDomElement &);
     void removedConnector(const QDomElement &);
-    void lockChanged(bool);
+    void pickModeChanged(bool);
+    void busModeChanged(bool);
     void terminalPointChanged(const QString & how);
     void terminalPointChanged(const QString & coord, double value);
     void getSpinAmount(double &);
@@ -78,7 +79,8 @@ signals:
 
 protected slots:
     void switchConnector(QListWidgetItem * current, QListWidgetItem * previous);
-    void lockChangedSlot(bool);
+    void pickModeChangedSlot();
+    void busModeChangedSlot(bool);
     void descriptionEntry();
     void typeEntry();
     void nameEntry();
@@ -88,7 +90,6 @@ protected slots:
     void removeConnector();
 
 protected:
-    void enableChanges(bool);
 	void changeConnector();
 
 protected:
@@ -99,10 +100,14 @@ protected:
     QGroupBox * m_connectorInfoGroupBox;
     QBoxLayout * m_connectorInfoLayout;
     QWidget * m_connectorInfoWidget;
-    QCheckBox * m_elementLock;
+	QCheckBox * m_busModeBox;
+	QFrame * m_modeFrame;
+	QPushButton * m_pickModeButton;
     QDoubleSpinBox * m_terminalPointX;
     QDoubleSpinBox * m_terminalPointY;
     QLabel * m_units;
+	QGroupBox * m_terminalPointGroupBox;
+	QLabel * m_terminalPointDragState;
 };
 
 #endif

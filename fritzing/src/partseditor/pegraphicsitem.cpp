@@ -43,6 +43,9 @@ static bool ShiftX = false;
 static bool ShiftY = false;
 static bool SpaceBarWasPressed = false;
 static const double MinMouseMove = 2;
+static const QColor NormalColor(0, 0, 255);
+static const QColor PickColor(255, 0, 255);
+
 
 PEGraphicsItem::PEGraphicsItem(double x, double y, double w, double h) : QGraphicsRectItem(x, y, w, h) {
     if (Dashes.isEmpty()) {
@@ -50,12 +53,13 @@ PEGraphicsItem::PEGraphicsItem(double x, double y, double w, double h) : QGraphi
     }
 
     m_terminalPoint = QPointF(w / 2, h / 2);
-    m_showTerminalPoint = false;
+    m_dragTerminalPoint = m_showMarquee = m_showTerminalPoint = false;
+	m_drawHighlight = true;
 	setAcceptedMouseButtons(Qt::LeftButton);
 	setAcceptHoverEvents(true);
     //setFlag(QGraphicsItem::ItemIsSelectable, true );
     setHighlighted(false);
-    setBrush(QBrush(QColor(0, 0, 255)));
+    setBrush(QBrush(NormalColor));
 }
 
 PEGraphicsItem::~PEGraphicsItem() {
@@ -72,6 +76,7 @@ void PEGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *) {
 
 void PEGraphicsItem::wheelEvent(QGraphicsSceneWheelEvent * event) {
     if (event->orientation() != Qt::Vertical) return;
+	if (!m_drawHighlight) return;
 
     // delta one click forward = 120; delta one click backward = -120
 
@@ -164,14 +169,18 @@ QPointF PEGraphicsItem::offset() {
 
 void PEGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) 
 {
-    QGraphicsRectItem::paint(painter, option, widget);
+	if (m_drawHighlight) {
+		QGraphicsRectItem::paint(painter, option, widget);
+	}
+
+	bool save = m_showTerminalPoint || m_showMarquee;
+
+	if (save) painter->save();
 
     if (m_showTerminalPoint) {
         QRectF r = rect();
         QLineF l1(0, m_terminalPoint.y(), r.width(), m_terminalPoint.y());
         QLineF l2(m_terminalPoint.x(), 0, m_terminalPoint.x(), r.height());
-
-        painter->save();
 
         painter->setOpacity(1.0);
         painter->setPen(QPen(QColor(0, 0, 0), 0, Qt::SolidLine));
@@ -182,32 +191,58 @@ void PEGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 	    painter->setPen(QPen(QColor(255, 255, 255), 0, Qt::DashLine));
         painter->setBrush(Qt::NoBrush);
         painter->drawLine(l1);
-        painter->drawLine(l2);
-    
-        painter->restore();
+        painter->drawLine(l2);        
     }
+
+	if (m_showMarquee) {
+        QRectF r = rect();
+		double d = qMin(r.width(), r.height()) / 16;
+		r.adjust(d, d, -d, -d);
+
+        painter->setOpacity(1.0);
+        painter->setPen(QPen(QColor(0, 0, 0), 0, Qt::SolidLine));
+        painter->setBrush(Qt::NoBrush);
+        painter->drawRect(r);
+
+	    painter->setPen(QPen(QColor(255, 255, 255), 0, Qt::DashLine));
+        painter->setBrush(Qt::NoBrush);
+        painter->drawRect(r);
+	}
+
+	if (save) painter->restore();
 }
 
-void PEGraphicsItem::showTerminalPoint(bool show) {
+void PEGraphicsItem::showTerminalPoint(bool show) 
+{
+    m_showTerminalPoint = show;
+    update();
+}
+
+
+bool PEGraphicsItem::showingTerminalPoint() {
+    return m_showTerminalPoint;
+}
+
+void PEGraphicsItem::showMarquee(bool show) {
     if (show) {
-        m_showTerminalPoint = true;
+        m_showMarquee = true;
         foreach (QGraphicsItem * item, scene()->items()) {
             PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
             if (pegi == NULL) continue;
             if (pegi == this) continue;
-            if (!pegi->showingTerminalPoint()) continue;
+            if (!pegi->showingMarquee()) continue;
              
-            pegi->showTerminalPoint(false);
-        }
+            pegi->showMarquee(false);
+		}
     }
     else {
-        m_showTerminalPoint = false;
+        m_showMarquee = false;
     }
     update();
 }
 
-bool PEGraphicsItem::showingTerminalPoint() {
-    return m_showTerminalPoint;
+bool PEGraphicsItem::showingMarquee() {
+    return m_showMarquee;
 }
 
 void PEGraphicsItem::setTerminalPoint(QPointF p) {
@@ -240,22 +275,20 @@ void PEGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent * event) {
 		return;
 	}
 
-
-
 	InfoGraphicsView * infoGraphicsView = InfoGraphicsView::getInfoGraphicsView(this);
 	if (infoGraphicsView != NULL && infoGraphicsView->spaceBarIsPressed()) {
 		event->ignore();
 		return;
 	}
 
-	bool locked;
-	emit mousePressed(this, locked);
-	if (locked) {
+	bool ignore;
+	emit mousePressed(this, ignore);
+	if (ignore) {
 		event->ignore();
 		return;
 	}
 
-    if (m_showTerminalPoint) {
+    if (m_showMarquee) {
         QPointF p = event->pos();
 	    if (event->modifiers() & Qt::ShiftModifier) {
 		    ShiftDown = true;
@@ -329,4 +362,13 @@ void PEGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *) {
 		// relocate the connector
         emit mouseReleased(this);
     }
+}
+
+void PEGraphicsItem::setPickAppearance(bool pick) {
+	setBrush(pick ? PickColor : NormalColor);
+}
+
+void PEGraphicsItem::setDrawHighlight(bool drawHighlight) {
+	m_drawHighlight = drawHighlight;
+	update();
 }

@@ -1015,6 +1015,36 @@ QStringList SqliteReferenceModel::propValues(const QString &family, const QStrin
 	return retval;
 }
 
+QMultiHash<QString, QString> SqliteReferenceModel::allPropValues(const QString &family, const QString &propName) {
+	QMultiHash<QString, QString> retval;
+
+	QSqlQuery query;
+	query.prepare(QString(
+		"SELECT value, moduleID FROM properties prop JOIN parts part ON part.id = prop.part_id \n"
+		"WHERE part.family = :family AND prop.name = :propName\n"
+		)
+	);
+	query.bindValue(":family",family.toLower().trimmed());
+	query.bindValue(":propName",propName.toLower().trimmed());
+
+	if(query.exec()) {
+		while(query.next()) {
+			//QSqlRecord record = query.record();
+			//for (int i = 0; i < record.count(); i++) {
+			//	DebugDialog::debug("result " + record.fieldName(i) + " " + record.value(i).toString());
+			//}
+			retval.insert(query.value(0).toString(), query.value(1).toString());
+		}
+	} else {
+        debugExec("couldn't retrieve values", query);
+		m_swappingEnabled = false;
+	}
+
+	return retval;
+}
+
+
+
 void SqliteReferenceModel::recordProperty(const QString &name, const QString &value) {
 	DebugDialog::debug(QString("RECORDING PROPERTY %1:%2").arg(name).arg(value));
 	m_recordedProperties.insert(name,value);

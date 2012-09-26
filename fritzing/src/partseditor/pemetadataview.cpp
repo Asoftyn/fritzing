@@ -85,6 +85,12 @@ void PEMetadataView::descriptionEntry() {
 	}
 }
 
+void PEMetadataView::urlEntry() {
+	if (m_urlEdit->isModified()) {
+		emit metadataChanged("url", m_urlEdit->text());
+	}
+}
+
 void PEMetadataView::labelEntry() {
 	if (m_labelEdit->isModified()) {
 		emit metadataChanged("label", m_labelEdit->text());
@@ -134,8 +140,9 @@ void PEMetadataView::initMetadata(const QDomDocument & doc)
     QDomElement descr = root.firstChildElement("description");
     QDomElement title = root.firstChildElement("title");
     QDomElement date = root.firstChildElement("date");
-	QStringList readOnlyKeys;
+    QDomElement url = root.firstChildElement("url");
 
+	QStringList readOnlyKeys;
     QHash<QString, QString> tagHash;    
     QDomElement tags = root.firstChildElement("tags");
     QDomElement tag = tags.firstChildElement("tag");
@@ -215,6 +222,13 @@ void PEMetadataView::initMetadata(const QDomDocument & doc)
 	m_labelEdit->setObjectName("PartsEditorLineEdit");
     m_labelEdit->setStatusTip(tr("Set the default part label prefix"));
     formLayout->addRow(tr("Label"), m_labelEdit);
+
+    m_urlEdit = new QLineEdit();
+    m_urlEdit->setText(url.text());
+	connect(m_urlEdit, SIGNAL(editingFinished()), this, SLOT(urlEntry()));
+	m_urlEdit->setObjectName("PartsEditorLineEdit");
+    m_urlEdit->setStatusTip(tr("Set the part's url if it is described on a web page"));
+    formLayout->addRow(tr("URL"), m_urlEdit);
 
     m_familyEdit = new QLineEdit();
     m_familyEdit->setText(family);

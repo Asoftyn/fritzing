@@ -54,15 +54,19 @@ public:
     QPointF offset();
     void showTerminalPoint(bool);
     bool showingTerminalPoint();
+	void showMarquee(bool);
+	bool showingMarquee();
     void setTerminalPoint(QPointF);
     QPointF terminalPoint();
     void setPendingTerminalPoint(QPointF);
     QPointF pendingTerminalPoint();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	void setPickAppearance(bool);
+	void setDrawHighlight(bool);
 
 signals:
     void highlightSignal(PEGraphicsItem *);
-    void mousePressed(PEGraphicsItem *, bool & locked);
+    void mousePressed(PEGraphicsItem *, bool & ignore);
     void mouseReleased(PEGraphicsItem *);
     void terminalPointMoved(PEGraphicsItem *, QPointF);
     void terminalPointChanged(PEGraphicsItem *, QPointF before, QPointF after);
@@ -72,11 +76,13 @@ protected:
     QDomElement  m_element;
     QPointF m_offset;
     bool m_showTerminalPoint;
+	bool m_showMarquee;
     QPointF m_terminalPoint;
     QPointF m_pendingTerminalPoint;
     bool m_dragTerminalPoint;
     QPointF m_dragTerminalOrigin;
     QPointF m_terminalPointOrigin;
+	bool m_drawHighlight;
 };
 
 #endif /* PEGRAPHICSITEM_H_ */

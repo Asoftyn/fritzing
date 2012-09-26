@@ -993,8 +993,7 @@ void GroundPlaneGenerator::collectBorderPoints(QImage & image, QList<QPoint> & p
     //int inc = 0;
 	while (true) {
         if (try8(currentX, currentY, image, points)) ;
-		else {
-            
+		else {            
             QPoint p = points.first();
             if (qAbs(p.x() - currentX) < 4 && qAbs(p.y() - currentY) < 4) {
                 // we're near the beginning again

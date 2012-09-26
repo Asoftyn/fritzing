@@ -75,8 +75,23 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
     QFrame * connectorsFrame = new QFrame;
     QVBoxLayout * connectorsLayout = new QVBoxLayout;
 
+	QFrame * hFrame = new QFrame;
+	QHBoxLayout * hFrameLayout = new QHBoxLayout;
+
     QLabel * label = new QLabel(tr("Connector List"));
-    connectorsLayout->addWidget(label);
+	hFrameLayout->addWidget(label);
+
+	hFrameLayout->addSpacing(PEUtils::Spacing);
+
+    m_busModeBox = new QCheckBox(tr("Set Internal Connections"));
+    m_busModeBox->setChecked(false);
+    m_busModeBox->setToolTip(tr("Set this checkbox to edit internal connections by drawing wires"));
+    connect(m_busModeBox, SIGNAL(clicked(bool)), this, SLOT(busModeChangedSlot(bool)));
+    hFrameLayout->addWidget(m_busModeBox);
+
+	hFrameLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
+	hFrame->setLayout(hFrameLayout);
+    connectorsLayout->addWidget(hFrame);
 
     m_connectorListWidget = new QListWidget();
 	connect(m_connectorListWidget, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(switchConnector(QListWidgetItem *, QListWidgetItem *)));
@@ -89,16 +104,23 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
     m_connectorInfoGroupBox = new QGroupBox;
     m_connectorInfoLayout = new QVBoxLayout;
 
-    m_elementLock = new QCheckBox(tr("Connector Locked"));
-    m_elementLock->setChecked(true);
-    m_elementLock->setToolTip(tr("Unlock to modify the current connector's information"));
-    connect(m_elementLock, SIGNAL(clicked(bool)), this, SLOT(lockChangedSlot(bool)));
-    m_connectorInfoLayout->addWidget(m_elementLock);
+	m_modeFrame = new QFrame;
+	QHBoxLayout * modeLayout = new QHBoxLayout;
+
+	m_pickModeButton = new QPushButton(tr("Select connector graphic"));
+    m_pickModeButton->setToolTip(tr("Using the mouse pointer and mouse wheel, navigate to the SVG region you want to assign to the current connector, then mouse down to select it."));
+	connect(m_pickModeButton, SIGNAL(clicked()), this, SLOT(pickModeChangedSlot()), Qt::DirectConnection);
+    modeLayout->addWidget(m_pickModeButton);
+
+	modeLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
+	m_modeFrame->setLayout(modeLayout);
+    m_connectorInfoLayout->addWidget(m_modeFrame);             
 
     m_connectorInfoWidget = new QFrame;             // a placeholder for PEUtils::connectorForm
     m_connectorInfoLayout->addWidget(m_connectorInfoWidget);             
 
-    QGroupBox * anchorGroupBox = new QGroupBox("Terminal point");
+	m_terminalPointGroupBox = new QGroupBox("Terminal point");
+	m_terminalPointGroupBox->setToolTip(tr("Controls for setting the terminal point for a connector. The terminal point is where a wire will attach to the connector. You can also drag the crosshair of the current connector"));
     QVBoxLayout * anchorGroupLayout = new QVBoxLayout;
 
     QFrame * posRadioFrame = new QFrame;
@@ -108,9 +130,12 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
     positionNames << "Center"  << "W" << "N" << "S" << "E";
     QList<QString> trPositionNames;
     trPositionNames << tr("Center") << tr("W") << tr("N") << tr("S") << tr("E");
+    QList<QString> trLongNames;
+    trLongNames << tr("center") << tr("west") << tr("north") << tr("south") << tr("east");
     for (int i = 0; i < positionNames.count(); i++) {
         QPushButton * button = new QPushButton(trPositionNames.at(i));
         button->setProperty("how", positionNames.at(i));
+		button->setToolTip(tr("Sets the connector's terminal point to %1.").arg(trLongNames.at(i)));
         connect(button, SIGNAL(clicked()), this, SLOT(buttonChangeTerminalPoint()));
         posRadioLayout->addWidget(button);
         m_buttons.append(button);
@@ -129,6 +154,7 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
 
     m_terminalPointX = new PEDoubleSpinBox;
     m_terminalPointX->setDecimals(4);
+	m_terminalPointX->setToolTip(tr("Modifies the x-coordinate of the terminal point"));
     posNumberLayout->addWidget(m_terminalPointX);
     connect(m_terminalPointX, SIGNAL(getSpinAmount(double &)), this, SLOT(getSpinAmountSlot(double &)), Qt::DirectConnection);
     connect(m_terminalPointX, SIGNAL(valueChanged(double)), this, SLOT(terminalPointEntry()));
@@ -141,6 +167,7 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
 
     m_terminalPointY = new PEDoubleSpinBox;
     m_terminalPointY->setDecimals(4);
+	m_terminalPointY->setToolTip(tr("Modifies the y-coordinate of the terminal point"));
     posNumberLayout->addWidget(m_terminalPointY);
     connect(m_terminalPointY, SIGNAL(getSpinAmount(double &)), this, SLOT(getSpinAmountSlot(double &)), Qt::DirectConnection);
     connect(m_terminalPointY, SIGNAL(valueChanged(double)), this, SLOT(terminalPointEntry()));
@@ -150,15 +177,18 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
 
     m_units = new QLabel();
     posNumberLayout->addWidget(m_units);
+	posNumberLayout->addSpacing(PEUtils::Spacing);
 
+	m_terminalPointDragState = new QLabel(tr("Dragging disabled"));
+    posNumberLayout->addWidget(m_terminalPointDragState);
 
     posNumberLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
 
     posNumberFrame->setLayout(posNumberLayout);
     anchorGroupLayout->addWidget(posNumberFrame);
 
-    anchorGroupBox->setLayout(anchorGroupLayout);
-    m_connectorInfoLayout->addWidget(anchorGroupBox);
+    m_terminalPointGroupBox->setLayout(anchorGroupLayout);
+    m_connectorInfoLayout->addWidget(m_terminalPointGroupBox);
 
 	m_connectorInfoLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
@@ -173,7 +203,7 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
 
     m_connectorListWidget->resize(m_connectorListWidget->width(), 0);
 
-    enableChanges(false);
+    enableConnectorChanges(false, false);
 }
 
 PEToolView::~PEToolView() 
@@ -183,22 +213,29 @@ PEToolView::~PEToolView()
 void PEToolView::highlightElement(PEGraphicsItem * pegi) {
     m_pegi = pegi;
     if (pegi == NULL) {
-        enableChanges(false);
+        enableConnectorChanges(false, false);
         return;
     }
 
-    enableChanges(!m_elementLock->isChecked());
+    enableConnectorChanges(pegi->showingMarquee(), true);
 }
 
-void PEToolView::enableChanges(bool enabled)
+void PEToolView::enableConnectorChanges(bool enableTerminalPoint, bool enablePick)
 {
-    foreach (QPushButton * button, m_buttons) button->setEnabled(enabled);
-    m_terminalPointX->setEnabled(enabled);
-    m_terminalPointY->setEnabled(enabled);
+	m_terminalPointGroupBox->setEnabled(enablePick);
 	if (m_connectorInfoWidget) {
-		m_connectorInfoWidget->setEnabled(enabled);
+		m_connectorInfoWidget->setEnabled(enablePick);
 	}
+	m_pickModeButton->setEnabled(enablePick);
 
+	if (enableTerminalPoint) {
+		m_terminalPointDragState->setText(tr("<font color='black'>Dragging enabled</font>"));
+		m_terminalPointDragState->setEnabled(true);
+	}
+	else {
+		m_terminalPointDragState->setText(tr("<font color='gray'>Dragging disabled</font>"));
+		m_terminalPointDragState->setEnabled(false);
+	}
 }
 
 void PEToolView::initConnectors(QList<QDomElement> & connectorList) {
@@ -240,7 +277,7 @@ void PEToolView::switchConnector(QListWidgetItem * current, QListWidgetItem * pr
     int pos = 99999;
     for (int ix = 0; ix < m_connectorInfoLayout->count(); ix++) {
         QLayoutItem * item = m_connectorInfoLayout->itemAt(ix);
-        if (item->widget() == m_elementLock) {
+        if (item->widget() == m_modeFrame) {
             pos = ix + 1;
             break;
         }
@@ -254,23 +291,16 @@ void PEToolView::switchConnector(QListWidgetItem * current, QListWidgetItem * pr
     emit switchedConnector(element);
 }
 
-void PEToolView::setLock(bool lock) {
-    if (m_elementLock) {
-        m_elementLock->setChecked(lock);
-        enableChanges(!lock);
-    }
+bool PEToolView::busMode() {
+    return m_busModeBox->isChecked();
 }
 
-bool PEToolView::locked() {
-    if (m_elementLock == NULL) return true;
-
-    return m_elementLock->isChecked();
-}
-
-void PEToolView::lockChangedSlot(bool state)
+void PEToolView::busModeChangedSlot(bool state)
 {
-    enableChanges(!state);
-    emit lockChanged(state);
+	if (state) enableConnectorChanges(false, false);
+	else enableConnectorChanges(m_pegi != NULL && m_pegi->showingMarquee(), m_pegi != NULL);
+
+    emit busModeChanged(state);
 }
 
 void PEToolView::nameEntry() {
@@ -365,4 +395,8 @@ void PEToolView::setChildrenVisible(bool vis)
 	foreach (QWidget * widget, findChildren<QWidget *>()) {
 		widget->setVisible(vis);
 	}
+}
+
+void PEToolView::pickModeChangedSlot() {
+	emit pickModeChanged(true);
 }

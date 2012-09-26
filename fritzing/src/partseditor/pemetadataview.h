@@ -72,6 +72,7 @@ protected slots:
     void familyEntry();
     void variantEntry();
     void dateEntry();
+	void urlEntry();
     void propertiesEntry();
     void tagsEntry();
 
@@ -82,6 +83,7 @@ protected:
     QPointer<QLineEdit> m_familyEdit;
     QPointer<QLineEdit> m_variantEdit;
     QPointer<QLineEdit> m_labelEdit;
+    QPointer<QLineEdit> m_urlEdit;
     QPointer<QTextEdit> m_descriptionEdit;
     QPointer<class HashPopulateWidget> m_propertiesEdit;
     QPointer<class HashPopulateWidget> m_tagsEdit;
