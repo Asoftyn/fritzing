@@ -72,6 +72,56 @@ PEConnectorsView::PEConnectorsView(QWidget * parent) : QWidget(parent)
     numberFrame->setLayout(numberLayout);
     mainLayout->addWidget(numberFrame);
 
+    QFrame * typeFrame = new QFrame();
+    QHBoxLayout * typeLayout = new QHBoxLayout();
+
+    label = new QLabel(QObject::tr("Set all to:"));
+	label->setObjectName("NewPartsEditorLabel");
+    typeLayout->addWidget(label);
+
+	m_radios.clear();
+    QRadioButton * radioButton = new QRadioButton(MaleSymbolString); 
+	QObject::connect(radioButton, SIGNAL(clicked()), this, SLOT(allTypeEntry()));
+    radioButton->setObjectName("NewPartsEditorRadio");
+    radioButton->setProperty("value", Connector::Male);
+    typeLayout->addWidget(radioButton);
+	m_radios.append(radioButton);
+
+    radioButton = new QRadioButton(FemaleSymbolString); 
+	QObject::connect(radioButton, SIGNAL(clicked()), this, SLOT(allTypeEntry()));
+    radioButton->setObjectName("NewPartsEditorRadio");
+    radioButton->setProperty("value", Connector::Female);
+    typeLayout->addWidget(radioButton);
+	m_radios.append(radioButton);
+
+    radioButton = new QRadioButton(QObject::tr("Pad")); 
+	QObject::connect(radioButton, SIGNAL(clicked()), this, SLOT(allTypeEntry()));
+    radioButton->setObjectName("NewPartsEditorRadio");
+    radioButton->setProperty("value", Connector::Pad);
+    typeLayout->addWidget(radioButton);
+	m_radios.append(radioButton);
+
+	typeLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
+	typeFrame->setLayout(typeLayout);
+	mainLayout->addWidget(typeFrame);
+
+    QFrame * smdFrame = new QFrame();
+    QHBoxLayout * smdLayout = new QHBoxLayout();
+
+    m_tht = new QRadioButton(tr("Through-hole")); 
+	QObject::connect(m_tht, SIGNAL(clicked()), this, SLOT(smdEntry()));
+    m_tht->setObjectName("NewPartsEditorRadio");
+    smdLayout->addWidget(m_tht);
+
+    m_smd = new QRadioButton(tr("SMD")); 
+	QObject::connect(m_smd, SIGNAL(clicked()), this, SLOT(smdEntry()));
+    m_smd->setObjectName("NewPartsEditorRadio");
+    smdLayout->addWidget(m_smd);
+
+	smdLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
+	smdFrame->setLayout(smdLayout);
+	mainLayout->addWidget(smdFrame);
+
 	m_scrollArea = new QScrollArea;
 	m_scrollArea->setWidgetResizable(true);
 	m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -161,7 +211,6 @@ void PEConnectorsView::removeConnector() {
     emit removedConnectors(cmdList);
 }
 
-
 void PEConnectorsView::changeConnector() {
     bool ok;
     int senderIndex = sender()->property("index").toInt(&ok);
@@ -173,3 +222,36 @@ void PEConnectorsView::changeConnector() {
     emit connectorMetadataChanged(&cmd);
 }
 
+void PEConnectorsView::allTypeEntry() {
+	QRadioButton * radio = qobject_cast<QRadioButton *>(sender());
+	if (radio == NULL) return;
+
+	bool ok;
+	Connector::ConnectorType ct = (Connector::ConnectorType) radio->property("value").toInt(&ok);
+	if (!ok) return;
+
+	emit connectorsTypeChanged(ct);
+
+	QTimer::singleShot(10, this, SLOT(uncheckRadios()));
+}
+
+void PEConnectorsView::smdEntry()
+{
+	QRadioButton * radio = qobject_cast<QRadioButton *>(sender());
+	if (radio == NULL) return;
+
+	emit smdChanged(radio == m_smd ? "smd" : "tht");
+}
+
+void PEConnectorsView::uncheckRadios() {
+	// this doesn't work because the buttons are "autoexclusive"
+	foreach (QRadioButton * radio, m_radios) {
+		radio->setChecked(false);
+	}
+}
+
+void PEConnectorsView::setSMD(bool smd)
+{
+	if (smd) m_smd->setChecked(true);
+	else m_tht->setChecked(true);
+}

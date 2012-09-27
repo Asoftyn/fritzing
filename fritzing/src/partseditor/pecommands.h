@@ -211,5 +211,26 @@ protected:
 
 /////////////////////////////////////////////
 
+class ChangeSMDCommand : public PEBaseCommand
+{
+public:
+	ChangeSMDCommand(class PEMainWindow *, const QString  & before, const QString & after, const QString  & oldFilename, const QString & newFilename, const QString & oldOriginal, const QString & newOriginal, QUndoCommand *parent);
+	void undo();
+	void redo();
+
+protected:
+	QString getParamString() const;
+
+protected:
+	QString m_before;
+	QString m_after;
+	QString m_oldFilename;
+	QString m_newFilename;
+	QString m_oldOriginal;
+	QString m_newOriginal;
+};
+
+/////////////////////////////////////////////
+
 
 #endif // PECOMMANDS_H

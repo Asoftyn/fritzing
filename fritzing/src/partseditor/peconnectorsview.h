@@ -38,11 +38,13 @@ $Date$
 #include <QVBoxLayout>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QRadioButton>
 #include <QMutex>
 
 #include "../items/itembase.h"
 #include "../items/wire.h"
 #include "../connectors/connectoritem.h"
+#include "../connectors/connector.h"
 #include "../referencemodel/referencemodel.h"
 
 class PEConnectorsView : public QWidget
@@ -54,11 +56,14 @@ public:
 
     void initConnectors(QList<QDomElement> & connectorList);
 	bool anyModified();
+	void setSMD(bool);
 
 signals:
     void connectorMetadataChanged(struct ConnectorMetadata *);
     void removedConnectors(QList<struct ConnectorMetadata *> &);
     void connectorCountChanged(int);
+    void connectorsTypeChanged(Connector::ConnectorType);
+	void smdChanged(const QString &);
 
 protected slots:
     void nameEntry();
@@ -66,17 +71,22 @@ protected slots:
     void typeEntry();
     void connectorCountEntry();
     void removeConnector();
+	void allTypeEntry();
+	void smdEntry();
+	void uncheckRadios();
 
 protected:
     void changeConnector();
 
 protected:
-    QPointer<QFrame> m_scrollFrame;
-	QPointer<QScrollArea> m_scrollArea;
-	QPointer<QLineEdit> m_numberEdit;
+    QFrame * m_scrollFrame;
+	QScrollArea * m_scrollArea;
+	QLineEdit * m_numberEdit;
     int m_connectorCount;
     QMutex m_mutex;
-
+	QList<QRadioButton *> m_radios;
+	QRadioButton * m_smd;
+	QRadioButton * m_tht;
 };
 
 #endif

@@ -65,6 +65,7 @@ public:
     bool editsModuleID(const QString &);
 	void addBusConnector(const QString & busID, const QString & connectorID);
 	void removeBusConnector(const QString & busID, const QString & connectorID, bool display);
+	void changeSMD(const QString & smd, const QString & filename, const QString & originalPath, int changeDirection);
 
 signals:
     void addToMyPartsSignal(ModelPart *);
@@ -91,6 +92,8 @@ public slots:
 	void deleteBusConnection();
 	void newWireSlot(Wire *);
 	void wireChangedSlot(class Wire*, const QLineF & oldLine, const QLineF & newLine, QPointF oldPos, QPointF newPos, ConnectorItem * from, ConnectorItem * to);
+	void connectorsTypeChanged(Connector::ConnectorType);
+	void smdChanged(const QString &);
 
 protected:
 	void closeEvent(QCloseEvent * event);
@@ -160,6 +163,9 @@ protected:
 	void clearPickMode();
 	void deleteBuses();
 	QList<PEGraphicsItem *> getPegiList(SketchWidget *);
+	void fillInMetadata(const QDomElement & connector, ConnectorMetadata & cmd);
+	void setConnectorSMD(bool toSMD, QDomElement & connector);
+	bool saveWithReferenceFile(QDomDocument & doc, const QString & referencePath, const QString & newPath);
 
 protected slots:
     void initZoom();

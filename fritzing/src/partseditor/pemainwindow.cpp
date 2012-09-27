@@ -31,16 +31,14 @@ $Date$
 
         crash when swapping part during save
 
-		change all radios in connectors view
-
 		when adding connectors by changing the count and "picking" only breadboard view, the connections are not saved to the fzp properly
         
         crashed when saving the description
 
+		opened part from my parts bin, hit save as, should have created new part, seems to have modified same part instead
+
 		ask to copy connectors when the same image is loaded into a second view
 			hidden views (i.e. view-specific parts)
-
-		escape key to exit pick mode
 
 		what happens if you pick the same rect for multiple connectors
 
@@ -63,8 +61,8 @@ $Date$
 
         smd vs. tht
 			what happens if you open an smd placed on the bottom layer?
-			clicking "pad" should remove item from copper0
-			clicking "m/f" should add item to both layers
+			clicking "smd" should remove item from copper0
+			clicking "tht" should add item to both layers
 			at save time fix up top level layers list
 
 		remove gorn addresses when saving svg files
@@ -72,8 +70,6 @@ $Date$
         leaves should be on top of svg tree (partly done)
 
         check all MainWindow * casts
-
-        first time help--trigger html page
 
 	    clean up menus
 			test everything visible works
@@ -84,6 +80,7 @@ $Date$
 		        
 		test button with export etchable to make sure the part is right?
 
+		if pcb svg does not have combined copper layers, complain
 
     ////////////////////////////// second release /////////////////////////////////
 
@@ -452,8 +449,10 @@ void PEMainWindow::initSketchWidgets()
 	sketchAreaWidget = new SketchAreaWidget(m_connectorsView, this);
 	addTab(sketchAreaWidget, tr("Connectors"));
     connect(m_connectorsView, SIGNAL(connectorMetadataChanged(ConnectorMetadata *)), this, SLOT(connectorMetadataChanged(ConnectorMetadata *)), Qt::DirectConnection);
+    connect(m_connectorsView, SIGNAL(connectorsTypeChanged(Connector::ConnectorType)), this, SLOT(connectorsTypeChanged(Connector::ConnectorType)));
     connect(m_connectorsView, SIGNAL(removedConnectors(QList<ConnectorMetadata *> &)), this, SLOT(removedConnectors(QList<ConnectorMetadata *> &)), Qt::DirectConnection);
     connect(m_connectorsView, SIGNAL(connectorCountChanged(int)), this, SLOT(connectorCountChanged(int)), Qt::DirectConnection);
+    connect(m_connectorsView, SIGNAL(smdChanged(const QString &)), this, SLOT(smdChanged(const QString &)));
 }
 
 void PEMainWindow::initDock()
@@ -957,19 +956,12 @@ QHash<QString, QString> PEMainWindow::getOldProperties()
 
 void PEMainWindow::connectorMetadataChanged(ConnectorMetadata * cmd)
 {
-    ConnectorMetadata oldcmd;
-
     int index;
     QDomElement connector = findConnector(cmd->connectorID, index);
     if (connector.isNull()) return;
 
-    oldcmd.connectorID = connector.attribute("id");
-    oldcmd.connectorType = Connector::Male;
-    if (connector.attribute("type").compare("female", Qt::CaseInsensitive) == 0) oldcmd.connectorType = Connector::Female;
-    else if (connector.attribute("type").compare("pad", Qt::CaseInsensitive) == 0) oldcmd.connectorType = Connector::Pad;
-    oldcmd.connectorName = connector.attribute("name");
-    QDomElement description = connector.firstChildElement("description");
-    oldcmd.connectorDescription = description.text();
+    ConnectorMetadata oldcmd;
+	fillInMetadata(connector, oldcmd);
 
     ChangeConnectorMetadataCommand * ccmc = new ChangeConnectorMetadataCommand(this, &oldcmd, cmd, NULL);
     ccmc->setText(tr("Change connector %1").arg(cmd->connectorName));
@@ -1011,10 +1003,7 @@ void PEMainWindow::changeConnectorElement(QDomElement & connector, ConnectorMeta
 {
     connector.setAttribute("name", cmd->connectorName);
     connector.setAttribute("id", cmd->connectorID);
-    QString type = "male";
-    if (cmd->connectorType == Connector::Female) type = "female";
-    else if (cmd->connectorType == Connector::Pad) type = "pad";
-    connector.setAttribute("type", type);
+    connector.setAttribute("type", Connector::connectorNameFromType(cmd->connectorType));
     TextUtils::replaceElementChildText(m_fzpDocument, connector, "description", cmd->connectorDescription);
 
 #ifndef QT_NO_DEBUG
@@ -1336,20 +1325,7 @@ void PEMainWindow::loadImage()
         }
 
         if (saveReferenceFile) {
-            QDomElement root = doc.documentElement();
-            QDomElement desc = root.firstChildElement("desc");
-            if (desc.isNull()) {
-                desc = doc.createElement("desc");
-                root.appendChild(desc);
-            }
-            QDomElement referenceFile = desc.firstChildElement(ReferenceFileString);
-            if (referenceFile.isNull()) {
-                referenceFile = doc.createElement(ReferenceFileString);
-                desc.appendChild(referenceFile);
-            }
-            TextUtils::replaceChildText(doc, desc, QFileInfo(origPath).fileName());
-			QString svg = TextUtils::svgNSOnly(doc.toString());
-            writeXml(newPath, removeGorn(svg), true);
+			saveWithReferenceFile(doc,  QFileInfo(origPath).fileName(), newPath);
         }
 
 		ChangeSvgCommand * csc = new ChangeSvgCommand(this, m_currentGraphicsView, itemBase->filename(), newPath, m_originalSvgPaths.value(itemBase->viewIdentifier()), newPath, NULL);
@@ -1494,6 +1470,9 @@ QString PEMainWindow::saveFzp() {
 }
 
 void PEMainWindow::reload(bool firstTime) {
+
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+
 	Q_UNUSED(firstTime);
 
     QString fzpPath = saveFzp();   // needs a document somewhere to set up connectors--not part of the undo stack
@@ -1513,6 +1492,7 @@ void PEMainWindow::reload(bool firstTime) {
 	m_metadataView->initMetadata(m_fzpDocument);
 
     initConnectors();
+	m_connectorsView->setSMD(modelPart->flippedSMD());
 
 	QList<QWidget *> widgets;
 	widgets << m_metadataView << m_peToolView << m_connectorsView;
@@ -1554,6 +1534,7 @@ void PEMainWindow::reload(bool firstTime) {
     // processEventBlocker might be enough?
     QTimer::singleShot(10, this, SLOT(initZoom()));
 
+	QApplication::restoreOverrideCursor();
 }
 
 void PEMainWindow::busModeChanged(bool state) {  
@@ -2898,3 +2879,212 @@ void PEMainWindow::deleteBuses() {
 		delete wire;
 	}
 }
+
+void PEMainWindow::connectorsTypeChanged(Connector::ConnectorType ct) 
+{
+	QUndoCommand * parentCommand = NULL;
+
+	QDomElement root = m_fzpDocument.documentElement();
+	QDomElement connectors = root.firstChildElement("connectors");
+	QDomElement connector = connectors.firstChildElement("connector");
+	while (!connector.isNull()) {
+		ConnectorMetadata oldCmd;
+		fillInMetadata(connector, oldCmd);
+		if (oldCmd.connectorType != ct) {
+			if (parentCommand == NULL) {
+				parentCommand = new QUndoCommand(tr("Change all connectors to %1").arg(Connector::connectorNameFromType(ct)));
+			}
+			ConnectorMetadata cmd = oldCmd;
+			cmd.connectorType = ct;
+			new ChangeConnectorMetadataCommand(this, &oldCmd, &cmd, parentCommand);
+		}
+
+		connector = connector.nextSiblingElement("connector");
+	}
+
+	if (parentCommand) {
+		m_undoStack->waitPush(parentCommand, SketchWidget::PropChangeDelay);
+	}
+}
+
+void PEMainWindow::fillInMetadata(const QDomElement & connector, ConnectorMetadata & cmd) 
+{
+    cmd.connectorID = connector.attribute("id");
+    cmd.connectorType = Connector::connectorTypeFromName(connector.attribute("type"));
+    cmd.connectorName = connector.attribute("name");
+    QDomElement description = connector.firstChildElement("description");
+    cmd.connectorDescription = description.text();
+}
+
+void PEMainWindow::smdChanged(const QString & after) {
+	QString before;
+	bool toSMD = true;
+	if (after.compare("smd", Qt::CaseInsensitive) != 0) {
+		before = "smd";
+		toSMD = false;
+	}
+
+	ItemBase * itemBase = m_items.value(ViewLayer::PCBView);
+	if (itemBase == NULL) return;
+
+	QFile file(itemBase->filename());
+	QDomDocument doc;
+	doc.setContent(&file);
+	QDomElement svgRoot = doc.documentElement();
+	QDomElement svgCopper0 = TextUtils::findElementWithAttribute(svgRoot, "id", "copper0");
+	QDomElement svgCopper1 = TextUtils::findElementWithAttribute(svgRoot, "id", "copper1");
+	if (svgCopper0.isNull() && svgCopper1.isNull()) {
+		QMessageBox::critical(NULL, tr("Parts Editor"), tr("Unable to parse '%1'").arg(itemBase->filename()));
+		return;
+	}
+
+	if (toSMD) {
+		if (svgCopper0.isNull() && !svgCopper1.isNull()) {
+			// everything is fine
+		}
+		else if (svgCopper1.isNull()) {
+			// just needs a swap
+			svgCopper0.setAttribute("id", "copper1");
+		}
+		else {
+			svgCopper0.removeAttribute("id");
+		}
+	}
+	else {
+		if (!svgCopper0.isNull() && !svgCopper1.isNull()) {
+			// everything is fine
+		}
+		else if (svgCopper1.isNull()) {
+			svgCopper1 = m_pcbDocument.createElement("g");
+			svgCopper1.setAttribute("id", "copper1");
+			svgRoot.appendChild(svgCopper1);
+			QDomElement child = svgCopper0.firstChildElement();
+			while (!child.isNull()) {
+				QDomElement next = child.nextSiblingElement();
+				svgCopper1.appendChild(child);
+				child = next;
+			}
+			svgCopper0.appendChild(svgCopper1);
+		}
+		else {
+			svgCopper0 = m_pcbDocument.createElement("g");
+			svgCopper0.setAttribute("id", "copper0");
+			svgRoot.appendChild(svgCopper0);
+			QDomElement child = svgCopper1.firstChildElement();
+			while (!child.isNull()) {
+				QDomElement next = child.nextSiblingElement();
+				svgCopper0.appendChild(child);
+				child = next;
+			}
+			svgCopper1.appendChild(svgCopper0);
+		}
+	}
+
+	QString referenceFile = getSvgReferenceFile(itemBase->filename());
+	QString newPath = m_userPartsFolderSvgPath + makeSvgPath(referenceFile, m_pcbGraphicsView, true);
+	saveWithReferenceFile(doc, referenceFile, newPath);
+
+	ChangeSMDCommand * csc = new ChangeSMDCommand(this, before, after, itemBase->filename(), newPath, m_originalSvgPaths.value(itemBase->viewIdentifier()), newPath, NULL);
+	csc->setText(tr("Change to %1").arg(after));
+	m_undoStack->waitPush(csc, SketchWidget::PropChangeDelay);
+}
+
+void PEMainWindow::changeSMD(const QString & after, const QString & filename, const QString & originalPath, int changeDirection)
+{
+	QDomElement root = m_fzpDocument.documentElement();
+	QDomElement views = root.firstChildElement("views");
+	QDomElement pcbView = views.firstChildElement("pcbView");
+	QDomElement layers = pcbView.firstChildElement("layers");
+	QDomElement copper0 = TextUtils::findElementWithAttribute(layers, "layerId", "copper0");
+	QDomElement copper1 = TextUtils::findElementWithAttribute(layers, "layerId", "copper1");
+	bool toSMD = true;
+	if (after.compare("smd", Qt::CaseInsensitive) == 0) {
+		if (!copper0.isNull()) {
+			copper0.parentNode().removeChild(copper0);
+		}
+	}
+	else {
+		toSMD = false;
+		if (copper0.isNull()) {
+			copper0 = m_fzpDocument.createElement("layer");
+			copper0.setAttribute("layerId", "copper0");
+			layers.appendChild(copper0);
+		}
+	}
+	if (copper1.isNull()) {
+		copper1 = m_fzpDocument.createElement("layer");
+		copper1.setAttribute("layerId", "copper1");
+		layers.appendChild(copper1);
+	}
+
+	QDomElement connectors = root.firstChildElement("connectors");
+	QDomElement connector = connectors.firstChildElement("connector");
+	while (!connector.isNull()) {
+		setConnectorSMD(toSMD, connector);
+		connector = connector.nextSiblingElement("connector");
+	}
+
+	changeSvg(m_pcbGraphicsView, filename, originalPath, changeDirection);
+}
+
+void PEMainWindow::setConnectorSMD(bool toSMD, QDomElement & connector) {
+	QDomElement views = connector.firstChildElement("views");
+	QDomElement pcbView = views.firstChildElement("pcbView");
+	QDomElement copper0 = TextUtils::findElementWithAttribute(pcbView, "layer", "copper0");
+	QDomElement copper1 = TextUtils::findElementWithAttribute(pcbView, "layer", "copper1");
+	if (copper0.isNull() && copper1.isNull()) {
+		// SVG is seriously messed up
+		DebugDialog::debug("setting SMD is very broken");
+		return;
+	}
+
+	if (toSMD) {
+		if (copper0.isNull() && !copper1.isNull()) {
+			// already correct
+			return;
+		}
+		if (copper1.isNull()) {
+			// swap it to copper1
+			copper0.setAttribute("layer", "copper1");
+			return;
+		}
+		// remove the extra layer
+		copper0.parentNode().removeChild(copper0);
+		return;
+	}
+
+	if (!copper0.isNull() && !copper1.isNull()) {
+		// already correct
+		return;
+	}
+
+	if (copper1.isNull()) {
+		copper1 = copper0.cloneNode(true).toElement();
+		copper0.parentNode().appendChild(copper1);
+		copper1.setAttribute("layer", "copper1");
+		return;
+	}
+
+	copper0 = copper1.cloneNode(true).toElement();
+	copper1.parentNode().appendChild(copper0);
+	copper0.setAttribute("layer", "copper0");
+}
+
+bool PEMainWindow::saveWithReferenceFile(QDomDocument & doc, const QString & referencePath, const QString & newPath)
+{
+    QDomElement root = doc.documentElement();
+    QDomElement desc = root.firstChildElement("desc");
+    if (desc.isNull()) {
+        desc = doc.createElement("desc");
+        root.appendChild(desc);
+    }
+    QDomElement referenceFile = desc.firstChildElement(ReferenceFileString);
+    if (referenceFile.isNull()) {
+        referenceFile = doc.createElement(ReferenceFileString);
+        desc.appendChild(referenceFile);
+    }
+    TextUtils::replaceChildText(doc, desc, referencePath);
+	QString svg = TextUtils::svgNSOnly(doc.toString());
+    return writeXml(newPath, removeGorn(svg), true);
+}
+

@@ -338,5 +338,38 @@ QString RemoveBusConnectorCommand::getParamString() const {
 			.arg(m_inverted);
         ;
 }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ChangeSMDCommand::ChangeSMDCommand(PEMainWindow * peMainWindow, const QString & before, const QString & after, 
+									const QString  & oldFilename, const QString & newFilename, 
+									const QString  & oldOriginal, const QString & newOriginal, 
+									QUndoCommand *parent)
+    : PEBaseCommand(peMainWindow, parent)
+{
+ 	m_before = before;
+	m_after = after;
+	m_oldFilename = oldFilename;
+	m_newFilename = newFilename;
+	m_oldOriginal = oldOriginal;
+	m_newOriginal = newOriginal;
+}
+
+void ChangeSMDCommand::undo()
+{
+    m_peMainWindow->changeSMD(m_before, m_oldFilename, m_oldOriginal, -1);
+}
+
+void ChangeSMDCommand::redo()
+{
+    m_peMainWindow->changeSMD(m_after, m_newFilename, m_newOriginal, 1);
+}
+
+QString ChangeSMDCommand::getParamString() const {
+	return "ChangeSMDCommand " + 
+        QString(" before:%1, after:%2")
+            .arg(m_before)
+            .arg(m_after)
+        ;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -113,9 +113,7 @@ QWidget * PEUtils::makeConnectorForm(const QDomElement & connector, int index, Q
     nameLayout->addWidget(nameEdit);
     nameLayout->addSpacing(Spacing);
 
-    Connector::ConnectorType ctype = Connector::Male;
-    if (connector.attribute("type").compare("female", Qt::CaseInsensitive) == 0) ctype = Connector::Female;
-    else if (connector.attribute("type").compare("pad", Qt::CaseInsensitive) == 0) ctype = Connector::Pad;
+    Connector::ConnectorType ctype = Connector::connectorTypeFromName(connector.attribute("type"));
 
     QRadioButton * radioButton = new QRadioButton(MaleSymbolString); 
 	QObject::connect(radioButton, SIGNAL(clicked()), slotHolder, SLOT(typeEntry()));

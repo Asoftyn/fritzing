@@ -9,11 +9,12 @@
     <div class="moz-text-html" lang="x-western">
       <div class="moz-cite-prefix"><br>
         We have decided to release the new Parts Editor in two phases.
-        The first phase, included in this release, is already more
-        powerful and easy to use than the old Parts Editor but you still
-        need to do a lot of preliminary work using an external SVG
+        The first phase, a part of this release, is already more
+        powerful and easy to use than the old Parts Editor, but you
+        still need to do a lot of preliminary work using an external SVG
         editor like Inkscape, Illustrator, or CorelDRAW. In the next
-        phase we hope to eliminate much of this requirement.<br>
+        phase we hope to eliminate much of the need to use external
+        programs.<br>
         <br>
         <big><big><b>How to start</b></big></big><br>
         <br>
@@ -27,8 +28,8 @@
         number of connectors. For example, if your part needs 39 pins,
         then start with a generic IC part, change it to a SIP (single
         inline package) and give it 39 pins. Though finding a part to
-        begin with may seem like a burden, it will save you some tedious
-        work.<br>
+        begin with may seem like a burden, it will save you some work as
+        you go through the process.<br>
         <br>
         You can open the new parts editor by right-clicking a part in a
         sketch; choosing 'Edit' from the Part menu; right clicking a
@@ -47,13 +48,13 @@
         Connectors view is for the connector metadata--but you can also
         use it to add and remove connectors.<br>
         <big><big><br>
-            <b>SVG prep; other filetypes</b></big></big><br>
+            <b>SVG preparation; loading other image types</b></big></big><br>
         <br>
         To load the SVGs for your part, go to the appropriate view, and
         use File &gt; Open. As before, you can load SVGs, gEDA .fp
         (footprint) files, KICAD .mod files (also for footprints). You
         can also still load PNG or JPG images, but we discourage this
-        because these images are raster-based, rather than vector-based,
+        because these images are raster-based rather than vector-based,
         so they don't look good when scaled. <br>
         <br>
         Since you have already begun with a part, it may be that you
@@ -62,8 +63,8 @@
         <br>
         It is still necessary to prepare SVGs for PCB view by grouping
         elements in layers: copper0, silkscreen, copper1, etc. (Layering
-        will be handled inside the phase 2 parts editor.) The best way
-        to understand the layers is to open up one of the core pcb svg
+        will be handled in the phase 2 parts editor.) The best way to
+        understand the layers is to open up one of the core pcb svg
         files, For example have a look at the file crystal_hc49U.svg:<br>
         <br>
         <tt>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
@@ -151,6 +152,7 @@
 
 
 
+
         <b>active</b> <b>connector</b>. If it has already been
         associated with an SVG element, that element will display a
         marquee highlight. Since we are just starting out, we will
@@ -220,7 +222,7 @@
         <br>
         You can use the buttons or spinners to adjust the terminal
         point. Here is a close up after hitting the W button, and
-        clicking the X spinner twice. <br>
+        clicking the X spinner twice (look at the pin marked 'AN2'). <br>
         <br>
         <img alt="schematic3" src="images/schematic3.png" height="492"
           width="536"><br>
