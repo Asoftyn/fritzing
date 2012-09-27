@@ -154,7 +154,6 @@ class PartsBinPaletteWidget : public QFrame, public Bundler {
 		QString m_defaultSaveFolder;
 		QString m_untitledFileName;
 
-		//class SimpleEditableLabelWidget *m_binTitle;
 		QString m_title;
 		bool m_isDirty;
 

@@ -31,6 +31,8 @@ $Date$
 
         crash when swapping part during save
 
+		change all radios in connectors view
+
 		when adding connectors by changing the count and "picking" only breadboard view, the connections are not saved to the fzp properly
         
         crashed when saving the description
@@ -1346,7 +1348,8 @@ void PEMainWindow::loadImage()
                 desc.appendChild(referenceFile);
             }
             TextUtils::replaceChildText(doc, desc, QFileInfo(origPath).fileName());
-            writeXml(newPath, removeGorn(TextUtils::svgNSOnly(doc.toString())), true);
+			QString svg = TextUtils::svgNSOnly(doc.toString());
+            writeXml(newPath, removeGorn(svg), true);
         }
 
 		ChangeSvgCommand * csc = new ChangeSvgCommand(this, m_currentGraphicsView, itemBase->filename(), newPath, m_originalSvgPaths.value(itemBase->viewIdentifier()), newPath, NULL);

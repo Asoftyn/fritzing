@@ -101,6 +101,32 @@
         can save your changes at any point and keep working, and undo is
         always available, even for unloading (and reloading) view
         images.<br>
+        <br>
+        If you start with a core part (i.e. a part from the Fritzing
+        distro), saving is equivalent to "Save As". A new part will be
+        created in your local storage area (explained below) and added
+        to the "My Parts" Bin. If you are editing a part that was in a
+        sketch, the part will be updated whenever you save. If you want
+        the new part to display in the My Parts Bin the next time you
+        run Fritzing, remember to save the bin (use the drop down menu
+        at the upper left of the bin). If you start editing from a part
+        in the My Parts Bin you have a choice between Save (which will
+        overwrite the part), and Save As (which will create a new part
+        and add it to the My Parts Bin).<br>
+        <br>
+        On Windows the local storage folder is something like
+        C:\Users\[username]\AppData\Roaming\Fritzing\parts\user\, and
+        SVGs are stored in
+        C:\Users\[username]\AppData\Roaming\Fritzing\parts\svg\user\. On
+        Linux and Mac this would be ~/.config/Fritzing/parts/user/ and
+        ~/.config/Fritzing/parts/svg/user/. <br>
+        <br>
+        To view the SVG image for the currrent view on the desktop,
+        choose File &gt; Show in Folder. On Mac and Windows this will
+        open a folder on your desktop with the SVG file selected. Under
+        Linux you get the folder but no file selection (if anyone has
+        advice about how to get the latter to work, we would be
+        grateful).<br>
         <big><big><br>
             <b>Associating a connector with its SVG counterpart</b></big></big><br>
         <br>
@@ -122,6 +148,7 @@
         Next we load the new breadboard image using File &gt;
         Open.&nbsp; In the Tools widget at the upper right, you see a
         list of connectors. Choose one to make it the <b>current </b>or
+
 
 
         <b>active</b> <b>connector</b>. If it has already been
@@ -201,7 +228,7 @@
         You can also drag the terminal point directly by mousing down on
         it when its SVG element is highlighted.<br>
         <big><big><br>
-            Setting internal connections</big> </big><br>
+            <b>Setting internal connections</b></big></big><br>
         <br>
         An internal connection is when a two or more connectors in a
         part are already connected, for example the GND connectors on
@@ -217,31 +244,12 @@
         internal connection, right-click the line and choose "Remove
         internal connection". To add a new connection, just drag a line
         out from one connector to another.<br>
+        <b><br>
+        </b><b><big><big>Known limits</big></big></b><br>
         <br>
-        <big><big>When you save</big></big><br>
-        <br>
-        If you start with a core part (i.e. a part from the Fritzing
-        distro), saving is equivalent to "Save As". A new part will be
-        created in your local storage area (see below) and added to the
-        "My Parts" Bin. If you are editing a part that was in a sketch,
-        the part will be updated whenever you save. If you want the new
-        part to display in the My Parts Bin the next time you run
-        Fritzing, remember to save the bin (use the drop down menu at
-        the upper left of the bin).<br>
-        <br>
-        On Windows the local storage folder is something like
-        C:\Users\[username]\AppData\Roaming\Fritzing\parts\user\, and
-        SVGs are stored in
-        C:\Users\[username]\AppData\Roaming\Fritzing\parts\svg\user\. On
-        Linux and Mac this would be ~/.config/Fritzing/parts/user/ and
-        ~/.config/Fritzing/parts/svg/user/. To view the current SVG
-        image on the desktop, choose File &gt; Show in Folder. On Mac
-        and Windows this will open a folder on your desktop with the SVG
-        file selected. Under Linux you get the folder but no file
-        selection (if anyone has advice about how to get the latter to
-        work, we would be grateful).<br>
-        <br>
-        <big><big>Bye for now</big></big><br>
+        holes, mixed tht and smd, hybrids<br>
+        <b><br>
+        </b> <b><big><big>Bye for now</big></big></b><br>
         <br>
         That's pretty much the phase one story. We hope you like what
         you've seen. Stay tuned for phase two.<br>

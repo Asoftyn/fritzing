@@ -40,7 +40,6 @@ $Date$
 #include "partsbincommands.h"
 #include "partsbiniconview.h"
 #include "partsbinlistview.h"
-#include "simpleeditablelabelwidget.h"
 #include "searchlineedit.h"
 #include "../utils/misc.h"
 #include "../debugdialog.h"

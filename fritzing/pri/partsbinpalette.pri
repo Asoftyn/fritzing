@@ -16,7 +16,7 @@
 # $Author$:
 # $Date$
 # ********************************************************************/
-HEADERS += src/partsbinpalette/simpleeditablelabelwidget.h \
+HEADERS += \
     src/partsbinpalette/partsbinpalettewidget.h \
     src/partsbinpalette/partsbinview.h \
     src/partsbinpalette/partsbinlistview.h \
@@ -29,7 +29,7 @@ HEADERS += src/partsbinpalette/simpleeditablelabelwidget.h \
     src/partsbinpalette/binmanager/stacktabbar.h \
     src/partsbinpalette/binmanager/stacktabwidget.h
 
-SOURCES += src/partsbinpalette/simpleeditablelabelwidget.cpp \
+SOURCES +=  \
     src/partsbinpalette/partsbinpalettewidget.cpp \
     src/partsbinpalette/partsbinview.cpp \
     src/partsbinpalette/partsbinlistview.cpp \

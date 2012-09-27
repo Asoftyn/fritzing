@@ -24,16 +24,6 @@ $Date$
 
 ********************************************************************/
 
-
-/**************************************
-
-TODO:
-
-    would be nice to have a change all radios function
-
-**************************************/
-
-
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFormLayout>
@@ -49,11 +39,9 @@ TODO:
 
 //////////////////////////////////////
 
-PEConnectorsView::PEConnectorsView(QWidget * parent) : QScrollArea(parent) 
+PEConnectorsView::PEConnectorsView(QWidget * parent) : QWidget(parent) 
 {
-    m_mainFrame = NULL;
-	this->setWidgetResizable(true);
-	this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	m_connectorCount = 0;
 
     QFile styleSheet(":/resources/styles/newpartseditor.qss");
     if (!styleSheet.open(QIODevice::ReadOnly)) {
@@ -61,27 +49,10 @@ PEConnectorsView::PEConnectorsView(QWidget * parent) : QScrollArea(parent)
     } else {
     	this->setStyleSheet(styleSheet.readAll());
     }
-}
 
-PEConnectorsView::~PEConnectorsView() {
-
-}
-
-void PEConnectorsView::initConnectors(QList<QDomElement> & connectorList) 
-{
-    if (m_mainFrame) {
-        this->setWidget(NULL);
-        delete m_mainFrame;
-        m_mainFrame = NULL;
-    }
-
-    m_connectorCount = connectorList.size();
-
-	m_mainFrame = new QFrame(this);
-	m_mainFrame->setObjectName("NewPartsEditorConnectors");
-	QVBoxLayout *mainLayout = new QVBoxLayout(m_mainFrame);
+	QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSizeConstraint( QLayout::SetMinAndMaxSize );
-
+	
     QLabel *explanation = new QLabel(tr("This is where you edit the connector metadata for the part"));
     mainLayout->addWidget(explanation);
 
@@ -91,27 +62,57 @@ void PEConnectorsView::initConnectors(QList<QDomElement> & connectorList)
     QLabel * label = new QLabel(tr("number of connectors:"));
     numberLayout->addWidget(label);
 
-    QLineEdit * numberEdit = new QLineEdit();
-    numberEdit->setText(QString::number(m_connectorCount));
+    m_numberEdit = new QLineEdit();
     QValidator *validator = new QIntValidator(1, 999, this);
-    numberEdit->setValidator(validator);
-    numberLayout->addWidget(numberEdit);
-    connect(numberEdit, SIGNAL(editingFinished()), this, SLOT(connectorCountEntry()));
+    m_numberEdit->setValidator(validator);
+    numberLayout->addWidget(m_numberEdit);
+    connect(m_numberEdit, SIGNAL(editingFinished()), this, SLOT(connectorCountEntry()));
 
     numberLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
     numberFrame->setLayout(numberLayout);
     mainLayout->addWidget(numberFrame);
 
+	m_scrollArea = new QScrollArea;
+	m_scrollArea->setWidgetResizable(true);
+	m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+	m_scrollFrame = new QFrame;
+	m_scrollArea->setWidget(m_scrollFrame);
+
+	mainLayout->addWidget(m_scrollArea);
+	this->setLayout(mainLayout);
+
+}
+
+PEConnectorsView::~PEConnectorsView() {
+
+}
+
+void PEConnectorsView::initConnectors(QList<QDomElement> & connectorList) 
+{
+    if (m_scrollFrame) {
+        m_scrollArea->setWidget(NULL);
+        delete m_scrollFrame;
+        m_scrollFrame = NULL;
+    }
+
+    m_connectorCount = connectorList.size();
+    m_numberEdit->setText(QString::number(m_connectorCount));
+
+	m_scrollFrame = new QFrame(this);
+	m_scrollFrame->setObjectName("NewPartsEditorConnectors");
+	QVBoxLayout *scrollLayout = new QVBoxLayout();
+
     int ix = 0;
     foreach (QDomElement connector, connectorList) {
         QWidget * widget = PEUtils::makeConnectorForm(connector, ix++, this, true);
-        mainLayout->addWidget(widget);
+        scrollLayout->addWidget(widget);
     }
 
-    mainLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    m_mainFrame->setLayout(mainLayout);
+    scrollLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding));
+    m_scrollFrame->setLayout(scrollLayout);
 
-    this->setWidget(m_mainFrame);
+    m_scrollArea->setWidget(m_scrollFrame);
 }
 
 void PEConnectorsView::nameEntry() {
@@ -153,7 +154,7 @@ void PEConnectorsView::removeConnector() {
     if (!ok) return;
 
     ConnectorMetadata cmd;
-    if (!PEUtils::fillInMetadata(senderIndex, m_mainFrame, cmd)) return;
+    if (!PEUtils::fillInMetadata(senderIndex, m_scrollFrame, cmd)) return;
 
     QList<ConnectorMetadata *> cmdList;
     cmdList.append(&cmd);
@@ -167,7 +168,7 @@ void PEConnectorsView::changeConnector() {
     if (!ok) return;
 
     ConnectorMetadata cmd;
-    if (!PEUtils::fillInMetadata(senderIndex, m_mainFrame, cmd)) return;
+    if (!PEUtils::fillInMetadata(senderIndex, m_scrollFrame, cmd)) return;
 
     emit connectorMetadataChanged(&cmd);
 }

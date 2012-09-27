@@ -45,7 +45,7 @@ $Date$
 #include "../connectors/connectoritem.h"
 #include "../referencemodel/referencemodel.h"
 
-class PEConnectorsView : public QScrollArea
+class PEConnectorsView : public QWidget
 {
 Q_OBJECT
 public:
@@ -71,7 +71,9 @@ protected:
     void changeConnector();
 
 protected:
-    QPointer<QFrame> m_mainFrame;
+    QPointer<QFrame> m_scrollFrame;
+	QPointer<QScrollArea> m_scrollArea;
+	QPointer<QLineEdit> m_numberEdit;
     int m_connectorCount;
     QMutex m_mutex;
 

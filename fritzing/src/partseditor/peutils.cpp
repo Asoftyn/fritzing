@@ -135,7 +135,7 @@ QWidget * PEUtils::makeConnectorForm(const QDomElement & connector, int index, Q
     radioButton->setProperty("type", "radio");
     nameLayout->addWidget(radioButton);
 
-    radioButton = new QRadioButton(QObject::tr("SMD-pad")); 
+    radioButton = new QRadioButton(QObject::tr("Pad")); 
 	QObject::connect(radioButton, SIGNAL(clicked()), slotHolder, SLOT(typeEntry()));
     radioButton->setObjectName("NewPartsEditorRadio");
     if (ctype == Connector::Pad) radioButton->setChecked(true); 
