@@ -29,9 +29,6 @@
         <file>resources/images/schematic_icon.png</file>
         <file>resources/images/pcb_icon.png</file>
         <file>resources/images/icon_icon.png</file>
-        <file>resources/images/error_x_small.png</file>
-        <file>resources/images/error_x_mini.png</file>
-        <file>resources/images/error_x_mini.svg</file>
         <file>resources/images/remove_prop_enter.png</file>
         <file>resources/images/remove_prop_leave.png</file>
         <file>resources/images/helpImageBreadboard.png</file>
@@ -70,25 +67,6 @@
         <file>resources/images/cursor/scale.bmp</file>
         <file>resources/images/cursor/scale_mask.bmp</file>
 	
-        <file>resources/images/icons/partsBinOpenEnabled_icon.png</file>
-        <file>resources/images/icons/partsBinOpenPressed_icon.png</file>
-        <file>resources/images/icons/partsBinSaveEnabled_icon.png</file>
-        <file>resources/images/icons/partsBinSaveDisabled_icon.png</file>
-        <file>resources/images/icons/partsBinSavePressed_icon.png</file>
-        <file>resources/images/icons/partsBinCoreEnabled_icon.png</file>
-        <file>resources/images/icons/partsBinCorePressed_icon.png</file>
-        <file>resources/images/icons/partsBinDeleteEnabled_icon.png</file>
-        <file>resources/images/icons/partsBinDeletePressed_icon.png</file>
-        <file>resources/images/icons/partsBinIconViewEnabled_icon.png</file>
-        <file>resources/images/icons/partsBinIconViewDisabled_icon.png</file>
-        <file>resources/images/icons/partsBinIconViewPressed_icon.png</file>
-        <file>resources/images/icons/partsBinListViewEnabled_icon.png</file>
-        <file>resources/images/icons/partsBinListViewDisabled_icon.png</file>
-        <file>resources/images/icons/partsBinListViewPressed_icon.png</file>
-        <file>resources/images/icons/partsBinToolButtonArrow.png</file>
-        <file>resources/images/icons/partsBinExportPartEnabled_icon.png</file>
-        <file>resources/images/icons/partsBinExportPartDisabled_icon.png</file>
-        <file>resources/images/icons/partsBinExportPartPressed_icon.png</file>
         <file>resources/images/icons/toolbarExport_gbr_icon.png</file>
         <file>resources/images/icons/toolbarExport_gbx_icon.png</file>
         <file>resources/images/icons/toolbarExport_jpeg_icon.png</file>
@@ -141,16 +119,6 @@
         <file>resources/images/icons/segmentedSwitcherXInactiveDimmed.png</file>
         <file>resources/images/icons/segmentedSwitcherXInactiveFocus.png</file>
         <file>resources/images/icons/segmentedSwitcherXInactiveFocusHover.png</file>
-        <file>resources/images/icons/partsEditorZoomInVerButton.png</file>
-        <file>resources/images/icons/partsEditorZoomOutVerButton.png</file>
-        <file>resources/images/icons/partsEditorZoomInHorButton.png</file>
-        <file>resources/images/icons/partsEditorZoomOutHorButton.png</file>
-        <file>resources/images/icons/partsEditorConnectorAddEnabled_icon.png</file>
-        <file>resources/images/icons/partsEditorConnectorAddDisabled_icon.png</file>
-        <file>resources/images/icons/partsEditorConnectorAddPressed_icon.png</file>
-        <file>resources/images/icons/partsEditorConnectorRemoveEnabled_icon.png</file>
-        <file>resources/images/icons/partsEditorConnectorRemoveDisabled_icon.png</file>
-        <file>resources/images/icons/partsEditorConnectorRemovePressed_icon.png</file>
         <file>resources/images/icons/arrowButtonUp.png</file>
         <file>resources/images/icons/arrowButtonDown.png</file>
         <file>resources/images/icons/arrowButtonLeft.png</file>
@@ -171,18 +139,6 @@
 	<file>resources/images/icons/partsBinCombinedMenuPressed_icon.png</file>
 	<file>resources/images/icons/partsBinCombinedMenuHover_icon.png</file>
 	<file>resources/images/icons/noArrow_icon.png</file>
-	
-	<file>resources/images/itemselection/cornerHandlerActiveBottomLeft.png</file>
-        <file>resources/images/itemselection/cornerHandlerActiveBottomRight.png</file>
-        <file>resources/images/itemselection/cornerHandlerActiveTopLeft.png</file>
-        <file>resources/images/itemselection/cornerHandlerActiveTopRight.png</file>
-        <file>resources/images/itemselection/cornerHandlerDarkBottomLeft.png</file>
-        <file>resources/images/itemselection/cornerHandlerDarkBottomRight.png</file>
-        <file>resources/images/itemselection/cornerHandlerDarkTopLeft.png</file>
-        <file>resources/images/itemselection/cornerHandlerDarkTopRight.png</file>
-        <file>resources/images/itemselection/crosshairHandlerActive.png</file>
-        <file>resources/images/itemselection/crosshairHandlerHover.png</file>
-        <file>resources/images/itemselection/crosshairHandlerNormal.png</file>
 	
         <file>resources/parts/core/wire.fzp</file>
         <file>resources/parts/core/cmRuler.fzp</file>
