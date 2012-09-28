@@ -37,9 +37,6 @@ $Date$
 
 		opened part from my parts bin, hit save as, should have created new part, seems to have modified same part instead
 
-		ask to copy connectors when the same image is loaded into a second view
-			hidden views (i.e. view-specific parts)
-
 		what happens if you pick the same rect for multiple connectors
 		
 		open part from my-parts, change nothing, do save: get a variant-in-use message
@@ -63,7 +60,7 @@ $Date$
 			test undo
 			what happens when adding connectors
 
-		part is not complete (all connectors not defined for all views)
+		part is not complete message? (all connectors not defined for all views)
 
         leaves should be on top of svg tree (partly done)
 
@@ -802,12 +799,28 @@ void PEMainWindow::createViewMenuActions() {
 	m_showConnectorsViewAct->setStatusTip(tr("Show the connector metadata in a list view"));
 	connect(m_showConnectorsViewAct, SIGNAL(triggered()), this, SLOT(showConnectorsView()));
 
+    m_hideOtherViewsAct = new QAction(tr("Make only this view visible"), this);
+	m_hideOtherViewsAct->setStatusTip(tr("The part will only be visible in this view and icon view"));
+	connect(m_hideOtherViewsAct, SIGNAL(triggered()), this, SLOT(hideOtherViews()));
+
 }
 
 void PEMainWindow::createViewMenu() {
     MainWindow::createViewMenu();
 
     bool afterNext = false;
+    foreach (QAction * action, m_viewMenu->actions()) {
+        if (action == m_setBackgroundColorAct) {
+			afterNext = true;
+		}
+		else if (afterNext) {
+            m_viewMenu->insertAction(action, m_hideOtherViewsAct);
+            m_viewMenu->insertSeparator(action);
+            break;
+        }
+    }
+	
+    afterNext = false;
     foreach (QAction * action, m_viewMenu->actions()) {
         if (action == m_showPCBAct) {
             afterNext = true;
@@ -1526,11 +1539,24 @@ QString PEMainWindow::saveFzp() {
     return fzpPath;
 }
 
-void PEMainWindow::reload(bool firstTime) {
+void PEMainWindow::reload(bool firstTime) 
+{
+	Q_UNUSED(firstTime);
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
-	Q_UNUSED(firstTime);
+	QList<ItemBase *> toDelete;
+
+	foreach (SketchWidget * sketchWidget, m_sketchWidgets.values()) {
+		foreach (QGraphicsItem * item, sketchWidget->scene()->items()) {
+			ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
+			if (itemBase) toDelete << itemBase;
+		}
+	}
+
+	foreach (ItemBase * itemBase, toDelete) {
+		delete itemBase;
+	}
 
     QString fzpPath = saveFzp();   // needs a document somewhere to set up connectors--not part of the undo stack
     ModelPart * modelPart = new ModelPart(m_fzpDocument, fzpPath, ModelPart::Part);
@@ -3182,13 +3208,12 @@ void PEMainWindow::reuseImage(ViewLayer::ViewIdentifier viewIdentifier) {
     QFileInfo info(afterFilename);
     csc->setText(QString("Load '%1'").arg(info.fileName()));
     m_undoStack->waitPush(csc, SketchWidget::PropChangeDelay);
-
 }
-
 
 void PEMainWindow::updateFileMenu() {
 	MainWindow::updateFileMenu();
 
+	/*
 	QHash<ViewLayer::ViewIdentifier, bool> enabled;
 	enabled.insert(ViewLayer::BreadboardView, true);
 	enabled.insert(ViewLayer::SchematicView, true);
@@ -3205,6 +3230,12 @@ void PEMainWindow::updateFileMenu() {
 	m_reuseBreadboardAct->setEnabled(enableAll && enabled.value(ViewLayer::BreadboardView));
 	m_reuseSchematicAct->setEnabled(enableAll && enabled.value(ViewLayer::SchematicView));
 	m_reusePCBAct->setEnabled(enableAll && enabled.value(ViewLayer::PCBView));
+	*/
+
+	bool enabled = m_currentGraphicsView && m_currentGraphicsView->viewIdentifier() == ViewLayer::IconView;
+	m_reuseBreadboardAct->setEnabled(enabled);
+	m_reuseSchematicAct->setEnabled(enabled);
+	m_reusePCBAct->setEnabled(enabled);
 }
 
 void PEMainWindow::setImageAttribute(QDomElement & layers, const QString & svgPath)
@@ -3216,5 +3247,81 @@ void PEMainWindow::setImageAttribute(QDomElement & layers, const QString & svgPa
 	layer = m_fzpDocument.createElement("layer");
 	layers.appendChild(layer);
 	layer.setAttribute("layerId", ViewLayer::viewLayerXmlNameFromID(ViewLayer::UnknownLayer));
+}
+
+void PEMainWindow::updateLayerMenu(bool resetLayout) {
+	MainWindow::updateLayerMenu(resetLayout);
+
+	bool enabled = false;
+	if (m_currentGraphicsView != NULL) {
+		switch (m_currentGraphicsView->viewIdentifier()) {
+			case ViewLayer::BreadboardView:
+			case ViewLayer::SchematicView:
+			case ViewLayer::PCBView:
+				enabled = true;
+			default:
+				break;
+		}
+	}
+
+	m_hideOtherViewsAct->setEnabled(enabled);
+}
+
+void PEMainWindow::hideOtherViews() {
+	if (m_currentGraphicsView == NULL) return;
+
+	ViewLayer::ViewIdentifier afterViewIdentifier = m_currentGraphicsView->viewIdentifier();
+	ItemBase * afterItemBase = m_items.value(afterViewIdentifier);
+	if (afterItemBase == NULL) return;
+	QString afterFilename = afterItemBase->filename();
+
+	QList<ViewLayer::ViewIdentifier> viewIdentifierList;
+	viewIdentifierList << ViewLayer::BreadboardView << ViewLayer::SchematicView << ViewLayer::PCBView;
+	viewIdentifierList.removeOne(afterViewIdentifier);
+
+	QString originalPath = saveFzp();
+
+	QString afterViewName = ViewLayer::viewIdentifierXmlName(afterViewIdentifier);
+	QStringList beforeViewNames;
+	foreach (ViewLayer::ViewIdentifier viewIdentifier, viewIdentifierList) {
+		beforeViewNames << ViewLayer::viewIdentifierXmlName(viewIdentifier);
+	}
+
+	QDomElement root = m_fzpDocument.documentElement();
+	QDomElement connectors = root.firstChildElement("connectors");
+	QDomElement connector = connectors.firstChildElement("connector");
+	while (!connector.isNull()) {
+		QDomElement views = connector.firstChildElement("views");
+		QDomElement afterView = views.firstChildElement(afterViewName);
+		
+		foreach (QString name, beforeViewNames) {
+			QDomElement toRemove = views.firstChildElement(name);
+			if (!toRemove.isNull()) {
+				toRemove.parentNode().removeChild(toRemove);
+			}
+			QDomElement toReplace = afterView.cloneNode(true).toElement();
+			toReplace.setTagName(name);
+			views.appendChild(toReplace);
+		}
+
+		connector = connector.nextSiblingElement("connector");
+	}
+
+	QDomElement views = root.firstChildElement("views");
+	QDomElement afterView = views.firstChildElement(afterViewName);
+	foreach (QString name, beforeViewNames) {
+		QDomElement toRemove = views.firstChildElement(name);
+		if (!toRemove.isNull()) {
+			toRemove.parentNode().removeChild(toRemove);
+		}
+		QDomElement toReplace = afterView.cloneNode(true).toElement();
+		toReplace.setTagName(name);
+		views.appendChild(toReplace);
+	}
+	
+    QString newPath = saveFzp();
+	ChangeFzpCommand * cfc = new ChangeFzpCommand(this, originalPath, newPath, NULL);
+	cfc->setText(tr("Make only %1 view visible").arg(m_currentGraphicsView->viewName()));
+	m_undoStack->waitPush(cfc, SketchWidget::PropChangeDelay);
 }
 

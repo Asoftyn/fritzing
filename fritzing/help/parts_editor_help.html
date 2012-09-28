@@ -9,19 +9,18 @@
     <div class="moz-text-html" lang="x-western">
       <div class="moz-cite-prefix"><br>
         We have decided to release the new Parts Editor in two phases.
-        The first phase, a part of this release, is already more
-        powerful and easy to use than the old Parts Editor, but you
-        still need to do a lot of preliminary work using an external SVG
-        editor like Inkscape, Illustrator, or CorelDRAW. In the next
-        phase we hope to eliminate much of the need to use external
-        programs.<br>
+        The first phase, included in release 0.7.9, is already easier to
+        use&nbsp; and more powerful than the old Parts Editor, but you
+        still have to do a lot of preliminary work using an SVG editor
+        like Inkscape, Illustrator, or CorelDRAW. In the next phase we
+        hope to eliminate much of the need to use these programs.<br>
         <br>
         <big><big><b>How to start</b></big></big><br>
         <br>
         The new approach is very different from that of the old Parts
         Editor, and explaining the difference is the purpose of this
         document. The first big change is that you cannot create a new
-        part from scratch--you must start with a part that already
+        part from scratch--you must begin with a part that already
         exists. So the best thing to do is to find a part that is pretty
         close to what you eventually want. If your part is really
         different from anything else, then just to try to match the
@@ -50,22 +49,24 @@
         <big><big><br>
             <b>Loading new images</b></big></big><br>
         <br>
-        To load the SVGs for your part, go to the appropriate view, and
-        use File &gt; Open. As before, you can load SVGs; gEDA .fp (pcb
-        footprint) files; and KICAD .mod (pcb footprint) files. You can
-        also still load PNG or JPG images, but we discourage this
-        because these images are raster-based rather than vector-based
-        so they don't look good when scaled. <br>
+        To load the SVGs for your part, switch to the appropriate view,
+        and use <b>File &gt; Open</b>. As before, you can load SVGs in
+        all views; gEDA .fp files and KICAD .mod files in PCB view. You
+        can also still load PNG or JPG images in all views, but we
+        discourage this because these are raster-based rather than
+        vector-based so they don't look good when scaled. <br>
         <br>
         Since you have already begun with a part, it may be that you
-        will only have to load an image for a particular view--you do
-        not have to replace all the images from the original.<br>
+        will only have to load a single image for a particular view--you
+        do not have to replace all the images in the original part.<br>
         <br>
         It is still necessary to prepare SVGs for PCB view by grouping
         elements in layers: copper0, silkscreen, copper1, etc. (Layering
         will be handled in the phase 2 parts editor.) The best way to
         understand the layers is to open up one of the core pcb svg
-        files, For example have a look at the file crystal_hc49U.svg:<br>
+        files, For example have a look at the file crystal_hc49U.svg.
+        Silkscreen layer has four while lines, the two copper layers
+        share a pair of circles.<br>
         <br>
         <tt>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
           &lt;svg baseProfile="tiny" height="0.20306in" version="1.2"
@@ -96,13 +97,23 @@
         </blockquote>
         <tt>&lt;/svg&gt;</tt><br>
         <br>
+        It is also necessary to add elements to the SVG file that can be
+        associated with connectors. For example, in the svg above, the
+        circle elements are used for connectors. If you load a JPG or
+        PNG file, there will not be any elements available to make
+        connectors and you will have to open the file in an SVG editor
+        to add those (this won't be necessary in phase 2):<br>
+        <br>
         Sometimes you will want to reuse the breadboard image as your
-        icon image. There is a shortcut for this under File &gt; Reuse
-        breadboard image. You can also find the options: File &gt; Reuse
-        schematic image, and File &gt; Reuse PCB image. These options
-        are also available in the other (not icon) views, though this
-        would probably only make sense as a way to set up a temporary
-        placeholder.<br>
+        icon image. There is a shortcut for this under <b>File &gt;
+          Reuse breadboard image</b>. You can also find the options: <b>File
+          &gt; Reuse schematic image</b>, and <b>File &gt; Reuse PCB
+          image</b>. <br>
+        <br>
+        For certain parts--like a breadboard--there is only one view
+        image. For technical reasons, you have to tell the Parts Editor
+        this is what you want.&nbsp; Use <b>View &gt; Make only this
+          view visible</b>.<br>
         <br>
         <big><big><b>Undo, save, show in folder</b></big></big><br>
         <br>
@@ -132,10 +143,10 @@
         ~/.config/Fritzing/parts/svg/user/. <br>
         <br>
         To find the SVG image for the current view on the desktop,
-        choose File &gt; Show in Folder. On Mac and Windows this will
-        open a folder on your desktop with the SVG file selected. Under
-        Linux you get the folder but no file selection (if anyone has
-        advice about how to get the latter to work, we would be
+        choose <b>File &gt; Show in Folder</b>. On Mac and Windows this
+        will open a folder on your desktop with the SVG file selected.
+        Under Linux you get the folder but no file selection (if anyone
+        has advice about how to get selection to work, we would be
         grateful).<br>
         <big><big><br>
             <b>Associating a connector with its SVG counterpart</b></big></big><br>
@@ -155,20 +166,13 @@
         <img alt="starting up" src="images/start.png" height="363"
           width="599"><br>
         <br>
-        Next we load the new breadboard image using File &gt;
-        Open.&nbsp; In the Tools widget at the upper right, you see a
-        list of connectors. Choose one to make it the <b>current </b>or
-
-
-
-
-
-
-        <b>active</b> <b>connector</b>. If it has already been
-        associated with an SVG element, that element will display a
-        marquee highlight. Since we are just starting out, we will
-        choose pin1 which is not currently associated with any SVG
-        element.<br>
+        Next we load the new breadboard image using <b>File &gt; Open</b>.&nbsp;
+        In the Tools widget at the upper right, you see a list of
+        connectors. Choose one to make it the <b>current </b>or <b>active</b>
+        <b>connector</b>. If it has already been associated with an SVG
+        element, that element will display a marquee highlight. Since we
+        are just starting out, we will choose pin1 which is not
+        currently associated with any SVG element.<br>
         <br>
         <img alt="pin 1" src="images/pin1.png" height="350" width="539"><br>
         <br>
@@ -260,7 +264,9 @@
         <b><br>
         </b><b><big><big>Known limits</big></big></b><br>
         <br>
-        holes, mixed tht and smd, hybrids<br>
+        The following feature are due in phase two: holes, mixed THT and
+        SMD connectors, control over svg element layering, some direct
+        manipulation of SVG elements.<br>
         <b><br>
         </b> <b><big><big>Bye for now</big></big></b><br>
         <br>

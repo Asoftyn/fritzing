@@ -235,7 +235,7 @@ protected slots:
 	void showPartsBinIconView();
 	void showPartsBinListView();
     void updateEditMenu();
-    void updateLayerMenu(bool resetLayout = false);
+    virtual void updateLayerMenu(bool resetLayout = false);
     void updatePartMenu();
     virtual void updateWireMenu();
     void updateTransformationActions();

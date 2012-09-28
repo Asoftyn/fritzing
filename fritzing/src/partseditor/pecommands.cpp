@@ -186,12 +186,16 @@ ChangeFzpCommand::ChangeFzpCommand(PEMainWindow * peMainWindow, const QString & 
 
 void ChangeFzpCommand::undo()
 {
-    m_peMainWindow->restoreFzp(m_oldFzpFile);
+	if (!m_redoOnly) {
+		m_peMainWindow->restoreFzp(m_oldFzpFile);
+	}
 }
 
 void ChangeFzpCommand::redo()
 {
-    m_peMainWindow->restoreFzp(m_newFzpFile);
+	if (!m_undoOnly) {
+		m_peMainWindow->restoreFzp(m_newFzpFile);
+	}
 }
 
 QString ChangeFzpCommand::getParamString() const {

@@ -190,6 +190,8 @@ protected slots:
 	void reuseBreadboard();
 	void reuseSchematic();
 	void reusePCB();
+	void hideOtherViews();
+    void updateLayerMenu(bool resetLayout = false);
 
 protected:
     QDomDocument m_fzpDocument;
@@ -206,6 +208,7 @@ protected:
     QAction * m_reuseBreadboardAct;
     QAction * m_reuseSchematicAct;
     QAction * m_reusePCBAct;
+	QAction * m_hideOtherViewsAct;
 
 	QPointer<SketchAreaWidget> m_iconWidget;
 	QPointer<class IconSketchWidget> m_iconGraphicsView;
