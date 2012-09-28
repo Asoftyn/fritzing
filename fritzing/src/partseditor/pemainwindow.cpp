@@ -31,8 +31,6 @@ $Date$
 
         crash when swapping part during save
 
-		// icon view should never use splitter
-
 		when adding connectors by changing the count and "picking" only breadboard view, the connections are not saved to the fzp properly
         
         crashed when saving the description
@@ -43,8 +41,6 @@ $Date$
 			hidden views (i.e. view-specific parts)
 
 		what happens if you pick the same rect for multiple connectors
-
-		PermaProtoFullsizedBoard.fzpz crashes fritzing when switching to pcb view 
 		
 		open part from my-parts, change nothing, do save: get a variant-in-use message
 
@@ -77,14 +73,14 @@ $Date$
 			test everything visible works
 
 		why isn't swapping available when a family has new parts with multiple variant values?
-		
-		quick ability to use the 'breadboard' file as the icon file (a checkbox for 'use breadboard image for icon', for example)
-		        
+				        
 		test button with export etchable to make sure the part is right?
 			export etchable is disabled without a board
 
 		if pcb svg does not have combined copper layers, complain
 			test for parentage using findElementWithAttribute 
+
+		hide view option
 
     ////////////////////////////// second release /////////////////////////////////
 
@@ -741,7 +737,7 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
 		    return;
         }
 
-        layers.setAttribute("image", svgPath);
+		setImageAttribute(layers, svgPath);
     }
 
     reload(true);
@@ -1498,7 +1494,7 @@ void PEMainWindow::changeSvg(SketchWidget * sketchWidget, const QString & filena
     QFileInfo info(filename);
     QDir dir = info.absoluteDir();
     QString shortName = dir.dirName() + "/" + info.fileName();
-    layers.setAttribute("image", shortName);
+	setImageAttribute(layers, shortName);
 
     foreach (QGraphicsItem * item, sketchWidget->scene()->items()) {
         PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
@@ -1950,7 +1946,7 @@ bool PEMainWindow::saveAs(bool overWrite)
             }
         }
 
-        layers.setAttribute("image", svgPath);
+		setImageAttribute(layers, svgPath);
 
         QString actualPath = svgOverWrite ? m_originalSvgPaths.value(sketchWidget->viewIdentifier()) : m_userPartsFolderSvgPath + svgPath; 
         bool result = writeXml(actualPath, removeGorn(svg), false);
@@ -1980,7 +1976,7 @@ bool PEMainWindow::saveAs(bool overWrite)
 
         QDomElement view = views.firstChildElement(ViewLayer::viewIdentifierXmlName(sketchWidget->viewIdentifier()));
         QDomElement layers = view.firstChildElement("layers");
-        layers.setAttribute("image", svgPath);
+		setImageAttribute(layers, svgPath);
     }
 
     // restores the temporary fzp state
@@ -3210,3 +3206,15 @@ void PEMainWindow::updateFileMenu() {
 	m_reuseSchematicAct->setEnabled(enableAll && enabled.value(ViewLayer::SchematicView));
 	m_reusePCBAct->setEnabled(enableAll && enabled.value(ViewLayer::PCBView));
 }
+
+void PEMainWindow::setImageAttribute(QDomElement & layers, const QString & svgPath)
+{
+	layers.setAttribute("image", svgPath);
+	QDomElement layer = layers.firstChildElement("layer");
+	if (!layer.isNull()) return;
+
+	layer = m_fzpDocument.createElement("layer");
+	layers.appendChild(layer);
+	layer.setAttribute("layerId", ViewLayer::viewLayerXmlNameFromID(ViewLayer::UnknownLayer));
+}
+

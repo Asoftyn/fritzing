@@ -7031,6 +7031,10 @@ void SketchWidget::addFixedToCenterItem2(SketchMainHelp * item) {
 
 void SketchWidget::drawBackground( QPainter * painter, const QRectF & rect )
 {
+	if (!rect.isValid()) {
+		return;
+	}
+
 	InfoGraphicsView::drawBackground(painter, rect);
 
 	// from:  http://www.qtcentre.org/threads/27364-Trying-to-draw-a-grid-on-a-QGraphicsScene-View

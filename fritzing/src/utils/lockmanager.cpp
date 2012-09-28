@@ -28,6 +28,7 @@ $Date$
 #include "folderutils.h"
 
 #include <QTimer>
+#include <QPointer>
 #include <QMutex>
 #include <QMutexLocker>
 #include <QDateTime>
@@ -37,7 +38,7 @@ const long LockManager::FastTime =  2000;
 const long LockManager::SlowTime = 240000;
 
 static LockManager TheLockManager;
-static QHash<long, QTimer *> TheTimers;
+static QHash<long, QPointer<QTimer> > TheTimers;
 static QMultiHash<long, LockedFile *> TheLockedFiles; 
 static QMutex TheMutex;
 
@@ -65,15 +66,17 @@ LockManager::LockManager() : QObject()
 LockManager::~LockManager()
 {
 	foreach (QTimer * timer, TheTimers) {
-		timer->stop();
+		if (timer) timer->stop();
 	}
 	TheTimers.clear();
 }
 
 void LockManager::cleanup() {
     foreach (QTimer * timer, TheTimers) {
-        timer->stop();
-        delete timer;
+		if (timer) {
+			timer->stop();
+			delete timer;
+		}
     }
     TheTimers.clear();
 }

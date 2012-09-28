@@ -170,6 +170,7 @@ protected:
 	bool activeLayerWidgetAlwaysOn();
 	void updateFileMenu();
 	void reuseImage(ViewLayer::ViewIdentifier);
+	void setImageAttribute(QDomElement & layers, const QString & image);
 
 protected slots:
     void initZoom();
