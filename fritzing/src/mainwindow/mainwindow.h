@@ -201,7 +201,7 @@ public slots:
 	void swapObsolete();
     void swapBoardImageSlot(SketchWidget * sketchWidget, ItemBase * itemBase, const QString & filename, const QString & moduleID, bool addName);
 	void updateTraceMenu();
-	void updateFileMenu();
+	virtual void updateFileMenu();
     void showStatusMessage(const QString &);
 
 protected slots:
@@ -386,7 +386,7 @@ protected:
 	void initSketchWidget(SketchWidget *);
 
     virtual void createActions();
-    void createFileMenuActions();
+    virtual void createFileMenuActions();
     void createExportActions();
     void createRaiseWindowActions();
     void createOrderFabAct();

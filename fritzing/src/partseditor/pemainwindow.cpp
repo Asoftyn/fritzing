@@ -31,6 +31,8 @@ $Date$
 
         crash when swapping part during save
 
+		// icon view should never use splitter
+
 		when adding connectors by changing the count and "picking" only breadboard view, the connections are not saved to the fzp properly
         
         crashed when saving the description
@@ -499,9 +501,26 @@ void PEMainWindow::moreInitDock()
 
 }
 
+void PEMainWindow::createFileMenuActions() {
+	MainWindow::createFileMenuActions();
+
+	m_reuseBreadboardAct = new QAction(tr("Reuse breadboard image"), this);
+	m_reuseBreadboardAct->setStatusTip(tr("Reuse the breadboard image in this view"));
+	connect(m_reuseBreadboardAct, SIGNAL(triggered()), this, SLOT(reuseBreadboard()));
+
+	m_reuseSchematicAct = new QAction(tr("Reuse schematic image"), this);
+	m_reuseSchematicAct->setStatusTip(tr("Reuse the schematic image in this view"));
+	connect(m_reuseSchematicAct, SIGNAL(triggered()), this, SLOT(reuseSchematic()));
+
+	m_reusePCBAct = new QAction(tr("Reuse PCB image"), this);
+	m_reusePCBAct->setStatusTip(tr("Reuse the PCB image in this view"));
+	connect(m_reusePCBAct, SIGNAL(triggered()), this, SLOT(reusePCB()));
+}
+
 void PEMainWindow::createActions()
 {
     createFileMenuActions();
+
 	m_openAct->setStatusTip(tr("Open a file to use as a part image."));
 	disconnect(m_openAct, SIGNAL(triggered()), this, SLOT(mainLoad()));
 	connect(m_openAct, SIGNAL(triggered()), this, SLOT(loadImage()));
@@ -1736,6 +1755,10 @@ void PEMainWindow::relocateConnector(PEGraphicsItem * pegi)
 void PEMainWindow::createFileMenu() {
     m_fileMenu = menuBar()->addMenu(tr("&File"));
     m_fileMenu->addAction(m_openAct);
+    m_fileMenu->addAction(m_reuseBreadboardAct);
+    m_fileMenu->addAction(m_reuseSchematicAct);
+    m_fileMenu->addAction(m_reusePCBAct);
+
     //m_fileMenu->addAction(m_revertAct);
 
     m_fileMenu->addSeparator();
@@ -3134,3 +3157,56 @@ bool PEMainWindow::saveWithReferenceFile(QDomDocument & doc, const QString & ref
     return writeXml(newPath, removeGorn(svg), true);
 }
 
+void PEMainWindow::reuseBreadboard()
+{
+	reuseImage(ViewLayer::BreadboardView);
+}
+
+void PEMainWindow::reuseSchematic()
+{
+	reuseImage(ViewLayer::SchematicView);
+}
+
+void PEMainWindow::reusePCB()
+{
+	reuseImage(ViewLayer::PCBView);
+}
+
+void PEMainWindow::reuseImage(ViewLayer::ViewIdentifier viewIdentifier) {
+	if (m_currentGraphicsView == NULL) return;
+
+	ItemBase * afterItemBase = m_items.value(viewIdentifier);
+	if (afterItemBase == NULL) return;
+
+	QString afterFilename = afterItemBase->filename();
+
+	ItemBase * beforeItemBase = m_items.value(m_currentGraphicsView->viewIdentifier());
+
+	ChangeSvgCommand * csc = new ChangeSvgCommand(this, m_currentGraphicsView, beforeItemBase->filename(), afterFilename, m_originalSvgPaths.value(beforeItemBase->viewIdentifier()), afterFilename, NULL);
+    QFileInfo info(afterFilename);
+    csc->setText(QString("Load '%1'").arg(info.fileName()));
+    m_undoStack->waitPush(csc, SketchWidget::PropChangeDelay);
+
+}
+
+
+void PEMainWindow::updateFileMenu() {
+	MainWindow::updateFileMenu();
+
+	QHash<ViewLayer::ViewIdentifier, bool> enabled;
+	enabled.insert(ViewLayer::BreadboardView, true);
+	enabled.insert(ViewLayer::SchematicView, true);
+	enabled.insert(ViewLayer::PCBView, true);
+	bool enableAll = true;
+	if (m_currentGraphicsView == NULL) {
+		enableAll = false;
+	}
+	else {
+		ViewLayer::ViewIdentifier viewIdentifier = m_currentGraphicsView->viewIdentifier();
+		enabled.insert(viewIdentifier, false);
+	}
+
+	m_reuseBreadboardAct->setEnabled(enableAll && enabled.value(ViewLayer::BreadboardView));
+	m_reuseSchematicAct->setEnabled(enableAll && enabled.value(ViewLayer::SchematicView));
+	m_reusePCBAct->setEnabled(enableAll && enabled.value(ViewLayer::PCBView));
+}

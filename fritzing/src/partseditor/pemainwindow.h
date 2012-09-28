@@ -115,6 +115,7 @@ protected:
 	QMenu *breadboardWireMenu();
 	void setTitle();
     void createViewMenuActions();
+    void createFileMenuActions();
     void createViewMenu();
     QHash<QString, QString> getOldProperties();
     QDomElement findConnector(const QString & id, int & index);
@@ -167,6 +168,8 @@ protected:
 	void setConnectorSMD(bool toSMD, QDomElement & connector);
 	bool saveWithReferenceFile(QDomDocument & doc, const QString & referencePath, const QString & newPath);
 	bool activeLayerWidgetAlwaysOn();
+	void updateFileMenu();
+	void reuseImage(ViewLayer::ViewIdentifier);
 
 protected slots:
     void initZoom();
@@ -183,6 +186,9 @@ protected slots:
     void updateWireMenu();
 	void closeLater();
 	void resetNextPick();
+	void reuseBreadboard();
+	void reuseSchematic();
+	void reusePCB();
 
 protected:
     QDomDocument m_fzpDocument;
@@ -196,6 +202,9 @@ protected:
     QAction * m_showIconAct;
     QAction * m_showInOSAct;
 	class WireAction * m_deleteBusConnectionAct;
+    QAction * m_reuseBreadboardAct;
+    QAction * m_reuseSchematicAct;
+    QAction * m_reusePCBAct;
 
 	QPointer<SketchAreaWidget> m_iconWidget;
 	QPointer<class IconSketchWidget> m_iconGraphicsView;

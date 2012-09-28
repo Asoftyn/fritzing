@@ -1316,7 +1316,7 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewIdenti
 		fixCopper1(modelPart, filename, viewLayerID, viewLayerSpec, flipDoc);
 	}
     QByteArray bytesToLoad;
-	if (modelPartShared->hasMultipleLayers(viewIdentifier)) {
+	if ((viewIdentifier != ViewLayer::IconView) && modelPartShared->hasMultipleLayers(viewIdentifier)) {
         QString layerName = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
 		// need to treat create "virtual" svg file for each layer
 		SvgFileSplitter svgFileSplitter;
