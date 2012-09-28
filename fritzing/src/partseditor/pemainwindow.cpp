@@ -61,11 +61,11 @@ $Date$
 
         smd vs. tht
 			what happens if you open an smd placed on the bottom layer?
-			clicking "smd" should remove item from copper0
-			clicking "tht" should add item to both layers
 			at save time fix up top level layers list
+			test undo
+			what happens when adding connectors
 
-		remove gorn addresses when saving svg files
+		part is not complete (all connectors not defined for all views)
 
         leaves should be on top of svg tree (partly done)
 
@@ -79,8 +79,10 @@ $Date$
 		quick ability to use the 'breadboard' file as the icon file (a checkbox for 'use breadboard image for icon', for example)
 		        
 		test button with export etchable to make sure the part is right?
+			export etchable is disabled without a board
 
 		if pcb svg does not have combined copper layers, complain
+			test for parentage using findElementWithAttribute 
 
     ////////////////////////////// second release /////////////////////////////////
 
@@ -212,6 +214,7 @@ $Date$
 #include "../connectors/connectoritem.h"
 #include "../connectors/bus.h"
 #include "../installedfonts.h"
+#include "../dock/layerpalette.h"
 
 #include <QtDebug>
 #include <QApplication>
@@ -457,6 +460,9 @@ void PEMainWindow::initSketchWidgets()
 
 void PEMainWindow::initDock()
 {
+
+	m_layerPalette = new LayerPalette(this);
+
     //m_binManager = new BinManager(m_referenceModel, NULL, m_undoStack, this);
     //m_binManager->openBin(":/resources/bins/pe.fzb");
     //m_binManager->hideTabBar();
@@ -485,6 +491,12 @@ void PEMainWindow::moreInitDock()
 
 	//QDockWidget * dockWidget = makeDock(BinManager::Title, m_binManager, MinHeight, DefaultHeight);
     //dockWidget->resize(0, 0);
+
+    makeDock(tr("Layers"), m_layerPalette, DockMinWidth, DockMinHeight)->hide();
+    m_layerPalette->setMinimumSize(DockMinWidth, DockMinHeight);
+	m_layerPalette->setShowAllLayersAction(m_showAllLayersAct);
+	m_layerPalette->setHideAllLayersAction(m_hideAllLayersAct);
+
 }
 
 void PEMainWindow::createActions()
@@ -506,6 +518,8 @@ void PEMainWindow::createActions()
     createViewMenuActions();
     createHelpMenuActions();
     createWindowMenuActions();
+	createActiveLayerActions();
+
 }
 
 void PEMainWindow::createMenus()
@@ -517,9 +531,36 @@ void PEMainWindow::createMenus()
     createHelpMenu();
 }
 
-QList<QWidget*> PEMainWindow::getButtonsForView(ViewLayer::ViewIdentifier) {
+QList<QWidget*> PEMainWindow::getButtonsForView(ViewLayer::ViewIdentifier viewIdentifier) {
+
 	QList<QWidget*> retval;
-    return retval;
+	SketchAreaWidget *parent;
+	switch(viewIdentifier) {
+		case ViewLayer::BreadboardView: parent = m_breadboardWidget; break;
+		case ViewLayer::SchematicView: parent = m_schematicWidget; break;
+		case ViewLayer::PCBView: parent = m_pcbWidget; break;
+		default: return retval;
+	}
+
+	//retval << createExportEtchableButton(parent);
+
+	switch (viewIdentifier) {
+		case ViewLayer::BreadboardView:
+			break;
+		case ViewLayer::SchematicView:
+			break;
+		case ViewLayer::PCBView:
+			// retval << createActiveLayerButton(parent);
+			break;
+		default:
+			break;
+	}
+
+	return retval;
+}
+
+bool PEMainWindow::activeLayerWidgetAlwaysOn() {
+	return true;
 }
 
 void PEMainWindow::connectPairs() {
@@ -763,6 +804,7 @@ void PEMainWindow::createViewMenu() {
             break;
         }
     }
+    m_numFixedActionsInViewMenu = m_viewMenu->actions().size();
 }
 
 void PEMainWindow::showMetadataView() {
@@ -1694,7 +1736,7 @@ void PEMainWindow::relocateConnector(PEGraphicsItem * pegi)
 void PEMainWindow::createFileMenu() {
     m_fileMenu = menuBar()->addMenu(tr("&File"));
     m_fileMenu->addAction(m_openAct);
-    m_fileMenu->addAction(m_revertAct);
+    //m_fileMenu->addAction(m_revertAct);
 
     m_fileMenu->addSeparator();
     m_fileMenu->addAction(m_closeAct);
@@ -1702,12 +1744,15 @@ void PEMainWindow::createFileMenu() {
     m_fileMenu->addAction(m_saveAsAct);
 
     m_fileMenu->addSeparator();
+	m_exportMenu = m_fileMenu->addMenu(tr("&Export"));
     //m_fileMenu->addAction(m_pageSetupAct);
     m_fileMenu->addAction(m_printAct);
     m_fileMenu->addAction(m_showInOSAct);
 
 	m_fileMenu->addSeparator();
 	m_fileMenu->addAction(m_quitAct);
+
+	populateExportMenu();
 
     connect(m_fileMenu, SIGNAL(aboutToShow()), this, SLOT(updateFileMenu()));
 }
@@ -2242,6 +2287,7 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
 			QTimer::singleShot(10, this, SLOT(initZoom()));
 		}
     }
+	updateActiveLayerButtons();
 }
 
 void PEMainWindow::backupSketch()

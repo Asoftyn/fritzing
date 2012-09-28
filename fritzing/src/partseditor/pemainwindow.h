@@ -166,6 +166,7 @@ protected:
 	void fillInMetadata(const QDomElement & connector, ConnectorMetadata & cmd);
 	void setConnectorSMD(bool toSMD, QDomElement & connector);
 	bool saveWithReferenceFile(QDomDocument & doc, const QString & referencePath, const QString & newPath);
+	bool activeLayerWidgetAlwaysOn();
 
 protected slots:
     void initZoom();

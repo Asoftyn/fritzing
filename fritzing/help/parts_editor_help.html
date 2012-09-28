@@ -45,16 +45,16 @@
         view, and Connectors view. As you might expect, the first four
         views are for the part images; the Metadata view is where you
         enter the part's title, author, and other properties; and the
-        Connectors view is for the connector metadata--but you can also
+        Connectors view is for the connector metadata--and you can also
         use it to add and remove connectors.<br>
         <big><big><br>
-            <b>SVG preparation; loading other image types</b></big></big><br>
+            <b>Loading new images</b></big></big><br>
         <br>
         To load the SVGs for your part, go to the appropriate view, and
-        use File &gt; Open. As before, you can load SVGs, gEDA .fp
-        (footprint) files, KICAD .mod files (also for footprints). You
-        can also still load PNG or JPG images, but we discourage this
-        because these images are raster-based rather than vector-based,
+        use File &gt; Open. As before, you can load SVGs; gEDA .fp (pcb
+        footprint) files; and KICAD .mod (pcb footprint) files. You can
+        also still load PNG or JPG images, but we discourage this
+        because these images are raster-based rather than vector-based
         so they don't look good when scaled. <br>
         <br>
         Since you have already begun with a part, it may be that you
@@ -96,12 +96,13 @@
         </blockquote>
         <tt>&lt;/svg&gt;</tt><br>
         <br>
-        <big><big><b>Save and undo</b></big></big><br>
+        <big><big><b>Undo, save, show in folder</b></big></big><br>
         <br>
-        The next big differences from the old Parts Editor are that you
-        can save your changes at any point and keep working, and undo is
-        always available, even for unloading (and reloading) view
-        images.<br>
+        The next big difference from the old Parts Editor is that undo
+        is always available, even after loading view images.
+        Furthermore, you can save your changes at any point and keep
+        working--the new Parts Editor is less like a dialog and more
+        like a full document window.<br>
         <br>
         If you start with a core part (i.e. a part from the Fritzing
         distro), saving is equivalent to "Save As". A new part will be
@@ -122,7 +123,7 @@
         Linux and Mac this would be ~/.config/Fritzing/parts/user/ and
         ~/.config/Fritzing/parts/svg/user/. <br>
         <br>
-        To view the SVG image for the currrent view on the desktop,
+        To find the SVG image for the current view on the desktop,
         choose File &gt; Show in Folder. On Mac and Windows this will
         open a folder on your desktop with the SVG file selected. Under
         Linux you get the folder but no file selection (if anyone has
@@ -149,6 +150,7 @@
         Next we load the new breadboard image using File &gt;
         Open.&nbsp; In the Tools widget at the upper right, you see a
         list of connectors. Choose one to make it the <b>current </b>or
+
 
 
 
@@ -222,7 +224,7 @@
         <br>
         You can use the buttons or spinners to adjust the terminal
         point. Here is a close up after hitting the W button, and
-        clicking the X spinner twice (look at the pin marked 'AN2'). <br>
+        clicking the X spinner twice (look at the pin marked 'AN2'): <br>
         <br>
         <img alt="schematic3" src="images/schematic3.png" height="492"
           width="536"><br>

@@ -113,6 +113,8 @@ void MainWindow::createDockWindows()
 
     makeDock(tr("Layers"), m_layerPalette, DockMinWidth, DockMinHeight)->hide();
     m_layerPalette->setMinimumSize(DockMinWidth, DockMinHeight);
+	m_layerPalette->setShowAllLayersAction(m_showAllLayersAct);
+	m_layerPalette->setHideAllLayersAction(m_hideAllLayersAct);
 
     m_windowMenu->addSeparator();
     m_windowMenu->addAction(m_openProgramWindowAct);
@@ -270,8 +272,6 @@ void MainWindow::initDock() {
 
 void MainWindow::moreInitDock() {
 	DebugDialog::debug("create view switcher");
-	m_layerPalette->setShowAllLayersAction(m_showAllLayersAct);
-	m_layerPalette->setHideAllLayersAction(m_hideAllLayersAct);
 
 	m_viewSwitcher = new ViewSwitcher();
 	connect(m_viewSwitcher, SIGNAL(viewSwitched(int)), this, SLOT(viewSwitchedTo(int)));

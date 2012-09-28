@@ -889,14 +889,6 @@ void MainWindow::createPartMenuActions() {
     m_selectMoveLockAct->setStatusTip(tr("Select all parts that can't be moved"));
     connect(m_selectMoveLockAct, SIGNAL(triggered()), this, SLOT(selectMoveLock()));
 
-	m_showAllLayersAct = new QAction(tr("&Show All Layers"), this);
-	m_showAllLayersAct->setStatusTip(tr("Show all the available layers for the current view"));
-	connect(m_showAllLayersAct, SIGNAL(triggered()), this, SLOT(showAllLayers()));
-
-	m_hideAllLayersAct = new QAction(tr("&Hide All Layers"), this);
-	m_hideAllLayersAct->setStatusTip(tr("Hide all the layers of the current view"));
-	connect(m_hideAllLayersAct, SIGNAL(triggered()), this, SLOT(hideAllLayers()));
-
 	m_showPartLabelAct = new QAction(tr("&Show part label"), this);
 	m_showPartLabelAct->setStatusTip(tr("Show or hide the label for the selected parts"));
 	m_showPartLabelAct->setCheckable(true);
@@ -1007,6 +999,14 @@ void MainWindow::createViewMenuActions() {
 	m_showPartsBinListViewAct = new QAction(tr("Show Parts Bin List View"), this);
 	m_showPartsBinListViewAct->setStatusTip(tr("Display the parts bin in a list view"));
 	connect(m_showPartsBinListViewAct, SIGNAL(triggered()), this, SLOT(showPartsBinListView()));
+
+	m_showAllLayersAct = new QAction(tr("&Show All Layers"), this);
+	m_showAllLayersAct->setStatusTip(tr("Show all the available layers for the current view"));
+	connect(m_showAllLayersAct, SIGNAL(triggered()), this, SLOT(showAllLayers()));
+
+	m_hideAllLayersAct = new QAction(tr("&Hide All Layers"), this);
+	m_hideAllLayersAct->setStatusTip(tr("Hide all the layers of the current view"));
+	connect(m_hideAllLayersAct, SIGNAL(triggered()), this, SLOT(hideAllLayers()));
 
 }
 
@@ -1147,6 +1147,15 @@ void MainWindow::createFileMenu() {
 	m_fileMenu->addAction(m_quitAct);
     connect(m_fileMenu, SIGNAL(aboutToShow()), this, SLOT(updateFileMenu()));
 
+	populateExportMenu();
+
+	m_exportMenu->addAction(m_exportBomAct);
+	m_exportMenu->addAction(m_exportNetlistAct);
+
+	//m_exportMenu->addAction(m_exportEagleAct);
+}
+
+void MainWindow::populateExportMenu() {
 	QMenu * imageMenu = m_exportMenu->addMenu(tr("as Image"));
 	imageMenu->addAction(m_exportPngAct);
 	imageMenu->addAction(m_exportJpgAct);
@@ -1160,12 +1169,8 @@ void MainWindow::createFileMenu() {
 	productionMenu->addAction(m_exportEtchableSvgAct);
 	productionMenu->addSeparator();
 	productionMenu->addAction(m_exportGerberAct);
-
-	m_exportMenu->addAction(m_exportBomAct);
-	m_exportMenu->addAction(m_exportNetlistAct);
-
-	//m_exportMenu->addAction(m_exportEagleAct);
 }
+
 
 void MainWindow::createEditMenu()
 {
@@ -1651,7 +1656,7 @@ void MainWindow::updatePartMenu() {
 }
 
 bool MainWindow::updateExportActions() {
-    int boardCount;
+    int boardCount = 0;
     if (m_pcbGraphicsView != NULL) {
         m_pcbGraphicsView->findSelectedBoard(boardCount);
     }
@@ -2330,21 +2335,7 @@ void MainWindow::createTraceMenuActions() {
 	connect(m_autorouteAct, SIGNAL(triggered()), this, SLOT(autoroute()));
 
 	createOrderFabAct();
-
-	m_activeLayerBothAct = new QAction(tr("Set both copper layers clickable"), this);
-	m_activeLayerBothAct->setStatusTip(tr("Set both copper layers clickable"));
-	m_activeLayerBothAct->setShortcut(tr("Shift+Ctrl+3"));
-	connect(m_activeLayerBothAct, SIGNAL(triggered()), this, SLOT(activeLayerBoth()));
-
-	m_activeLayerTopAct = new QAction(tr("Set copper top layer clickable"), this);
-	m_activeLayerTopAct->setStatusTip(tr("Set copper top layer clickable"));
-	m_activeLayerTopAct->setShortcut(tr("Shift+Ctrl+2"));
-	connect(m_activeLayerTopAct, SIGNAL(triggered()), this, SLOT(activeLayerTop()));
-
-	m_activeLayerBottomAct = new QAction(tr("Set copper bottom layer clickable"), this);
-	m_activeLayerBottomAct->setStatusTip(tr("Set copper bottom layer clickable"));
-	m_activeLayerBottomAct->setShortcut(tr("Shift+Ctrl+1"));
-	connect(m_activeLayerBottomAct, SIGNAL(triggered()), this, SLOT(activeLayerBottom()));
+	createActiveLayerActions();
 
 	QAction * traceAct = new QAction(tr("&Create trace from ratsnest"), this);
 	traceAct->setStatusTip(tr("Create a trace from the ratsnest line"));
@@ -2443,6 +2434,23 @@ void MainWindow::createTraceMenuActions() {
 	m_autorouterSettingsAct = new QAction(tr("Autorouter settings..."), this);
 	m_autorouterSettingsAct->setStatusTip(tr("Set autorouting parameters..."));
 	connect(m_autorouterSettingsAct, SIGNAL(triggered()), this, SLOT(autorouterSettings()));
+}
+
+void MainWindow::createActiveLayerActions() {
+	m_activeLayerBothAct = new QAction(tr("Set both copper layers clickable"), this);
+	m_activeLayerBothAct->setStatusTip(tr("Set both copper layers clickable"));
+	m_activeLayerBothAct->setShortcut(tr("Shift+Ctrl+3"));
+	connect(m_activeLayerBothAct, SIGNAL(triggered()), this, SLOT(activeLayerBoth()));
+
+	m_activeLayerTopAct = new QAction(tr("Set copper top layer clickable"), this);
+	m_activeLayerTopAct->setStatusTip(tr("Set copper top layer clickable"));
+	m_activeLayerTopAct->setShortcut(tr("Shift+Ctrl+2"));
+	connect(m_activeLayerTopAct, SIGNAL(triggered()), this, SLOT(activeLayerTop()));
+
+	m_activeLayerBottomAct = new QAction(tr("Set copper bottom layer clickable"), this);
+	m_activeLayerBottomAct->setStatusTip(tr("Set copper bottom layer clickable"));
+	m_activeLayerBottomAct->setShortcut(tr("Shift+Ctrl+1"));
+	connect(m_activeLayerBottomAct, SIGNAL(triggered()), this, SLOT(activeLayerBottom()));
 }
 
 void MainWindow::activeLayerBoth() {

@@ -391,6 +391,7 @@ protected:
     void createRaiseWindowActions();
     void createOrderFabAct();
     void createOpenExampleMenu();
+	void createActiveLayerActions();
     void populateMenuFromXMLFile(QMenu *parentMenu, QStringList &actionsTracker, const QString &folderPath, const QString &indexFileName);
     QHash<QString, struct SketchDescriptor *> indexAvailableElements(QDomElement &domElem, const QString &srcPrefix, QStringList & actionsTracker);
     void populateMenuWithIndex(const QHash<QString, struct SketchDescriptor *> &, QMenu * parentMenu, QDomElement &domElem);
@@ -517,6 +518,7 @@ protected:
     virtual void createWindowMenu();
     virtual void createTraceMenus();
     virtual void createHelpMenu();
+	virtual void populateExportMenu();
 
     // dock management
 	void createDockWindows();
@@ -536,6 +538,8 @@ protected:
 	virtual int currentTabIndex();
 	virtual void setCurrentTabIndex(int);
 	virtual QWidget * currentTabWidget();
+	virtual bool activeLayerWidgetAlwaysOn();
+
 
 protected:
 	static void removeActionsStartingAt(QMenu *menu, int start=0);

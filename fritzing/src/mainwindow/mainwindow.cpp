@@ -2059,7 +2059,9 @@ void MainWindow::updateActiveLayerButtons() {
 
 int MainWindow::activeLayerIndex() 
 {
-	if (m_currentGraphicsView->boardLayers() == 2) {
+	if (m_currentGraphicsView == NULL) return -1;
+
+	if (m_currentGraphicsView->boardLayers() == 2 || activeLayerWidgetAlwaysOn()) {
 		bool copper0Visible = m_currentGraphicsView->layerIsActive(ViewLayer::Copper0);
 		bool copper1Visible = m_currentGraphicsView->layerIsActive(ViewLayer::Copper1);
 		if (copper0Visible && copper1Visible) {
@@ -2074,6 +2076,10 @@ int MainWindow::activeLayerIndex()
 	}
 
 	return -1;
+}
+
+bool MainWindow::activeLayerWidgetAlwaysOn() {
+	return false;
 }
 
 /**
