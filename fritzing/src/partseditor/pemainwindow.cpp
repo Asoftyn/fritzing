@@ -60,7 +60,7 @@ $Date$
 			test undo
 			what happens when adding connectors
 
-		part is not complete message? (all connectors not defined for all views)
+		"part is not complete" message? (all connectors not defined for all views)
 
         leaves should be on top of svg tree (partly done)
 
@@ -77,7 +77,7 @@ $Date$
 		if pcb svg does not have combined copper layers, complain
 			test for parentage using findElementWithAttribute 
 
-		hide view option
+		don't allow hidden views to be dragged in
 
     ////////////////////////////// second release /////////////////////////////////
 
@@ -804,7 +804,7 @@ void PEMainWindow::createViewMenuActions() {
 	connect(m_hideOtherViewsAct, SIGNAL(triggered()), this, SLOT(hideOtherViews()));
 
 }
-
+ 
 void PEMainWindow::createViewMenu() {
     MainWindow::createViewMenu();
 
@@ -814,8 +814,8 @@ void PEMainWindow::createViewMenu() {
 			afterNext = true;
 		}
 		else if (afterNext) {
-            m_viewMenu->insertAction(action, m_hideOtherViewsAct);
             m_viewMenu->insertSeparator(action);
+            m_viewMenu->insertAction(action, m_hideOtherViewsAct);
             break;
         }
     }
