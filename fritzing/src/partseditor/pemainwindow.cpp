@@ -29,18 +29,14 @@ $Date$
 
     ///////////////////////////////// first release ///////////////////////////////
 
-        crash when swapping part during save
-
 		when adding connectors by changing the count and "picking" only breadboard view, the connections are not saved to the fzp properly
+		"part is not complete" message? (all connectors not defined for all views)
+		
+		bug: generic ic, make SIP, switch to 39 pins, open in parts editor
+			at some point the pcb svg is saved to local parts/svg/user/pcb and the copper0/copper1 layering is fuckedconnect
         
-        crashed when saving the description
-
 		what happens if you pick the same rect for multiple connectors
 		
-        changed terminal points sometimes not being saved
-
-        connector locations are not updating properly when a part in the sketch is edited
-
         from partseditorview.cpp
 	        bool fileHasChanged = (m_viewIdentifier == ViewLayer::IconView) ? false : TextUtils::fixPixelDimensionsIn(fileContent);
 	        fileHasChanged |= TextUtils::fixViewboxOrigin(fileContent);
@@ -56,7 +52,6 @@ $Date$
 			test undo
 			what happens when adding connectors
 
-		"part is not complete" message? (all connectors not defined for all views)
 
         check all MainWindow * casts
 
@@ -299,7 +294,7 @@ void PEMainWindow::closeEvent(QCloseEvent *event)
 {
 	qDebug() << "close event";
 
-	QString message;
+	QStringList messages;
 
 	if (m_inFocusWidgets.count() > 0) {
 		bool gotOne = false;
@@ -323,37 +318,39 @@ void PEMainWindow::closeEvent(QCloseEvent *event)
 			}
 		}
 		if (gotOne) {
-			message =  tr("There is one last edit still pending.");
+			messages << tr("There is one last edit still pending.");
 		}
 	}
 
 	QString family = m_metadataView->family();
-
-	if (message.isEmpty()) {
-		if (family.isEmpty()) {
-			message = tr("'family'can not be blank.");
-		}
+	if (family.isEmpty()) {
+		messages << tr("The 'family' property can not be blank.");
 	}
 
 	QStringList keys = m_metadataView->properties().keys();
 
-	if (message.isEmpty()) {
-		if (keys.contains("family", Qt::CaseInsensitive)) {
-			message = tr("Duplicate 'family' property not allowed");
-		}
+	if (keys.contains("family", Qt::CaseInsensitive)) {
+		messages << tr("A duplicate 'family' property is not allowed");
 	}
 
-	if (message.isEmpty()) {
-		if (keys.contains("variant", Qt::CaseInsensitive)) {
-			message = tr("Duplicate 'variant' property not allowed");
-		}
+	if (keys.contains("variant", Qt::CaseInsensitive)) {
+		messages << tr("A duplicate 'variant' property is not allowed");
 	}
 
-	if (!message.isEmpty()) {
+
+
+	if (messages.count() > 0) {
 	    QMessageBox messageBox(this);
 	    messageBox.setWindowTitle(tr("Close without saving?"));
+		
+		QString message = tr("This part can not be saved as-is:\n\n");
+		foreach (QString string, messages) {
+			message.append('\t');
+			message.append(string);
+			messages.append("\n\n");
+		}
 
-        message += tr("\n\nDo you want to keep working or close without saving?");
+        message += tr("Do you want to keep working or close without saving?");
 
 	    messageBox.setText(message);
 	    messageBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
@@ -373,6 +370,9 @@ void PEMainWindow::closeEvent(QCloseEvent *event)
         event->ignore();
         return;
     }
+
+	// if all connectors not found, put up a message
+
 
 	QSettings settings;
 	settings.setValue(m_settingsPrefix + "state",saveState());
@@ -673,15 +673,55 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
         if (!itemBase->hasCustomSVG()) continue;
 
         QHash<QString, QString> svgHash;
-        QString svg = "";
+		QStringList svgList;
 		foreach (ViewLayer * vl, sketchWidget->viewLayers().values()) {
-			svg += itemBase->retrieveSvg(vl->viewLayerID(), svgHash, false, GraphicsUtils::StandardFritzingDPI);
+			QString string = itemBase->retrieveSvg(vl->viewLayerID(), svgHash, false, GraphicsUtils::StandardFritzingDPI);
+			if (!string.isEmpty()) {
+				svgList.append(string);
+			}
 		}
 
-        if (svg.isEmpty()) {
+        if (svgList.count() == 0) {
             DebugDialog::debug(QString("pe: missing custom svg %1").arg(originalModelPart->moduleID()));
             continue;
         }
+
+
+		QString svg;
+		if (svgList.count() == 1) {
+			svg = svgList.at(0);
+		}
+		else {
+			// deal with copper0 and copper1 layers as parent/child
+			QRegExp white("\\s");
+			QStringList whiteList;
+			foreach (QString string, svgList) {
+				string.remove(white);
+				whiteList << string;
+			}
+			bool keepGoing = true;
+			while (keepGoing) {
+				keepGoing = false;
+				for (int i = 0; i < whiteList.count() - 1; i++)  {
+					for (int j = i + 1; j < whiteList.count(); j++) {
+						if (whiteList.at(i).contains(whiteList.at(j))) {
+							keepGoing = true;
+							whiteList.removeAt(j);
+							svgList.removeAt(j);
+							break;
+						}
+						if (whiteList.at(j).contains(whiteList.at(i))) {
+							keepGoing = true;
+							whiteList.removeAt(i);
+							svgList.removeAt(i);
+							break;
+						}
+					}
+					if (keepGoing) break;
+				}
+			}
+			svg = svgList.join("\n");
+		}
 
         QString referenceFile = getSvgReferenceFile(itemBase->filename());
 		QSizeF size = itemBase->size();
@@ -1168,7 +1208,7 @@ void PEMainWindow::initSvgTree(SketchWidget * sketchWidget, ItemBase * itemBase,
     QDomElement connector = connectors.firstChildElement("connector");
     while (!connector.isNull()) {
 		QString svgID, terminalID;
-        bool ok = getConnectorSvgIDs(connector, sketchWidget, svgID, terminalID);
+        bool ok = PEUtils::getConnectorSvgIDs(connector, sketchWidget->viewIdentifier(), svgID, terminalID);
 		if (ok) {
 			PEGraphicsItem * terminalItem = pegiHash.value(terminalID, NULL);
 			PEGraphicsItem * pegi = pegiHash.value(svgID);
@@ -1212,6 +1252,7 @@ void PEMainWindow::initConnectors() {
 
     m_connectorsView->initConnectors(connectorList);
     m_peToolView->initConnectors(connectorList);
+	updateAssignedConnectors();
 }
 
 void PEMainWindow::switchedConnector(const QDomElement & element)
@@ -1225,7 +1266,7 @@ void PEMainWindow::switchedConnector(const QDomElement & element)
 void PEMainWindow::switchedConnector(const QDomElement & element, SketchWidget * sketchWidget)
 {
     QString svgID, terminalID;
-    if (!getConnectorSvgIDs(element, sketchWidget, svgID, terminalID)) return;
+    if (!PEUtils::getConnectorSvgIDs(element, sketchWidget->viewIdentifier(), svgID, terminalID)) return;
 
     QList<PEGraphicsItem *> pegiList = getPegiList(sketchWidget);
     bool gotOne = false;
@@ -1564,9 +1605,6 @@ void PEMainWindow::reload(bool firstTime)
     	
 	m_metadataView->initMetadata(m_fzpDocument);
 
-    initConnectors();
-	m_connectorsView->setSMD(modelPart->flippedSMD());
-
 	QList<QWidget *> widgets;
 	widgets << m_metadataView << m_peToolView << m_connectorsView;
 	foreach (QWidget * widget, widgets) {
@@ -1589,6 +1627,9 @@ void PEMainWindow::reload(bool firstTime)
     m_items.insert(m_breadboardGraphicsView->viewIdentifier(), breadboardItem);
     m_items.insert(m_schematicGraphicsView->viewIdentifier(), schematicItem);
     m_items.insert(m_pcbGraphicsView->viewIdentifier(), pcbItem);
+
+    initConnectors();
+	m_connectorsView->setSMD(modelPart->flippedSMD());
 
     foreach (ItemBase * itemBase, m_items.values()) {
         // TODO: may have to revisit this and move all pegi items
@@ -1642,7 +1683,7 @@ void PEMainWindow::busModeChanged(bool state) {
 	QDomElement connectors = root.firstChildElement("connectors");
 	QDomElement connector = connectors.firstChildElement("connector");
 	while (!connector.isNull()) {
-		QDomElement p = this->getConnectorPElement(connector, m_currentGraphicsView);
+		QDomElement p = PEUtils::getConnectorPElement(connector, m_currentGraphicsView->viewIdentifier());
 		QString id = p.attribute("svgId");
 		foreach (PEGraphicsItem * pegi, pegiList) {
 			QDomElement pegiElement = pegi->element();
@@ -1718,7 +1759,7 @@ void PEMainWindow::pegiMousePressed(PEGraphicsItem * pegi, bool & ignore)
 	QDomElement connectors = root.firstChildElement("connectors");
 	QDomElement connector = connectors.firstChildElement("connector");
 	while (!connector.isNull()) {
-		QDomElement p = this->getConnectorPElement(connector, m_currentGraphicsView);
+		QDomElement p = PEUtils::getConnectorPElement(connector, m_currentGraphicsView->viewIdentifier());
 		if (p.attribute("svgId") == id || p.attribute("terminalId") == id) {
 			m_peToolView->setCurrentConnector(connector);
 			return;
@@ -1742,7 +1783,7 @@ void PEMainWindow::relocateConnector(PEGraphicsItem * pegi)
 
     QDomElement currentConnectorElement = m_peToolView->currentConnector();
     QString svgID, terminalID;
-    if (!getConnectorSvgIDs(currentConnectorElement, m_currentGraphicsView, svgID, terminalID)) {
+    if (!PEUtils::getConnectorSvgIDs(currentConnectorElement, m_currentGraphicsView->viewIdentifier(), svgID, terminalID)) {
         return;
     }
 
@@ -1792,25 +1833,6 @@ void PEMainWindow::createFileMenu() {
     connect(m_fileMenu, SIGNAL(aboutToShow()), this, SLOT(updateFileMenu()));
 }
 
-QDomElement PEMainWindow::getConnectorPElement(const QDomElement & element, SketchWidget * sketchWidget)
-{
-    QString viewName = ViewLayer::viewIdentifierXmlName(sketchWidget->viewIdentifier());
-    QDomElement views = element.firstChildElement("views");
-    QDomElement view = views.firstChildElement(viewName);
-    return view.firstChildElement("p");
-}
-
-bool PEMainWindow::getConnectorSvgIDs(const QDomElement & element, SketchWidget * sketchWidget, QString & id, QString & terminalID) {
-    QDomElement p = getConnectorPElement(element, sketchWidget);
-    if (p.isNull()) return false;
-
-    id = p.attribute("svgId");
-    if (id.isEmpty()) return false;
-
-    terminalID = p.attribute("terminalId");
-    return true;
-}
-
 void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QString & id, const QString & terminalID,
                 const QString & oldGorn, const QString & oldGornTerminal, const QString & newGorn, const QString & newGornTerminal, 
                 int changeDirection)
@@ -1852,6 +1874,7 @@ void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QStri
         }
     }
 
+	updateAssignedConnectors();
     updateChangeCount(sketchWidget, changeDirection);
 }
 
@@ -2134,7 +2157,7 @@ void PEMainWindow::moveTerminalPoint(SketchWidget * sketchWidget, const QString 
         return;
     }
 
-    QDomElement pElement = getConnectorPElement(connectorElement, sketchWidget);
+    QDomElement pElement = PEUtils::getConnectorPElement(connectorElement, sketchWidget->viewIdentifier());
     QString svgID = pElement.attribute("svgId");
     if (svgID.isEmpty()) {
         DebugDialog::debug(QString("Can't find svgId for connector %1").arg(connectorID));
@@ -2338,6 +2361,8 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
 			QTimer::singleShot(10, this, SLOT(initZoom()));
 		}
     }
+
+	updateAssignedConnectors();
 	updateActiveLayerButtons();
 }
 
@@ -3342,4 +3367,11 @@ QString PEMainWindow::makeNewVariant(const QString & family)
 	}
 
 	return candidate;
+}
+
+void PEMainWindow::updateAssignedConnectors() {
+	if (m_currentGraphicsView == NULL) return;
+
+	QDomDocument * doc = m_docs.value(m_currentGraphicsView->viewIdentifier());
+	if (doc) m_peToolView->showAssignedConnectors(doc, m_currentGraphicsView->viewIdentifier());
 }

@@ -212,3 +212,22 @@ bool PEUtils::fillInMetadata(int senderIndex, QWidget * parent, ConnectorMetadat
     }
     return result;   
 }
+
+QDomElement PEUtils::getConnectorPElement(const QDomElement & element, ViewLayer::ViewIdentifier viewIdentifier)
+{
+    QString viewName = ViewLayer::viewIdentifierXmlName(viewIdentifier);
+    QDomElement views = element.firstChildElement("views");
+    QDomElement view = views.firstChildElement(viewName);
+    return view.firstChildElement("p");
+}
+
+bool PEUtils::getConnectorSvgIDs(const QDomElement & element, ViewLayer::ViewIdentifier viewIdentifier, QString & id, QString & terminalID) {
+    QDomElement p = getConnectorPElement(element, viewIdentifier);
+    if (p.isNull()) return false;
+
+    id = p.attribute("svgId");
+    if (id.isEmpty()) return false;
+
+    terminalID = p.attribute("terminalId");
+    return true;
+}

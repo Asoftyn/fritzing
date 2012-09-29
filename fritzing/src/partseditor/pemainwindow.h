@@ -128,8 +128,6 @@ protected:
     QString saveFzp();
     void reload(bool firstTime);
     void createFileMenu();
-    bool getConnectorSvgIDs(const QDomElement & element, SketchWidget * sketchWidget, QString & id, QString & terminalID);
-    QDomElement getConnectorPElement(const QDomElement & element, SketchWidget * sketchWidget);
     void updateChangeCount(SketchWidget * sketchWidget, int changeDirection);
     class PEGraphicsItem * findConnectorItem();
     void terminalPointChangedAux(PEGraphicsItem * pegi, QPointF before, QPointF after);
@@ -193,6 +191,7 @@ protected slots:
 	void reusePCB();
 	void hideOtherViews();
     void updateLayerMenu(bool resetLayout = false);
+	void updateAssignedConnectors();
 
 protected:
     QDomDocument m_fzpDocument;

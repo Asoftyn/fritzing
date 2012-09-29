@@ -75,28 +75,18 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
     QFrame * connectorsFrame = new QFrame;
     QVBoxLayout * connectorsLayout = new QVBoxLayout;
 
-	QFrame * hFrame = new QFrame;
-	QHBoxLayout * hFrameLayout = new QHBoxLayout;
+    QLabel * label = new QLabel(tr("Connector List (a checked connector's graphic is assigned)"));
+	connectorsLayout->addWidget(label);
 
-    QLabel * label = new QLabel(tr("Connector List"));
-	hFrameLayout->addWidget(label);
-
-	hFrameLayout->addSpacing(PEUtils::Spacing);
+    m_connectorListWidget = new QListWidget();
+	connect(m_connectorListWidget, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(switchConnector(QListWidgetItem *, QListWidgetItem *)));
+    connectorsLayout->addWidget(m_connectorListWidget);
 
     m_busModeBox = new QCheckBox(tr("Set Internal Connections"));
     m_busModeBox->setChecked(false);
     m_busModeBox->setToolTip(tr("Set this checkbox to edit internal connections by drawing wires"));
     connect(m_busModeBox, SIGNAL(clicked(bool)), this, SLOT(busModeChangedSlot(bool)));
-    hFrameLayout->addWidget(m_busModeBox);
-
-	hFrameLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
-	hFrame->setLayout(hFrameLayout);
-    connectorsLayout->addWidget(hFrame);
-
-    m_connectorListWidget = new QListWidget();
-	connect(m_connectorListWidget, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(switchConnector(QListWidgetItem *, QListWidgetItem *)));
-
-    connectorsLayout->addWidget(m_connectorListWidget);
+    connectorsLayout->addWidget(m_busModeBox);
 
     connectorsFrame->setLayout(connectorsLayout);
     splitter->addWidget(connectorsFrame);
@@ -107,8 +97,8 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
 	m_modeFrame = new QFrame;
 	QHBoxLayout * modeLayout = new QHBoxLayout;
 
-	m_pickModeButton = new QPushButton(tr("Select connector graphic"));
-    m_pickModeButton->setToolTip(tr("Using the mouse pointer and mouse wheel, navigate to the SVG region you want to assign to the current connector, then mouse down to select it."));
+	m_pickModeButton = new QPushButton(tr("Assign connector graphic"));
+    m_pickModeButton->setToolTip(tr("Using the mouse pointer and mouse wheel, navigate to the SVG region to which you want to assign to the current connector, then mouse down to assign it."));
 	connect(m_pickModeButton, SIGNAL(clicked()), this, SLOT(pickModeChangedSlot()), Qt::DirectConnection);
     modeLayout->addWidget(m_pickModeButton);
 
@@ -249,6 +239,11 @@ void PEToolView::initConnectors(QList<QDomElement> & connectorList) {
 		QListWidgetItem *item = new QListWidgetItem;
 		item->setData(Qt::DisplayRole, connector.attribute("name"));
 		item->setData(Qt::UserRole, ix++);
+		Qt::ItemFlags flags = item->flags();
+		if (flags & Qt::ItemIsUserCheckable) {
+			flags ^= Qt::ItemIsUserCheckable;
+			item->setFlags(flags);
+		}
 		m_connectorListWidget->addItem(item);
     }
 
@@ -258,7 +253,28 @@ void PEToolView::initConnectors(QList<QDomElement> & connectorList) {
     }
 
     m_connectorListWidget->blockSignals(false);
+}
 
+void PEToolView::showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::ViewIdentifier viewIdentifier) {
+	QDomElement svgRoot = svgDoc->documentElement();
+
+	for (int i = 0; i < m_connectorListWidget->count(); i++) {
+		QListWidgetItem * item = m_connectorListWidget->item(i);
+		item->setCheckState(Qt::Unchecked);
+		int index = item->data(Qt::UserRole).toInt();
+		QDomElement connector = m_connectorList.at(index);
+		QString svgID, terminalID;
+        bool ok = PEUtils::getConnectorSvgIDs(connector, viewIdentifier, svgID, terminalID);
+		if (!ok) {
+			// this shouldn't happen
+			continue;
+		}
+
+		QDomElement element = TextUtils::findElementWithAttribute(svgRoot, "id", svgID);
+		if (!element.isNull()) {
+			item->setCheckState(Qt::Checked);
+		}
+	}
 }
 
 void PEToolView::switchConnector(QListWidgetItem * current, QListWidgetItem * previous) {

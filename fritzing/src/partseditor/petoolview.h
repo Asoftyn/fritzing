@@ -38,6 +38,8 @@ $Date$
 #include <QDomDocument>
 #include <QDoubleSpinBox>
 
+#include "../viewlayer.h"
+
 class PEDoubleSpinBox : public QDoubleSpinBox
 {
 Q_OBJECT
@@ -66,6 +68,7 @@ public:
     void setTerminalPointLimits(QSizeF);
 	void setChildrenVisible(bool vis);
     void enableConnectorChanges(bool enableTerminalPoint, bool enablePick);
+	void showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::ViewIdentifier);
 
 signals:
     void switchedConnector(const QDomElement &);
