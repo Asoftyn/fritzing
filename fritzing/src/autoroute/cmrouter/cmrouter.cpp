@@ -912,8 +912,15 @@ bool CMRouter::drc(QString & message)
     else {
 		if (m_error.length() > 0) message = m_error;
 		else {
-			message = tr("The areas on your board highlighted in red are connectors and traces which overlap or are too close together. "
-					 "Reposition them and run the DRC again to find more problems.");
+			message = tr("The areas on your board highlighted in red are connectors and traces which may overlap or be too close together. ") +
+					 tr("Reposition them and run the DRC again to find more problems.\n\n") +
+					 tr("Note that the DRC is known to give false positives--in other words, it may find 'overlaps' that don't actually exist. ") +
+					 tr("So if you inspect the highlighed areas and see nothing wrong, you are probably correct.\n\n") +
+					 tr("For an absolutely definitive 'DRC', download a 'Gerber Viewer' ") +
+					 tr("(a software package for looking at 'Gerber' files) ") +
+					 tr("and choose File > Export > for Production > Extended Gerber (RS-274X), ") +
+					 tr("then look at the resulting files in your Gerber Viewer. ")
+					 ;
 		}
 	}
 

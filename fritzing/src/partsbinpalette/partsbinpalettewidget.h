@@ -97,6 +97,7 @@ class PartsBinPaletteWidget : public QFrame, public Bundler {
 		void copyFilesToContrib(ModelPart *, QWidget * originator);
         ModelPart * root();
         bool isTempPartsBin();
+		void reloadPart(const QString & moduleID);
 
 	public slots:
 		void addPartCommand(const QString& moduleID);

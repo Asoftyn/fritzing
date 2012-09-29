@@ -35,12 +35,8 @@ $Date$
         
         crashed when saving the description
 
-		opened part from my parts bin, hit save as, should have created new part, seems to have modified same part instead
-
 		what happens if you pick the same rect for multiple connectors
 		
-		open part from my-parts, change nothing, do save: get a variant-in-use message
-
         changed terminal points sometimes not being saved
 
         connector locations are not updating properly when a part in the sketch is edited
@@ -62,24 +58,21 @@ $Date$
 
 		"part is not complete" message? (all connectors not defined for all views)
 
-        leaves should be on top of svg tree (partly done)
-
         check all MainWindow * casts
 
 	    clean up menus
 			test everything visible works
-
-		why isn't swapping available when a family has new parts with multiple variant values?
 				        
-		test button with export etchable to make sure the part is right?
-			export etchable is disabled without a board
-
-		if pcb svg does not have combined copper layers, complain
-			test for parentage using findElementWithAttribute 
-
-		don't allow hidden views to be dragged in
+		don't allow hidden views to be dragged in from the parts bin
 
     ////////////////////////////// second release /////////////////////////////////
+
+		why isn't swapping available when a family has new parts with multiple variant values?
+
+		load smd footprint into tht part?
+
+		test button with export etchable to make sure the part is right?
+			export etchable is disabled without a board
 
 		align to grid
 
@@ -335,27 +328,10 @@ void PEMainWindow::closeEvent(QCloseEvent *event)
 	}
 
 	QString family = m_metadataView->family();
-	QString variant = m_metadataView->variant();
 
 	if (message.isEmpty()) {
 		if (family.isEmpty()) {
 			message = tr("'family'can not be blank.");
-		}
-	}
-
-	if (message.isEmpty()) {
-		if (variant.isEmpty()) {
-			message = tr("'variant' can not be blank.");
-		}
-	}
-
-	if (message.isEmpty()) {
-		QHash<QString, QString> variants = m_referenceModel->allPropValues(family, "variant");
-		QStringList values = variants.values(variant);
-		QString moduleID = m_fzpDocument.documentElement().attribute("moduleId");
-		values.removeOne(moduleID);
-		if (values.count() > 0) {
-			message = tr("Variant '%1' is in use. A part's variant must be unique within a family.").arg(variant);
 		}
 	}
 
@@ -659,8 +635,6 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
     }
     TextUtils::replaceChildText(m_fzpDocument, date, QDate::currentDate().toString());
 
-    fzpRoot.setAttribute("moduleId", m_guid);
-
 	QDomElement properties = fzpRoot.firstChildElement("properties");
 	if (properties.isNull()) {
 		properties = m_fzpDocument.createElement("properties");
@@ -687,14 +661,8 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
 	}
 	QDomElement variant = TextUtils::findElementWithAttribute(properties, "name", "variant");
 	if (variant.isNull()) {
-		QStringList variants = m_referenceModel->propValues(family.text(), "variant", true);
-		int theMax = std::numeric_limits<int>::max(); 
-		QString candidate;
-		for (int i = 1; i < theMax; i++) {
-			candidate = QString("variant %1").arg(i);
-			if (!variants.contains(candidate, Qt::CaseInsensitive)) break;
-		}
-		replaceProperty("variant", candidate, properties);
+		QString newVariant = makeNewVariant(family.text());
+		replaceProperty("variant", newVariant, properties);
 	}
 
 	// make sure local props are copied
@@ -857,6 +825,10 @@ void PEMainWindow::changeSpecialProperty(const QString & name, const QString & v
 		return;
 	}
 
+	if (oldProperties.value(name) == value) {
+		return;
+	}
+
     QHash<QString, QString> newProperties(oldProperties);
     newProperties.insert(name, value);
     
@@ -880,8 +852,10 @@ void PEMainWindow::metadataChanged(const QString & name, const QString & value)
 		QString family = m_metadataView->family();
 		QHash<QString, QString> variants = m_referenceModel->allPropValues(family, "variant");
 		QStringList values = variants.values(value);
-		QString moduleID = m_fzpDocument.documentElement().attribute("moduleId");
-		values.removeOne(moduleID);
+		if (m_canSave) {
+			QString moduleID = m_fzpDocument.documentElement().attribute("moduleId");
+			values.removeOne(moduleID);
+		}
 		if (values.count() > 0) {
 			QMessageBox::warning(NULL, tr("Must be unique"), tr("Variant '%1' is in use. The variant name must be unique.").arg(value));
 			return;
@@ -992,8 +966,9 @@ void PEMainWindow::changeProperties(const QHash<QString, QString> & newPropertie
     QDomElement properties = root.firstChildElement("properties");
     QDomElement prop = properties.firstChildElement("property");
     while (!prop.isNull()) {
+		QDomElement next = prop.nextSiblingElement("property");
         properties.removeChild(prop);
-        prop = properties.firstChildElement("property");
+        prop = next;
     }
 
     foreach (QString name, newProperties.keys()) {
@@ -1095,6 +1070,23 @@ void PEMainWindow::initSvgTree(SketchWidget * sketchWidget, ItemBase * itemBase,
     if (!doc.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
 		DebugDialog::debug(QString("unable to parse svg: %1 %2 %3").arg(errorStr).arg(errorLine).arg(errorColumn));
         return;
+	}
+
+	if (itemBase->viewIdentifier() == ViewLayer::PCBView) {
+		QDomElement root = doc.documentElement();
+		QDomElement copper0 = TextUtils::findElementWithAttribute(root, "id", "copper0");
+		QDomElement copper1 = TextUtils::findElementWithAttribute(root, "id", "copper1");
+		if (!copper0.isNull() && !copper1.isNull()) {
+			QDomElement parent0 = copper0.parentNode().toElement();
+			QDomElement parent1 = copper1.parentNode().toElement();
+			if (parent0.attribute("id") == "copper1") ;
+			else if (parent1.attribute("id") == "copper0") ;
+			else {
+    			QMessageBox::warning(NULL, tr("SVG problem"), 
+					tr("This version of the new Parts Editor can not deal with separate copper0 and copper1 layers in '%1'. ").arg(itemBase->filename()) +
+					tr("So editing may produce an invalid PCB view image"));
+			}
+		}
 	}
 
     int z = PegiZ;
@@ -1569,9 +1561,7 @@ void PEMainWindow::reload(bool firstTime)
     ItemBase * breadboardItem = m_breadboardGraphicsView->addItem(modelPart, m_breadboardGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
     ItemBase * schematicItem = m_schematicGraphicsView->addItem(modelPart, m_schematicGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
     ItemBase * pcbItem = m_pcbGraphicsView->addItem(modelPart, m_pcbGraphicsView->defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
-    
-	// make sure m_fzpDocument has a variant property
-	
+    	
 	m_metadataView->initMetadata(m_fzpDocument);
 
     initConnectors();
@@ -1880,17 +1870,18 @@ bool PEMainWindow::saveAs() {
 bool PEMainWindow::saveAs(bool overWrite)
 {
     QDomElement fzpRoot = m_fzpDocument.documentElement();
-    QString workingModuleID = fzpRoot.attribute("moduleId");
 
     QList<MainWindow *> affectedWindows;
+    QList<MainWindow *> allWindows;
     if (overWrite) {
-        fzpRoot.setAttribute("moduleId", m_originalModuleID);
         foreach (QWidget *widget, QApplication::topLevelWidgets()) {
             MainWindow *mainWindow = qobject_cast<MainWindow *>(widget);
 		    if (mainWindow == NULL) continue;
 			    
 		    if (qobject_cast<PEMainWindow *>(mainWindow) != NULL) continue;
 
+
+			allWindows.append(mainWindow);
             if (mainWindow->usesPart(m_originalModuleID)) {
                 affectedWindows.append(mainWindow);
             }
@@ -1982,18 +1973,33 @@ bool PEMainWindow::saveAs(bool overWrite)
     }
 
     QDir dir(m_userPartsFolderPath);
-    QString fzpPath = dir.absoluteFilePath(QString("%1%2.fzp").arg(getFzpReferenceFile()).arg(m_guid));   
+	QString suffix = QString("%1_%2").arg(m_guid).arg(m_fileIndex++);
+    QString fzpPath = dir.absoluteFilePath(QString("%1%2.fzp").arg(getFzpReferenceFile()).arg(suffix));  
+
     if (overWrite) {
         fzpPath = m_originalFzpPath;
     }
+	else {
+		fzpRoot.setAttribute("moduleId", suffix);
+		QString family = m_metadataView->family();
+		QString variant = m_metadataView->variant();
+		QHash<QString, QString> variants = m_referenceModel->allPropValues(family, "variant");
+		QStringList values = variants.values(variant);
+		if (values.count() > 0) {
+			QString newVariant = makeNewVariant(family);
+			QDomElement properties = fzpRoot.firstChildElement("properties");
+			replaceProperty("variant", newVariant, properties);
+			m_metadataView->resetProperty("variant", newVariant);
+		}
+	}
+
     bool result = writeXml(fzpPath, m_fzpDocument.toString(), false);
 
-    if (!overWrite) {
-        m_originalFzpPath = fzpPath;
-        m_originalModuleID = fzpRoot.attribute("moduleId");
-    }
-
-    QString savedModuleID = fzpRoot.attribute("moduleId");
+	if (!overWrite) {
+		m_originalFzpPath = fzpPath;
+		m_canSave = true;
+		m_originalModuleID = fzpRoot.attribute("moduleId");
+	}
 
     // restore the set of working svg files
     foreach (SketchWidget * sketchWidget, m_sketchWidgets.values()) {
@@ -2005,10 +2011,7 @@ bool PEMainWindow::saveAs(bool overWrite)
 		setImageAttribute(layers, svgPath);
     }
 
-    // restores the temporary fzp state
-    fzpRoot.setAttribute("moduleId", workingModuleID);
-
-    ModelPart * modelPart = m_referenceModel->retrieveModelPart(savedModuleID);
+    ModelPart * modelPart = m_referenceModel->retrieveModelPart(m_originalModuleID);
     if (modelPart == NULL) {
 	    modelPart = m_referenceModel->loadPart(fzpPath, true);
         emit addToMyPartsSignal(modelPart);
@@ -2019,6 +2022,9 @@ bool PEMainWindow::saveAs(bool overWrite)
         QUndoCommand * parentCommand = new QUndoCommand;
         foreach (MainWindow * mainWindow, affectedWindows) {
             mainWindow->updateParts(m_originalModuleID, parentCommand);
+        }
+        foreach (MainWindow * mainWindow, allWindows) {
+            mainWindow->updatePartsBin(m_originalModuleID);
         }
         undoStack.push(parentCommand);
     }
@@ -3325,3 +3331,15 @@ void PEMainWindow::hideOtherViews() {
 	m_undoStack->waitPush(cfc, SketchWidget::PropChangeDelay);
 }
 
+QString PEMainWindow::makeNewVariant(const QString & family)
+{
+	QStringList variants = m_referenceModel->propValues(family, "variant", true);
+	int theMax = std::numeric_limits<int>::max(); 
+	QString candidate;
+	for (int i = 1; i < theMax; i++) {
+		candidate = QString("variant %1").arg(i);
+		if (!variants.contains(candidate, Qt::CaseInsensitive)) break;
+	}
+
+	return candidate;
+}

@@ -168,7 +168,7 @@ public:
     void setCurrentView(ViewLayer::ViewIdentifier);
     bool usesPart(const QString & moduleID);
     bool updateParts(const QString & moduleID, QUndoCommand * parentCommand);
-
+	void updatePartsBin(const QString & moduleID);
 
 public:
 	static void initNames();

@@ -44,7 +44,7 @@ class SvgIconPixmapItem : public QGraphicsPixmapItem {
 public:
 	SvgIconPixmapItem(const QPixmap & pixmap, QGraphicsItem * parent = 0);
 	void setPlural(bool);
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget=0);
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 protected:
 	bool m_plural;
@@ -59,6 +59,7 @@ public:
 	ItemBase * itemBase() const;
 	ModelPart * modelPart() const;
 	const QString &moduleID() const;
+	void setItemBase(ItemBase *, bool plural);
 
 	static void initNames();
 	static void cleanup();
@@ -67,7 +68,7 @@ protected:
 	void hoverEnterEvent ( QGraphicsSceneHoverEvent * event );
 	void hoverLeaveEvent ( QGraphicsSceneHoverEvent * event );
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-
+	void setupImage(bool plural, ViewLayer::ViewIdentifier viewIdentifier);
 
 protected:
 	QPointer<ItemBase> m_itemBase;

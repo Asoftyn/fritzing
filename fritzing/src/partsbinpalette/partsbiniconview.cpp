@@ -160,7 +160,7 @@ void PartsBinIconView::removePart(const QString &moduleID) {
         }
     }
     if(itemToRemove) {
-        m_partHash.remove(moduleID);
+        m_itemBaseHash.remove(moduleID);
         itemToRemove->setParentItem(NULL);
         m_noSelectionChangeEmition = true;
         m_layout->removeItem(itemToRemove);
@@ -179,7 +179,7 @@ void PartsBinIconView::removeParts() {
             itemsToRemove.append(it);
         }
     }
-    m_partHash.clear();
+    m_itemBaseHash.clear();
 
     foreach (SvgIconWidget * itemToRemove, itemsToRemove) {
         m_noSelectionChangeEmition = true;
@@ -199,36 +199,15 @@ int PartsBinIconView::setItemAux(ModelPart * modelPart, int position) {
 
 	emit settingItem();
 	QString moduleID = modelPart->moduleID();
-	if(contains(moduleID)) {
-		m_partHash[moduleID]->copy(modelPart);      // copies into the cached modelPart, but I don't know why
+	if (contains(moduleID)) {
 		return position;
 	}
 	
 	SvgIconWidget* svgicon = NULL;
 	if (modelPart->itemType() != ModelPart::Space) {
-        ItemBase::PluralType plural;
-        ItemBase * itemBase = ItemBaseHash.value(moduleID);
-        if (itemBase == NULL) {
-		    itemBase = PartFactory::createPart(modelPart, ViewLayer::ThroughHoleThroughTop_OneLayer, ViewLayer::IconView, ViewGeometry(), ItemBase::getNextID(), NULL, NULL, false);
-		    plural = itemBase->isPlural();
-		    if (plural == ItemBase::NotSure) {
-			    QHash<QString,QString> properties = modelPart->properties();
-			    QString family = properties.value("family", "").toLower();
-			    foreach (QString key, properties.keys()) {
-				    QStringList values = m_referenceModel->propValues(family, key, true);
-				    if (values.length() > 1) {
-					    plural = ItemBase::Plural;
-					    break;
-				    }
-			    }
-		    }
-            ItemBaseHash.insert(moduleID, itemBase);
-        }
-        else {
-            plural = itemBase->isPlural();
-        }
+		ItemBase::PluralType plural;
+		ItemBase * itemBase = loadItemBase(moduleID, plural);
         svgicon = new SvgIconWidget(modelPart, ViewLayer::IconView, itemBase, plural == ItemBase::Plural);
-		m_partHash[moduleID] = modelPart;
 	}
 	else {
 		svgicon = new SvgIconWidget(modelPart, ViewLayer::IconView, NULL, false);
@@ -452,4 +431,46 @@ SvgIconWidget * PartsBinIconView::svgIconWidgetAt(const QPoint & pos) {
 	}
 
 	return NULL;
+}
+
+void PartsBinIconView::reloadPart(const QString & moduleID) {
+	if (!contains(moduleID)) return;
+
+	for (int i = 0; i < m_layout->count(); i++) {
+		SvgIconWidget *it = dynamic_cast<SvgIconWidget*>(m_layout->itemAt(i));
+		if (it == NULL) continue;
+
+		if (it->itemBase()->moduleID().compare(moduleID) != 0) continue;
+
+		ItemBase::PluralType plural;
+		ItemBase * itemBase = loadItemBase(moduleID, plural);
+
+		it->setItemBase(itemBase, plural);
+		return;
+	}
+}
+
+ItemBase * PartsBinIconView::loadItemBase(const QString & moduleID, ItemBase::PluralType & plural) {
+	ItemBase * itemBase = ItemBaseHash.value(moduleID);
+	ModelPart * modelPart = m_referenceModel->retrieveModelPart(moduleID);
+    if (itemBase == NULL) {
+		itemBase = PartFactory::createPart(modelPart, ViewLayer::ThroughHoleThroughTop_OneLayer, ViewLayer::IconView, ViewGeometry(), ItemBase::getNextID(), NULL, NULL, false);
+		ItemBaseHash.insert(moduleID, itemBase);
+	}
+	m_itemBaseHash.insert(moduleID, itemBase);
+
+    plural = itemBase->isPlural();
+	if (plural == ItemBase::NotSure) {
+		QHash<QString,QString> properties = modelPart->properties();
+		QString family = properties.value("family", "").toLower();
+		foreach (QString key, properties.keys()) {
+			QStringList values = m_referenceModel->propValues(family, key, true);
+			if (values.length() > 1) {
+				plural = ItemBase::Plural;
+				break;
+			}
+		}
+	}
+
+	return itemBase;
 }

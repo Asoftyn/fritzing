@@ -86,7 +86,15 @@ void PartsBinView::reloadParts(PaletteModel * model) {
 }
 
 void PartsBinView::doClear() {
-	m_partHash.clear();
+	m_itemBaseHash.clear();
+}
+
+void PartsBinView::removePartReference(const QString & moduleID) {
+	ItemBase * itemBase = ItemBaseHash.value(moduleID);
+	if (itemBase) {
+		ItemBaseHash.remove(moduleID);
+		itemBase->deleteLater();
+	}
 }
 
 void PartsBinView::setItem(ModelPart * modelPart) {
@@ -223,7 +231,7 @@ void PartsBinView::dropEventAux(QDropEvent* event, bool justAppend) {
 }
 
 bool PartsBinView::contains(const QString &moduleID) {
-	return m_partHash.contains(moduleID);
+	return m_itemBaseHash.contains(moduleID);
 }
 
 void PartsBinView::setInfoViewOnHover(bool infoViewOnHover) {

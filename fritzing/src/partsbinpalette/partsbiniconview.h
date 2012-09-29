@@ -57,6 +57,7 @@ class PartsBinIconView : public InfoGraphicsView, public PartsBinView
 		int selectedIndex();
 
 		QList<QObject*> orderedChildren();
+		void reloadPart(const QString & moduleID);
 
 	protected:
 		void doClear();
@@ -79,6 +80,7 @@ class PartsBinIconView : public InfoGraphicsView, public PartsBinView
 		QGraphicsWidget* closestItemTo(const QPoint& pos);
 		class SvgIconWidget * svgIconWidgetAt(const QPoint & pos);
 		class SvgIconWidget * svgIconWidgetAt(int x, int y);
+		ItemBase * loadItemBase(const QString & moduleID, ItemBase::PluralType &);
 
 	public slots:
 		void setSelected(int position, bool doEmit=false);

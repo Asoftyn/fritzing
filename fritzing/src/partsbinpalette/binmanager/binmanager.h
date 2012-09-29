@@ -114,6 +114,7 @@ class BinManager : public QFrame {
         bool isTempPartsBin(PartsBinPaletteWidget * bin);
         void setTempPartsBinLocation(const QString & filename);
         void hideTabBar();
+		void reloadPart(const QString & moduleID);
 
 	signals:
 		void savePartAsBundled(const QString &moduleId);

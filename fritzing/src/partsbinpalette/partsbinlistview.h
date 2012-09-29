@@ -49,6 +49,7 @@ class PartsBinListView : public QListWidget, public PartsBinView {
 		int position(const QString &moduleID);
 
 		QList<QObject*> orderedChildren();
+		void reloadPart(const QString & moduleID);
 
 	public slots:
 		void setSelected(int position, bool doEmit=false);
@@ -83,6 +84,7 @@ class PartsBinListView : public QListWidget, public PartsBinView {
 		bool dropMimeData(int index, const QMimeData *data, Qt::DropAction action);
 		QMimeData * mimeData(const QList<QListWidgetItem *> items) const;
 		QStringList mimeTypes() const;
+		void loadImage(QListWidgetItem * lwi, const QString & moduleID); 
 
 	protected:
 		class HtmlInfoView * m_infoView;

@@ -54,6 +54,7 @@ class PartsBinView {
 		void setInfoViewOnHover(bool infoViewOnHover);
 
 		virtual QList<QObject*> orderedChildren() = 0;
+		virtual void reloadPart(const QString & moduleID) = 0;
 		void dropEventAux(QDropEvent* event, bool justAppend = false);
 
 	protected:
@@ -74,6 +75,7 @@ class PartsBinView {
 
     public:
         static void cleanup();
+		static void removePartReference(const QString & moduleID);
 
 	public:
 		static QHash<QString, QString> TranslatedCategoryNames;
@@ -82,11 +84,11 @@ class PartsBinView {
 		ReferenceModel *m_referenceModel;
 		PartsBinPaletteWidget *m_parent;
 
-		QHash<QString /*moduleId*/,ModelPart*> m_partHash;
 		bool m_infoViewOnHover;
 
 		QPoint m_dragStartPos;
-
+        
+		QHash<QString, class ItemBase *> m_itemBaseHash;
         static QHash<QString, class ItemBase *> ItemBaseHash;
 };
 

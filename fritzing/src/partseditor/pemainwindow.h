@@ -171,6 +171,7 @@ protected:
 	void updateFileMenu();
 	void reuseImage(ViewLayer::ViewIdentifier);
 	void setImageAttribute(QDomElement & layers, const QString & image);
+	QString makeNewVariant(const QString & family);
 
 protected slots:
     void initZoom();

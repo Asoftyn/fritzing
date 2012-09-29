@@ -925,3 +925,8 @@ ModelPart * PartsBinPaletteWidget::root() {
 bool PartsBinPaletteWidget::isTempPartsBin() {
     return m_manager->isTempPartsBin(this);
 }
+
+void PartsBinPaletteWidget::reloadPart(const QString & moduleID) {
+	m_iconView->reloadPart(moduleID);
+	m_listView->reloadPart(moduleID);
+}

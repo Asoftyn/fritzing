@@ -83,8 +83,7 @@ int PartsBinListView::setItemAux(ModelPart * modelPart, int position) {
 
 	emit settingItem();
 	QString moduleID = modelPart->moduleID();
-	if(contains(moduleID)) {
-		m_partHash[moduleID]->copy(modelPart);   // copies into the cached modelPart, but I don't know why
+	if (contains(moduleID)) {
 		return position;
 	}
 
@@ -97,28 +96,7 @@ int PartsBinListView::setItemAux(ModelPart * modelPart, int position) {
 		lwi->setText("        " + TranslatedCategoryNames.value(modelPart->instanceText(), modelPart->instanceText()));
 	}
 	else {
-        ItemBase * itemBase = ItemBaseHash.value(moduleID);
-        if (itemBase == NULL) {
-		    itemBase = PartFactory::createPart(modelPart, ViewLayer::ThroughHoleThroughTop_OneLayer, ViewLayer::IconView, ViewGeometry(), ItemBase::getNextID(), NULL, NULL, false);
-		    ItemBaseHash.insert(moduleID, itemBase);
-            QString error;
-		    LayerAttributes layerAttributes;
-		    FSvgRenderer * renderer = itemBase->setUpImage(modelPart, ViewLayer::IconView, ViewLayer::Icon, itemBase->viewLayerSpec(), layerAttributes, error);
-		    if (renderer != NULL) {
-			    if (itemBase) {
-				    itemBase->setFilename(renderer->filename());
-			    }
-                itemBase->setSharedRendererEx(renderer);
-            }
-        }
-		lwi->setData(Qt::UserRole, qVariantFromValue( itemBase ) );
-		QSize size(HtmlInfoView::STANDARD_ICON_IMG_WIDTH, HtmlInfoView::STANDARD_ICON_IMG_HEIGHT);
-		QPixmap * pixmap = FSvgRenderer::getPixmap(itemBase->renderer(), size);
-		lwi->setIcon(QIcon(*pixmap));
-		delete pixmap;
-		lwi->setData(Qt::UserRole + 1, itemBase->renderer()->defaultSize());
-
-		m_partHash[moduleID] = modelPart;
+		loadImage(lwi, moduleID);
 	}
 
 	if(position > -1 && position < count()) {
@@ -196,14 +174,14 @@ void PartsBinListView::removePart(const QString &moduleID) {
 	m_hoverItem = NULL;
 	int idxToRemove = position(moduleID);
 	if(idxToRemove > -1) {
-		m_partHash.remove(moduleID);
+		m_itemBaseHash.remove(moduleID);
 		delete takeItem(idxToRemove);
 	}
 }
 
 void PartsBinListView::removeParts() {
 	m_hoverItem = NULL;
-    m_partHash.clear();
+    m_itemBaseHash.clear();
     while (count() > 0) {
         delete takeItem(0);
     }
@@ -380,4 +358,47 @@ void PartsBinListView::showContextMenu(const QPoint& pos) {
 		menu = m_parent->combinedMenu();
 	}
     menu->exec(mapToGlobal(pos));
+}
+
+void PartsBinListView::reloadPart(const QString & moduleID) {
+	if (!contains(moduleID)) return;
+
+	for(int i = 0; i < count(); i++) {
+		QListWidgetItem * lwi = item(i);
+		ItemBase * itemBase = itemItemBase(lwi);
+		if (itemBase == NULL) continue;
+
+		if (itemBase->moduleID().compare(moduleID) == 0) {
+			lwi->setText(itemBase->title());
+			loadImage(lwi, moduleID);
+			return;
+		}
+	}
+}
+
+void PartsBinListView::loadImage(QListWidgetItem * lwi, const QString & moduleID) 
+{
+    ItemBase * itemBase = ItemBaseHash.value(moduleID);
+    if (itemBase == NULL) {
+		ModelPart * modelPart = itemBase->modelPart();
+		itemBase = PartFactory::createPart(modelPart, ViewLayer::ThroughHoleThroughTop_OneLayer, ViewLayer::IconView, ViewGeometry(), ItemBase::getNextID(), NULL, NULL, false);
+		ItemBaseHash.insert(moduleID, itemBase);
+        QString error;
+		LayerAttributes layerAttributes;
+		FSvgRenderer * renderer = itemBase->setUpImage(modelPart, ViewLayer::IconView, ViewLayer::Icon, itemBase->viewLayerSpec(), layerAttributes, error);
+		if (renderer != NULL) {
+			if (itemBase) {
+				itemBase->setFilename(renderer->filename());
+			}
+            itemBase->setSharedRendererEx(renderer);
+        }
+    }
+	lwi->setData(Qt::UserRole, qVariantFromValue( itemBase ) );
+	QSize size(HtmlInfoView::STANDARD_ICON_IMG_WIDTH, HtmlInfoView::STANDARD_ICON_IMG_HEIGHT);
+	QPixmap * pixmap = FSvgRenderer::getPixmap(itemBase->renderer(), size);
+	lwi->setIcon(QIcon(*pixmap));
+	delete pixmap;
+	lwi->setData(Qt::UserRole + 1, itemBase->renderer()->defaultSize());
+
+	m_itemBaseHash.insert(moduleID, itemBase);
 }

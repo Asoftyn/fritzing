@@ -2494,3 +2494,7 @@ void MainWindow::showStatusMessage(const QString & message)
     m_statusBar->showMessage(message);
     m_statusBar->blockSignals(false);
 }
+
+void MainWindow::updatePartsBin(const QString & moduleID) {
+	m_binManager->reloadPart(moduleID);
+}

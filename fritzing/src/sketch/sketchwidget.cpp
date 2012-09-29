@@ -805,7 +805,26 @@ PaletteItem* SketchWidget::addPartItem(ModelPart * modelPart, ViewLayer::ViewLay
 	// fritzing crashes
 	if(viewLayerID != ViewLayer::UnknownLayer) {
 		QString error;
-		if (paletteItem->renderImage(modelPart, viewIdentifier, m_viewLayers, viewLayerID, doConnectors, error)) {
+		bool result = paletteItem->renderImage(modelPart, viewIdentifier, m_viewLayers, viewLayerID, doConnectors, error);
+		if (!result) {
+			bool retry = false;
+			switch (viewLayerID) {
+				case ViewLayer::Copper0:
+					viewLayerID = ViewLayer::Copper1;
+					retry = true;
+					break;
+				case ViewLayer::Copper1:
+					viewLayerID = ViewLayer::Copper0;
+					retry = true;
+					break;
+				default:
+					break;
+			}
+			if (retry) {
+				result = paletteItem->renderImage(modelPart, viewIdentifier, m_viewLayers, viewLayerID, doConnectors, error);
+			}
+		}
+		if (result) {
 			//DebugDialog::debug(QString("addPartItem %1").arg(viewIdentifier));
 			addToScene(paletteItem, paletteItem->viewLayerID());
 			paletteItem->loadLayerKin(m_viewLayers, viewLayerSpec);

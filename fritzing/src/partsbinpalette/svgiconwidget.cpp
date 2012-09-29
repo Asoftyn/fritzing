@@ -105,46 +105,7 @@ SvgIconWidget::SvgIconWidget(ModelPart * modelPart, ViewLayer::ViewIdentifier vi
 		this->setMaximumSize(PluralImage->size());
 		setAcceptHoverEvents(true);
 		setFlags(QGraphicsItem::ItemIsSelectable);
-
-		QString error;
-		LayerAttributes layerAttributes;
-		FSvgRenderer * renderer = m_itemBase->setUpImage(modelPart, viewIdentifier, ViewLayer::Icon, ViewLayer::ThroughHoleThroughTop_OneLayer, layerAttributes, error);
-        if (renderer == NULL) {
-            DebugDialog::debug(QString("missing renderer for icon %1").arg(modelPart->moduleID()));
-        }
-		if (renderer && m_itemBase) {
-			m_itemBase->setFilename(renderer->filename());
-		}
-
-		QPixmap pixmap(plural ? *PluralImage : *SingularImage);
-		QPixmap * icon = (renderer == NULL) ? NULL : FSvgRenderer::getPixmap(renderer, QSize(ICON_SIZE, ICON_SIZE));
-		if (icon) {
-			QPainter painter;
-			painter.begin(&pixmap);
-			if (plural) {
-				painter.drawPixmap(PLURAL_OFFSET, PLURAL_OFFSET, *icon);
-			}
-			else {
-				painter.drawPixmap(SINGULAR_OFFSET, SINGULAR_OFFSET, *icon);
-			}
-			painter.end();
-			delete icon;
-		}
-
-		m_pixmapItem = new SvgIconPixmapItem(pixmap, this);
-		m_pixmapItem->setPlural(plural);
-
-		m_pixmapItem->setFlags(0);
-		m_pixmapItem->setPos(0, 0);
-
-		if (m_itemBase) {
-			m_itemBase->setTooltip();
-			setToolTip(m_itemBase->toolTip());
-		}
-
-        if (renderer) {
-            itemBase->setSharedRendererEx(renderer);
-        }
+		setupImage(plural, viewIdentifier);
 	}
 }
 
@@ -227,3 +188,52 @@ void SvgIconWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 	QGraphicsWidget::paint(painter, option, widget);
 }
 
+void SvgIconWidget::setItemBase(ItemBase * itemBase, bool plural)
+{
+	m_itemBase = itemBase;
+	setupImage(plural, itemBase->viewIdentifier());
+}
+
+void SvgIconWidget::setupImage(bool plural, ViewLayer::ViewIdentifier viewIdentifier)
+{
+	QString error;
+	LayerAttributes layerAttributes;
+	ModelPart * modelPart = m_itemBase->modelPart();
+	FSvgRenderer * renderer = m_itemBase->setUpImage(modelPart, viewIdentifier, ViewLayer::Icon, ViewLayer::ThroughHoleThroughTop_OneLayer, layerAttributes, error);
+    if (renderer == NULL) {
+        DebugDialog::debug(QString("missing renderer for icon %1").arg(modelPart->moduleID()));
+    }
+	if (renderer && m_itemBase) {
+		m_itemBase->setFilename(renderer->filename());
+	}
+
+	QPixmap pixmap(plural ? *PluralImage : *SingularImage);
+	QPixmap * icon = (renderer == NULL) ? NULL : FSvgRenderer::getPixmap(renderer, QSize(ICON_SIZE, ICON_SIZE));
+	if (icon) {
+		QPainter painter;
+		painter.begin(&pixmap);
+		if (plural) {
+			painter.drawPixmap(PLURAL_OFFSET, PLURAL_OFFSET, *icon);
+		}
+		else {
+			painter.drawPixmap(SINGULAR_OFFSET, SINGULAR_OFFSET, *icon);
+		}
+		painter.end();
+		delete icon;
+	}
+
+	m_pixmapItem = new SvgIconPixmapItem(pixmap, this);
+	m_pixmapItem->setPlural(plural);
+
+	m_pixmapItem->setFlags(0);
+	m_pixmapItem->setPos(0, 0);
+
+	if (m_itemBase) {
+		m_itemBase->setTooltip();
+		setToolTip(m_itemBase->toolTip());
+	}
+
+    if (renderer) {
+        m_itemBase->setSharedRendererEx(renderer);
+    }
+}

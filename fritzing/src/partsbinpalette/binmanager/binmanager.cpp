@@ -47,6 +47,7 @@ $Date$
 #include "../../utils/fileprogressdialog.h"
 #include "../../referencemodel/referencemodel.h"
 #include "../partsbinpalettewidget.h"
+#include "../partsbinview.h"
 
 ///////////////////////////////////////////////////////////
 
@@ -210,7 +211,7 @@ void BinManager::insertBin(PartsBinPaletteWidget* bin, int index) {
 bool BinManager::beforeClosing() {
 	bool retval = true;
 
-	for(int j=0; j < m_stackTabWidget->count(); j++) {
+	for(int j = 0; j < m_stackTabWidget->count(); j++) {
 		PartsBinPaletteWidget *bin = qobject_cast<PartsBinPaletteWidget*>(m_stackTabWidget->widget(j));
 		if (bin && !bin->fastLoaded()) {
 			setAsCurrentTab(bin);
@@ -1185,4 +1186,14 @@ void BinManager::mainLoad() {
 void BinManager::hideTabBar()
 {
     m_stackTabWidget->stackTabBar()->hide();
+}
+
+void BinManager::reloadPart(const QString & moduleID) {
+	PartsBinView::removePartReference(moduleID);
+	for(int j = 0; j < m_stackTabWidget->count(); j++) {
+		PartsBinPaletteWidget *bin = qobject_cast<PartsBinPaletteWidget*>(m_stackTabWidget->widget(j));
+		if (bin == NULL) continue;
+
+		bin->reloadPart(moduleID);
+	}
 }
