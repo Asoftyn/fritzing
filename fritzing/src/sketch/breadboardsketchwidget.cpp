@@ -229,6 +229,7 @@ void BreadboardSketchWidget::showEvent(QShowEvent * event) {
             p += QPointF(4, 50);
 			QPointF q = mapToScene(p.toPoint());
 			m_addedDefaultPart->setPos(q);
+			alignOneToGrid(m_addedDefaultPart);
 			QTimer::singleShot(10, this, SLOT(vScrollToZero()));
 		}
 	}

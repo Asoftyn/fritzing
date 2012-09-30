@@ -520,10 +520,6 @@ Use the file?</source>
         <source>Your sketch is ready for production: there are no connectors or traces that overlap or are too close together.</source>
         <translation>Seu desenho está pronto para produção: não existem trilhas ou ligações incorretas ou muito próximas.</translation>
     </message>
-    <message>
-        <source>The areas on your board highlighted in red are connectors and traces which overlap or are too close together. Reposition them and run the DRC again to find more problems.</source>
-        <translation>As áreas pintadas a vermelho na sua placa são ligações ou trilhas que se sobrepõem ou estão muito próximas. Reposicione-os e execute o DRC outra vez para detectar mais problemas.</translation>
-    </message>
     <message numerus="yes">
         <source>
 
@@ -539,6 +535,42 @@ Nota: Os componentes %n não estão totalmente dentro da placa.</numerusform>
     </message>
     <message>
         <source>The Design Rule Check (DRC) was cancelled, because it could not find a board (or it found more than one).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The areas on your board highlighted in red are connectors and traces which may overlap or be too close together. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reposition them and run the DRC again to find more problems.
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Note that the DRC is known to give false positives--in other words, it may find &apos;overlaps&apos; that don&apos;t actually exist. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>So if you inspect the highlighed areas and see nothing wrong, you are probably correct.
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For an absolutely definitive &apos;DRC&apos;, download a &apos;Gerber Viewer&apos; </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(a software package for looking at &apos;Gerber&apos; files) </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and choose File &gt; Export &gt; for Production &gt; Extended Gerber (RS-274X), </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>then look at the resulting files in your Gerber Viewer. </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2992,6 +3024,14 @@ Razão: %2 (código do erro %3)</translation>
         <source>number of connectors:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Through-hole</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMD</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PEMainWindow</name>
@@ -3258,18 +3298,6 @@ Go ahead and save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&apos;family&apos;can not be blank.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&apos;variant&apos; can not be blank.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Variant &apos;%1&apos; is in use. A part&apos;s variant must be unique within a family.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Duplicate &apos;family&apos; property not allowed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3279,12 +3307,6 @@ Go ahead and save?</source>
     </message>
     <message>
         <source>Close without saving?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-
-Do you want to keep working or close without saving?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3381,6 +3403,114 @@ Do you want to keep working or close without saving?</source>
         <source>Add internal connection from &apos;%1&apos; to &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The &apos;family&apos; property can not be blank.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A duplicate &apos;family&apos; property is not allowed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A duplicate &apos;variant&apos; property is not allowed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This part can not be saved as-is:
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to keep working or close without saving?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>This part has %n unassigned connectors </source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>across %n views. </source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Until all connectors are assigned to SVG elements, the part will not work correctly. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Layers</source>
+        <translation type="unfinished">Camadas</translation>
+    </message>
+    <message>
+        <source>Reuse breadboard image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reuse the breadboard image in this view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reuse schematic image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reuse the schematic image in this view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reuse PCB image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reuse the PCB image in this view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make only this view visible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The part will only be visible in this view and icon view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This version of the new Parts Editor can not deal with separate copper0 and copper1 layers in &apos;%1&apos;. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>So editing may produce an invalid PCB view image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Export</source>
+        <translation type="unfinished">&amp;Exportar</translation>
+    </message>
+    <message>
+        <source>Change all connectors to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to parse &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make only %1 view visible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exiting the Parts Editor now is fine, as long as you remember to finish the assignments later.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PEMetadataView</name>
@@ -3460,6 +3590,14 @@ Do you want to keep working or close without saving?</source>
         <source>Variant</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Set the part&apos;s url if it is described on a web page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PESvgView</name>
@@ -3474,18 +3612,6 @@ Do you want to keep working or close without saving?</source>
 </context>
 <context>
     <name>PEToolView</name>
-    <message>
-        <source>Connector List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connector Locked</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unlock to modify the current connector&apos;s information</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Center</source>
         <translation type="unfinished"></translation>
@@ -3508,6 +3634,74 @@ Do you want to keep working or close without saving?</source>
     </message>
     <message>
         <source>Connector %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connector List (a checked connector&apos;s graphic is assigned)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Internal Connections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set this checkbox to edit internal connections by drawing wires</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Assign connector graphic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Using the mouse pointer and mouse wheel, navigate to the SVG region to which you want to assign to the current connector, then mouse down to assign it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Controls for setting the terminal point for a connector. The terminal point is where a wire will attach to the connector. You can also drag the crosshair of the current connector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>west</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>north</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>south</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>east</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sets the connector&apos;s terminal point to %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modifies the x-coordinate of the terminal point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modifies the y-coordinate of the terminal point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dragging disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;font color=&apos;black&apos;&gt;Dragging enabled&lt;/font&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;font color=&apos;gray&apos;&gt;Dragging disabled&lt;/font&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4966,10 +5160,6 @@ is already there, we won&apos;t add it again, right?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>SMD-pad</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4987,6 +5177,14 @@ is already there, we won&apos;t add it again, right?</source>
     </message>
     <message>
         <source>Internal Connections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set all to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pad</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

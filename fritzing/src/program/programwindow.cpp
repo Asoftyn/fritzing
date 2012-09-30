@@ -465,7 +465,8 @@ bool ProgramWindow::eventFilter(QObject * object, QEvent * event) {
  * Reimplement closeEvent to save any modified documents before closing.
  */
 void ProgramWindow::closeEvent(QCloseEvent *event) {
-	if(beforeClosing()) {
+	bool discard;
+	if(beforeClosing(true, discard)) {
 		cleanUp();
 		QMainWindow::closeEvent(event);
 		emit closed();
@@ -626,7 +627,8 @@ void ProgramWindow::setProgrammer(QAction* action) {
     currentWidget()->chooseProgrammer(action->data().toString());
 }
 
-bool ProgramWindow::beforeClosing(bool showCancel) {
+bool ProgramWindow::beforeClosing(bool showCancel, bool & discard) {
+	discard = false;
 	for (int i = 0; i < m_tabWidget->count(); i++) {
 		if (!beforeClosingTab(i, showCancel)) {
 			return false;

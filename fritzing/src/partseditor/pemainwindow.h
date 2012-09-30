@@ -44,6 +44,17 @@ public:
 	void addViewLayers();
 };
 
+struct ViewThing {
+    ItemBase * itemBase;
+    QDomDocument * document;
+    int svgChangeCount;
+    bool everZoomed;
+    SketchWidget * sketchWidget;
+    QString originalSvgPath;
+	bool firstTime;
+
+	ViewThing();
+};
 
 class PEMainWindow : public MainWindow
 {
@@ -94,6 +105,7 @@ public slots:
 	void wireChangedSlot(class Wire*, const QLineF & oldLine, const QLineF & newLine, QPointF oldPos, QPointF newPos, ConnectorItem * from, ConnectorItem * to);
 	void connectorsTypeChanged(Connector::ConnectorType);
 	void smdChanged(const QString &);
+	void showing(SketchWidget *);
 
 protected:
 	void closeEvent(QCloseEvent * event);
@@ -170,6 +182,7 @@ protected:
 	void reuseImage(ViewLayer::ViewIdentifier);
 	void setImageAttribute(QDomElement & layers, const QString & image);
 	QString makeNewVariant(const QString & family);
+	void connectorWarning();
 
 protected slots:
     void initZoom();
@@ -218,17 +231,12 @@ protected:
     class PESvgView * m_peSvgView;
     QString m_guid;
     int m_fileIndex;
-    QHash<ViewLayer::ViewIdentifier, ItemBase *> m_items;
-    QHash<ViewLayer::ViewIdentifier, QDomDocument *> m_docs;
-    QHash<ViewLayer::ViewIdentifier, int> m_svgChangeCount;
-    QHash<ViewLayer::ViewIdentifier, bool> m_everZoomed;
-    QHash<ViewLayer::ViewIdentifier, SketchWidget *> m_sketchWidgets;
+    QHash<ViewLayer::ViewIdentifier, ViewThing *> m_viewThings;
     QString m_userPartsFolderPath;
     QString m_userPartsFolderSvgPath;
     bool m_canSave;
     QString m_originalFzpPath;
     QString m_originalModuleID;
-    QHash<ViewLayer::ViewIdentifier, QString> m_originalSvgPaths;
     bool m_gaveSaveWarning;
 	QStringList m_filesToDelete;
 	QList< QPointer<QWidget> > m_inFocusWidgets;

@@ -70,7 +70,7 @@ protected:
 	virtual QStringList getExtensions() = 0;
 
 	virtual bool saveAsAux(const QString & fileName) = 0;
-	virtual bool beforeClosing(bool showCancel=true);			// returns true if close, false if cancel
+	virtual bool beforeClosing(bool showCancel, bool & discard);			// returns true if close, false if cancel
     QMessageBox::StandardButton beforeClosingMessage(const QString & filename, bool showCancel);
     virtual void setBeforeClosingText(const QString & filename, QMessageBox & messageBox);
 

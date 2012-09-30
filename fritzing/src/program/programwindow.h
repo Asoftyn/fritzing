@@ -154,7 +154,7 @@ protected:
 	void initProgrammerNames();
 	QString getExtensionString();
 	QStringList getExtensions();
-	bool beforeClosing(bool showCancel=true); // returns true if close, false if cancel
+	bool beforeClosing(bool showCancel, bool & discard); // returns true if close, false if cancel
 	QStringList getSerialPortsAux();
 
 protected:

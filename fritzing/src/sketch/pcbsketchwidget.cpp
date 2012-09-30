@@ -353,6 +353,7 @@ void PCBSketchWidget::dealWithDefaultParts() {
 	// place it
 	QPointF q = mapToScene(p.toPoint());
 	m_addedDefaultPart->setPos(q);
+	alignOneToGrid(m_addedDefaultPart);
 	ResizableBoard * rb = qobject_cast<ResizableBoard *>(m_addedDefaultPart);
 	if (rb) rb->resizePixels(partSize.width(), partSize.height(), m_viewLayers);
 	QTimer::singleShot(10, this, SLOT(vScrollToZero()));

@@ -74,15 +74,12 @@ $Date$
 #include "../processeventblocker.h"
 #include "../help/helper.h"
 #include "../sketchtoolbutton.h"
-
 #include "../partsbinpalette/binmanager/binmanager.h"
-
 #include "../fsvgrenderer.h"
 #include "../utils/fsizegrip.h"
 #include "../utils/expandinglabel.h"
 #include "../dock/viewswitcher.h"
 #include "../dock/viewswitcherdockwidget.h"
-
 #include "../utils/autoclosemessagebox.h"
 #include "../utils/fileprogressdialog.h"
 #include "../utils/clickablelabel.h"
@@ -90,6 +87,7 @@ $Date$
 #include "../items/resistor.h"
 #include "../items/symbolpaletteitem.h"
 #include "../utils/zoomslider.h"
+#include "../partseditor/pemainwindow.h"
 
 
 ///////////////////////////////////////////////
@@ -993,7 +991,8 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
 	if (!m_closeSilently) {
 		bool whatWithAliens = whatToDoWithAlienFiles();
-		if(!beforeClosing() || !whatWithAliens ||!m_binManager->beforeClosing()) {
+		bool discard;
+		if(!beforeClosing(true, discard) || !whatWithAliens ||!m_binManager->beforeClosing()) {
 			event->ignore();
 			return;
 		}
@@ -2148,6 +2147,10 @@ void MainWindow::setAutosave(int minutes, bool enabled) {
 		if (mainWindow == NULL) continue;
 
 		mainWindow->m_autosaveTimer.stop();
+		if (qobject_cast<PEMainWindow *>(widget)) {
+			continue;
+		}
+
 		if (AutosaveEnabled) {
 			// is there a way to get the current timer offset so that all the timers aren't running in sync?
 			// or just add some random time...

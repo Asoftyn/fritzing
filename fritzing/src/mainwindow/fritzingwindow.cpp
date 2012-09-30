@@ -190,13 +190,15 @@ bool FritzingWindow::anyModified() {
 	return isWindowModified();
 }
 
-bool FritzingWindow::beforeClosing(bool showCancel) {
+bool FritzingWindow::beforeClosing(bool showCancel, bool & discard) {
+	discard = false;
 	if (anyModified()) {
 		QMessageBox::StandardButton reply = beforeClosingMessage(m_fwFilename, showCancel);
      	if (reply == QMessageBox::Save) {
      		return save();
     	} 
 		else if (reply == QMessageBox::Discard) {
+			discard = true;
      		return true;
         }
      	else {

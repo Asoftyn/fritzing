@@ -312,6 +312,9 @@ public:
 	void deleteMiddle(QSet<ItemBase *> & deletedItems, QUndoCommand * parentCommand);
     void setPasting(bool);
     void showUnrouted();
+	QPointF alignOneToGrid(ItemBase * itemBase);
+	void showEvent(QShowEvent * event);
+
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
@@ -447,7 +450,6 @@ protected:
 	virtual QPoint calcFixedToCenterItemOffset(const QRect & viewPortRect, const QSizeF & helpSize);
 	virtual bool acceptsTrace(const ViewGeometry &);
 	virtual ItemBase * placePartDroppedInOtherView(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry & viewGeometry, long id, SketchWidget * dropOrigin);
-	void alignOneToGrid(ItemBase * itemBase);
 	void showPartLabelsAux(bool show, QList<ItemBase *> & itemBases);
 	virtual void extraRenderSvgStep(ItemBase *, QPointF offset, double dpi, double printerScale, QString & outputSvg);
 	virtual ViewLayer::ViewLayerSpec createWireViewLayerSpec(ConnectorItem * from, ConnectorItem * to);
@@ -523,6 +525,7 @@ signals:
     void swapBoardImageSignal(SketchWidget * sketchWidget, ItemBase * itemBase, const QString & filename, const QString & moduleID, bool addName);
     void canConnectSignal(Wire * from, ItemBase * to, bool & connect);
     void swapStartSignal(SwapThing & swapThing, bool master);
+	void showing(SketchWidget *);
 
 protected slots:
 	void itemAddedSlot(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, SketchWidget * dropOrigin);

@@ -266,7 +266,6 @@ void PEToolView::showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::
 		QString svgID, terminalID;
         bool ok = PEUtils::getConnectorSvgIDs(connector, viewIdentifier, svgID, terminalID);
 		if (!ok) {
-			// this shouldn't happen
 			continue;
 		}
 

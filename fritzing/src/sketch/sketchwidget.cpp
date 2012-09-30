@@ -7054,6 +7054,8 @@ void SketchWidget::drawBackground( QPainter * painter, const QRectF & rect )
 		return;
 	}
 
+	//DebugDialog::debug(QString("draw background %1").arg(viewName()));
+
 	InfoGraphicsView::drawBackground(painter, rect);
 
 	// from:  http://www.qtcentre.org/threads/27364-Trying-to-draw-a-grid-on-a-QGraphicsScene-View
@@ -8314,7 +8316,7 @@ bool SketchWidget::acceptsTrace(const ViewGeometry &) {
 	return false;
 }
 
-void SketchWidget::alignOneToGrid(ItemBase * itemBase) {
+QPointF SketchWidget::alignOneToGrid(ItemBase * itemBase) {
 	if (m_alignToGrid) {
 		QHash<long, ItemBase *> savedItems;
 		QHash<Wire *, ConnectorItem *> savedWires;
@@ -8323,9 +8325,13 @@ void SketchWidget::alignOneToGrid(ItemBase * itemBase) {
 			m_alignmentItem = NULL;
 			QPointF loc = itemBase->pos();
 			alignLoc(loc, m_alignmentStartPoint, QPointF(0,0), QPointF(0, 0));
+			QPointF result = loc - itemBase->pos();
 			itemBase->setPos(loc);
+			return result;
 		}
 	}
+
+	return QPointF(0, 0);
 }
 
 ViewGeometry::WireFlag SketchWidget::getTraceFlag() {
@@ -8869,3 +8875,7 @@ void SketchWidget::showUnrouted() {
 	}
 }
 
+void SketchWidget::showEvent(QShowEvent * event) {
+	InfoGraphicsView::showEvent(event);
+	emit showing(this);
+}
