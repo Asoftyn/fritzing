@@ -110,6 +110,8 @@ BaseCommand::CrossViewType BreadboardSketchWidget::wireSplitCrossView()
 }
 
 bool BreadboardSketchWidget::canDropModelPart(ModelPart * modelPart) {	
+	if (!SketchWidget::canDropModelPart(modelPart)) return false;
+
     if (Board::isBoard(modelPart)) {
         return matchesLayer(modelPart);
     }

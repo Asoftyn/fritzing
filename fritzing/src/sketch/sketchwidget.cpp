@@ -1727,8 +1727,12 @@ bool SketchWidget::dragEnterEventAux(QDragEnterEvent *event) {
 }
 
 bool SketchWidget::canDropModelPart(ModelPart * modelPart) {
-	Q_UNUSED(modelPart);
-	return true;
+	LayerList layerList = modelPart->viewLayers(viewIdentifier());
+	foreach (ViewLayer::ViewLayerID viewLayerID, m_viewLayers.keys()) {
+		if (layerList.contains(viewLayerID)) return true;
+	}
+
+	return false;
 }
 
 void SketchWidget::dragLeaveEvent(QDragLeaveEvent * event) {

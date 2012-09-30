@@ -26,12 +26,14 @@ $Date$
 
 #include "virtualwire.h"
 #include "../connectors/connectoritem.h"
+#include "../model/modelpart.h"
 
 VirtualWire::VirtualWire( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier,  const ViewGeometry & viewGeometry, long id, QMenu * itemMenu  ) 
 	: ClipableWire(modelPart, viewIdentifier,  viewGeometry,  id, itemMenu, false)
 {
-	m_colorWasNamed = false;
 	// note: at this point in fritzing development, the VirtualWire class is only ever used for ratsnest wires
+	modelPart->setLocalProp("ratsnest", "true");
+	m_colorWasNamed = false;
 	setFlag(QGraphicsItem::ItemIsSelectable, false);
 }
 

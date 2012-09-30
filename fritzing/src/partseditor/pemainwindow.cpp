@@ -28,13 +28,7 @@ $Date$
 
 
     ///////////////////////////////// first release ///////////////////////////////
-		        			
-	    clean up menus
-			test everything visible works
-				        
-		don't allow hidden views to be dragged in from the parts bin
-
-		initial align to grid?
+		        							       
 
     ////////////////////////////// second release /////////////////////////////////
 
@@ -49,12 +43,10 @@ $Date$
 
 		why isn't swapping available when a family has new parts with multiple variant values?
 
-		load smd footprint into tht part?
-
 		test button with export etchable to make sure the part is right?
 			export etchable is disabled without a board
 
-		align to grid
+		align to grid when moving?
 
 		restore editable pin labels functionality
 			requires storing labels in the part rather than in the sketch
@@ -524,6 +516,15 @@ void PEMainWindow::createMenus()
     createViewMenu();
     createWindowMenu();
     createHelpMenu();
+}
+
+void PEMainWindow::createEditMenu()
+{
+    m_editMenu = menuBar()->addMenu(tr("&Edit"));
+    m_editMenu->addAction(m_undoAct);
+    m_editMenu->addAction(m_redoAct);
+    updateEditMenu();
+    connect(m_editMenu, SIGNAL(aboutToShow()), this, SLOT(updateEditMenu()));
 }
 
 QList<QWidget*> PEMainWindow::getButtonsForView(ViewLayer::ViewIdentifier viewIdentifier) {

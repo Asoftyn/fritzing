@@ -175,6 +175,8 @@ void SchematicSketchWidget::setNewPartVisible(ItemBase * itemBase) {
 }
 
 bool SchematicSketchWidget::canDropModelPart(ModelPart * modelPart) {
+	if (!SketchWidget::canDropModelPart(modelPart)) return false;
+
 	switch (modelPart->itemType()) {
 		case ModelPart::Logo:
             if (modelPart->moduleID().contains("schematic", Qt::CaseInsensitive)) return true;

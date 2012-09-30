@@ -129,6 +129,7 @@ protected:
     void createViewMenuActions();
     void createFileMenuActions();
     void createViewMenu();
+	void createEditMenu();
     QHash<QString, QString> getOldProperties();
     QDomElement findConnector(const QString & id, int & index);
     void changeConnectorElement(QDomElement & connector, ConnectorMetadata *);

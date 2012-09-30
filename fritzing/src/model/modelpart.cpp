@@ -32,7 +32,6 @@ $Date$
 #include "../version/version.h"
 #include "../utils/folderutils.h"
 #include "../items/itembase.h"
-#include "../items/virtualwire.h"
 
 #include <QDomElement>
 #include <QBitArray>
@@ -223,7 +222,7 @@ void ModelPart::saveInstances(const QString & fileName, QXmlStreamWriter & strea
 		streamWriter.writeStartElement("instances");
 	}
 
-	if (m_viewItems.size() > 0) {
+	if (parent() != NULL) {  // m_viewItems.size() > 0
 		saveInstance(streamWriter);
 	}
 
@@ -250,7 +249,9 @@ void ModelPart::saveInstances(const QString & fileName, QXmlStreamWriter & strea
 
 void ModelPart::saveInstance(QXmlStreamWriter & streamWriter) 
 {
-	if (qobject_cast<VirtualWire *>(m_viewItems.at(0)) != NULL) return;				// don't save virtual wires
+	if (localProp("ratsnest").toBool()) {
+		return;				// don't save virtual wires
+	}
 
 	streamWriter.writeStartElement("instance");
 	if (m_modelPartShared != NULL) {

@@ -471,7 +471,9 @@ void PCBSketchWidget::setNewPartVisible(ItemBase * itemBase) {
 }
 
 bool PCBSketchWidget::canDropModelPart(ModelPart * modelPart) {
-    if (Board::isBoard(modelPart)) {
+	if (!SketchWidget::canDropModelPart(modelPart)) return false;
+
+	if (Board::isBoard(modelPart)) {
         return matchesLayer(modelPart);
     }
 
@@ -757,6 +759,7 @@ void PCBSketchWidget::showLabelFirstTime(long itemID, bool show, bool doEmit) {
 	SketchWidget::showLabelFirstTime(itemID, show, doEmit);
 	ItemBase * itemBase = findItem(itemID);
 	if (itemBase == NULL) return;
+	if (!canDropModelPart(itemBase->modelPart())) return;
 
 	switch (itemBase->itemType()) {
 		case ModelPart::Part:
