@@ -108,6 +108,7 @@ public:
 	void convertToVia(ConnectorItem * lastHoverEnterConnectorItem);
 	void convertToBendpoint();
     int checkLoadedTraces();
+	bool hasCustomBoardShape();
 
 public:
 	static QSizeF jumperItemSize();

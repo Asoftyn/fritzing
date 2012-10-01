@@ -2586,3 +2586,12 @@ int PCBSketchWidget::checkLoadedTraces() {
 
     return wires.count();
 }
+
+bool PCBSketchWidget::hasCustomBoardShape() {
+	QList<ItemBase *> boards = findBoard();
+	foreach (ItemBase * board, boards) {
+		if (qobject_cast<BoardLogoItem *>(board)) return true;
+	}
+
+	return false;
+}

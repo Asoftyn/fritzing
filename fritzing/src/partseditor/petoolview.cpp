@@ -239,6 +239,8 @@ void PEToolView::initConnectors(QList<QDomElement> & connectorList) {
 		QListWidgetItem *item = new QListWidgetItem;
 		item->setData(Qt::DisplayRole, connector.attribute("name"));
 		item->setData(Qt::UserRole, ix++);
+		QPushButton * button = new QPushButton("test");
+		m_connectorListWidget->setItemWidget(item, button);
 		Qt::ItemFlags flags = item->flags();
 		if (flags & Qt::ItemIsUserCheckable) {
 			flags ^= Qt::ItemIsUserCheckable;

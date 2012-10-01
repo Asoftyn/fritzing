@@ -169,6 +169,7 @@ public:
     bool usesPart(const QString & moduleID);
     bool updateParts(const QString & moduleID, QUndoCommand * parentCommand);
 	void updatePartsBin(const QString & moduleID);
+	bool hasCustomBoardShape();
 
 public:
 	static void initNames();

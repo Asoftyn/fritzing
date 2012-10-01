@@ -2501,3 +2501,10 @@ void MainWindow::showStatusMessage(const QString & message)
 void MainWindow::updatePartsBin(const QString & moduleID) {
 	m_binManager->reloadPart(moduleID);
 }
+
+bool MainWindow::hasCustomBoardShape() {
+	if (m_pcbGraphicsView == NULL) return false;
+
+	return m_pcbGraphicsView->hasCustomBoardShape();
+}
+

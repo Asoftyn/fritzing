@@ -680,6 +680,10 @@ QString GerberGenerator::cleanOutline(const QString & outlineSvg)
 	QList<QDomElement> leaves;
     QDomElement root = doc.documentElement();
     TextUtils::collectLeaves(root, leaves);
+	QDomNodeList textNodes = root.elementsByTagName("text");
+	for (int t = 0; t < textNodes.count(); t++) {
+		leaves << textNodes.at(t).toElement();
+	}
 
 	if (leaves.count() == 0) return "";
 	if (leaves.count() == 1) return outlineSvg;
@@ -690,7 +694,8 @@ QString GerberGenerator::cleanOutline(const QString & outlineSvg)
 			if (leaf.attribute("id", "").compare(MagicBoardOutlineID) == 0) {
 				for (int j = 0; j < leaves.count(); j++) {
 					if (i != j) {
-						leaves.at(j).parentNode().removeChild(leaves.at(j));
+						QDomElement jleaf = leaves.at(j);
+						jleaf.parentNode().removeChild(jleaf);
 					}
 				}
 
