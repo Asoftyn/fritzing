@@ -35,6 +35,7 @@ $Date$
 #include <QTextEdit>
 #include <QRadioButton>
 #include <QLabel>
+#include <QTextStream>
 
 QString PEUtils::Units = "mm";
 const int PEUtils::Spacing = 10;
@@ -88,16 +89,7 @@ QWidget * PEUtils::makeConnectorForm(const QDomElement & connector, int index, Q
     QFrame * nameFrame = new QFrame();
     QHBoxLayout * nameLayout = new QHBoxLayout();
 
-    QLabel * justLabel = new QLabel(QObject::tr("<b>id:</b>"));
-	justLabel->setObjectName("NewPartsEditorLabel");
-    nameLayout->addWidget(justLabel);
-
-    justLabel = new QLabel(connector.attribute("id"));
-	justLabel->setObjectName("NewPartsEditorLabel");
-    nameLayout->addWidget(justLabel);
-    nameLayout->addSpacing(Spacing);
-
-    justLabel = new QLabel(QObject::tr("<b>Name:</b>"));
+    QLabel * justLabel = new QLabel(QObject::tr("<b>Name:</b>"));
 	justLabel->setObjectName("NewPartsEditorLabel");
     nameLayout->addWidget(justLabel);
 
@@ -113,7 +105,31 @@ QWidget * PEUtils::makeConnectorForm(const QDomElement & connector, int index, Q
     nameLayout->addWidget(nameEdit);
     nameLayout->addSpacing(Spacing);
 
+    HashRemoveButton * hashRemoveButton = new HashRemoveButton(NULL, NULL, NULL);
+    hashRemoveButton->setProperty("index", index);
+	QObject::connect(hashRemoveButton, SIGNAL(clicked(HashRemoveButton *)), slotHolder, SLOT(removeConnector()));
+    nameLayout->addWidget(hashRemoveButton);
+
+    nameFrame->setLayout(nameLayout);
+    mainLayout->addWidget(nameFrame);
+
+    QFrame * idFrame = new QFrame();
+    QHBoxLayout * idLayout = new QHBoxLayout();
+
+	justLabel = new QLabel(QObject::tr("<b>id:</b>"));
+	justLabel->setObjectName("NewPartsEditorLabel");
+    idLayout->addWidget(justLabel);
+
+    justLabel = new QLabel(connector.attribute("id"));
+	justLabel->setObjectName("NewPartsEditorLabel");
+    idLayout->addWidget(justLabel);
+    idLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
+
     Connector::ConnectorType ctype = Connector::connectorTypeFromName(connector.attribute("type"));
+
+	justLabel = new QLabel(QObject::tr("<b>type:</b>"));
+	justLabel->setObjectName("NewPartsEditorLabel");
+    idLayout->addWidget(justLabel);
 
     QRadioButton * radioButton = new QRadioButton(MaleSymbolString); 
 	QObject::connect(radioButton, SIGNAL(clicked()), slotHolder, SLOT(typeEntry()));
@@ -122,7 +138,7 @@ QWidget * PEUtils::makeConnectorForm(const QDomElement & connector, int index, Q
     radioButton->setProperty("value", Connector::Male);
     radioButton->setProperty("index", index);
     radioButton->setProperty("type", "radio");
-    nameLayout->addWidget(radioButton);
+    idLayout->addWidget(radioButton);
 
     radioButton = new QRadioButton(FemaleSymbolString); 
 	QObject::connect(radioButton, SIGNAL(clicked()), slotHolder, SLOT(typeEntry()));
@@ -131,25 +147,21 @@ QWidget * PEUtils::makeConnectorForm(const QDomElement & connector, int index, Q
     radioButton->setProperty("value", Connector::Female);
     radioButton->setProperty("index", index);
     radioButton->setProperty("type", "radio");
-    nameLayout->addWidget(radioButton);
+    idLayout->addWidget(radioButton);
 
     radioButton = new QRadioButton(QObject::tr("Pad")); 
 	QObject::connect(radioButton, SIGNAL(clicked()), slotHolder, SLOT(typeEntry()));
     radioButton->setObjectName("NewPartsEditorRadio");
     if (ctype == Connector::Pad) radioButton->setChecked(true); 
     radioButton->setProperty("value", Connector::Pad);
-    nameLayout->addWidget(radioButton);
+    idLayout->addWidget(radioButton);
     radioButton->setProperty("index", index);
     radioButton->setProperty("type", "radio");
-    nameLayout->addSpacing(Spacing);
+    idLayout->addSpacing(Spacing);
 
-    HashRemoveButton * hashRemoveButton = new HashRemoveButton(NULL, NULL, NULL);
-    hashRemoveButton->setProperty("index", index);
-	QObject::connect(hashRemoveButton, SIGNAL(clicked(HashRemoveButton *)), slotHolder, SLOT(removeConnector()));
-    nameLayout->addWidget(hashRemoveButton);
+    idFrame->setLayout(idLayout);
+    mainLayout->addWidget(idFrame);
 
-    nameFrame->setLayout(nameLayout);
-    mainLayout->addWidget(nameFrame);
 
     QFrame * descriptionFrame = new QFrame();
     QHBoxLayout * descriptionLayout = new QHBoxLayout();
@@ -221,12 +233,16 @@ QDomElement PEUtils::getConnectorPElement(const QDomElement & element, ViewLayer
     return view.firstChildElement("p");
 }
 
-bool PEUtils::getConnectorSvgIDs(const QDomElement & element, ViewLayer::ViewIdentifier viewIdentifier, QString & id, QString & terminalID) {
+bool PEUtils::getConnectorSvgIDs(QDomElement & element, ViewLayer::ViewIdentifier viewIdentifier, QString & id, QString & terminalID) {
     QDomElement p = getConnectorPElement(element, viewIdentifier);
-    if (p.isNull()) return false;
+    if (p.isNull()) {
+		return false;
+	}
 
     id = p.attribute("svgId");
-    if (id.isEmpty()) return false;
+    if (id.isEmpty()) {
+		return false;
+	}
 
     terminalID = p.attribute("terminalId");
     return true;

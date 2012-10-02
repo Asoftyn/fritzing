@@ -29,6 +29,15 @@ $Date$
 
     ///////////////////////////////// first release ///////////////////////////////
 		        							       
+	pin label names set in pin label editor are not getting to the fzp document
+
+	remove "lower" assignment button and move name to that position
+
+	move svg palette south
+
+	move terminal group south
+
+	button gradually makes list bigger--can we start it out that way
 
     ////////////////////////////// second release /////////////////////////////////
 
@@ -443,21 +452,22 @@ void PEMainWindow::moreInitDock()
     static int MinHeight = 75;
     static int DefaultHeight = 100;
 
-    m_peSvgView = new PESvgView();
-    makeDock(tr("SVG"), m_peSvgView, DockMinWidth, DockMinHeight);
-    m_peSvgView->setMinimumSize(DockMinWidth, DockMinHeight);
 
     m_peToolView = new PEToolView();
     connect(m_peToolView, SIGNAL(getSpinAmount(double &)), this, SLOT(getSpinAmount(double &)), Qt::DirectConnection);
     connect(m_peToolView, SIGNAL(terminalPointChanged(const QString &)), this, SLOT(terminalPointChanged(const QString &)));
     connect(m_peToolView, SIGNAL(terminalPointChanged(const QString &, double)), this, SLOT(terminalPointChanged(const QString &, double)));
-    connect(m_peToolView, SIGNAL(switchedConnector(const QDomElement &)), this, SLOT(switchedConnector(const QDomElement &)));
+    connect(m_peToolView, SIGNAL(switchedConnector(int)), this, SLOT(switchedConnector(int)));
     connect(m_peToolView, SIGNAL(removedConnector(const QDomElement &)), this, SLOT(removedConnector(const QDomElement &)));
     connect(m_peToolView, SIGNAL(pickModeChanged(bool)), this, SLOT(pickModeChanged(bool)));
     connect(m_peToolView, SIGNAL(busModeChanged(bool)), this, SLOT(busModeChanged(bool)));
     connect(m_peToolView, SIGNAL(connectorMetadataChanged(ConnectorMetadata *)), this, SLOT(connectorMetadataChanged(ConnectorMetadata *)), Qt::DirectConnection);
     makeDock(tr("Connectors"), m_peToolView, DockMinWidth, DockMinHeight);
     m_peToolView->setMinimumSize(DockMinWidth, DockMinHeight);
+
+    m_peSvgView = new PESvgView();
+    makeDock(tr("SVG"), m_peSvgView, DockMinWidth, DockMinHeight);
+    m_peSvgView->setMinimumSize(DockMinWidth, DockMinHeight);
 
 	//QDockWidget * dockWidget = makeDock(BinManager::Title, m_binManager, MinHeight, DefaultHeight);
     //dockWidget->resize(0, 0);
@@ -1250,30 +1260,34 @@ void PEMainWindow::initConnectors() {
     QDomElement root = m_fzpDocument.documentElement();
     QDomElement connectors = root.firstChildElement("connectors");
     QDomElement connector = connectors.firstChildElement("connector");
-    QList<QDomElement> connectorList;
+    m_connectorList.clear();
     while (!connector.isNull()) {
-        connectorList.append(connector);
+        m_connectorList.append(connector);
         connector = connector.nextSiblingElement("connector");
     }
 
-    qSort(connectorList.begin(), connectorList.end(), byID);
+    qSort(m_connectorList.begin(), m_connectorList.end(), byID);
 
-    m_connectorsView->initConnectors(connectorList);
-    m_peToolView->initConnectors(connectorList);
+    m_connectorsView->initConnectors(&m_connectorList);
+    m_peToolView->initConnectors(&m_connectorList);
 	updateAssignedConnectors();
 }
 
-void PEMainWindow::switchedConnector(const QDomElement & element)
+void PEMainWindow::switchedConnector(int ix)
 {
     if (m_currentGraphicsView == NULL) return;
-    if (element.isNull()) return;
 
-    switchedConnector(element, m_currentGraphicsView);
+    switchedConnector(ix, m_currentGraphicsView);
 }
 
-void PEMainWindow::switchedConnector(const QDomElement & element, SketchWidget * sketchWidget)
+void PEMainWindow::switchedConnector(int ix, SketchWidget * sketchWidget)
 {
-    QString svgID, terminalID;
+	if (m_connectorList.count() == 0) return;
+
+	QDomElement element = m_connectorList.at(ix);
+    if (element.isNull()) return;
+
+	QString svgID, terminalID;
     if (!PEUtils::getConnectorSvgIDs(element, sketchWidget->viewIdentifier(), svgID, terminalID)) return;
 
     QList<PEGraphicsItem *> pegiList = getPegiList(sketchWidget);
@@ -1654,7 +1668,7 @@ void PEMainWindow::reload(bool firstTime)
         viewThing->everZoomed = false;
    }
 
-    switchedConnector(m_peToolView->currentConnector());
+    switchedConnector(m_peToolView->currentConnectorIndex());
 
     // processEventBlocker might be enough?
     QTimer::singleShot(10, this, SLOT(initZoom()));
@@ -1760,7 +1774,8 @@ void PEMainWindow::pegiMousePressed(PEGraphicsItem * pegi, bool & ignore)
 	QString id = pegi->element().attribute("id");
 	if (id.isEmpty()) return;
 
-	if (m_peToolView->currentConnector().attribute("id").compare(id) == 0) {
+	QDomElement current = m_connectorList.at(m_peToolView->currentConnectorIndex());
+	if (current.attribute("id").compare(id) == 0) {
 		// already there
 		return;
 	}
@@ -1792,7 +1807,9 @@ void PEMainWindow::relocateConnector(PEGraphicsItem * pegi)
         return;
     }
 
-    QDomElement currentConnectorElement = m_peToolView->currentConnector();
+	QDomElement fzpRoot = m_fzpDocument.documentElement();
+	QDomElement connectors = fzpRoot.firstChildElement("connectors");
+	QDomElement currentConnectorElement = m_connectorList.at(m_peToolView->currentConnectorIndex());
     QString svgID, terminalID;
     if (!PEUtils::getConnectorSvgIDs(currentConnectorElement, m_currentGraphicsView->viewIdentifier(), svgID, terminalID)) {
         return;
@@ -1876,7 +1893,7 @@ void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QStri
             pegi->setHighlighted(true);
 			pegi->showMarquee(true);
 			pegi->showTerminalPoint(true);
-            switchedConnector(m_peToolView->currentConnector(), sketchWidget);
+            switchedConnector(m_peToolView->currentConnectorIndex(), sketchWidget);
 
         }
         else if (element.attribute("gorn").compare(oldGorn) == 0) {
@@ -2136,7 +2153,7 @@ void PEMainWindow::terminalPointChangedAux(PEGraphicsItem * pegi, QPointF before
 
     pegi->setPendingTerminalPoint(after);
 
-    QDomElement currentConnectorElement = m_peToolView->currentConnector();
+    QDomElement currentConnectorElement = m_connectorList.at(m_peToolView->currentConnectorIndex());
 
     MoveTerminalPointCommand * mtpc = new MoveTerminalPointCommand(this, this->m_currentGraphicsView, currentConnectorElement.attribute("id"), pegi->rect().size(), before, after, NULL);
     mtpc->setText(tr("Move terminal point"));
@@ -2358,7 +2375,8 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
 
     if (m_peToolView == NULL) return;
 
-    switchedConnector(m_peToolView->currentConnector());
+
+    switchedConnector(m_peToolView->currentConnectorIndex());
 
     bool enabled = index < IconViewIndex;
 	m_peSvgView->setChildrenVisible(enabled);
@@ -2523,13 +2541,24 @@ void PEMainWindow::connectorCountChanged(int newCount) {
 
     QString originalPath = saveFzp();
 
+	// assume you cannot start from zero
+	QDomElement connectorModel = connectorList.at(0);
     for (int i = connectorList.count(); i < newCount; i++) {
         id++;
-        QDomElement element = m_fzpDocument.createElement("connector");
+        QDomElement element = connectorModel.cloneNode(true).toElement();
         connectors.appendChild(element);
-        element.setAttribute("type", "male");
         element.setAttribute("name", QString("pin %1").arg(id));
-        element.setAttribute("id", QString("connector%1").arg(id));
+		QString cid = QString("connector%1").arg(id);
+        element.setAttribute("id", cid);
+		QString svgid = cid + "pin";
+		QDomNodeList nodeList = element.elementsByTagName("p");
+		for (int n = 0; n < nodeList.count(); n++) {
+			QDomElement p = nodeList.at(n).toElement();
+			p.removeAttribute("terminalId");
+			p.removeAttribute("legId");
+			p.setAttribute("svgId", svgid);
+		}
+
     }
 
     QString newPath = saveFzp();

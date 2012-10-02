@@ -138,7 +138,7 @@ PEConnectorsView::~PEConnectorsView() {
 
 }
 
-void PEConnectorsView::initConnectors(QList<QDomElement> & connectorList) 
+void PEConnectorsView::initConnectors(QList<QDomElement> * connectorList) 
 {
     if (m_scrollFrame) {
         m_scrollArea->setWidget(NULL);
@@ -146,7 +146,7 @@ void PEConnectorsView::initConnectors(QList<QDomElement> & connectorList)
         m_scrollFrame = NULL;
     }
 
-    m_connectorCount = connectorList.size();
+    m_connectorCount = connectorList->size();
     m_numberEdit->setText(QString::number(m_connectorCount));
 
 	m_scrollFrame = new QFrame(this);
@@ -154,7 +154,7 @@ void PEConnectorsView::initConnectors(QList<QDomElement> & connectorList)
 	QVBoxLayout *scrollLayout = new QVBoxLayout();
 
     int ix = 0;
-    foreach (QDomElement connector, connectorList) {
+    foreach (QDomElement connector, *connectorList) {
         QWidget * widget = PEUtils::makeConnectorForm(connector, ix++, this, true);
         scrollLayout->addWidget(widget);
     }

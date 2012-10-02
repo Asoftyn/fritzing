@@ -34,7 +34,7 @@ $Date$
 #include <QGroupBox>
 #include <QCheckBox>
 #include <QLabel>
-#include <QListWidget>
+#include <QTreeWidget>
 #include <QDomDocument>
 #include <QDoubleSpinBox>
 
@@ -60,9 +60,9 @@ public:
 	~PEToolView();
 
     void highlightElement(class PEGraphicsItem *);
-    void initConnectors(QList<QDomElement> & connectorList);
+    void initConnectors(QList<QDomElement> * connectorList);
 	bool busMode();
-    QDomElement currentConnector();
+    int currentConnectorIndex();
 	void setCurrentConnector(const QDomElement &);
     void setTerminalPointCoords(QPointF);
     void setTerminalPointLimits(QSizeF);
@@ -71,7 +71,7 @@ public:
 	void showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::ViewIdentifier);
 
 signals:
-    void switchedConnector(const QDomElement &);
+    void switchedConnector(int);
     void removedConnector(const QDomElement &);
     void pickModeChanged(bool);
     void busModeChanged(bool);
@@ -81,7 +81,7 @@ signals:
     void connectorMetadataChanged(struct ConnectorMetadata *);
 
 protected slots:
-    void switchConnector(QListWidgetItem * current, QListWidgetItem * previous);
+    void switchConnector(QTreeWidgetItem * current, QTreeWidgetItem * previous);
     void pickModeChangedSlot();
     void busModeChangedSlot(bool);
     void descriptionEntry();
@@ -94,18 +94,17 @@ protected slots:
 
 protected:
 	void changeConnector();
+	void hideConnectorListStuff();
 
 protected:
-    QListWidget * m_connectorListWidget;
+    QTreeWidget * m_connectorListWidget;
     QList<QPushButton *> m_buttons;
     class PEGraphicsItem * m_pegi;
-    QList<QDomElement> m_connectorList;
+    QList<QDomElement> * m_connectorList;
     QGroupBox * m_connectorInfoGroupBox;
     QBoxLayout * m_connectorInfoLayout;
     QWidget * m_connectorInfoWidget;
 	QCheckBox * m_busModeBox;
-	QFrame * m_modeFrame;
-	QPushButton * m_pickModeButton;
     QDoubleSpinBox * m_terminalPointX;
     QDoubleSpinBox * m_terminalPointY;
     QLabel * m_units;

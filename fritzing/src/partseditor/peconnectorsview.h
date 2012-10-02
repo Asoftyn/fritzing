@@ -54,7 +54,7 @@ public:
 	PEConnectorsView(QWidget * parent = 0);
 	~PEConnectorsView();
 
-    void initConnectors(QList<QDomElement> & connectorList);
+    void initConnectors(QList<QDomElement> * connectorList);
 	bool anyModified();
 	void setSMD(bool);
 

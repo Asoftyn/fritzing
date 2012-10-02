@@ -40,6 +40,11 @@ $Date$
 
 //////////////////////////////////////
 
+static QPixmap * CheckImage = NULL;
+static QPixmap * NoCheckImage = NULL;
+
+//////////////////////////////////////
+
 PEDoubleSpinBox::PEDoubleSpinBox(QWidget * parent) : QDoubleSpinBox(parent)
 {
 }
@@ -56,6 +61,9 @@ void PEDoubleSpinBox::stepBy(int steps)
 
 PEToolView::PEToolView(QWidget * parent) : QWidget(parent) 
 {
+	if (CheckImage == NULL) CheckImage = new QPixmap(":/resources/images/icons/check.png");
+	if (NoCheckImage == NULL) NoCheckImage = new QPixmap(":/resources/images/icons/nocheck.png");
+
     this->setObjectName("PEToolView");
 
     QFile styleSheet(":/resources/styles/newpartseditor.qss");
@@ -75,11 +83,12 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
     QFrame * connectorsFrame = new QFrame;
     QVBoxLayout * connectorsLayout = new QVBoxLayout;
 
-    QLabel * label = new QLabel(tr("Connector List (a checked connector's graphic is assigned)"));
+    QLabel * label = new QLabel(tr("Connector List (a checked connector's graphic is selected)"));
 	connectorsLayout->addWidget(label);
 
-    m_connectorListWidget = new QListWidget();
-	connect(m_connectorListWidget, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(switchConnector(QListWidgetItem *, QListWidgetItem *)));
+    m_connectorListWidget = new QTreeWidget();
+	m_connectorListWidget->setColumnCount(2);
+	connect(m_connectorListWidget, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), this, SLOT(switchConnector(QTreeWidgetItem *, QTreeWidgetItem *)));
     connectorsLayout->addWidget(m_connectorListWidget);
 
     m_busModeBox = new QCheckBox(tr("Set Internal Connections"));
@@ -93,18 +102,6 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
 
     m_connectorInfoGroupBox = new QGroupBox;
     m_connectorInfoLayout = new QVBoxLayout;
-
-	m_modeFrame = new QFrame;
-	QHBoxLayout * modeLayout = new QHBoxLayout;
-
-	m_pickModeButton = new QPushButton(tr("Assign connector graphic"));
-    m_pickModeButton->setToolTip(tr("Using the mouse pointer and mouse wheel, navigate to the SVG region to which you want to assign to the current connector, then mouse down to assign it."));
-	connect(m_pickModeButton, SIGNAL(clicked()), this, SLOT(pickModeChangedSlot()), Qt::DirectConnection);
-    modeLayout->addWidget(m_pickModeButton);
-
-	modeLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
-	m_modeFrame->setLayout(modeLayout);
-    m_connectorInfoLayout->addWidget(m_modeFrame);             
 
     m_connectorInfoWidget = new QFrame;             // a placeholder for PEUtils::connectorForm
     m_connectorInfoLayout->addWidget(m_connectorInfoWidget);             
@@ -194,6 +191,7 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
     m_connectorListWidget->resize(m_connectorListWidget->width(), 0);
 
     enableConnectorChanges(false, false);
+
 }
 
 PEToolView::~PEToolView() 
@@ -216,7 +214,6 @@ void PEToolView::enableConnectorChanges(bool enableTerminalPoint, bool enablePic
 	if (m_connectorInfoWidget) {
 		m_connectorInfoWidget->setEnabled(enablePick);
 	}
-	m_pickModeButton->setEnabled(enablePick);
 
 	if (enableTerminalPoint) {
 		m_terminalPointDragState->setText(tr("<font color='black'>Dragging enabled</font>"));
@@ -228,29 +225,27 @@ void PEToolView::enableConnectorChanges(bool enableTerminalPoint, bool enablePic
 	}
 }
 
-void PEToolView::initConnectors(QList<QDomElement> & connectorList) {
+void PEToolView::initConnectors(QList<QDomElement> * connectorList) {
     m_connectorListWidget->blockSignals(true);
 
-    m_connectorListWidget->clear();  // deletes QListWidgetItems
+    m_connectorListWidget->clear();  // deletes QTreeWidgetItems
     m_connectorList = connectorList;
 
-    int ix = 0;
-    foreach (QDomElement connector, connectorList) {
-		QListWidgetItem *item = new QListWidgetItem;
-		item->setData(Qt::DisplayRole, connector.attribute("name"));
-		item->setData(Qt::UserRole, ix++);
-		QPushButton * button = new QPushButton("test");
-		m_connectorListWidget->setItemWidget(item, button);
-		Qt::ItemFlags flags = item->flags();
-		if (flags & Qt::ItemIsUserCheckable) {
-			flags ^= Qt::ItemIsUserCheckable;
-			item->setFlags(flags);
-		}
-		m_connectorListWidget->addItem(item);
+    for (int ix = 0; ix < connectorList->count(); ix++) {
+		QDomElement connector = connectorList->at(ix);
+		QTreeWidgetItem *item = new QTreeWidgetItem;
+		item->setData(0, Qt::DisplayRole, connector.attribute("name"));
+		item->setData(0, Qt::UserRole, ix);
+		item->setData(1, Qt::UserRole, ix);
+		item->setData(0, Qt::DecorationRole, *NoCheckImage);
+		m_connectorListWidget->addTopLevelItem(item);
+		//m_connectorListWidget->setItemWidget(item, 1, button);
+		m_connectorListWidget->addTopLevelItem(item);
+		//button->setVisible(false);
     }
 
-    if (m_connectorListWidget->count() > 0) {
-        m_connectorListWidget->setCurrentRow(0);
+    if (connectorList->count() > 0) {
+        m_connectorListWidget->setCurrentItem(m_connectorListWidget->topLevelItem(0));
         switchConnector(m_connectorListWidget->currentItem(), NULL);
     }
 
@@ -260,11 +255,10 @@ void PEToolView::initConnectors(QList<QDomElement> & connectorList) {
 void PEToolView::showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::ViewIdentifier viewIdentifier) {
 	QDomElement svgRoot = svgDoc->documentElement();
 
-	for (int i = 0; i < m_connectorListWidget->count(); i++) {
-		QListWidgetItem * item = m_connectorListWidget->item(i);
-		item->setCheckState(Qt::Unchecked);
-		int index = item->data(Qt::UserRole).toInt();
-		QDomElement connector = m_connectorList.at(index);
+	for (int i = 0; i < m_connectorListWidget->topLevelItemCount(); i++) {
+		QTreeWidgetItem * item = m_connectorListWidget->topLevelItem(i);
+		int index = item->data(0, Qt::UserRole).toInt();
+		QDomElement connector = m_connectorList->at(index);
 		QString svgID, terminalID;
         bool ok = PEUtils::getConnectorSvgIDs(connector, viewIdentifier, svgID, terminalID);
 		if (!ok) {
@@ -272,13 +266,19 @@ void PEToolView::showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::
 		}
 
 		QDomElement element = TextUtils::findElementWithAttribute(svgRoot, "id", svgID);
-		if (!element.isNull()) {
-			item->setCheckState(Qt::Checked);
+		if (element.isNull()) {
+			item->setData(0, Qt::DecorationRole, *NoCheckImage);
+		}
+		else {
+			item->setData(0, Qt::DecorationRole, *CheckImage);
 		}
 	}
+
+	hideConnectorListStuff();
+	m_connectorListWidget->repaint();
 }
 
-void PEToolView::switchConnector(QListWidgetItem * current, QListWidgetItem * previous) {
+void PEToolView::switchConnector(QTreeWidgetItem * current, QTreeWidgetItem * previous) {
     Q_UNUSED(previous);
 
     if (m_connectorInfoWidget) {
@@ -288,14 +288,17 @@ void PEToolView::switchConnector(QListWidgetItem * current, QListWidgetItem * pr
 
     if (current == NULL) return;
 
-    int index = current->data(Qt::UserRole).toInt();
-    QDomElement element = m_connectorList.at(index);
+    int index = current->data(0, Qt::UserRole).toInt();
+	//QWidget * widget = m_connectorListWidget->itemWidget(current, 1);
+	//widget->setVisible(true);
+	//m_connectorListWidget->setItemWidget(current, 1, m_assignButton);
+    QDomElement element = m_connectorList->at(index);
 
     int pos = 99999;
     for (int ix = 0; ix < m_connectorInfoLayout->count(); ix++) {
         QLayoutItem * item = m_connectorInfoLayout->itemAt(ix);
-        if (item->widget() == m_modeFrame) {
-            pos = ix + 1;
+        if (item->widget() == m_terminalPointGroupBox) {
+            pos = ix;
             break;
         }
     }
@@ -305,7 +308,9 @@ void PEToolView::switchConnector(QListWidgetItem * current, QListWidgetItem * pr
     m_connectorInfoGroupBox->setTitle(tr("Connector %1").arg(element.attribute("name")));
     m_units->setText(QString("(%1)").arg(PEUtils::Units));
 
-    emit switchedConnector(element);
+	hideConnectorListStuff();
+
+    emit switchedConnector(index);
 }
 
 bool PEToolView::busMode() {
@@ -333,10 +338,10 @@ void PEToolView::descriptionEntry() {
 }
 
 void PEToolView::changeConnector() {
-	QListWidgetItem * item = m_connectorListWidget->currentItem();
+	QTreeWidgetItem * item = m_connectorListWidget->currentItem();
     if (item == NULL) return;
 
-    int index = item->data(Qt::UserRole).toInt();
+    int index = item->data(0, Qt::UserRole).toInt();
 
     ConnectorMetadata cmd;
     if (!PEUtils::fillInMetadata(index, this, cmd)) return;
@@ -345,22 +350,24 @@ void PEToolView::changeConnector() {
 }
 
 void PEToolView::setCurrentConnector(const QDomElement & newConnector) {
-	for (int ix = 0; ix < m_connectorListWidget->count(); ix++) {
-		int index = m_connectorListWidget->item(ix)->data(Qt::UserRole).toInt();
-		QDomElement connector = m_connectorList.at(index);
+	for (int ix = 0; ix < m_connectorListWidget->topLevelItemCount(); ix++) {
+		QTreeWidgetItem * item = m_connectorListWidget->topLevelItem(ix);
+		int index = item->data(0, Qt::UserRole).toInt();
+		QDomElement connector = m_connectorList->at(index);
 		if (connector.attribute("id") == newConnector.attribute("id")) {
-			m_connectorListWidget->setCurrentRow(index);
+			m_connectorListWidget->setCurrentItem(item);
+			hideConnectorListStuff();
 			return;
 		}
 	}
 }
 
-QDomElement PEToolView::currentConnector() {
-    QListWidgetItem * item = m_connectorListWidget->currentItem();
-    if (item == NULL) return QDomElement();
+int PEToolView::currentConnectorIndex() {
+    QTreeWidgetItem * item = m_connectorListWidget->currentItem();
+    if (item == NULL) return -1;
 
-    int index = item->data(Qt::UserRole).toInt();
-    return m_connectorList.at(index);
+    int index = item->data(0, Qt::UserRole).toInt();
+    return index;
 }
 
 void PEToolView::setTerminalPointCoords(QPointF p) {
@@ -398,11 +405,11 @@ void PEToolView::getSpinAmountSlot(double & d) {
 
 
 void PEToolView::removeConnector() {
-    QListWidgetItem * item = m_connectorListWidget->currentItem();
+    QTreeWidgetItem * item = m_connectorListWidget->currentItem();
     if (item == NULL) return;
 
-    int index = item->data(Qt::UserRole).toInt();
-    QDomElement element = m_connectorList.at(index);
+    int index = item->data(0, Qt::UserRole).toInt();
+    QDomElement element = m_connectorList->at(index);
     emit removedConnector(element);
 
 }
@@ -416,4 +423,31 @@ void PEToolView::setChildrenVisible(bool vis)
 
 void PEToolView::pickModeChangedSlot() {
 	emit pickModeChanged(true);
+}
+
+void PEToolView::hideConnectorListStuff() {
+	m_connectorListWidget->setHeaderHidden(true);
+	QTreeWidgetItem * current = m_connectorListWidget->currentItem();
+
+	for (int i = 0; i < m_connectorListWidget->topLevelItemCount(); i++) {
+		QTreeWidgetItem * item = m_connectorListWidget->topLevelItem(i);
+		QWidget * widget = m_connectorListWidget->itemWidget(item, 1);
+		if (widget) {
+			if (item == current) ;
+			else {
+				// item is deleted
+				m_connectorListWidget->removeItemWidget(item, 1);
+			}
+		}
+		else {
+			if (item != current) ;
+			else {
+				QPushButton * assignButton = new QPushButton(tr("Select connector's graphic"));
+				connect(assignButton, SIGNAL(clicked()), this, SLOT(pickModeChangedSlot()), Qt::DirectConnection);
+				assignButton->setToolTip(tr("Use the cursor location and mouse wheel to navigate to the SVG element which you want to assign to the current connector, then mouse down to select it."));
+				m_connectorListWidget->setItemWidget(item, 1, assignButton);
+			}
+		}
+	}
+
 }

@@ -92,7 +92,7 @@ public slots:
     void pegiMouseReleased(class PEGraphicsItem *);
     void pegiTerminalPointMoved(class PEGraphicsItem *, QPointF);
     void pegiTerminalPointChanged(class PEGraphicsItem *, QPointF before, QPointF after);
-    void switchedConnector(const QDomElement &);
+    void switchedConnector(int);
     void removedConnector(const QDomElement &);
     void terminalPointChanged(const QString & how);
     void terminalPointChanged(const QString & coord, double value);
@@ -145,7 +145,7 @@ protected:
     class PEGraphicsItem * findConnectorItem();
     void terminalPointChangedAux(PEGraphicsItem * pegi, QPointF before, QPointF after);
     void showInOS(QWidget *parent, const QString &pathIn);
-    void switchedConnector(const QDomElement &, SketchWidget *);
+    void switchedConnector(int, SketchWidget *);
     PEGraphicsItem * makePegi(QSizeF size, QPointF topLeft, ItemBase * itemBase, QDomElement & element);
     QRectF getPixelBounds(FSvgRenderer & renderer, QDomElement & element);
     bool canSave();
@@ -243,6 +243,8 @@ protected:
 	QList< QPointer<QWidget> > m_inFocusWidgets;
 	bool m_inPickMode;
 	bool m_useNextPick;
+	QList<QDomElement> m_connectorList;
+
 };
 
 

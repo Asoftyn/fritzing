@@ -49,7 +49,7 @@ public:
 	static double unconvertUnits(double val);
     static QWidget * makeConnectorForm(const QDomElement & connector, int index, QObject * slotHolder, bool alternating);
 	static bool fillInMetadata(int senderIndex, QWidget * parentWidget, ConnectorMetadata & cmd);
-    static bool getConnectorSvgIDs(const QDomElement & connector, ViewLayer::ViewIdentifier, QString & id, QString & terminalID);
+    static bool getConnectorSvgIDs(QDomElement & connector, ViewLayer::ViewIdentifier, QString & id, QString & terminalID);
     static QDomElement getConnectorPElement(const QDomElement & connector, ViewLayer::ViewIdentifier);
 
 public:
