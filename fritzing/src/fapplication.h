@@ -39,6 +39,8 @@ $Date$
 #include <QTcpSocket>
 #include <QMutex>
 #include <QThread>
+#include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkAccessManager>
 
 class FServer : public QTcpServer
 {
@@ -66,7 +68,7 @@ public:
 
 signals:
     void error(QTcpSocket::SocketError socketError);
-    void doCommand(const QString & command, const QString & params, QString & result);
+    void doCommand(const QString & command, const QString & params, QString & result, int & status);
 
 protected:
     void writeResponse(QTcpSocket *, int code, const QString & codeString, const QString & mimeType, const QString & message);
@@ -119,7 +121,7 @@ public slots:
 	void externalProcessSlot(QString & name, QString & path, QStringList & args);
 	void gotOrderFab(QNetworkReply *);
     void newConnection(int socketDescriptor);
-    void doCommand(const QString & command, const QString & params, QString & result);
+    void doCommand(const QString & command, const QString & params, QString & result, int & status);
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);

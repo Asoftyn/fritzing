@@ -32,6 +32,8 @@ $Date$
 
     ////////////////////////////// second release /////////////////////////////////
 
+		icon editor?
+
         for svg import check for flaws:
             multiple connector or terminal ids
 			trash any other matching id
@@ -490,7 +492,8 @@ void PEMainWindow::createActions()
 {
     createFileMenuActions();
 
-	m_openAct->setStatusTip(tr("Open a file to use as a part image."));
+	m_openAct->setText(tr("Load image for view..."));
+	m_openAct->setStatusTip(tr("Open a file to use as the image for this view of the part."));
 	disconnect(m_openAct, SIGNAL(triggered()), this, SLOT(mainLoad()));
 	connect(m_openAct, SIGNAL(triggered()), this, SLOT(loadImage()));
 

@@ -179,16 +179,31 @@ FServerThread::FServerThread(int socketDescriptor, QObject *parent) : QThread(pa
     }
 
     QString subFolder = params.join("/");
+	bool fixSubFolder = false;
     QString mimeType;
     if (command == "svg") {
-        mimeType = "image/svg+xml";
+		 mimeType = "image/svg+xml";
     }
     else if (command == "gerber") {
+    }
+    else if (command == "svg-tcp") {
+		fixSubFolder = true;
+    }
+    else if (command == "gerber-tcp") {
+		fixSubFolder = true;
     }
     else {
         writeResponse(socket, 400, "Bad Request", "", "");
         return;
     }
+
+	if (fixSubFolder) {
+		// replace "/" that was removed from "http:/blah" above
+		int ix = subFolder.indexOf(":/");
+		if (ix >= 0) {
+			subFolder.insert(ix + 1, "/");
+		}
+	}
 
     int waitInterval = 100;     // 100ms to wait
     int timeoutSeconds = 2 * 60;    // timeout after 2 minutes
@@ -208,12 +223,51 @@ FServerThread::FServerThread(int socketDescriptor, QObject *parent) : QThread(pa
 
     DebugDialog::debug(QString("emitting do command %1 %2").arg(command).arg(subFolder));
     QString result;
-    emit doCommand(command, subFolder, result);
+	int status;
+    emit doCommand(command, subFolder, result, status);
 
     m_busy.unlock();
 
+	if (status != 200) {
+		writeResponse(socket, status, "failed", "", result);
+	}
+	else if (command.endsWith("tcp")) {
+		QString filename = result;
+		mimeType = "application/zip";
+		QFile file(filename);
+		if (file.open(QFile::ReadOnly)) {
+			QString response = QString("HTTP/1.0 %1 %2\r\n").arg(200).arg("ok");
+			response += QString("Content-Type: %1; charset=\"utf-8\"\r\n").arg(mimeType);
+			response += QString("Content-Length: %1\r\n").arg(file.size());
+			response += QString("\r\n");    
+			socket->write(response.toUtf8());
+			int buffersize = 8192;
+			long remaining = file.size();
+			while (remaining >= buffersize) {
+				QByteArray bytes = file.read(buffersize);
+				socket->write(bytes);
+				remaining -= buffersize;
+			}
+			if (remaining > 0) {
+				QByteArray bytes = file.read(remaining);
+				socket->write(bytes);
+			}
+			socket->disconnectFromHost();
+			socket->waitForDisconnected();
+			socket->deleteLater();
+			file.close();
+		}
+		else {
+			writeResponse(socket, 500, "failed", "", "local zip failure (2)");
+		}
 
-    writeResponse(socket, 200, "Ok", mimeType, result);
+		QFileInfo info(filename);
+		QDir dir = info.dir();
+		FolderUtils::rmdir(dir);
+	}
+	else {
+		writeResponse(socket, 200, "Ok", mimeType, result);
+	}
 }
 
 void FServerThread::writeResponse(QTcpSocket * socket, int code, const QString & codeString, const QString & mimeType, const QString & message) 
@@ -1696,16 +1750,82 @@ void FApplication::initServer() {
 void FApplication::newConnection(int socketDescription) {
      FServerThread *thread = new FServerThread(socketDescription, this);
      connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-     connect(thread, SIGNAL(doCommand(const QString &, const QString &, QString &)), this, SLOT(doCommand(const QString &, const QString &, QString &)), Qt::BlockingQueuedConnection);
+     connect(thread, SIGNAL(doCommand(const QString &, const QString &, QString &, int &)), 
+			this, SLOT(doCommand(const QString &, const QString &, QString &, int &)), Qt::BlockingQueuedConnection);
      thread->start();
 }
 
 
-void FApplication::doCommand(const QString & command, const QString & params, QString & result) {
+void FApplication::doCommand(const QString & command, const QString & params, QString & result, int & status) {
+	status = 200;
+	result = "";
+
     QDir dir(m_portRootFolder);
-    dir.cd(params);
+
+	QString subfolder = params;
+	if (command.endsWith("tcp")) {
+		subfolder = FolderUtils::getRandText();
+		dir.mkdir(subfolder);
+	}
+
+    dir.cd(subfolder);
     m_outputFolder = dir.absolutePath();
-    if (command == "svg") {
+
+	if (command.endsWith("tcp")) {
+		QEventLoop loop;
+		QNetworkAccessManager networkManager;
+		QObject::connect(&networkManager, SIGNAL(finished(QNetworkReply*)), &loop, SLOT(quit()));
+
+		QUrl url = params;
+		QNetworkReply* reply = networkManager.get(QNetworkRequest(url));
+
+		loop.exec();
+
+		status = 404;
+
+		if (reply->error() == QNetworkReply::NoError) {
+			if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toUInt() == 200) {
+				if (reply->isReadable()) {
+					int buffersize = 8192;
+					QStringList components = params.split("/");
+					QString filename = components.last();
+					QFile file(dir.absoluteFilePath(filename));
+					if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+						status = 200;
+						while (reply->bytesAvailable() >= buffersize) {
+							QByteArray bytes = reply->read(buffersize);
+							file.write(bytes);
+						}
+						if (reply->bytesAvailable() > 0) {
+							file.write(reply->readAll());
+						}
+						file.close();
+					}
+					else {
+						result = "unable to save to local file";
+					}
+				}
+				else {
+					result = "response unreadable";
+				}
+			}
+			else {
+				result = QString("bad response from url server %1").arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toUInt());
+			}
+		}
+		else {
+			result = QString("url get failed %1").arg(reply->error());
+		}
+
+		reply->deleteLater();
+	}
+
+	if (!result.isEmpty()) {
+		// network problem
+		return;
+	}
+
+	if (command.startsWith("svg")) {
         runSvgServiceAux();
 	    QStringList nameFilters;
 	    nameFilters << ("*.svg");
@@ -1717,7 +1837,7 @@ void FApplication::doCommand(const QString & command, const QString & params, QS
             }
         }
     }
-    else if (command == "gerber") {
+    else if (command.startsWith("gerber")) {
         runGerberServiceAux();
 	    QStringList nameFilters;
 	    nameFilters << ("*.txt");
@@ -1729,4 +1849,21 @@ void FApplication::doCommand(const QString & command, const QString & params, QS
             }
         }
     }
+
+
+	if (command.endsWith("tcp")) {
+		QStringList skipSuffixes(".zip");
+		skipSuffixes << ".fzz";
+		QString filename = dir.absoluteFilePath(subfolder + ".zip");
+		if (FolderUtils::createZipAndSaveTo(dir, filename, skipSuffixes)) {
+			status = 200;
+			result = filename;
+		}
+		else {
+			status = 500;
+			result = "local zip failure";
+		}
+	}
 }
+
+
