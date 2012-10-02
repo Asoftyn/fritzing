@@ -58,7 +58,7 @@ cd $compile_folder
 #QT_HOME="/home/jonathan/qtsdk-2010.05/qt"
 #QT_HOME="/usr"
 #QT_HOME="/home/jonathan/QtSDK/Desktop/Qt/473/gcc"
-QT_HOME="/usr/local/Trolltech/Qt-4.8.2"
+QT_HOME="/usr/local/Trolltech/Qt-4.8.3"
 
 
 $QT_HOME/bin/qmake CONFIG+=release -unix
@@ -70,7 +70,7 @@ echo "making release folder: $release_folder"
 mkdir ../$release_folder
 
 echo "copying release files"
-cp -rf bins/ parts/ sketches/ Fritzing Fritzing.sh README.txt LICENSE.GPL2 LICENSE.GPL3 ../$release_folder/
+cp -rf bins/ parts/ sketches/ help/ pdb/ Fritzing Fritzing.sh README.txt LICENSE.GPL2 LICENSE.GPL3 ../$release_folder/
 cd ../$release_folder
 
 echo "making library folders"
