@@ -29,7 +29,6 @@ $Date$
 
     ///////////////////////////////// first release ///////////////////////////////
 		        							       
-	pin label names set in pin label editor are not getting to the fzp document
 
     ////////////////////////////// second release /////////////////////////////////
 
@@ -659,7 +658,18 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
 		replaceProperty(byteArray, originalModelPart->property(byteArray).toString(), properties);
 	}
 
-	// for now kill editable pin labels, otherwise the saved part will try to use the labels that are only found in the sketch
+	QDomElement connectors = fzpRoot.firstChildElement("connectors");
+	QDomElement connector = connectors.firstChildElement("connector");
+	while (!connector.isNull()) {
+		QString localName = originalModelPart->connectorLocalName(connector.attribute("id"));
+		if (!localName.isEmpty()) {
+			connector.setAttribute("name", localName);
+		}
+		connector = connector.nextSiblingElement("connector");
+	}
+
+
+	// for now kill the editable pin labels property, otherwise the saved part will try to use the labels that are only found in the sketch
 	QDomElement epl = TextUtils::findElementWithAttribute(properties, "name", "editable pin labels");
 	if (!epl.isNull()) {
 		TextUtils::replaceChildText(m_fzpDocument, epl, "false");
@@ -674,8 +684,6 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
 		QString newVariant = makeNewVariant(family.text());
 		replaceProperty("variant", newVariant, properties);
 	}
-
-	// make sure local props are copied
 
     foreach (ViewThing * viewThing, m_viewThings.values()) {
         ItemBase * itemBase = originalModelPart->viewItem(viewThing->sketchWidget->viewIdentifier());

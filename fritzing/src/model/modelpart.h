@@ -179,6 +179,7 @@ public:
 	void initBuses();
 	void clearBuses();
 	void setConnectorLocalName(const QString & id, const QString & name);
+	QString connectorLocalName(const QString & id);
 	void setLocalTitle(const QString &);
     const QList<ViewImage *> viewImages();
     void addConnector(Connector *);

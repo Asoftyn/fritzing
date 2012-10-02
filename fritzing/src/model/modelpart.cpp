@@ -904,6 +904,18 @@ void ModelPart::setConnectorLocalName(const QString & id, const QString & name)
 	}
 }
 
+QString ModelPart::connectorLocalName(const QString & id)
+{
+	if (id.isEmpty()) return "";
+
+	Connector * connector = m_connectorHash.value(id, NULL);
+	if (connector) {
+		return connector->connectorLocalName();
+	}
+
+	return "";
+}
+
 QString ModelPart::family(){
 	if (m_modelPartShared) return m_modelPartShared->family();
 
