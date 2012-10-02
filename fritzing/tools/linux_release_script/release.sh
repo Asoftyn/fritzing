@@ -27,10 +27,7 @@ cd $current_dir
 cd $compile_folder/bins/more
 rm -rf sparkfun-*.fzb
 
-echo "make sure parts bins are ok"
-
 cd $current_dir
-
 
 #let's define some variables that we'll need to in the future
 relname=$1  #`date +%Y.%m.%d`
@@ -40,6 +37,15 @@ if [ "$arch_aux" == 'x86_64' ] ; then
 	# only creates the source tarball, when running on the 64 platform
 	tarball_folder="fritzing-$relname.source"
 	cp -rf $compile_folder $tarball_folder
+	cp -rf $compile_folder/pdb/contrib $tarball_folder/parts
+	cp -rf $compile_folder/pdb/core $tarball_folder/parts
+	cp -rf $compile_folder/pdb/obsolete $tarball_folder/parts
+	#cp -rf $compile_folder/pdb/user $tarball_folder/parts
+	rm -rf $tarball_folder/SetupAPI.Lib
+	rm -rf $tarball_folder/deploy_fritzing.bat
+	rm -rf $tarball_folder/FritzingInfo.plist
+	rm -rf $tarball_folder/parts/parts.db
+	rm -rf $tarball_folder/pdb
 	rm -rf $tarball_folder/datasheets
 	rm -rf $tarball_folder/not_quite_ready
 	rm -rf $tarball_folder/part-gen-scripts
@@ -50,6 +56,7 @@ if [ "$arch_aux" == 'x86_64' ] ; then
 	echo "making source tarball: $tarball_folder"
 	tar -cjf ./$tarball_folder.tar.bz2 $tarball_folder
 	rm -rf $tarball_folder
+	echo "done with source tarball: $tarball_folder"
 
 	else arch='i386'
 fi
