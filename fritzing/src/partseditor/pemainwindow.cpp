@@ -31,14 +31,6 @@ $Date$
 		        							       
 	pin label names set in pin label editor are not getting to the fzp document
 
-	remove "lower" assignment button and move name to that position
-
-	move svg palette south
-
-	move terminal group south
-
-	button gradually makes list bigger--can we start it out that way
-
     ////////////////////////////// second release /////////////////////////////////
 
         for svg import check for flaws:
@@ -2957,6 +2949,9 @@ bool PEMainWindow::eventFilter(QObject *object, QEvent *event)
 					return true;
 				}
 			}
+
+			default:
+				break;
 		}
 
 		return false;

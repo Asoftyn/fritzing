@@ -37,6 +37,7 @@ $Date$
 #include <QPushButton>
 #include <QLineEdit>
 #include <QFile>
+#include <QApplication>
 
 //////////////////////////////////////
 
@@ -239,9 +240,9 @@ void PEToolView::initConnectors(QList<QDomElement> * connectorList) {
 		item->setData(1, Qt::UserRole, ix);
 		item->setData(0, Qt::DecorationRole, *NoCheckImage);
 		m_connectorListWidget->addTopLevelItem(item);
-		//m_connectorListWidget->setItemWidget(item, 1, button);
-		m_connectorListWidget->addTopLevelItem(item);
-		//button->setVisible(false);
+		QLabel * label = new QLabel("");
+		//label->setPixmap(*NoCheckImage);
+		m_connectorListWidget->setItemWidget(item, 1, label);
     }
 
     if (connectorList->count() > 0) {
@@ -250,6 +251,8 @@ void PEToolView::initConnectors(QList<QDomElement> * connectorList) {
     }
 
     m_connectorListWidget->blockSignals(false);
+
+	QApplication::processEvents();
 }
 
 void PEToolView::showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::ViewIdentifier viewIdentifier) {
@@ -289,9 +292,6 @@ void PEToolView::switchConnector(QTreeWidgetItem * current, QTreeWidgetItem * pr
     if (current == NULL) return;
 
     int index = current->data(0, Qt::UserRole).toInt();
-	//QWidget * widget = m_connectorListWidget->itemWidget(current, 1);
-	//widget->setVisible(true);
-	//m_connectorListWidget->setItemWidget(current, 1, m_assignButton);
     QDomElement element = m_connectorList->at(index);
 
     int pos = 99999;
@@ -432,15 +432,18 @@ void PEToolView::hideConnectorListStuff() {
 	for (int i = 0; i < m_connectorListWidget->topLevelItemCount(); i++) {
 		QTreeWidgetItem * item = m_connectorListWidget->topLevelItem(i);
 		QWidget * widget = m_connectorListWidget->itemWidget(item, 1);
-		if (widget) {
-			if (item == current) ;
+		if (qobject_cast<QPushButton *>(widget)) {
+			if (item == current) ;   // button is already there
 			else {
-				// item is deleted
+				// remove the button and add the label
 				m_connectorListWidget->removeItemWidget(item, 1);
+				QLabel * label = new QLabel();
+				//label->setPixmap(*NoCheckImage);
+				m_connectorListWidget->setItemWidget(item, 1, label);
 			}
 		}
 		else {
-			if (item != current) ;
+			if (item != current) ;		// label is already there
 			else {
 				QPushButton * assignButton = new QPushButton(tr("Select connector's graphic"));
 				connect(assignButton, SIGNAL(clicked()), this, SLOT(pickModeChangedSlot()), Qt::DirectConnection);
