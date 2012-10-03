@@ -494,7 +494,7 @@ bool SymbolPaletteItem::collectExtraInfo(QWidget * parent, const QString & famil
 		edit->setText(getLabel());
 		edit->setObjectName("infoViewLineEdit");
 
-		connect(edit, SIGNAL(safeEditingFinished()), this, SLOT(labelEntry()));
+		connect(edit, SIGNAL(editingFinished()), this, SLOT(labelEntry()));
 		returnWidget = edit;	
 
 		returnValue = getLabel();
