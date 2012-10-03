@@ -30,6 +30,28 @@ $Date$
 
 #include "paletteitem.h"
 
+/*
+#include <QTime>
+
+class FocusBugLineEdit : public QLineEdit {
+    Q_OBJECT
+
+public:
+	FocusBugLineEdit(QWidget * parent = NULL);
+	~FocusBugLineEdit();
+
+signals:
+	void safeEditingFinished();
+
+protected slots:
+	void editingFinishedSlot();
+	
+protected:
+	QTime m_lastEditingFinishedEmit; 					
+
+};
+*/
+
 class SymbolPaletteItem : public PaletteItem 
 {
 	Q_OBJECT
@@ -53,6 +75,7 @@ public:
 	bool hasPartNumberProperty();
 	bool isNetLabel();
 	bool hasPartLabel();
+    QString getLabel();
 
 public:
 	static double DefaultVoltage;
@@ -69,7 +92,6 @@ protected:
 	QString replaceTextElement(QString svg);
     ViewLayer::ViewIdentifier useViewIdentifierForPixmap(ViewLayer::ViewIdentifier, bool swappingEnabled);
     void setLabel(const QString &);
-    QString getLabel();
     QString getDirection();
     QString retrieveNetLabelSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
 

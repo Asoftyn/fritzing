@@ -38,6 +38,7 @@ $Date$
 
 #include <QLineEdit>
 #include <QMultiHash>
+#include <QMessageBox>
 
 #define VOLTAGE_HASH_CONVERSION 1000000
 #define FROMVOLTAGE(v) ((long) (v * VOLTAGE_HASH_CONVERSION))
@@ -47,6 +48,34 @@ static QMultiHash<QString, QPointer<ConnectorItem> > LocalNetLabels;
 static QList< QPointer<ConnectorItem> > LocalGrounds;
 static QList<double> Voltages;
 double SymbolPaletteItem::DefaultVoltage = 5;
+
+/////////////////////////////////////////////////////
+
+/*
+FocusBugLineEdit::FocusBugLineEdit(QWidget * parent) : QLineEdit(parent)
+{
+	connect(this, SIGNAL(editingFinished()), this, SLOT(editingFinishedSlot()));
+    m_lastEditingFinishedEmit = QTime::currentTime();
+}
+
+FocusBugLineEdit::~FocusBugLineEdit()
+{
+}
+
+void FocusBugLineEdit::editingFinishedSlot() {
+    QTime now = QTime::currentTime();
+    int d = m_lastEditingFinishedEmit.msecsTo(now);
+    DebugDialog::debug(QString("dtime %1").arg(d));
+    if (d < 1000) {
+        return;
+    }
+
+    m_lastEditingFinishedEmit = now;
+    emit safeEditingFinished();
+}
+*/
+
+////////////////////////////////////////
 
 SymbolPaletteItem::SymbolPaletteItem( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
 	: PaletteItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
@@ -72,6 +101,8 @@ SymbolPaletteItem::SymbolPaletteItem( ModelPart * modelPart, ViewLayer::ViewIden
 			}
 			modelPart->setLocalProp("label", label);
 		}
+        setInstanceTitle(label);
+
 		QString direction = getDirection();
 		if (direction.isEmpty()) {
 			direction = modelPart->properties().value("direction");
@@ -463,7 +494,7 @@ bool SymbolPaletteItem::collectExtraInfo(QWidget * parent, const QString & famil
 		edit->setText(getLabel());
 		edit->setObjectName("infoViewLineEdit");
 
-		connect(edit, SIGNAL(editingFinished()), this, SLOT(labelEntry()));
+		connect(edit, SIGNAL(safeEditingFinished()), this, SLOT(labelEntry()));
 		returnWidget = edit;	
 
 		returnValue = getLabel();
@@ -488,6 +519,11 @@ void SymbolPaletteItem::labelEntry() {
 	QString current = getLabel();
 	if (edit->text().compare(current) == 0) return;
 
+    if (edit->text().isEmpty()) {
+		QMessageBox::warning(NULL, tr("Net labels"), tr("Net labels cannot be blank"));
+        return;
+    }
+
 	InfoGraphicsView * infoGraphicsView = InfoGraphicsView::getInfoGraphicsView(this);
 	if (infoGraphicsView != NULL) {
 		infoGraphicsView->setProp(this, "label", ItemBase::TranslatedPropertyNames.value("label"), current, edit->text(), true);
@@ -495,6 +531,8 @@ void SymbolPaletteItem::labelEntry() {
 }
 
 ItemBase::PluralType SymbolPaletteItem::isPlural() {
+    if (m_isNetLabel) return Plural;
+
 	return Singular;
 }
 

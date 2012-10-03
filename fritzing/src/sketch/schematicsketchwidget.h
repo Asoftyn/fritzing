@@ -80,6 +80,8 @@ public:
 
 public slots:
 	void setVoltage(double voltage, bool doEmit);
+	void setProp(ItemBase *, const QString & propName, const QString & translatedPropName, const QString & oldValue, const QString & newValue, bool redraw);
+	void setInstanceTitle(long id, const QString & oldTitle, const QString & newTitle, bool isUndoable, bool doEmit);
 
 protected slots:
 	void updateBigDots();

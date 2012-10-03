@@ -135,7 +135,7 @@ HtmlInfoView::HtmlInfoView(QWidget * parent) : QScrollArea(parent)
 	m_titleEdit->setToolTip(tr("Change the part label here"));
 	m_titleEdit->setAlignment(Qt::AlignLeft);
 
-	connect(m_titleEdit, SIGNAL(editingFinished()), this, SLOT(setInstanceTitle()));
+	connect(m_titleEdit, SIGNAL(editingFinished()), this, SLOT(setInstanceTitle()), Qt::QueuedConnection);
 	connect(m_titleEdit, SIGNAL(mouseEnter()), this, SLOT(instanceTitleEnter()));
 	connect(m_titleEdit, SIGNAL(mouseLeave()), this, SLOT(instanceTitleLeave()));
 	connect(m_titleEdit, SIGNAL(editable(bool)), this, SLOT(instanceTitleEditable(bool)));
@@ -798,7 +798,8 @@ void HtmlInfoView::clearPropThingPlugin(PropThing * propThing, QWidget * plugin)
     //DebugDialog::debug(QString("clearing %1").arg((long) plugin, 0, 16));
 
 	propThing->m_layout->removeWidget(plugin);
-	plugin->setVisible(false);
+    plugin->blockSignals(true);     
+	plugin->setVisible(false);          // seems to trigger an unwanted focus out signal
 	plugin->deleteLater();
 }
 

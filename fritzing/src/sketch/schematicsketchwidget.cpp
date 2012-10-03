@@ -243,6 +243,57 @@ void SchematicSketchWidget::changeConnection(long fromID, const QString & fromCo
 	m_updateDotsTimer.start();
 }
 
+void SchematicSketchWidget::setInstanceTitle(long itemID, const QString & oldText, const QString & newText, bool isUndoable, bool doEmit) {
+	// isUndoable is true when setInstanceTitle is called from the infoview 
+
+    if (isUndoable) {
+	    SymbolPaletteItem * sitem = qobject_cast<SymbolPaletteItem *>(findItem(itemID));
+	    if (sitem && sitem->isNetLabel()) {
+            setProp(sitem, "label", ItemBase::TranslatedPropertyNames.value("label"), oldText, newText, true);
+            return;
+        }
+    }
+
+    SketchWidget::setInstanceTitle(itemID, oldText, newText, isUndoable, doEmit);
+}
+
+void SchematicSketchWidget::setProp(ItemBase * itemBase, const QString & prop, const QString & trProp, const QString & oldValue, const QString & newValue, bool redraw)
+{
+    if (prop =="label") {
+        SymbolPaletteItem * sitem = qobject_cast<SymbolPaletteItem *>(itemBase);
+        if (sitem != NULL && sitem->isNetLabel()) {
+            if (sitem->getLabel() == newValue) {
+                return;
+            }
+
+            QUndoCommand * parentCommand =  new QUndoCommand();
+	        parentCommand->setText(tr("Change label from %1 to %2").arg(oldValue).arg(newValue));
+
+	        new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+
+	        QList<Wire *> done;
+	        foreach (ConnectorItem * toConnectorItem, sitem->connector0()->connectedToItems()) {
+		        Wire * w = qobject_cast<Wire *>(toConnectorItem->attachedTo());
+		        if (w == NULL) continue;
+		        if (done.contains(w)) continue;
+
+		        QList<ConnectorItem *> ends;
+		        removeWire(w, ends, done, parentCommand);
+	        }
+
+	        new SetPropCommand(this, itemBase->id(), "label", oldValue, newValue, true, parentCommand);
+            new ChangeLabelTextCommand(this, itemBase->id(), oldValue, newValue, parentCommand);
+
+	        new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
+
+	        m_undoStack->waitPush(parentCommand, PropChangeDelay);
+            return;
+        }
+    }
+
+    SketchWidget::setProp(itemBase, prop, trProp, oldValue, newValue, redraw);
+}
+
 void SchematicSketchWidget::setVoltage(double v, bool doEmit)
 {
 	Q_UNUSED(doEmit);

@@ -32,6 +32,7 @@ $Date$
 #include <QTextEdit>
 #include <QMessageBox>
 #include <QtDebug>
+#include <QApplication>
 
 #include "pemetadataview.h"
 #include "hashpopulatewidget.h"
@@ -128,6 +129,14 @@ void PEMetadataView::tagsEntry() {
 
 void PEMetadataView::initMetadata(const QDomDocument & doc) 
 {
+    QWidget * widget = QApplication::focusWidget();
+    if (widget) {
+        QList<QWidget *> children = m_mainFrame->findChildren<QWidget *>();
+        if (children.contains(widget)) {
+            widget->blockSignals(true);
+        }
+    }
+
     if (m_mainFrame) {
         this->setWidget(NULL);
         delete m_mainFrame;

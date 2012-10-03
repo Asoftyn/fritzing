@@ -31,6 +31,7 @@ $Date$
 #include <QRadioButton>
 #include <QMessageBox>
 #include <QMutexLocker>
+#include <QApplication>
 
 #include "peconnectorsview.h"
 #include "peutils.h"
@@ -140,6 +141,14 @@ PEConnectorsView::~PEConnectorsView() {
 
 void PEConnectorsView::initConnectors(QList<QDomElement> * connectorList) 
 {
+    QWidget * widget = QApplication::focusWidget();
+    if (widget) {
+        QList<QWidget *> children = m_scrollFrame->findChildren<QWidget *>();
+        if (children.contains(widget)) {
+            widget->blockSignals(true);
+        }
+    }
+
     if (m_scrollFrame) {
         m_scrollArea->setWidget(NULL);
         delete m_scrollFrame;

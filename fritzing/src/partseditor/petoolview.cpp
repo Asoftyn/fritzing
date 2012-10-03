@@ -284,6 +284,14 @@ void PEToolView::showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::
 void PEToolView::switchConnector(QTreeWidgetItem * current, QTreeWidgetItem * previous) {
     Q_UNUSED(previous);
 
+    QWidget * widget = QApplication::focusWidget();
+    if (widget) {
+        QList<QWidget *> children = m_connectorInfoWidget->findChildren<QWidget *>();
+        if (children.contains(widget)) {
+            widget->blockSignals(true);
+        }
+    }
+
     if (m_connectorInfoWidget) {
         delete m_connectorInfoWidget;
         m_connectorInfoWidget = NULL;
