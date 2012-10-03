@@ -46,6 +46,7 @@ public:
 	static const QString GroundPlaneModuleIDName;
 	static const QString GroundModuleIDName;
 	static const QString PowerModuleIDName;
+	static const QString NetLabelModuleIDName;
 	static const QString JustPowerModuleIDName;
 	static const QString ResistorModuleIDName;
 	static const QString LogoTextModuleIDName;

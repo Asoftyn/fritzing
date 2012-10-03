@@ -101,17 +101,7 @@ QString Ruler::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QS
 		}
 
 		if (!xml.isEmpty()) {
-			QString xmlName = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
-			SvgFileSplitter splitter;
-			bool result = splitter.splitString(xml, xmlName);
-			if (!result) {
-				return "";
-			}
-			result = splitter.normalize(dpi, xmlName, blackOnly);
-			if (!result) {
-				return "";
-			}
-			return splitter.elementString(xmlName);
+			 return PaletteItemBase::normalizeSvg(xml, viewLayerID, blackOnly, dpi);
 		}
 	}
 

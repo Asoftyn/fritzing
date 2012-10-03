@@ -99,17 +99,7 @@ QString GroundPlane::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QStri
 		xml = prop("svg");
 
 		if (!xml.isEmpty()) {
-			QString xmlName = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
-			SvgFileSplitter splitter;
-			bool result = splitter.splitString(xml, xmlName);
-			if (!result) {
-				return ___emptyString___;
-			}
-			result = splitter.normalize(dpi, xmlName, blackOnly);
-			if (!result) {
-				return ___emptyString___;
-			}
-			return splitter.elementString(xmlName);
+            return PaletteItemBase::normalizeSvg(xml, viewLayerID, blackOnly, dpi);
 		}
 	}
 

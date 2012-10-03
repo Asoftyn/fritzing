@@ -261,17 +261,7 @@ QString Hole::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QSt
 	if (holeSize.length() == 2) {
 		QString svg = makeSvg(holeSize.at(0), holeSize.at(1), viewLayerID);
 		if (!svg.isEmpty()) {
-			QString xmlName = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
-			SvgFileSplitter splitter;
-			bool result = splitter.splitString(svg, xmlName);
-			if (!result) {
-				return "";
-			}
-			result = splitter.normalize(dpi, xmlName, blackOnly);
-			if (!result) {
-				return "";
-			}
-			return splitter.elementString(xmlName);
+            return PaletteItemBase::normalizeSvg(svg, viewLayerID, blackOnly, dpi);
 		}
 	}
 

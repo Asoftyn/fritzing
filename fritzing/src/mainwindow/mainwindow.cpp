@@ -85,7 +85,6 @@ $Date$
 #include "../utils/clickablelabel.h"
 #include "../items/resizableboard.h"
 #include "../items/resistor.h"
-#include "../items/symbolpaletteitem.h"
 #include "../utils/zoomslider.h"
 #include "../partseditor/pemainwindow.h"
 

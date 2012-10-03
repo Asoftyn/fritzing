@@ -60,17 +60,7 @@ QString LED::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QStr
 	QString svg = getColorSVG(prop("color"), viewLayerID);
 	if (svg.isEmpty()) return "";
 
-	QString xmlName = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
-	SvgFileSplitter splitter;
-	bool result = splitter.splitString(svg, xmlName);
-	if (!result) {
-		return "";
-	}
-	result = splitter.normalize(dpi, xmlName, blackOnly);
-	if (!result) {
-		return "";
-	}
-	return splitter.elementString(xmlName);
+    return PaletteItemBase::normalizeSvg(svg, viewLayerID, blackOnly, dpi);
 }
 
 void LED::addedToScene(bool temporary)

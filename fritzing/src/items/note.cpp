@@ -743,16 +743,16 @@ QString Note::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QSt
 
 	switch (viewLayerID) {
 		case ViewLayer::BreadboardNote:
-			if (viewIdentifier() != ViewLayer::BreadboardView) return ___emptyString___;
+			if (viewIdentifier() != ViewLayer::BreadboardView) return "";
 			break;
 		case ViewLayer::PcbNote:
-			if (viewIdentifier() != ViewLayer::PCBView) return ___emptyString___;
+			if (viewIdentifier() != ViewLayer::PCBView) return "";
 			break;
 		case ViewLayer::SchematicNote:
-			if (viewIdentifier() != ViewLayer::SchematicView) return ___emptyString___;
+			if (viewIdentifier() != ViewLayer::SchematicView) return "";
 			break;
 		default:
-			return ___emptyString___;
+			return "";
 	}
 
 	QString svg = "<g>";

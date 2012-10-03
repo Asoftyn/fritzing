@@ -748,6 +748,22 @@ void PaletteItemBase::checkFreeRotation(Qt::KeyboardModifiers modifiers, QPointF
 	}
 }
 
+QString PaletteItemBase::normalizeSvg(QString & svg, ViewLayer::ViewLayerID viewLayerID, bool blackOnly, double dpi)
+{
+	QString xmlName = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
+	SvgFileSplitter splitter;
+	bool result = splitter.splitString(svg, xmlName);
+	if (!result) {
+		return "";
+	}
+	result = splitter.normalize(dpi, xmlName, blackOnly);
+	if (!result) {
+		return "";
+	}
+	return splitter.elementString(xmlName);
+}
+
+
 /*
 
 void PaletteItemBase::setPos(const QPointF & pos) {

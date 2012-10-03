@@ -421,6 +421,9 @@ ModelPart * PaletteModel::loadPart(const QString & path, bool update) {
 	else if (moduleID.compare(ModuleIDNames::GroundModuleIDName) == 0) {
 		type = ModelPart::Symbol;
 	}
+	else if (moduleID.endsWith(ModuleIDNames::NetLabelModuleIDName)) {
+		type = ModelPart::Symbol;
+	}
 	else if (moduleID.compare(ModuleIDNames::RulerModuleIDName) == 0) {
 		type = ModelPart::Ruler;
 	}

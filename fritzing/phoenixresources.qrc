@@ -160,6 +160,7 @@
         <file>resources/parts/core/boardlogoimage.fzp</file>
         <file>resources/parts/core/boardlogoimage_one_layer.fzp</file>
         <file>resources/parts/core/ground.fzp</file>
+        <file>resources/parts/core/netlabel.fzp</file>
 	<file>resources/parts/core/via.fzp</file>
 	<file>resources/parts/core/pad.fzp</file>
 	<file>resources/parts/core/pad0.fzp</file>
@@ -215,6 +216,7 @@
         <file>resources/parts/svg/core/pcb/pad0.svg</file>
  
         <file>resources/parts/svg/core/schematic/ground.svg</file>
+        <file>resources/parts/svg/core/schematic/netlabel.svg</file>
         <file>resources/parts/svg/core/schematic/cell.svg</file>
         <file>resources/parts/svg/core/schematic/power.svg</file>
         <file>resources/parts/svg/core/schematic/frame.svg</file>

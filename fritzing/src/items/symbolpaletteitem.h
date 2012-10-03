@@ -51,25 +51,34 @@ public:
 	PluralType isPlural();
 	void addedToScene(bool temporary);
 	bool hasPartNumberProperty();
+	bool isNetLabel();
+	bool hasPartLabel();
 
 public:
 	static double DefaultVoltage;
 
 public slots:
 	void voltageEntry(const QString & text);
+	void labelEntry();
 
 protected:
 	void removeMeFromBus(double voltage);
 	double useVoltage(ConnectorItem * connectorItem);
 	QString makeSvg();
+	QString makeNetLabelSvg();
 	QString replaceTextElement(QString svg);
     ViewLayer::ViewIdentifier useViewIdentifierForPixmap(ViewLayer::ViewIdentifier, bool swappingEnabled);
+    void setLabel(const QString &);
+    QString getLabel();
+    QString getDirection();
+    QString retrieveNetLabelSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
 
 protected:
 	double m_voltage;
 	QPointer<ConnectorItem> m_connector0;
 	QPointer<ConnectorItem> m_connector1;
 	bool m_voltageReference;
+	bool m_isNetLabel;
 };
 
 #endif

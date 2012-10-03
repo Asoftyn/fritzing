@@ -734,17 +734,7 @@ QString ResizableBoard::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QS
 		double h = m_modelPart->localProp("height").toDouble();
 		QString xml = makeLayerSvg(viewLayerID, w, h, GraphicsUtils::mm2mils(w), GraphicsUtils::mm2mils(h));
 		if (!xml.isEmpty()) {
-			QString xmlName = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
-			SvgFileSplitter splitter;
-			bool result = splitter.splitString(xml, xmlName);
-			if (!result) {
-				return "";
-			}
-			result = splitter.normalize(dpi, xmlName, blackOnly);
-			if (!result) {
-				return "";
-			}
-			return splitter.elementString(xmlName);
+			return PaletteItemBase::normalizeSvg(xml, viewLayerID, blackOnly, dpi);
 		}
 	}
 

@@ -191,18 +191,7 @@ QString Resistor::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString,
 	}
 
 	QString svg = makeSvg(m_ohms, viewLayerID);
-
-	QString xmlName = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
-	SvgFileSplitter splitter;
-	bool result = splitter.splitString(svg, xmlName);
-	if (!result) {
-		return "";
-	}
-	result = splitter.normalize(dpi, xmlName, blackOnly);
-	if (!result) {
-		return "";
-	}
-	return splitter.elementString(xmlName);
+    return PaletteItemBase::normalizeSvg(svg, viewLayerID, blackOnly, dpi);
 }
 
 QString Resistor::makeSvg(const QString & resistance, ViewLayer::ViewLayerID viewLayerID) {

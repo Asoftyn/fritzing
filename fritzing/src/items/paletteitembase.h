@@ -83,6 +83,8 @@ public:
 	void setPos(const QPointF & pos);
 	void setPos(double x, double y);
 	*/
+protected:
+    static QString normalizeSvg(QString & svg, ViewLayer::ViewLayerID viewLayerID, bool blackOnly, double dpi);
 
 protected:
     void setUpConnectors(FSvgRenderer *, bool ignoreTerminalPoints);

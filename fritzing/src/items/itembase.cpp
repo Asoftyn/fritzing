@@ -1439,7 +1439,7 @@ QString ItemBase::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString,
 	Q_UNUSED(svgHash);
 	Q_UNUSED(blackOnly);
 	Q_UNUSED(dpi);
-	return ___emptyString___;
+	return "";
 }
 
 bool ItemBase::hasConnections()
