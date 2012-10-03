@@ -461,6 +461,8 @@ void Note::forceFormat(int position, int charsAdded) {
 }
 
 void Note::contentsChangedSlot() {
+
+    //DebugDialog::debug(QString("contents changed ") + m_graphicsTextItem->document()->toPlainText());
 	if (m_charsAdded > 0) {
 		forceFormat(m_charsPosition, m_charsAdded);
 	}
