@@ -49,6 +49,9 @@ $Date$
 #include <qmath.h>
 #include <qnumeric.h>
 
+QList<QString> PaperSizeNames;
+QList<QSizeF> PaperSizeDimensions;
+
 QHash<QString, QString> BoardLayerTemplates;
 QHash<QString, QString> SilkscreenLayerTemplates;
 static const int LineThickness = 8;
@@ -423,6 +426,7 @@ ResizableBoard::ResizableBoard( ModelPart * modelPart, ViewLayer::ViewIdentifier
     m_aspectRatioCheck = NULL;
     m_aspectRatioLabel = NULL;
     m_revertButton = NULL;
+    m_paperSizeComboBox = NULL;
 
 	m_corner = ResizableBoard::NO_CORNER;
 	m_currentScale = 1.0;
@@ -705,6 +709,7 @@ void ResizableBoard::resizeMMAux(double mmW, double mmH)
 			break;
 		}
 	}
+
 }
 
 void ResizableBoard::loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec) {
@@ -877,7 +882,8 @@ bool ResizableBoard::collectExtraInfo(QWidget * parent, const QString & family, 
 			return true;
 		}
 
-		returnWidget = setUpDimEntry(false, false, returnWidget);
+		returnWidget = setUpDimEntry(false, false, false, returnWidget);
+        returnWidget->setEnabled(swappingEnabled);
 		return true;
 	}
 
@@ -886,6 +892,18 @@ bool ResizableBoard::collectExtraInfo(QWidget * parent, const QString & family, 
 
 QStringList ResizableBoard::collectValues(const QString & family, const QString & prop, QString & value) {
 	return Board::collectValues(family, prop, value);
+}
+
+void ResizableBoard::paperSizeChanged(int index) {
+    QComboBox * comboBox = qobject_cast<QComboBox *>(sender());
+    if (comboBox == NULL) return;
+
+    QModelIndex modelIndex = comboBox->model()->index(index,0);  
+    QSizeF size = comboBox->model()->data(modelIndex, Qt::UserRole).toSizeF();
+	InfoGraphicsView * infoGraphicsView = InfoGraphicsView::getInfoGraphicsView(this);
+	if (infoGraphicsView != NULL) {
+		infoGraphicsView->resizeBoard(size.width(), size.height(), true);
+	}
 }
 
 void ResizableBoard::widthEntry() {
@@ -1072,7 +1090,7 @@ void ResizableBoard::setKinCursor(Qt::CursorShape cursor) {
 	}
 }
 
-QFrame * ResizableBoard::setUpDimEntry(bool includeAspectRatio, bool includeRevert, QWidget * & returnWidget)
+QFrame * ResizableBoard::setUpDimEntry(bool includeAspectRatio, bool includeRevert, bool includePaperSizes, QWidget * & returnWidget)
 {
 	double tens = pow(10.0, m_decimalsAfter);
 	double w = qRound(m_modelPart->localProp("width").toDouble() * tens) / tens;	// truncate to 1 decimal point
@@ -1139,38 +1157,65 @@ QFrame * ResizableBoard::setUpDimEntry(bool includeAspectRatio, bool includeReve
 	vboxLayout->addWidget(subframe1);
 	vboxLayout->addWidget(subframe2);
 
-	if (includeAspectRatio || includeRevert) {
+	if (includeAspectRatio || includeRevert || includePaperSizes) {
 		QFrame * subframe3 = new QFrame();
 		QHBoxLayout * hboxLayout3 = new QHBoxLayout();
 		hboxLayout3->setAlignment(Qt::AlignLeft);
 		hboxLayout3->setContentsMargins(0, 0, 0, 0);
 		hboxLayout3->setSpacing(0);
 	
-        if (includeAspectRatio) {
-		    QLabel * l3 = new QLabel(tr("keep aspect ratio"));
-		    l3->setMargin(0);
-		    l3->setObjectName("infoViewLabel");
-		    QCheckBox * checkBox = new QCheckBox();
-		    checkBox->setChecked(m_keepAspectRatio);
-		    checkBox->setObjectName("infoViewCheckBox");
+		if (includeAspectRatio) {
+			QLabel * l3 = new QLabel(tr("keep aspect ratio"));
+			l3->setMargin(0);
+			l3->setObjectName("infoViewLabel");
+			QCheckBox * checkBox = new QCheckBox();
+			checkBox->setChecked(m_keepAspectRatio);
+			checkBox->setObjectName("infoViewCheckBox");
 
-		    hboxLayout3->addWidget(l3);
-		    hboxLayout3->addWidget(checkBox);
- 		    connect(checkBox, SIGNAL(toggled(bool)), this, SLOT(keepAspectRatio(bool)));
-		    m_aspectRatioCheck = checkBox;
-            m_aspectRatioLabel = l3;
-       }
-        if (includeRevert) {
-            QPushButton * pb = new QPushButton(tr("Revert"));
-            pb->setObjectName("infoViewButton");
-            hboxLayout3->addWidget(pb);
-            connect(pb, SIGNAL(clicked(bool)), this, SLOT(revertSize(bool)));
-            double w = modelPart()->localProp("width").toDouble();
-            double ow = modelPart()->localProp("originalWidth").toDouble();
-            double h = modelPart()->localProp("height").toDouble();
-            double oh = modelPart()->localProp("originalHeight").toDouble();
-            pb->setEnabled(qAbs(w - ow) > JND || qAbs(h - oh) > JND);
-            m_revertButton = pb;
+			hboxLayout3->addWidget(l3);
+			hboxLayout3->addWidget(checkBox);
+			connect(checkBox, SIGNAL(toggled(bool)), this, SLOT(keepAspectRatio(bool)));
+			m_aspectRatioCheck = checkBox;
+			m_aspectRatioLabel = l3;
+	    }
+	    if (includeRevert) {
+			QPushButton * pb = new QPushButton(tr("Revert"));
+			pb->setObjectName("infoViewButton");
+			hboxLayout3->addWidget(pb);
+			connect(pb, SIGNAL(clicked(bool)), this, SLOT(revertSize(bool)));
+			double w = modelPart()->localProp("width").toDouble();
+			double ow = modelPart()->localProp("originalWidth").toDouble();
+			double h = modelPart()->localProp("height").toDouble();
+			double oh = modelPart()->localProp("originalHeight").toDouble();
+			pb->setEnabled(qAbs(w - ow) > JND || qAbs(h - oh) > JND);
+			m_revertButton = pb;
+	    }
+        if (includePaperSizes) {
+            initPaperSizes();
+
+			QLabel * l3 = new QLabel(tr("size"));
+			l3->setMargin(0);
+			l3->setObjectName("infoViewLabel");
+
+            m_paperSizeComboBox = new QComboBox();
+	        m_paperSizeComboBox->setObjectName("infoViewComboBox");
+	        m_paperSizeComboBox->setEditable(false);
+            m_paperSizeComboBox->setMinimumWidth(150);
+            m_paperSizeComboBox->addItem(tr("custom"));
+            for (int i = 0; i < PaperSizeNames.count(); i++) {
+                QSizeF dim = PaperSizeDimensions.at(i);
+                m_paperSizeComboBox->addItem(PaperSizeNames.at(i), dim);
+            }
+
+            QModelIndex modelIndex = m_paperSizeComboBox->model()->index(0,0);  
+            m_paperSizeComboBox->model()->setData(modelIndex, 0, Qt::UserRole - 1);           // to make it selectable again use Qt::ItemIsSelectable | Qt::ItemIsEnabled)
+
+            updatePaperSizes(w, h);
+            connect(m_paperSizeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(paperSizeChanged(int)));
+
+            hboxLayout3->addWidget(l3);
+            hboxLayout3->addWidget(m_paperSizeComboBox);
+
         }
 
 		subframe3->setLayout(hboxLayout3);
@@ -1211,6 +1256,7 @@ void ResizableBoard::setWidthAndHeight(double w, double h)
 	if (m_heightEditor) {
 		m_heightEditor->setText(QString::number(h));
 	}
+    updatePaperSizes(w, h);
 }
 
 QString ResizableBoard::getShapeForRenderer(const QString & svg, ViewLayer::ViewLayerID viewLayerID) 
@@ -1255,3 +1301,30 @@ void ResizableBoard::revertSize(bool) {
 	}
 }
 
+void ResizableBoard::updatePaperSizes(double w, double h) {
+    if (m_paperSizeComboBox ==  NULL) return;
+
+    int currentIndex = 0;
+    for (int i = 0; i < PaperSizeNames.count(); i++) {
+        QSizeF dim = PaperSizeDimensions.at(i);
+        if (qAbs(w - dim.width()) < 0.1 && qAbs(h - dim.height()) < 0.1) {
+            currentIndex = i + 1;
+        }
+    }
+
+    QString custom = tr("custom");
+    if (currentIndex == 0) {
+        custom =  QString("%1x%2").arg(w).arg(h);
+    }
+    m_paperSizeComboBox->setItemText(0, custom);
+    m_paperSizeComboBox->setCurrentIndex(currentIndex);
+}
+
+void ResizableBoard::initPaperSizes() {
+    if (PaperSizeNames.count() == 0) {
+        PaperSizeNames << tr("A0 (1030x1456)") << tr("A1 (728x1030)") << tr("A2 (515x728)") << tr("A3 (364x515)") << tr("A4 (257x364)") << tr("A5 (182x257)") << tr("A6 (128x182)") 
+            << tr("Letter (8.5x11)") << tr("Legal (8.5x14)") << tr("Ledger (17x11)") << tr("Tabloid (11x17");
+        PaperSizeDimensions << QSizeF(1030,1456) << QSizeF(728,1030) << QSizeF(515,728) << QSizeF(364,515) << QSizeF(257,364) << QSizeF(182,257) << QSizeF(128,182) 
+            << QSizeF(215.9,279.4) << QSizeF(215.9,355.6) << QSizeF(432,279) << QSizeF(279,432);
+    }
+}

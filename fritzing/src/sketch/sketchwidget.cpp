@@ -87,6 +87,7 @@ $Date$
 #include "../items/moduleidnames.h"
 #include "../items/hole.h"
 #include "../items/capacitor.h"
+#include "../items/schematicframe.h"
 #include "../utils/graphutils.h"
 #include "../utils/ratsnestcolors.h"
 #include "../utils/cursormaster.h"
@@ -7298,7 +7299,15 @@ void SketchWidget::resizeBoard(long itemID, double mmW, double mmH) {
 	Pad * pad = qobject_cast<Pad *>(item);
 	if (pad) {
 		pad->resizeMM(mmW, mmH, m_viewLayers);
+        return;
 	}
+
+	SchematicFrame * schematicFrame = qobject_cast<SchematicFrame *>(item);
+	if (schematicFrame) {
+		schematicFrame->resizeMM(mmW, mmH, m_viewLayers);
+        return;
+	}
+
 }
 
 void SketchWidget::resizeBoard(double mmW, double mmH, bool doEmit)

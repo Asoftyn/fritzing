@@ -270,7 +270,14 @@ bool SchematicFrame::makeLineEdit(QWidget * parent, const QString & family, cons
 
 bool SchematicFrame::collectExtraInfo(QWidget * parent, const QString & family, const QString & propp, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget) 
 {
-	if (propp.compare("date", Qt::CaseInsensitive) == 0) {
+	if (propp.compare("shape", Qt::CaseInsensitive) == 0) {
+		returnWidget = setUpDimEntry(false, false, true, returnWidget);
+        returnWidget->setEnabled(swappingEnabled);
+		returnProp = tr("shape");
+		return true;
+	}
+
+    if (propp.compare("date", Qt::CaseInsensitive) == 0) {
 		QDateTimeEdit * dateTimeEdit = new QDateTimeEdit(QDateTime::currentDateTime(), parent);
 		QString d = prop("date");
 		if (!d.isEmpty()) {

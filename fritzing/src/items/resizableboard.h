@@ -119,6 +119,7 @@ public slots:
 	virtual void heightEntry();
 	void keepAspectRatio(bool checkState);
 	void revertSize(bool);
+    virtual void paperSizeChanged(int);
 
 protected:
 	enum Corner {
@@ -151,10 +152,12 @@ protected:
 	virtual ResizableBoard::Corner findCorner(QPointF p, Qt::KeyboardModifiers);
 	void setKinCursor(QCursor &);
 	void setKinCursor(Qt::CursorShape);
-	QFrame * setUpDimEntry(bool includeAspectRatio, bool includeRevert, QWidget * & returnWidget);
+	QFrame * setUpDimEntry(bool includeAspectRatio, bool includeRevert, bool includePaperSizes, QWidget * & returnWidget);
 	void fixWH();
 	void setWidthAndHeight(double w, double h);
     QString getShapeForRenderer(const QString & svg, ViewLayer::ViewLayerID viewLayerID);
+    void initPaperSizes();
+    void updatePaperSizes(double width, double height);
 
 protected:
 	static const double CornerHandleSize;
@@ -170,6 +173,7 @@ protected:
 	QPointer<QCheckBox> m_aspectRatioCheck;
     QPointer<QLabel> m_aspectRatioLabel;
     QPointer<QPushButton> m_revertButton;
+    QPointer<QComboBox> m_paperSizeComboBox;
 
 	QPointF m_resizeMousePos;
 	QSizeF m_resizeStartSize;

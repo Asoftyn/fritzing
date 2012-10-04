@@ -18,6 +18,7 @@
    <property name="rev"></property>
    <property name="date"></property>
   <property name="sheet"></property>
+  <property name="shape"></property>
   <property name="family">Schematic Frame</property>
  </properties>
  <taxonomy>discreteParts.schematic.frame.resizable</taxonomy>

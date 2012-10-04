@@ -205,7 +205,8 @@ bool LogoItem::collectExtraInfo(QWidget * parent, const QString & family, const 
 	}
 
 	if (prop.compare("shape", Qt::CaseInsensitive) == 0) {
-		returnWidget = setUpDimEntry(true, !m_hasLogo, returnWidget);
+		returnWidget = setUpDimEntry(true, !m_hasLogo, false, returnWidget);
+        returnWidget->setEnabled(swappingEnabled);
 		returnProp = tr("shape");
 		return true;
 	}
@@ -965,7 +966,9 @@ bool BoardLogoItem::collectExtraInfo(QWidget * parent, const QString & family, c
 {
 	if (prop.compare("shape", Qt::CaseInsensitive) == 0) {
         Board::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
-		returnWidget = setUpDimEntry(true, true,  returnWidget);   
+		returnWidget = setUpDimEntry(true, true, false, returnWidget);  
+        returnWidget->setEnabled(swappingEnabled);
+
         m_aspectRatioCheck->setEnabled(false);
         m_aspectRatioCheck->setChecked(true);
         m_aspectRatioCheck->setVisible(false);
