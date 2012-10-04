@@ -1229,8 +1229,11 @@ Plane * CMRouter::tilePlane(ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewL
 			if (!m_sketchWidget->sameElectricalLayer2(wire->viewLayerID(), viewLayerID)) continue;
 			if (beenThere.contains(wire)) continue;
 
+            QLineF line = wire->line();
+            wire->debugInfo(QString("wire info %1 %2 %3 %4").arg(line.p1().x()).arg(line.p1().y()).arg(line.p2().x()).arg(line.p2().y()));
 			tileWire(wire, beenThere, alreadyTiled, m_sketchWidget->autorouteTypePCB() ? Tile::OBSTACLE : Tile::SCHEMATICWIRESPACE, wireOverlapType, eliminateThin);
-			if (alreadyTiled.count() > 0) {
+			DebugDialog::debug("success");
+            if (alreadyTiled.count() > 0) {
 				m_hasOverlaps = true;
 				if (overlapType != ReportAllOverlaps) return thePlane;
 				else {
@@ -1658,6 +1661,17 @@ void CMRouter::tileWires(QList<Wire *> & wires, QList<Tile *> & alreadyTiled, Ti
 {
 	QMultiHash<Wire *, QRectF> wireRects;
 	foreach (Wire * wire, wires) {
+        TraceWire * traceWire = qobject_cast<TraceWire *>(wire);
+        if (traceWire == NULL) {
+            // something fishy going on: why is a normal wire connected to a trace?
+            continue;
+        }
+
+		if (!traceWire->isTraceType(m_sketchWidget->getTraceFlag())) {
+            // shouldn't happen
+            continue;
+        }
+
 		QPointF p1 = wire->pos();
 		QPointF p2 = wire->line().p2() + p1;
 		double dx = qAbs(p1.x() - p2.x());
@@ -1667,14 +1681,14 @@ void CMRouter::tileWires(QList<Wire *> & wires, QList<Tile *> & alreadyTiled, Ti
 			double x = qMin(p1.x(), p2.x()) - (wire->width() / 2) - m_keepout;
 			double y = qMin(p1.y(), p2.y()) - m_keepout;			
 			wireRects.insert(wire, QRectF(x, y, wire->width() + dx + m_keepout + m_keepout, dy + m_keepout + m_keepout));
-			qobject_cast<TraceWire *>(wire)->setWireDirection(TraceWire::Vertical);
+			traceWire->setWireDirection(TraceWire::Vertical);
 		}
 		else if (dy < CloseEnough) {
 			// horizontal line
 			double y = qMin(p1.y(), p2.y()) - (wire->width() / 2) - m_keepout;
 			double x = qMin(p1.x(), p2.x()) - m_keepout;
 			wireRects.insert(wire, QRectF(x, y, qMax(p1.x(), p2.x()) - x + m_keepout + m_keepout, wire->width() + dy + m_keepout + m_keepout));
-			qobject_cast<TraceWire *>(wire)->setWireDirection(TraceWire::Horizontal);
+			traceWire->setWireDirection(TraceWire::Horizontal);
 		}
 		else {
 			double factor = (eliminateThin ? StandardWireWidth : 1);
@@ -1709,7 +1723,7 @@ void CMRouter::tileWires(QList<Wire *> & wires, QList<Tile *> & alreadyTiled, Ti
 				wireRects.insert(wire, r);
 			}
 
-			qobject_cast<TraceWire *>(wire)->setWireDirection(TraceWire::Diagonal);
+			traceWire->setWireDirection(TraceWire::Diagonal);
 		}
 	}
 
