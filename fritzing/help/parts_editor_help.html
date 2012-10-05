@@ -18,7 +18,7 @@
         <big><big><b>How to start</b></big></big><br>
         <br>
         The new approach is very different from that of the old Parts
-        Editor, and explaining the difference is the purpose of this
+        Editor, and explaining that difference is the purpose of this
         document. The first big change is that you cannot create a new
         part from scratch--you must begin with a part that already
         exists. So the best thing to do is to find a part that is pretty
@@ -27,34 +27,50 @@
         number of connectors. For example, if your part needs 39 pins,
         then start with a generic IC part, change it to a SIP (single
         inline package) and give it 39 pins. Though finding a part to
-        begin with may seem like a burden, it will save you some work as
+        begin with may seem like a burden, it will save you effort as
         you go through the process.<br>
         <br>
         You can open the new parts editor by right-clicking a part in a
-        sketch; choosing 'Edit' from the Part menu; right clicking a
-        part in the Parts Bin; or using the Parts Bin drop down menu.<br>
+        sketch and choosing the 'Edit' option; choosing 'Edit' from the
+        Part menu; right clicking a part in the Parts Bin and choosing
+        the 'Edit' option; or using the Parts Bin drop down menu.<br>
         <br>
         <big><big><b>Six views</b></big></big><br>
         <br>
         The new Parts Editor no longer tries to display everything in a
         single view.&nbsp; Instead, it works like the sketch window
-        where there are multiple tabs, but only one tab is visible at a
+        which has multiple tabs with only one tab visible at a
         time.&nbsp; In the new Parts Editor there are six tabs:
         Breadboard view, Schematic view, PCB view, Icon view, Metadata
         view, and Connectors view. As you might expect, the first four
         views are for the part images; the Metadata view is where you
         enter the part's title, author, and other properties; and the
-        Connectors view is for the connector metadata--and you can also
-        use it to add and remove connectors.<br>
+        Connectors view is for editing connector metadata, and for
+        adding or removing connectors. For the latter, you just type in
+        the number of connectors you want.<br>
         <big><big><br>
             <b>Loading new images</b></big></big><br>
         <br>
         To load the SVGs for your part, switch to the appropriate view,
-        and use <b>File &gt; Open</b>. As before, you can load SVGs in
-        all views; gEDA .fp files and KICAD .mod files in PCB view. You
-        can also still load PNG or JPG images in all views, but we
-        discourage this because these are raster-based rather than
-        vector-based so they don't look good when scaled. <br>
+        and use <b>File &gt; Load image for view</b>. As before, you
+        can load SVGs in all views and gEDA .fp files and KICAD .mod
+        files in PCB view only. To create an SVG for any view, you must
+        use an external SVG editor (Inkscape, Illustrator, CorelDRAW, or
+        a text editor) to layout the elements that will be used as
+        connectors. The SVG example below uses &lt;circle&gt; elements
+        for connectors.<br>
+        <br>
+        Loading PNG or JPG images directly is possible, but since these
+        become SVG images with only a single element, there is no way to
+        place individual connectors. We
+        also&nbsp; discourage the use of PNG and JPG because these are
+        raster-based rather than vector-based, so they don't look good
+        when scaled. If you still prefer to use PNG or JPG, we recommend
+        that for now you open them in an external SVG editor and add
+        connector elements there (see below for more about 'connector
+        elements'). Save the result as an SVG, and use that in the Parts
+        Editor.&nbsp; In phase 2 you will be able to add connector
+        elements directly in the Parts Editor.<br>
         <br>
         Since you have already begun with a part, it may be that you
         will only have to load a single image for a particular view--you
@@ -66,7 +82,7 @@
         understand the layers is to open up one of the core pcb svg
         files, For example have a look at the file crystal_hc49U.svg.
         Silkscreen layer has four while lines, the two copper layers
-        share a pair of circles.<br>
+        share a pair of circles as connector elements.<br>
         <br>
         <tt>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
           &lt;svg baseProfile="tiny" height="0.20306in" version="1.2"
@@ -97,16 +113,10 @@
         </blockquote>
         <tt>&lt;/svg&gt;</tt><br>
         <br>
-        It is also necessary to add elements to the SVG file that can be
-        associated with connectors. For example, in the svg above, the
-        circle elements are used for connectors. If you load a JPG or
-        PNG file, there will not be any elements available to make
-        connectors and you will have to open the file in an SVG editor
-        to add those (this won't be necessary in phase 2):<br>
-        <br>
         Sometimes you will want to reuse the breadboard image as your
         icon image. There is a shortcut for this under <b>File &gt;
           Reuse breadboard image</b>. You can also find the options: <b>File
+
 
           &gt; Reuse schematic image</b>, and <b>File &gt; Reuse PCB
           image</b>. <br>
@@ -129,14 +139,15 @@
         If you start with a core part (i.e. a part from the Fritzing
         distro), saving is equivalent to "Save As". A new part will be
         created in your local storage area (explained below) and added
-        to the "My Parts" Bin. If you are editing a part that was in a
-        sketch, the part will be updated whenever you save. If you want
-        the new part to display in the My Parts Bin the next time you
-        run Fritzing, remember to save the bin (use the drop down menu
-        at the upper left of the bin). If you start editing from a part
-        in the My Parts Bin you have a choice between Save (which will
-        overwrite the part), and Save As (which will create a new part
-        and add it to the My Parts Bin).<br>
+        to the "My Parts" Bin. If you are editing a custom part that was
+        in a sketch, the part will be updated whenever you save (core
+        parts are not updated). If you want the new part to display in
+        the My Parts Bin the next time you run Fritzing, remember to
+        save the bin (use the drop down menu at the upper left of the
+        bin). If you start editing from a part in the My Parts Bin you
+        have a choice between Save (which will overwrite the part), and
+        Save As (which will create a new part and add it to the My Parts
+        Bin).<br>
         <br>
         On Windows the local storage folder is something like
         C:\Users\[username]\AppData\Roaming\Fritzing\parts\user\, and
@@ -154,45 +165,48 @@
         <big><big><br>
             <b>Associating a connector with its SVG counterpart</b></big></big><br>
         <br>
-        The next task will be to&nbsp; associate each pin with its
-        counterpart in the SVG for a given view. This is handled very
+        The next task will be to associate each connector with its
+        counterpart in the SVG for each view. This is handled very
         differently from before. For an example, I am going to use
         images from a part created by Shunichi Yamamoto (who graciously
         gave us permission to include them in this tutorial, and who
         also helped beta test the new Parts Editor).&nbsp; <br>
         <br>
-        The new part has 39 pins, so we begin with a Generic IC part and
-        drag it into an empty sketch. There we use the Inspector to
-        change it a to SIP and give it 39 pins. Then we open that in the
-        new Parts Editor with a right-click.&nbsp; <br>
+        The new part will have 39 pins, so we begin with a Generic IC
+        part and drag it into an empty sketch. There we use the
+        Inspector to change it a to SIP and give it 39 pins. Then we
+        open that in the new Parts Editor with a right-click.&nbsp; <br>
         <br>
         <img alt="starting up" src="images/start.png" height="363"
           width="599"><br>
         <br>
-        Next we load the new breadboard image using <b>File &gt; Open</b>.&nbsp;
-
-        In the Tools widget at the upper right, you see a list of
-        connectors. Choose one to make it the <b>current </b>or <b>active</b>
-        <b>connector</b>. If it has already been associated with an SVG
-        element, that element will display a marquee highlight. Since we
-        are just starting out, we will choose pin1 which is not
-        currently associated with any SVG element.<br>
+        Next we load the new breadboard image using <b>File &gt; Load
+          image for view</b>.&nbsp; In the Tools widget at the upper
+        right, you see a list of connectors. Choose one to make it the <b>current
+        </b>or <b>active</b> <b>connector</b>. If it has already been
+        associated with an SVG element, that element will display a
+        marquee highlight. Since we are just starting out, we will
+        choose pin1 which is not currently associated with any SVG
+        element.<br>
         <br>
-        <img alt="pin 1" src="images/pin1.png" height="350" width="539"><br>
+        <img alt="pin1" src="images/pin1.png" height="328" width="499"><br>
         <br>
-        To create the actual association click the "Select connector
+        To create the actual association click the "Select connector's
         graphic" button over in the Connectors widget. This basically
         puts you in a "mode" that lasts until the next time you mouse
         down. If you want to escape the mode, click anywhere outside the
         part or use the escape key. You can only make the association
         when you are in this mode (this keeps you from accidentally
-        reassociating a pin later). Now move your mouse over the SVG. As
-        you do so, various elements will highlight. It is most likely
-        the case that any given mouse location could refer to multiple
-        SVG elements (or groups). Use the mouse wheel to highlight other
-        elements above or below the currently highlighted one in the
-        z-order. Here are three highlights from the same mouse position,
-        using the mouse wheel:<br>
+        associating a connector to a graphic when you didn't intend to).
+        <br>
+        <br>
+        In the mode, move your mouse over the SVG. As you do so,
+        different SVG elements will highlight. It is often the case that
+        any given mouse location can refer to multiple SVG elements (or
+        groups of elements). Use the mouse wheel to highlight other
+        elements above or beneath the currently highlighted one (in the
+        z-order). Here are three highlights from the same mouse
+        position, using the mouse wheel:<br>
         <br>
         <img alt="highlight1" src="images/highlight1.png" height="161"
           width="348"><br>
@@ -236,8 +250,11 @@
         Here is what the Connectors widget looks like with pin3 as the
         current connector:<br>
         <br>
-        <img alt="tools1" src="images/tools1.png" height="557"
-          width="421"><br>
+        <img alt="tools1" src="images/tools1.png" height="481"
+          width="384"><br>
+        <br>
+        Notice that since we have assigned graphics to three of the
+        connectors, those connectors are checked in the connector list.<br>
         <br>
         You can use the buttons or spinners to adjust the terminal
         point. Here is a close up after hitting the W button, and
@@ -253,13 +270,14 @@
         <br>
         An internal connection is when a two or more connectors in a
         part are already connected, for example the GND connectors on
-        the Arduino UNO. You can edit internal connections by clicking
-        on the "Set internal connections" checkbox in the Connectors
-        widget--it's right at the top (you can see it two images back).
-        Since we are talking about the Arduino UNO, here is what it
-        looks like when Set internal connections is checked:<br>
+        the Arduino UNO. You can specify and edit internal connections
+        by clicking on the "Set internal connections" checkbox in the
+        Connectors widget--it's beneath the connectors list (you can see
+        it in the image of the Connectors widget, above). Since we are
+        talking about the Arduino UNO, here is what it looks like when
+        Set internal connections is checked:<br>
         <br>
-        <img alt="bus1" src="images/bus1.png" height="270" width="517"><br>
+        <img alt="bus1" src="images/bus1.png" height="328" width="522"><br>
         <br>
         The green lines represent the internal connections. To remove an
         internal connection, right-click the line and choose "Remove
@@ -268,9 +286,17 @@
         <b><br>
         </b><b><big><big>Known limits</big></big></b><br>
         <br>
-        The following feature are due in phase two: holes, mixed THT and
-        SMD connectors, control over svg element layering, some direct
-        manipulation of SVG elements, parts with bendable legs.<br>
+        The following feature are due in phase two: <br>
+        <ul>
+          <li>adding holes</li>
+          <li>mixing THT and SMD connectors--for now you must start with
+            an SMD part to create a new SMD part, and start with a
+            through-hole part to create a new through-hole part. <br>
+          </li>
+          <li>control over SVG element layering</li>
+          <li>direct manipulation of SVG elements</li>
+          <li>setting up parts with bendable legs.</li>
+        </ul>
         <b><br>
         </b> <b><big><big>Bye for now</big></big></b><br>
         <br>

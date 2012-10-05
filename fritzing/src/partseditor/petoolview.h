@@ -37,6 +37,7 @@ $Date$
 #include <QTreeWidget>
 #include <QDomDocument>
 #include <QDoubleSpinBox>
+#include <QPointer>
 
 #include "../viewlayer.h"
 
@@ -65,7 +66,7 @@ public:
     void setTerminalPointCoords(QPointF);
     void setTerminalPointLimits(QSizeF);
 	void setChildrenVisible(bool vis);
-    void enableConnectorChanges(bool enableTerminalPointDrag, bool enableTerminalPointControls, bool enablePick);
+    void enableConnectorChanges(bool enableTerminalPointDrag, bool enableTerminalPointControls, bool enableInfo, bool enableAssign);
 	void showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::ViewIdentifier);
 
 signals:
@@ -96,19 +97,20 @@ protected:
 
 
 protected:
-    QTreeWidget * m_connectorListWidget;
+    QPointer<QTreeWidget> m_connectorListWidget;
     QList<QPushButton *> m_buttons;
-    class PEGraphicsItem * m_pegi;
+    QPointer<class PEGraphicsItem> m_pegi;
     QList<QDomElement> * m_connectorList;
-    QGroupBox * m_connectorInfoGroupBox;
-    QBoxLayout * m_connectorInfoLayout;
-    QWidget * m_connectorInfoWidget;
-	QCheckBox * m_busModeBox;
-    QDoubleSpinBox * m_terminalPointX;
-    QDoubleSpinBox * m_terminalPointY;
-    QLabel * m_units;
-	QGroupBox * m_terminalPointGroupBox;
-	QLabel * m_terminalPointDragState;
+    QPointer<QGroupBox> m_connectorInfoGroupBox;
+    QPointer<QBoxLayout> m_connectorInfoLayout;
+    QPointer<QWidget> m_connectorInfoWidget;
+	QPointer<QCheckBox> m_busModeBox;
+    QPointer<QDoubleSpinBox> m_terminalPointX;
+    QPointer<QDoubleSpinBox> m_terminalPointY;
+    QPointer<QLabel> m_units;
+	QPointer<QGroupBox> m_terminalPointGroupBox;
+	QPointer<QLabel> m_terminalPointDragState;
+    QPointer<QPushButton> m_assignButton;
 };
 
 #endif

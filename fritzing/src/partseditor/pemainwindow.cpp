@@ -1258,7 +1258,7 @@ void PEMainWindow::highlightSlot(PEGraphicsItem * pegi) {
     if (m_peToolView) {
         bool enableTerminalPointControls = anyMarquee();
         bool vis = anyVisible();
-        m_peToolView->enableConnectorChanges(vis && pegi->showingMarquee(), vis && enableTerminalPointControls, enableTerminalPointControls);
+        m_peToolView->enableConnectorChanges(vis && pegi->showingMarquee(), vis && enableTerminalPointControls, m_connectorList.count() > 0, vis);
     }
 
     if (m_peSvgView) {
@@ -1689,9 +1689,6 @@ void PEMainWindow::reload(bool firstTime)
 void PEMainWindow::busModeChanged(bool state) {  
 	if (m_currentGraphicsView == NULL) return;
 
-	QApplication::setOverrideCursor(Qt::WaitCursor);
-
-
 	if (!state) {
         foreach (ViewThing * viewThing, m_viewThings.values()) {
             viewThing->busMode = false;
@@ -1699,13 +1696,12 @@ void PEMainWindow::busModeChanged(bool state) {
         }
 
 		deleteBuses();
+
         reload(false);
-		QApplication::restoreOverrideCursor();
 		return;
 	}
 
 	QList<PEGraphicsItem *> pegiList = getPegiList(m_currentGraphicsView);
-
 
 	reload(false);
 
@@ -1742,8 +1738,7 @@ void PEMainWindow::busModeChanged(bool state) {
     }
 
 	displayBuses();
-	m_peToolView->enableConnectorChanges(false, false, anyMarquee());
-	QApplication::restoreOverrideCursor();
+	m_peToolView->enableConnectorChanges(false, false, m_connectorList.count() > 0, false);
 }
 
 void PEMainWindow::pickModeChanged(bool state) {  

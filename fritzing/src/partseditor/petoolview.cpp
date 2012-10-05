@@ -62,6 +62,8 @@ void PEDoubleSpinBox::stepBy(int steps)
 
 PEToolView::PEToolView(QWidget * parent) : QWidget(parent) 
 {
+    m_assignButton = NULL;
+
 	if (CheckImage == NULL) CheckImage = new QPixmap(":/resources/images/icons/check.png");
 	if (NoCheckImage == NULL) NoCheckImage = new QPixmap(":/resources/images/icons/nocheck.png");
 
@@ -191,7 +193,7 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
 
     m_connectorListWidget->resize(m_connectorListWidget->width(), 0);
 
-    enableConnectorChanges(false, false, false);
+    enableConnectorChanges(false, false, false, false);
 
 }
 
@@ -199,21 +201,28 @@ PEToolView::~PEToolView()
 {
 }
 
-void PEToolView::enableConnectorChanges(bool enableTerminalPointDrag, bool enableTerminalPointControls, bool enablePick)
+void PEToolView::enableConnectorChanges(bool enableTerminalPointDrag, bool enableTerminalPointControls, bool enableInfo, bool enableAssign)
 {
-	m_terminalPointGroupBox->setEnabled(enableTerminalPointControls);
+    if (m_assignButton) {
+        m_assignButton->setEnabled(enableAssign);
+    }
+    if (m_terminalPointGroupBox) {
+	    m_terminalPointGroupBox->setEnabled(enableTerminalPointControls);
+    }
 	if (m_connectorInfoWidget) {
-		m_connectorInfoWidget->setEnabled(enablePick);
+		m_connectorInfoWidget->setEnabled(enableInfo);
 	}
 
-	if (enableTerminalPointDrag) {
-		m_terminalPointDragState->setText(tr("<font color='black'>Dragging enabled</font>"));
-		m_terminalPointDragState->setEnabled(true);
-	}
-	else {
-		m_terminalPointDragState->setText(tr("<font color='gray'>Dragging disabled</font>"));
-		m_terminalPointDragState->setEnabled(false);
-	}
+    if (m_terminalPointDragState) {
+	    if (enableTerminalPointDrag) {
+		    m_terminalPointDragState->setText(tr("<font color='black'>Dragging enabled</font>"));
+		    m_terminalPointDragState->setEnabled(true);
+	    }
+	    else {
+		    m_terminalPointDragState->setText(tr("<font color='gray'>Dragging disabled</font>"));
+		    m_terminalPointDragState->setEnabled(false);
+	    }
+    }
 }
 
 void PEToolView::initConnectors(QList<QDomElement> * connectorList) {
@@ -436,10 +445,10 @@ void PEToolView::hideConnectorListStuff() {
 		else {
 			if (item != current) ;		// label is already there
 			else {
-				QPushButton * assignButton = new QPushButton(tr("Select connector's graphic"));
-				connect(assignButton, SIGNAL(clicked()), this, SLOT(pickModeChangedSlot()), Qt::DirectConnection);
-				assignButton->setToolTip(tr("Use the cursor location and mouse wheel to navigate to the SVG element which you want to assign to the current connector, then mouse down to select it."));
-				m_connectorListWidget->setItemWidget(item, 1, assignButton);
+				m_assignButton = new QPushButton(tr("Select connector's graphic"));
+				connect(m_assignButton, SIGNAL(clicked()), this, SLOT(pickModeChangedSlot()), Qt::DirectConnection);
+				m_assignButton->setToolTip(tr("Use the cursor location and mouse wheel to navigate to the SVG element which you want to assign to the current connector, then mouse down to select it."));
+				m_connectorListWidget->setItemWidget(item, 1, m_assignButton);
 			}
 		}
 	}
