@@ -52,6 +52,7 @@ struct ViewThing {
     SketchWidget * sketchWidget;
     QString originalSvgPath;
 	bool firstTime;
+    bool busMode;
 
 	ViewThing();
 };
@@ -184,6 +185,8 @@ protected:
 	void setImageAttribute(QDomElement & layers, const QString & image);
 	QString makeNewVariant(const QString & family);
 	void connectorWarning();
+    bool anyMarquee();
+    bool anyVisible();
 
 protected slots:
     void initZoom();

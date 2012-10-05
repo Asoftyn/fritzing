@@ -191,7 +191,7 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
 
     m_connectorListWidget->resize(m_connectorListWidget->width(), 0);
 
-    enableConnectorChanges(false, false);
+    enableConnectorChanges(false, false, false);
 
 }
 
@@ -199,24 +199,14 @@ PEToolView::~PEToolView()
 {
 }
 
-void PEToolView::highlightElement(PEGraphicsItem * pegi) {
-    m_pegi = pegi;
-    if (pegi == NULL) {
-        enableConnectorChanges(false, false);
-        return;
-    }
-
-    enableConnectorChanges(pegi->showingMarquee(), true);
-}
-
-void PEToolView::enableConnectorChanges(bool enableTerminalPoint, bool enablePick)
+void PEToolView::enableConnectorChanges(bool enableTerminalPointDrag, bool enableTerminalPointControls, bool enablePick)
 {
-	m_terminalPointGroupBox->setEnabled(enablePick);
+	m_terminalPointGroupBox->setEnabled(enableTerminalPointControls);
 	if (m_connectorInfoWidget) {
 		m_connectorInfoWidget->setEnabled(enablePick);
 	}
 
-	if (enableTerminalPoint) {
+	if (enableTerminalPointDrag) {
 		m_terminalPointDragState->setText(tr("<font color='black'>Dragging enabled</font>"));
 		m_terminalPointDragState->setEnabled(true);
 	}
@@ -321,15 +311,8 @@ void PEToolView::switchConnector(QTreeWidgetItem * current, QTreeWidgetItem * pr
     emit switchedConnector(index);
 }
 
-bool PEToolView::busMode() {
-    return m_busModeBox->isChecked();
-}
-
 void PEToolView::busModeChangedSlot(bool state)
 {
-	if (state) enableConnectorChanges(false, false);
-	else enableConnectorChanges(m_pegi != NULL && m_pegi->showingMarquee(), m_pegi != NULL);
-
     emit busModeChanged(state);
 }
 
@@ -460,5 +443,6 @@ void PEToolView::hideConnectorListStuff() {
 			}
 		}
 	}
-
 }
+
+

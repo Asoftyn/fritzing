@@ -29,8 +29,11 @@ $Date$
 
     ///////////////////////////////// first release ///////////////////////////////
 		        							       
+    clicking set bus mode fucks up anchor points
 
-    ////////////////////////////// second release /////////////////////////////////
+    terminal point area is not highlighting properly
+   
+    ////////////////////// second release /////////////////////////////////
 
 		icon editor?
 
@@ -244,6 +247,7 @@ ViewThing::ViewThing() {
     everZoomed = false;
     sketchWidget = NULL;
 	firstTime = true;
+    busMode = false;
 }
 
 /////////////////////////////////////////////////////
@@ -1252,8 +1256,11 @@ void PEMainWindow::initSvgTree(SketchWidget * sketchWidget, ItemBase * itemBase,
 
 void PEMainWindow::highlightSlot(PEGraphicsItem * pegi) {
     if (m_peToolView) {
-        m_peToolView->highlightElement(pegi);
+        bool enableTerminalPointControls = anyMarquee();
+        bool vis = anyVisible();
+        m_peToolView->enableConnectorChanges(vis && pegi->showingMarquee(), vis && enableTerminalPointControls, enableTerminalPointControls);
     }
+
     if (m_peSvgView) {
         m_peSvgView->highlightElement(pegi);
     }
@@ -1684,52 +1691,58 @@ void PEMainWindow::busModeChanged(bool state) {
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
-	QList<PEGraphicsItem *> pegiList = getPegiList(m_currentGraphicsView);
 
 	if (!state) {
-		m_currentGraphicsView->hideConnectors(true);
-		foreach (PEGraphicsItem * pegi, pegiList) {
-			pegi->setDrawHighlight(true);
-		}
+        foreach (ViewThing * viewThing, m_viewThings.values()) {
+            viewThing->busMode = false;
+            viewThing->sketchWidget->hideConnectors(true);
+        }
+
 		deleteBuses();
+        reload(false);
 		QApplication::restoreOverrideCursor();
 		return;
 	}
 
+	QList<PEGraphicsItem *> pegiList = getPegiList(m_currentGraphicsView);
+
+
 	reload(false);
-	// items on pegiList no longer exist after reload so get them again
-	pegiList = getPegiList(m_currentGraphicsView);
 
-	m_currentGraphicsView->hideConnectors(true);
-	foreach (PEGraphicsItem * pegi, pegiList) {
-		pegi->setDrawHighlight(false);
-	}
-
-	// show connectorItems that have connectors assigned
-	QStringList connectorIDs;
 	QDomElement root = m_fzpDocument.documentElement();
 	QDomElement connectors = root.firstChildElement("connectors");
-	QDomElement connector = connectors.firstChildElement("connector");
-	while (!connector.isNull()) {
-		QDomElement p = PEUtils::getConnectorPElement(connector, m_currentGraphicsView->viewIdentifier());
-		QString id = p.attribute("svgId");
-		foreach (PEGraphicsItem * pegi, pegiList) {
-			QDomElement pegiElement = pegi->element();
-			if (pegiElement.attribute("id").compare(id) == 0) {
-				connectorIDs.append(connector.attribute("id"));
-				break;
-			}
-		}
-		connector = connector.nextSiblingElement("connector");
-	}	
 
-	if (connectorIDs.count() > 0) {
-		ViewThing * viewThing = m_viewThings.value(m_currentGraphicsView->viewIdentifier());
-		viewThing->itemBase->showConnectors(connectorIDs);
-	}
+    foreach (ViewThing * viewThing, m_viewThings.values()) {
+	    // items on pegiList no longer exist after reload so get them now
+	    pegiList = getPegiList(viewThing->sketchWidget);
+	    viewThing->sketchWidget->hideConnectors(true);
+	    foreach (PEGraphicsItem * pegi, pegiList) {
+		    pegi->setVisible(false);
+	    }
+
+	    // show connectorItems that have connectors assigned
+	    QStringList connectorIDs;
+	    QDomElement connector = connectors.firstChildElement("connector");
+	    while (!connector.isNull()) {
+		    QDomElement p = PEUtils::getConnectorPElement(connector, viewThing->sketchWidget->viewIdentifier());
+		    QString id = p.attribute("svgId");
+		    foreach (PEGraphicsItem * pegi, pegiList) {
+			    QDomElement pegiElement = pegi->element();
+			    if (pegiElement.attribute("id").compare(id) == 0) {
+				    connectorIDs.append(connector.attribute("id"));
+				    break;
+			    }
+		    }
+		    connector = connector.nextSiblingElement("connector");
+	    }	
+
+	    if (connectorIDs.count() > 0) {
+		    viewThing->itemBase->showConnectors(connectorIDs);
+	    }
+    }
 
 	displayBuses();
-	m_peToolView->enableConnectorChanges(false, false);
+	m_peToolView->enableConnectorChanges(false, false, anyMarquee());
 	QApplication::restoreOverrideCursor();
 }
 
@@ -1765,8 +1778,7 @@ void PEMainWindow::pegiTerminalPointChanged(PEGraphicsItem * pegi, QPointF befor
 
 void PEMainWindow::pegiMousePressed(PEGraphicsItem * pegi, bool & ignore)
 {
-	ignore = m_peToolView->busMode();
-	if (ignore) return;
+    ignore = false;
 
 	if (m_useNextPick) {
 		m_useNextPick = false;
@@ -2377,7 +2389,6 @@ void PEMainWindow::tabWidget_currentChanged(int index) {
     MainWindow::tabWidget_currentChanged(index);
 
     if (m_peToolView == NULL) return;
-
 
     switchedConnector(m_peToolView->currentConnectorIndex());
 
@@ -3489,4 +3500,30 @@ void PEMainWindow::showing(SketchWidget * sketchWidget) {
 			}
 		}
 	}	
+}
+
+bool PEMainWindow::anyMarquee() {
+    if (m_currentGraphicsView == NULL) return false;
+
+    QList<PEGraphicsItem *> pegiList = getPegiList(m_currentGraphicsView);
+    foreach (PEGraphicsItem * pegi, pegiList) {
+        if (pegi->showingMarquee()) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool PEMainWindow::anyVisible() {
+    if (m_currentGraphicsView == NULL) return false;
+
+    foreach (QGraphicsItem * item, m_currentGraphicsView->scene()->items()) {
+        PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
+        if (pegi == NULL) continue;
+		
+		return pegi->isVisible();
+    }
+
+    return false;
 }

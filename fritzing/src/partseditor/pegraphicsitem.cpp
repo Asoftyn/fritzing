@@ -54,7 +54,6 @@ PEGraphicsItem::PEGraphicsItem(double x, double y, double w, double h) : QGraphi
 
     m_terminalPoint = QPointF(w / 2, h / 2);
     m_dragTerminalPoint = m_showMarquee = m_showTerminalPoint = false;
-	m_drawHighlight = true;
 	setAcceptedMouseButtons(Qt::LeftButton);
 	setAcceptHoverEvents(true);
     //setFlag(QGraphicsItem::ItemIsSelectable, true );
@@ -76,7 +75,6 @@ void PEGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *) {
 
 void PEGraphicsItem::wheelEvent(QGraphicsSceneWheelEvent * event) {
     if (event->orientation() != Qt::Vertical) return;
-	if (!m_drawHighlight) return;
 
     // delta one click forward = 120; delta one click backward = -120
 
@@ -169,9 +167,7 @@ QPointF PEGraphicsItem::offset() {
 
 void PEGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) 
 {
-	if (m_drawHighlight) {
-		QGraphicsRectItem::paint(painter, option, widget);
-	}
+	QGraphicsRectItem::paint(painter, option, widget);
 
 	bool save = m_showTerminalPoint || m_showMarquee;
 
@@ -366,9 +362,4 @@ void PEGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *) {
 
 void PEGraphicsItem::setPickAppearance(bool pick) {
 	setBrush(pick ? PickColor : NormalColor);
-}
-
-void PEGraphicsItem::setDrawHighlight(bool drawHighlight) {
-	m_drawHighlight = drawHighlight;
-	update();
 }

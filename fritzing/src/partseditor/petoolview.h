@@ -59,15 +59,13 @@ public:
 	PEToolView(QWidget * parent = NULL);
 	~PEToolView();
 
-    void highlightElement(class PEGraphicsItem *);
     void initConnectors(QList<QDomElement> * connectorList);
-	bool busMode();
     int currentConnectorIndex();
 	void setCurrentConnector(const QDomElement &);
     void setTerminalPointCoords(QPointF);
     void setTerminalPointLimits(QSizeF);
 	void setChildrenVisible(bool vis);
-    void enableConnectorChanges(bool enableTerminalPoint, bool enablePick);
+    void enableConnectorChanges(bool enableTerminalPointDrag, bool enableTerminalPointControls, bool enablePick);
 	void showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::ViewIdentifier);
 
 signals:
@@ -95,6 +93,7 @@ protected slots:
 protected:
 	void changeConnector();
 	void hideConnectorListStuff();
+
 
 protected:
     QTreeWidget * m_connectorListWidget;

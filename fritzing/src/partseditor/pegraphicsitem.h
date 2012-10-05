@@ -62,7 +62,6 @@ public:
     QPointF pendingTerminalPoint();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 	void setPickAppearance(bool);
-	void setDrawHighlight(bool);
 
 signals:
     void highlightSignal(PEGraphicsItem *);
