@@ -527,6 +527,34 @@ void PEMainWindow::createMenus()
     createHelpMenu();
 }
 
+void PEMainWindow::createFileMenu() {
+    m_fileMenu = menuBar()->addMenu(tr("&File"));
+    m_fileMenu->addAction(m_openAct);
+    m_fileMenu->addAction(m_reuseBreadboardAct);
+    m_fileMenu->addAction(m_reuseSchematicAct);
+    m_fileMenu->addAction(m_reusePCBAct);
+
+    //m_fileMenu->addAction(m_revertAct);
+
+    m_fileMenu->addSeparator();
+    m_fileMenu->addAction(m_closeAct);
+    m_fileMenu->addAction(m_saveAct);
+    m_fileMenu->addAction(m_saveAsAct);
+
+    m_fileMenu->addSeparator();
+	m_exportMenu = m_fileMenu->addMenu(tr("&Export"));
+    //m_fileMenu->addAction(m_pageSetupAct);
+    m_fileMenu->addAction(m_printAct);
+    m_fileMenu->addAction(m_showInOSAct);
+
+	m_fileMenu->addSeparator();
+	m_fileMenu->addAction(m_quitAct);
+
+	populateExportMenu();
+
+    connect(m_fileMenu, SIGNAL(aboutToShow()), this, SLOT(updateFileMenu()));
+}
+
 void PEMainWindow::createEditMenu()
 {
     m_editMenu = menuBar()->addMenu(tr("&Edit"));
@@ -1466,7 +1494,7 @@ void PEMainWindow::loadImage()
         }
 
         if (saveReferenceFile) {
-			saveWithReferenceFile(doc,  QFileInfo(origPath).fileName(), newPath);
+			saveWithReferenceFile(&doc,  QFileInfo(origPath).fileName(), newPath);
         }
 
 		ViewThing * viewThing = m_viewThings.value(itemBase->viewIdentifier());
@@ -1573,13 +1601,7 @@ QString PEMainWindow::saveSvg(QString & svg, const QString & newFilePath) {
 
 void PEMainWindow::changeSvg(SketchWidget * sketchWidget, const QString & filename, const QString & originalPath, int changeDirection) {
     QDomElement fzpRoot = m_fzpDocument.documentElement();
-    QDomElement views = fzpRoot.firstChildElement("views");
-    QDomElement view = views.firstChildElement(ViewLayer::viewIdentifierXmlName(sketchWidget->viewIdentifier()));
-    QDomElement layers = view.firstChildElement("layers");
-    QFileInfo info(filename);
-    QDir dir = info.absoluteDir();
-    QString shortName = dir.dirName() + "/" + info.fileName();
-	setImageAttribute(layers, shortName);
+    setImageAttribute(fzpRoot, filename, sketchWidget->viewIdentifier());
 
     foreach (QGraphicsItem * item, sketchWidget->scene()->items()) {
         PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
@@ -1815,9 +1837,9 @@ void PEMainWindow::pegiMouseReleased(PEGraphicsItem *) {
 void PEMainWindow::relocateConnector(PEGraphicsItem * pegi)
 {
     QString newGorn = pegi->element().attribute("gorn");
-    QDomDocument * doc = m_viewThings.value(m_currentGraphicsView->viewIdentifier())->document;
-    QDomElement root = doc->documentElement();
-    QDomElement newGornElement = TextUtils::findElementWithAttribute(root, "gorn", newGorn);
+    QDomDocument * svgDoc = m_viewThings.value(m_currentGraphicsView->viewIdentifier())->document;
+    QDomElement svgRoot = svgDoc->documentElement();
+    QDomElement newGornElement = TextUtils::findElementWithAttribute(svgRoot, "gorn", newGorn);
     if (newGornElement.isNull()) {
         return;
     }
@@ -1830,11 +1852,11 @@ void PEMainWindow::relocateConnector(PEGraphicsItem * pegi)
         return;
     }
 
-    QDomElement oldGornElement = TextUtils::findElementWithAttribute(root, "id", svgID);
+    QDomElement oldGornElement = TextUtils::findElementWithAttribute(svgRoot, "id", svgID);
     QString oldGorn = oldGornElement.attribute("gorn");
     QString oldGornTerminal;
     if (!terminalID.isEmpty()) {
-        QDomElement element = TextUtils::findElementWithAttribute(root, "id", terminalID);
+        QDomElement element = TextUtils::findElementWithAttribute(svgRoot, "id", terminalID);
         oldGornTerminal = element.attribute("gorn");
     }
 
@@ -1848,56 +1870,56 @@ void PEMainWindow::relocateConnector(PEGraphicsItem * pegi)
     m_undoStack->waitPush(rcsc, SketchWidget::PropChangeDelay);
 }
 
-void PEMainWindow::createFileMenu() {
-    m_fileMenu = menuBar()->addMenu(tr("&File"));
-    m_fileMenu->addAction(m_openAct);
-    m_fileMenu->addAction(m_reuseBreadboardAct);
-    m_fileMenu->addAction(m_reuseSchematicAct);
-    m_fileMenu->addAction(m_reusePCBAct);
-
-    //m_fileMenu->addAction(m_revertAct);
-
-    m_fileMenu->addSeparator();
-    m_fileMenu->addAction(m_closeAct);
-    m_fileMenu->addAction(m_saveAct);
-    m_fileMenu->addAction(m_saveAsAct);
-
-    m_fileMenu->addSeparator();
-	m_exportMenu = m_fileMenu->addMenu(tr("&Export"));
-    //m_fileMenu->addAction(m_pageSetupAct);
-    m_fileMenu->addAction(m_printAct);
-    m_fileMenu->addAction(m_showInOSAct);
-
-	m_fileMenu->addSeparator();
-	m_fileMenu->addAction(m_quitAct);
-
-	populateExportMenu();
-
-    connect(m_fileMenu, SIGNAL(aboutToShow()), this, SLOT(updateFileMenu()));
-}
-
-void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QString & id, const QString & terminalID,
+void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QString & svgID, const QString & terminalID,
                 const QString & oldGorn, const QString & oldGornTerminal, const QString & newGorn, const QString & newGornTerminal, 
                 int changeDirection)
 {
-    QDomDocument * doc = m_viewThings.value(sketchWidget->viewIdentifier())->document;
-    QDomElement root = doc->documentElement();
+    ViewLayer::ViewIdentifier viewIdentifier = sketchWidget->viewIdentifier();
+    ViewThing * viewThing = m_viewThings.value(viewIdentifier);
+    QDomDocument * svgDoc = viewThing->document;
+    QDomElement svgRoot = svgDoc->documentElement();
 
-    QDomElement oldGornElement = TextUtils::findElementWithAttribute(root, "gorn", oldGorn);
+    QDomElement oldGornElement = TextUtils::findElementWithAttribute(svgRoot, "gorn", oldGorn);
     QDomElement oldGornTerminalElement;
     if (!oldGornTerminal.isEmpty()) {
-        oldGornTerminalElement = TextUtils::findElementWithAttribute(root, "gorn", oldGornTerminal);
+        oldGornTerminalElement = TextUtils::findElementWithAttribute(svgRoot, "gorn", oldGornTerminal);
     }
-    QDomElement newGornElement = TextUtils::findElementWithAttribute(root, "gorn", newGorn);
+    QDomElement newGornElement = TextUtils::findElementWithAttribute(svgRoot, "gorn", newGorn);
     QDomElement newGornTerminalElement;
     if (!newGornTerminal.isEmpty()) {
-        newGornTerminalElement = TextUtils::findElementWithAttribute(root, "gorn", newGornTerminal);
+        newGornTerminalElement = TextUtils::findElementWithAttribute(svgRoot, "gorn", newGornTerminal);
     }
 
     if (!oldGornElement.isNull()) oldGornElement.setAttribute("id", "");
     if (!oldGornTerminalElement.isNull()) oldGornTerminalElement.setAttribute("id", "");
-    if (!newGornElement.isNull()) newGornElement.setAttribute("id", id);
+    if (!newGornElement.isNull()) newGornElement.setAttribute("id", svgID);
     if (!newGornTerminalElement.isNull()) newGornTerminalElement.setAttribute("id", terminalID);
+
+	QDomElement fzpRoot = m_fzpDocument.documentElement();
+	QDomElement connectors = fzpRoot.firstChildElement("connectors");
+    QDomElement connector = connectors.firstChildElement("connector");
+    while (!connector.isNull()) {
+        QString cSvgID, cTerminalID;
+        if (PEUtils::getConnectorSvgIDs(connector, viewIdentifier, cSvgID, cTerminalID)) {
+            if (cSvgID == svgID) break;
+        }
+        connector = connector.nextSiblingElement("connector");
+    }
+    if (connector.isNull()) return;
+
+    if (terminalID.isEmpty()) {
+        connector.removeAttribute("terminalId");
+    }
+    else {
+        connector.setAttribute("terminalId", terminalID);
+    }
+
+    // update svg in case there is a subsequent call to reload
+	QString referenceFile = getSvgReferenceFile(viewThing->itemBase->filename());
+	QString newPath = m_userPartsFolderSvgPath + makeSvgPath(referenceFile, sketchWidget, true);
+	saveWithReferenceFile(svgDoc, referenceFile, newPath);
+
+    setImageAttribute(fzpRoot, newPath, viewIdentifier);
 
     foreach (QGraphicsItem * item, sketchWidget->scene()->items()) {
         PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
@@ -3167,7 +3189,7 @@ void PEMainWindow::smdChanged(const QString & after) {
 
 	QString referenceFile = getSvgReferenceFile(itemBase->filename());
 	QString newPath = m_userPartsFolderSvgPath + makeSvgPath(referenceFile, m_pcbGraphicsView, true);
-	saveWithReferenceFile(doc, referenceFile, newPath);
+	saveWithReferenceFile(&doc, referenceFile, newPath);
 
 	ChangeSMDCommand * csc = new ChangeSMDCommand(this, before, after, itemBase->filename(), newPath, viewThing->originalSvgPath, newPath, NULL);
 	csc->setText(tr("Change to %1").arg(after));
@@ -3255,21 +3277,21 @@ void PEMainWindow::setConnectorSMD(bool toSMD, QDomElement & connector) {
 	copper0.setAttribute("layer", "copper0");
 }
 
-bool PEMainWindow::saveWithReferenceFile(QDomDocument & doc, const QString & referencePath, const QString & newPath)
+bool PEMainWindow::saveWithReferenceFile(QDomDocument * doc, const QString & referencePath, const QString & newPath)
 {
-    QDomElement root = doc.documentElement();
+    QDomElement root = doc->documentElement();
     QDomElement desc = root.firstChildElement("desc");
     if (desc.isNull()) {
-        desc = doc.createElement("desc");
+        desc = doc->createElement("desc");
         root.appendChild(desc);
     }
     QDomElement referenceFile = desc.firstChildElement(ReferenceFileString);
     if (referenceFile.isNull()) {
-        referenceFile = doc.createElement(ReferenceFileString);
+        referenceFile = doc->createElement(ReferenceFileString);
         desc.appendChild(referenceFile);
     }
-    TextUtils::replaceChildText(doc, desc, referencePath);
-	QString svg = TextUtils::svgNSOnly(doc.toString());
+    TextUtils::replaceChildText(*doc, desc, referencePath);
+	QString svg = TextUtils::svgNSOnly(doc->toString());
     return writeXml(newPath, removeGorn(svg), true);
 }
 
@@ -3330,6 +3352,17 @@ void PEMainWindow::updateFileMenu() {
 	m_reuseBreadboardAct->setEnabled(enabled);
 	m_reuseSchematicAct->setEnabled(enabled);
 	m_reusePCBAct->setEnabled(enabled);
+}
+
+void PEMainWindow::setImageAttribute(QDomElement & fzpRoot, const QString & svgPath, ViewLayer::ViewIdentifier viewIdentifier)
+{
+    QDomElement views = fzpRoot.firstChildElement("views");
+    QDomElement view = views.firstChildElement(ViewLayer::viewIdentifierXmlName(viewIdentifier));
+    QDomElement layers = view.firstChildElement("layers");
+    QFileInfo info(svgPath);
+    QDir dir = info.absoluteDir();
+    QString shortName = dir.dirName() + "/" + info.fileName();
+	setImageAttribute(layers, shortName);
 }
 
 void PEMainWindow::setImageAttribute(QDomElement & layers, const QString & svgPath)

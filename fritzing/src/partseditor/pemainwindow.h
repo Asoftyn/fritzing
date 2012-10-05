@@ -178,11 +178,12 @@ protected:
 	QList<PEGraphicsItem *> getPegiList(SketchWidget *);
 	void fillInMetadata(const QDomElement & connector, ConnectorMetadata & cmd);
 	void setConnectorSMD(bool toSMD, QDomElement & connector);
-	bool saveWithReferenceFile(QDomDocument & doc, const QString & referencePath, const QString & newPath);
+	bool saveWithReferenceFile(QDomDocument * doc, const QString & referencePath, const QString & newPath);
 	bool activeLayerWidgetAlwaysOn();
 	void updateFileMenu();
 	void reuseImage(ViewLayer::ViewIdentifier);
 	void setImageAttribute(QDomElement & layers, const QString & image);
+    void setImageAttribute(QDomElement & fzpRoot, const QString & svgPath, ViewLayer::ViewIdentifier viewIdentifier);
 	QString makeNewVariant(const QString & family);
 	void connectorWarning();
     bool anyMarquee();

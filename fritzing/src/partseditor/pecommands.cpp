@@ -370,9 +370,13 @@ void ChangeSMDCommand::redo()
 
 QString ChangeSMDCommand::getParamString() const {
 	return "ChangeSMDCommand " + 
-        QString(" before:%1, after:%2")
+        QString(" before:%1, after:%2 oldpath:%3, newPath:%4, oldorig:%5, neworig:%6")
             .arg(m_before)
             .arg(m_after)
+            .arg(m_oldFilename)
+            .arg(m_newFilename)
+            .arg(m_oldOriginal)
+            .arg(m_newOriginal)
         ;
 }
 
