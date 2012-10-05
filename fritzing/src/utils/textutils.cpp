@@ -489,8 +489,8 @@ bool TextUtils::cleanSodipodi(QString &content)
 	// clean out sodipodi stuff
 	// TODO: don't bother with the core parts
 	int l1 = content.length();
+	content.remove(SodipodiAttributeDetector);          // remove attributes first
 	content.remove(SodipodiElementDetector);
-	content.remove(SodipodiAttributeDetector);
 	if (content.length() != l1) {
 		return true;
 	}

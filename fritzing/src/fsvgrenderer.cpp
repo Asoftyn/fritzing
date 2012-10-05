@@ -120,34 +120,20 @@ QByteArray FSvgRenderer::loadAux(const QByteArray & theContents, const QString &
 
 	QByteArray cleanContents(theContents);
 	bool cleaned = false;
-	if (TextUtils::isIllustratorFile(cleanContents)) {
-		QString string(cleanContents);
-
-#ifndef QT_NO_DEBUG
-		if (string.contains("sodipodi") || string.contains("inkscape")) {
-			// if svg has both Illustrator and Inkscape crap then converting back and forth between strings and QDomDocument
-			// in FixPixelDimensionsIn() can result in invalid xml
-
-			if (!filename.contains("icon", Qt::CaseInsensitive)) {
-				DebugDialog::debug("Illustrator and inkscape:" + filename);
-			}
-		}
-#endif
-		//DebugDialog::debug("Illustrator " + filename);
-		if (TextUtils::fixPixelDimensionsIn(string)) {
-			cleaned = true;
-			cleanContents = string.toUtf8();
-		}
-	}
-	
 
     QString string(cleanContents);
     if (TextUtils::fixMuch(string)) {
-		cleanContents = string.toUtf8();
 		cleaned = true;
 	}
-
-	// no it isn't
+	if (TextUtils::fixPixelDimensionsIn(string)) {
+        cleaned = true;
+    }
+    if (TextUtils::fixViewboxOrigin(string)) {
+        cleaned = true;
+    }
+    if (cleaned) {
+        cleanContents = string.toUtf8();
+    }
 
 	if (connectorIDs.count() > 0 || !setColor.isEmpty() || findNonConnectors) {
 		QString errorStr;
