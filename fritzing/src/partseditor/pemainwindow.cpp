@@ -433,6 +433,7 @@ void PEMainWindow::initSketchWidgets()
     connect(m_connectorsView, SIGNAL(removedConnectors(QList<ConnectorMetadata *> &)), this, SLOT(removedConnectors(QList<ConnectorMetadata *> &)), Qt::DirectConnection);
     connect(m_connectorsView, SIGNAL(connectorCountChanged(int)), this, SLOT(connectorCountChanged(int)), Qt::DirectConnection);
     connect(m_connectorsView, SIGNAL(smdChanged(const QString &)), this, SLOT(smdChanged(const QString &)));
+
 }
 
 void PEMainWindow::initDock()
@@ -610,7 +611,11 @@ QMenu *PEMainWindow::pcbItemMenu() {
     return NULL;
 }
 
-void PEMainWindow::setInitialItem(PaletteItem * paletteItem) {
+void PEMainWindow::setInitialItem(PaletteItem * paletteItem) 
+{
+    m_pcbGraphicsView->setBoardLayers(2, true);
+	m_pcbGraphicsView->setLayerActive(ViewLayer::Copper1, true);
+	m_pcbGraphicsView->setLayerActive(ViewLayer::Copper0, true);
 
     ModelPart * originalModelPart = NULL;
     if (paletteItem == NULL) {
