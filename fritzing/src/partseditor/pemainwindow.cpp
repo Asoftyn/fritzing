@@ -1918,7 +1918,6 @@ void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QStri
 	QString referenceFile = getSvgReferenceFile(viewThing->itemBase->filename());
 	QString newPath = m_userPartsFolderSvgPath + makeSvgPath(referenceFile, sketchWidget, true);
 	saveWithReferenceFile(svgDoc, referenceFile, newPath);
-
     setImageAttribute(fzpRoot, newPath, viewIdentifier);
 
     foreach (QGraphicsItem * item, sketchWidget->scene()->items()) {
@@ -2312,6 +2311,12 @@ void PEMainWindow::moveTerminalPoint(SketchWidget * sketchWidget, const QString 
                 break;
             }
         }
+
+        // update svg in case there is a subsequent call to reload
+	    QString referenceFile = getSvgReferenceFile(viewThing->itemBase->filename());
+	    QString newPath = m_userPartsFolderSvgPath + makeSvgPath(referenceFile, sketchWidget, true);
+	    saveWithReferenceFile(svgDoc, referenceFile, newPath);
+        setImageAttribute(fzpRoot, newPath, sketchWidget->viewIdentifier());
 
         double invdx = dx * size.width() / svgBounds.width();
         double invdy = dy * size.height() / svgBounds.height();
