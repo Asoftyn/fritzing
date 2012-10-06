@@ -86,7 +86,7 @@ PEToolView::PEToolView(QWidget * parent) : QWidget(parent)
     QFrame * connectorsFrame = new QFrame;
     QVBoxLayout * connectorsLayout = new QVBoxLayout;
 
-    QLabel * label = new QLabel(tr("Connector List (a checked connector's graphic is selected)"));
+    QLabel * label = new QLabel(tr("Connector List (a checkmark means the graphic was selected)"));
 	connectorsLayout->addWidget(label);
 
     m_connectorListWidget = new QTreeWidget();
@@ -445,7 +445,8 @@ void PEToolView::hideConnectorListStuff() {
 		else {
 			if (item != current) ;		// label is already there
 			else {
-				m_assignButton = new QPushButton(tr("Select connector's graphic"));
+				m_assignButton = new QPushButton(tr("Select graphic"));
+                m_assignButton->setMaximumWidth(150);
 				connect(m_assignButton, SIGNAL(clicked()), this, SLOT(pickModeChangedSlot()), Qt::DirectConnection);
 				m_assignButton->setToolTip(tr("Use the cursor location and mouse wheel to navigate to the SVG element which you want to assign to the current connector, then mouse down to select it."));
 				m_connectorListWidget->setItemWidget(item, 1, m_assignButton);
