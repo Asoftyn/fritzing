@@ -1603,11 +1603,6 @@ void PEMainWindow::changeSvg(SketchWidget * sketchWidget, const QString & filena
     QDomElement fzpRoot = m_fzpDocument.documentElement();
     setImageAttribute(fzpRoot, filename, sketchWidget->viewIdentifier());
 
-    foreach (QGraphicsItem * item, sketchWidget->scene()->items()) {
-        PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
-        if (pegi) delete pegi;
-    }
-
     foreach (ViewThing * viewThing, m_viewThings.values()) {
         foreach(ItemBase * lk, viewThing->itemBase->layerKin()) {
             delete lk;
@@ -1651,6 +1646,8 @@ void PEMainWindow::reload(bool firstTime)
 	foreach (ItemBase * itemBase, toDelete) {
 		delete itemBase;
 	}
+
+    killPegi();
 
     QString fzpPath = saveFzp();   // needs a document somewhere to set up connectors--not part of the undo stack
     ModelPart * modelPart = new ModelPart(m_fzpDocument, fzpPath, ModelPart::Part);
@@ -1890,8 +1887,8 @@ void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QStri
         newGornTerminalElement = TextUtils::findElementWithAttribute(svgRoot, "gorn", newGornTerminal);
     }
 
-    if (!oldGornElement.isNull()) oldGornElement.setAttribute("id", "");
-    if (!oldGornTerminalElement.isNull()) oldGornTerminalElement.setAttribute("id", "");
+    if (!oldGornElement.isNull()) oldGornElement.removeAttribute("id");
+    if (!oldGornTerminalElement.isNull()) oldGornTerminalElement.removeAttribute("id");
     if (!newGornElement.isNull()) newGornElement.setAttribute("id", svgID);
     if (!newGornTerminalElement.isNull()) newGornTerminalElement.setAttribute("id", terminalID);
 
@@ -1907,11 +1904,12 @@ void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QStri
     }
     if (connector.isNull()) return;
 
+    QDomElement p = PEUtils::getConnectorPElement(connector, viewIdentifier);
     if (terminalID.isEmpty()) {
-        connector.removeAttribute("terminalId");
+        p.removeAttribute("terminalId");
     }
     else {
-        connector.setAttribute("terminalId", terminalID);
+        p.setAttribute("terminalId", terminalID);
     }
 
     // update svg in case there is a subsequent call to reload
@@ -2132,9 +2130,18 @@ void PEMainWindow::updateChangeCount(SketchWidget * sketchWidget, int changeDire
 
 PEGraphicsItem * PEMainWindow::findConnectorItem()
 {
-    foreach (QGraphicsItem * item, m_currentGraphicsView->scene()->items()) {
-        PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
-        if (pegi && pegi->showingMarquee()) return pegi;
+    if (m_currentGraphicsView == NULL) return NULL;
+
+    QDomElement connector = m_connectorList.at(m_peToolView->currentConnectorIndex());
+    if (connector.isNull()) return NULL;
+
+	QString svgID, terminalID;
+    bool ok = PEUtils::getConnectorSvgIDs(connector, m_currentGraphicsView->viewIdentifier(), svgID, terminalID);
+    if (!ok) return NULL;
+
+    QList<PEGraphicsItem *> pegiList = getPegiList(m_currentGraphicsView);
+    foreach (PEGraphicsItem * pegi, pegiList) {
+        if (pegi->element().attribute("id") == svgID) return pegi;
     }
 
     return NULL;
@@ -2492,7 +2499,6 @@ void PEMainWindow::restoreFzp(const QString & fzpPath)
 {
     if (!loadFzp(fzpPath)) return;
 
-    killPegi();
     reload(false);
 }
 
@@ -3064,13 +3070,25 @@ void PEMainWindow::clearPickMode() {
 }
 
 QList<PEGraphicsItem *> PEMainWindow::getPegiList(SketchWidget * sketchWidget) {
+   // DebugDialog::debug("-----------------------------");
+
     QList<PEGraphicsItem *> pegiList;
     foreach (QGraphicsItem * item, sketchWidget->scene()->items()) {
         PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
         if (pegi == NULL) continue;
 		
 		pegiList.append(pegi);
+        /*
+        if (pegi->showingTerminalPoint() || pegi->showingMarquee() || !pegi->element().attribute("id").isEmpty()) {
+            DebugDialog::debug(QString("pegi m:%1 t:%2 %3")
+                .arg(pegi->showingMarquee())
+                .arg(pegi->showingTerminalPoint())
+                .arg(pegi->element().attribute("id")));
+        }
+        */
     }
+
+    //DebugDialog::debug("-----------------------------");
 
 	return pegiList;
 }
