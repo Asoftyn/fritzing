@@ -116,8 +116,8 @@ QByteArray FSvgRenderer::loadSvg(const QByteArray & contents, const QString & fi
 	return loadAux(contents, filename, connectorIDs, terminalIDs, legIDs, setColor, colorElementID, findNonConnectors);
 }
 
-QByteArray FSvgRenderer::loadAux(const QByteArray & theContents, const QString & filename, const QStringList & connectorIDs, const QStringList & terminalIDs, const QStringList & legIDs, const QString & setColor, const QString & colorElementID, bool findNonConnectors) {
-
+QByteArray FSvgRenderer::loadAux(const QByteArray & theContents, const QString & filename, const QStringList & connectorIDs, const QStringList & terminalIDs, const QStringList & legIDs, const QString & setColor, const QString & colorElementID, bool findNonConnectors) 
+{
 	QByteArray cleanContents(theContents);
 	bool cleaned = false;
 
