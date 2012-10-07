@@ -80,7 +80,6 @@ public:
 	static void changeColors(QDomElement & element, QString & toColor, QStringList & exceptions);
 	static void fixStyleAttributeRecurse(QDomElement & element);
 	static void fixColorRecurse(QDomElement & element, const QString & newColor, const QStringList & exceptions);
-	static void fixStyleAttribute(QDomElement & element, QString & style, const QString & attributeName);
 
 protected:
 	void normalizeChild(QDomElement & childElement, 
@@ -96,7 +95,6 @@ protected:
 
 protected:
 	static void changeStrokeWidth(QDomElement & element, double delta, bool absolute, bool changeOpacity);
-	static void fixStyleAttribute(QDomElement & element);
 	static bool shiftAttribute(QDomElement & element, const char * attributeName, double d);
 	static void setStrokeOrFill(QDomElement & element, bool doIt, const QString & color, bool force);
 

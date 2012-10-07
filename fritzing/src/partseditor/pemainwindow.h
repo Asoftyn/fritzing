@@ -50,6 +50,7 @@ struct ViewThing {
     int svgChangeCount;
     bool everZoomed;
     SketchWidget * sketchWidget;
+    QString referenceFile;
     QString originalSvgPath;
 	bool firstTime;
     bool busMode;
@@ -70,14 +71,16 @@ public:
     void changeProperties(const QHash<QString, QString> &, bool updateDisplay);
     void changeMetadata(const QString & name, const QString & value, bool updateDisplay);
     void changeConnectorMetadata(ConnectorMetadata *, bool updateDisplay);
-    void changeSvg(SketchWidget *, const QString & filename, const QString & originalPath, int changeDirection);
+    void changeSvg(SketchWidget *, const QString & filename, int changeDirection);
     void relocateConnectorSvg(SketchWidget *, const QString & id, const QString & terminalID, const QString & oldGorn, const QString & oldGornTerminal, const QString & newGorn, const QString & newGornTerminal, int changeDirection);
     void moveTerminalPoint(SketchWidget *, const QString & id, QSizeF, QPointF, int changeDirection);
     void restoreFzp(const QString & filename);
     bool editsModuleID(const QString &);
 	void addBusConnector(const QString & busID, const QString & connectorID);
 	void removeBusConnector(const QString & busID, const QString & connectorID, bool display);
-	void changeSMD(const QString & smd, const QString & filename, const QString & originalPath, int changeDirection);
+	void changeSMD(const QString & smd, const QString & filename, int changeDirection);
+    void changeReferenceFile(ViewLayer::ViewIdentifier viewIdentifier, const QString referenceFile);
+    void changeOriginalFile(ViewLayer::ViewIdentifier viewIdentifier, const QString originalFile, int changeCount);
 
 signals:
     void addToMyPartsSignal(ModelPart *);
@@ -138,7 +141,6 @@ protected:
     void initConnectors();
     QString createSvgFromImage(const QString &origFilePath);
     QString makeSvgPath(const QString & referenceFile, SketchWidget * sketchWidget, bool useIndex);
-    QString saveSvg(QString & svg, const QString & newFilePath);
     QString saveFzp();
     void reload(bool firstTime);
     void createFileMenu();
@@ -159,6 +161,7 @@ protected:
     QString getFzpReferenceFile();
     QString getSvgReferenceFile(const QString & filename);
     QString makeDesc(const QString & referenceFile);
+    void insertDesc(const QString & referenceFile, QString & svg);
     void updateRaiseWindowAction();
 	bool writeXml(const QString & path, const QString & text, bool temp);
 	void displayBuses();
@@ -188,6 +191,7 @@ protected:
 	void connectorWarning();
     bool anyMarquee();
     bool anyVisible();
+    QString makeDirName();
 
 protected slots:
     void initZoom();

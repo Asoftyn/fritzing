@@ -28,7 +28,7 @@ $Date$
 
 #include "../utils/misc.h"
 #include "../utils/textutils.h"
-//#include "../debugdialog.h"
+#include "../debugdialog.h"
 #include "svgpathparser.h"
 #include "svgpathlexer.h"
 #include "svgpathrunner.h"
@@ -37,8 +37,6 @@ $Date$
 #include <QFile>
 #include <QtDebug>
 #include <QXmlStreamReader>
-
-static QString findStyle("%1[\\s]*:[\\s]*([^;]*)[;]?");
 
 struct HVConvertData {
 	double x;
@@ -356,13 +354,13 @@ void SvgFileSplitter::normalizeChild(QDomElement & element,
 	bool doChildren = false;
 	QString nodeName = element.nodeName();
 	if (nodeName.compare("g") == 0) {
-		fixStyleAttribute(element);
+		TextUtils::fixStyleAttribute(element);
 		normalizeAttribute(element, "stroke-width", sNewWidth, vbWidth);
 		setStrokeOrFill(element, blackOnly, "black", false);
 		doChildren = true;
 	}
 	else if (nodeName.compare("circle") == 0) {
-		fixStyleAttribute(element);
+		TextUtils::fixStyleAttribute(element);
 		normalizeAttribute(element, "cx", sNewWidth, vbWidth);
 		normalizeAttribute(element, "cy", sNewHeight, vbHeight);
 		normalizeAttribute(element, "r", sNewWidth, vbWidth);
@@ -370,7 +368,7 @@ void SvgFileSplitter::normalizeChild(QDomElement & element,
 		setStrokeOrFill(element, blackOnly, "black", false);
 	}
 	else if (nodeName.compare("line") == 0) {
-		fixStyleAttribute(element);
+		TextUtils::fixStyleAttribute(element);
 		normalizeAttribute(element, "x1", sNewWidth, vbWidth);
 		normalizeAttribute(element, "y1", sNewHeight, vbHeight);
 		normalizeAttribute(element, "x2", sNewWidth, vbWidth);
@@ -379,7 +377,7 @@ void SvgFileSplitter::normalizeChild(QDomElement & element,
 		setStrokeOrFill(element, blackOnly, "black", false);
 	}
 	else if (nodeName.compare("rect") == 0) {
-		fixStyleAttribute(element);
+		TextUtils::fixStyleAttribute(element);
 		normalizeAttribute(element, "width", sNewWidth, vbWidth);
 		normalizeAttribute(element, "height", sNewHeight, vbHeight);
 		normalizeAttribute(element, "x", sNewWidth, vbWidth);
@@ -396,7 +394,7 @@ void SvgFileSplitter::normalizeChild(QDomElement & element,
 		setStrokeOrFill(element, blackOnly, "black", false);
 	}
 	else if (nodeName.compare("ellipse") == 0) {
-		fixStyleAttribute(element);
+		TextUtils::fixStyleAttribute(element);
 		normalizeAttribute(element, "cx", sNewWidth, vbWidth);
 		normalizeAttribute(element, "cy", sNewHeight, vbHeight);
 		normalizeAttribute(element, "rx", sNewWidth, vbWidth);
@@ -405,7 +403,7 @@ void SvgFileSplitter::normalizeChild(QDomElement & element,
 		setStrokeOrFill(element, blackOnly, "black", false);
 	}
 	else if (nodeName.compare("polygon") == 0 || nodeName.compare("polyline") == 0) {
-		fixStyleAttribute(element);
+		TextUtils::fixStyleAttribute(element);
 		normalizeAttribute(element, "stroke-width", sNewWidth, vbWidth);
 		QString data = element.attribute("points");
 		if (!data.isEmpty()) {
@@ -424,7 +422,7 @@ void SvgFileSplitter::normalizeChild(QDomElement & element,
 		setStrokeOrFill(element, blackOnly, "black", false);
 	}
 	else if (nodeName.compare("path") == 0) {
-		fixStyleAttribute(element);
+		TextUtils::fixStyleAttribute(element);
 		normalizeAttribute(element, "stroke-width", sNewWidth, vbWidth);
 		setStrokeOrFill(element, blackOnly, "black", false);
 		QString data = element.attribute("d").trimmed();
@@ -442,7 +440,7 @@ void SvgFileSplitter::normalizeChild(QDomElement & element,
 		}
 	}
 	else if (nodeName.compare("text") == 0) {
-		fixStyleAttribute(element);
+		TextUtils::fixStyleAttribute(element);
 		normalizeAttribute(element, "x", sNewWidth, vbWidth);
 		normalizeAttribute(element, "y", sNewHeight, vbHeight);
 		normalizeAttribute(element, "stroke-width", sNewWidth, vbWidth);
@@ -487,9 +485,20 @@ void SvgFileSplitter::normalizeChild(QDomElement & element,
 
 bool SvgFileSplitter::normalizeAttribute(QDomElement & element, const char * attributeName, double num, double denom)
 {
-	double n = element.attribute(attributeName).toDouble() * num / denom;
+    QString attributeValue = element.attribute(attributeName);
+    if (attributeValue.isEmpty()) return true;
+
+    bool ok;
+	double n = attributeValue.toDouble(&ok) * num / denom;
+    if (!ok) {
+        QString string;
+        QTextStream stream(&string);
+        element.save(stream, 0);
+        DebugDialog::debug("bad attribute " + string);
+    }
+
 	element.setAttribute(attributeName, QString::number(n));
-	return true;
+	return ok;
 }
 
 QString SvgFileSplitter::shift(double x, double y, const QString & elementID, bool shiftTransforms)
@@ -1053,7 +1062,7 @@ void SvgFileSplitter::setStrokeOrFill(QDomElement & element, bool blackOnly, con
 }
 
 void SvgFileSplitter::fixStyleAttributeRecurse(QDomElement & element) {
-	fixStyleAttribute(element);
+	TextUtils::fixStyleAttribute(element);
 	QDomElement childElement = element.firstChildElement();
 	while (!childElement.isNull()) {
 		fixStyleAttributeRecurse(childElement);
@@ -1062,7 +1071,7 @@ void SvgFileSplitter::fixStyleAttributeRecurse(QDomElement & element) {
 }
 
 void SvgFileSplitter::fixColorRecurse(QDomElement & element, const QString & newColor, const QStringList & exceptions) {
-	fixStyleAttribute(element);
+	TextUtils::fixStyleAttribute(element);
 	bool gotException = false;
 	QString s = element.attribute("stroke");
 	QString f = element.attribute("fill");
@@ -1101,42 +1110,6 @@ void SvgFileSplitter::fixColorRecurse(QDomElement & element, const QString & new
 	while (!childElement.isNull()) {
 		fixColorRecurse(childElement, newColor, exceptions);
 		childElement = childElement.nextSiblingElement();
-	}
-}
-
-void SvgFileSplitter::fixStyleAttribute(QDomElement & element)
-{
-	QString style = element.attribute("style");
-	if (style.isEmpty()) return;
-
-	fixStyleAttribute(element, style, "stroke-width");
-	fixStyleAttribute(element, style, "stroke");
-	fixStyleAttribute(element, style, "fill");
-	fixStyleAttribute(element, style, "fill-opacity");
-	fixStyleAttribute(element, style, "stroke-opacity");
-	fixStyleAttribute(element, style, "font-size");
-
-	if (style.trimmed().isEmpty()) {
-		element.removeAttribute("style");
-	}
-	else {
-		element.setAttribute("style", style);
-	}
-
-	//QString deleteMe;
-	//QTextStream stream(&deleteMe);
-	//stream << element;
-	//DebugDialog::debug(deleteMe);
-}
-
-void SvgFileSplitter::fixStyleAttribute(QDomElement & element, QString & style, const QString & attributeName)
-{
-	QString str = findStyle.arg(attributeName);
-	QRegExp sw(str);
-	if (sw.indexIn(style) >= 0) {
-		QString value = sw.cap(1);
-		style.remove(sw);
-		element.setAttribute(attributeName, value);
 	}
 }
 

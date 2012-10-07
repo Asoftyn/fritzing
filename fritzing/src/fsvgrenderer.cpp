@@ -122,7 +122,7 @@ QByteArray FSvgRenderer::loadAux(const QByteArray & theContents, const QString &
 	bool cleaned = false;
 
     QString string(cleanContents);
-    if (TextUtils::fixMuch(string)) {
+    if (TextUtils::fixMuch(string, false)) {
 		cleaned = true;
 	}
 	if (TextUtils::fixPixelDimensionsIn(string)) {

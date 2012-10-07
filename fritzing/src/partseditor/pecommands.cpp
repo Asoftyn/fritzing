@@ -208,25 +208,23 @@ QString ChangeFzpCommand::getParamString() const {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ChangeSvgCommand::ChangeSvgCommand(PEMainWindow * peMainWindow, SketchWidget * sketchWidget, const QString  & oldFilename, const QString & newFilename, 
-            const QString  & oldOriginal, const QString & newOriginal, QUndoCommand *parent)
+ChangeSvgCommand::ChangeSvgCommand(PEMainWindow * peMainWindow, SketchWidget * sketchWidget, const QString  & oldFilename, const QString & newFilename, QUndoCommand *parent)
     : PEBaseCommand(peMainWindow, parent)
 {
  	m_sketchWidget = sketchWidget;
 	m_oldFilename = oldFilename;
 	m_newFilename = newFilename;
-	m_oldOriginal = oldOriginal;
-	m_newOriginal = newOriginal;
+
 }
 
 void ChangeSvgCommand::undo()
 {
-    m_peMainWindow->changeSvg(m_sketchWidget, m_oldFilename, m_oldOriginal, -1);
+    m_peMainWindow->changeSvg(m_sketchWidget, m_oldFilename, -1);
 }
 
 void ChangeSvgCommand::redo()
 {
-    m_peMainWindow->changeSvg(m_sketchWidget, m_newFilename, m_newOriginal, 1);
+    m_peMainWindow->changeSvg(m_sketchWidget, m_newFilename, 1);
 }
 
 QString ChangeSvgCommand::getParamString() const {
@@ -346,7 +344,6 @@ QString RemoveBusConnectorCommand::getParamString() const {
 
 ChangeSMDCommand::ChangeSMDCommand(PEMainWindow * peMainWindow, const QString & before, const QString & after, 
 									const QString  & oldFilename, const QString & newFilename, 
-									const QString  & oldOriginal, const QString & newOriginal, 
 									QUndoCommand *parent)
     : PEBaseCommand(peMainWindow, parent)
 {
@@ -354,18 +351,16 @@ ChangeSMDCommand::ChangeSMDCommand(PEMainWindow * peMainWindow, const QString & 
 	m_after = after;
 	m_oldFilename = oldFilename;
 	m_newFilename = newFilename;
-	m_oldOriginal = oldOriginal;
-	m_newOriginal = newOriginal;
 }
 
 void ChangeSMDCommand::undo()
 {
-    m_peMainWindow->changeSMD(m_before, m_oldFilename, m_oldOriginal, -1);
+    m_peMainWindow->changeSMD(m_before, m_oldFilename, -1);
 }
 
 void ChangeSMDCommand::redo()
 {
-    m_peMainWindow->changeSMD(m_after, m_newFilename, m_newOriginal, 1);
+    m_peMainWindow->changeSMD(m_after, m_newFilename, 1);
 }
 
 QString ChangeSMDCommand::getParamString() const {
@@ -375,8 +370,33 @@ QString ChangeSMDCommand::getParamString() const {
             .arg(m_after)
             .arg(m_oldFilename)
             .arg(m_newFilename)
-            .arg(m_oldOriginal)
-            .arg(m_newOriginal)
+        ;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ReferenceFileCommand::ReferenceFileCommand(PEMainWindow * peMainWindow, ViewLayer::ViewIdentifier viewIdentifier, const QString & filename, QUndoCommand *parent)
+    : PEBaseCommand(peMainWindow, parent)
+{
+	m_filename = filename;
+    m_viewIdentifier = viewIdentifier;
+}
+
+void ReferenceFileCommand::undo()
+{
+	m_peMainWindow->changeReferenceFile(m_viewIdentifier, m_filename);
+}
+
+void ReferenceFileCommand::redo()
+{
+	m_peMainWindow->changeReferenceFile(m_viewIdentifier, m_filename);
+}
+
+QString ReferenceFileCommand::getParamString() const {
+	return "ReferenceFileCommand " + 
+        QString(" v:%1 fn:%2")
+            .arg(m_viewIdentifier)
+            .arg(m_filename)
         ;
 }
 

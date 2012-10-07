@@ -6997,7 +6997,7 @@ QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QSizeF & 
 			QString itemSvg = itemBase->retrieveSvg(itemBase->viewLayerID(), svgHash, blackOnly, dpi);
 			if (itemSvg.isEmpty()) continue;
 
-            TextUtils::fixMuch(itemSvg);
+            TextUtils::fixMuch(itemSvg, false);
 
 			foreach (ConnectorItem * ci, itemBase->cachedConnectorItems()) {
 				if (!ci->hasRubberBandLeg()) continue;

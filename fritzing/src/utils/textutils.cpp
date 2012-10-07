@@ -1023,7 +1023,7 @@ bool TextUtils::fixInternalUnits(QString & svg)
 	return result;
 }
 
-bool TextUtils::fixMuch(QString &svg)
+bool TextUtils::fixMuch(QString &svg, bool fixStrokeWidthFlag)
 {
     bool result = cleanSodipodi(svg);
 	result |= fixInternalUnits(svg);
@@ -1052,12 +1052,51 @@ bool TextUtils::fixMuch(QString &svg)
         result |= tspanRemoveAux(svgDom);
     }
 
+    if (fixStrokeWidthFlag) {
+        result |= fixStrokeWidth(svgDom);
+    }
+
     QDomElement root = svgDom.documentElement();
     result |= elevateTransform(root);
 
-
     if (result) {
         svg = removeXMLEntities(svgDom.toString());
+    }
+
+    return result;
+}
+
+bool TextUtils::fixStrokeWidth(QDomDocument & svgDoc) {
+    bool result = false;
+
+    QList<QDomElement> todo;
+    todo << svgDoc.documentElement();
+    while (todo.count() > 0) {
+        QDomElement element = todo.takeFirst();
+        QDomElement child = element.firstChildElement();
+        while (!child.isNull()) {
+            todo.append(child);
+            child = child.nextSiblingElement();
+        }
+
+        QString stroke, strokeWidth;
+        stroke = element.attribute("stroke");
+        strokeWidth = element.attribute("stroke-width");
+        if (stroke.isEmpty()) {
+            QString style = element.attribute("style");
+            if (style.contains("stroke")) {
+                fixStyleAttribute(element);
+                stroke = element.attribute("stroke");
+                strokeWidth = element.attribute("stroke-width");
+            }
+        }
+
+        if (stroke.isEmpty()) continue;
+        if (stroke == "none") continue;
+        if (!strokeWidth.isEmpty()) continue;
+
+        element.setAttribute("stroke-width", 1);
+        result = true;
     }
 
     return result;
@@ -1646,3 +1685,40 @@ bool TextUtils::fixFonts(QString & svg, const QString & destFont) {
 	return changed;
 }
 
+void TextUtils::fixStyleAttribute(QDomElement & element)
+{
+	QString style = element.attribute("style");
+	if (style.isEmpty()) return;
+
+	fixStyleAttribute(element, style, "stroke-width");
+	fixStyleAttribute(element, style, "stroke");
+	fixStyleAttribute(element, style, "fill");
+	fixStyleAttribute(element, style, "fill-opacity");
+	fixStyleAttribute(element, style, "stroke-opacity");
+	fixStyleAttribute(element, style, "font-size");
+
+	if (style.trimmed().isEmpty()) {
+		element.removeAttribute("style");
+	}
+	else {
+		element.setAttribute("style", style);
+	}
+
+	//QString deleteMe;
+	//QTextStream stream(&deleteMe);
+	//stream << element;
+	//DebugDialog::debug(deleteMe);
+}
+
+void TextUtils::fixStyleAttribute(QDomElement & element, QString & style, const QString & attributeName)
+{
+    static const QString findStyle("%1[\\s]*:[\\s]*([^;]*)[;]?");
+
+	QString str = findStyle.arg(attributeName);
+	QRegExp sw(str);
+	if (sw.indexIn(style) >= 0) {
+		QString value = sw.cap(1);
+		style.remove(sw);
+		element.setAttribute(attributeName, value);
+	}
+}

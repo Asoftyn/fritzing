@@ -111,9 +111,10 @@ public:
 	static QSizeF parseForWidthAndHeight(const QString & svg);
     static void gornTree(QDomDocument &);
     static bool elevateTransform(QDomElement &);
-    static bool fixMuch(QString &svg);
+    static bool fixMuch(QString &svg, bool fixStrokeWidth);
 	static bool fixInternalUnits(QString & svg);
 	static bool fixFonts(QString & svg, const QString & destFont);
+	static void fixStyleAttribute(QDomElement & element);
 
 public:
 	static const QRegExp FindWhitespace;
@@ -138,7 +139,8 @@ protected:
     static bool noPatternAux(QDomDocument & svgDom, const QString & tag);
     static bool noUseAux(QDomDocument & svgDom);
     static bool tspanRemoveAux(QDomDocument & svgDom);
-
+    static void fixStyleAttribute(QDomElement & element, QString & style, const QString & attributeName);
+    static bool fixStrokeWidth(QDomDocument & svgDoc);
 };
 
 #endif
