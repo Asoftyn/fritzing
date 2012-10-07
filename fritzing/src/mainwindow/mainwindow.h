@@ -220,6 +220,7 @@ protected slots:
 	void pasteInPlace();
     void duplicate();
     void doDelete();
+    void doDeletePlus();
     void selectAll();
     void deselect();
     void zoomIn();
@@ -644,7 +645,9 @@ protected:
     QAction *m_pasteInPlaceAct;
     QAction *m_duplicateAct;
     QAction *m_deleteAct;
+    QAction *m_deletePlusAct;
     class WireAction *m_deleteWireAct;
+    class WireAction *m_deleteWirePlusAct;
     QAction *m_selectAllAct;
     QAction *m_deselectAct;
 	QAction *m_addNoteAct;

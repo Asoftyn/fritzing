@@ -964,7 +964,7 @@ void SketchWidget::deleteItem(ItemBase * itemBase, bool deleteModelPart, bool do
 
 }
 
-void SketchWidget::deleteSelected(Wire * wire) {
+void SketchWidget::deleteSelected(Wire * wire, bool plus) {
 	QSet<ItemBase *> itemBases;
 	if (wire) {
 		itemBases << wire;
@@ -999,7 +999,7 @@ void SketchWidget::deleteSelected(Wire * wire) {
 	}
 
 	if (!rats) {
-		cutDeleteAux("Delete");			// wire is selected in this case, so don't bother sending it along
+		cutDeleteAux("Delete", plus, wire);			// wire is selected in this case, so don't bother sending it along
 		return;
 	}
 
@@ -1008,7 +1008,7 @@ void SketchWidget::deleteSelected(Wire * wire) {
 	m_undoStack->waitPush(parentCommand, PropChangeDelay);
 }
 
-void SketchWidget::cutDeleteAux(QString undoStackMessage) {
+void SketchWidget::cutDeleteAux(QString undoStackMessage, bool plus, Wire * wire) {
 
 	//DebugDialog::debug("before delete");
 
@@ -1018,12 +1018,28 @@ void SketchWidget::cutDeleteAux(QString undoStackMessage) {
 
 	QSet<ItemBase *> deletedItems;
 
-	foreach (QGraphicsItem * sitem, sitems) {
-		if (!canDeleteItem(sitem, sitems.count())) continue;
+    if (plus) {
+        if (wire != NULL) {
+            deletedItems.insert(wire);
+        }
+        else {
+	        m_savedItems.clear();
+	        m_savedWires.clear();
+            prepMove(NULL, false);
+            foreach (ItemBase * itemBase, m_savedItems) deletedItems.insert(itemBase);
+            foreach (Wire * wire, m_savedWires.keys()) deletedItems.insert(wire);
+            m_savedWires.clear();
+            m_savedItems.clear();
+        }
+    }
+    else {
+	    foreach (QGraphicsItem * sitem, sitems) {
+		    if (!canDeleteItem(sitem, sitems.count())) continue;
 
-		// canDeleteItem insures dynamic_cast<ItemBase *>(sitem)->layerKinChief() won't break
-		deletedItems.insert(dynamic_cast<ItemBase *>(sitem)->layerKinChief());
-	}
+		    // canDeleteItem insures dynamic_cast<ItemBase *>(sitem)->layerKinChief() won't break
+		    deletedItems.insert(dynamic_cast<ItemBase *>(sitem)->layerKinChief());
+	    }
+    }
 
 	if (deletedItems.count() <= 0) {
 		return;
@@ -1443,7 +1459,7 @@ void SketchWidget::selectAllItems(bool state, bool doEmit) {
 
 void SketchWidget::cut() {
 	copy();
-	cutDeleteAux("Cut");
+	cutDeleteAux("Cut", false, NULL);
 }
 
 void SketchWidget::copy() {
