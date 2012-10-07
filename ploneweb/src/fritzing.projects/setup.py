@@ -28,6 +28,7 @@ setup(name='fritzing.projects',
           'Plone',
           'plone.app.dexterity [grok]',
           'plone.app.referenceablebehavior',
+          'plone.app.relationfield',
           'plone.namedfile [blobs]',
           'fritzing.parts',
           # -*- Extra requirements: -*-

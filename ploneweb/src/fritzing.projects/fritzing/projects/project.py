@@ -9,7 +9,7 @@ from z3c.relationfield.schema import RelationList, RelationChoice
 from plone.formwidget.contenttree import ObjPathSourceBinder
 from zope.lifecycleevent.interfaces import IObjectCreatedEvent, IObjectModifiedEvent
 from Products.CMFCore.utils import getToolByName
-from zope.app.component.hooks import getSite
+from zope.component.hooks import getSite
 
 from Acquisition import aq_inner
 import zipfile, xml.dom.minidom, xml.dom

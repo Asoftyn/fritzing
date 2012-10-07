@@ -6,9 +6,7 @@ from plone.directives import form, dexterity
 from zope.interface import Invalid
 
 from zope.schema import Text, ASCII, ASCIILine, Date, Dict, Id, List
-from plone.app.textfield import RichText
 from plone.namedfile.field import NamedBlobFile
-from z3c.relationfield.schema import RelationList, RelationChoice
 from plone.formwidget.contenttree import ObjPathSourceBinder
 
 from zope.lifecycleevent.interfaces import IObjectCreatedEvent, IObjectModifiedEvent

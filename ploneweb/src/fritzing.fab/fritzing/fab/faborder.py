@@ -1,7 +1,6 @@
 from five import grok
 
-from zope.lifecycleevent.interfaces import IObjectModifiedEvent
-from zope.app.container.interfaces import IObjectMovedEvent
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent, IObjectMovedEvent
 from zope.component import createObject
 
 from plone.directives import dexterity

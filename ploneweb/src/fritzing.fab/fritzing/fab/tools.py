@@ -1,7 +1,7 @@
 import urllib
 import re
 
-from zope.app.component.hooks import getSite
+from zope.component.hooks import getSite
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions
