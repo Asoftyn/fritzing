@@ -14,6 +14,7 @@
     <property name="allowed_content_types">
         <element value="Image" />
         <element value="File" />
+        <element value="fritzing.parts.part" />
     </property>
 
     <!-- schema, class -->

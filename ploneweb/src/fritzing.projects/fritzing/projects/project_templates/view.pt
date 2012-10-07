@@ -11,15 +11,14 @@
     <tal:main-macro metal:define-macro="main">
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
-
         <h1 class="documentFirstHeading" tal:content="context/title" />
-        
         <div tal:replace="structure provider:plone.belowcontenttitle" />
-
         <p class="documentDescription" tal:content="context/description" />
 
         <div tal:replace="structure provider:plone.abovecontentbody" />
-        
+
+        <div tal:content="structure view/w/picture/render"/>
+        <!--
         <div tal:define="picture nocall:context/picture"
              tal:condition="nocall:picture">
             <img tal:attributes="src string:${context/absolute_url}/@@download/picture/${picture/filename};
@@ -27,9 +26,47 @@
                 width picture/_width | nothing;"
             />
         </div>
+        -->
+
+        <h3>Views</h3>
+        <div class="sketchViews">
+            <div>
+                <h5>Breadboard</h5>
+                <p tal:replace="structure context/breadboardView | nothing"/>
+            </div>
+            <div>
+                <h5>Schematic</h5>
+                <p tal:replace="structure context/schematicView | nothing"/>
+            </div>
+            <div>
+                <h5>PCB</h5>
+                <p tal:replace="structure context/pcbView | nothing"/>
+            </div>
+        </div>
+
         <p tal:replace="structure context/body/output | nothing" />
-        <p><a tal:attributes="href string:${context/absolute_url}/@@download/fritzingFile/${context/fritzingFile/filename}">Download</a></p>
+
+        <div tal:replace="structure view/w/fritzingFile/render"/>
+        <!--<p><a tal:attributes="href string:${context/absolute_url}/@@download/fritzingFile/${context/fritzingFile/filename}">Download</a></p>-->
+        <p>Downloaded <span tal:replace="context/numberOfDownloads"/> times.</p>
         <p>Viewed <span tal:replace="context/numberOfViews"/> times.</p>
+
+        <h3>Metadata</h3>
+        <dl>
+            <dt>Fritzing Version</dt>
+            <dd tal:content="context/fritzingVersion"/>
+        </dl>
+
+        <h3>Parts</h3>
+        <ul tal:repeat="part context/parts">
+            <li><a tal:content="part/Title"/></li>
+        </ul>
+        <ul tal:repeat="part context/customParts">
+            <li><a tal:content="part/Title"/></li>
+        </ul>
+
+        <h3>Code</h3>
+        <div tal:content="structure context/code"/>
         
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
