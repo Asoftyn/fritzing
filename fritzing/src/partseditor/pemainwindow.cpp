@@ -2096,7 +2096,7 @@ bool PEMainWindow::saveAs(bool overWrite)
 	}
     else {
         m_referenceModel->reloadPart(fzpPath, m_originalModuleID);
-        QUndoStack undoStack;
+        WaitPushUndoStack undoStack;
         QUndoCommand * parentCommand = new QUndoCommand;
         foreach (MainWindow * mainWindow, affectedWindows) {
             mainWindow->updateParts(m_originalModuleID, parentCommand);

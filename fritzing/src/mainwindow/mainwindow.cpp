@@ -2471,11 +2471,17 @@ bool MainWindow::usesPart(const QString & moduleID) {
 bool MainWindow::updateParts(const QString & moduleID, QUndoCommand * parentCommand) {
     if (m_currentGraphicsView == NULL) return false;
 
+    QSet<ItemBase *> itemBases;
     foreach (QGraphicsItem * item, m_currentGraphicsView->scene()->items()) {
         ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
-        if (itemBase != NULL && itemBase->moduleID().compare(moduleID) == 0) {
-            swapSelectedAuxAux(itemBase, moduleID, itemBase->viewLayerSpec(), parentCommand);
-        }
+        if (itemBase == NULL) continue;       
+        if (itemBase->moduleID().compare(moduleID) != 0) continue;
+
+        itemBases.insert(itemBase->layerKinChief());
+    }
+
+    foreach (ItemBase * itemBase, itemBases) {
+        swapSelectedAuxAux(itemBase, moduleID, itemBase->viewLayerSpec(), parentCommand);
     }
 
     return true;

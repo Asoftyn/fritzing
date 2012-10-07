@@ -85,7 +85,12 @@ bool LayerKinPaletteItem::ok() {
 }
 
 void LayerKinPaletteItem::updateConnections() {
-	m_layerKinChief->updateConnections();
+    if (m_layerKinChief) {
+	    m_layerKinChief->updateConnections();
+    }
+    else {
+        DebugDialog::debug("chief deleted before layerkin");
+    }
 }
 
 void LayerKinPaletteItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
