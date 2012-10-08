@@ -192,7 +192,9 @@ $Date$
 
 ////////////////////////////////////////////////////
 
-bool GotZeroConnector = false;
+static bool RubberBandLegWarning = false;
+
+static bool GotZeroConnector = false;
 
 static const QString ReferenceFileString("referenceFile");
 
@@ -541,6 +543,7 @@ void PEMainWindow::createFileMenu() {
     m_fileMenu->addAction(m_closeAct);
     m_fileMenu->addAction(m_saveAct);
     m_fileMenu->addAction(m_saveAsAct);
+    m_saveAsAct->setText(tr("Save as new part"));
 
     m_fileMenu->addSeparator();
 	m_exportMenu = m_fileMenu->addMenu(tr("&Export"));
@@ -699,6 +702,8 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem)
 		replaceProperty(byteArray, originalModelPart->property(byteArray).toString(), properties);
 	}
 
+
+    bool hasLegID = false;
 	QDomElement connectors = fzpRoot.firstChildElement("connectors");
 	QDomElement connector = connectors.firstChildElement("connector");
 	while (!connector.isNull()) {
@@ -706,8 +711,30 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem)
 		if (!localName.isEmpty()) {
 			connector.setAttribute("name", localName);
 		}
+        if (!hasLegID) {
+            QDomNodeList plist = connector.elementsByTagName("p");
+            for (int i = 0; i < plist.count(); i++) {
+                QDomElement p = plist.at(i).toElement();
+                if (!p.attribute("legId").isEmpty()) {
+                    hasLegID = true;
+                    break;
+                }
+            }
+        }
 		connector = connector.nextSiblingElement("connector");
 	}
+
+    if (hasLegID && !RubberBandLegWarning) {
+        RubberBandLegWarning = true;
+        QMessageBox::warning(NULL, tr("Parts Editor"), 
+                                    tr("This part has bendable legs. ") +
+                                    tr("This version of the Parts Editor does not yet support editing bendable legs, and the legs may not be displayed correctly in breadboard view . ") +
+                                    tr("If you make changes to breadboard view, or change connector metadata, the legs may no longer work. ") +
+                                    tr("You can safely make changes to Schematic or PCB view.\n\n") +
+                                    tr("This warning will not be repeated in this session of Fritzing")
+                                );
+    }
+
 
 
 	// for now kill the editable pin labels property, otherwise the saved part will try to use the labels that are only found in the sketch
@@ -3344,6 +3371,8 @@ void PEMainWindow::reuseImage(ViewLayer::ViewIdentifier viewIdentifier) {
 
 void PEMainWindow::updateFileMenu() {
 	MainWindow::updateFileMenu();
+
+    m_saveAct->setEnabled(canSave());
 
 	/*
 	QHash<ViewLayer::ViewIdentifier, bool> enabled;

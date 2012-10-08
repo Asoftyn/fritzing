@@ -252,7 +252,6 @@ protected:
 	bool m_inPickMode;
 	bool m_useNextPick;
 	QList<QDomElement> m_connectorList;
-
 };
 
 

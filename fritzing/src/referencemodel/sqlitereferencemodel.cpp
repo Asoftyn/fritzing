@@ -158,7 +158,9 @@ bool SqliteReferenceModel::loadFromDB(QSqlDatabase & keep_db, QSqlDatabase & db)
     if (!query.isActive() || !query.next()) return false;
 
     int count = query.value(0).toInt();
-    if (count == 0) return false;
+    if (count == 0) {
+        return false;
+    }
 
     DebugDialog::debug(QString("parts count %1").arg(count));
 
