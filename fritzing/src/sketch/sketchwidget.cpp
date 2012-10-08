@@ -2193,6 +2193,13 @@ void SketchWidget::mousePressEvent(QMouseEvent *event)
 				m_dragCurve = curvyWiresIndicated(event->modifiers()) && wire->canHaveCurve();
 				m_dragBendpointWire = wire;
 				m_dragBendpointPos = event->pos();
+                if (m_connectorDragWire) {
+                    // if you happen to drag on a wire which is on top of a connector 
+                    // drag the bendpoint on the wire rather than the new wire from the connector
+                    // maybe a better approach to block mousePressConnectorEvent?
+                    delete m_connectorDragWire;
+                    m_connectorDragWire = NULL;
+                }
 				return;	
 			}
 		}
@@ -2775,6 +2782,7 @@ void SketchWidget::prepDragBendpoint(Wire * wire, QPoint eventPos, bool dragCurv
 
 	m_connectorDragWire->initDragEnd(m_connectorDragWire->connector0(), newPos);
 	m_connectorDragWire->grabMouse();
+    m_connectorDragWire->debugInfo("grabbing mouse");
 }
 
 bool SketchWidget::collectFemaleConnectees(ItemBase * itemBase, QSet<ItemBase *> & items) {
@@ -2800,6 +2808,7 @@ bool SketchWidget::draggingWireEnd() {
 		wire = qobject_cast<Wire *>(connectorItem->attachedTo());
 	}
 
+    wire->debugInfo("mouse grabber");
 	return wire->draggingEnd();
 }
 
@@ -2817,6 +2826,7 @@ void SketchWidget::mouseMoveEvent(QMouseEvent *event) {
 		m_dragBendpointWire = NULL;
 		prepDragBendpoint(tempWire, m_dragBendpointPos, m_dragCurve);
 		m_draggingBendpoint = true;
+        DebugDialog::debug("dragging bendpoint");
 		this->m_alignmentStartPoint = mapToScene(m_dragBendpointPos);		// not sure this will be correct...
 		return;
 	}
@@ -2877,12 +2887,13 @@ void SketchWidget::mouseMoveEvent(QMouseEvent *event) {
 		QPointF q = mapToGlobal(pp);
 		QMouseEvent alignedEvent(event->type(), pp, QPoint(q.x(), q.y()), event->button(), event->buttons(), event->modifiers());
 		
-		DebugDialog::debug(QString("sketch move event %1,%2").arg(sp.x()).arg(sp.y()));
+		//DebugDialog::debug(QString("sketch move event %1,%2").arg(sp.x()).arg(sp.y()));
 		QGraphicsView::mouseMoveEvent(&alignedEvent);
 		return;
 	}
 
 	if (draggingWireEnd()) {
+       // DebugDialog::debug("dragging wire end");
 		checkAutoscroll(event->globalPos());
 	}
 
@@ -2996,6 +3007,8 @@ void SketchWidget::findConnectorsUnder(ItemBase * item) {
 void SketchWidget::mouseReleaseEvent(QMouseEvent *event) {
 	//setRenderHint(QPainter::Antialiasing, true);
 
+    DebugDialog::debug("sketch mouse release event");
+
 	m_draggingBendpoint = false;
 	if (m_movingByArrow) return;
 
@@ -3038,17 +3051,13 @@ void SketchWidget::mouseReleaseEvent(QMouseEvent *event) {
 	}
 
 	turnOffAutoscroll();
+
 	QGraphicsView::mouseReleaseEvent(event);
 
 	if (m_connectorDragWire != NULL) {
-		if (scene()->mouseGrabberItem() == m_connectorDragWire) {
-			// probably already ungrabbed by the wire, but just in case
-			m_connectorDragWire->ungrabMouse();
-		}
-
 		// remove again (may not have been removed earlier)
 		if (m_connectorDragWire->scene() != NULL) {
-			this->scene()->removeItem(m_connectorDragWire);
+            removeDragWire();
 			//m_infoView->unregisterCurrentItem();
 			updateInfoView();
 
@@ -3624,7 +3633,7 @@ void SketchWidget::dragWireChanged(Wire* wire, ConnectorItem * fromOnWire, Conne
 		// or to == NULL and it's pcb or schematic view, bail out
 		if ((m_connectorDragConnector == to) || !canCreateWire(wire, fromOnWire, to)) {
 			clearDragWireTempCommand();
-			this->scene()->removeItem(m_connectorDragWire);
+            removeDragWire();
 			return;
 		}
 	}
@@ -3725,7 +3734,7 @@ void SketchWidget::dragWireChanged(Wire* wire, ConnectorItem * fromOnWire, Conne
 	clearTemporaries();
 
 	// remove the temporary wire
-	this->scene()->removeItem(m_connectorDragWire);
+    removeDragWire();
 
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	m_undoStack->push(parentCommand);
@@ -3817,7 +3826,7 @@ void SketchWidget::dragRatsnestChanged()
 	m_bendpointWire = NULL;			// signal that we're done
 
 	// remove the temporary wire
-	this->scene()->removeItem(m_connectorDragWire);
+    removeDragWire();
 
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	m_undoStack->push(parentCommand);
@@ -4352,6 +4361,7 @@ void SketchWidget::mousePressConnectorEvent(ConnectorItem * connectorItem, QGrap
 	// give connector item the mouse, so wire doesn't get mouse moved events
 	m_connectorDragWire->setVisible(true);
 	m_connectorDragWire->grabMouse();
+	m_connectorDragWire->debugInfo("grabbing mouse 2");
 	m_connectorDragWire->initDragEnd(m_connectorDragWire->connector0(), event->scenePos());
 	m_connectorDragConnector->tempConnectTo(m_connectorDragWire->connector1(), false);
 	m_connectorDragWire->connector1()->tempConnectTo(m_connectorDragConnector, false);
@@ -8920,3 +8930,14 @@ void SketchWidget::showEvent(QShowEvent * event) {
 	InfoGraphicsView::showEvent(event);
 	emit showing(this);
 }
+
+void SketchWidget::removeDragWire() {
+	if (scene()->mouseGrabberItem() == m_connectorDragWire) {
+		// probably already ungrabbed by the wire, but just in case
+		m_connectorDragWire->ungrabMouse();
+		m_connectorDragWire->debugInfo("ungrabbing mouse 2");
+	}
+
+	this->scene()->removeItem(m_connectorDragWire);
+}
+

@@ -477,6 +477,7 @@ protected:
     void selectAllWiresFrom(ViewGeometry::WireFlag flag, QList<QGraphicsItem *> & items);
     bool canConnect(ItemBase * from, ItemBase * to);
     virtual bool canConnect(Wire * from, ItemBase * to);
+    void removeDragWire();
 
 protected:
 	static bool lessThan(int a, int b);
