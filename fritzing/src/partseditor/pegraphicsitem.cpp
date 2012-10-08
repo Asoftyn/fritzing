@@ -56,7 +56,7 @@ PEGraphicsItem::PEGraphicsItem(double x, double y, double w, double h) : QGraphi
         Dashes << DashLength << DashLength;
     }
 
-   m_pick = m_flash = false;
+    m_pick = m_flash = false;
 
     m_terminalPoint = QPointF(w / 2, h / 2);
     m_dragTerminalPoint = m_showMarquee = m_showTerminalPoint = false;
@@ -84,7 +84,7 @@ void PEGraphicsItem::wheelEvent(QGraphicsSceneWheelEvent * event) {
     if (event->orientation() != Qt::Vertical) return;
     if (event->delta() == 0) return;
 
-    DebugDialog::debug(QString("wheel %1 %2").arg(event->delta()).arg(QTime::currentTime().msec()));
+    //DebugDialog::debug(QString("wheel %1 %2").arg(event->delta()).arg(QTime::currentTime().msec()));
 
     // delta one click forward = 120; delta one click backward = -120
     
@@ -191,7 +191,7 @@ void PEGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
     if (m_flash) {
         m_flash = false;
-        QTimer::singleShot(1, this, SLOT(restoreColor()));
+        QTimer::singleShot(40, this, SLOT(restoreColor()));
     }
 
 	bool save = m_showTerminalPoint || m_showMarquee;
@@ -398,7 +398,7 @@ void PEGraphicsItem::flash() {
 }
 
 void PEGraphicsItem::restoreColor() {
-	setBrush(m_pick ? PickColor : NormalColor);
+    setBrush(m_pick ? PickColor : NormalColor);
     setOpacity(m_savedOpacity);
     update();
 }

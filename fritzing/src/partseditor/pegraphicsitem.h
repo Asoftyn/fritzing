@@ -67,7 +67,6 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 	void setPickAppearance(bool);
     void flash();
-    void restoreColor();
 
 signals:
     void highlightSignal(PEGraphicsItem *);
@@ -75,6 +74,9 @@ signals:
     void mouseReleased(PEGraphicsItem *);
     void terminalPointMoved(PEGraphicsItem *, QPointF);
     void terminalPointChanged(PEGraphicsItem *, QPointF before, QPointF after);
+
+protected slots:
+    void restoreColor();
 
 protected:
     bool m_highlighted;
@@ -90,8 +92,8 @@ protected:
     QPointF m_terminalPointOrigin;
     bool m_drawHighlight;
     int m_wheelAccum;
-    bool m_pick;
     qreal m_savedOpacity;
+    bool m_pick;
 };
 
 #endif /* PEGRAPHICSITEM_H_ */
