@@ -2222,7 +2222,6 @@ int PCBSketchWidget::selectAllItemType(ModelPart::ItemType itemType, const QStri
 
 		itemBases.insert(itemBase->layerKinChief());
 	}
-    itemBases << board;
 
 	return selectAllItems(itemBases, QObject::tr("Select all %1").arg(typeName));
 
