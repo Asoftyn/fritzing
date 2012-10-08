@@ -450,8 +450,8 @@ void PEMainWindow::initDock()
 
 void PEMainWindow::moreInitDock()
 {
-    static int MinHeight = 75;
-    static int DefaultHeight = 100;
+    //static int MinHeight = 75;
+    //static int DefaultHeight = 100;
 
 
     m_peToolView = new PEToolView();

@@ -34,6 +34,7 @@ $Date$
 #include <QGraphicsScene>
 #include <QPainter>
 
+
 static QVector<qreal> Dashes;
 static const int DashLength = 3;
 
@@ -49,33 +50,13 @@ static const QColor PickColor(255, 0, 255);
 
 ////////////////////////////////////////////////
 
-HighlightTimer::HighlightTimer() : QTimer()
-{
-    m_pegi = NULL;
-}
-
-HighlightTimer::~HighlightTimer() {
-}
-
-void HighlightTimer::setPegi(PEGraphicsItem * pegi) {
-    m_pegi = pegi;
-}
-
-PEGraphicsItem * HighlightTimer::pegi() {
-    return m_pegi;
-}
-
-////////////////////////////////////////////////
-
 
 PEGraphicsItem::PEGraphicsItem(double x, double y, double w, double h) : QGraphicsRectItem(x, y, w, h) {
     if (Dashes.isEmpty()) {
         Dashes << DashLength << DashLength;
     }
 
-    m_highlightTimer.setSingleShot(true);
-    m_highlightTimer.setInterval(50);
-    connect(&m_highlightTimer, SIGNAL(timeout()), this, SLOT(doHighlight()));
+    m_lastWheelTime = QTime::currentTime();
 
     m_terminalPoint = QPointF(w / 2, h / 2);
     m_dragTerminalPoint = m_showMarquee = m_showTerminalPoint = false;
@@ -99,13 +80,22 @@ void PEGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *) {
 }
 
 void PEGraphicsItem::wheelEvent(QGraphicsSceneWheelEvent * event) {
-    m_highlightTimer.stop();
     if (event->orientation() != Qt::Vertical) return;
+
+    DebugDialog::debug(QString("wheel %1 %2").arg(event->delta()).arg(QTime::currentTime().msec()));
+
+    QTime now = QTime::currentTime();
+    if (m_lastWheelTime.msecsTo(now) < 75) {
+        m_lastWheelTime = now;
+        return;
+    }
+
+    m_lastWheelTime = now;
 
     // delta one click forward = 120; delta one click backward = -120
 
-    int steps = event->delta() / 120;
-    steps = (steps < 0) ? -1 : 1;
+
+    int steps = (event->delta() < 0) ? -1 : 1;
     QList<PEGraphicsItem *> items;
     foreach (QGraphicsItem * item, scene()->items(event->scenePos())) {
         PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
@@ -145,8 +135,7 @@ void PEGraphicsItem::wheelEvent(QGraphicsSceneWheelEvent * event) {
     else if (ix >= items.count()) ix = items.count() - 1;
     
     if (!items.at(ix)->highlighted()) {
-        m_highlightTimer.setPegi(items.at(ix));
-        m_highlightTimer.start();
+        items.at(ix)->setHighlighted(true);
     }
 }
 
@@ -389,15 +378,5 @@ void PEGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *) {
 
 void PEGraphicsItem::setPickAppearance(bool pick) {
 	setBrush(pick ? PickColor : NormalColor);
-}
-
-void PEGraphicsItem::doHighlight() {
-    HighlightTimer * timer = qobject_cast<HighlightTimer *>(sender());
-    if (timer == NULL) return;
-
-    PEGraphicsItem * pegi = timer->pegi();
-    if (pegi == NULL) return;
-
-    pegi->setHighlighted(true);
 }
 

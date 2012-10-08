@@ -34,21 +34,7 @@ $Date$
 #include <QGraphicsSceneHoverEvent>
 #include <QTimer>
 #include <QPointer>
-
-
-class HighlightTimer : public QTimer {
-    Q_OBJECT
-
-public:  
-    HighlightTimer();
-    ~HighlightTimer();
-
-    void setPegi(class PEGraphicsItem *);
-    PEGraphicsItem * pegi();
-
-protected:
-    QPointer<class PEGraphicsItem> m_pegi;
-};
+#include <QTime>
 
 class PEGraphicsItem : public QObject, public QGraphicsRectItem 
 {
@@ -87,22 +73,19 @@ signals:
     void terminalPointMoved(PEGraphicsItem *, QPointF);
     void terminalPointChanged(PEGraphicsItem *, QPointF before, QPointF after);
 
-protected slots:
-    void doHighlight();
-
 protected:
     bool m_highlighted;
     QDomElement  m_element;
     QPointF m_offset;
     bool m_showTerminalPoint;
-	bool m_showMarquee;
+    bool m_showMarquee;
     QPointF m_terminalPoint;
     QPointF m_pendingTerminalPoint;
     bool m_dragTerminalPoint;
     QPointF m_dragTerminalOrigin;
     QPointF m_terminalPointOrigin;
-	bool m_drawHighlight;
-    HighlightTimer m_highlightTimer;
+    bool m_drawHighlight;
+    QTime m_lastWheelTime;
 };
 
 #endif /* PEGRAPHICSITEM_H_ */
