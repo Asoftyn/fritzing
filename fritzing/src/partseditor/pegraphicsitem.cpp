@@ -56,7 +56,7 @@ PEGraphicsItem::PEGraphicsItem(double x, double y, double w, double h) : QGraphi
         Dashes << DashLength << DashLength;
     }
 
-    m_lastWheelTime = QTime::currentTime();
+   m_pick = m_flash = false;
 
     m_terminalPoint = QPointF(w / 2, h / 2);
     m_dragTerminalPoint = m_showMarquee = m_showTerminalPoint = false;
@@ -72,6 +72,7 @@ PEGraphicsItem::~PEGraphicsItem() {
 }
 
 void PEGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent *) {
+    m_wheelAccum = 0;
 	setHighlighted(true);
 }
 
@@ -81,21 +82,20 @@ void PEGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *) {
 
 void PEGraphicsItem::wheelEvent(QGraphicsSceneWheelEvent * event) {
     if (event->orientation() != Qt::Vertical) return;
+    if (event->delta() == 0) return;
 
     DebugDialog::debug(QString("wheel %1 %2").arg(event->delta()).arg(QTime::currentTime().msec()));
 
-    QTime now = QTime::currentTime();
-    if (m_lastWheelTime.msecsTo(now) < 75) {
-        m_lastWheelTime = now;
-        return;
-    }
-
-    m_lastWheelTime = now;
-
     // delta one click forward = 120; delta one click backward = -120
+    
+    int magDelta = qAbs(event->delta());
+    int sign = event->delta() / magDelta;
+    int delta = sign * qMin(magDelta, 120);
+    m_wheelAccum += delta;
+    if (qAbs(m_wheelAccum) < 120) return;
 
+    m_wheelAccum = 0;
 
-    int steps = (event->delta() < 0) ? -1 : 1;
     QList<PEGraphicsItem *> items;
     foreach (QGraphicsItem * item, scene()->items(event->scenePos())) {
         PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
@@ -122,7 +122,7 @@ void PEGraphicsItem::wheelEvent(QGraphicsSceneWheelEvent * event) {
         return;
     }
 
-    ix += steps;
+    ix += sign;
 
     // wrap
     //while (ix < 0) {
@@ -134,8 +134,12 @@ void PEGraphicsItem::wheelEvent(QGraphicsSceneWheelEvent * event) {
     if (ix < 0) ix = 0;
     else if (ix >= items.count()) ix = items.count() - 1;
     
-    if (!items.at(ix)->highlighted()) {
-        items.at(ix)->setHighlighted(true);
+    PEGraphicsItem * theItem = items.at(ix);
+    if (theItem->highlighted()) {
+        theItem->flash();
+    }
+    else {
+        theItem->setHighlighted(true);
     }
 }
 
@@ -184,6 +188,11 @@ QPointF PEGraphicsItem::offset() {
 void PEGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) 
 {
 	QGraphicsRectItem::paint(painter, option, widget);
+
+    if (m_flash) {
+        m_flash = false;
+        QTimer::singleShot(1, this, SLOT(restoreColor()));
+    }
 
 	bool save = m_showTerminalPoint || m_showMarquee;
 
@@ -377,6 +386,19 @@ void PEGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *) {
 }
 
 void PEGraphicsItem::setPickAppearance(bool pick) {
+    m_pick = pick;
 	setBrush(pick ? PickColor : NormalColor);
 }
 
+void PEGraphicsItem::flash() {
+    m_savedOpacity = opacity();
+    m_flash = true;
+    setBrush(QColor(255, 255, 255));
+    update();
+}
+
+void PEGraphicsItem::restoreColor() {
+	setBrush(m_pick ? PickColor : NormalColor);
+    setOpacity(m_savedOpacity);
+    update();
+}

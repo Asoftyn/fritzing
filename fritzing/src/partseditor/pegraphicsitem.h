@@ -35,6 +35,7 @@ $Date$
 #include <QTimer>
 #include <QPointer>
 #include <QTime>
+#include <QBrush>
 
 class PEGraphicsItem : public QObject, public QGraphicsRectItem 
 {
@@ -65,6 +66,8 @@ public:
     QPointF pendingTerminalPoint();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 	void setPickAppearance(bool);
+    void flash();
+    void restoreColor();
 
 signals:
     void highlightSignal(PEGraphicsItem *);
@@ -75,6 +78,7 @@ signals:
 
 protected:
     bool m_highlighted;
+    bool m_flash;
     QDomElement  m_element;
     QPointF m_offset;
     bool m_showTerminalPoint;
@@ -85,7 +89,9 @@ protected:
     QPointF m_dragTerminalOrigin;
     QPointF m_terminalPointOrigin;
     bool m_drawHighlight;
-    QTime m_lastWheelTime;
+    int m_wheelAccum;
+    bool m_pick;
+    qreal m_savedOpacity;
 };
 
 #endif /* PEGRAPHICSITEM_H_ */
