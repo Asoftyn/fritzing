@@ -149,7 +149,7 @@ protected:
     void terminalPointChangedAux(PEGraphicsItem * pegi, QPointF before, QPointF after);
     void showInOS(QWidget *parent, const QString &pathIn);
     void switchedConnector(int, SketchWidget *);
-    PEGraphicsItem * makePegi(QSizeF size, QPointF topLeft, ItemBase * itemBase, QDomElement & element);
+    PEGraphicsItem * makePegi(QSizeF size, QPointF topLeft, ItemBase * itemBase, QDomElement & element, double z);
     QRectF getPixelBounds(FSvgRenderer & renderer, QDomElement & element);
     bool canSave();
     bool saveAs(bool overWrite);

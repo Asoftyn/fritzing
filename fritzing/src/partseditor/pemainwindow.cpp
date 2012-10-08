@@ -202,7 +202,6 @@ static const int IconViewIndex = 3;
 static const int MetadataViewIndex = 4;
 static const int ConnectorsViewIndex = 5;
 
-static QHash<ViewLayer::ViewIdentifier, int> ZList;
 const static int PegiZ = 5000;
 const static int RatZ = 6000;
 
@@ -1258,59 +1257,59 @@ void PEMainWindow::initSvgTree(SketchWidget * sketchWidget, ItemBase * itemBase,
     QList<QDomElement> traverse;
     traverse << svgDocument.documentElement();
     while (traverse.count() > 0) {
-        ZList.insert(itemBase->viewIdentifier(), z++);
+        QDomElement element = traverse.takeFirst();
+
+        // depth first
         QList<QDomElement> next;
-        foreach (QDomElement element, traverse) {
-            bool isG = false;
-            bool isSvg = false;
-            QString tagName = element.tagName();
-            if      (tagName.compare("rect") == 0);
-            else if (tagName.compare("g") == 0) {
-                isG = true;
-            }
-            else if (tagName.compare("svg") == 0) {
-                isSvg = true;
-            }
-            else if (tagName.compare("circle") == 0);
-            else if (tagName.compare("ellipse") == 0);
-            else if (tagName.compare("path") == 0);
-            else if (tagName.compare("line") == 0);
-            else if (tagName.compare("polyline") == 0);
-            else if (tagName.compare("polygon") == 0);
-            else if (tagName.compare("text") == 0);
-            else continue;
-
-            QRectF bounds = getPixelBounds(renderer, element);
-            if (isSvg) {                
-                bounds.setWidth(0);             // skip top level element
-            }
-            else if (isG) {
-                // skip if it's too high up in the hierarchy?
-            }
-
-            // known Qt bug: boundsOnElement returns zero width and height for text elements.
-            if (bounds.width() > 0 && bounds.height() > 0) {
-                PEGraphicsItem * pegi = makePegi(bounds.size(), bounds.topLeft(), itemBase, element);
-				pegiHash.insert(element.attribute("id"), pegi);
-
-                /* 
-                QString string;
-                QTextStream stream(&string);
-                element.save(stream, 0);
-                DebugDialog::debug("........");
-                DebugDialog::debug(string);
-                */
-            }
-
-            QDomElement child = element.firstChildElement();
-            while (!child.isNull()) {
-                next.append(child);
-                child = child.nextSiblingElement();
-            }
+        QDomElement child = element.firstChildElement();
+        while (!child.isNull()) {
+            next << child;
+            child = child.nextSiblingElement();
         }
-        traverse.clear();
-        foreach (QDomElement element, next) traverse.append(element);
-        next.clear();
+        while (next.count() > 0) {
+            traverse.push_front(next.takeLast());
+        }
+
+        bool isG = false;
+        bool isSvg = false;
+        QString tagName = element.tagName();
+        if      (tagName.compare("rect") == 0);
+        else if (tagName.compare("g") == 0) {
+            isG = true;
+        }
+        else if (tagName.compare("svg") == 0) {
+            isSvg = true;
+        }
+        else if (tagName.compare("circle") == 0);
+        else if (tagName.compare("ellipse") == 0);
+        else if (tagName.compare("path") == 0);
+        else if (tagName.compare("line") == 0);
+        else if (tagName.compare("polyline") == 0);
+        else if (tagName.compare("polygon") == 0);
+        else if (tagName.compare("text") == 0);
+        else continue;
+
+        QRectF bounds = getPixelBounds(renderer, element);
+        if (isSvg) {                
+            bounds.setWidth(0);             // skip top level element
+        }
+        else if (isG) {
+            // skip if it's too high up in the hierarchy?
+        }
+
+        // known Qt bug: boundsOnElement returns zero width and height for text elements.
+        if (bounds.width() > 0 && bounds.height() > 0) {
+            PEGraphicsItem * pegi = makePegi(bounds.size(), bounds.topLeft(), itemBase, element, z++);
+			pegiHash.insert(element.attribute("id"), pegi);
+
+            /* 
+            QString string;
+            QTextStream stream(&string);
+            element.save(stream, 0);
+            DebugDialog::debug("........");
+            DebugDialog::debug(string);
+            */
+        }
     }
 
     QDomElement root = m_fzpDocument.documentElement();
@@ -2347,8 +2346,7 @@ void PEMainWindow::moveTerminalPoint(SketchWidget * sketchWidget, const QString 
         double invdx = dx * size.width() / svgBounds.width();
         double invdy = dy * size.height() / svgBounds.height();
         QPointF topLeft = connectorPegi->offset() + p - QPointF(invdx, invdy);
-        PEGraphicsItem * pegi = makePegi(QSizeF(invdx * 2, invdy * 2), topLeft, viewThing->itemBase, terminalElement);
-        pegi->setZValue(oldZ);
+        PEGraphicsItem * pegi = makePegi(QSizeF(invdx * 2, invdy * 2), topLeft, viewThing->itemBase, terminalElement, oldZ);
         DebugDialog::debug("new pegi location", pegi->pos());
         updateChangeCount(sketchWidget, changeDirection);
     }
@@ -2394,12 +2392,11 @@ void PEMainWindow::showInOS() {
     showInOS(this, viewThing->itemBase->filename());
 }
 
-PEGraphicsItem * PEMainWindow::makePegi(QSizeF size, QPointF topLeft, ItemBase * itemBase, QDomElement & element) 
+PEGraphicsItem * PEMainWindow::makePegi(QSizeF size, QPointF topLeft, ItemBase * itemBase, QDomElement & element, double z) 
 {
     PEGraphicsItem * pegiItem = new PEGraphicsItem(0, 0, size.width(), size.height());
 	pegiItem->showTerminalPoint(false);
     pegiItem->setPos(itemBase->pos() + topLeft);
-    int z = ZList.value(itemBase->viewIdentifier());
     pegiItem->setZValue(z);
     itemBase->scene()->addItem(pegiItem);
     pegiItem->setElement(element);
