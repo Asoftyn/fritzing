@@ -529,12 +529,6 @@ bool FSvgRenderer::setUpConnector(SvgIdLayer * svgIdLayer, bool ignoreTerminalPo
 				bounds);
 	*/
 
-	if (connectorInfo && connectorInfo->gotCircle) {
-		svgIdLayer->m_radius = connectorInfo->radius * defaultSizeF.width() / viewBox.width();
-		svgIdLayer->m_strokeWidth = connectorInfo->strokeWidth * defaultSizeF.width() / viewBox.width();
-		//bounds = connectorInfo->cbounds;
-	}
-
 	
 	/*DebugDialog::debug(QString("identity matrix %11 %1 %2, viewbox: %3 %4 %5 %6, bounds: %7 %8 %9 %10, size: %12 %13").arg(m_modelPart->title()).arg(connectorSharedID())
 					   .arg(viewBox.x()).arg(viewBox.y()).arg(viewBox.width()).arg(viewBox.height())
@@ -548,7 +542,21 @@ bool FSvgRenderer::setUpConnector(SvgIdLayer * svgIdLayer, bool ignoreTerminalPo
 	// might be a qt problem.
 	//QMatrix matrix0 = connectorInfo->matrix * this->matrixForElement(connectorID);  
 	//QRectF r1 = matrix0.mapRect(bounds);
-	QRectF r1 = this->matrixForElement(connectorID).mapRect(bounds);
+
+    QMatrix elementMatrix = this->matrixForElement(connectorID);
+	QRectF r1 = elementMatrix.mapRect(bounds);
+
+	if (connectorInfo && connectorInfo->gotCircle) {
+        QLineF l(0,0,connectorInfo->radius, 0);
+        QLineF lm = elementMatrix.map(l);
+		svgIdLayer->m_radius = lm.length() * defaultSizeF.width() / viewBox.width();
+
+        QLineF k(0,0,connectorInfo->strokeWidth, 0);
+        QLineF km = elementMatrix.map(l);
+		svgIdLayer->m_strokeWidth = km.length() * defaultSizeF.width() / viewBox.width();
+		//bounds = connectorInfo->cbounds;
+	}
+
 
 	/*
 	svgIdLayer->m_rect.setRect(r1.x() * defaultSize.width() / viewBox.width(), 
