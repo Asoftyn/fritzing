@@ -74,7 +74,7 @@ PEGraphicsItem::PEGraphicsItem(double x, double y, double w, double h) : QGraphi
     }
 
     m_highlightTimer.setSingleShot(true);
-    m_highlightTimer.setInterval(5);
+    m_highlightTimer.setInterval(50);
     connect(&m_highlightTimer, SIGNAL(timeout()), this, SLOT(doHighlight()));
 
     m_terminalPoint = QPointF(w / 2, h / 2);
