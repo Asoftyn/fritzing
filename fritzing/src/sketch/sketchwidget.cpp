@@ -6998,8 +6998,11 @@ QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QSizeF & 
 			QString labelSvg = partLabel->owner()->makePartLabelSvg(blackOnly, dpi, printerScale);
 			if (labelSvg.isEmpty()) continue;
 
+            labelSvg = translateSVG(labelSvg, partLabel->owner()->partLabelScenePos() - offset, dpi, printerScale);
+            labelSvg = QString("<g partID='%1' id='partLabel'>%2</g>").arg(partLabel->owner()->id()).arg(labelSvg);
+
 			empty = false;
-			outputSVG.append(translateSVG(labelSvg, partLabel->owner()->partLabelScenePos() - offset, dpi, printerScale));
+			outputSVG.append(labelSvg);
 			continue;
 		}
 			
@@ -7012,12 +7015,15 @@ QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QSizeF & 
 			foreach (ConnectorItem * ci, itemBase->cachedConnectorItems()) {
 				if (!ci->hasRubberBandLeg()) continue;
 
+                // at the moment, the legs don't get a partID, but since there are no legs in PCB view, we don't care
 				outputSVG.append(ci->makeLegSvg(offset, dpi, printerScale, blackOnly));
 			}
 
             QTransform t = itemBase->transform();
             itemSvg = TextUtils::svgTransform(itemSvg, t, false, QString());
-			outputSVG.append(translateSVG(itemSvg, itemBase->scenePos() - offset, dpi, printerScale));
+            itemSvg = translateSVG(itemSvg, itemBase->scenePos() - offset, dpi, printerScale);
+            itemSvg =  QString("<g partID='%1'>%2</g>").arg(itemBase->id()).arg(itemSvg);
+			outputSVG.append(itemSvg);
 			empty = false;
 
 			/*
@@ -7042,7 +7048,9 @@ QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QSizeF & 
 			//		);
 			//}
 
-			outputSVG.append(makeWireSVG(wire, offset, dpi, printerScale, blackOnly));
+            QString wireSvg = makeWireSVG(wire, offset, dpi, printerScale, blackOnly);
+            wireSvg = QString("<g partID='%1'>%2</g>").arg(wire->id()).arg(wireSvg);
+			outputSVG.append(wireSvg);
 			empty = false;
 		}
 		extraRenderSvgStep(itemBase, offset, dpi, printerScale, outputSVG);
