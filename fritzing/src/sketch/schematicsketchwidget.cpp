@@ -470,3 +470,7 @@ void SchematicSketchWidget::selectAllWires(ViewGeometry::WireFlag flag)
 bool SchematicSketchWidget::canConnect(Wire *, ItemBase *) {
     return true;
 }
+
+QString SchematicSketchWidget::checkDroppedModuleID(const QString & moduleID) {
+    return moduleID;
+}

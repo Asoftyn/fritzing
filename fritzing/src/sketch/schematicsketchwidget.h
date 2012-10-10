@@ -96,6 +96,7 @@ protected:
 	ViewLayer::ViewLayerSpec createWireViewLayerSpec(ConnectorItem * from, ConnectorItem * to);
     void selectAllWires(ViewGeometry::WireFlag flag);
     bool canConnect(Wire * from, ItemBase * to);
+    QString checkDroppedModuleID(const QString & moduleID);
 
 protected:
 	QTimer m_updateDotsTimer;

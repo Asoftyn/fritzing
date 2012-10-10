@@ -2249,7 +2249,7 @@ void PCBSketchWidget::selectAllWires(ViewGeometry::WireFlag flag)
 QString PCBSketchWidget::checkDroppedModuleID(const QString & moduleID) {
     if (moduleID.endsWith(ModuleIDNames::CopperBlockerModuleIDName)) {
         ViewLayer * viewLayer = m_viewLayers.value(ViewLayer::Copper0);
-        if (viewLayer->isActive()) {
+        if (viewLayer != NULL && viewLayer->isActive()) {
             return ModuleIDNames::Copper0BlockerModuleIDName;
         }
 
@@ -2258,7 +2258,7 @@ QString PCBSketchWidget::checkDroppedModuleID(const QString & moduleID) {
 
     if (moduleID.endsWith(ModuleIDNames::PadModuleIDName)) {
         ViewLayer * viewLayer = m_viewLayers.value(ViewLayer::Copper1);
-        if (viewLayer->isActive()) {
+        if (viewLayer != NULL && viewLayer->isActive()) {
             return ModuleIDNames::PadModuleIDName;
         }
 
