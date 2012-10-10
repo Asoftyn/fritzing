@@ -11,9 +11,9 @@ from zope.lifecycleevent.interfaces import IObjectCreatedEvent, IObjectModifiedE
 from Products.CMFCore.utils import getToolByName
 from zope.component.hooks import getSite
 
-from Acquisition import aq_inner
 import zipfile, xml.dom.minidom, xml.dom
 from cStringIO import StringIO
+import urllib, urllib2
 
 from fritzing.projects import FritzingProjectsMessageFactory as _
 from fritzing.parts.part import IPart
@@ -130,6 +130,7 @@ class View(dexterity.DisplayForm):
         self.context.numberOfViews += 1
 
 
+
 @grok.subscribe(IProject, IObjectCreatedEvent)
 @grok.subscribe(IProject, IObjectModifiedEvent)
 def extractFZZ(project, event):
@@ -163,15 +164,11 @@ def extractFZZ(project, event):
         raise Invalid(
             _(u"No Fritzing sketch (.fz) found in fzz.")
         )
-    
-    # TODO Generate SVGs
-    #~ breadboardSVG = None
-    #~ schematicSVG = None
-    #~ pcbSVG = None
-    # Run Fritzing to load this fzz and export all SVGs
-    project.breadboardView = ""
-    project.schematicView = ""
-    project.pcbView = ""
+        
+    # TODO fix svg generation, works out of Plone, but causes weird errors here
+    #URLError: <urlopen error [Errno 111] Connection refused>
+    #generateSVGs(project)
+
     
     # Parse FZ
     dom = None
@@ -231,3 +228,28 @@ def extractFZZ(project, event):
         project.code += code
         project.code += '\n'
     #TODO rather add as children of this project?
+
+
+
+def generateSVGs(project):
+    # connect to Fritzing service to load this fzz and export all SVGs
+    FRITZING_URL = "http://192.168.1.111:9999/svg-tcp/"
+    sketchURL = project.absolute_url() + "/@@download/fritzingFile/" + urllib.quote(project.fritzingFile.filename)
+    serviceURL = FRITZING_URL + sketchURL
+    try:
+        remotezip = urllib2.urlopen(serviceURL)
+    except urllib2.URLError as err:
+        raise Invalid(
+            _(u"Couldn't reach SVG service: "+serviceURL+" -- "+str(err.reason))
+        )
+    else:
+        zipinmemory = StringIO(remotezip.read())
+        zf = None
+        zf = zipfile.ZipFile(zipinmemory) 
+        for i, name in enumerate(zf.namelist()):
+            if name.endswith('breadboard.svg'):
+                project.breadboardView = zf.read(name)
+            if name.endswith('schematic.svg'):
+                project.schematicView = zf.read(name)
+            if name.endswith('pcb.svg'):
+                project.pcbView = zf.read(name)
