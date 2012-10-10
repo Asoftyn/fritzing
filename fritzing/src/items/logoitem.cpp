@@ -469,12 +469,9 @@ void LogoItem::setProp(const QString & prop, const QString & value) {
 void LogoItem::setLogo(QString logo, bool force) {
 	if (!force && m_logo.compare(logo) == 0) return;
 
-	switch (this->m_viewIdentifier) {
-		case ViewLayer::PCBView:
-			break;
-		default:
-			return;
-	}
+    if (!isEverVisible()) {
+        return;
+    }
 
 	QString svg;
 	QFile f(m_originalFilename);
