@@ -6892,19 +6892,19 @@ void SketchWidget::resizeNote(long itemID, const QSizeF & size)
 }
 
 QString SketchWidget::renderToSVG(double printerScale, const LayerList & layers, 
-								  bool blackOnly, QSizeF & imageSize, ItemBase * board, double dpi, 
+								  bool blackOnly, QRectF & imageRect, ItemBase * board, double dpi, 
 								  bool selectedItems, bool renderBlocker, bool & empty)
 {
 	QRectF offsetRect;
 	if (board) {
 		offsetRect = board->sceneBoundingRect();
 	}
-	return renderToSVG(printerScale, layers, blackOnly, imageSize, board, offsetRect, dpi, selectedItems, renderBlocker, empty);
+	return renderToSVG(printerScale, layers, blackOnly, imageRect, board, offsetRect, dpi, selectedItems, renderBlocker, empty);
 }
 
 
 QString SketchWidget::renderToSVG(double printerScale, const LayerList & layers, 
-								  bool blackOnly, QSizeF & imageSize, ItemBase * board, QRectF & offsetRect, double dpi, 
+								  bool blackOnly, QRectF & imageRect, ItemBase * board, QRectF & offsetRect, double dpi, 
 								  bool selectedItems, bool renderBlocker, bool & empty)
 {
 
@@ -6946,7 +6946,7 @@ QString SketchWidget::renderToSVG(double printerScale, const LayerList & layers,
 		itemsBoundingRect |= item->sceneBoundingRect();
 	}
 
-	return renderToSVG(printerScale, blackOnly, imageSize, offsetRect, dpi, renderBlocker, itemsAndLabels, itemsBoundingRect, empty);
+	return renderToSVG(printerScale, blackOnly, imageRect, offsetRect, dpi, renderBlocker, itemsAndLabels, itemsBoundingRect, empty);
 }
 
 QString translateSVG(QString & svg, QPointF loc, double dpi, double printerScale) {
@@ -6961,7 +6961,7 @@ QString translateSVG(QString & svg, QPointF loc, double dpi, double printerScale
 	return svg;
 }
 
-QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QSizeF & imageSize, QRectF & offsetRect, double dpi,
+QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QRectF & imageRect, QRectF & offsetRect, double dpi,
 								  bool renderBlocker, QList<QGraphicsItem *> & itemsAndLabels, QRectF itemsBoundingRect,
 								  bool & empty)
 {
@@ -6978,9 +6978,7 @@ QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QSizeF & 
 		height = offsetRect.height();
 	}
 
-	imageSize.setWidth(width);
-	imageSize.setHeight(height);
-
+	imageRect.setRect(offset.x(), offset.y(), width, height);
 	QString outputSVG = TextUtils::makeSVGHeader(printerScale, dpi, width, height);
 
 	QHash<QString, QString> svgHash;

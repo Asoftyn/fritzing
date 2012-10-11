@@ -125,9 +125,9 @@ void GerberGenerator::exportToGerber(const QString & prefix, const QString & exp
 
     // now do it for the outline/contour
     LayerList outlineLayerIDs = ViewLayer::outlineLayers();
-	QSizeF imageSize;
+	QRectF imageRect;
 	bool empty;
-	QString svgOutline = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, outlineLayerIDs, true, imageSize, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
+	QString svgOutline = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, outlineLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
     if (svgOutline.isEmpty()) {
         displayMessage(QObject::tr("outline is empty"), displayMessageBoxes);
         return;
@@ -162,9 +162,9 @@ void GerberGenerator::exportToGerber(const QString & prefix, const QString & exp
 
 int GerberGenerator::doCopper(ItemBase * board, PCBSketchWidget * sketchWidget, LayerList & viewLayerIDs, const QString & copperName, const QString & copperSuffix, const QString & filename, const QString & exportDir, bool displayMessageBoxes) 
 {
-	QSizeF imageSize;
+	QRectF imageRect;
 	bool empty;
-	QString svg = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, imageSize, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
+	QString svg = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
 	if (svg.isEmpty()) {
 		displayMessage(QObject::tr("%1 file export failure (1)").arg(copperName), displayMessageBoxes);
 		return 0;
@@ -184,9 +184,9 @@ int GerberGenerator::doCopper(ItemBase * board, PCBSketchWidget * sketchWidget, 
 
 int GerberGenerator::doSilk(LayerList silkLayerIDs, const QString & silkName, const QString & gerberSuffix, ItemBase * board, PCBSketchWidget * sketchWidget, const QString & filename, const QString & exportDir, bool displayMessageBoxes, const QString & clipString) 
 {
-	QSizeF imageSize;
+	QRectF imageRect;
 	bool empty;
-	QString svgSilk = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, silkLayerIDs, true, imageSize, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
+	QString svgSilk = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, silkLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
     if (svgSilk.isEmpty()) {
 		displayMessage(QObject::tr("silk file export failure (1)"), displayMessageBoxes);
         return 0;
@@ -226,9 +226,9 @@ int GerberGenerator::doDrill(ItemBase * board, PCBSketchWidget * sketchWidget, c
     LayerList drillLayerIDs;
     drillLayerIDs << ViewLayer::drillLayers();
 
-	QSizeF imageSize;
+	QRectF imageRect;
 	bool empty;
-	QString svgDrill = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, drillLayerIDs, true, imageSize, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
+	QString svgDrill = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, drillLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
     if (svgDrill.isEmpty()) {
 		displayMessage(QObject::tr("drill file export failure (1)"), displayMessageBoxes);
         return 0;
@@ -256,9 +256,9 @@ int GerberGenerator::doMask(LayerList maskLayerIDs, const QString &maskName, con
 	QList<ItemBase *> copperLogoItems;
 	sketchWidget->hideCopperLogoItems(copperLogoItems);
 
-	QSizeF imageSize;
+	QRectF imageRect;
 	bool empty;
-	QString svgMask = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, maskLayerIDs, true, imageSize, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
+	QString svgMask = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, maskLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
     if (svgMask.isEmpty()) {
 		displayMessage(QObject::tr("mask file export failure (1)"), displayMessageBoxes);
         return 0;
@@ -298,9 +298,9 @@ int GerberGenerator::doPasteMask(LayerList maskLayerIDs, const QString &maskName
 	QList<ItemBase *> holes;
 	sketchWidget->hideHoles(holes);
 
-	QSizeF imageSize;
+	QRectF imageRect;
 	bool empty;
-	QString svgMask = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, maskLayerIDs, true, imageSize, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
+	QString svgMask = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, maskLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
     if (svgMask.isEmpty()) {
 		displayMessage(QObject::tr("mask file export failure (1)"), displayMessageBoxes);
         return 0;

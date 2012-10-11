@@ -1503,23 +1503,23 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 
 	LayerList viewLayerIDs;
 	viewLayerIDs << ViewLayer::Board;
-	QSizeF boardImageSize;
+	QRectF boardImageRect;
 	bool empty;
-	QString boardSvg = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, boardImageSize, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
+	QString boardSvg = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, boardImageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
 	if (boardSvg.isEmpty()) {
         QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to render board svg (1)."));
 		return false;
 	}
 
     QString svg0;
-	QSizeF copperImageSize;
+	QRectF copperImageRect;
     if (viewLayerID == ViewLayer::UnknownLayer || viewLayerID == ViewLayer::GroundPlane0) {
 	    viewLayerIDs.clear();
 	    viewLayerIDs << ViewLayer::Copper0 << ViewLayer::Copper0Trace  << ViewLayer::GroundPlane0;
 
 	    // hide ground traces so the ground plane will intersect them
 	    if (fillGroundTraces) showGroundTraces(seeds, false);
-	    svg0 = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, copperImageSize, board, GraphicsUtils::StandardFritzingDPI, false, true, empty);
+	    svg0 = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, copperImageRect, board, GraphicsUtils::StandardFritzingDPI, false, true, empty);
 	    if (fillGroundTraces) showGroundTraces(seeds, true);
 	    if (svg0.isEmpty()) {
             QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to render copper svg (1)."));
@@ -1533,7 +1533,7 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 		viewLayerIDs << ViewLayer::Copper1 << ViewLayer::Copper1Trace << ViewLayer::GroundPlane1;
 
 		if (fillGroundTraces) showGroundTraces(seeds, false);
-		svg1 = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, copperImageSize, board, GraphicsUtils::StandardFritzingDPI, false, true, empty);
+		svg1 = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, copperImageRect, board, GraphicsUtils::StandardFritzingDPI, false, true, empty);
 		if (fillGroundTraces) showGroundTraces(seeds, true);
 		if (svg1.isEmpty()) {
 			QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to render copper svg (1)."));
@@ -1555,7 +1555,7 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 				    this, SLOT(postImageSlot(GroundPlaneGenerator *, QImage *, QGraphicsItem *)));
 	    }
 
-	    bool result = gpg0.generateGroundPlane(boardSvg, boardImageSize, svg0, copperImageSize, exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */,
+	    bool result = gpg0.generateGroundPlane(boardSvg, boardImageRect.size(), svg0, copperImageRect.size(), exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */,
 											    ViewLayer::Copper0Color);
 	    if (result == false) {
             QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to write copper fill (1)."));
@@ -1573,7 +1573,7 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 			connect(&gpg1, SIGNAL(postImageSignal(GroundPlaneGenerator *, QImage *, QGraphicsItem *)), 
 					this, SLOT(postImageSlot(GroundPlaneGenerator *, QImage *, QGraphicsItem *)));
 		}
-		bool result = gpg1.generateGroundPlane(boardSvg, boardImageSize, svg1, copperImageSize, exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */,
+		bool result = gpg1.generateGroundPlane(boardSvg, boardImageRect.size(), svg1, copperImageRect.size(), exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */,
 												ViewLayer::Copper1Color);
 		if (result == false) {
 			QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to write copper fill (2)."));
@@ -1633,9 +1633,9 @@ QString PCBSketchWidget::generateCopperFillUnit(ItemBase * itemBase, QPointF whe
 
 	LayerList viewLayerIDs;
 	viewLayerIDs << ViewLayer::Board;
-	QSizeF boardImageSize;
+	QRectF boardImageRect;
 	bool empty;
-	QString boardSvg = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, boardImageSize, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
+	QString boardSvg = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, boardImageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
 	if (boardSvg.isEmpty()) {
         QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to render board svg (1)."));
 		return "";
@@ -1651,11 +1651,11 @@ QString PCBSketchWidget::generateCopperFillUnit(ItemBase * itemBase, QPointF whe
 	}
 
 	viewLayerIDs = ViewLayer::copperLayers(viewLayerSpec);
-	QSizeF copperImageSize;
+	QRectF copperImageRect;
 
 	bool vis = itemBase->isVisible();
 	itemBase->setVisible(false);
-	QString svg = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, copperImageSize, board, GraphicsUtils::StandardFritzingDPI, false, true, empty);
+	QString svg = renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, copperImageRect, board, GraphicsUtils::StandardFritzingDPI, false, true, empty);
 	itemBase->setVisible(vis);
 	if (svg.isEmpty()) {
         QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to render copper svg (1)."));
@@ -1670,7 +1670,7 @@ QString PCBSketchWidget::generateCopperFillUnit(ItemBase * itemBase, QPointF whe
 	gpg.setStrokeWidthIncrement(StrokeWidthIncrement);
 	gpg.setLayerName(gpLayerName);
 	gpg.setMinRunSize(10, 10);
-	bool result = gpg.generateGroundPlaneUnit(boardSvg, boardImageSize, svg, copperImageSize, exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */, 
+	bool result = gpg.generateGroundPlaneUnit(boardSvg, boardImageRect.size(), svg, copperImageRect.size(), exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */, 
 												color, whereToStart);
 
 	if (result == false || gpg.newSVGs().count() < 1) {

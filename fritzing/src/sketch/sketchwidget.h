@@ -217,12 +217,12 @@ public:
 	void resizeNote(long itemID, const QSizeF & );
 	class SelectItemCommand* stackSelectionState(bool pushIt, QUndoCommand * parentCommand);
 	QString renderToSVG(double printerScale, const LayerList &, 
-						bool blackOnly, QSizeF & imageSize, ItemBase * board, double dpi, 
+						bool blackOnly, QRectF & imageRect, ItemBase * board, double dpi, 
 						bool selectedItems, bool renderBlocker, bool & empty);
 	QString renderToSVG(double printerScale, const LayerList &, 
-						bool blackOnly, QSizeF & imageSize, ItemBase * board, QRectF & offsetRect, double dpi, 
+						bool blackOnly, QRectF & imageRect, ItemBase * board, QRectF & offsetRect, double dpi, 
 						bool selectedItems, bool renderBlocker, bool & empty);
-	QString renderToSVG(double printerScale, bool blackOnly, QSizeF & imageSize, QRectF & offsetRect, double dpi, 
+	QString renderToSVG(double printerScale, bool blackOnly, QRectF & imageRect, QRectF & offsetRect, double dpi, 
 								  bool renderBlocker, 
 								  QList<QGraphicsItem *> & itemsAndLabels, QRectF itemsBoundingRect, bool & empty);
 

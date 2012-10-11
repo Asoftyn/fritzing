@@ -90,6 +90,7 @@ void StackTabBar::dragMoveEvent(QDragMoveEvent* event) {
 			event->acceptProposedAction();
 			m_dragMoveTimer.setProperty("index", index);
 			if (!m_dragMoveTimer.isActive()) {
+                DebugDialog::debug("starting drag move timer");
 				m_dragMoveTimer.start();
 			}
 			//DebugDialog::debug(QString("setting index %1").arg(index));

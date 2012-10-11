@@ -1217,7 +1217,7 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
 void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QString & boardName, QList<LayerThing> & layerThingList, QDir & saveDir) {
 	try {
 		
-		QSizeF imageSize;
+		QRectF imageRect;
 		bool empty;
 
 		QString maskTop;
@@ -1235,7 +1235,7 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
                 default:
                     break;
 			}
-			QString one = mainWindow->pcbView()->renderToSVG(GraphicsUtils::SVGDPI, layerThing.layerList, true, imageSize, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
+			QString one = mainWindow->pcbView()->renderToSVG(GraphicsUtils::SVGDPI, layerThing.layerList, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
 					
 			QString clipString;
 					
