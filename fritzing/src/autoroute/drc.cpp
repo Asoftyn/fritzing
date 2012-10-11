@@ -29,7 +29,7 @@ $Date$
 #include "../debugdialog.h"
 #include "../items/virtualwire.h"
 #include "../items/tracewire.h"
-#include "../items/jumperitem.h"
+#include "../items/via.h"
 #include "../utils/graphicsutils.h"
 #include "../utils/folderutils.h"
 #include "../connectors/connectoritem.h"
@@ -41,6 +41,7 @@ $Date$
 #include <qmath.h>
 #include <QApplication>
 #include <QMessageBox>
+#include <QPixmap>
 
 ///////////////////////////////////////////
 
@@ -71,16 +72,31 @@ DRC::DRC(PCBSketchWidget * sketchWidget, ItemBase * board)
 {
 	m_sketchWidget = sketchWidget;
     m_board = board;
+    m_displayItem = NULL;
+    m_displayImage = NULL;
+    m_plusImage = NULL;
+    m_minusImage = NULL;
 }
 
 DRC::~DRC(void)
 {
+    if (m_displayItem) {
+        delete m_displayItem;
+    }
+    if (m_plusImage) {
+        delete m_plusImage;
+    }
+    if (m_minusImage) {
+        delete m_minusImage;
+    }
+    if (m_displayImage) {
+        delete m_displayImage;
+    }
 }
 
 bool DRC::start(QString & message) {
     bool result = true;
     message = tr("Your sketch is ready for production: there are no connectors or traces that overlap or are too close together.");
-
 
     double keepout = 7;  // mils
     double dpi = (1000 / keepout) * 2;
@@ -138,6 +154,7 @@ bool DRC::start(QString & message) {
     layerSpecs << ViewLayer::Bottom;
     if (bothSidesNow) layerSpecs << ViewLayer::Top;
 
+    bool collisions = false;
     QList<QString> masters;
     int emptyMasterCount = 0;
     foreach (ViewLayer::ViewLayerSpec viewLayerSpec, layerSpecs) {    
@@ -183,28 +200,25 @@ bool DRC::start(QString & message) {
         #endif
 
 
-        if (pixelsCollide(m_plusImage, m_minusImage, m_displayImage, 0, 0, imgSize.width(), imgSize.height(), 0xffff0000)) {
+        if (pixelsCollide(m_plusImage, m_minusImage, m_displayImage, 0, 0, imgSize.width(), imgSize.height(), 0x80ff0000)) {
             message = tr("Too close to a border or a hole");
+            collisions = true;
             result = false;
         }
-
     }
 
-
-
+    if (collisions) {
+        QPixmap pixmap = QPixmap::fromImage(*m_displayImage);
+        m_displayItem = new QGraphicsPixmapItem(pixmap);
+        m_displayItem->setPos(m_board->pos());
+        m_sketchWidget->scene()->addItem(m_displayItem);
+        m_displayItem->setZValue(5000);
+        m_displayItem->setScale(GraphicsUtils::SVGDPI / dpi);
+    }
 
 	
 
     /*
-
-
-	QByteArray copperByteArray;
-	if (!SvgFileSplitter::changeStrokeWidth(svg, m_strokeWidthIncrement, false, true, copperByteArray)) {
-		return NULL;
-	}
-
-
-    m_keepout = GraphicsUtils::mils2pixels(7, GraphicsUtils::SVGDPI);
 
 	QHash<ConnectorItem *, int> indexer;
     bool bothSides = true;
@@ -223,6 +237,18 @@ void DRC::cleanup() {
 }
 
 void DRC::makeHoles(QDomDocument & masterDoc, QImage * image, QRectF & sourceRes) {
+    QSet<QString> holeIDs;
+
+    foreach (QGraphicsItem * item, m_sketchWidget->scene()->items()) {
+        Hole * hole = dynamic_cast<Hole *>(item);
+        if (hole == NULL) continue;
+
+        Via * via = qobject_cast<Via *>(hole);
+        if (via) continue;
+
+        holeIDs.insert(QString::number(hole->id()));
+    }
+
     QList<QDomElement> todo;
     QList<QDomElement> holes;
     QList<QDomElement> notHoles;
@@ -240,6 +266,25 @@ void DRC::makeHoles(QDomDocument & masterDoc, QImage * image, QRectF & sourceRes
             firstTime = false;
             continue;
         }
+
+        foreach (QString holeID, holeIDs) {
+            // make sure all sub circles of Hole parts will be added to the board image
+            if (element.attribute("partID") == holeID) {
+                QList<QDomElement> htodo;
+                htodo << element;
+                while (!htodo.isEmpty()) {
+                    QDomElement helement = htodo.takeFirst();
+                    helement.setAttribute("id", FSvgRenderer::NonConnectorName);
+                    QDomElement child = helement.firstChildElement();
+                    while (!child.isNull()) {
+                        htodo << child;
+                        child = child.nextSiblingElement();
+                    }
+                }
+                break;
+            }
+        }
+
         if (element.tagName() == "g") continue;
 
         if (element.attribute("id").contains(FSvgRenderer::NonConnectorName)) {

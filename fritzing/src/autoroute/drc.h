@@ -31,6 +31,7 @@ $Date$
 #include <QObject>
 #include <QImage>
 #include <QDomDocument>
+#include <QGraphicsPixmapItem>
 
 #include "../svg/svgfilesplitter.h"
 
@@ -57,6 +58,7 @@ protected:
     QImage * m_plusImage;
     QImage * m_minusImage;
     QImage * m_displayImage;
+    QGraphicsPixmapItem * m_displayItem;
 };
 
 #endif
