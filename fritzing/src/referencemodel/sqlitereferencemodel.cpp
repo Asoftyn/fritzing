@@ -84,6 +84,9 @@ void killBuses(QVector<BusShared *> & buses) {
     buses.clear();
 }
 
+QStringList FailurePartMessages;
+QStringList FailurePropertyMessages;
+
 void noSwappingMessage()
 {
 	QMessageBox::warning(NULL,
@@ -101,6 +104,8 @@ SqliteReferenceModel::SqliteReferenceModel() {
 
 bool SqliteReferenceModel::loadAll(const QString & databaseName, bool fullLoad)
 {
+    FailurePartMessages.clear();
+    FailurePropertyMessages.clear();
     m_fullLoad = fullLoad;
 	initParts();
 
@@ -117,9 +122,43 @@ bool SqliteReferenceModel::loadAll(const QString & databaseName, bool fullLoad)
 	 * the same family and providing exactly the same properties set
 	 */
 
-	if(!m_swappingEnabled) {
+	if (!m_swappingEnabled) {
         noSwappingMessage();
 	}
+    else if (FailurePartMessages.count() > 0) {
+        QString message = tr("The swapping mechanism is disabled for:\n\n");
+        if (FailurePartMessages.count() == 1) {
+            message += FailurePartMessages.at(0);
+        }
+        else if (FailurePartMessages.count() < 6) {
+            message += FailurePartMessages.join("\n");
+        }
+        else {
+            for (int i = 0; i < 4; i++) {
+                message += FailurePartMessages.at(i);
+                message += ("\n");
+            }
+            message += "\n" + tr("and %1 other parts").arg(FailurePartMessages.count() - 4);
+        }
+	    QMessageBox::warning(NULL, QObject::tr("Oops!"), message, QMessageBox::Ok);   
+    }
+    else if (FailurePropertyMessages.count() > 0) {
+        QString message = tr("The swapping mechanism is disabled for:\n\n");
+        if (FailurePropertyMessages.count() == 1) {
+            message += FailurePropertyMessages.at(0);
+        }
+        else if (FailurePropertyMessages.count() < 6) {
+            message += FailurePropertyMessages.join("\n");
+        }
+        else {
+            for (int i = 0; i < 4; i++) {
+                message += FailurePropertyMessages.at(i);
+                message += ("\n");
+            }
+            message += "\n" + tr("and %1 other properties").arg(FailurePropertyMessages.count() - 4);
+        }
+	    QMessageBox::warning(NULL, QObject::tr("Oops!"), message, QMessageBox::Ok);   
+    }
     return m_swappingEnabled;
 
 }
@@ -826,7 +865,14 @@ bool SqliteReferenceModel::insertPart(ModelPart * modelPart, bool fullLoad) {
         foreach (QString prop, properties.keys()) {
             if (prop == "family") continue;
 
-			insertProperty(prop, properties.value(prop), id);
+			bool result = insertProperty(prop, properties.value(prop), id);
+            if (fullLoad && !result) {
+                m_swappingEnabled = false;
+            }
+            if (!result) {
+                FailurePropertyMessages << tr("property '%1' in part '%2' with id '%3'.")
+                    .arg(prop).arg(modelPart->path()).arg(modelPart->moduleID());
+            }
 		}
 
         if (fullLoad) {
@@ -848,7 +894,8 @@ bool SqliteReferenceModel::insertPart(ModelPart * modelPart, bool fullLoad) {
         }
 	} else {
         debugExec("couldn't insert part", query);
-		m_swappingEnabled = false;
+        FailurePartMessages << tr("part '%1' with id '%2'; possibly because it has no 'family' property.")
+                                .arg(modelPart->path()).arg(modelPart->moduleID());
 	}
 
     DebugModelPart = NULL;
@@ -863,7 +910,7 @@ bool SqliteReferenceModel::insertProperty(const QString & name, const QString & 
 	query.bindValue(":part_id", id);
 	if(!query.exec()) {
         debugExec("couldn't insert property", query);
-		m_swappingEnabled = false;
+		return false;
 	} else {
 		// qulonglong id = query.lastInsertId().toULongLong();
 	}
