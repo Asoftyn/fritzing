@@ -44,7 +44,7 @@ public:
 	DRC(class PCBSketchWidget *, class ItemBase * board);
 	virtual ~DRC(void);
 
-	bool start(QString & message);
+	bool start(QString & message, QStringList & messages);
 
 public slots:
 	void cancel();
@@ -65,7 +65,7 @@ protected:
     void markSubs(QDomElement & root, const QString & mark);
     void splitSubs(QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs);
     void updateDisplay(double dpi);
-	bool startAux(QString & message);
+	bool startAux(QString & message, QStringList & messages);
 	
 protected:
 	class PCBSketchWidget * m_sketchWidget;

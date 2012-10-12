@@ -54,11 +54,8 @@ $Date$
 //
 //  keepout ui
 //
-//  singletons
-//
 //  if a part is already overlapping, leave it out of future checking?
 //
-//  why are events blocking
 //
 ///////////////////////////////////////////
 
@@ -81,10 +78,14 @@ bool pixelsCollide(QImage * image1, QImage * image2, QImage * image3, int x1, in
 	return result;
 }
 
+static QString CancelledMessage;
+
 ///////////////////////////////////////////
 
 DRC::DRC(PCBSketchWidget * sketchWidget, ItemBase * board)
 {
+    CancelledMessage = tr("DRC was cancelled.");
+
     m_cancelled = false;
 	m_sketchWidget = sketchWidget;
     m_board = board;
@@ -113,18 +114,24 @@ DRC::~DRC(void)
     }
 }
 
-bool DRC::start(QString & message) {
-    bool result = startAux(message);
+bool DRC::start(QString & message, QStringList & messages) {
+    bool result = startAux(message, messages);
+    if (result) {
+        if (messages.count() == 0) {
+            message = tr("Your sketch is ready for production: there are no connectors or traces that overlap or are too close together.");
+        }
+        else {
+            message = tr("The areas on your board highlighted in red are connectors and traces which may overlap or be too close together. ") +
+					 tr("Reposition them and run the DRC again to find more problems");
+        }
+    }
+
     emit wantBothVisible();
     emit setProgressValue(m_maxProgress);
     return result;
 }
 
-bool DRC::startAux(QString & message) {
-
-    bool result = true;
-    message = tr("Your sketch is ready for production: there are no connectors or traces that overlap or are too close together.");
-    QStringList messages;
+bool DRC::startAux(QString & message, QStringList & messages) {
 
     bool bothSidesNow = m_sketchWidget->boardLayers() == 2;
 
@@ -190,8 +197,7 @@ bool DRC::startAux(QString & message) {
     m_displayImage = new QImage(imgSize, QImage::Format_ARGB32);
     m_displayImage->fill(0);
 
-    result = makeBoard(m_minusImage, sourceRes);
-    if (!result) {
+    if (!makeBoard(m_minusImage, sourceRes)) {
         message = tr("Fritzing error: unable to render board svg.");
         return false;
     }
@@ -226,18 +232,16 @@ bool DRC::startAux(QString & message) {
 	    QString errorStr;
 	    int errorLine;
 	    int errorColumn;
-	    bool result = masterDoc->setContent(master, &errorStr, &errorLine, &errorColumn);
-	    if (!result) {
+	    if (!masterDoc->setContent(master, &errorStr, &errorLine, &errorColumn)) {
             message = tr("Unexpected SVG rendering failure--contact fritzing.org");
 		    return false;
 	    }
 
 	    ProcessEventBlocker::processEvents();
         if (m_cancelled) {
-            message = tr("cancelled");
+            message = CancelledMessage;
             return false;
         }
-
 
         if (master.contains(FSvgRenderer::NonConnectorName)) {
             makeHoles(masterDoc, m_minusImage, sourceRes, viewLayerSpec);
@@ -245,7 +249,7 @@ bool DRC::startAux(QString & message) {
 
 	    ProcessEventBlocker::processEvents();
         if (m_cancelled) {
-            message = tr("cancelled");
+            message = CancelledMessage;
             return false;
         }
 
@@ -259,7 +263,7 @@ bool DRC::startAux(QString & message) {
 
 	    ProcessEventBlocker::processEvents();
         if (m_cancelled) {
-            message = tr("cancelled");
+            message = CancelledMessage;
             return false;
         }
 
@@ -269,14 +273,13 @@ bool DRC::startAux(QString & message) {
             messages << msg;
             collisions = true;
             updateDisplay(dpi);
-            result = false;
         }
 
         emit setProgressValue(progress++);
 
 	    ProcessEventBlocker::processEvents();
         if (m_cancelled) {
-            message = tr("cancelled");
+            message = CancelledMessage;
             return false;
         }
 
@@ -348,7 +351,7 @@ bool DRC::startAux(QString & message) {
 
 	        ProcessEventBlocker::processEvents();
             if (m_cancelled) {
-                message = tr("cancelled");
+                message = CancelledMessage;
                 return false;
             }
 
@@ -370,7 +373,6 @@ bool DRC::startAux(QString & message) {
                     emit setProgressMessage(msg);
                     collisions = true;
                     updateDisplay(dpi);
-                    result = false;
                 }
             }
 
@@ -378,17 +380,13 @@ bool DRC::startAux(QString & message) {
 
 	        ProcessEventBlocker::processEvents();
             if (m_cancelled) {
-                message = tr("cancelled");
+                message = CancelledMessage;
                 return false;
             }
         }
     }
 
-    if (messages.count() > 0) {
-        message = messages.join("\n");
-    }
-
-    return result;
+    return true;
 }
 
 void DRC::makeHoles(QDomDocument * masterDoc, QImage * image, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec) {

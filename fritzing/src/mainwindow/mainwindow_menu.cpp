@@ -38,6 +38,7 @@ $Date$
 #include "../autoroute/cmrouter/cmrouter.h"
 #include "../autoroute/autorouteprogressdialog.h"
 #include "../autoroute/drc.h"
+#include "../autoroute/drcresultsdialog.h"
 #include "../items/virtualwire.h"
 #include "../items/resizableboard.h"
 #include "../items/jumperitem.h"
@@ -3718,17 +3719,19 @@ void MainWindow::newDesignRulesCheck()
 	ProcessEventBlocker::block();
 
 	QString message;
-	bool result = drc.start(message);
+    QStringList messages;
+	bool finished = drc.start(message, messages);
 
 	ProcessEventBlocker::unblock();
 
     progress.close();
 
-	if (result) {
+	if (messages.count() == 0) {
 		QMessageBox::information(this, tr("Fritzing"), message);
 	}
 	else {
-		QMessageBox::warning(this, tr("Fritzing"), message);
+		DRCResultsDialog dialog(message, messages, this);
+        dialog.exec();
 	}
 }
 

@@ -120,6 +120,7 @@
 
 
 
+
           &gt; Reuse schematic image</b>, and <b>File &gt; Reuse PCB
           image</b>. <br>
         <br>
@@ -139,17 +140,22 @@
         like a full document window.<br>
         <br>
         If you start with a core part (i.e. a part from the Fritzing
-        distro), saving is equivalent to "Save As". A new part will be
-        created in your local storage area (explained below) and added
-        to the "My Parts" Bin. If you are editing a custom part that was
-        in a sketch, the part will be updated whenever you save (core
-        parts are not updated). If you want the new part to display in
-        the My Parts Bin the next time you run Fritzing, remember to
+        distro), saving from the Parts Editor is disabled. You must use
+        <b>Save as new part</b>, because you cannot change a core part.
+        <b>Save as new part</b> creates a new part in your local storage
+        area (explained below) and this part is added to the "My Parts"
+        Bin--it is a copy of the original part (plus whatever changes
+        you have already made so far using the Parts Editor). If you are
+        editing a custom part that was in a sketch, the part will be
+        updated whenever you save. If you want the new part to display
+        in the My Parts Bin the next time you run Fritzing, remember to
         save the bin (use the drop down menu at the upper left of the
         bin). If you start editing from a part in the My Parts Bin you
-        have a choice between Save (which will overwrite the part), and
-        Save As (which will create a new part and add it to the My Parts
-        Bin).<br>
+        have a choice between <b>Save </b>(which will overwrite the
+        part), and <b>Save As New Part</b> (which will create a new
+        part and add it to the My Parts Bin). If you copy a part into My
+        Parts Bin from some other bin, then probably <b>Save </b>will
+        be disabled.<br>
         <br>
         On Windows the local storage folder is something like
         C:\Users\[username]\AppData\Roaming\Fritzing\parts\user\, and
@@ -185,6 +191,7 @@
         Next we load the new breadboard image using <b>File &gt; Load
           image for view</b>.&nbsp; In the Tools widget at the upper
         right, you see a list of connectors. Choose one to make it the <b>current
+
 
 
         </b>or <b>active</b> <b>connector</b>. If it has already been
