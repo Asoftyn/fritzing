@@ -3722,6 +3722,8 @@ void MainWindow::newDesignRulesCheck()
 
 	ProcessEventBlocker::unblock();
 
+    progress.close();
+
 	if (result) {
 		QMessageBox::information(this, tr("Fritzing"), message);
 	}

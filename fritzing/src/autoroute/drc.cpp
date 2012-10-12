@@ -56,10 +56,6 @@ $Date$
 //
 //  singletons
 //
-//  why pixmap is invisible on overlaps
-//
-//  why simple overlap is not working
-//
 //  if a part is already overlapping, leave it out of future checking?
 //
 //  why are events blocking
@@ -284,6 +280,22 @@ bool DRC::startAux(QString & message) {
             return false;
         }
 
+    }
+
+    while (singletons.count() > 0) {
+        QList<ConnectorItem *> combined;
+        QList<ConnectorItem *> singleton = singletons.takeFirst();
+        ItemBase * chief = singleton.at(0)->attachedTo()->layerKinChief();
+        combined.append(singleton);
+        for (int ix = singletons.count() - 1; ix >= 0; ix--) {
+            QList<ConnectorItem *> candidate = singletons.at(ix);
+            if (candidate.at(0)->attachedTo()->layerKinChief() == chief) {
+                combined.append(candidate);
+                singletons.removeAt(ix);
+            }
+        }
+
+        equis.append(combined);
     }
 
     int index = 0;
