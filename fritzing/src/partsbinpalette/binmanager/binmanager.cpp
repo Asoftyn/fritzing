@@ -750,6 +750,8 @@ QList<QAction*> BinManager::openedBinsActions(const QString &moduleId) {
 
 	for (int i = 0; i < m_stackTabWidget->count(); i++) {
 		PartsBinPaletteWidget* pppw = (PartsBinPaletteWidget *) m_stackTabWidget->widget(i);
+        if (pppw->readOnly()) continue;
+
 		QAction *act = pppw->addPartToMeAction();
 		act->setEnabled(!pppw->contains(moduleId));
 		titlesAndActions[pppw->title()] = act;
