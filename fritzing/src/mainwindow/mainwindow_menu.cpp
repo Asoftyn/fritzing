@@ -3694,9 +3694,33 @@ void MainWindow::newDesignRulesCheck()
         }
 	}
 
+	AutorouteProgressDialog progress(tr("DRC Progress..."), true, false, false, pcbSketchWidget, this);
+	progress.setModal(true);
+	progress.show();
+	QRect pr = progress.frameGeometry();
+	QRect wr = pcbSketchWidget->frameGeometry();
+    QPoint p = pcbSketchWidget->mapTo(this, wr.topRight());
+	progress.move(p.x() - pr.width(), pr.top());
+
 	DRC drc(pcbSketchWidget, board);
+
+	connect(&drc, SIGNAL(wantTopVisible()), this, SLOT(activeLayerTop()), Qt::DirectConnection);
+	connect(&drc, SIGNAL(wantBottomVisible()), this, SLOT(activeLayerBottom()), Qt::DirectConnection);
+	connect(&drc, SIGNAL(wantBothVisible()), this, SLOT(activeLayerBoth()), Qt::DirectConnection);
+
+	connect(&progress, SIGNAL(cancel()), &drc, SLOT(cancel()), Qt::DirectConnection);
+
+	connect(&drc, SIGNAL(setMaximumProgress(int)), &progress, SLOT(setMaximum(int)), Qt::DirectConnection);
+	connect(&drc, SIGNAL(setProgressValue(int)), &progress, SLOT(setValue(int)), Qt::DirectConnection);
+	connect(&drc, SIGNAL(setProgressMessage(const QString &)), &progress, SLOT(setMessage(const QString &)));
+
+	ProcessEventBlocker::processEvents();
+	ProcessEventBlocker::block();
+
 	QString message;
 	bool result = drc.start(message);
+
+	ProcessEventBlocker::unblock();
 
 	if (result) {
 		QMessageBox::information(this, tr("Fritzing"), message);
@@ -3704,10 +3728,6 @@ void MainWindow::newDesignRulesCheck()
 	else {
 		QMessageBox::warning(this, tr("Fritzing"), message);
 	}
-
-	drc.cleanup();
-
-
 }
 
 void MainWindow::designRulesCheck() 

@@ -543,6 +543,7 @@ void PEMainWindow::createFileMenu() {
     m_fileMenu->addAction(m_saveAct);
     m_fileMenu->addAction(m_saveAsAct);
     m_saveAsAct->setText(tr("Save as new part"));
+    m_saveAsAct->setStatusTip(tr("Make a copy of the part and save it in the 'My Parts' Bin"));
 
     m_fileMenu->addSeparator();
 	m_exportMenu = m_fileMenu->addMenu(tr("&Export"));

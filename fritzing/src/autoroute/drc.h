@@ -34,6 +34,7 @@ $Date$
 #include <QGraphicsPixmapItem>
 
 #include "../svg/svgfilesplitter.h"
+#include "../viewlayer.h"
 
 class DRC : public QObject
 {
@@ -44,21 +45,39 @@ public:
 	virtual ~DRC(void);
 
 	bool start(QString & message);
-	void cleanup();
+
+public slots:
+	void cancel();
+
+signals:
+	void setMaximumProgress(int);
+	void setProgressValue(int);
+	void wantTopVisible();
+	void wantBottomVisible();	
+	void wantBothVisible();
+	void setProgressMessage(const QString &);
 
 protected:
-    void makeHoles(QDomDocument & masterDoc, QImage *, QRectF & source);
-
+    void makeHoles(QDomDocument *, QImage *, QRectF & sourceRes, ViewLayer::ViewLayerSpec);
+    bool makeBoard(QImage *, QRectF & sourceRes);
+    void splitNet(QDomDocument *, QList<class ConnectorItem *> & , QImage * minusImage, QImage * plusImage, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec, double keepout, int index);
+    void renderOne(QDomDocument * masterDoc, QImage * image, QRectF & sourceRes);
+    void markSubs(QDomElement & root, const QString & mark);
+    void splitSubs(QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs);
+    void updateDisplay(double dpi);
+	bool startAux(QString & message);
 	
 protected:
 	class PCBSketchWidget * m_sketchWidget;
     class ItemBase * m_board;
-	QList< QList<class ConnectorItem *>* > m_allPartConnectorItems;
 	double m_keepout;
     QImage * m_plusImage;
     QImage * m_minusImage;
     QImage * m_displayImage;
     QGraphicsPixmapItem * m_displayItem;
+    QHash<ViewLayer::ViewLayerSpec, QDomDocument *> m_masterDocs;
+    bool m_cancelled;
+    int m_maxProgress;
 };
 
 #endif

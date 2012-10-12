@@ -2538,7 +2538,7 @@ QString PCBSketchWidget::makePasteMask(const QString & svgMask, ItemBase * board
 
 int PCBSketchWidget::checkLoadedTraces() {
 
-    QCoreApplication::processEvents();
+    ProcessEventBlocker::processEvents();
     scene()->clearSelection();
     QList<Wire *> wires;
     QHash<Wire *, QLineF> lines;

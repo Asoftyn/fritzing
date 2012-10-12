@@ -250,8 +250,6 @@ void PEToolView::initConnectors(QList<QDomElement> * connectorList) {
     }
 
     m_connectorListWidget->blockSignals(false);
-
-	QApplication::processEvents();
 }
 
 void PEToolView::showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::ViewIdentifier viewIdentifier) {

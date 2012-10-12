@@ -1155,12 +1155,12 @@ bool SvgFileSplitter::changeStrokeWidth(const QString & svg, double delta, bool 
 		return false;
 	}
 
-	changeStrokeWidth(root, delta, absolute, changeOpacity);
+	changeStrokeWidth(root, delta, absolute, changeOpacity, true);
 	byteArray = domDocument.toByteArray();
 	return true;
 }
 
-void SvgFileSplitter::changeStrokeWidth(QDomElement & element, double delta, bool absolute, bool changeOpacity) {
+void SvgFileSplitter::changeStrokeWidth(QDomElement & element, double delta, bool absolute, bool changeOpacity, bool recurse) {
 	bool ok;
 	double sw = element.attribute("stroke-width").toDouble(&ok);
 	if (ok) {
@@ -1179,11 +1179,13 @@ void SvgFileSplitter::changeStrokeWidth(QDomElement & element, double delta, boo
 	    }
     }
 
-	QDomElement child = element.firstChildElement();
-	while (!child.isNull()) {
-		changeStrokeWidth(child, delta, absolute, changeOpacity);
-		child = child.nextSiblingElement();
-	}
+    if (recurse) {
+	    QDomElement child = element.firstChildElement();
+	    while (!child.isNull()) {
+		    changeStrokeWidth(child, delta, absolute, changeOpacity, recurse);
+		    child = child.nextSiblingElement();
+	    }
+    }
 }
 
 bool SvgFileSplitter::changeColors(const QString & svg, QString & toColor, QStringList & exceptions, QByteArray & byteArray) {

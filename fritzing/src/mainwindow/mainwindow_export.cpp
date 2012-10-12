@@ -869,7 +869,7 @@ void MainWindow::saveBundledNonAtomicEntity(QString &filename, const QString &ex
 		}
 	}
 
-	QApplication::processEvents();
+	ProcessEventBlocker::processEvents();
 
 	if(!FolderUtils::createZipAndSaveTo(destFolder, bundledFileName, skipSuffixes)) {
 		QMessageBox::warning(
