@@ -516,63 +516,6 @@ Use the file?</source>
             <numerusform>Nota: o auto-encaminhamento não foi efetivo nos componentes %n, porque estes não estão colocados inteiramente dentro da placa.</numerusform>
         </translation>
     </message>
-    <message>
-        <source>Your sketch is ready for production: there are no connectors or traces that overlap or are too close together.</source>
-        <translation>Seu desenho está pronto para produção: não existem trilhas ou ligações incorretas ou muito próximas.</translation>
-    </message>
-    <message numerus="yes">
-        <source>
-
-Note: %n parts are not located entirely on the board.</source>
-        <translation>
-            <numerusform>
-
-Nota: O componente %n não está totalmente dentro da placa.</numerusform>
-            <numerusform>
-
-Nota: Os componentes %n não estão totalmente dentro da placa.</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>The Design Rule Check (DRC) was cancelled, because it could not find a board (or it found more than one).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The areas on your board highlighted in red are connectors and traces which may overlap or be too close together. </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reposition them and run the DRC again to find more problems.
-
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Note that the DRC is known to give false positives--in other words, it may find &apos;overlaps&apos; that don&apos;t actually exist. </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>So if you inspect the highlighed areas and see nothing wrong, you are probably correct.
-
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>For an absolutely definitive &apos;DRC&apos;, download a &apos;Gerber Viewer&apos; </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>(a software package for looking at &apos;Gerber&apos; files) </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>and choose File &gt; Export &gt; for Production &gt; Extended Gerber (RS-274X), </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>then look at the resulting files in your Gerber Viewer. </source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ConnectorItem</name>
@@ -587,6 +530,60 @@ Nota: Os componentes %n não estão totalmente dentro da placa.</numerusform>
     <message>
         <source>Straighten curve</source>
         <translation>Endireitar curva</translation>
+    </message>
+</context>
+<context>
+    <name>DRC</name>
+    <message>
+        <source>DRC was cancelled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your sketch is ready for production: there are no connectors or traces that overlap or are too close together.</source>
+        <translation type="unfinished">Seu desenho está pronto para produção: não existem trilhas ou ligações incorretas ou muito próximas.</translation>
+    </message>
+    <message>
+        <source>The areas on your board highlighted in red are connectors and traces which may overlap or be too close together. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reposition them and run the DRC again to find more problems</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fritzing error: unable to render board svg.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No traces or connectors to check</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unexpected SVG rendering failure--contact fritzing.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Too close to a border or a hole (%1 layer)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Part %1 &apos;%2&apos; crosses another net on %3 layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DRCResultsDialog</name>
+    <message>
+        <source>DRC Results</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2138,10 +2135,6 @@ Por favor verifique em todos os modos de visualização para verificar alguma mo
         <translation>Defina a camada inferior de cobre clicável</translation>
     </message>
     <message>
-        <source>Design Rules Check</source>
-        <translation>Verificar regras de projeto (DRC)</translation>
-    </message>
-    <message>
         <source>Select any parts that are too close together for safe board production (w/in 10 mil)</source>
         <translation>Selecione todos os componentes que estão próximos uns dos outros para a produção da borda de segurança (w/in 10 mil)</translation>
     </message>
@@ -2878,6 +2871,26 @@ Go ahead and revert?</source>
         <source>The folder &quot;%1&quot; isn&apos;t a Fritzing installation folder</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Delete Plus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete selection + attached wires</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Wire (up to bendpoints)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Design Rules Check (DRC)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DRC Progress...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ModelBase</name>
@@ -3096,10 +3109,6 @@ Razão: %2 (código do erro %3)</translation>
         <translation type="unfinished">Conectores</translation>
     </message>
     <message>
-        <source>Open a file to use as a part image.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show in Folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3202,10 +3211,6 @@ Razão: %2 (código do erro %3)</translation>
     <message>
         <source>no footprints found in %1</source>
         <translation type="unfinished">footprints não encontrados em %1</translation>
-    </message>
-    <message>
-        <source>unable to open temp file %1</source>
-        <translation type="unfinished">não foi possível abrir o arquivo temporário %1</translation>
     </message>
     <message>
         <source>Relocate connector %1</source>
@@ -3511,6 +3516,56 @@ Go ahead and save?</source>
         <source>Exiting the Parts Editor now is fine, as long as you remember to finish the assignments later.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Load image for view...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open a file to use as the image for this view of the part.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as new part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make a copy of the part and save it in the &apos;My Parts&apos; Bin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation type="unfinished">&amp;Editar</translation>
+    </message>
+    <message>
+        <source>This part has bendable legs. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This version of the Parts Editor does not yet support editing bendable legs, and the legs may not be displayed correctly in breadboard view . </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you make changes to breadboard view, or change connector metadata, the legs may no longer work. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You can safely make changes to Schematic or PCB view.
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This warning will not be repeated in this session of Fritzing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to load &apos;%1&apos;. Please close the parts editor without saving and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to load image file &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PEMetadataView</name>
@@ -3637,23 +3692,11 @@ Go ahead and save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Connector List (a checked connector&apos;s graphic is assigned)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Set Internal Connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Set this checkbox to edit internal connections by drawing wires</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Assign connector graphic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Using the mouse pointer and mouse wheel, navigate to the SVG region to which you want to assign to the current connector, then mouse down to assign it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3702,6 +3745,18 @@ Go ahead and save?</source>
     </message>
     <message>
         <source>&lt;font color=&apos;gray&apos;&gt;Dragging disabled&lt;/font&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connector List (a checkmark means the graphic was selected)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select graphic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use the cursor location and mouse wheel to navigate to the SVG element which you want to assign to the current connector, then mouse down to select it.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5187,6 +5242,10 @@ is already there, we won&apos;t add it again, right?</source>
         <source>Pad</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&lt;b&gt;type:&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
@@ -5294,6 +5353,58 @@ is already there, we won&apos;t add it again, right?</source>
         <source>Revert</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>size</source>
+        <translation type="unfinished">tamanho</translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation type="unfinished">personalizado</translation>
+    </message>
+    <message>
+        <source>A0 (1030x1456)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A1 (728x1030)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A2 (515x728)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A3 (364x515)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A4 (257x364)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A5 (182x257)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A6 (128x182)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Letter (8.5x11)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Legal (8.5x14)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ledger (17x11)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tabloid (11x17</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Ruler</name>
@@ -5336,12 +5447,20 @@ is already there, we won&apos;t add it again, right?</source>
         <source>sheet</source>
         <translation>folha</translation>
     </message>
+    <message>
+        <source>shape</source>
+        <translation type="unfinished">forma</translation>
+    </message>
 </context>
 <context>
     <name>SchematicSketchWidget</name>
     <message>
         <source>Change voltage from %1 to %2</source>
         <translation>Mudar a tensão de %1 para %2</translation>
+    </message>
+    <message>
+        <source>Change label from %1 to %2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5635,6 +5754,31 @@ Note: you can also trigger this display by mousing down on the routing status te
     </message>
 </context>
 <context>
+    <name>SqliteReferenceModel</name>
+    <message>
+        <source>The swapping mechanism is disabled for:
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and %1 other parts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and %1 other properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>property &apos;%1&apos; in part &apos;%2&apos; with id &apos;%3&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>part &apos;%1&apos; with id &apos;%2&apos;; possibly because it has no &apos;family&apos; property.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Stripboard</name>
     <message>
         <source>Restored</source>
@@ -5666,6 +5810,22 @@ Note: you can also trigger this display by mousing down on the routing status te
     <message>
         <source>voltage</source>
         <translation>tensão</translation>
+    </message>
+    <message>
+        <source>net label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>label</source>
+        <translation type="unfinished">etiqueta</translation>
+    </message>
+    <message>
+        <source>Net labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Net labels cannot be blank</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
