@@ -889,52 +889,6 @@ bool CMRouter::reorderEdges(QList<Ordering *> & orderings, Ordering * currentOrd
 	return gotNew;
 }
 
-bool CMRouter::drc(QString & message) 
-{
-	// TODO: 
-	//	what about ground plane?
-
-	if (m_sketchWidget->autorouteTypePCB() && m_board == NULL) {
-        message = tr("The Design Rule Check (DRC) was cancelled, because it could not find a board (or it found more than one).");
-		return false;
-	}
-
-	QHash<ConnectorItem *, int> indexer;
-	m_sketchWidget->collectAllNets(indexer, m_allPartConnectorItems, false, m_bothSidesNow);
-	fixWidths();
-	cleanUpNets();
-	m_keepout = StandardWireWidth / 2;
-
-	bool ok = drc(CMRouter::ReportAllOverlaps, CMRouter::AllowEquipotentialOverlaps, false, false);
-    if (ok) {
-		message = tr("Your sketch is ready for production: there are no connectors or traces that overlap or are too close together.");
-	}
-    else {
-		if (m_error.length() > 0) message = m_error;
-		else {
-			message = tr("The areas on your board highlighted in red are connectors and traces which may overlap or be too close together. ") +
-					 tr("Reposition them and run the DRC again to find more problems.\n\n") +
-					 tr("Note that the DRC is known to give false positives--in other words, it may find 'overlaps' that don't actually exist. ") +
-					 tr("So if you inspect the highlighed areas and see nothing wrong, you are probably correct.\n\n") +
-					 tr("For an absolutely definitive 'DRC', download a 'Gerber Viewer' ") +
-					 tr("(a software package for looking at 'Gerber' files) ") +
-					 tr("and choose File > Export > for Production > Extended Gerber (RS-274X), ") +
-					 tr("then look at the resulting files in your Gerber Viewer. ")
-					 ;
-		}
-	}
-
-	if (m_offBoardConnectors.count() > 0) {
-		QSet<ItemBase *> parts;
-		foreach (ConnectorItem * connectorItem, m_offBoardConnectors) {
-			parts.insert(connectorItem->attachedTo()->layerKinChief());
-		}
-		message += tr("\n\nNote: %n parts are not located entirely on the board.", "", parts.count());
-	}
-
-	return ok;
-}
-
 void CMRouter::drcClean() 
 {
 	clearGridEntries();

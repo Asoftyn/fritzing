@@ -48,7 +48,6 @@ $Date$
 
 ///////////////////////////////////////////
 //
-//  deal with rotated board
 //
 //  deal with invisible connectors
 //
@@ -125,6 +124,10 @@ bool DRC::start(QString & message, QStringList & messages) {
 					 tr("Reposition them and run the DRC again to find more problems");
         }
     }
+
+#ifndef QT_NO_DEBUG
+	m_displayImage->save(FolderUtils::getUserDataStorePath("") + "/testDRCDisplay.png");
+#endif
 
     emit wantBothVisible();
     emit setProgressValue(m_maxProgress);
@@ -257,9 +260,9 @@ bool DRC::startAux(QString & message, QStringList & messages) {
         SvgFileSplitter::changeStrokeWidth(root, 2 * keepout, false, true, true);
 
         renderOne(masterDoc, m_plusImage, sourceRes);
-        //#ifndef QT_NO_DEBUG
+        #ifndef QT_NO_DEBUG
 	        m_plusImage->save(FolderUtils::getUserDataStorePath("") + QString("/testDRCmaster%1.png").arg(viewLayerSpec));
-        //#endif
+        #endif
 
 	    ProcessEventBlocker::processEvents();
         if (m_cancelled) {
@@ -451,9 +454,11 @@ void DRC::makeHoles(QDomDocument * masterDoc, QImage * image, QRectF & sourceRes
     }
 
     renderOne(masterDoc, image, sourceRes);
-    //#ifndef QT_NO_DEBUG
+    #ifndef QT_NO_DEBUG
 	    image->save(FolderUtils::getUserDataStorePath("") + QString("/testDRCBoardHoles%1.png").arg(viewLayerSpec));
-    //#endif
+    #else
+        Q_UNUSED(viewLayerSpec);
+    #endif
 
     // restore doc without holes
     foreach (QDomElement element, holes) {
@@ -673,7 +678,7 @@ void DRC::updateDisplay(double dpi) {
 
     QPixmap pixmap = QPixmap::fromImage(*m_displayImage);
     m_displayItem = new QGraphicsPixmapItem(pixmap);
-    m_displayItem->setPos(m_board->pos());
+    m_displayItem->setPos(m_board->sceneBoundingRect().topLeft());
     m_sketchWidget->scene()->addItem(m_displayItem);
     m_displayItem->setZValue(5000);
     m_displayItem->setScale(GraphicsUtils::SVGDPI / dpi);

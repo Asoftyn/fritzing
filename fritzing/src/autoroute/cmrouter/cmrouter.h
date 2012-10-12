@@ -177,7 +177,6 @@ public:
 	~CMRouter(void);
 
 	void start();
-	bool drc(QString & message); 
 	void drcClean(); 
 
 public:

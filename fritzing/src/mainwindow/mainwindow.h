@@ -348,7 +348,6 @@ protected slots:
 
 	void openProgramWindow();
 	void linkToProgramFile(const QString & filename, const QString & language, const QString & programmer, bool addLink, bool strong);
-	void designRulesCheck();
 	void newDesignRulesCheck();
 	void subSwapSlot(SketchWidget *, ItemBase *, const QString & newModuleID, ViewLayer::ViewLayerSpec, long & newID, QUndoCommand * parentCommand);
 	void updateLayerMenuSlot();
@@ -748,7 +747,6 @@ protected:
 	class ConnectorItemAction *m_setOneGroundFillSeedAct;
 	QAction *m_setGroundFillSeedsAct;
 	QAction *m_clearGroundFillSeedsAct;
-	QAction *m_designRulesCheckAct;
 	QAction *m_newDesignRulesCheckAct;
 	QAction *m_autorouterSettingsAct;
 	QAction *m_tidyWiresAct;

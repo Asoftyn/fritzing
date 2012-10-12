@@ -1299,7 +1299,6 @@ void MainWindow::createTraceMenus()
 {
 	m_pcbTraceMenu = menuBar()->addMenu(tr("&Routing"));
 	m_pcbTraceMenu->addAction(m_autorouteAct);
-	m_pcbTraceMenu->addAction(m_designRulesCheckAct);
 	m_pcbTraceMenu->addAction(m_newDesignRulesCheckAct);
 	m_pcbTraceMenu->addAction(m_checkLoadedTracesAct);
 	m_pcbTraceMenu->addAction(m_autorouterSettingsAct);
@@ -1926,7 +1925,6 @@ void MainWindow::updateTraceMenu() {
 	m_setGroundFillSeedsAct->setEnabled(gfsEnabled && boardCount >= 1);
 	m_clearGroundFillSeedsAct->setEnabled(gfsEnabled && boardCount >= 1);
 
-	m_designRulesCheckAct->setEnabled(boardCount >= 1);
 	m_newDesignRulesCheckAct->setEnabled(boardCount >= 1);
 	m_checkLoadedTracesAct->setEnabled(true);
 	m_autorouterSettingsAct->setEnabled(m_currentGraphicsView == m_pcbGraphicsView);
@@ -2445,12 +2443,7 @@ void MainWindow::createTraceMenuActions() {
 	m_clearGroundFillSeedsAct->setStatusTip(tr("Clear ground fill seeds--enable copper fill only."));
 	connect(m_clearGroundFillSeedsAct, SIGNAL(triggered()), this, SLOT(clearGroundFillSeeds()));
 
-	m_designRulesCheckAct = new QAction(tr("Design Rules Check"), this);
-	m_designRulesCheckAct->setStatusTip(tr("Select any parts that are too close together for safe board production (w/in 10 mil)"));
-	m_designRulesCheckAct->setShortcut(tr("Shift+Ctrl+D"));
-	connect(m_designRulesCheckAct, SIGNAL(triggered()), this, SLOT(designRulesCheck()));
-
-	m_newDesignRulesCheckAct = new QAction(tr("New Design Rules Check (DRC)"), this);
+	m_newDesignRulesCheckAct = new QAction(tr("Design Rules Check (DRC)"), this);
 	m_newDesignRulesCheckAct->setStatusTip(tr("Select any parts that are too close together for safe board production (w/in 10 mil)"));
 	m_newDesignRulesCheckAct->setShortcut(tr("Shift+Ctrl+D"));
 	connect(m_newDesignRulesCheckAct, SIGNAL(triggered()), this, SLOT(newDesignRulesCheck()));
@@ -3678,7 +3671,6 @@ void MainWindow::newDesignRulesCheck()
 	PCBSketchWidget * pcbSketchWidget = qobject_cast<PCBSketchWidget *>(m_currentGraphicsView);
 	if (pcbSketchWidget == NULL) return;
 	
-
     ItemBase * board = NULL;
     if (pcbSketchWidget->autorouteTypePCB()) {
         int boardCount;
@@ -3720,7 +3712,7 @@ void MainWindow::newDesignRulesCheck()
 
 	QString message;
     QStringList messages;
-	bool finished = drc.start(message, messages);
+	drc.start(message, messages);
 
 	ProcessEventBlocker::unblock();
 
@@ -3733,44 +3725,6 @@ void MainWindow::newDesignRulesCheck()
 		DRCResultsDialog dialog(message, messages, this);
         dialog.exec();
 	}
-}
-
-void MainWindow::designRulesCheck() 
-{
-	if (m_currentGraphicsView == NULL) return;
-
-	PCBSketchWidget * pcbSketchWidget = qobject_cast<PCBSketchWidget *>(m_currentGraphicsView);
-	if (pcbSketchWidget == NULL) return;
-	
-
-    ItemBase * board = NULL;
-    if (pcbSketchWidget->autorouteTypePCB()) {
-        int boardCount;
-		board = pcbSketchWidget->findSelectedBoard(boardCount);
-        if (boardCount == 0) {
-            QMessageBox::critical(this, tr("Fritzing"),
-                       tr("Your sketch does not have a board yet! DRC only works with a PCB."));
-            return;
-        }
-        if (board == NULL) {
-            QMessageBox::critical(this, tr("Fritzing"),
-                       tr("Please select a PCB. DRC only works on one board at a time."));
-            return;
-        }
-	}
-
-	CMRouter cmRouter(pcbSketchWidget, board, true);
-	QString message;
-	bool result = cmRouter.drc(message);
-
-	if (result) {
-		QMessageBox::information(this, tr("Fritzing"), message);
-	}
-	else {
-		QMessageBox::warning(this, tr("Fritzing"), message);
-	}
-
-	cmRouter.drcClean();
 }
 
 void MainWindow::changeTraceLayer() {
