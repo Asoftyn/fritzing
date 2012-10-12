@@ -1019,7 +1019,6 @@ void PCBSketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseCo
 	if (parentCommand == NULL) {
 		shiftHoles();
 	}
-
 }
 
 bool PCBSketchWidget::isInLayers(ConnectorItem * connectorItem, ViewLayer::ViewLayerSpec viewLayerSpec) {
@@ -2596,3 +2595,18 @@ bool PCBSketchWidget::hasCustomBoardShape() {
 
 	return false;
 }
+
+ViewLayer::ViewLayerSpec PCBSketchWidget::getViewLayerSpec(ModelPart * modelPart, QDomElement & instance, QDomElement & view, ViewGeometry & viewGeometry) 
+{
+    Q_UNUSED(instance);
+
+    if (modelPart->flippedSMD()) {
+        ViewLayer::ViewLayerID viewLayerID = ViewLayer::viewLayerIDFromXmlString(view.attribute("layer"));
+        if (viewLayerID == ViewLayer::Copper0) {
+            return ViewLayer::ThroughHoleThroughTop_OneLayer;
+        }
+    }
+
+    return SketchWidget::getViewLayerSpec(modelPart, instance, view, viewGeometry);
+}
+

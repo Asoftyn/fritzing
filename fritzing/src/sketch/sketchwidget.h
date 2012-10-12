@@ -440,7 +440,7 @@ protected:
 	QString makeMoveSVG(double printerScale, double dpi, QPointF & offset); 
 	void prepDeleteProps(ItemBase * itemBase, long id, const QString & newModuleID, QUndoCommand * parentCommand);
 	void prepDeleteOtherProps(ItemBase * itemBase, long id, const QString & newModuleID, QUndoCommand * parentCommand);
-	ViewLayer::ViewLayerSpec getViewLayerSpec(ModelPart * modelPart, QDomElement & instance, QDomElement & view, ViewGeometry &);
+	virtual ViewLayer::ViewLayerSpec getViewLayerSpec(ModelPart * modelPart, QDomElement & instance, QDomElement & view, ViewGeometry &);
 	virtual ViewLayer::ViewLayerSpec wireViewLayerSpec(ConnectorItem *);
 
 	virtual bool resizingJumperItemPress(QGraphicsItem * item);
