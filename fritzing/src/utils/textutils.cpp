@@ -516,41 +516,6 @@ bool TextUtils::cleanSodipodi(QString &content)
 	*/
 }
 
-bool TextUtils::fixViewboxOrigin(QString &fileContent) {
-	QDomDocument svgDom;
-
-	bool fileHasChanged = false;
-	if(isIllustratorFile(fileContent)) {
-		QString errorMsg;
-		int errorLine;
-		int errorCol;
-		if(!svgDom.setContent(fileContent, true, &errorMsg, &errorLine, &errorCol)) {
-			return false;
-		}
-
-		QDomElement elem = svgDom.firstChildElement("svg");
-
-		fileHasChanged = moveViewboxToTopLeftCorner(elem);
-
-		if(fileHasChanged) {
-			fileContent = svgDom.toString();
-		}
-	}
-
-	return fileHasChanged;
-}
-
-bool TextUtils::moveViewboxToTopLeftCorner(QDomElement &elem) {
-	QString attrName = elem.hasAttribute("viewbox")? "viewbox": "viewBox";
-	QStringList vals = elem.attribute(attrName).split(" ");
-	if(vals.length() == 4 && (vals[0] != "0" || vals[1] != "0")) {
-		QString newValue = QString("0 0 %1 %2").arg(vals[2]).arg(vals[3]);
-		elem.setAttribute(attrName,newValue);
-		return true;
-	}
-	return false;
-}
-
 bool TextUtils::fixPixelDimensionsIn(QString &fileContent) {
 	bool isIllustrator = isIllustratorFile(fileContent);
 	if (!isIllustrator) return false;
@@ -1036,6 +1001,9 @@ bool TextUtils::fixMuch(QString &svg, bool fixStrokeWidthFlag)
 		return result;
 	}
 
+    QDomElement root = svgDom.documentElement();
+    result |= fixViewBox(root);
+
     QStringList strings;
     strings << "pattern" << "marker" << "clipPath";
     foreach (QString string, strings) {
@@ -1056,7 +1024,6 @@ bool TextUtils::fixMuch(QString &svg, bool fixStrokeWidthFlag)
         result |= fixStrokeWidth(svgDom);
     }
 
-    QDomElement root = svgDom.documentElement();
     result |= elevateTransform(root);
 
     if (result) {
@@ -1064,6 +1031,37 @@ bool TextUtils::fixMuch(QString &svg, bool fixStrokeWidthFlag)
     }
 
     return result;
+}
+
+bool TextUtils::fixViewBox(QDomElement & root) {
+	QString viewBox = root.attribute("viewBox");
+    if (viewBox.isEmpty()) return false;
+
+	QStringList coords = viewBox.split(QRegExp(" |,"));
+	if (coords.length() != 4) return false;
+    
+    if (coords[0] == "0" && coords[1] == "0") return false;
+
+    bool ok;
+    double x = coords.at(0).toDouble(&ok);
+    if (!ok) return false;
+
+    double y = coords.at(1).toDouble(&ok);
+    if (!ok) return false;
+
+	QString newValue = QString("0 0 %1 %2").arg(coords[2]).arg(coords[3]);
+	root.setAttribute("viewBox", newValue);
+
+    QDomElement transformElement = root.ownerDocument().createElement("g");
+    transformElement.setAttribute("transform", QString("translate(%1,%2)").arg(-x).arg(-y));
+    transformElement = root.insertBefore(transformElement, QDomElement()).toElement();
+    QDomElement nextElement = transformElement.nextSiblingElement();
+    while (!nextElement.isNull()) {
+        transformElement.appendChild(nextElement);
+        nextElement = transformElement.nextSiblingElement();
+    }
+
+	return true;
 }
 
 bool TextUtils::fixStrokeWidth(QDomDocument & svgDoc) {

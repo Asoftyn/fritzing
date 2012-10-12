@@ -44,8 +44,6 @@ $Date$
 		loading tht into smd or v.v.
 			can't seem to assign connectors after adding connectors
 
-		fileHasChanged |= TextUtils::fixViewboxOrigin(fileContent);
-
 		why isn't swapping available when a family has new parts with multiple variant values?
 
 		test button with export etchable to make sure the part is right?

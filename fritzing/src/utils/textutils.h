@@ -63,7 +63,6 @@ public:
 	static bool isIllustratorDoc(const QDomDocument & doc);
 	static QString removeXMLEntities(QString svgContent);
 	static bool cleanSodipodi(QString &bytes);
-	static bool fixViewboxOrigin(QString &fileContent);
 	static bool fixPixelDimensionsIn(QString &fileContent);
 	static bool addCopper1(const QString & filename, QDomDocument & doc, const QString & srcAtt, const QString & destAtt);
 	static void setSVGTransform(QDomElement &, QMatrix &);
@@ -130,7 +129,6 @@ public:
 	static const QString AdobeIllustratorIdentifier;
 
 protected:
-	static bool moveViewboxToTopLeftCorner(QDomElement &elem);
 	static bool pxToInches(QDomElement &elem, const QString &attrName, bool isIllustrator);
     static void squashNotElement(QDomElement & element, const QString & elementName, const QString & attName, const QRegExp & matchContent, bool & result);
 	static void initPowerPrefixes();
@@ -141,6 +139,7 @@ protected:
     static bool tspanRemoveAux(QDomDocument & svgDom);
     static void fixStyleAttribute(QDomElement & element, QString & style, const QString & attributeName);
     static bool fixStrokeWidth(QDomDocument & svgDoc);
+    static bool fixViewBox(QDomElement & root);
 };
 
 #endif

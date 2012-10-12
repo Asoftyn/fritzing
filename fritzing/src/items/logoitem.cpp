@@ -300,7 +300,6 @@ void LogoItem::loadImage(const QString & fileName, bool addName)
 
         TextUtils::fixMuch(svg, true);
 		TextUtils::fixPixelDimensionsIn(svg);
-		TextUtils::fixViewboxOrigin(svg);
 
 		QString errorStr;
 		int errorLine;
