@@ -1110,12 +1110,20 @@ void PEMainWindow::propertiesChanged(const QHash<QString, QString> & newProperti
 
 void PEMainWindow::changeProperties(const QHash<QString, QString> & newProperties, bool updateDisplay)
 {
+    bool incomingFamily = newProperties.keys().contains("family");
+    bool incomingVariant = newProperties.keys().contains("variant");
+
     QDomElement root = m_fzpDocument.documentElement();
     QDomElement properties = root.firstChildElement("properties");
     QDomElement prop = properties.firstChildElement("property");
     while (!prop.isNull()) {
 		QDomElement next = prop.nextSiblingElement("property");
-        properties.removeChild(prop);
+        bool doRemove = true;
+        if (prop.attribute("name") == "family" && !incomingFamily) doRemove = false;
+        if (prop.attribute("name") == "variant" && !incomingVariant) doRemove = false;
+        if (doRemove) {
+            properties.removeChild(prop);
+        }
         prop = next;
     }
 
