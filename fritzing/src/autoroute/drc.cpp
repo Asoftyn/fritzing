@@ -33,6 +33,7 @@ $Date$
 #include "../items/via.h"
 #include "../utils/graphicsutils.h"
 #include "../utils/folderutils.h"
+#include "../utils/textutils.h"
 #include "../connectors/connectoritem.h"
 #include "../items/moduleidnames.h"
 #include "../processeventblocker.h"
@@ -45,6 +46,14 @@ $Date$
 #include <QMessageBox>
 #include <QPixmap>
 #include <QSet>
+#include <QSettings>
+#include <QDialogButtonBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QListWidget>
+#include <QDoubleSpinBox>
+#include <QRadioButton>
 
 ///////////////////////////////////////////
 //
@@ -76,6 +85,151 @@ bool pixelsCollide(QImage * image1, QImage * image2, QImage * image3, int x1, in
 
 	return result;
 }
+
+///////////////////////////////////////////////
+
+DRCResultsDialog::DRCResultsDialog(const QString & message, const QStringList & messages, QWidget *parent) : QDialog(parent) 
+{
+	this->setWindowTitle(tr("DRC Results"));
+
+	QVBoxLayout * vLayout = new QVBoxLayout(this);
+
+	QLabel * label = new QLabel(message);
+    label->setWordWrap(true);
+	vLayout->addWidget(label);
+
+    QListWidget *listWidget = new QListWidget();
+    listWidget->addItems(messages);
+    vLayout->addWidget(listWidget);
+
+	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+	connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+
+	vLayout->addWidget(buttonBox);
+	this->setLayout(vLayout);
+}
+
+DRCResultsDialog::~DRCResultsDialog() {
+}
+
+///////////////////////////////////////////
+
+static const QString KeepoutSetting("DRC_Keepout");
+static const double KeepoutDefault = 10;  // mils
+
+double getKeepoutSetting(bool & inches) 
+{
+    double keepout = KeepoutDefault;  // mils
+    QSettings settings;
+    QString keepoutSetting = settings.value(KeepoutSetting, QString("%1in").arg(KeepoutDefault / 1000)).toString();
+    inches = !keepoutSetting.endsWith("mm");
+    bool ok;
+    double candidate = TextUtils::convertToInches(keepoutSetting, &ok, false);
+    if (ok) {
+        keepout = candidate * 1000; // mils
+    }
+    return keepout;
+}
+
+DRCKeepoutDialog::DRCKeepoutDialog(QWidget *parent) : QDialog(parent) 
+{
+	this->setWindowTitle(tr("DRC Keepout Setting"));
+
+	QVBoxLayout * vLayout = new QVBoxLayout(this);
+
+	QLabel * label = new QLabel(tr("The 'keepout' is the minimum amount of space you want to keep between a connector or trace on one net and a connector or trace in another net. ") +
+                                tr(".01 inch or .254 mm is a good default.")
+                                );
+    label->setWordWrap(true);
+	vLayout->addWidget(label);
+	label = new QLabel(tr("Note: the smaller the distance, the slower the DRC will run."));
+	vLayout->addWidget(label);
+
+    QFrame * frame = new QFrame;
+    QHBoxLayout * frameLayout = new QHBoxLayout;
+
+    m_spinBox = new QDoubleSpinBox;
+    m_spinBox->setDecimals(4);
+    connect(m_spinBox, SIGNAL(valueChanged(double)), this, SLOT(keepoutEntry()));
+    connect(m_spinBox, SIGNAL(valueChanged(const QString &)), this, SLOT(keepoutEntry()));
+    frameLayout->addWidget(m_spinBox);
+
+    m_inRadio = new QRadioButton("in");
+    frameLayout->addWidget(m_inRadio);
+    connect(m_inRadio, SIGNAL(clicked()), this, SLOT(toInches()));
+
+    m_mmRadio = new QRadioButton("mm");
+    frameLayout->addWidget(m_mmRadio);
+    connect(m_mmRadio, SIGNAL(clicked()), this, SLOT(toMM()));
+
+    frameLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
+
+    bool inches;
+    m_keepout = getKeepoutSetting(inches);
+    if (inches) {
+        toInches();
+        m_inRadio->setChecked(true);
+    }
+    else {
+        toMM();
+        m_mmRadio->setChecked(true);
+    }
+
+    frame->setLayout(frameLayout);
+    vLayout->addWidget(frame);
+
+	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+	connect(buttonBox, SIGNAL(accepted()), this, SLOT(saveAndAccept()));
+	connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+
+	vLayout->addWidget(buttonBox);
+	this->setLayout(vLayout);
+}
+
+DRCKeepoutDialog::~DRCKeepoutDialog() {
+}
+
+
+void DRCKeepoutDialog::toInches() {
+    m_spinBox->blockSignals(true);
+    m_spinBox->setRange(.001, 1);
+    m_spinBox->setSingleStep(.001);
+    m_spinBox->setValue(m_keepout / 1000);
+    m_spinBox->blockSignals(false);
+}
+
+void DRCKeepoutDialog::toMM() {
+    m_spinBox->blockSignals(true);
+    m_spinBox->setRange(.001 * 25.4, 1);
+    m_spinBox->setSingleStep(.01);
+    m_spinBox->setValue(m_keepout * 25.4 / 1000);
+    m_spinBox->blockSignals(false);
+}
+
+void DRCKeepoutDialog::keepoutEntry() {
+    double k = m_spinBox->value();
+    if (m_inRadio->isChecked()) {
+        m_keepout = k * 1000;
+    }
+    else {
+        m_keepout = k * 1000 / 25.4;
+    }
+}
+
+void DRCKeepoutDialog::saveAndAccept() {
+    QSettings settings;
+    QString keepoutSetting;
+    if (m_inRadio->isChecked()) {
+        keepoutSetting = QString("%1in").arg(m_keepout / 1000);
+    }
+    else {
+        keepoutSetting = QString("%1mm").arg(m_keepout * 25.4 / 1000);
+    }
+    settings.setValue(KeepoutSetting, keepoutSetting);
+    accept();
+}
+
+///////////////////////////////////////////////
 
 static QString CancelledMessage;
 
@@ -182,7 +336,9 @@ bool DRC::startAux(QString & message, QStringList & messages) {
 
 	ProcessEventBlocker::processEvents();
 
-    double keepout = 7;  // mils
+    bool inches;
+    double keepout = getKeepoutSetting(inches);
+    
     double dpi = (1000 / keepout);
     QRectF boardRect = m_board->sceneBoundingRect();
     QRectF sourceRes(0, 0, 
@@ -257,7 +413,7 @@ bool DRC::startAux(QString & message, QStringList & messages) {
         }
 
         QDomElement root = masterDoc->documentElement();
-        SvgFileSplitter::changeStrokeWidth(root, 2 * keepout, false, true, true);
+        SvgFileSplitter::forceStrokeWidth(root, 2 * keepout, "#000000", true);
 
         renderOne(masterDoc, m_plusImage, sourceRes);
         #ifndef QT_NO_DEBUG
@@ -560,7 +716,7 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
 
         if (element.attribute("net") == "net") {
             net.append(element);
-            SvgFileSplitter::changeStrokeWidth(element, -2 * keepout, false, true, false);
+            SvgFileSplitter::forceStrokeWidth(element, -2 * keepout, "#000000", false);
         }
         else if (element.attribute("net") == "alsoNet") {
             alsoNet.append(element);
@@ -585,7 +741,7 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
 
     // restore doc without net
     foreach (QDomElement element, net) {
-        SvgFileSplitter::changeStrokeWidth(element, 2 * keepout, false, true, false);
+        SvgFileSplitter::forceStrokeWidth(element, 2 * keepout, "#000000", false);
         element.setAttribute("former", element.tagName());
         element.removeAttribute("net");
         element.setTagName("g");

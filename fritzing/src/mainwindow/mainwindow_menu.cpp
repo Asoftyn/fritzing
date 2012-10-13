@@ -38,7 +38,6 @@ $Date$
 #include "../autoroute/cmrouter/cmrouter.h"
 #include "../autoroute/autorouteprogressdialog.h"
 #include "../autoroute/drc.h"
-#include "../autoroute/drcresultsdialog.h"
 #include "../items/virtualwire.h"
 #include "../items/resizableboard.h"
 #include "../items/jumperitem.h"
@@ -1300,6 +1299,7 @@ void MainWindow::createTraceMenus()
 	m_pcbTraceMenu = menuBar()->addMenu(tr("&Routing"));
 	m_pcbTraceMenu->addAction(m_autorouteAct);
 	m_pcbTraceMenu->addAction(m_newDesignRulesCheckAct);
+	m_pcbTraceMenu->addAction(m_newDesignRulesKeepoutAct);
 	m_pcbTraceMenu->addAction(m_checkLoadedTracesAct);
 	m_pcbTraceMenu->addAction(m_autorouterSettingsAct);
 
@@ -1926,6 +1926,7 @@ void MainWindow::updateTraceMenu() {
 	m_clearGroundFillSeedsAct->setEnabled(gfsEnabled && boardCount >= 1);
 
 	m_newDesignRulesCheckAct->setEnabled(boardCount >= 1);
+	m_newDesignRulesKeepoutAct->setEnabled(true);
 	m_checkLoadedTracesAct->setEnabled(true);
 	m_autorouterSettingsAct->setEnabled(m_currentGraphicsView == m_pcbGraphicsView);
 	m_updateRoutingStatusAct->setEnabled(true);
@@ -2444,9 +2445,13 @@ void MainWindow::createTraceMenuActions() {
 	connect(m_clearGroundFillSeedsAct, SIGNAL(triggered()), this, SLOT(clearGroundFillSeeds()));
 
 	m_newDesignRulesCheckAct = new QAction(tr("Design Rules Check (DRC)"), this);
-	m_newDesignRulesCheckAct->setStatusTip(tr("Select any parts that are too close together for safe board production (w/in 10 mil)"));
+	m_newDesignRulesCheckAct->setStatusTip(tr("Highlights any parts that are too close together for safe board production"));
 	m_newDesignRulesCheckAct->setShortcut(tr("Shift+Ctrl+D"));
 	connect(m_newDesignRulesCheckAct, SIGNAL(triggered()), this, SLOT(newDesignRulesCheck()));
+
+	m_newDesignRulesKeepoutAct = new QAction(tr("Set Design Rules Keepout"), this);
+	m_newDesignRulesKeepoutAct->setStatusTip(tr("Set the minimum distance between parts for the DRC (Design Rules Check)"));
+	connect(m_newDesignRulesKeepoutAct, SIGNAL(triggered()), this, SLOT(designRulesKeepout()));
 
 	m_checkLoadedTracesAct = new QAction(tr("Check Loaded Traces"), this);
 	m_checkLoadedTracesAct->setStatusTip(tr("Select any traces where the screen location doesn't match their actual location."));
@@ -3662,6 +3667,12 @@ void MainWindow::linkToProgramFile(const QString & filename, const QString & lan
 			}
 		}
 	}
+}
+
+void MainWindow::designRulesKeepout() 
+{
+	DRCKeepoutDialog dialog(this);
+    dialog.exec();
 }
 
 void MainWindow::newDesignRulesCheck() 

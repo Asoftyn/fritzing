@@ -28,7 +28,6 @@ src/autoroute/cmrouter/tile.h  \
 src/autoroute/cmrouter/tileutils.h  \
 src/autoroute/zoomcontrols.h \
 src/autoroute/drc.h \
-src/autoroute/drcresultsdialog.h \
  
 SOURCES += \
 src/autoroute/autorouter.cpp \
@@ -42,4 +41,3 @@ src/autoroute/cmrouter/search.cpp \
 src/autoroute/cmrouter/search2.cpp   \
 src/autoroute/zoomcontrols.cpp \
 src/autoroute/drc.cpp \
-src/autoroute/drcresultsdialog.cpp \

@@ -32,6 +32,9 @@ $Date$
 #include <QImage>
 #include <QDomDocument>
 #include <QGraphicsPixmapItem>
+#include <QDialog>
+#include <QDoubleSpinBox>
+#include <QRadioButton>
 
 #include "../svg/svgfilesplitter.h"
 #include "../viewlayer.h"
@@ -78,6 +81,37 @@ protected:
     QHash<ViewLayer::ViewLayerSpec, QDomDocument *> m_masterDocs;
     bool m_cancelled;
     int m_maxProgress;
+};
+
+class DRCResultsDialog : public QDialog
+{
+Q_OBJECT
+
+public:
+	DRCResultsDialog(const QString & message, const QStringList & messages, QWidget *parent = 0);
+	~DRCResultsDialog();
+};
+
+class DRCKeepoutDialog : public QDialog
+{
+Q_OBJECT
+
+public:
+	DRCKeepoutDialog(QWidget *parent = 0);
+	~DRCKeepoutDialog();
+
+protected slots:
+    void toInches();
+    void toMM();
+    void keepoutEntry();
+    void saveAndAccept();
+
+protected:
+    double m_keepout;
+    bool m_inches;
+    QDoubleSpinBox * m_spinBox;
+    QRadioButton * m_inRadio;
+    QRadioButton * m_mmRadio;
 };
 
 #endif
