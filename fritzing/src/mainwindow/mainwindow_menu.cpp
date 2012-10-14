@@ -3698,6 +3698,9 @@ void MainWindow::newDesignRulesCheck()
         }
 	}
 
+	bool copper0Active = pcbSketchWidget->layerIsActive(ViewLayer::Copper0);
+	bool copper1Active = pcbSketchWidget->layerIsActive(ViewLayer::Copper1);
+
 	AutorouteProgressDialog progress(tr("DRC Progress..."), true, false, false, pcbSketchWidget, this);
 	progress.setModal(true);
 	progress.show();
@@ -3717,25 +3720,17 @@ void MainWindow::newDesignRulesCheck()
 	connect(&drc, SIGNAL(setMaximumProgress(int)), &progress, SLOT(setMaximum(int)), Qt::DirectConnection);
 	connect(&drc, SIGNAL(setProgressValue(int)), &progress, SLOT(setValue(int)), Qt::DirectConnection);
 	connect(&drc, SIGNAL(setProgressMessage(const QString &)), &progress, SLOT(setMessage(const QString &)));
+	connect(&drc, SIGNAL(hideProgress()), &progress, SLOT(close()));
 
 	ProcessEventBlocker::processEvents();
 	ProcessEventBlocker::block();
-
-	QString message;
-    QStringList messages;
-	drc.start(message, messages);
-
+	drc.start();
 	ProcessEventBlocker::unblock();
 
-    progress.close();
+	pcbSketchWidget->setLayerActive(ViewLayer::Copper1, copper1Active);
+	pcbSketchWidget->setLayerActive(ViewLayer::Copper0, copper0Active);
+	updateActiveLayerButtons();
 
-	if (messages.count() == 0) {
-		QMessageBox::information(this, tr("Fritzing"), message);
-	}
-	else {
-		DRCResultsDialog dialog(message, messages, this);
-        dialog.exec();
-	}
 }
 
 void MainWindow::changeTraceLayer() {

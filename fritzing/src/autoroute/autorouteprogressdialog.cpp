@@ -49,11 +49,11 @@ void ArrowButton::mousePressEvent(QMouseEvent *event) {
 	Q_UNUSED(event);
 	if (m_scrollX != 0) {
 		QScrollBar * scrollBar = m_view->horizontalScrollBar();
-		scrollBar->setValue(scrollBar->value() + m_scrollX);
+		scrollBar->setValue(scrollBar->value() - m_scrollX);
 	}
 	else if (m_scrollY != 0) {
 		QScrollBar * scrollBar = m_view->verticalScrollBar();
-		scrollBar->setValue(scrollBar->value() + m_scrollY);
+		scrollBar->setValue(scrollBar->value() - m_scrollY);
 	}
 }
 

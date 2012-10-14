@@ -35,9 +35,12 @@ $Date$
 #include <QDialog>
 #include <QDoubleSpinBox>
 #include <QRadioButton>
+#include <QListWidgetItem>
+#include <QPointer>
 
 #include "../svg/svgfilesplitter.h"
 #include "../viewlayer.h"
+#include "../connectors/connectoritem.h"
 
 class DRC : public QObject
 {
@@ -47,12 +50,13 @@ public:
 	DRC(class PCBSketchWidget *, class ItemBase * board);
 	virtual ~DRC(void);
 
-	bool start(QString & message, QStringList & messages);
+	bool start();
 
 public slots:
 	void cancel();
 
 signals:
+    void hideProgress();
 	void setMaximumProgress(int);
 	void setProgressValue(int);
 	void wantTopVisible();
@@ -63,12 +67,12 @@ signals:
 protected:
     void makeHoles(QDomDocument *, QImage *, QRectF & sourceRes, ViewLayer::ViewLayerSpec);
     bool makeBoard(QImage *, QRectF & sourceRes);
-    void splitNet(QDomDocument *, QList<class ConnectorItem *> & , QImage * minusImage, QImage * plusImage, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec, double keepout, int index);
+    void splitNet(QDomDocument *, QList<ConnectorItem *> & , QImage * minusImage, QImage * plusImage, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec, double keepout, int index);
     void renderOne(QDomDocument * masterDoc, QImage * image, QRectF & sourceRes);
     void markSubs(QDomElement & root, const QString & mark);
     void splitSubs(QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs);
     void updateDisplay(double dpi);
-	bool startAux(QString & message, QStringList & messages);
+	bool startAux(QString & message, QStringList & messages, QList<ConnectorItem *> & connectorItems);
 	
 protected:
 	class PCBSketchWidget * m_sketchWidget;
@@ -88,8 +92,18 @@ class DRCResultsDialog : public QDialog
 Q_OBJECT
 
 public:
-	DRCResultsDialog(const QString & message, const QStringList & messages, QWidget *parent = 0);
+	DRCResultsDialog(const QString & message, const QStringList & messages, const QList<ConnectorItem *> & connectorItems, QGraphicsItem * displayItem, class PCBSketchWidget * sketchWidget, QWidget *parent = 0);
 	~DRCResultsDialog();
+
+protected slots:
+    void pressedSlot(QListWidgetItem *);
+    void releasedSlot(QListWidgetItem *);
+
+protected:
+    QStringList m_messages;
+    QList< QPointer<ConnectorItem> > m_connectorItems;
+    QPointer <class PCBSketchWidget> m_sketchWidget;
+    QGraphicsItem * m_displayItem;
 };
 
 class DRCKeepoutDialog : public QDialog
@@ -112,6 +126,7 @@ protected:
     QDoubleSpinBox * m_spinBox;
     QRadioButton * m_inRadio;
     QRadioButton * m_mmRadio;
+
 };
 
 #endif

@@ -88,28 +88,84 @@ bool pixelsCollide(QImage * image1, QImage * image2, QImage * image3, int x1, in
 
 ///////////////////////////////////////////////
 
-DRCResultsDialog::DRCResultsDialog(const QString & message, const QStringList & messages, QWidget *parent) : QDialog(parent) 
+DRCResultsDialog::DRCResultsDialog(const QString & message, const QStringList & messages, const QList<ConnectorItem *> & connectorItems, 
+                                    QGraphicsItem * displayItem, PCBSketchWidget * sketchWidget, QWidget *parent) 
+                 : QDialog(parent) 
 {
+    setAttribute(Qt::WA_DeleteOnClose, true);
+    m_messages = messages;
+    m_sketchWidget = sketchWidget;
+    m_displayItem = displayItem;
+    if (m_displayItem) {
+        m_displayItem->setFlags(0);
+    }
+    foreach (ConnectorItem * connectorItem, connectorItems) {
+        m_connectorItems.append(connectorItem);
+    }
+
 	this->setWindowTitle(tr("DRC Results"));
 
 	QVBoxLayout * vLayout = new QVBoxLayout(this);
 
-	QLabel * label = new QLabel(message);
+    QLabel * label = new QLabel(tr("Click on an enabled item in the list to select the part it represents."));
+    label->setWordWrap(true);
+	vLayout->addWidget(label);
+
+    label = new QLabel(tr("Note: list items and the red highlighting will not update as you edit your sketch--you must rerun the DRC. The highlighting will disappear when you close this dialog."));
+    label->setWordWrap(true);
+	vLayout->addWidget(label);
+
+	label = new QLabel(message);
     label->setWordWrap(true);
 	vLayout->addWidget(label);
 
     QListWidget *listWidget = new QListWidget();
-    listWidget->addItems(messages);
+    for (int ix = 0; ix < messages.count(); ix++) {
+        QListWidgetItem * item = new QListWidgetItem(messages.at(ix));
+        ConnectorItem * connectorItem = connectorItems.at(ix);
+        item->setFlags(connectorItem == NULL ? Qt::NoItemFlags : (Qt::ItemIsSelectable | Qt::ItemIsEnabled) );
+        item->setData(Qt::UserRole, ix);
+        listWidget->addItem(item);
+    }
     vLayout->addWidget(listWidget);
+	connect(listWidget, SIGNAL(itemPressed(QListWidgetItem *)), this, SLOT(pressedSlot(QListWidgetItem *)));
+	connect(listWidget, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(releasedSlot(QListWidgetItem *)));
 
 	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
-	connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+	connect(buttonBox, SIGNAL(accepted()), this, SLOT(close()));
 
 	vLayout->addWidget(buttonBox);
 	this->setLayout(vLayout);
 }
 
 DRCResultsDialog::~DRCResultsDialog() {
+    if (m_displayItem != NULL && m_sketchWidget != NULL) {
+        delete m_displayItem;
+    }
+}
+
+void DRCResultsDialog::pressedSlot(QListWidgetItem * item) {
+    if (item == NULL) return;
+
+    int ix = item->data(Qt::UserRole).toInt();
+    ConnectorItem * connectorItem = m_connectorItems.at(ix);
+    if (connectorItem == NULL) {
+        return;
+    }
+
+    m_sketchWidget->selectItem(connectorItem->attachedTo());
+}
+
+void DRCResultsDialog::releasedSlot(QListWidgetItem * item) {
+    if (item == NULL) return;
+
+    int ix = item->data(Qt::UserRole).toInt();
+    ConnectorItem * connectorItem = m_connectorItems.at(ix);
+    if (connectorItem == NULL) {
+        item->setFlags(Qt::NoItemFlags);
+        return;
+    }
+
 }
 
 ///////////////////////////////////////////
@@ -138,7 +194,7 @@ DRCKeepoutDialog::DRCKeepoutDialog(QWidget *parent) : QDialog(parent)
 	QVBoxLayout * vLayout = new QVBoxLayout(this);
 
 	QLabel * label = new QLabel(tr("The 'keepout' is the minimum amount of space you want to keep between a connector or trace on one net and a connector or trace in another net. ") +
-                                tr(".01 inch or .254 mm is a good default.")
+                                tr("0.01 inch or 0.254 mm is a good default.")
                                 );
     label->setWordWrap(true);
 	vLayout->addWidget(label);
@@ -267,8 +323,12 @@ DRC::~DRC(void)
     }
 }
 
-bool DRC::start(QString & message, QStringList & messages) {
-    bool result = startAux(message, messages);
+bool DRC::start() {
+	QString message;
+    QStringList messages;
+    QList<ConnectorItem *> connectorItems;
+
+    bool result = startAux(message, messages, connectorItems);
     if (result) {
         if (messages.count() == 0) {
             message = tr("Your sketch is ready for production: there are no connectors or traces that overlap or are too close together.");
@@ -285,10 +345,21 @@ bool DRC::start(QString & message, QStringList & messages) {
 
     emit wantBothVisible();
     emit setProgressValue(m_maxProgress);
+    emit hideProgress();
+
+	if (messages.count() == 0) {
+		QMessageBox::information(m_sketchWidget->window(), tr("Fritzing"), message);
+	}
+	else {
+		DRCResultsDialog * dialog = new DRCResultsDialog(message, messages, connectorItems, m_displayItem, m_sketchWidget, m_sketchWidget->window());
+        dialog->show();
+        m_displayItem = NULL;
+	}
+
     return result;
 }
 
-bool DRC::startAux(QString & message, QStringList & messages) {
+bool DRC::startAux(QString & message, QStringList & messages, QList<ConnectorItem *> & connectorItems) {
 
     bool bothSidesNow = m_sketchWidget->boardLayers() == 2;
 
@@ -430,6 +501,7 @@ bool DRC::startAux(QString & message, QStringList & messages) {
             QString msg = tr("Too close to a border or a hole (%1 layer)").arg(viewLayerSpec == ViewLayer::Top ? tr("top") : tr("bottom"));
             emit setProgressMessage(msg);
             messages << msg;
+            connectorItems << NULL;
             collisions = true;
             updateDisplay(dpi);
         }
@@ -529,6 +601,7 @@ bool DRC::startAux(QString & message, QStringList & messages) {
                         .arg(viewLayerSpec == ViewLayer::Top ? tr("top") : tr("bottom"))
                       ;
                     messages << msg;
+                    connectorItems << equ;
                     emit setProgressMessage(msg);
                     collisions = true;
                     updateDisplay(dpi);

@@ -8947,3 +8947,16 @@ void SketchWidget::removeDragWire() {
 	this->scene()->removeItem(m_connectorDragWire);
 }
 
+void SketchWidget::selectItem(ItemBase * itemBase) {
+    QString message = itemBase == NULL ? tr("Deselect all") : tr("Select %1").arg(itemBase->instanceTitle());
+	QUndoCommand * parentCommand = new QUndoCommand(message);
+
+	stackSelectionState(false, parentCommand);
+	SelectItemCommand * selectItemCommand = new SelectItemCommand(this, SelectItemCommand::NormalSelect, parentCommand);
+	if (itemBase) {
+		selectItemCommand->addRedo(itemBase->id());
+	}
+
+	scene()->clearSelection();
+	m_undoStack->push(parentCommand);
+}
