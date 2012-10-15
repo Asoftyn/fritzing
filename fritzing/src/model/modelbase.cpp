@@ -226,10 +226,10 @@ bool ModelBase::loadInstances(QDomDocument & domDocument, QDomElement & instance
             QDomElement view = views.firstChildElement();
             if (views.isNull() || view.isNull()) {
                 // do not load a part with no views
-                QString text;
-                QTextStream stream(&text);
-                instance.save(stream, 0);
-                DebugDialog::debug(text);
+                //QString text;
+                //QTextStream stream(&text);
+                //instance.save(stream, 0);
+                //DebugDialog::debug(text);
                 instance = instance.nextSiblingElement("instance");
                 continue;
             }

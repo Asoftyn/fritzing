@@ -791,6 +791,9 @@ void MainWindow::saveAsShareable(const QString & path, bool saveModel)
 	foreach (QGraphicsItem * item, m_pcbGraphicsView->scene()->items()) {
 		ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
 		if (itemBase == NULL) continue;
+        if (itemBase->modelPart() == NULL) {
+            continue;
+        }
 		if (itemBase->modelPart()->isCore()) continue;
 	
 		saveParts.insert(itemBase->moduleID(), itemBase->modelPart());

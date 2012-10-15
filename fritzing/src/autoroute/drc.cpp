@@ -193,12 +193,15 @@ DRCKeepoutDialog::DRCKeepoutDialog(QWidget *parent) : QDialog(parent)
 
 	QVBoxLayout * vLayout = new QVBoxLayout(this);
 
-	QLabel * label = new QLabel(tr("The 'keepout' is the minimum amount of space you want to keep between a connector or trace on one net and a connector or trace in another net. ") +
-                                tr("0.01 inch or 0.254 mm is a good default.")
-                                );
+	QLabel * label = new QLabel(tr("The 'keepout' is the minimum amount of space you want to keep between a connector or trace on one net and a connector or trace in another net"));
     label->setWordWrap(true);
 	vLayout->addWidget(label);
-	label = new QLabel(tr("Note: the smaller the distance, the slower the DRC will run."));
+
+    label = new QLabel(tr("A keepout of 0.01 inch (0.254 mm) is a good default."));
+    label->setWordWrap(true);
+	vLayout->addWidget(label);
+
+	label = new QLabel(tr("Note: the smaller the keepout, the slower the DRC will run."));
 	vLayout->addWidget(label);
 
     QFrame * frame = new QFrame;
@@ -596,7 +599,7 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<ConnectorIte
                 double t = (rect.top() - boardRect.top()) * dpi / GraphicsUtils::SVGDPI;
                 double r = (rect.right() - boardRect.left()) * dpi / GraphicsUtils::SVGDPI;
                 double b = (rect.bottom() - boardRect.top()) * dpi / GraphicsUtils::SVGDPI;
-                DebugDialog::debug(QString("l:%1 t:%2 r:%3 b:%4").arg(l).arg(t).arg(r).arg(b));
+                //DebugDialog::debug(QString("l:%1 t:%2 r:%3 b:%4").arg(l).arg(t).arg(r).arg(b));
                 if (pixelsCollide(m_plusImage, m_minusImage, m_displayImage, l, t, r, b, 0x80ff0000)) {
                     ItemBase * itemBase = equ->attachedTo();
                     QString msg = tr("Part %1 '%2' crosses another net on %3 layer")
