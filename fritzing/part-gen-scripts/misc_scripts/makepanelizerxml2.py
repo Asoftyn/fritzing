@@ -91,20 +91,39 @@ def main():
 
     lines = []
     rows = gd_client.GetListFeed(spreadsheet_id, worksheet_id).entry
+    boardsInOrder = {}
+    boardsInXml = {}
+    for row in rows:
+        #print row.custom
+        filename = row.custom['filename'].text
+        orderNumber = row.custom['ordernr'].text
+        if filename and orderNumber:
+            if orderNumber in boardsInOrder:
+                boardsInOrder[orderNumber]  += 1
+            else:
+                boardsInOrder[orderNumber]  = 1
+                boardsInXml[orderNumber] = 1
+            
+
     for row in rows:
         filename = row.custom['filename'].text
-        orderNumber = row.custom['order-nr'].text
+        orderNumber = row.custom['ordernr'].text
         if filename and orderNumber:
+            boardCount = row.custom['boards'].text
+            if not(boardCount):
+                boardCount = 1
             optional = row.custom['optional'].text
             if not(optional):
                 optional = 0
             required = row.custom['count'].text
             if not(required):
                 required = 0
-            xml =  "<board name='{0}_{1}_{2}' requiredCount='{1}' maxOptionalCount='{3}' inscription='{0}' inscriptionHeight='2mm' originalName='{2}' />\n"
+            xml =  "<board name='{0}_{5}of{6}_x{1}c_x{4}b_{2}' requiredCount='{1}' maxOptionalCount='{3}' inscription='{0}' boardCount='{4}' thisFzz='{5}' fzzCount='{6}' inscriptionHeight='2mm' originalName='{2}' />\n"
             if orderNumber == "products":
-                xml =  "<board name='{2}' requiredCount='{1}' maxOptionalCount='{3}' inscription='' inscriptionHeight='2mm' originalName='{2}' />\n"
-            xml = xml.format(orderNumber, required, filename, optional)
+                xml =  "<board name='{2}' requiredCount='{1}' maxOptionalCount='{3}' inscription='' boardCount='{4}' thisFzz='{5}' fzzCount='{6}' inscriptionHeight='2mm' originalName='{2}' />\n"
+            thisBoard = boardsInXml[orderNumber]
+            boardsInXml[orderNumber] += 1
+            xml = xml.format(orderNumber, required, filename, optional, boardCount, thisBoard, boardsInOrder[orderNumber])
             lines.append(xml)
             #print xml
         
