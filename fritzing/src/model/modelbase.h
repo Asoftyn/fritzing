@@ -42,7 +42,7 @@ public:
 	ModelPartSharedRoot * rootModelPartShared();
 	virtual ModelPart* retrieveModelPart(const QString & moduleID);
 	virtual ModelPart * addModelPart(ModelPart * parent, ModelPart * copyChild);
-	virtual bool load(const QString & fileName, ModelBase* referenceModel, QList<ModelPart *> & modelParts);
+    bool loadFromFile(const QString & fileName, ModelBase* referenceModel, QList<ModelPart *> & modelParts, bool checkInstances);
 	void save(const QString & fileName, bool asPart);
 	void save(const QString & fileName, class QXmlStreamWriter &, bool asPart);
 	virtual ModelPart * addPart(QString newPartPath, bool addToReference);
@@ -66,7 +66,7 @@ signals:
 
 protected:
 	void renewModelIndexes(QDomElement & root, const QString & childName, QHash<long, long> & oldToNew);
-	bool loadInstances(QDomDocument &, QDomElement & root, QList<ModelPart *> & modelParts);
+	bool loadInstances(QDomDocument &, QDomElement & root, QList<ModelPart *> & modelParts, bool checkViews);
 	ModelPart * fixObsoleteModuleID(QDomDocument & domDocument, QDomElement & instance, QString & moduleIDRef);
 	static bool isRatsnest(QDomElement & instance);
 	static void checkTraces(QDomElement & instance);

@@ -500,7 +500,7 @@ signals:
 	void selectionChangedSignal();
 
 	void resizeSignal();
-	void dropSignal(const QPoint &pos, ModelPart *);
+	void dropSignal(const QPoint &pos);
 	void routingStatusSignal(SketchWidget *, const RoutingStatus &);
 	void movingSignal(SketchWidget *, QUndoCommand * parentCommand);
 	void selectAllItemsSignal(bool state, bool doEmit);

@@ -495,7 +495,7 @@ void PartsBinPaletteWidget::load(const QString &filename, QWidget * progressTarg
 		    connect(m_listView, SIGNAL(settingItem()), progressTarget, SLOT(settingItemSlot()));
 	    }
 	    DebugDialog::debug(QString("loading bin '%1'").arg(name));
-	    bool result = paletteBinModel->load(filename, m_referenceModel);
+	    bool result = paletteBinModel->loadFromFile(filename, m_referenceModel, false);
 	    DebugDialog::debug(QString("done loading bin '%1'").arg(name));
 
 	    if (!result) {

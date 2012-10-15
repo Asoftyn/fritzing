@@ -1980,7 +1980,7 @@ void SketchWidget::dropItemEvent(QDropEvent *event) {
 
     event->acceptProposedAction();
 
-	emit dropSignal(event->pos(), modelPart);
+	emit dropSignal(event->pos());
 }
 
 SelectItemCommand* SketchWidget::stackSelectionState(bool pushIt, QUndoCommand * parentCommand) {
@@ -5217,6 +5217,9 @@ void SketchWidget::killDroppingItem() {
 	if (m_droppingItem != NULL) {
 		m_droppingItem->removeLayerKin();
 		this->scene()->removeItem(m_droppingItem);
+        if (m_droppingItem->modelPart()) {
+            delete m_droppingItem->modelPart();
+        }
 		delete m_droppingItem;
 		m_droppingItem = NULL;
 	}

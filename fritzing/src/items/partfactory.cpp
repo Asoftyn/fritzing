@@ -243,6 +243,10 @@ QString PartFactory::getSvgFilename(ModelPart * modelPart, const QString & expec
 		return getSvgFilenameAux(expectedFileName, modelPart, &Dip::makeBreadboardSvg);
 	}
 
+	if (expectedFileName.startsWith("pcb/generic_ic_dip_", Qt::CaseInsensitive)) {
+		return getSvgFilenameAux(expectedFileName, modelPart, &MysteryPart::makePcbDipSvg);
+	}
+
 	if (expectedFileName.startsWith("pcb/nsjumper_", Qt::CaseInsensitive)) {
 		return getSvgFilenameAux(expectedFileName, modelPart, &PinHeader::makePcbSvg);
 	}

@@ -509,9 +509,9 @@ ModelPart * PaletteModel::loadPart(const QString & path, bool update) {
 }
 
 
-bool PaletteModel::load(const QString & fileName, ModelBase * referenceModel) {
+bool PaletteModel::loadFromFile(const QString & fileName, ModelBase * referenceModel, bool checkViews) {
 	QList<ModelPart *> modelParts;
-	bool result = ModelBase::load(fileName, referenceModel, modelParts);
+	bool result = ModelBase::loadFromFile(fileName, referenceModel, modelParts, checkViews);
 	if (result) {
 		m_loadedFromFile = true;
 		m_loadedFrom = fileName;

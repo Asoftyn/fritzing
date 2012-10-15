@@ -69,7 +69,7 @@ ModelPart * ModelBase::retrieveModelPart(const QString & /* moduleID */)  {
 }
 
 // loads a model from an fz file--assumes a reference model exists with all parts
-bool ModelBase::load(const QString & fileName, ModelBase * referenceModel, QList<ModelPart *> & modelParts) {
+bool ModelBase::loadFromFile(const QString & fileName, ModelBase * referenceModel, QList<ModelPart *> & modelParts, bool checkViews) {
 	m_referenceModel = referenceModel;
 
     QFile file(fileName);
@@ -204,7 +204,7 @@ bool ModelBase::load(const QString & fileName, ModelBase * referenceModel, QList
 		}
 	}
 
-	bool result = loadInstances(domDocument, instances, modelParts);
+	bool result = loadInstances(domDocument, instances, modelParts, checkViews);
 	emit loadedInstances(this, instances);
 	return result;
 }
@@ -213,13 +213,27 @@ ModelPart * ModelBase::fixObsoleteModuleID(QDomDocument & domDocument, QDomEleme
 	return PartFactory::fixObsoleteModuleID(domDocument, instance, moduleIDRef, m_referenceModel);
 }
 
-bool ModelBase::loadInstances(QDomDocument & domDocument, QDomElement & instances, QList<ModelPart *> & modelParts)
+bool ModelBase::loadInstances(QDomDocument & domDocument, QDomElement & instances, QList<ModelPart *> & modelParts, bool checkViews)
 {
 	QHash<QString, QString> missingModules;
    	QDomElement instance = instances.firstChildElement("instance");
    	ModelPart* modelPart = NULL;
    	while (!instance.isNull()) {
 		emit loadingInstance(this, instance);
+
+        if (checkViews) {
+            QDomElement views = instance.firstChildElement("views");
+            QDomElement view = views.firstChildElement();
+            if (views.isNull() || view.isNull()) {
+                // do not load a part with no views
+                QString text;
+                QTextStream stream(&text);
+                instance.save(stream, 0);
+                DebugDialog::debug(text);
+                instance = instance.nextSiblingElement("instance");
+                continue;
+            }
+        }
 
    		// for now assume all parts are in the palette
    		QString moduleIDRef = instance.attribute("moduleIdRef");
@@ -462,7 +476,7 @@ bool ModelBase::paste(ModelBase * referenceModel, QByteArray & data, QList<Model
 	//file.write(domDocument.toByteArray());
 	//file.close();
 
-	return loadInstances(domDocument, instances, modelParts);
+	return loadInstances(domDocument, instances, modelParts, true);
 }
 
 void ModelBase::renewModelIndexes(QDomElement & parentElement, const QString & childName, QHash<long, long> & oldToNew)

@@ -346,7 +346,7 @@ void MainWindow::mainLoad(const QString & fileName, const QString & displayName)
 				this, SLOT(loadedViewsSlot(ModelBase *, QDomElement &)), Qt::DirectConnection);
 	connect(m_sketchModel, SIGNAL(loadedRoot(const QString &, ModelBase *, QDomElement &)),
 				this, SLOT(loadedRootSlot(const QString &, ModelBase *, QDomElement &)), Qt::DirectConnection);
-	m_sketchModel->load(fileName, m_referenceModel, modelParts);
+	m_sketchModel->loadFromFile(fileName, m_referenceModel, modelParts, true);
 	DebugDialog::debug("core loaded");
 	disconnect(m_sketchModel, SIGNAL(loadedViews(ModelBase *, QDomElement &)),
 				this, SLOT(loadedViewsSlot(ModelBase *, QDomElement &)));
