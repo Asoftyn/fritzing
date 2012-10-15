@@ -443,6 +443,8 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<ConnectorIte
         else emit wantBottomVisible();
 
 	    LayerList viewLayerIDs = ViewLayer::copperLayers(viewLayerSpec);
+        viewLayerIDs.removeOne(ViewLayer::GroundPlane0);
+        viewLayerIDs.removeOne(ViewLayer::GroundPlane1);
         QRectF masterImageRect;
         bool empty;
 	    QString master = m_sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, masterImageRect, m_board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
@@ -541,6 +543,8 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<ConnectorIte
         if (masterDoc == NULL) continue;
 
 	    LayerList viewLayerIDs = ViewLayer::copperLayers(viewLayerSpec);
+        viewLayerIDs.removeOne(ViewLayer::GroundPlane0);
+        viewLayerIDs.removeOne(ViewLayer::GroundPlane1);
 
         QList<ConnectorItem *> singletons;
 
