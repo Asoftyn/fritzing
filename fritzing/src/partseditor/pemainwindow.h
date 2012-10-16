@@ -66,7 +66,7 @@ public:
 	PEMainWindow(class ReferenceModel * referenceModel, QWidget * parent);
 	~PEMainWindow();
 
-    void setInitialItem(class PaletteItem *);
+    bool setInitialItem(class PaletteItem *);
     void changeTags(const QStringList &, bool updateDisplay);
     void changeProperties(const QHash<QString, QString> &, bool updateDisplay);
     void changeMetadata(const QString & name, const QString & value, bool updateDisplay);
@@ -181,7 +181,6 @@ protected:
 	QList<PEGraphicsItem *> getPegiList(SketchWidget *);
 	void fillInMetadata(const QDomElement & connector, ConnectorMetadata & cmd);
 	void setConnectorSMD(bool toSMD, QDomElement & connector);
-	bool saveWithReferenceFile(QDomDocument * doc, const QString & referencePath, const QString & newPath);
 	bool activeLayerWidgetAlwaysOn();
 	void updateFileMenu();
 	void reuseImage(ViewLayer::ViewIdentifier);

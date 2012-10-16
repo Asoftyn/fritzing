@@ -142,7 +142,7 @@ void BinManager::initStandardBins()
 	createCombinedMenu();
 	createContextMenus();
 
-	DebugDialog::debug("init bin manager");
+	//DebugDialog::debug("init bin manager");
 	QList<BinLocation *> actualLocations;
 	findAllBins(actualLocations);
 	restoreStateAndGeometry(actualLocations);
@@ -154,10 +154,10 @@ void BinManager::initStandardBins()
 		registerBin(bin);
 		delete location;
 	}
-	DebugDialog::debug("open core bin");
+	//DebugDialog::debug("open core bin");
 	openCoreBinIn();
 		
-	DebugDialog::debug("after core bin");
+	//DebugDialog::debug("after core bin");
 
 	connectTabWidget();
 }

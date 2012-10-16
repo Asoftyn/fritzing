@@ -505,6 +505,17 @@ bool Panelizer::bestFitOne(PanelItem * panelItem, PanelParams & panelParams, QLi
 			.arg(GraphicsUtils::StandardFritzingDPI * h);
 
 		QStringList strings = QFileInfo(panelItem->path).completeBaseName().split("_");
+        if (strings.count() >= 5) {
+            QString start = strings.takeFirst();
+            QStringList middle;
+            middle << strings.at(0) << strings.at(1) << strings.at(2);
+            strings.removeAt(0);
+            strings.removeAt(0);
+            strings.removeAt(0);
+            QString end = strings.join("_");
+            strings.clear();
+            strings << start << middle.join(" ") << end;
+        }
 		double cx = GraphicsUtils::StandardFritzingDPI * (panelItem->x + (w / 2));
 		int fontSize1 = 250;
 		int fontSize2 = 150;
@@ -1156,6 +1167,7 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
     int moved = mainWindow->pcbView()->checkLoadedTraces();
     if (moved > 0) {
         QMessageBox::warning(NULL, QObject::tr("Fritzing"), QObject::tr("%1 wires moved from their saved position in %2.").arg(moved).arg(path));
+        DebugDialog::debug(QString("\ncheckloadedtraces %1\n").arg(path)); 
     }
 
 

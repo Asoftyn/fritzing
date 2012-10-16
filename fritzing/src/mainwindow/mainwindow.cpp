@@ -461,16 +461,16 @@ void MainWindow::initMenus() {
 	QShortcut::tr("Shift", "for naming shortcut keys on menu items");
 	QShortcut::tr("Meta", "for naming shortcut keys on menu items");
 
-	DebugDialog::debug("create menus");
+	//DebugDialog::debug("create menus");
 
     createActions();
     createMenus();
 
-	DebugDialog::debug("create toolbars");
+	//DebugDialog::debug("create toolbars");
 
     createStatusBar();
 
-	DebugDialog::debug("after creating status bar");
+	//DebugDialog::debug("after creating status bar");
 
 	if (m_fileProgressDialog) {
 		m_fileProgressDialog->setValue(91);
@@ -1001,7 +1001,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 		}
 	}
 
-	DebugDialog::debug(QString("top level windows: %1").arg(QApplication::topLevelWidgets().size()));
+	//DebugDialog::debug(QString("top level windows: %1").arg(QApplication::topLevelWidgets().size()));
 	/*
 	foreach (QWidget * widget, QApplication::topLevelWidgets()) {
 		QMenu * menu = qobject_cast<QMenu *>(widget);

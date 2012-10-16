@@ -472,14 +472,14 @@ void PartsBinPaletteWidget::load(const QString &filename, QWidget * progressTarg
     PaletteModel * paletteBinModel = PaletteBinModels.value(filename);
     if (paletteBinModel == NULL) {
 	    paletteBinModel = new PaletteModel(true, false);
-	    DebugDialog::debug("after palette model");
+	    //DebugDialog::debug("after palette model");
 
 	    QString name = m_title;
 	    if (name.isEmpty()) name = QFileInfo(filename).baseName();
 
 	    bool deleteWhenDone = false;
         if (progressTarget != NULL) {
-            DebugDialog::debug("open progress " + filename);
+            //DebugDialog::debug("open progress " + filename);
 		    deleteWhenDone = true;
             progressTarget = m_loadingProgressDialog = new FileProgressDialog(tr("Loading..."), 200, progressTarget);
 		    m_loadingProgressDialog->setBinLoadingChunk(200);
@@ -496,7 +496,7 @@ void PartsBinPaletteWidget::load(const QString &filename, QWidget * progressTarg
 	    }
 	    DebugDialog::debug(QString("loading bin '%1'").arg(name));
 	    bool result = paletteBinModel->loadFromFile(filename, m_referenceModel, false);
-	    DebugDialog::debug(QString("done loading bin '%1'").arg(name));
+	    //DebugDialog::debug(QString("done loading bin '%1'").arg(name));
 
 	    if (!result) {
 		    QMessageBox::warning(NULL, QObject::tr("Fritzing"), QObject::tr("Fritzing cannot load the parts bin"));
@@ -508,7 +508,7 @@ void PartsBinPaletteWidget::load(const QString &filename, QWidget * progressTarg
 	    }
 
 	    if (progressTarget) {
-            DebugDialog::debug("close progress " + filename);
+            //DebugDialog::debug("close progress " + filename);
 		    disconnect(paletteBinModel, SIGNAL(loadingInstances(ModelBase *, QDomElement &)), progressTarget, SLOT(loadingInstancesSlot(ModelBase *, QDomElement &)));
 		    disconnect(paletteBinModel, SIGNAL(loadingInstance(ModelBase *, QDomElement &)), progressTarget, SLOT(loadingInstanceSlot(ModelBase *, QDomElement &)));
 		    disconnect(m_iconView, SIGNAL(settingItem()), progressTarget, SLOT(settingItemSlot()));

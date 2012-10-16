@@ -264,14 +264,14 @@ void MainWindow::initDock() {
 	m_binManager = new BinManager(m_referenceModel, m_infoView, m_undoStack, this);
     m_binManager->initStandardBins();
 
-	DebugDialog::debug("after creating bins");
+	//DebugDialog::debug("after creating bins");
 	if (m_fileProgressDialog) {
 		m_fileProgressDialog->setValue(89);
 	}
 }
 
 void MainWindow::moreInitDock() {
-	DebugDialog::debug("create view switcher");
+	//DebugDialog::debug("create view switcher");
 
 	m_viewSwitcher = new ViewSwitcher();
 	connect(m_viewSwitcher, SIGNAL(viewSwitched(int)), this, SLOT(viewSwitchedTo(int)));

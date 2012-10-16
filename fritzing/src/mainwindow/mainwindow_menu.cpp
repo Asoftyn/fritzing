@@ -347,7 +347,7 @@ void MainWindow::mainLoad(const QString & fileName, const QString & displayName)
 	connect(m_sketchModel, SIGNAL(loadedRoot(const QString &, ModelBase *, QDomElement &)),
 				this, SLOT(loadedRootSlot(const QString &, ModelBase *, QDomElement &)), Qt::DirectConnection);
 	m_sketchModel->loadFromFile(fileName, m_referenceModel, modelParts, true);
-	DebugDialog::debug("core loaded");
+	//DebugDialog::debug("core loaded");
 	disconnect(m_sketchModel, SIGNAL(loadedViews(ModelBase *, QDomElement &)),
 				this, SLOT(loadedViewsSlot(ModelBase *, QDomElement &)));
 	disconnect(m_sketchModel, SIGNAL(loadedRoot(const QString &, ModelBase *, QDomElement &)),
@@ -2058,10 +2058,14 @@ void MainWindow::openNewPartsEditor(PaletteItem * paletteItem)
 
     PEMainWindow * peMainWindow = new PEMainWindow(m_referenceModel, NULL);
     peMainWindow->init(m_referenceModel, NULL);
-    peMainWindow->setInitialItem(paletteItem);
-	peMainWindow->show();
-	peMainWindow->raise();
-    connect(peMainWindow, SIGNAL(addToMyPartsSignal(ModelPart *)), this, SLOT(addToMyParts(ModelPart *)));
+   if (peMainWindow->setInitialItem(paletteItem)) {   
+	    peMainWindow->show();
+	    peMainWindow->raise();
+        connect(peMainWindow, SIGNAL(addToMyPartsSignal(ModelPart *)), this, SLOT(addToMyParts(ModelPart *)));
+   }
+   else {
+       delete peMainWindow;
+   }
 }
 
 void MainWindow::getPartsEditorNewAnd(ItemBase * fromItem) 

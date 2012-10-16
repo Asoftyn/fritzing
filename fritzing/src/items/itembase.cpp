@@ -821,7 +821,8 @@ void ItemBase::setLocalSticky(bool s)
 		    if (!StickyRenderer.isValid()) {
 			    QString fn(":resources/images/part_sticky.svg");
 			    bool success = StickyRenderer.load(fn);
-			    DebugDialog::debug(QString("sticky load success %1").arg(success));
+                Q_UNUSED(success);
+			    //DebugDialog::debug(QString("sticky load success %1").arg(success));
 		    }
 
 		    m_stickyItem = new QGraphicsSvgItem();

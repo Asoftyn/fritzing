@@ -641,7 +641,7 @@ QMenu *PEMainWindow::pcbItemMenu() {
     return NULL;
 }
 
-void PEMainWindow::setInitialItem(PaletteItem * paletteItem) 
+bool PEMainWindow::setInitialItem(PaletteItem * paletteItem) 
 {
     m_pcbGraphicsView->setBoardLayers(2, true);
 	m_pcbGraphicsView->setLayerActive(ViewLayer::Copper1, true);
@@ -663,7 +663,7 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem)
     //DebugDialog::debug(QString("%1, %2").arg(info.absoluteFilePath()).arg(m_userPartsFolderPath));
     m_canSave = info.absoluteFilePath().contains(m_userPartsFolderPath);
 
-    if (!loadFzp(originalModelPart->path())) return;
+    if (!loadFzp(originalModelPart->path())) return false;
 
     QDomElement fzpRoot = m_fzpDocument.documentElement();
     QString referenceFile = fzpRoot.attribute(ReferenceFileString);
@@ -757,9 +757,7 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem)
 
         viewThing->referenceFile = getSvgReferenceFile(itemBase->filename());
 
-
         if (!itemBase->hasCustomSVG()) {
-            QString referenceFile = getSvgReferenceFile(itemBase->filename());
             QFile file(itemBase->filename());
             if (!file.open(QFile::ReadOnly)) {
                 QMessageBox::critical(NULL, tr("Parts Editor"), tr("Unable to load '%1'. Please close the parts editor without saving and try again.").arg(itemBase->filename()));
@@ -767,13 +765,13 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem)
             }
 
             QString svg = file.readAll();
-            insertDesc(referenceFile, svg);
+            insertDesc(viewThing->referenceFile, svg);
             TextUtils::fixMuch(svg, true);
-            QString svgPath = makeSvgPath(referenceFile, viewThing->sketchWidget, true);
+            QString svgPath = makeSvgPath(viewThing->referenceFile, viewThing->sketchWidget, true);
             bool result = writeXml(m_userPartsFolderSvgPath + svgPath, removeGorn(svg), true);
             if (!result) {
                 QMessageBox::critical(NULL, tr("Parts Editor"), tr("Unable to write svg to  %1").arg(svgPath));
-		        return;
+		        return false;
             }
 
             continue;
@@ -830,23 +828,22 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem)
 			svg = svgList.join("\n");
 		}
 
-        QString referenceFile = getSvgReferenceFile(itemBase->filename());
 		QSizeF size = itemBase->size();
         QString header = TextUtils::makeSVGHeader(GraphicsUtils::SVGDPI, GraphicsUtils::StandardFritzingDPI, size.width(), size.height());
-        header += makeDesc(referenceFile);
+        header += makeDesc(viewThing->referenceFile);
 		svg = header + svg + "</svg>";
-        QString svgPath = makeSvgPath(referenceFile, viewThing->sketchWidget, true);
+        QString svgPath = makeSvgPath(viewThing->referenceFile, viewThing->sketchWidget, true);
         bool result = writeXml(m_userPartsFolderSvgPath + svgPath, removeGorn(svg), true);
         if (!result) {
             QMessageBox::critical(NULL, tr("Parts Editor"), tr("Unable to write svg to  %1").arg(svgPath));
-		    return;
+		    return false;
         }
 
         QDomElement view = views.firstChildElement(ViewLayer::viewIdentifierXmlName(viewThing->sketchWidget->viewIdentifier()));
         QDomElement layers = view.firstChildElement("layers");
         if (layers.isNull()) {
             QMessageBox::critical(NULL, tr("Parts Editor"), tr("Unable to parse fzp file  %1").arg(originalModelPart->path()));
-		    return;
+		    return false;
         }
 
 		setImageAttribute(layers, svgPath);
@@ -861,7 +858,7 @@ void PEMainWindow::setInitialItem(PaletteItem * paletteItem)
 
     setTitle();
     createRaiseWindowActions();
-
+    return true;
 }
 
 void PEMainWindow::initHelper()
@@ -877,9 +874,7 @@ void PEMainWindow::initZoom() {
         }
 		
 		if (viewThing->itemBase) {
-			QString referenceFile = getSvgReferenceFile(viewThing->itemBase->filename());
-			if (referenceFile.isEmpty()) referenceFile = viewThing->itemBase->filename();
-			m_peSvgView->setFilename(referenceFile);
+			m_peSvgView->setFilename(viewThing->referenceFile);
 		}
     }
 }
@@ -1963,8 +1958,7 @@ void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QStri
     }
 
     // update svg in case there is a subsequent call to reload
-	QString referenceFile = getSvgReferenceFile(viewThing->itemBase->filename());
-	QString newPath = m_userPartsFolderSvgPath + makeSvgPath(referenceFile, sketchWidget, true);
+	QString newPath = m_userPartsFolderSvgPath + makeSvgPath(viewThing->referenceFile, sketchWidget, true);
 	QString svg = TextUtils::svgNSOnly(svgDoc->toString());
     writeXml(newPath, removeGorn(svg), true);
     setImageAttribute(fzpRoot, newPath, viewIdentifier);
@@ -2344,8 +2338,7 @@ void PEMainWindow::moveTerminalPoint(SketchWidget * sketchWidget, const QString 
         }
 
         // update svg in case there is a subsequent call to reload
-	    QString referenceFile = getSvgReferenceFile(viewThing->itemBase->filename());
-	    QString newPath = m_userPartsFolderSvgPath + makeSvgPath(referenceFile, sketchWidget, true);
+	    QString newPath = m_userPartsFolderSvgPath + makeSvgPath(viewThing->referenceFile, sketchWidget, true);
 	    QString svg = TextUtils::svgNSOnly(svgDoc->toString());
         writeXml(newPath, removeGorn(svg), true);
         setImageAttribute(fzpRoot, newPath, sketchWidget->viewIdentifier());
@@ -2661,19 +2654,42 @@ QString PEMainWindow::getSvgReferenceFile(const QString & filename) {
     QString referenceFile = info.fileName();
 
     QFile file(filename);
-    if (file.open(QFile::ReadOnly)) {
-        QString svg = file.readAll();
-        int ix = svg.indexOf("<" + ReferenceFileString);
-        if (ix >= 0) {
-            int jx = svg.indexOf(">", ix);
-            if (jx > ix) {
-                int kx = svg.indexOf("<", jx);
-                if (kx > jx) {
-                    referenceFile = svg.mid(jx + 1, kx - jx - 1);
+    if (!file.open(QFile::ReadOnly)) return referenceFile;
+
+    QString svg = file.readAll();
+    if (!svg.contains(ReferenceFileString)) return referenceFile;
+
+    QXmlStreamReader xml(svg.toUtf8());
+	xml.setNamespaceProcessing(false);
+    bool inDesc = false;
+	while (!xml.atEnd()) {
+        switch (xml.readNext()) {
+            case QXmlStreamReader::StartElement:
+                {
+                    QString name = xml.name().toString();
+			        if (inDesc && name.compare(ReferenceFileString) == 0) {
+				        QString candidate = xml.readElementText().trimmed();
+				        if (candidate.isEmpty()) return referenceFile;
+                        return candidate;
+			        }
+			        if (name.compare("desc") == 0) {
+				        inDesc = true;
+			        }
                 }
-            }
-        }
-    }
+			    break;
+            case QXmlStreamReader::EndElement:
+                {
+                    QString name = xml.name().toString();
+			        if (name.compare("desc") == 0) {
+				        inDesc = false;
+			        }
+                }
+			    break;
+			
+		    default:
+			    break;
+		}
+	}
 
     return referenceFile;
 }
@@ -3233,8 +3249,7 @@ void PEMainWindow::smdChanged(const QString & after) {
 		}
 	}
 
-	QString referenceFile = getSvgReferenceFile(itemBase->filename());
-	QString newPath = m_userPartsFolderSvgPath + makeSvgPath(referenceFile, m_pcbGraphicsView, true);
+	QString newPath = m_userPartsFolderSvgPath + makeSvgPath(viewThing->referenceFile, m_pcbGraphicsView, true);
 	QString svg = TextUtils::svgNSOnly(svgDoc.toString());
     writeXml(newPath, removeGorn(svg), true);
 
@@ -3324,23 +3339,6 @@ void PEMainWindow::setConnectorSMD(bool toSMD, QDomElement & connector) {
 	copper0.setAttribute("layer", "copper0");
 }
 
-bool PEMainWindow::saveWithReferenceFile(QDomDocument * doc, const QString & referencePath, const QString & newPath)
-{
-    QDomElement root = doc->documentElement();
-    QDomElement desc = root.firstChildElement("desc");
-    if (desc.isNull()) {
-        desc = doc->createElement("desc");
-        root.appendChild(desc);
-    }
-    QDomElement referenceFile = desc.firstChildElement(ReferenceFileString);
-    if (referenceFile.isNull()) {
-        referenceFile = doc->createElement(ReferenceFileString);
-        desc.appendChild(referenceFile);
-    }
-    TextUtils::replaceChildText(*doc, desc, referencePath);
-	QString svg = TextUtils::svgNSOnly(doc->toString());
-    return writeXml(newPath, removeGorn(svg), true);
-}
 
 void PEMainWindow::reuseBreadboard()
 {
