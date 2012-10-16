@@ -374,30 +374,3 @@ QString ChangeSMDCommand::getParamString() const {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-ReferenceFileCommand::ReferenceFileCommand(PEMainWindow * peMainWindow, ViewLayer::ViewIdentifier viewIdentifier, const QString & filename, QUndoCommand *parent)
-    : PEBaseCommand(peMainWindow, parent)
-{
-	m_filename = filename;
-    m_viewIdentifier = viewIdentifier;
-}
-
-void ReferenceFileCommand::undo()
-{
-	m_peMainWindow->changeReferenceFile(m_viewIdentifier, m_filename);
-}
-
-void ReferenceFileCommand::redo()
-{
-	m_peMainWindow->changeReferenceFile(m_viewIdentifier, m_filename);
-}
-
-QString ReferenceFileCommand::getParamString() const {
-	return "ReferenceFileCommand " + 
-        QString(" v:%1 fn:%2")
-            .arg(m_viewIdentifier)
-            .arg(m_filename)
-        ;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////

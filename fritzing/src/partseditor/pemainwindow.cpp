@@ -1548,9 +1548,9 @@ void PEMainWindow::loadImage()
 
     QFileInfo info(origPath);
     QUndoCommand * parentCommand = new QUndoCommand(QString("Load '%1'").arg(info.fileName()));
-    new ReferenceFileCommand(this, itemBase->viewIdentifier(), viewThing->referenceFile, parentCommand);
+    //new ReferenceFileCommand(this, itemBase->viewIdentifier(), viewThing->referenceFile, parentCommand);
 	new ChangeSvgCommand(this, m_currentGraphicsView, itemBase->filename(), newPath, parentCommand);
-    new ReferenceFileCommand(this, itemBase->viewIdentifier(), newReferenceFile, parentCommand);
+    //new ReferenceFileCommand(this, itemBase->viewIdentifier(), newReferenceFile, parentCommand);
     m_undoStack->waitPush(parentCommand, SketchWidget::PropChangeDelay);
 }
 
@@ -1709,6 +1709,7 @@ void PEMainWindow::reload(bool firstTime)
 	foreach (ItemBase * itemBase, itemBases) {
 		ViewThing * viewThing = m_viewThings.value(itemBase->viewIdentifier());
 		viewThing->itemBase = itemBase;
+        viewThing->referenceFile = getSvgReferenceFile(itemBase->filename());
 	}
 
 	m_metadataView->initMetadata(m_fzpDocument);

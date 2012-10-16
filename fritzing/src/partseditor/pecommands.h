@@ -228,22 +228,5 @@ protected:
 
 /////////////////////////////////////////////
 
-class ReferenceFileCommand : public PEBaseCommand
-{
-public:
-	ReferenceFileCommand(class PEMainWindow *, ViewLayer::ViewIdentifier, const QString & filename, QUndoCommand *parent);
-	void undo();
-	void redo();
-
-protected:
-	QString getParamString() const;
-
-protected:
-	ViewLayer::ViewIdentifier m_viewIdentifier;
-    QString m_filename;
-};
-
-/////////////////////////////////////////////
-
 
 #endif // PECOMMANDS_H
