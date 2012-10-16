@@ -60,14 +60,12 @@ $Date$
 //
 //  deal with invisible connectors
 //
-//  keepout ui
-//
 //  if a part is already overlapping, leave it out of future checking?
 //
 //
 ///////////////////////////////////////////
 
-bool pixelsCollide(QImage * image1, QImage * image2, QImage * image3, int x1, int y1, int x2, int y2, uint clr) {
+bool pixelsCollide(QImage * image1, QImage * image2, QImage * image3, int x1, int y1, int x2, int y2, uint clr, QPointF & atPixel) {
     bool result = false;
 	for (int y = y1; y < y2; y++) {
 		for (int x = x1; x < x2; x++) {
@@ -80,15 +78,41 @@ bool pixelsCollide(QImage * image1, QImage * image2, QImage * image3, int x1, in
             image3->setPixel(x, y, clr);
 			//DebugDialog::debug(QString("p1:%1 p2:%2").arg(p1, 0, 16).arg(p2, 0, 16));
 			result = true;
+            atPixel.setX(x);
+            atPixel.setY(y);
 		}
 	}
 
 	return result;
 }
 
+QStringList getNames(CollidingThing * collidingThing) {
+    QStringList names;
+    QList<ItemBase *> itemBases;
+    foreach (ItemBase * itemBase, collidingThing->itemBases) {
+        if (itemBase) {
+            itemBases << itemBase;
+        }
+    }
+    foreach (ConnectorItem * connectorItem, collidingThing->connectorItems) {
+        if (connectorItem) {
+            itemBases << connectorItem->attachedTo();
+        }
+    }
+    foreach (ItemBase * itemBase, itemBases) {
+        if (itemBase) {
+            itemBase = itemBase->layerKinChief();
+            QString name = QObject::tr("Part %1 '%2'").arg(itemBase->title()) .arg(itemBase->instanceTitle());
+            names << name;
+        }
+    }
+    
+    return names;
+}
+
 ///////////////////////////////////////////////
 
-DRCResultsDialog::DRCResultsDialog(const QString & message, const QStringList & messages, const QList<ConnectorItem *> & connectorItems, 
+DRCResultsDialog::DRCResultsDialog(const QString & message, const QStringList & messages, const QList<CollidingThing *> & collidingThings, 
                                     QGraphicsItem * displayItem, PCBSketchWidget * sketchWidget, QWidget *parent) 
                  : QDialog(parent) 
 {
@@ -99,31 +123,28 @@ DRCResultsDialog::DRCResultsDialog(const QString & message, const QStringList & 
     if (m_displayItem) {
         m_displayItem->setFlags(0);
     }
-    foreach (ConnectorItem * connectorItem, connectorItems) {
-        m_connectorItems.append(connectorItem);
-    }
+    m_collidingThings = collidingThings;
 
 	this->setWindowTitle(tr("DRC Results"));
 
 	QVBoxLayout * vLayout = new QVBoxLayout(this);
 
-    QLabel * label = new QLabel(tr("Click on an enabled item in the list to select the part it represents."));
+    QLabel * label = new QLabel(message);
     label->setWordWrap(true);
 	vLayout->addWidget(label);
 
-    label = new QLabel(tr("Note: list items and the red highlighting will not update as you edit your sketch--you must rerun the DRC. The highlighting will disappear when you close this dialog."));
+    label = new QLabel(tr("Click on an item in the list to select the part it refer to."));
     label->setWordWrap(true);
 	vLayout->addWidget(label);
 
-	label = new QLabel(message);
+    label = new QLabel(tr("Note: the list items and the red highlighting will not update as you edit your sketch--you must rerun the DRC. The highlighting will disappear when you close this dialog."));
     label->setWordWrap(true);
 	vLayout->addWidget(label);
 
     QListWidget *listWidget = new QListWidget();
     for (int ix = 0; ix < messages.count(); ix++) {
         QListWidgetItem * item = new QListWidgetItem(messages.at(ix));
-        ConnectorItem * connectorItem = connectorItems.at(ix);
-        item->setFlags(connectorItem == NULL ? Qt::NoItemFlags : (Qt::ItemIsSelectable | Qt::ItemIsEnabled) );
+        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         item->setData(Qt::UserRole, ix);
         listWidget->addItem(item);
     }
@@ -142,26 +163,54 @@ DRCResultsDialog::~DRCResultsDialog() {
     if (m_displayItem != NULL && m_sketchWidget != NULL) {
         delete m_displayItem;
     }
+    foreach (CollidingThing * collidingThing, m_collidingThings) {
+        delete collidingThing;
+    }
+    m_collidingThings.clear();
 }
 
 void DRCResultsDialog::pressedSlot(QListWidgetItem * item) {
     if (item == NULL) return;
 
     int ix = item->data(Qt::UserRole).toInt();
-    ConnectorItem * connectorItem = m_connectorItems.at(ix);
-    if (connectorItem == NULL) {
-        return;
+    CollidingThing * collidingThing = m_collidingThings.at(ix);
+    QList<ItemBase *> itemBases;
+    foreach (ConnectorItem * connectorItem, collidingThing->connectorItems) {
+        if (connectorItem) {
+            itemBases << connectorItem->attachedTo()->layerKinChief();
+        }
     }
-
-    m_sketchWidget->selectItem(connectorItem->attachedTo());
+    foreach (ItemBase * itemBase, collidingThing->itemBases) {
+        if (itemBase) {
+            itemBases << itemBase;
+            continue;
+        }
+    }
+    m_sketchWidget->selectItems(itemBases);
 }
 
 void DRCResultsDialog::releasedSlot(QListWidgetItem * item) {
     if (item == NULL) return;
 
     int ix = item->data(Qt::UserRole).toInt();
-    ConnectorItem * connectorItem = m_connectorItems.at(ix);
-    if (connectorItem == NULL) {
+    CollidingThing * collidingThing = m_collidingThings.at(ix);
+    bool gotAny = false;
+    foreach (ConnectorItem * connectorItem, collidingThing->connectorItems) {
+        if (connectorItem) {
+            gotAny = true;
+            break;
+        }
+    }
+    if (!gotAny) {
+        foreach (ItemBase * itemBase, collidingThing->itemBases) {
+            if (itemBase) {
+                gotAny = true;
+                break;
+            }
+        }
+    }
+
+    if (!gotAny) {
         item->setFlags(Qt::NoItemFlags);
         return;
     }
@@ -329,9 +378,9 @@ DRC::~DRC(void)
 bool DRC::start() {
 	QString message;
     QStringList messages;
-    QList<ConnectorItem *> connectorItems;
+    QList<CollidingThing *> collidingThings;
 
-    bool result = startAux(message, messages, connectorItems);
+    bool result = startAux(message, messages, collidingThings);
     if (result) {
         if (messages.count() == 0) {
             message = tr("Your sketch is ready for production: there are no connectors or traces that overlap or are too close together.");
@@ -354,7 +403,7 @@ bool DRC::start() {
 		QMessageBox::information(m_sketchWidget->window(), tr("Fritzing"), message);
 	}
 	else {
-		DRCResultsDialog * dialog = new DRCResultsDialog(message, messages, connectorItems, m_displayItem, m_sketchWidget, m_sketchWidget->window());
+		DRCResultsDialog * dialog = new DRCResultsDialog(message, messages, collidingThings, m_displayItem, m_sketchWidget, m_sketchWidget->window());
         dialog->show();
         m_displayItem = NULL;
 	}
@@ -362,8 +411,8 @@ bool DRC::start() {
     return result;
 }
 
-bool DRC::startAux(QString & message, QStringList & messages, QList<ConnectorItem *> & connectorItems) {
-
+bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThing *> & collidingThings) {
+    QStringList collidingHashes;
     bool bothSidesNow = m_sketchWidget->boardLayers() == 2;
 
     QList<ConnectorItem *> visited;
@@ -411,7 +460,7 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<ConnectorIte
 	ProcessEventBlocker::processEvents();
 
     bool inches;
-    double keepout = getKeepoutSetting(inches);
+    double keepout = getKeepoutSetting(inches);  // keepout result is in mils
     
     double dpi = (1000 / keepout);
     QRectF boardRect = m_board->sceneBoundingRect();
@@ -502,13 +551,25 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<ConnectorIte
             return false;
         }
 
-        if (pixelsCollide(m_plusImage, m_minusImage, m_displayImage, 0, 0, imgSize.width(), imgSize.height(), 0x80ff0000)) {
-            QString msg = tr("Too close to a border or a hole (%1 layer)").arg(viewLayerSpec == ViewLayer::Top ? tr("top") : tr("bottom"));
-            emit setProgressMessage(msg);
-            messages << msg;
-            connectorItems << NULL;
-            collisions = true;
-            updateDisplay(dpi);
+        QPointF atPixel;
+        if (pixelsCollide(m_plusImage, m_minusImage, m_displayImage, 0, 0, imgSize.width(), imgSize.height(), 0x80ff0000, atPixel)) {
+            CollidingThing * collidingThing = findItemsAt(atPixel, m_board, viewLayerIDs, keepout, dpi, true);
+            if (!collidingHashes.contains(collidingThing->hash)) {
+                QStringList names = getNames(collidingThing);
+                if (names.count() > 0) {
+                    QString name = names.at(0);
+                    QString msg = tr("%1 (and possibly other parts) are too close to a border or a hole (%2 layer)")
+                        .arg(name)
+                        .arg(viewLayerSpec == ViewLayer::Top ? tr("top") : tr("bottom"))
+                        ;
+                    emit setProgressMessage(msg);
+                    messages << msg;
+                    collidingThings << collidingThing;
+                    collidingHashes << collidingThing->hash;
+                    collisions = true;
+                    updateDisplay(dpi);
+                }
+            }
         }
 
         emit setProgressValue(progress++);
@@ -600,18 +661,29 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<ConnectorIte
                 double r = (rect.right() - boardRect.left()) * dpi / GraphicsUtils::SVGDPI;
                 double b = (rect.bottom() - boardRect.top()) * dpi / GraphicsUtils::SVGDPI;
                 //DebugDialog::debug(QString("l:%1 t:%2 r:%3 b:%4").arg(l).arg(t).arg(r).arg(b));
-                if (pixelsCollide(m_plusImage, m_minusImage, m_displayImage, l, t, r, b, 0x80ff0000)) {
-                    ItemBase * itemBase = equ->attachedTo();
-                    QString msg = tr("Part %1 '%2' crosses another net on %3 layer")
-                        .arg(itemBase->title())
-                        .arg(itemBase->instanceTitle())
-                        .arg(viewLayerSpec == ViewLayer::Top ? tr("top") : tr("bottom"))
-                      ;
-                    messages << msg;
-                    connectorItems << equ;
-                    emit setProgressMessage(msg);
-                    collisions = true;
-                    updateDisplay(dpi);
+                QPointF atPixel;
+                if (pixelsCollide(m_plusImage, m_minusImage, m_displayImage, l, t, r, b, 0x80ff0000, atPixel)) {
+                    CollidingThing * collidingThing = findItemsAt(atPixel, m_board, viewLayerIDs, keepout, dpi, false);
+                    if (!collidingHashes.contains(collidingThing->hash)) {
+                        QStringList names = getNames(collidingThing);
+                        QString name0 = tr("Something");
+                        QString name1 = name0;
+                        if (names.count() > 0) {
+                            name0 = names.at(0);
+                            if (names.count() > 1) name1 = names.at(1);
+                            QString msg = tr("%1 crosses %2 (%3 layer)")
+                                .arg(name0)
+                                .arg(name1)
+                                .arg(viewLayerSpec == ViewLayer::Top ? tr("top") : tr("bottom"))
+                              ;
+                            messages << msg;
+                            collidingThings << collidingThing;
+                            collidingHashes << collidingThing->hash;
+                            emit setProgressMessage(msg);
+                            collisions = true;
+                            updateDisplay(dpi);
+                        }
+                    }
                 }
             }
 
@@ -925,3 +997,58 @@ void DRC::updateDisplay(double dpi) {
 void DRC::cancel() {
 	m_cancelled = true;
 }
+
+CollidingThing * DRC::findItemsAt(QPointF pixel, ItemBase * board, const LayerList & viewLayerIDs, double keepout, double dpi, bool skipHoles) {
+    CollidingThing * collidingThing = new CollidingThing;
+
+    double cx = (pixel.x() * GraphicsUtils::SVGDPI / dpi) + board->pos().x();
+    double cy = (pixel.y() * GraphicsUtils::SVGDPI / dpi) + board->pos().y();
+    double offset = keepout * GraphicsUtils::SVGDPI / 1000;         // mils
+    QRectF r(cx - offset, cy - offset, offset + offset, offset + offset);
+    QSet<ItemBase *> itemBases;
+    QSet<ItemBase *> additionalItemBases;
+    QSet<ConnectorItem *> connectorItems;
+    QList<QGraphicsItem *> items = m_sketchWidget->scene()->items(r);
+    foreach (QGraphicsItem * item, items) {
+        ConnectorItem * connectorItem = dynamic_cast<ConnectorItem *>(item);
+        if (connectorItem) {
+            ItemBase * itemBase = connectorItem->attachedTo();
+            if (itemBase == board) continue;        // shouldn't happen
+            if (skipHoles && itemBase->itemType() == ModelPart::Hole) continue;
+            if (!viewLayerIDs.contains(itemBase->viewLayerID())) continue;
+
+            connectorItems.insert(connectorItem);
+            itemBases.insert(itemBase->layerKinChief());
+        }
+    }
+    foreach (QGraphicsItem * item, items) {
+        ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
+        if (itemBase) {
+            if (itemBase == board) continue;
+            if (!viewLayerIDs.contains(itemBase->viewLayerID())) continue;
+            if (itemBases.contains(itemBase->layerKinChief())) continue;
+            if (skipHoles && itemBase->itemType() == ModelPart::Hole) continue;
+
+            additionalItemBases.insert(itemBase->layerKinChief());
+        }
+    }
+
+    QList<QObject *> objects;
+    QStringList hashes;
+    foreach (ConnectorItem * connectorItem, connectorItems) {
+        if (connectorItem) {
+            collidingThing->connectorItems.append(connectorItem);
+            hashes << QString::number((long) connectorItem, 0, 16);
+        }
+    }
+    foreach (ItemBase * itemBase, additionalItemBases) {
+        if (itemBase) {
+            collidingThing->itemBases.append(itemBase);
+            hashes << QString::number((long) itemBase, 0, 16);
+        }
+    }
+    qSort(hashes);
+    collidingThing->hash = hashes.join("");
+    return collidingThing;
+}
+

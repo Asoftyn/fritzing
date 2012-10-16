@@ -40,7 +40,13 @@ $Date$
 
 #include "../svg/svgfilesplitter.h"
 #include "../viewlayer.h"
-#include "../connectors/connectoritem.h"
+
+struct CollidingThing {
+    QList< QPointer<class ConnectorItem> > connectorItems;
+    QList< QPointer<class ItemBase> > itemBases;
+    QString hash;
+};
+
 
 class DRC : public QObject
 {
@@ -72,7 +78,8 @@ protected:
     void markSubs(QDomElement & root, const QString & mark);
     void splitSubs(QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs);
     void updateDisplay(double dpi);
-	bool startAux(QString & message, QStringList & messages, QList<ConnectorItem *> & connectorItems);
+	bool startAux(QString & message, QStringList & messages, QList<CollidingThing *> &);
+    CollidingThing * findItemsAt(QPointF pixel, ItemBase * board, const LayerList & viewLayerIDs, double keepout, double dpi, bool skipHoles);
 	
 protected:
 	class PCBSketchWidget * m_sketchWidget;
@@ -92,7 +99,7 @@ class DRCResultsDialog : public QDialog
 Q_OBJECT
 
 public:
-	DRCResultsDialog(const QString & message, const QStringList & messages, const QList<ConnectorItem *> & connectorItems, QGraphicsItem * displayItem, class PCBSketchWidget * sketchWidget, QWidget *parent = 0);
+	DRCResultsDialog(const QString & message, const QStringList & messages, const QList<CollidingThing *> &, QGraphicsItem * displayItem, class PCBSketchWidget * sketchWidget, QWidget *parent = 0);
 	~DRCResultsDialog();
 
 protected slots:
@@ -101,7 +108,7 @@ protected slots:
 
 protected:
     QStringList m_messages;
-    QList< QPointer<ConnectorItem> > m_connectorItems;
+    QList<CollidingThing *> m_collidingThings;
     QPointer <class PCBSketchWidget> m_sketchWidget;
     QGraphicsItem * m_displayItem;
 };

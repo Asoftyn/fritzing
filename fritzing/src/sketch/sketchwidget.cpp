@@ -8951,14 +8951,40 @@ void SketchWidget::removeDragWire() {
 }
 
 void SketchWidget::selectItem(ItemBase * itemBase) {
-    QString message = itemBase == NULL ? tr("Deselect all") : tr("Select %1").arg(itemBase->instanceTitle());
+    QList<ItemBase *> itemBases;
+    itemBases << itemBase;
+    selectItems(itemBases);
+}
+
+void SketchWidget::selectItems(QList<ItemBase *> itemBases) {
+    bool count = 0;
+    ItemBase * theItemBase;
+    foreach(ItemBase * itemBase, itemBases) {
+        if (itemBase) {
+            theItemBase = itemBase;
+            count++;
+        }
+    }
+    
+    QString message;
+    if (count == 0) {
+        message = tr("Deselect all");
+    }
+    else if (count == 1) {
+        message = tr("Select %1").arg(theItemBase->instanceTitle());  
+    }
+    else {
+        message = tr("Select %1 items").arg(count);  
+    }
 	QUndoCommand * parentCommand = new QUndoCommand(message);
 
 	stackSelectionState(false, parentCommand);
 	SelectItemCommand * selectItemCommand = new SelectItemCommand(this, SelectItemCommand::NormalSelect, parentCommand);
-	if (itemBase) {
-		selectItemCommand->addRedo(itemBase->id());
-	}
+    foreach(ItemBase * itemBase, itemBases) {
+        if (itemBase) {
+            selectItemCommand->addRedo(itemBase->id());
+        }
+    }
 
 	scene()->clearSelection();
 	m_undoStack->push(parentCommand);
