@@ -8958,7 +8958,7 @@ void SketchWidget::selectItem(ItemBase * itemBase) {
 
 void SketchWidget::selectItems(QList<ItemBase *> itemBases) {
     bool count = 0;
-    ItemBase * theItemBase;
+    ItemBase * theItemBase = NULL;
     foreach(ItemBase * itemBase, itemBases) {
         if (itemBase) {
             theItemBase = itemBase;
