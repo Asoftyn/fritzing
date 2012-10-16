@@ -1548,9 +1548,7 @@ void PEMainWindow::loadImage()
 
     QFileInfo info(origPath);
     QUndoCommand * parentCommand = new QUndoCommand(QString("Load '%1'").arg(info.fileName()));
-    //new ReferenceFileCommand(this, itemBase->viewIdentifier(), viewThing->referenceFile, parentCommand);
 	new ChangeSvgCommand(this, m_currentGraphicsView, itemBase->filename(), newPath, parentCommand);
-    //new ReferenceFileCommand(this, itemBase->viewIdentifier(), newReferenceFile, parentCommand);
     m_undoStack->waitPush(parentCommand, SketchWidget::PropChangeDelay);
 }
 
