@@ -560,10 +560,6 @@ Use the file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Too close to a border or a hole (%1 layer)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>top</source>
         <translation type="unfinished"></translation>
     </message>
@@ -572,7 +568,38 @@ Use the file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Part %1 &apos;%2&apos; crosses another net on %3 layer</source>
+        <source>Fritzing</source>
+        <translation type="unfinished">Fritzing</translation>
+    </message>
+    <message>
+        <source>%1 (and possibly other parts) are too close to a border or a hole (%2 layer)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Something</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 crosses %2 (%3 layer)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DRCKeepoutDialog</name>
+    <message>
+        <source>DRC Keepout Setting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The &apos;keepout&apos; is the minimum amount of space you want to keep between a connector or trace on one net and a connector or trace in another net</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A keepout of 0.01 inch (0.254 mm) is a good default.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Note: the smaller the keepout, the slower the DRC will run.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -580,6 +607,14 @@ Use the file?</source>
     <name>DRCResultsDialog</name>
     <message>
         <source>DRC Results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click on an item in the list to select the part it refer to.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Note: the list items and the red highlighting will not update as you edit your sketch--you must rerun the DRC. The highlighting will disappear when you close this dialog.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2136,10 +2171,6 @@ Please check all views for potential side-effects.</source>
         <translation>设置底层铜层可点击</translation>
     </message>
     <message>
-        <source>Select any parts that are too close together for safe board production (w/in 10 mil)</source>
-        <translation>使任意元件间的距离大于电路板生产安全距离(w/in 10 mil)</translation>
-    </message>
-    <message>
         <source>Copper Top and Copper Bottom layers are both active</source>
         <translation>激活上下覆铜层</translation>
     </message>
@@ -2899,6 +2930,18 @@ Go ahead and revert?</source>
     </message>
     <message>
         <source>DRC Progress...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Highlights any parts that are too close together for safe board production</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Design Rules Keepout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the minimum distance between parts for the DRC (Design Rules Check)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5263,6 +5306,10 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
         <source>&lt;b&gt;type:&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Part %1 &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
@@ -5761,6 +5808,10 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
         <source>%1
 
 Note: you can also trigger this display by mousing down on the routing status text in the status bar.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deselect all</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
