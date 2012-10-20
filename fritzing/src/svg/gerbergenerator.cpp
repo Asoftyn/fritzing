@@ -658,6 +658,11 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
 		    image.save(FolderUtils::getUserDataStorePath("") + "/output.png");
     #endif
 
+            QString path = makePath(image, res / GraphicsUtils::StandardFritzingDPI, "#000000");
+            svgString.replace("</svg>", path + "</svg>");
+
+            /*
+
 		    GroundPlaneGenerator gpg;
 		    gpg.setLayerName(layerName);
 		    gpg.setMinRunSize(1, 1);
@@ -665,6 +670,8 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
 		    if (gpg.newSVGs().count() > 0) {
                 svgString = gpg.mergeSVGs(svgString, "");
 		    }
+
+            */
 		}
 	}
 
@@ -734,4 +741,44 @@ void GerberGenerator::mergeOutlineElement(QImage & image, QRectF & target, doubl
 	if (gpg.newSVGs().count() > 0) {
         svgString = gpg.mergeSVGs(svgString, "");
 	}
+}
+
+QString GerberGenerator::makePath(QImage & image, double unit, const QString & colorString) 
+{
+    double halfUnit = unit / 2;
+    QString paths;
+    int lineCount = 0;
+    for (int y = 0; y < image.height(); y++) {
+		bool inWhite = false;
+		int whiteStart = 0;
+		for (int x = 0; x < image.width(); x++) {
+			QRgb current = image.pixel(x, y);
+			if (inWhite) {
+				if (current == 0xffffffff) {			
+					// another white pixel, keep moving
+					continue;
+				}
+
+				// got black: close up this segment;
+				inWhite = false;
+                paths += QString("M%1,%2L%3,%2 ").arg(whiteStart + halfUnit).arg(y + halfUnit).arg(x - 1 + halfUnit);
+                if (++lineCount == 10) {
+                    lineCount = 0;
+                    paths += "\n";
+                }
+			}
+			else {
+				if (current != 0xffffffff) {				
+					// another black pixel, keep moving
+					continue;
+				}
+
+				inWhite = true;
+				whiteStart = x;
+			}
+		}
+	}
+
+    QString path = QString("<path fill='none' stroke='%1' stroke-width='%2' d='").arg(colorString).arg(unit);
+    return path + paths + "' />\n";
 }

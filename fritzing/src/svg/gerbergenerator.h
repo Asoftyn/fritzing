@@ -67,7 +67,7 @@ protected:
 	static void displayMessage(const QString & message, bool displayMessageBoxes);
 	static bool saveEnd(const QString & layerName, const QString & exportDir, const QString & prefix, const QString & suffix, bool displayMessageBoxes, SVG2gerber & gerber);
     static void mergeOutlineElement(QImage & image, QRectF & target, double res, QDomDocument & document, QString & svgString, int ix, const QString & layerName);
-
+    static QString makePath(QImage & image, double unit, const QString & colorString);
 
 };
 

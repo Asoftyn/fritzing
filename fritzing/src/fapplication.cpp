@@ -1265,14 +1265,14 @@ void FApplication::checkForUpdates(bool atUserRequest)
 
 void FApplication::enableCheckUpdates(bool enabled)
 {
-	DebugDialog::debug("before enable check updates");
+	//DebugDialog::debug("before enable check updates");
     foreach (QWidget *widget, QApplication::topLevelWidgets()) {
         MainWindow *mainWindow = qobject_cast<MainWindow *>(widget);
 		if (mainWindow) {
 			mainWindow->enableCheckUpdates(enabled);
 		}
 	}
-	DebugDialog::debug("after enable check updates");
+	//DebugDialog::debug("after enable check updates");
 }
 
 
