@@ -163,14 +163,15 @@ void ViewLayer::initNames() {
 		alternatives.insert(ViewLayer::Copper0, ViewLayer::Copper1);
 		alternatives.insert(ViewLayer::Copper1, ViewLayer::Copper0);
 
-		unconnectables.insert(ViewLayer::Copper0, ViewLayer::Copper1);
-		unconnectables.insert(ViewLayer::Copper0, ViewLayer::Copper1Trace);
-		unconnectables.insert(ViewLayer::Copper0Trace, ViewLayer::Copper1);
-		unconnectables.insert(ViewLayer::Copper0Trace, ViewLayer::Copper1Trace);
-		unconnectables.insert(ViewLayer::Copper1, ViewLayer::Copper0);
-		unconnectables.insert(ViewLayer::Copper1, ViewLayer::Copper0Trace);
-		unconnectables.insert(ViewLayer::Copper1Trace, ViewLayer::Copper0);
-		unconnectables.insert(ViewLayer::Copper1Trace, ViewLayer::Copper0Trace);
+        LayerList l0, l1;
+        l0 << ViewLayer::Copper0 << ViewLayer::Copper0Trace << ViewLayer::GroundPlane0;
+        l1 << ViewLayer::Copper1 << ViewLayer::Copper1Trace << ViewLayer::GroundPlane1;
+        foreach (ViewLayer::ViewLayerID viewLayerID0, l0) {
+            foreach (ViewLayer::ViewLayerID viewLayerID1, l1) {
+                unconnectables.insert(viewLayerID0, viewLayerID1);
+                unconnectables.insert(viewLayerID1, viewLayerID0);
+            }
+        }
 	}
 
 	if (ViewIdentifierNames.count() == 0) {
