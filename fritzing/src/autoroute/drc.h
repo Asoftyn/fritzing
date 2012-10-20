@@ -42,9 +42,8 @@ $Date$
 #include "../viewlayer.h"
 
 struct CollidingThing {
-    QList< QPointer<class ConnectorItem> > connectorItems;
-    QList< QPointer<class ItemBase> > itemBases;
-    QString hash;
+    QPointer<class ConnectorItem> connectorItem;
+    QList<QPointF> atPixels;
 };
 
 
@@ -79,7 +78,7 @@ protected:
     void splitSubs(QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs);
     void updateDisplay(double dpi);
 	bool startAux(QString & message, QStringList & messages, QList<CollidingThing *> &);
-    CollidingThing * findItemsAt(QPointF pixel, ItemBase * board, const LayerList & viewLayerIDs, double keepout, double dpi, bool skipHoles);
+    CollidingThing * findItemsAt(QList<QPointF> &, ItemBase * board, const LayerList & viewLayerIDs, double keepout, double dpi, bool skipHoles, ConnectorItem * already);
 	
 protected:
 	class PCBSketchWidget * m_sketchWidget;
@@ -99,7 +98,7 @@ class DRCResultsDialog : public QDialog
 Q_OBJECT
 
 public:
-	DRCResultsDialog(const QString & message, const QStringList & messages, const QList<CollidingThing *> &, QGraphicsItem * displayItem, class PCBSketchWidget * sketchWidget, QWidget *parent = 0);
+	DRCResultsDialog(const QString & message, const QStringList & messages, const QList<CollidingThing *> &, QGraphicsPixmapItem * displayItem,  QImage * displayImage, class PCBSketchWidget * sketchWidget, QWidget *parent = 0);
 	~DRCResultsDialog();
 
 protected slots:
@@ -110,7 +109,8 @@ protected:
     QStringList m_messages;
     QList<CollidingThing *> m_collidingThings;
     QPointer <class PCBSketchWidget> m_sketchWidget;
-    QGraphicsItem * m_displayItem;
+    QGraphicsPixmapItem * m_displayItem;
+    QImage * m_displayImage;
 };
 
 class DRCKeepoutDialog : public QDialog

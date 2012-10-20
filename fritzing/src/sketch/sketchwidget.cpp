@@ -8956,7 +8956,30 @@ void SketchWidget::selectItem(ItemBase * itemBase) {
     selectItems(itemBases);
 }
 
-void SketchWidget::selectItems(QList<ItemBase *> itemBases) {
+void SketchWidget::selectItems(QList<ItemBase *> startingItemBases) {
+    QSet<ItemBase *> itemBases;
+    foreach (ItemBase * itemBase, startingItemBases) {
+        if (itemBase) itemBases.insert(itemBase->layerKinChief());
+    }
+
+    QSet<ItemBase *> already;
+    foreach (QGraphicsItem * item, scene()->selectedItems()) {
+        ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
+        if (itemBase) already.insert(itemBase->layerKinChief());
+    }
+
+    bool theSame = (itemBases.count() == already.count());
+    if (theSame) {
+        foreach(ItemBase * itemBase, itemBases) {
+            if (!already.contains(itemBase)) {
+                theSame = false;
+                break;
+            }
+        }
+    }
+
+    if (theSame) return;
+
     bool count = 0;
     ItemBase * theItemBase = NULL;
     foreach(ItemBase * itemBase, itemBases) {
