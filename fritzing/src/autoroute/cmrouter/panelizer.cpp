@@ -709,7 +709,7 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
 			return false;
 		}
 
-        if (customPartsOnly && !mainWindow->hasAnyAlien() && !mainWindow->hasCustomBoardShape()) {
+        if (customPartsOnly && !mainWindow->hasAnyAlien() && !mainWindow->hasCustomBoardShape() && (mainWindow->pcbView()->checkLoadedTraces() == 0)) {
             mainWindow->close();
             delete mainWindow,
 			boardElement = boardElement.nextSiblingElement("board"); 
