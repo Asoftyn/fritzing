@@ -89,8 +89,19 @@ void LogoItem::addedToScene(bool temporary)
 		m_aspectRatio.setHeight(this->boundingRect().height());
 		m_originalFilename = filename();
 		QString svg = prop("shape");
-		if (!svg.isEmpty()) {					
-			m_aspectRatio = modelPart()->localProp("aspectratio").toSizeF();
+		if (!svg.isEmpty()) {
+            QString arString = modelPart()->localProp("aspectratio").toString();
+            if (!arString.isEmpty()) {
+			    m_aspectRatio =  modelPart()->localProp("aspectratio").toSizeF();
+            }
+            else {
+                bool okw, okh;
+                double w = m_modelPart->localProp("width").toDouble(&okw);
+		        double h = m_modelPart->localProp("height").toDouble(&okh);
+                if (okw && okh) {
+                    m_aspectRatio = QSizeF(w, h);
+                }
+            }
 			if (resetRenderer(getShapeForRenderer(svg))) {
 			}
 			else {
