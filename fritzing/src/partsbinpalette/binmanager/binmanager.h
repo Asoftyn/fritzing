@@ -139,6 +139,7 @@ class BinManager : public QFrame {
 		void renameBin();
 		void exportSelected();
 		bool removeSelected();
+		void findSelected();
 		void saveBundledBin();
         void mainLoad();
 
@@ -200,6 +201,7 @@ protected:
 		QAction *m_editPartNewAction;
 		QAction *m_exportPartAction;
 		QAction *m_removePartAction;
+		QAction *m_findPartAction;
 
         QString m_tempPartsBinLocation;
 

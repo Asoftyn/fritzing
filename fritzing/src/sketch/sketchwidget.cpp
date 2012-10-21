@@ -6802,6 +6802,7 @@ void SketchWidget::hidePartLabel(ItemBase * item) {
 
 
 void SketchWidget::collectParts(QList<ItemBase *> & partList) {
+    // using PaletteItem instead of ItemBase ensures layerKinChiefs only
 	foreach (QGraphicsItem * item, scene()->items()) {
 		PaletteItem * pitem = dynamic_cast<PaletteItem *>(item);
 		if (pitem == NULL) continue;
@@ -8958,6 +8959,23 @@ void SketchWidget::selectItem(ItemBase * itemBase) {
     QList<ItemBase *> itemBases;
     itemBases << itemBase;
     selectItems(itemBases);
+}
+
+void SketchWidget::selectItemsWithModuleID(ModelPart * modelPart) {
+    QSet<ItemBase *> itemBases;
+    foreach (QGraphicsItem * item, scene()->items()) {
+        ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
+        if (itemBase && itemBase->moduleID() == modelPart->moduleID()) {
+            itemBases.insert(itemBase->layerKinChief());
+        }
+    }
+
+    if (itemBases.count() == 0) {
+        QMessageBox::information(NULL, "Not found", tr("Part '%1' not found in sketch").arg(modelPart->title()));
+        return;
+    }
+
+    selectItems(itemBases.values());
 }
 
 void SketchWidget::selectItems(QList<ItemBase *> startingItemBases) {

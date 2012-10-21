@@ -1130,8 +1130,8 @@ void MainWindow::exportBOM() {
 	}
 
     QList <ItemBase*> partList;
-    QMap<QString, int> shoppingList;
-	QHash<QString, ItemBase *> descrs;
+    QList<QString> descrList;
+	QMultiHash<QString, ItemBase *> descrs;
 
 	m_currentGraphicsView->collectParts(partList);
 
@@ -1140,17 +1140,12 @@ void MainWindow::exportBOM() {
 	foreach (ItemBase * itemBase, partList) {
 		if (itemBase->itemType() != ModelPart::Part) continue;
 
-        QString desc = getBomProps(itemBase);
-
-        if(!shoppingList.contains(desc)) {
-            shoppingList.insert(desc, 1);
-			descrs.insert(desc, itemBase);
-        }
-        else {
-            shoppingList[desc]++;
+        QString desc = itemBase->title() + "%%%%%" + getBomProps(itemBase);  // keeps different parts separate if there are no properties
+        descrs.insert(desc, itemBase);
+        if (!descrList.contains(desc)) {
+            descrList.append(desc);
         }
     }
-
 
 	QString assemblyString;
 	foreach (ItemBase * itemBase, partList) {
@@ -1160,13 +1155,10 @@ void MainWindow::exportBOM() {
     }
 
 	QString shoppingListString;
-    QMapIterator<QString, int> it(shoppingList);
-    while (it.hasNext()) {
-        it.next();
-		ItemBase * itemBase = descrs.value(it.key());
-
-		// it.value() = count; it.key() = bomProps
-		shoppingListString += bomRowTemplate.arg(it.value()).arg(itemBase->title()).arg(it.key());
+    foreach (QString descr, descrList) {
+        QList<ItemBase *> itemBases = descrs.values(descr);
+        QStringList split = descr.split("%%%%%");
+		shoppingListString += bomRowTemplate.arg(itemBases.count()).arg(split.at(0)).arg(split.at(1));
     }
 
 	QString bom = bomTemplate

@@ -845,6 +845,7 @@ void BinManager::updateBinCombinedMenu(PartsBinPaletteWidget * bin) {
 	m_editPartNewAction->setEnabled(enabled && itemBase->canEditPart());
 	m_exportPartAction->setEnabled(enabled && !itemBase->modelPart()->isCore());
 	m_removePartAction->setEnabled(enabled && bin->allowsChanges());
+	m_findPartAction->setEnabled(enabled);
 }
 
 void BinManager::createCombinedMenu() 
@@ -910,10 +911,12 @@ void BinManager::createCombinedMenu()
 	m_editPartNewAction = new QAction(tr("Edit Part (new parts editor)..."),this);
 	m_exportPartAction = new QAction(tr("Export Part..."),this);
 	m_removePartAction = new QAction(tr("Remove Part"),this);
+	m_findPartAction = new QAction(tr("Find Part in Sketch"),this);
 
 	connect(m_editPartNewAction, SIGNAL(triggered()),this, SLOT(editSelectedNew()));
 	connect(m_exportPartAction, SIGNAL(triggered()),this, SLOT(exportSelected()));
 	connect(m_removePartAction, SIGNAL(triggered()),this, SLOT(removeSelected()));
+	connect(m_findPartAction, SIGNAL(triggered()),this, SLOT(findSelected()));
 
 	connect(m_combinedMenu, SIGNAL(aboutToShow()), this, SLOT(updateBinCombinedMenuCurrent()));
 
@@ -921,6 +924,7 @@ void BinManager::createCombinedMenu()
 	m_combinedMenu->addAction(m_editPartNewAction);
 	m_combinedMenu->addAction(m_exportPartAction);
 	m_combinedMenu->addAction(m_removePartAction);
+	m_combinedMenu->addAction(m_findPartAction);
 
 }
 
@@ -937,6 +941,7 @@ void BinManager::createContextMenus() {
 	m_partContextMenu->addAction(m_editPartNewAction);
 	m_partContextMenu->addAction(m_exportPartAction);
 	m_partContextMenu->addAction(m_removePartAction);
+	m_partContextMenu->addAction(m_findPartAction);
 }
 
 void BinManager::closeBin() {
@@ -1093,6 +1098,17 @@ bool BinManager::removeSelected() {
 
 	return true;
 }
+
+void BinManager::findSelected() {
+	PartsBinPaletteWidget * bin = currentBin();
+	if (bin == NULL) return;
+
+	ModelPart * mp = bin->selectedModelPart();
+	if (mp == NULL) return;
+
+    m_mainWindow->selectPartsWithModuleID(mp);
+}
+
 
 void BinManager::exportSelected() {
 	PartsBinPaletteWidget * bin = currentBin();

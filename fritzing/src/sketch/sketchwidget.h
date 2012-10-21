@@ -105,6 +105,7 @@ public:
     void selectItem(long id, bool state, bool updateInfoView, bool doEmit);
     void selectItem(ItemBase * itemBase);
     void selectItems(QList<ItemBase *>);
+    void selectItemsWithModuleID(ModelPart *);
     void selectDeselectAllCommand(bool state);
     void changeWire(long fromID, QLineF line, QPointF pos, bool updateConnections, bool updateRatsnest);   
     void changeLeg(long fromID, const QString & connectorID, const QPolygonF &, bool relative, const QString & why);   

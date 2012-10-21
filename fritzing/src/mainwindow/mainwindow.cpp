@@ -2513,3 +2513,8 @@ bool MainWindow::hasCustomBoardShape() {
 	return m_pcbGraphicsView->hasCustomBoardShape();
 }
 
+void MainWindow::selectPartsWithModuleID(ModelPart * modelPart) {
+    if (m_currentGraphicsView == NULL) return;
+
+    m_currentGraphicsView->selectItemsWithModuleID(modelPart);
+}
