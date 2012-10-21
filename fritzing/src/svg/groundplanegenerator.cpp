@@ -150,7 +150,8 @@ bool GroundPlaneGenerator::generateGroundPlaneUnit(const QString & boardSvg, QSi
 												   QPointF whereToStart) 
 {
 	double bWidth, bHeight;
-	QImage * image = generateGroundPlaneAux(boardSvg, boardImageSize, svg, copperImageSize, exceptions, board, res, bWidth, bHeight);
+    QList<QRectF> rects;
+	QImage * image = generateGroundPlaneAux(boardSvg, boardImageSize, svg, copperImageSize, exceptions, board, res, bWidth, bHeight, rects);
 	if (image == NULL) return false;
 
 	QRectF bsbr = board->sceneBoundingRect();
@@ -229,16 +230,32 @@ bool GroundPlaneGenerator::generateGroundPlane(const QString & boardSvg, QSizeF 
 {
 
 	double bWidth, bHeight;
-	QImage * image = generateGroundPlaneAux(boardSvg, boardImageSize, svg, copperImageSize, exceptions, board, res, bWidth, bHeight);
+    QList<QRectF> rects;
+	QImage * image = generateGroundPlaneAux(boardSvg, boardImageSize, svg, copperImageSize, exceptions, board, res, bWidth, bHeight, rects);
 	if (image == NULL) return false;
 
-	scanImage(*image, bWidth, bHeight, GraphicsUtils::StandardFritzingDPI / res, res, color, true, true, QSizeF(.05, .05), 1 / GraphicsUtils::SVGDPI, QPointF(0,0));
+    double pixelFactor = GraphicsUtils::StandardFritzingDPI / res;
+	scanImage(*image, bWidth, bHeight, pixelFactor, res, color, true, true, QSizeF(.05, .05), 1 / GraphicsUtils::SVGDPI, QPointF(0,0));
+    if (rects.count() > 0) {
+        foreach (QRectF r, rects) {
+            // add the rects separately as tiny SVGs which don't get clipped (since they are connected)
+            QList<QPolygon> polygons;
+            QPolygon polygon;
+            polygon << QPoint(r.left() * pixelFactor, r.top() * pixelFactor) 
+                    << QPoint(r.right() * pixelFactor, r.top() * pixelFactor)  
+                    << QPoint(r.right() * pixelFactor, r.bottom() * pixelFactor) 
+                    << QPoint(r.left() * pixelFactor, r.bottom() * pixelFactor);
+            polygons.append(polygon);
+            makePolySvg(polygons, res, bWidth, bHeight, pixelFactor, color, false, true, QSizeF(0, 0), 0, QPointF(0, 0));
+        }
+    }
+
 	delete image;
 	return true;
 }
 
 QImage * GroundPlaneGenerator::generateGroundPlaneAux(const QString & boardSvg, QSizeF boardImageSize, const QString & svg, QSizeF copperImageSize, 
-													QStringList & exceptions, QGraphicsItem * board, double res, double & bWidth, double & bHeight) 
+													QStringList & exceptions, QGraphicsItem * board, double res, double & bWidth, double & bHeight, QList<QRectF> & rects) 
 {
 	QByteArray boardByteArray;
     QString tempColor("#ffffff");
@@ -349,13 +366,13 @@ QImage * GroundPlaneGenerator::generateGroundPlaneAux(const QString & boardSvg, 
 	image->save(FolderUtils::getUserDataStorePath("") + "/testGroundFillCopper.png");
 #endif
 
-	emit postImageSignal(this, image, board);	
+	emit postImageSignal(this, image, board, rects);	
 
 	return image;
 }
 
 void GroundPlaneGenerator::scanImage(QImage & image, double bWidth, double bHeight, double pixelFactor, double res, 
-									 const QString & colorString, bool makeConnector, 
+									 const QString & colorString, bool makeConnectorFlag, 
 									 bool makeOffset, QSizeF minAreaInches, double minDimensionInches, QPointF polygonOffset)  
 {
 	QList<QRect> rects;
@@ -372,24 +389,7 @@ void GroundPlaneGenerator::scanImage(QImage & image, double bWidth, double bHeig
 
 		// note: there is always one
 		joinScanLines(newRects, polygons);
-		QPointF offset;
-		QString pSvg = makePolySvg(polygons, res, bWidth, bHeight, pixelFactor, colorString, makeConnector, makeOffset ? &offset : NULL, minAreaInches, minDimensionInches, polygonOffset);
-		if (pSvg.isEmpty()) continue;
-
-		m_newSVGs.append(pSvg);
-		if (makeOffset) {
-			offset *= GraphicsUtils::SVGDPI;
-			m_newOffsets.append(offset);			// offset now in pixels
-		}
-
-		/*
-		QFile file4("testPoly.svg");
-		file4.open(QIODevice::WriteOnly);
-		QTextStream out4(&file4);
-		out4 << pSvg;
-		file4.close();
-		*/
-
+        makePolySvg(polygons, res, bWidth, bHeight, pixelFactor, colorString, makeConnectorFlag, makeOffset, minAreaInches, minDimensionInches, polygonOffset);
 	}
 
 	/*
@@ -732,6 +732,29 @@ void GroundPlaneGenerator::joinScanLines(QList<QRect> & rects, QList<QPolygon> &
 	}
 }
 
+void GroundPlaneGenerator::makePolySvg(QList<QPolygon> & polygons, double res, double bWidth, double bHeight, double pixelFactor, 
+										const QString & colorString, bool makeConnectorFlag, bool makeOffset, 
+										QSizeF minAreaInches, double minDimensionInches, QPointF polygonOffset) 
+{
+	QPointF offset;
+	QString pSvg = makePolySvg(polygons, res, bWidth, bHeight, pixelFactor, colorString, makeConnectorFlag, makeOffset ? &offset : NULL, minAreaInches, minDimensionInches, polygonOffset);
+	if (pSvg.isEmpty()) return;
+
+	m_newSVGs.append(pSvg);
+	if (makeOffset) {
+		offset *= GraphicsUtils::SVGDPI;
+		m_newOffsets.append(offset);			// offset now in pixels
+	}
+
+	/*
+	QFile file4("testPoly.svg");
+	file4.open(QIODevice::WriteOnly);
+	QTextStream out4(&file4);
+	out4 << pSvg;
+	file4.close();
+	*/
+}
+
 QString GroundPlaneGenerator::makePolySvg(QList<QPolygon> & polygons, double res, double bWidth, double bHeight, double pixelFactor, 
 										const QString & colorString, bool makeConnectorFlag, QPointF * offset, 
 										QSizeF minAreaInches, double minDimensionInches, QPointF polygonOffset) 
@@ -1023,7 +1046,7 @@ void GroundPlaneGenerator::collectBorderPoints(QImage & image, QList<QPoint> & p
 }
 
 void GroundPlaneGenerator::scanOutline(QImage & image, double bWidth, double bHeight, double pixelFactor, double res, 
-									 const QString & colorString, bool makeConnector, 
+									 const QString & colorString, bool makeConnectorFlag, 
 									 bool makeOffset, QSizeF minAreaInches, double minDimensionInches)  
 {
 	QList<QPoint> points;
@@ -1043,15 +1066,7 @@ void GroundPlaneGenerator::scanOutline(QImage & image, double bWidth, double bHe
 
 	QList<QPolygon> polygons;
 	polygons.append(polygon);
-	QPointF offset;
-	QString pSvg = makePolySvg(polygons, res, bWidth, bHeight, pixelFactor, colorString, makeConnector, makeOffset ? &offset : NULL, minAreaInches, minDimensionInches, QPointF(0, 0));
-	if (!pSvg.isEmpty()) {
-		m_newSVGs.append(pSvg);
-		if (makeOffset) {
-			offset *= GraphicsUtils::SVGDPI;
-			m_newOffsets.append(offset);			// offset now in pixels
-		}
-	}
+    makePolySvg(polygons, res, bWidth, bHeight, pixelFactor, colorString, makeConnectorFlag, makeOffset, minAreaInches, minDimensionInches, QPointF(0,0));
 
 	/*
 	QFile file4("testPoly.svg");
