@@ -1707,6 +1707,10 @@ bool SketchWidget::dragEnterEventAux(QDragEnterEvent *event) {
 
 		// create temporary item for dragging
 		m_droppingItem = addItemAuxTemp(modelPart, defaultViewLayerSpec(), viewGeometry, fromID, doConnectors, m_viewIdentifier, true);
+        QSizeF size = m_droppingItem->sceneBoundingRect().size();
+        if (size.width() < offset.x() || size.height() < offset.y()) {
+            offset = m_droppingOffset = QPointF(size.width() / 2, size.height() / 2);
+        }
 
 		QHash<long, ItemBase *> savedItems;
 		QHash<Wire *, ConnectorItem *> savedWires;
