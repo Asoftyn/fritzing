@@ -779,6 +779,6 @@ QString GerberGenerator::makePath(QImage & image, double unit, const QString & c
 		}
 	}
 
-    QString path = QString("<path fill='none' stroke='%1' stroke-width='%2' d='").arg(colorString).arg(unit);
+    QString path = QString("<path fill='none' stroke='%1' stroke-width='%2' stroke-linecap='square' d='").arg(colorString).arg(unit);
     return path + paths + "' />\n";
 }

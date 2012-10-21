@@ -573,7 +573,29 @@ int SVG2gerber::allPaths2gerber(ForWhy forWhy) {
             continue;
 		}
 
-		standardAperture(path, apertureMap, current_dcode, dcode_index, 0);
+        if (path.attribute("stroke-linecap") == "square") {
+	        double stroke_width = path.attribute("stroke-width").toDouble();
+	        if (stroke_width != 0) {
+	            QString aperture = QString("R,%1X%1").arg(stroke_width/1000, 0, 'f');
+
+                    // add aperture to defs if we don't have it yet
+                if (!apertureMap.contains(aperture)) {
+                    apertureMap[aperture] = QString::number(dcode_index);
+                    m_gerber_header += "%ADD" + QString::number(dcode_index) + aperture + "*%\n";
+                    dcode_index++;
+                }
+
+	            QString dcode = apertureMap[aperture];
+	            if (current_dcode != dcode) {
+		            //switch to correct aperture
+		            m_gerber_paths += "G54D" + dcode + "*\n";
+		            current_dcode = dcode;
+	            }
+            }
+        }
+        else {
+		    standardAperture(path, apertureMap, current_dcode, dcode_index, 0);
+        }
 
         // set poly fill if this is actually a filled in shape
 		bool polyFill = fillNotStroke(path, forWhy);
