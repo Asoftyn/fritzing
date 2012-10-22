@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-Sensors-PHOTOCELL-PTH-KIT'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-Sensors' PHOTOCELL PTH-KIT -->
 <version>4</version>
-<date>2012-09-20</date>
+<date>2012-10-22</date>
 <label>R</label>
 <author>www.fritzing.org</author>
 <description>CdS photoresistor. This is a low cost way to detect light levels. Resistance decreases with more incoming light. SparkFun SKU: SEN-09088</description>
@@ -19,7 +19,7 @@
 </properties>
 <views>
 <breadboardView>
-<layers image='breadboard/sparkfun-sensors_photocell-kit_breadboard.svg'>
+<layers image='breadboard/basic_ldr.svg'>
 <layer layerId='breadboard'/>
 </layers>
 </breadboardView>
@@ -36,7 +36,7 @@
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-sensors_photocell-kit_breadboard.svg'>
+<layers image='breadboard/basic_ldr.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

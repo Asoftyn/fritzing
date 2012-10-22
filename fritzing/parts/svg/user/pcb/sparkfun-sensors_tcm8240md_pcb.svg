@@ -1,58 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Ebene_1" xmlns:svg="http://www.w3.org/2000/svg"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="31.946px"
-	 height="36.426px" viewBox="0 0 31.946 36.426" enable-background="new 0 0 31.946 36.426" xml:space="preserve">
-<g>
-	<g>
-		<polygon fill="#2A2A2A" points="2.856,1.562 0,4.418 0,33.563 32,33.563 32,1.562 		"/>
-		<polygon fill="#333333" points="4.931,0.94 0.835,5.036 0.835,31.27 31.165,31.27 31.165,0.94 		"/>
-		<rect y="33.563" fill="#1A1A1A" width="32" height="1.779"/>
-		<circle fill="#1A1A1A" cx="16" cy="16.105" r="14.739"/>
-		<circle fill="#2A2A2A" cx="16" cy="14.739" r="14.739"/>
-		<circle fill="#1A1A1A" cx="16" cy="14.653" r="12.296"/>
-		<circle fill="#2A2A2A" cx="16" cy="13.256" r="12.296"/>
-		<circle fill="#1A1A1A" cx="16" cy="13.256" r="11.192"/>
-		<circle fill="#2A2A2A" cx="16" cy="12.357" r="11.192"/>
-		<rect x="4.793" y="10.42" fill="#1A1A1A" width="22.414" height="1.936"/>
-		<path fill="#1A1A1A" d="M11.25,22.315c-0.55,0-1.225-0.389-1.5-0.865L5,13.222c-0.275-0.477-0.275-1.256,0-1.732l4.75-8.226
-			c0.275-0.477,0.95-0.866,1.5-0.866h9.5c0.549,0,1.225,0.39,1.5,0.866L27,11.49c0.275,0.477,0.275,1.256,0,1.732l-4.75,8.228
-			c-0.275,0.477-0.951,0.865-1.5,0.865H11.25z"/>
-		<path fill="#333333" d="M11.25,20.379c-0.55,0-1.225-0.389-1.5-0.865L5,11.287c-0.275-0.477-0.275-1.256,0-1.732l4.75-8.226
-			c0.275-0.477,0.95-0.866,1.5-0.866h9.5c0.549,0,1.225,0.39,1.5,0.866L27,9.554c0.275,0.477,0.275,1.256,0,1.732l-4.75,8.228
-			c-0.275,0.477-0.951,0.865-1.5,0.865H11.25z"/>
-		<circle fill="#2A2A2A" cx="16" cy="10.42" r="9.221"/>
-		<circle fill="#4A2A2A" cx="16" cy="10.42" r="2.145"/>
-		<path fill="#333333" d="M16,6.189c-2.337,0-4.231,1.894-4.231,4.231s1.894,4.231,4.231,4.231c2.336,0,4.231-1.895,4.231-4.231
-			S18.336,6.189,16,6.189z M16,12.566c-1.185,0-2.145-0.961-2.145-2.146c0-1.185,0.96-2.146,2.145-2.146
-			c1.184,0,2.145,0.96,2.145,2.146C18.145,11.605,17.184,12.566,16,12.566z"/>
-		<path fill="#1A1A1A" d="M16,9.211c1.024,0,1.878,0.718,2.091,1.678c0.035-0.151,0.055-0.307,0.055-0.468
-			c0-1.185-0.961-2.146-2.145-2.146c-1.185,0-2.145,0.96-2.145,2.146c0,0.161,0.021,0.316,0.054,0.467
-			C14.124,9.929,14.976,9.211,16,9.211z"/>
-		<rect x="13.709" y="30.463" fill="#1A1A1A" width="4.58" height="0.807"/>
-		<polygon fill="#1A1A1A" points="29.5,30.463 25.991,30.463 25.456,31.27 30.036,31.27 		"/>
-		<polygon fill="#2A2A2A" points="1.642,28.961 1.642,25.452 0.835,24.917 0.835,29.497 		"/>
-		<polygon fill="#1A1A1A" points="0.835,24.917 0.835,25.877 1.642,26.413 1.642,25.452 		"/>
-		<polygon fill="#1A1A1A" points="0.835,31.27 0.835,32.715 25.456,32.715 25.991,31.911 29.5,31.911 30.036,32.715 31.165,32.715 
-			31.165,31.27 		"/>
-		<rect x="26.772" y="32.79" fill="#1A1A1A" width="1.77" height="0.773"/>
-		<rect x="26.772" y="34.569" fill="#2A2A2A" width="1.77" height="0.773"/>
-		<rect x="0.835" y="35.342" fill="#1A1A1A" width="30.329" height="1.084"/>
-	</g>
-	<g>
-		<rect x="6.596" y="35.704" fill="#FFA800" width="1.8" height="0.723"/>
-		<rect x="9.431" y="35.704" fill="#FFA800" width="1.8" height="0.723"/>
-		<rect x="12.266" y="35.704" fill="#FFA800" width="1.8" height="0.723"/>
-		<rect x="15.101" y="35.704" fill="#FFA800" width="1.8" height="0.723"/>
-		<rect x="20.77" y="35.704" fill="#FFA800" width="1.801" height="0.723"/>
-		<rect x="17.934" y="35.704" fill="#FFA800" width="1.801" height="0.723"/>
-	</g>
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (http://www.fritzing.org/) -->
+<svg xmlns:svg='http://www.w3.org/2000/svg' xmlns='http://www.w3.org/2000/svg' version='1.2' baseProfile='tiny' x='0in' y='0in' width='0.443701in' height='0.443701in' viewBox='0 0 11.27 11.27' >
+<g id='copper1'>
+<rect id='connector0pad' connectorname='P$1' x='0' y='2.3175' width='1.27' height='0.635' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector1pad' connectorname='P$2' x='0' y='3.3175' width='1.27' height='0.635' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector2pad' connectorname='P$3' x='0' y='4.3175' width='1.27' height='0.635' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector3pad' connectorname='P$4' x='0' y='5.3175' width='1.27' height='0.635' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector4pad' connectorname='P$5' x='0' y='6.3175' width='1.27' height='0.635' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector5pad' connectorname='P$6' x='0' y='7.3175' width='1.27' height='0.635' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector6pad' connectorname='P$7' x='2.3175' y='10' width='0.635' height='1.27' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector7pad' connectorname='P$8' x='3.3175' y='10' width='0.635' height='1.27' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector8pad' connectorname='P$9' x='4.3175' y='10' width='0.635' height='1.27' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector9pad' connectorname='P$10' x='5.3175' y='10' width='0.635' height='1.27' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector10pad' connectorname='P$11' x='6.3175' y='10' width='0.635' height='1.27' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector11pad' connectorname='P$12' x='7.3175' y='10' width='0.635' height='1.27' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector12pad' connectorname='P$13' x='10' y='8.3175' width='1.27' height='0.635' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector13pad' connectorname='P$14' x='10' y='7.3175' width='1.27' height='0.635' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector14pad' connectorname='P$15' x='10' y='6.3175' width='1.27' height='0.635' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector15pad' connectorname='P$16' x='10' y='5.3175' width='1.27' height='0.635' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector16pad' connectorname='P$17' x='10' y='4.3175' width='1.27' height='0.635' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector17pad' connectorname='P$18' x='10' y='3.3175' width='1.27' height='0.635' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector18pad' connectorname='P$19' x='8.3175' y='0' width='0.635' height='1.27' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector19pad' connectorname='P$20' x='7.3175' y='0' width='0.635' height='1.27' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector20pad' connectorname='P$21' x='6.3175' y='0' width='0.635' height='1.27' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector21pad' connectorname='P$22' x='5.3175' y='0' width='0.635' height='1.27' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector22pad' connectorname='P$23' x='4.3175' y='0' width='0.635' height='1.27' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<rect id='connector23pad' connectorname='P$24' x='3.3175' y='0' width='0.635' height='1.27' stroke='none' stroke-width='0' fill='#F7BD13' stroke-linecap='round'/>
+<g id='copper0'>
 </g>
-<circle cx="29.84" cy="29.497" r="0.7"/>
-<path fill="#1A1A1A" d="M29.84,29.351c0.289,0,0.535,0.174,0.643,0.423c0.036-0.085,0.058-0.179,0.058-0.277
-	c0-0.388-0.313-0.7-0.7-0.7s-0.7,0.313-0.7,0.7c0,0.099,0.021,0.192,0.058,0.277C29.305,29.525,29.551,29.351,29.84,29.351z"/>
-<circle cx="2.498" cy="29.497" r="0.7"/>
-<path fill="#1A1A1A" d="M2.498,29.351c0.289,0,0.535,0.174,0.643,0.423c0.036-0.085,0.058-0.179,0.058-0.277
-	c0-0.388-0.313-0.7-0.7-0.7s-0.7,0.313-0.7,0.7c0,0.099,0.021,0.192,0.058,0.277C1.962,29.525,2.208,29.351,2.498,29.351z"/>
+</g>
+<g id='silkscreen'>
+<line class='other' x1='0.535' y1='8.135' x2='0.535' y2='10.735' stroke='#f0f0f0' stroke-width='0.127' stroke-linecap='round'/>
+<line class='other' x1='0.535' y1='10.735' x2='2.135' y2='10.735' stroke='#f0f0f0' stroke-width='0.127' stroke-linecap='round'/>
+<line class='other' x1='8.135' y1='10.735' x2='10.735' y2='10.735' stroke='#f0f0f0' stroke-width='0.127' stroke-linecap='round'/>
+<line class='other' x1='10.735' y1='10.735' x2='10.735' y2='9.135' stroke='#f0f0f0' stroke-width='0.127' stroke-linecap='round'/>
+<line class='other' x1='10.735' y1='3.135' x2='10.735' y2='0.535' stroke='#f0f0f0' stroke-width='0.127' stroke-linecap='round'/>
+<line class='other' x1='10.735' y1='0.535' x2='9.135' y2='0.535' stroke='#f0f0f0' stroke-width='0.127' stroke-linecap='round'/>
+<line class='other' x1='3.135' y1='0.535' x2='1.535' y2='0.535' stroke='#f0f0f0' stroke-width='0.127' stroke-linecap='round'/>
+<line class='other' x1='1.535' y1='0.535' x2='0.535' y2='1.535' stroke='#f0f0f0' stroke-width='0.127' stroke-linecap='round'/>
+<line class='other' x1='0.535' y1='1.535' x2='0.535' y2='2.135' stroke='#f0f0f0' stroke-width='0.127' stroke-linecap='round'/>
+</g>
 </svg>

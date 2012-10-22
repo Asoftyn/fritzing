@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-RF-LS20126-'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-RF' LS20126  -->
 <version>4</version>
-<date>2012-09-20</date>
+<date>2012-10-22</date>
 <label>U</label>
 <author>www.fritzing.org</author>
 <description>&lt;h3&gt; LS20126 20-Channel GPS Module&lt;/h3&gt;&lt;br&gt;
@@ -37,7 +37,7 @@ The LOCOSYS LS20126 GPS smart antenna module is a high sensitivity, low power, S
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-rf_ls20126_breadboard.svg'>
+<layers image='icon/LS20126.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>
