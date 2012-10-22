@@ -1925,13 +1925,13 @@ void ConnectorItem::debugInfo(const QString & msg)
 {
 
 #ifndef QT_NO_DEBUG
-	QString s = QString("%1 cid:%2 %3 %4 id:%5 %6 vlid:%7 vid:%8 spec:%9 flg:%10 hy:%11 bus:%12 r:%13 sw:%14")
-	//QString s = QString("%1 %2 %3 %4 id:%5 %6 vlid:%7 vid:%8")
+	QString s = QString("%1 cid:%2 cname:%3 title:%4 id:%5 type:%6 inst:%7 vlid:%8 vid:%9 spec:%10 flg:%11 hy:%12 bus:%13 r:%14 sw:%15")
 			.arg(msg)
 			.arg(this->connectorSharedID())
 			.arg(this->connectorSharedName())
 			.arg(this->attachedToTitle())
 			.arg(this->attachedToID())
+			.arg(this->attachedToItemType())
 			.arg(this->attachedToInstanceTitle())
 			.arg(this->attachedToViewLayerID())
 			.arg(this->attachedToViewIdentifier())

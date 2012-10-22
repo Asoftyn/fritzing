@@ -6426,7 +6426,7 @@ void SketchWidget::updateRoutingStatus(RoutingStatus & routingStatus, bool manua
 		ConnectorItem::collectEqualPotential(connectorItems, true, ViewGeometry::RatsnestFlag);
 		visited.append(connectorItems);
 
-		//if (this->viewIdentifier() == ViewLayer::PCBView) {
+		//if (this->viewIdentifier() == ViewLayer::SchematicView) {
 		//	DebugDialog::debug("________________________");
 		//	foreach (ConnectorItem * ci, connectorItems) ci->debugInfo("cep");
 		//}
@@ -6439,17 +6439,11 @@ void SketchWidget::updateRoutingStatus(RoutingStatus & routingStatus, bool manua
 		if (partConnectorItems.count() < 1) continue;
 		if (!doRatsnest && partConnectorItems.count() <= 1) continue;
 
-		//DebugDialog::debug("________________________");
 		for (int i = partConnectorItems.count() - 1; i >= 0; i--) {
 			ConnectorItem * ci = partConnectorItems[i];
 			
-			//if (this->viewIdentifier() == ViewLayer::PCBView) {
-				//ci->debugInfo("pc");
-			//}
-
 			if (!ci->attachedTo()->isEverVisible()) {
 				partConnectorItems.removeAt(i);
-				// ci->debugInfo("ever visible check");
 			}
 		}
 
@@ -6460,6 +6454,13 @@ void SketchWidget::updateRoutingStatus(RoutingStatus & routingStatus, bool manua
 		}
 
 		if (partConnectorItems.count() <= 1) continue;
+
+	    //if (this->viewIdentifier() == ViewLayer::SchematicView) {
+		//    DebugDialog::debug("________________________");
+        //    foreach (ConnectorItem * pci, partConnectorItems) {
+		//		pci->debugInfo("pc");
+		//	}
+        //}
 
 		GraphUtils::scoreOneNet(partConnectorItems, this->getTraceFlag(), routingStatus);
 	}

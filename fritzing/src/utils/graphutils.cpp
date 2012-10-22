@@ -463,6 +463,18 @@ bool GraphUtils::scoreOneNet(QList<ConnectorItem *> & partConnectorItems, ViewGe
 				continue;
 			}
 
+            if (from->attachedToItemType() == ModelPart::Symbol && 
+                to->attachedToItemType() == ModelPart::Symbol && 
+                from->attachedTo()->isEverVisible() && 
+                to->attachedTo()->isEverVisible()) 
+           {
+                // equipotential symbols are treated as if they were connected by wires
+				add_edge_d(i, j, G);
+				add_edge_d(j, i, G);
+				gotUserConnection = true;
+				continue;
+			}
+
 			if (to->attachedTo() != from->attachedTo()) {
 				gotUserConnection = true;
 				continue;
@@ -481,6 +493,8 @@ bool GraphUtils::scoreOneNet(QList<ConnectorItem *> & partConnectorItems, ViewGe
 	if (!gotUserConnection) {
 		return false;
 	}
+
+
 
 	routingStatus.m_netCount++;
 
@@ -507,8 +521,6 @@ bool GraphUtils::scoreOneNet(QList<ConnectorItem *> & partConnectorItems, ViewGe
 				            }
 			            }
                     }
-                    continue;
-                default:
                     continue;
             }
 
