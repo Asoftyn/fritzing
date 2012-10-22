@@ -69,18 +69,27 @@ def main():
     print "connected"
 
     # Query for the rows
-    print "Reading rows...."
+    print "loading spreadsheet..."
     q = gdata.spreadsheet.service.DocumentQuery()
     q['title'] = "Fritzing Fab Orders"
     q['title-exact'] = 'true'
     feed = gd_client.GetSpreadsheetsFeed(query=q)
-    assert(feed)
+    if feed == None:
+        print "no spreadsheet feed"
+        sys.exit(1)
     
+    print "got spreadsheet feed"
     spreadsheet_id = feed.entry[0].id.text.rsplit('/',1)[1]    
     wsfeed = gd_client.GetWorksheetsFeed(spreadsheet_id)
+    if wsfeed == None:
+        print "no worksheet feed"
+        sys.exit(1)
     
+    print "checking entries"
+    #pprint(vars(wsfeed))
     worksheet_id = None
     for entry in wsfeed.entry:
+        print "worksheet", entry.title.text
         if entry.title.text and (entry.title.text == worksheet):
             worksheet_id = entry.id.text.rsplit('/',1)[1]
             break
@@ -89,8 +98,12 @@ def main():
         print "worksheet", worksheet, "not found"
         sys.exit(0)
 
+    print "checking rows", spreadsheet_id, worksheet_id
     lines = []
-    rows = gd_client.GetListFeed(spreadsheet_id, worksheet_id).entry
+    listFeed = gd_client.GetListFeed(spreadsheet_id, worksheet_id);
+    #pprint(vars(listFeed))
+    rows = listFeed.entry
+    
     boardsInOrder = {}
     boardsInXml = {}
     for row in rows:
