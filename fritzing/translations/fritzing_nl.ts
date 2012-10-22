@@ -384,6 +384,10 @@
         <source>Edit Part (new parts editor)...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Find Part in Sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Board</name>
@@ -575,15 +579,11 @@ Use the file?</source>
         <translation type="unfinished">Fritzing</translation>
     </message>
     <message>
-        <source>%1 (and possibly other parts) are too close to a border or a hole (%2 layer)</source>
+        <source>Too close to a border or a hole (%1 layer)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Something</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 crosses %2 (%3 layer)</source>
+        <source>%1 is overlapping (%2 layer)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -613,11 +613,11 @@ Use the file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Click on an item in the list to select the part it refer to.</source>
+        <source>Note: the list items and the red highlighting will not update as you edit your sketch--you must rerun the DRC. The highlighting will disappear when you close this dialog.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Note: the list items and the red highlighting will not update as you edit your sketch--you must rerun the DRC. The highlighting will disappear when you close this dialog.</source>
+        <source>Click on an item in the list to highlight of overlap it refers to.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5790,6 +5790,10 @@ Note: you can also trigger this display by mousing down on the routing status te
     </message>
     <message>
         <source>Deselect all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Part &apos;%1&apos; not found in sketch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

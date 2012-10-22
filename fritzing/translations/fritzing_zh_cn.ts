@@ -161,11 +161,11 @@
     </message>
     <message>
         <source>to Alexander Kaltsas for the Greek translation, </source>
-        <translation type="unfinished"></translation>
+        <translation>Alexander Kaltsas对希腊语的翻译, </translation>
     </message>
     <message>
         <source>to &amp;#313;ubom&amp;iacute;r Ducho&amp;#328; for the Slovak translation, </source>
-        <translation type="unfinished"></translation>
+        <translation> &amp;#313;ubom&amp;iacute;r Ducho&amp;#328; 对斯洛伐克语的翻译, </translation>
     </message>
 </context>
 <context>
@@ -362,26 +362,30 @@
     </message>
     <message>
         <source>Searching...</source>
-        <translation type="unfinished"></translation>
+        <translation>查找中...</translation>
     </message>
     <message>
         <source>Import...</source>
-        <translation type="unfinished"></translation>
+        <translation>导入...</translation>
     </message>
     <message>
         <source>Load a Fritzing part (.fzpz), or a Fritzing parts bin (.fzb, .fzbz)</source>
-        <translation type="unfinished"></translation>
+        <translation>载入Fritzing原件（.fzpz）,或者 Fritzing元件库（.fzb, .fzbz）</translation>
     </message>
     <message>
         <source>Select a Fritzing File to Open</source>
-        <translation type="unfinished">选择要打开的Fritzing文件</translation>
+        <translation>选择要打开的Fritzing文件</translation>
     </message>
     <message>
         <source>Fritzing Files (*%1 *%2 *%3);;Fritzing Part (*%1);;Fritzing Bin (*%2);;Fritzing Shareable Bin (*%3)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fritzing文件 (*%1 *%2 *%3);;Fritzing元件(*%1);;Fritzing元件库(*%2);;Fritzing分享元件库(*%3)</translation>
     </message>
     <message>
         <source>Edit Part (new parts editor)...</source>
+        <translation>编辑元件（新元件编辑器）...</translation>
+    </message>
+    <message>
+        <source>Find Part in Sketch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -400,89 +404,95 @@
 
 A custom board svg typically has one silkscreen layer and one board layer.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+一个自定义的板svg一般拥有一个丝印层，一个板层。
+</translation>
     </message>
     <message>
         <source>Have a look at the circle_pcb.svg file in your Fritzing installation folder at parts/svg/core/pcb/.
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>查看一下你的Fritziing安装文件夹parts/svg/core/pcb/中Circle_pcb.svg文件。
+
+</translation>
     </message>
     <message>
         <source>image file</source>
-        <translation type="unfinished">图像文件</translation>
+        <translation>图像文件</translation>
     </message>
     <message>
         <source>load image file</source>
-        <translation type="unfinished">载入图像文件</translation>
+        <translation>载入图像文件</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished">图像</translation>
+        <translation>图像</translation>
     </message>
     <message>
         <source>Select an image file to load</source>
-        <translation type="unfinished">选择一个载入的图像文件</translation>
+        <translation>选择一个载入的图像文件</translation>
     </message>
     <message>
         <source>due to an xml problem: %1 line:%2 column:%3</source>
-        <translation type="unfinished"></translation>
+        <translation>由于xml问题：%1排：%2列%3</translation>
     </message>
     <message>
         <source>because the xml is not correctly formatted</source>
-        <translation type="unfinished"></translation>
+        <translation>因为xml不是正确的格式</translation>
     </message>
     <message>
         <source>the &lt;board&gt; element contains no shape elements</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;board&gt;元素包含没有形状的元素</translation>
     </message>
     <message>
         <source>because there are multiple &lt;board&gt; layers</source>
-        <translation type="unfinished"></translation>
+        <translation>因为有多个&lt;board&gt;层</translation>
     </message>
     <message>
         <source>because there are multiple &lt;silkscreen&gt; layers</source>
-        <translation type="unfinished"></translation>
+        <translation>因为有多个&lt;silkscreen&gt;层</translation>
     </message>
     <message>
         <source>because there is no &lt;board&gt; layer</source>
-        <translation type="unfinished"></translation>
+        <translation>因为没有&lt;board&gt;层</translation>
     </message>
     <message>
         <source>the svg contains no shape elements</source>
-        <translation type="unfinished"></translation>
+        <translation>svg不包含形状元素</translation>
     </message>
     <message>
         <source>but the pcb itself will have no silkscreen layer</source>
-        <translation type="unfinished"></translation>
+        <translation>因为PCB本身不包含丝印层</translation>
     </message>
     <message>
         <source>the svg doesn&apos;t fit the custom board format</source>
-        <translation type="unfinished"></translation>
+        <translation>svg不适合自定义板格式</translation>
     </message>
     <message>
         <source>Unable to load</source>
-        <translation type="unfinished">不能载入</translation>
+        <translation>不能载入</translation>
     </message>
     <message>
         <source>Unable to load image from %1 %2</source>
-        <translation type="unfinished">不能从%1 %2中载入图像</translation>
+        <translation>不能从%1 %2中载入图像</translation>
     </message>
     <message>
         <source>Can load, but</source>
-        <translation type="unfinished"></translation>
+        <translation>不能载入，但是</translation>
     </message>
     <message>
         <source>The image from %1 can be loaded, but %2
 Use the file?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1的图像可以被载入，但是%2
+使用这个文件？</translation>
     </message>
 </context>
 <context>
     <name>BoardLogoItem</name>
     <message>
         <source>shape</source>
-        <translation type="unfinished">形状</translation>
+        <translation>形状</translation>
     </message>
 </context>
 <context>
@@ -533,54 +543,50 @@ Use the file?</source>
     <name>DRC</name>
     <message>
         <source>DRC was cancelled.</source>
-        <translation type="unfinished"></translation>
+        <translation>DRC取消了.</translation>
     </message>
     <message>
         <source>Your sketch is ready for production: there are no connectors or traces that overlap or are too close together.</source>
-        <translation type="unfinished">你的样板已经准备好生产：没有接插件或布线重复或者太靠近了。</translation>
+        <translation>你的样板已经准备好生产：没有接插件或布线重复或者太靠近了。</translation>
     </message>
     <message>
         <source>The areas on your board highlighted in red are connectors and traces which may overlap or be too close together. </source>
-        <translation type="unfinished"></translation>
+        <translation>你板上红色高亮的区域是接插件和连接线可能重叠或者靠一起了。</translation>
     </message>
     <message>
         <source>Reposition them and run the DRC again to find more problems</source>
-        <translation type="unfinished"></translation>
+        <translation>重排布他们，并再次运行DRC找出更多问题</translation>
     </message>
     <message>
         <source>Fritzing error: unable to render board svg.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fritzing错误：不能渲染板子的svg。</translation>
     </message>
     <message>
         <source>No traces or connectors to check</source>
-        <translation type="unfinished"></translation>
+        <translation>没有连线或接插件被检查</translation>
     </message>
     <message>
         <source>Unexpected SVG rendering failure--contact fritzing.org</source>
-        <translation type="unfinished"></translation>
+        <translation>不可预料的SVG渲染错误--联系fritzing.org</translation>
     </message>
     <message>
         <source>top</source>
-        <translation type="unfinished"></translation>
+        <translation>顶部</translation>
     </message>
     <message>
         <source>bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>底部</translation>
     </message>
     <message>
         <source>Fritzing</source>
-        <translation type="unfinished">Fritzing</translation>
+        <translation>Fritzing</translation>
     </message>
     <message>
-        <source>%1 (and possibly other parts) are too close to a border or a hole (%2 layer)</source>
+        <source>Too close to a border or a hole (%1 layer)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Something</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 crosses %2 (%3 layer)</source>
+        <source>%1 is overlapping (%2 layer)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -588,33 +594,33 @@ Use the file?</source>
     <name>DRCKeepoutDialog</name>
     <message>
         <source>DRC Keepout Setting</source>
-        <translation type="unfinished"></translation>
+        <translation>设计规则检查最小距离设置</translation>
     </message>
     <message>
         <source>The &apos;keepout&apos; is the minimum amount of space you want to keep between a connector or trace on one net and a connector or trace in another net</source>
-        <translation type="unfinished"></translation>
+        <translation>最小距离是指你想要在一个网络上的接插件与线之间和一个其他网上的接插件与线之间保持的最小空间数量</translation>
     </message>
     <message>
         <source>A keepout of 0.01 inch (0.254 mm) is a good default.</source>
-        <translation type="unfinished"></translation>
+        <translation>0.01inch（0.254mm）的最小距离是一个好的默认值。</translation>
     </message>
     <message>
         <source>Note: the smaller the keepout, the slower the DRC will run.</source>
-        <translation type="unfinished"></translation>
+        <translation>注意：最小距离越小，DRC运行的越慢。</translation>
     </message>
 </context>
 <context>
     <name>DRCResultsDialog</name>
     <message>
         <source>DRC Results</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Click on an item in the list to select the part it refer to.</source>
-        <translation type="unfinished"></translation>
+        <translation>DRC结果</translation>
     </message>
     <message>
         <source>Note: the list items and the red highlighting will not update as you edit your sketch--you must rerun the DRC. The highlighting will disappear when you close this dialog.</source>
+        <translation>注意：列表中的项目和红色高亮的项目在你编辑设计的时候不会更新--你必须返回DRC。高亮在你关闭对话框的时候会消失。</translation>
+    </message>
+    <message>
+        <source>Click on an item in the list to highlight of overlap it refers to.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -880,23 +886,23 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
     </message>
     <message>
         <source>Change the locked state of the part in this view. A locked part can&apos;t be moved.</source>
-        <translation type="unfinished"></translation>
+        <translation>改变此视图中的元件锁定状态。锁定的元件不能被移动。</translation>
     </message>
     <message>
         <source>Sticky</source>
-        <translation type="unfinished"></translation>
+        <translation>粘联</translation>
     </message>
     <message>
         <source>Change the &quot;sticky&quot; state of the part in this view. When a sticky part is moved, objects on top of it also move.</source>
-        <translation type="unfinished"></translation>
+        <translation>改变视图中&quot;粘联&quot;的状态。当粘联的元件移动时，它上面的元件也会移动。</translation>
     </message>
     <message>
         <source>v. %1 %2</source>
-        <translation type="unfinished">v. %1 %2</translation>
+        <translation>v. %1 %2</translation>
     </message>
     <message>
         <source>obsolete</source>
-        <translation type="unfinished"></translation>
+        <translation>废弃的</translation>
     </message>
 </context>
 <context>
@@ -1055,7 +1061,7 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
     </message>
     <message>
         <source>file for %1 %2 not found</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 %2的文件未找到</translation>
     </message>
 </context>
 <context>
@@ -1115,35 +1121,35 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
     </message>
     <message>
         <source>due to a rendering error</source>
-        <translation type="unfinished"></translation>
+        <translation>由于渲染错误</translation>
     </message>
     <message>
         <source>because the svg is empty</source>
-        <translation type="unfinished"></translation>
+        <translation>因为svg为空</translation>
     </message>
     <message>
         <source>due to an xml problem: %1 line:%2 column:%3</source>
-        <translation type="unfinished"></translation>
+        <translation>由于xml问题：%1 线:%2列:%3</translation>
     </message>
     <message>
         <source>because the file has no root element</source>
-        <translation type="unfinished"></translation>
+        <translation>因为文件没有root元素</translation>
     </message>
     <message>
         <source>because the file has no &lt;svg&gt; element</source>
-        <translation type="unfinished"></translation>
+        <translation>因为文件没有&lt;svg&gt;元素</translation>
     </message>
     <message>
         <source>because of an improper width or height attribute</source>
-        <translation type="unfinished"></translation>
+        <translation>因为不合适的宽度或高度属性</translation>
     </message>
     <message>
         <source>for unknown reasons--possibly the image file is corrupted</source>
-        <translation type="unfinished"></translation>
+        <translation>因为未知原因--可能图像文件不正确</translation>
     </message>
     <message>
         <source>because this appears to be a SVG file exported from CorelDRAW without choosing the &apos;presentation attributes&apos; setting</source>
-        <translation type="unfinished"></translation>
+        <translation>出现这个可能是因为从CorelDRAW中导出的SVG文件没有选择&apos;提示属性&apos;设置</translation>
     </message>
 </context>
 <context>
@@ -2632,317 +2638,319 @@ Would you like to convert &apos;%1&apos; to the .fzz format now or open it read-
     </message>
     <message>
         <source>Show Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>显示网格</translation>
     </message>
     <message>
         <source>Show the grid</source>
-        <translation type="unfinished"></translation>
+        <translation>显示指定的网格</translation>
     </message>
     <message>
         <source>Actual Size</source>
-        <translation type="unfinished"></translation>
+        <translation>实际尺寸</translation>
     </message>
     <message>
         <source>It doesn&apos;t seem to be possible to automatically determine the actual physical size of the monitor, so &apos;actual size&apos; as currently implemented is only a guess. Your best bet would be to drag out a ruler part, then place a real (physical) ruler on top and zoom until they match up.</source>
-        <translation type="unfinished"></translation>
+        <translation>看起来不可能自动决定显示器的实际物理尺寸，所以当前&apos;实际尺寸&apos;的实现只是一个猜想。你最好使用一个尺子元件，然后放一个（物理上的）尺子在上面，缩放直至他们尺寸匹配。</translation>
     </message>
     <message>
         <source>Select All &quot;Don&apos;t Autoroute&quot; Traces</source>
-        <translation type="unfinished"></translation>
+        <translation>选择所有&apos;不自动布线&apos;的线</translation>
     </message>
     <message>
         <source>Select All Autoroutable Traces</source>
-        <translation type="unfinished"></translation>
+        <translation>选择所有自动布线的线</translation>
     </message>
     <message>
         <source>Select all trace wires that can be changed during autorouting</source>
-        <translation type="unfinished"></translation>
+        <translation>选择所有在自动布线时可以改变的线</translation>
     </message>
     <message>
         <source>Change to single layer pcb</source>
-        <translation type="unfinished"></translation>
+        <translation>转换为单层PCB</translation>
     </message>
     <message>
         <source>Change to two layer pcb</source>
-        <translation type="unfinished"></translation>
+        <translation>转换为双层PCB</translation>
     </message>
     <message>
         <source>Change image to %2</source>
-        <translation type="unfinished"></translation>
+        <translation>转换图像为%2</translation>
     </message>
     <message>
         <source>Gerber export can only handle one board at a time--please select the board you want to export.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gerber导出一次只能处理一片板--请选择你想导入的板子。</translation>
     </message>
     <message>
         <source>Sticky</source>
-        <translation type="unfinished"></translation>
+        <translation>粘联</translation>
     </message>
     <message>
         <source>If a &quot;sticky&quot; part is moved, parts on top of it are also moved</source>
-        <translation type="unfinished"></translation>
+        <translation>如果一个&quot;粘连&quot;元件移动了，在它上面的元件也会被移动</translation>
     </message>
     <message>
         <source>Set Grid Size...</source>
-        <translation type="unfinished"></translation>
+        <translation>设置网格尺寸...</translation>
     </message>
     <message>
         <source>Set the size of the grid in this view</source>
-        <translation type="unfinished"></translation>
+        <translation>设置此视图中的网格尺寸</translation>
     </message>
     <message>
         <source>Set Background Color...</source>
-        <translation type="unfinished"></translation>
+        <translation>设置背景颜色...</translation>
     </message>
     <message>
         <source>Set the background color of this view</source>
-        <translation type="unfinished"></translation>
+        <translation>设置此视图中的背景颜色</translation>
     </message>
     <message>
         <source>jumpers</source>
-        <translation type="unfinished"></translation>
+        <translation>跳线</translation>
     </message>
     <message>
         <source>copperfill</source>
-        <translation type="unfinished"></translation>
+        <translation>覆铜</translation>
     </message>
     <message>
         <source>vias</source>
-        <translation type="unfinished"></translation>
+        <translation>飞线</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
     <message>
         <source>Set the grid size for %1.</source>
-        <translation type="unfinished">设置网格大小为%1。</translation>
+        <translation>设置网格大小为%1。</translation>
     </message>
     <message>
         <source>Grid Size:</source>
-        <translation type="unfinished">网格大小:</translation>
+        <translation>网格大小:</translation>
     </message>
     <message>
         <source>in</source>
-        <translation type="unfinished">in</translation>
+        <translation>in</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation type="unfinished">mm</translation>
+        <translation>mm</translation>
     </message>
     <message>
         <source>Restore Default</source>
-        <translation type="unfinished">恢复默认值</translation>
+        <translation>恢复默认值</translation>
     </message>
     <message>
         <source>%1 background Color</source>
-        <translation type="unfinished">%1 背景色</translation>
+        <translation>%1 背景色</translation>
     </message>
     <message>
         <source>Fritzing Files (*%1 *%2 *%3 *%4 *%5);;Fritzing (*%1);;Fritzing Shareable (*%2);;Fritzing Part (*%3);;Fritzing Bin (*%4);;Fritzing Shareable Bin (*%5)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fritzing 文件(*%1 *%2 *%3 *%4 *%5);;Fritzing (*%1);;Fritzing分享(*%2);;Fritzing元件(*%3);;Fritzing元件库(*%4);;Fritzing分享元件库(*%5)</translation>
     </message>
     <message>
         <source>Your sketch does not have a board yet! Please add a PCB in order to export etchable.</source>
-        <translation type="unfinished"></translation>
+        <translation>你的设计还没有板子！请添加一块PCB以便导出可蚀刻的。</translation>
     </message>
     <message>
         <source>Etchable export can only handle one board at a time--please select the board you want to export.</source>
-        <translation type="unfinished"></translation>
+        <translation>可蚀刻的导出每次只能处理一块板--请选择你想导出的板子。</translation>
     </message>
     <message>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use the autorouter.</source>
-        <translation type="unfinished"></translation>
+        <translation>你的设计还没有板子！请添加一块PCB以便可以使用自动布线。</translation>
     </message>
     <message>
         <source>Please select the board you want to autoroute. The autorouter can only handle one board at a time.</source>
-        <translation type="unfinished"></translation>
+        <translation>请选择你想自动布线的板。自动布线每次只能处理一块板。</translation>
     </message>
     <message>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use ground or copper fill.</source>
-        <translation type="unfinished"></translation>
+        <translation>你的设计中还没有板子！请添加一块PCB以便可以使用地或铜层填充。</translation>
     </message>
     <message>
         <source>Please select a PCB--copper fill only works for one board at a time.</source>
-        <translation type="unfinished"></translation>
+        <translation>请选择一块PCB--铜填充一次只能为一块板工作。</translation>
     </message>
     <message>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to remove copper fill.</source>
-        <translation type="unfinished"></translation>
+        <translation>你的设计中还没有板子！请添加一块PCB以便可以移除铜填充。</translation>
     </message>
     <message>
         <source>Please select a PCB--ground fill operations only work on a one board at a time.</source>
-        <translation type="unfinished"></translation>
+        <translation>请选择你想自动布线的板。地填充操作每次只能处理一块板。</translation>
     </message>
     <message>
         <source>Your sketch does not have a board yet! DRC only works with a PCB.</source>
-        <translation type="unfinished"></translation>
+        <translation>你的设计中还没有包含板！DRC只能在有PCB时工作.</translation>
     </message>
     <message>
         <source>Please select a PCB. DRC only works on one board at a time.</source>
-        <translation type="unfinished"></translation>
+        <translation>请选择一块PCB。DRC一次只能处理一块板。</translation>
     </message>
     <message>
         <source>Your sketch does not have a board yet! Please add a PCB in order to use copper fill operations.</source>
-        <translation type="unfinished"></translation>
+        <translation>你的设计中还没有包含板！请添加一块PCB以便使用覆铜功能.</translation>
     </message>
     <message>
         <source>Please select a PCB. Copper fill operations only work on one board at a time.</source>
-        <translation type="unfinished"></translation>
+        <translation>请选择一块PCB--铜填充一次只能为一块板工作。</translation>
     </message>
     <message>
         <source>Convert Bendpoint to Via</source>
-        <translation type="unfinished"></translation>
+        <translation>将曲点变为飞线</translation>
     </message>
     <message>
         <source>Convert the bendpoint to a via</source>
-        <translation type="unfinished"></translation>
+        <translation>转换一个曲点为飞线</translation>
     </message>
     <message>
         <source>Convert Via to Bendpoint</source>
-        <translation type="unfinished"></translation>
+        <translation>转换飞线为曲点</translation>
     </message>
     <message>
         <source>Convert the via to a bendpoint</source>
-        <translation type="unfinished"></translation>
+        <translation>转换飞线为曲点</translation>
     </message>
     <message>
         <source>Revert?</source>
-        <translation type="unfinished"></translation>
+        <translation>恢复？</translation>
     </message>
     <message>
         <source>This operation can not be undone--you will lose all of your changes.
 
 Go ahead and revert?</source>
-        <translation type="unfinished"></translation>
+        <translation>这个操作不能被重做--将会失去所有的修改。
+
+继续并恢复？</translation>
     </message>
     <message>
         <source>Open a Fritzing sketch (.fzz, .fz), or load a Fritzing part (.fzpz), or a Fritzing parts bin (.fzb, .fzbz)</source>
-        <translation type="unfinished"></translation>
+        <translation>打开一个Fritzing设计(.fzz, .fz), 或载入Fritzing元件or load a Fritzing part(.fzpz),或Fritzing元件库(.fzb, .fzbz)</translation>
     </message>
     <message>
         <source>Revert</source>
-        <translation type="unfinished"></translation>
+        <translation>恢复</translation>
     </message>
     <message>
         <source>Reload the sketch</source>
-        <translation type="unfinished"></translation>
+        <translation>重新载入设计</translation>
     </message>
     <message>
         <source>Check Loaded Traces</source>
-        <translation type="unfinished"></translation>
+        <translation>检查载入的线</translation>
     </message>
     <message>
         <source>Select any traces where the screen location doesn&apos;t match their actual location.</source>
-        <translation type="unfinished"></translation>
+        <translation>选择所有屏幕位置和实际位置不匹配的线。</translation>
     </message>
     <message>
         <source>Unrouted connections</source>
-        <translation type="unfinished"></translation>
+        <translation>未布线的连接</translation>
     </message>
     <message>
         <source>There are no unrouted connections in this view.</source>
-        <translation type="unfinished"></translation>
+        <translation>这个视图中没有未布线的连接。</translation>
     </message>
     <message>
         <source>Edit (new parts editor)</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑（新元件编辑器）</translation>
     </message>
     <message>
         <source>Open the new parts editor on an existing part</source>
-        <translation type="unfinished"></translation>
+        <translation>在一个已存在的元件上打开新元件编辑器</translation>
     </message>
     <message>
         <source>Show unrouted</source>
-        <translation type="unfinished"></translation>
+        <translation>显示未布线</translation>
     </message>
     <message>
         <source>Highlight all unrouted connectors</source>
-        <translation type="unfinished"></translation>
+        <translation>高亮所有未布线的接插件</translation>
     </message>
     <message>
         <source>View Switcher</source>
-        <translation type="unfinished">查看切换器</translation>
+        <translation>查看切换器</translation>
     </message>
     <message>
         <source>Inspector</source>
-        <translation type="unfinished">指示栏</translation>
+        <translation>指示栏</translation>
     </message>
     <message>
         <source>Undo History</source>
-        <translation type="unfinished">撤销历史</translation>
+        <translation>撤销历史</translation>
     </message>
     <message>
         <source>Breadboard</source>
-        <translation type="unfinished">面包板</translation>
+        <translation>面包板</translation>
     </message>
     <message>
         <source>Schematic</source>
-        <translation type="unfinished">原理图</translation>
+        <translation>原理图</translation>
     </message>
     <message>
         <source>PCB</source>
-        <translation type="unfinished">PCB</translation>
+        <translation>PCB</translation>
     </message>
     <message>
         <source>Navigator</source>
-        <translation type="unfinished">导航栏</translation>
+        <translation>导航栏</translation>
     </message>
     <message>
         <source>Layers</source>
-        <translation type="unfinished">层</translation>
+        <translation>层</translation>
     </message>
     <message>
         <source>Couldn&apos;t get the dock widget</source>
-        <translation type="unfinished">不能获得可停靠控件</translation>
+        <translation>不能获得可停靠控件</translation>
     </message>
     <message>
         <source>&amp;Delete Wire</source>
-        <translation type="unfinished"></translation>
+        <translation>删除线（&amp;D）</translation>
     </message>
     <message>
         <source>Parts Editor Help</source>
-        <translation type="unfinished"></translation>
+        <translation>元件编辑器帮助</translation>
     </message>
     <message>
         <source>Display Parts Editor help in a browser</source>
-        <translation type="unfinished"></translation>
+        <translation>在浏览器中显示元件编辑器帮助</translation>
     </message>
     <message>
         <source>The folder &quot;%1&quot; isn&apos;t a Fritzing installation folder</source>
-        <translation type="unfinished"></translation>
+        <translation>文件夹&quot;%1&quot;不是Fritzing安装文件夹</translation>
     </message>
     <message>
         <source>Delete Plus</source>
-        <translation type="unfinished"></translation>
+        <translation>增强删除</translation>
     </message>
     <message>
         <source>Delete selection + attached wires</source>
-        <translation type="unfinished"></translation>
+        <translation>删除选择和连接的线</translation>
     </message>
     <message>
         <source>Delete Wire (up to bendpoints)</source>
-        <translation type="unfinished"></translation>
+        <translation>删除线（至曲点）</translation>
     </message>
     <message>
         <source>Design Rules Check (DRC)</source>
-        <translation type="unfinished"></translation>
+        <translation>设计规则检查（DRC）</translation>
     </message>
     <message>
         <source>DRC Progress...</source>
-        <translation type="unfinished"></translation>
+        <translation>DRC进行中...</translation>
     </message>
     <message>
         <source>Highlights any parts that are too close together for safe board production</source>
-        <translation type="unfinished"></translation>
+        <translation>为安全板产品高亮任何过于接近的元件</translation>
     </message>
     <message>
         <source>Set Design Rules Keepout</source>
-        <translation type="unfinished"></translation>
+        <translation>设置设计规则安全距离</translation>
     </message>
     <message>
         <source>Set the minimum distance between parts for the DRC (Design Rules Check)</source>
-        <translation type="unfinished"></translation>
+        <translation>设置元件间DRC（设计规则检查）的最小距离</translation>
     </message>
 </context>
 <context>
@@ -3050,766 +3058,774 @@ Reason: %2 (errcode %3)</source>
     </message>
     <message>
         <source>%1 Fill: please select the board you want to apply fill to.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1填充：请选择你想应用填充的板。</translation>
     </message>
     <message>
         <source>Ground</source>
-        <translation type="unfinished"></translation>
+        <translation>接地</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished"></translation>
+        <translation>覆铜</translation>
     </message>
     <message>
         <source>Copper fill: please select only the board you want to fill.</source>
-        <translation type="unfinished"></translation>
+        <translation>覆铜：请只选择想要填充的板子。</translation>
     </message>
     <message>
         <source>Your sketch does not have a board yet! Please add a PCB in order to use this selection operation.</source>
-        <translation type="unfinished"></translation>
+        <translation>你的设计中还没有板子！请增加一块PCB以便使用选择操作。</translation>
     </message>
     <message>
         <source>Please click on a PCB first--this selection operation only works for one board at a time.</source>
-        <translation type="unfinished"></translation>
+        <translation>请先点击一下PCB--这个选择操作每次只能对一块板起作用。</translation>
     </message>
     <message>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use this selection operation.</source>
-        <translation type="unfinished"></translation>
+        <translation>你的设计中还没有板子！请增加一块PCB以便使用选择操作。</translation>
     </message>
     <message>
         <source>Unable to convert this via to a bendpoint because it is connected to a part that is only on the bottom layer and another part that is only on the top layer.</source>
-        <translation type="unfinished"></translation>
+        <translation>不能将此飞线转换为曲点，因为它连接至只在底层的一个元件，另外一个元件只在顶层。</translation>
     </message>
 </context>
 <context>
     <name>PEConnectorsView</name>
     <message>
         <source>This is where you edit the connector metadata for the part</source>
-        <translation type="unfinished"></translation>
+        <translation>这里用来编辑接插件元件的元数据</translation>
     </message>
     <message>
         <source>number of connectors:</source>
-        <translation type="unfinished"></translation>
+        <translation>接插件数量：</translation>
     </message>
     <message>
         <source>Through-hole</source>
-        <translation type="unfinished"></translation>
+        <translation>通孔</translation>
     </message>
     <message>
         <source>SMD</source>
-        <translation type="unfinished"></translation>
+        <translation>SMD</translation>
     </message>
 </context>
 <context>
     <name>PEMainWindow</name>
     <message>
         <source>Parts Editor</source>
-        <translation type="unfinished">元件编辑器</translation>
+        <translation>元件编辑器</translation>
     </message>
     <message>
         <source>Show Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>显示图标</translation>
     </message>
     <message>
         <source>Ctrl+4</source>
-        <translation type="unfinished">Ctrl+4</translation>
+        <translation>Ctrl+4</translation>
     </message>
     <message>
         <source>Show the icon view</source>
-        <translation type="unfinished"></translation>
+        <translation>显示图标视图</translation>
     </message>
     <message>
         <source>Ctrl+5</source>
-        <translation type="unfinished">Ctrl+5</translation>
+        <translation>Ctrl+5</translation>
     </message>
     <message>
         <source>Show the metadata view</source>
-        <translation type="unfinished"></translation>
+        <translation>显示元数据视图</translation>
     </message>
     <message>
         <source>Show Connectors</source>
-        <translation type="unfinished"></translation>
+        <translation>显示接插件</translation>
     </message>
     <message>
         <source>Ctrl+6</source>
-        <translation type="unfinished">Ctrl+6</translation>
+        <translation>Ctrl+6</translation>
     </message>
     <message>
         <source>Change %1 to &apos;%2&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>转换%1至%2</translation>
     </message>
     <message>
         <source>Change tags</source>
-        <translation type="unfinished"></translation>
+        <translation>转换标签</translation>
     </message>
     <message>
         <source>Change properties</source>
-        <translation type="unfinished"></translation>
+        <translation>转换属性</translation>
     </message>
     <message>
         <source>Change description</source>
-        <translation type="unfinished"></translation>
+        <translation>转换描述</translation>
     </message>
     <message>
         <source>Change connector %1</source>
-        <translation type="unfinished"></translation>
+        <translation>转换接插件%1</translation>
     </message>
     <message>
         <source>SVG</source>
-        <translation type="unfinished"></translation>
+        <translation>SVG</translation>
     </message>
     <message>
         <source>Connectors</source>
-        <translation type="unfinished">接插件</translation>
+        <translation>接插件</translation>
     </message>
     <message>
         <source>Show in Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>文件中显示</translation>
     </message>
     <message>
         <source>On the desktop, open the folder containing the current svg file.</source>
-        <translation type="unfinished"></translation>
+        <translation>在桌面上，打开包含当前svg文件的文件夹。</translation>
     </message>
     <message>
         <source>Unable to write svg to  %1</source>
-        <translation type="unfinished"></translation>
+        <translation>不能写入svg至%1</translation>
     </message>
     <message>
         <source>Unable to parse fzp file  %1</source>
-        <translation type="unfinished"></translation>
+        <translation>不能解析fzp文件%1</translation>
     </message>
     <message>
         <source>Icon View</source>
-        <translation type="unfinished"></translation>
+        <translation>图标视图</translation>
     </message>
     <message>
         <source>Metadata View</source>
-        <translation type="unfinished"></translation>
+        <translation>元数据视图</translation>
     </message>
     <message>
         <source>Connectors View</source>
-        <translation type="unfinished"></translation>
+        <translation>接插件视图</translation>
     </message>
     <message>
         <source>Image &amp; Footprint Files (%1 %2 %3 %4 %5);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3);;gEDA Footprint Files (%4);;Kicad Module Files (%5)</source>
-        <translation type="unfinished">图形和器件封装文件(%1 %2 %3 %4 %5);;SVG 文件 (%1);;JPEG 文件 (%2);;PNG 文件 (%3);;gEDA器件封装文件 (%4);;Kicad Module 文件 (%5)</translation>
+        <translation>图形和器件封装文件(%1 %2 %3 %4 %5);;SVG 文件 (%1);;JPEG 文件 (%2);;PNG 文件 (%3);;gEDA器件封装文件 (%4);;Kicad Module 文件 (%5)</translation>
     </message>
     <message>
         <source>Image Files (%1 %2 %3);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3)%4%5</source>
-        <translation type="unfinished">图形文件 (%1 %2 %3);;SVG 文件 (%1);;JPEG 文件 (%2);;PNG 文件 (%3)%4%5</translation>
+        <translation>图形文件 (%1 %2 %3);;SVG 文件 (%1);;JPEG 文件 (%2);;PNG 文件 (%3)%4%5</translation>
     </message>
     <message>
         <source>Open Image</source>
-        <translation type="unfinished">打开图像</translation>
+        <translation>打开图像</translation>
     </message>
     <message>
         <source>Copy problem</source>
-        <translation type="unfinished"></translation>
+        <translation>复制问题</translation>
     </message>
     <message>
         <source>Unable to make a local copy of: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>不能建立本地副本：&apos;%1&apos;</translation>
     </message>
     <message>
         <source>You may use a PNG or JPG image to construct your part, but it is better to use an SVG. </source>
-        <translation type="unfinished"></translation>
+        <translation>你可以使用PNG或JPG图像建立你的元件，但最好使用SVG建立。 </translation>
     </message>
     <message>
         <source>PNG and JPG images retain their nature as bitmaps and do not look good when scaled--</source>
-        <translation type="unfinished"></translation>
+        <translation>PNG和JPG图像保持他们位图的属性，当缩放时看起来不好-- </translation>
     </message>
     <message>
         <source>so for Fritzing parts it is best to use PNG and JPG only as placeholders.</source>
-        <translation type="unfinished"></translation>
+        <translation>所以对于Fritzing元件最好只使用PNG和JPG作为占位符。</translation>
     </message>
     <message>
         <source>Use of PNG and JPG discouraged</source>
-        <translation type="unfinished"></translation>
+        <translation>使用PNG和JPG是不被建议的</translation>
     </message>
     <message>
         <source>Conversion problem</source>
-        <translation type="unfinished">转换问题</translation>
+        <translation>转换问题</translation>
     </message>
     <message>
         <source>SVG problem</source>
-        <translation type="unfinished"></translation>
+        <translation>SVG问题</translation>
     </message>
     <message>
         <source>Unable to parse &apos;%1&apos;: %2 line:%3 column:%4</source>
-        <translation type="unfinished"></translation>
+        <translation>不能解析&apos;%1&apos;:%2线:%3列:%4</translation>
     </message>
     <message>
         <source>There are no copper layers defined in: %1. </source>
-        <translation type="unfinished"></translation>
+        <translation>在%1中没有定义覆铜层。</translation>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://fritzing.org/learning/tutorials/creating-custom-parts/providing-part-graphics/&quot;&gt;this explanation&lt;/a&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>查看 &lt;a href=&quot;http://fritzing.org/learning/tutorials/creating-custom-parts/providing-part-graphics/&quot;&gt;这个解释&lt;/a&gt;。</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;br/&gt;This will not be a problem in the next release of the Parts Editor, </source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;br/&gt;这在下一版的元件编辑器中将不再是问题, </translation>
     </message>
     <message>
         <source>but for now please modify the file according to the instructions in the link.</source>
-        <translation type="unfinished"></translation>
+        <translation>但是现在请根据下面的连接来修改文件.</translation>
     </message>
     <message>
         <source>no schematics found in %1</source>
-        <translation type="unfinished">在%1中未找到原理图</translation>
+        <translation>在%1中未找到原理图</translation>
     </message>
     <message>
         <source>schematic part</source>
-        <translation type="unfinished">原理图元件</translation>
+        <translation>原理图元件</translation>
     </message>
     <message>
         <source>no footprints found in %1</source>
-        <translation type="unfinished">在%1中未找到器件封装</translation>
+        <translation>在%1中未找到器件封装</translation>
     </message>
     <message>
         <source>Relocate connector %1</source>
-        <translation type="unfinished"></translation>
+        <translation>重置接插件%1</translation>
     </message>
     <message>
         <source>&amp;File</source>
-        <translation type="unfinished">文件(&amp;F)</translation>
+        <translation>文件(&amp;F)</translation>
     </message>
     <message>
         <source>Sketch Change Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>设计改变警告</translation>
     </message>
     <message>
         <source>The open sketch &apos;%1&apos; uses the part you are editing. </source>
-        <translation type="unfinished"></translation>
+        <translation>打开的设计&apos;%1&apos;使用了你正在编辑的元件。</translation>
     </message>
     <message>
         <source>Saving this part will make a change to the sketch that cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation>保存这个元件将会对设计产生不能恢复的改变。</translation>
     </message>
     <message>
         <source>The open sketches </source>
-        <translation type="unfinished"></translation>
+        <translation>打开的设计</translation>
     </message>
     <message>
         <source>&apos;%1&apos;, </source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos;</translation>
     </message>
     <message>
         <source>and &apos;%1&apos; </source>
-        <translation type="unfinished"></translation>
+        <translation>和&apos;%1&apos; </translation>
     </message>
     <message>
         <source>Saving this part will make a change to these sketches that cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation>保存这个元件将会对这些设计造成改变，使他不能重做。</translation>
     </message>
     <message>
         <source>
 
 Go ahead and save?</source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+继续并保存？</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">保存</translation>
+        <translation>保存</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Move terminal point</source>
-        <translation type="unfinished"></translation>
+        <translation>移动末端的点</translation>
     </message>
     <message>
         <source>Remove connector</source>
-        <translation type="unfinished"></translation>
+        <translation>移除接插件</translation>
     </message>
     <message>
         <source>Remove %1 connectors</source>
-        <translation type="unfinished"></translation>
+        <translation>移除%1接插件</translation>
     </message>
     <message>
         <source>Save &quot;%1&quot;</source>
-        <translation type="unfinished">保存 &quot;%1&quot;</translation>
+        <translation>保存 &quot;%1&quot;</translation>
     </message>
     <message>
         <source>Do you want to save the changes you made in the part &quot;%1&quot;?</source>
-        <translation type="unfinished"></translation>
+        <translation>你想保存在元件&quot;%1&quot;中作的改变么?</translation>
     </message>
     <message>
         <source>Your changes will be lost if you don&apos;t save them.</source>
-        <translation type="unfinished">如果不保存，所做的修改将会丢失.</translation>
+        <translation>如果不保存，所做的修改将会丢失.</translation>
     </message>
     <message>
         <source>untitled part</source>
-        <translation type="unfinished"></translation>
+        <translation>无标题元件</translation>
     </message>
     <message>
         <source>Add connector</source>
-        <translation type="unfinished">添加接插件</translation>
+        <translation>添加接插件</translation>
     </message>
     <message>
         <source>Add %1 connectors</source>
-        <translation type="unfinished"></translation>
+        <translation>增加%1接插件</translation>
     </message>
     <message>
         <source>There is one last edit still pending.</source>
-        <translation type="unfinished"></translation>
+        <translation>最后的编辑还在处理中。</translation>
     </message>
     <message>
         <source>Duplicate &apos;family&apos; property not allowed</source>
-        <translation type="unfinished"></translation>
+        <translation>不允许复制&apos;family&apos;的属性</translation>
     </message>
     <message>
         <source>Duplicate &apos;variant&apos; property not allowed</source>
-        <translation type="unfinished"></translation>
+        <translation>不允许复制&apos;variant&apos;的属性</translation>
     </message>
     <message>
         <source>Close without saving?</source>
-        <translation type="unfinished"></translation>
+        <translation>不保存关闭？</translation>
     </message>
     <message>
         <source>Close without saving</source>
-        <translation type="unfinished"></translation>
+        <translation>关闭程序且不保存</translation>
     </message>
     <message>
         <source>Keep working</source>
-        <translation type="unfinished"></translation>
+        <translation>保持工作</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished">图标</translation>
+        <translation>图标</translation>
     </message>
     <message>
         <source>Metadata</source>
-        <translation type="unfinished"></translation>
+        <translation>元数据</translation>
     </message>
     <message>
         <source>Remove Internal Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>移除内部连接</translation>
     </message>
     <message>
         <source>Fritzing (New) Parts Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Fritzing（新的）元件编辑器</translation>
     </message>
     <message>
         <source>Show Metadata</source>
-        <translation type="unfinished"></translation>
+        <translation>显示元数据</translation>
     </message>
     <message>
         <source>Show the connector metadata in a list view</source>
-        <translation type="unfinished"></translation>
+        <translation>在列表视图中显示元数据</translation>
     </message>
     <message>
         <source>Blank not allowed</source>
-        <translation type="unfinished"></translation>
+        <translation>不允许为空</translation>
     </message>
     <message>
         <source>The value of &apos;%1&apos; can not be blank.</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos;的值不能为空。</translation>
     </message>
     <message>
         <source>Change %1 to %2</source>
-        <translation type="unfinished"></translation>
+        <translation>把%1转变为%2</translation>
     </message>
     <message>
         <source>Must be unique</source>
-        <translation type="unfinished"></translation>
+        <translation>必须是唯一的</translation>
     </message>
     <message>
         <source>Variant &apos;%1&apos; is in use. The variant name must be unique.</source>
-        <translation type="unfinished"></translation>
+        <translation>变量&apos;%1&apos;在使用中。变量名必须是唯一的。</translation>
     </message>
     <message>
         <source>Duplicate problem</source>
-        <translation type="unfinished"></translation>
+        <translation>复制问题</translation>
     </message>
     <message>
         <source>Unable to load &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>不能载入&apos;%1&apos;</translation>
     </message>
     <message>
         <source>The SVG file &apos;%1&apos; appears to have been exported from CorelDRAW without the &apos;presentation attributes&apos; setting. </source>
-        <translation type="unfinished"></translation>
+        <translation>出现这个可能是因为从CorelDRAW中导出的SVG文件&apos;%1&apos;没有选择&apos;提示属性&apos;设置. </translation>
     </message>
     <message>
         <source>Please re-export the SVG file using that setting, and try loading again.</source>
-        <translation type="unfinished"></translation>
+        <translation>请使用设置重新导出SVG文件，并在此导入。</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>字体</translation>
     </message>
     <message>
         <source>Fritzing currently only supports OCRA and Droid fonts--these have been substituted in for the fonts in &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Fritzing当前只支持OCRA和Droid字体--这些已经被替换为字体&apos;%1&apos;</translation>
     </message>
     <message>
         <source>Unable to load image file &apos;%1&apos;: 
 
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>不能载入图像文件&apos;%1&apos;:
+
+%2</translation>
     </message>
     <message>
         <source>Remove internal connection from &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>移除内部连接从&apos;%1&apos;</translation>
     </message>
     <message>
         <source>Internal connections are very messed up.</source>
-        <translation type="unfinished"></translation>
+        <translation>内部连接太混乱了。</translation>
     </message>
     <message>
         <source>Add internal connection from &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>增加内部连接从&apos;%1&apos;到&apos;%2&apos;</translation>
     </message>
     <message>
         <source>The &apos;family&apos; property can not be blank.</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;family&apos;属性不能为空。</translation>
     </message>
     <message>
         <source>A duplicate &apos;family&apos; property is not allowed</source>
-        <translation type="unfinished"></translation>
+        <translation>不允许复制&apos;family&apos;属性</translation>
     </message>
     <message>
         <source>A duplicate &apos;variant&apos; property is not allowed</source>
-        <translation type="unfinished"></translation>
+        <translation>不允许复制&apos;variant&apos;属性</translation>
     </message>
     <message>
         <source>This part can not be saved as-is:
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>这个元件不能被另存为：
+
+</translation>
     </message>
     <message>
         <source>Do you want to keep working or close without saving?</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message numerus="yes">
         <source>This part has %n unassigned connectors </source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>这个元件有%n个未分配的接插件 </numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>across %n views. </source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>交叉%n视图。</numerusform>
         </translation>
     </message>
     <message>
         <source>Until all connectors are assigned to SVG elements, the part will not work correctly. </source>
-        <translation type="unfinished"></translation>
+        <translation>直到所有的接插件分配给SVG元素，这个元件才能正确工作。</translation>
     </message>
     <message>
         <source>Layers</source>
-        <translation type="unfinished">层</translation>
+        <translation>层</translation>
     </message>
     <message>
         <source>Reuse breadboard image</source>
-        <translation type="unfinished"></translation>
+        <translation>重用面包板图像</translation>
     </message>
     <message>
         <source>Reuse the breadboard image in this view</source>
-        <translation type="unfinished"></translation>
+        <translation>在这个视图中重新使用面包板图像</translation>
     </message>
     <message>
         <source>Reuse schematic image</source>
-        <translation type="unfinished"></translation>
+        <translation>重新使用原理图</translation>
     </message>
     <message>
         <source>Reuse the schematic image in this view</source>
-        <translation type="unfinished"></translation>
+        <translation>在这个视图中重新使用原理图像</translation>
     </message>
     <message>
         <source>Reuse PCB image</source>
-        <translation type="unfinished"></translation>
+        <translation>重用PCB图像</translation>
     </message>
     <message>
         <source>Reuse the PCB image in this view</source>
-        <translation type="unfinished"></translation>
+        <translation>在这个视图中重新使用PCB图像</translation>
     </message>
     <message>
         <source>Make only this view visible</source>
-        <translation type="unfinished"></translation>
+        <translation>只让这个视图可见</translation>
     </message>
     <message>
         <source>The part will only be visible in this view and icon view</source>
-        <translation type="unfinished"></translation>
+        <translation>元件这能在此视图和图标视图中可见</translation>
     </message>
     <message>
         <source>This version of the new Parts Editor can not deal with separate copper0 and copper1 layers in &apos;%1&apos;. </source>
-        <translation type="unfinished"></translation>
+        <translation>这个版本的新的元件编辑器不能处理&apos;%1&apos;中分离的copper0和copper1层。</translation>
     </message>
     <message>
         <source>So editing may produce an invalid PCB view image</source>
-        <translation type="unfinished"></translation>
+        <translation>所已编辑可能导致无效的PCB视图图像</translation>
     </message>
     <message>
         <source>&amp;Export</source>
-        <translation type="unfinished">导出(&amp;E)</translation>
+        <translation>导出(&amp;E)</translation>
     </message>
     <message>
         <source>Change all connectors to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>转变所有接插件至%1</translation>
     </message>
     <message>
         <source>Unable to parse &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>不能解析&apos;%1&apos;</translation>
     </message>
     <message>
         <source>Change to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>转变至%1</translation>
     </message>
     <message>
         <source>Make only %1 view visible</source>
-        <translation type="unfinished"></translation>
+        <translation>只使%1视图可见</translation>
     </message>
     <message>
         <source>Exiting the Parts Editor now is fine, as long as you remember to finish the assignments later.</source>
-        <translation type="unfinished"></translation>
+        <translation>现在退出元件编辑器是可以的，只要你记得之后完成分配就可以了。</translation>
     </message>
     <message>
         <source>Load image for view...</source>
-        <translation type="unfinished"></translation>
+        <translation>在视图中载入图像...</translation>
     </message>
     <message>
         <source>Open a file to use as the image for this view of the part.</source>
-        <translation type="unfinished"></translation>
+        <translation>打开一个文件作为此视图中元件的图像。</translation>
     </message>
     <message>
         <source>Save as new part</source>
-        <translation type="unfinished"></translation>
+        <translation>另存为新元件</translation>
     </message>
     <message>
         <source>Make a copy of the part and save it in the &apos;My Parts&apos; Bin</source>
-        <translation type="unfinished"></translation>
+        <translation>复制此元件，并把他保存&apos;my parts&apos;库中</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation type="unfinished">编辑(&amp;E)</translation>
+        <translation>编辑(&amp;E)</translation>
     </message>
     <message>
         <source>This part has bendable legs. </source>
-        <translation type="unfinished"></translation>
+        <translation>次元件包含可弯曲的腿。</translation>
     </message>
     <message>
         <source>This version of the Parts Editor does not yet support editing bendable legs, and the legs may not be displayed correctly in breadboard view . </source>
-        <translation type="unfinished"></translation>
+        <translation>这版的元件编辑器不支持编辑可弯曲的腿，腿可能不能在面板板视图中正确的显示。</translation>
     </message>
     <message>
         <source>If you make changes to breadboard view, or change connector metadata, the legs may no longer work. </source>
-        <translation type="unfinished"></translation>
+        <translation>如果你做面包板视图的转换，或者转换元数据，腿将不再有效了。</translation>
     </message>
     <message>
         <source>You can safely make changes to Schematic or PCB view.
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>你可以安全的对原理图或PCB视图进行修改。
+
+</translation>
     </message>
     <message>
         <source>This warning will not be repeated in this session of Fritzing</source>
-        <translation type="unfinished"></translation>
+        <translation>这个警告不能在Fritzing这个阶段重复的出现</translation>
     </message>
     <message>
         <source>Unable to load &apos;%1&apos;. Please close the parts editor without saving and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>不能载入&apos;%1&apos;。请关闭元件编辑器中未保存部分并重试。</translation>
     </message>
     <message>
         <source>Unable to load image file &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>不能载入图像文件&apos;%1&apos;</translation>
     </message>
 </context>
 <context>
     <name>PEMetadataView</name>
     <message>
         <source>This is where you edit the metadata for the part ...</source>
-        <translation type="unfinished"></translation>
+        <translation>这里是编辑元件元数据的地方...</translation>
     </message>
     <message>
         <source>Set the part&apos;s title</source>
-        <translation type="unfinished"></translation>
+        <translation>设置元件标题</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>标题</translation>
     </message>
     <message>
         <source>Set the part&apos;s date</source>
-        <translation type="unfinished"></translation>
+        <translation>设置元件日期</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation type="unfinished">日期</translation>
+        <translation>日期</translation>
     </message>
     <message>
         <source>Set the part&apos;s author</source>
-        <translation type="unfinished"></translation>
+        <translation>设置元件作者</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished">作者</translation>
+        <translation>作者</translation>
     </message>
     <message>
         <source>Set the part&apos;s description--you can use simple html (as defined by Qt&apos;s Rich Text)</source>
-        <translation type="unfinished"></translation>
+        <translation>设置元件描述--你可以使用简单的html（Qt富文本定义的内容）</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished">描述</translation>
+        <translation>描述</translation>
     </message>
     <message>
         <source>Set the default part label prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>设置默认元件标签前缀</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished">标签</translation>
+        <translation>标签</translation>
     </message>
     <message>
         <source>Set the part&apos;s family--what other parts is this part related to</source>
-        <translation type="unfinished"></translation>
+        <translation>设置元件家族--这个元件有关的其他元件</translation>
     </message>
     <message>
         <source>Family</source>
-        <translation type="unfinished"></translation>
+        <translation>家族</translation>
     </message>
     <message>
         <source>Set the part&apos;s properties</source>
-        <translation type="unfinished"></translation>
+        <translation>设置元件属性</translation>
     </message>
     <message>
         <source>Properties</source>
-        <translation type="unfinished">属性</translation>
+        <translation>属性</translation>
     </message>
     <message>
         <source>Set the part&apos;s tags</source>
-        <translation type="unfinished"></translation>
+        <translation>设置元件关键词</translation>
     </message>
     <message>
         <source>Tags</source>
-        <translation type="unfinished">关键词</translation>
+        <translation>关键词</translation>
     </message>
     <message>
         <source>Set the part&apos;s variant--this makes it unique from all other parts in the same family</source>
-        <translation type="unfinished"></translation>
+        <translation>设置元件的变量--这使它与同一家族其他元件相比是惟一的</translation>
     </message>
     <message>
         <source>Variant</source>
-        <translation type="unfinished"></translation>
+        <translation>变量</translation>
     </message>
     <message>
         <source>Set the part&apos;s url if it is described on a web page</source>
-        <translation type="unfinished"></translation>
+        <translation>设置元件的url如果它在网页上有描述</translation>
     </message>
     <message>
         <source>URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL</translation>
     </message>
 </context>
 <context>
     <name>PESvgView</name>
     <message>
         <source>width:</source>
-        <translation type="unfinished"></translation>
+        <translation>宽度:</translation>
     </message>
     <message>
         <source>height:</source>
-        <translation type="unfinished"></translation>
+        <translation>高度:</translation>
     </message>
 </context>
 <context>
     <name>PEToolView</name>
     <message>
         <source>Center</source>
-        <translation type="unfinished"></translation>
+        <translation>中心</translation>
     </message>
     <message>
         <source>N</source>
-        <translation type="unfinished"></translation>
+        <translation>N</translation>
     </message>
     <message>
         <source>E</source>
-        <translation type="unfinished"></translation>
+        <translation>E</translation>
     </message>
     <message>
         <source>S</source>
-        <translation type="unfinished"></translation>
+        <translation>S</translation>
     </message>
     <message>
         <source>W</source>
-        <translation type="unfinished"></translation>
+        <translation>W</translation>
     </message>
     <message>
         <source>Connector %1</source>
-        <translation type="unfinished"></translation>
+        <translation>接插件%1</translation>
     </message>
     <message>
         <source>Set Internal Connections</source>
-        <translation type="unfinished"></translation>
+        <translation>设置内部连接</translation>
     </message>
     <message>
         <source>Set this checkbox to edit internal connections by drawing wires</source>
-        <translation type="unfinished"></translation>
+        <translation>选定这个复选框通过画线来便捷内部的连接</translation>
     </message>
     <message>
         <source>Controls for setting the terminal point for a connector. The terminal point is where a wire will attach to the connector. You can also drag the crosshair of the current connector</source>
-        <translation type="unfinished"></translation>
+        <translation>控制接插件端点的设置。端点是线和接插件连接的地方。你也可以拖动当前接插件的十字准线</translation>
     </message>
     <message>
         <source>center</source>
-        <translation type="unfinished">中心</translation>
+        <translation>中心</translation>
     </message>
     <message>
         <source>west</source>
-        <translation type="unfinished">西</translation>
+        <translation>西</translation>
     </message>
     <message>
         <source>north</source>
-        <translation type="unfinished">北</translation>
+        <translation>北</translation>
     </message>
     <message>
         <source>south</source>
-        <translation type="unfinished">南</translation>
+        <translation>南</translation>
     </message>
     <message>
         <source>east</source>
-        <translation type="unfinished">东</translation>
+        <translation>东</translation>
     </message>
     <message>
         <source>Sets the connector&apos;s terminal point to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>设置接插件的端点%1。</translation>
     </message>
     <message>
         <source>Modifies the x-coordinate of the terminal point</source>
-        <translation type="unfinished"></translation>
+        <translation>修改端点的x坐标</translation>
     </message>
     <message>
         <source>Modifies the y-coordinate of the terminal point</source>
-        <translation type="unfinished"></translation>
+        <translation>修改端点的y坐标</translation>
     </message>
     <message>
         <source>Dragging disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>禁止拖拽</translation>
     </message>
     <message>
         <source>&lt;font color=&apos;black&apos;&gt;Dragging enabled&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font color=&apos;black&apos;&gt;允许拖拽&lt;/font&gt;</translation>
     </message>
     <message>
         <source>&lt;font color=&apos;gray&apos;&gt;Dragging disabled&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font color=&apos;gray&apos;&gt;禁止拖拽&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Connector List (a checkmark means the graphic was selected)</source>
-        <translation type="unfinished"></translation>
+        <translation>接插件列表（对号的意思是图像被选中）</translation>
     </message>
     <message>
         <source>Select graphic</source>
-        <translation type="unfinished"></translation>
+        <translation>选择图像</translation>
     </message>
     <message>
         <source>Use the cursor location and mouse wheel to navigate to the SVG element which you want to assign to the current connector, then mouse down to select it.</source>
-        <translation type="unfinished"></translation>
+        <translation>使用光标定位，鼠标滚轮来指定想要给当前接插件分配的SVG元素，然后按下鼠标来选择它。</translation>
     </message>
 </context>
 <context>
@@ -3867,27 +3883,27 @@ Go ahead and save?</source>
     </message>
     <message>
         <source>hole size</source>
-        <translation type="unfinished">孔径</translation>
+        <translation>孔径</translation>
     </message>
     <message>
         <source>advanced settings</source>
-        <translation type="unfinished">高级设置</translation>
+        <translation>高级设置</translation>
     </message>
     <message>
         <source>in</source>
-        <translation type="unfinished">in</translation>
+        <translation>in</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation type="unfinished">mm</translation>
+        <translation>mm</translation>
     </message>
     <message>
         <source>Hole Diameter</source>
-        <translation type="unfinished">内径</translation>
+        <translation>内径</translation>
     </message>
     <message>
         <source>Ring Thickness</source>
-        <translation type="unfinished">外径</translation>
+        <translation>外径</translation>
     </message>
 </context>
 <context>
@@ -4286,15 +4302,15 @@ shift键转换滚动轴
     </message>
     <message>
         <source>Clear Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>清除设置</translation>
     </message>
     <message>
         <source>When you mouse-down and drag on a wire or the leg of a part (as opposed to a connector or a bendpoint) do you want to change the curvature of the wire (or leg) or drag out a new bendpoint?</source>
-        <translation type="unfinished"></translation>
+        <translation>当鼠标按下，拖动线或元件腿（区别于接插件或曲点）你想改变线（或腿）的曲率或者拖一个新的曲点么？</translation>
     </message>
     <message>
         <source>This checkbox sets the default behavior. You can switch back to the non-default behavior by holding down the Control key (Mac: Command key) when you drag.</source>
-        <translation type="unfinished"></translation>
+        <translation>复选框设置默认的行为。你可以切换到非默认行为通过在拖动时按下CTRL键（mac：Command key）。</translation>
     </message>
 </context>
 <context>
@@ -5196,119 +5212,119 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
     </message>
     <message>
         <source>Select all &apos;Don&apos;t autoroute&apos; traces</source>
-        <translation type="unfinished"></translation>
+        <translation>选择所有&apos;不自动布线&apos;的线</translation>
     </message>
     <message>
         <source>Select all autorouteable traces</source>
-        <translation type="unfinished"></translation>
+        <translation>选择所有自动布线的线</translation>
     </message>
     <message>
         <source>Set Grid Size</source>
-        <translation type="unfinished"></translation>
+        <translation>设置网格大小</translation>
     </message>
     <message>
         <source>There is no undo for this action, and no further warning!!!!</source>
-        <translation type="unfinished"></translation>
+        <translation>这些操作没有恢复，也没有更多的警告!!!</translation>
     </message>
     <message>
         <source>Clear Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>清除设置</translation>
     </message>
     <message>
         <source>No connections (on the PCB) to route.</source>
-        <translation type="unfinished"></translation>
+        <translation>没有连接（PCB上）用来布线。</translation>
     </message>
     <message>
         <source>No connections to route.</source>
-        <translation type="unfinished"></translation>
+        <translation>没有连接来布线。</translation>
     </message>
     <message>
         <source>Connected highlight color</source>
-        <translation type="unfinished"></translation>
+        <translation>连接高亮的颜色</translation>
     </message>
     <message>
         <source>Unconnected highlight color</source>
-        <translation type="unfinished"></translation>
+        <translation>非连接高亮的颜色</translation>
     </message>
     <message>
         <source>Clear all saved settings and close this dialog immediately.</source>
-        <translation type="unfinished"></translation>
+        <translation>清除所有保存的设置立即关闭对话框。</translation>
     </message>
     <message>
         <source>This action does not delete any files; it restores settings to their default values.</source>
-        <translation type="unfinished"></translation>
+        <translation>这个操作不删除任何文件;它恢复他们默认的设置值.</translation>
     </message>
     <message>
         <source>Convert to Via</source>
-        <translation type="unfinished"></translation>
+        <translation>转换为飞线</translation>
     </message>
     <message>
         <source>Convert Via to Bendpoint</source>
-        <translation type="unfinished"></translation>
+        <translation>转换飞线为曲点</translation>
     </message>
     <message>
         <source>%1 wires moved from their saved position in %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1的线从它%2中保存的位置移动。</translation>
     </message>
     <message>
         <source>paste mask layer(s), </source>
-        <translation type="unfinished"></translation>
+        <translation>粘贴遮盖层，</translation>
     </message>
     <message>
         <source>ii</source>
-        <translation type="unfinished"></translation>
+        <translation>ii</translation>
     </message>
     <message>
         <source>Icon View</source>
-        <translation type="unfinished"></translation>
+        <translation>图标视图</translation>
     </message>
     <message>
         <source>&lt;b&gt;id:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;id:&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Name:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;姓名:&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Set the connectors&apos;s title</source>
-        <translation type="unfinished"></translation>
+        <translation>设置接插件标题</translation>
     </message>
     <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;描述:&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Set the connectors&apos;s description</source>
-        <translation type="unfinished"></translation>
+        <translation>设置接插件描述</translation>
     </message>
     <message>
         <source>%1 file export failure (2): %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1文件导出错误（2）：%2</translation>
     </message>
     <message>
         <source>Fritzing cannot load the parts bin</source>
-        <translation type="unfinished"></translation>
+        <translation>Fritzing不能载入元件库</translation>
     </message>
     <message>
         <source>Internal Connections</source>
-        <translation type="unfinished"></translation>
+        <translation>内部连接</translation>
     </message>
     <message>
         <source>Set all to:</source>
-        <translation type="unfinished"></translation>
+        <translation>设置所有至：</translation>
     </message>
     <message>
         <source>Pad</source>
-        <translation type="unfinished"></translation>
+        <translation>Pad</translation>
     </message>
     <message>
         <source>&lt;b&gt;type:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;类型:&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Part %1 &apos;%2&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>元件%1&apos;%2&apos;</translation>
     </message>
 </context>
 <context>
@@ -5380,7 +5396,7 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
     </message>
     <message>
         <source>Resistor</source>
-        <translation type="unfinished"></translation>
+        <translation>电阻</translation>
     </message>
 </context>
 <context>
@@ -5407,63 +5423,63 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
     </message>
     <message>
         <source>keep aspect ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>保持宽高比</translation>
     </message>
     <message>
         <source>Revert</source>
-        <translation type="unfinished"></translation>
+        <translation>恢复</translation>
     </message>
     <message>
         <source>size</source>
-        <translation type="unfinished">大小</translation>
+        <translation>大小</translation>
     </message>
     <message>
         <source>custom</source>
-        <translation type="unfinished">自定义</translation>
+        <translation>自定义</translation>
     </message>
     <message>
         <source>A0 (1030x1456)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>A1 (728x1030)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>A2 (515x728)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>A3 (364x515)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>A4 (257x364)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>A5 (182x257)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>A6 (128x182)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Letter (8.5x11)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Legal (8.5x14)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Ledger (17x11)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Tabloid (11x17</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -5509,7 +5525,7 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
     </message>
     <message>
         <source>shape</source>
-        <translation type="unfinished">形状</translation>
+        <translation>形状</translation>
     </message>
 </context>
 <context>
@@ -5520,7 +5536,7 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
     </message>
     <message>
         <source>Change label from %1 to %2</source>
-        <translation type="unfinished"></translation>
+        <translation>改变标签从%1 至 %2</translation>
     </message>
 </context>
 <context>
@@ -5790,28 +5806,35 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
     </message>
     <message>
         <source>Note text change</source>
-        <translation type="unfinished"></translation>
+        <translation>注意文字的变化</translation>
     </message>
     <message>
         <source>Unrouted connections are highlighted in yellow.</source>
-        <translation type="unfinished"></translation>
+        <translation>未布线的连接高亮为黄色。</translation>
     </message>
     <message>
         <source>There are no unrouted connections</source>
-        <translation type="unfinished"></translation>
+        <translation>没有未布线的连接</translation>
     </message>
     <message>
         <source>Unrouted connections</source>
-        <translation type="unfinished"></translation>
+        <translation>未布线连接
+</translation>
     </message>
     <message>
         <source>%1
 
 Note: you can also trigger this display by mousing down on the routing status text in the status bar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1
+
+注意：你也可以通过在状态栏中的布线状态文本上按下鼠标触发这个显示。</translation>
     </message>
     <message>
         <source>Deselect all</source>
+        <translation>取消选择所有</translation>
+    </message>
+    <message>
+        <source>Part &apos;%1&apos; not found in sketch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5821,23 +5844,25 @@ Note: you can also trigger this display by mousing down on the routing status te
         <source>The swapping mechanism is disabled for:
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>交换机制被禁止因为：
+
+</translation>
     </message>
     <message>
         <source>and %1 other parts</source>
-        <translation type="unfinished"></translation>
+        <translation>和%1其他元件</translation>
     </message>
     <message>
         <source>and %1 other properties</source>
-        <translation type="unfinished"></translation>
+        <translation>和%1其他属性</translation>
     </message>
     <message>
         <source>property &apos;%1&apos; in part &apos;%2&apos; with id &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>id为&apos;%3&apos;的元件&apos;%2&apos;属性&apos;%1&apos;。</translation>
     </message>
     <message>
         <source>part &apos;%1&apos; with id &apos;%2&apos;; possibly because it has no &apos;family&apos; property.</source>
-        <translation type="unfinished"></translation>
+        <translation>id为&apos;%2&apos;的元件&apos;1%&apos;;可能因为没有&apos;family&apos;属性。</translation>
     </message>
 </context>
 <context>
@@ -5873,19 +5898,19 @@ Note: you can also trigger this display by mousing down on the routing status te
     </message>
     <message>
         <source>net label</source>
-        <translation type="unfinished"></translation>
+        <translation>网络标签</translation>
     </message>
     <message>
         <source>label</source>
-        <translation type="unfinished">标签</translation>
+        <translation>标签</translation>
     </message>
     <message>
         <source>Net labels</source>
-        <translation type="unfinished"></translation>
+        <translation>网络标签</translation>
     </message>
     <message>
         <source>Net labels cannot be blank</source>
-        <translation type="unfinished"></translation>
+        <translation>网络标签不能为空</translation>
     </message>
 </context>
 <context>
@@ -6003,7 +6028,7 @@ Note: you can also trigger this display by mousing down on the routing status te
     </message>
     <message>
         <source>Select from the dropdown, or type in any value from %1 to %2</source>
-        <translation type="unfinished"></translation>
+        <translation>从下拉中选择，或者从%1至%2中填入任何值</translation>
     </message>
 </context>
 <context>
@@ -6118,15 +6143,15 @@ Note: you can also trigger this display by mousing down on the routing status te
     </message>
     <message>
         <source>Indonesian - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>印度尼西亚语 - %1</translation>
     </message>
     <message>
         <source>Slovak - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>斯洛伐克语 - %1</translation>
     </message>
     <message>
         <source>Bengali - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>孟加拉语 - %1</translation>
     </message>
 </context>
 <context>
@@ -6235,11 +6260,11 @@ Note: you can also trigger this display by mousing down on the routing status te
     </message>
     <message>
         <source>super fine (8 mil)</source>
-        <translation type="unfinished"></translation>
+        <translation>超细（8mil）</translation>
     </message>
     <message>
         <source>extra thin (12 mil)</source>
-        <translation type="unfinished"></translation>
+        <translation>特细（12mil）</translation>
     </message>
 </context>
 <context>
