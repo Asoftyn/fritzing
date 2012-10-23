@@ -118,6 +118,7 @@ bool BreadboardSketchWidget::canDropModelPart(ModelPart * modelPart) {
 
 	switch (modelPart->itemType()) {
 		case ModelPart::Logo:
+             if (modelPart->moduleID().contains("breadboard", Qt::CaseInsensitive)) return true;
 		case ModelPart::Symbol:
 		case ModelPart::Jumper:
 		case ModelPart::CopperFill:
@@ -168,6 +169,7 @@ void BreadboardSketchWidget::setNewPartVisible(ItemBase * itemBase) {
 		case ModelPart::Jumper:
 		case ModelPart::CopperFill:
 		case ModelPart::Logo:
+            if (itemBase->moduleID().contains("breadboard", Qt::CaseInsensitive)) return;
 		case ModelPart::Hole:
 		case ModelPart::Via:
 			itemBase->setVisible(false);

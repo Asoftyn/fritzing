@@ -39,6 +39,9 @@ $Date$
 #include <qmath.h>
 #include <qnumeric.h>
 
+QSet<QString> InstalledFonts::InstalledFontsList;
+QMultiHash<QString, QString> InstalledFonts::InstalledFontsNameMapper;   // family name to filename; SVG files seem to have to use filename
+
 const QString TextUtils::CreatedWithFritzingString("Created with Fritzing (http://www.fritzing.org/)");
 const QString TextUtils::CreatedWithFritzingXmlComment("<!-- " + CreatedWithFritzingString + " -->\n");
 

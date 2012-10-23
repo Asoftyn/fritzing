@@ -3,6 +3,29 @@
 	<title>Parts Editor Parts</title>
      <instances>
      
+       <instance moduleIdRef="__spacer__" modelIndex="3" path="Breadboard View">
+        <views>
+          <iconView layer="icon">
+            <geometry z="-1" x="-1" y="-1"></geometry>
+          </iconView>
+        </views>
+      </instance>
+
+       <instance moduleIdRef="BreadboardLogoTextModuleID" modelIndex="56" path=":/resources/parts/core/breadboardlogotext.fzp">
+        <views>
+          <iconView layer="icon">
+            <geometry z="-1" x="-1" y="-1"/>
+          </iconView>
+        </views>
+      </instance>
+      <instance moduleIdRef="BreadboardLogoImageModuleID" modelIndex="57" path=":/resources/parts/core/breadboardlogoimage.fzp">
+        <views>
+          <iconView layer="icon">
+            <geometry z="-1" x="-1" y="-1"/>
+          </iconView>
+        </views>
+      </instance>     
+      
        <instance moduleIdRef="__spacer__" modelIndex="3" path="Schematic View">
         <views>
           <iconView layer="icon">
@@ -18,7 +41,7 @@
           </iconView>
         </views>
       </instance>
-      <instance moduleIdRef="SchematicLogoImageModuleID" modelIndex="57" path=":/resources/parts/core/schematicogoimage.fzp">
+      <instance moduleIdRef="SchematicLogoImageModuleID" modelIndex="57" path=":/resources/parts/core/schematiclogoimage.fzp">
         <views>
           <iconView layer="icon">
             <geometry z="-1" x="-1" y="-1"/>

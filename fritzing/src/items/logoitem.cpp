@@ -740,6 +740,23 @@ QString SchematicLogoItem::colorString() {
     return "black";
 }
 
+///////////////////////////////////////////////////////////////////////
+
+BreadboardLogoItem::BreadboardLogoItem( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: LogoItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+{
+}
+
+BreadboardLogoItem::~BreadboardLogoItem() {
+}
+
+ViewLayer::ViewLayerID BreadboardLogoItem::layer() {
+	return ViewLayer::Breadboard;
+}
+
+QString BreadboardLogoItem::colorString() {
+    return "#787878";
+}
 
 ///////////////////////////////////////////////////////////////////////
 

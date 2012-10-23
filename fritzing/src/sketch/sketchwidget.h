@@ -448,8 +448,9 @@ protected:
 
 	virtual bool resizingJumperItemPress(QGraphicsItem * item);
 	virtual bool resizingJumperItemRelease();
-	virtual bool resizingBoardPress(QGraphicsItem * item);
-	virtual bool resizingBoardRelease();
+	bool resizingBoardPress(QGraphicsItem * item);
+	bool resizingBoardRelease();
+	void resizeBoard();
 	virtual QPoint calcFixedToCenterItemOffset(const QRect & viewPortRect, const QSizeF & helpSize);
 	virtual bool acceptsTrace(const ViewGeometry &);
 	virtual ItemBase * placePartDroppedInOtherView(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry & viewGeometry, long id, SketchWidget * dropOrigin);
@@ -704,6 +705,7 @@ protected:
 	RoutingStatus m_routingStatus;
 	bool m_anyInRotation;
     bool m_pasting;
+	QPointer<class ResizableBoard> m_resizingBoard;
 
 public:
 	static ViewLayer::ViewLayerID defaultConnectorLayer(ViewLayer::ViewIdentifier viewId);

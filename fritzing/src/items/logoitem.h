@@ -125,6 +125,19 @@ protected:
 	QString colorString();
 };
 
+class BreadboardLogoItem : public LogoItem
+{
+Q_OBJECT
+	
+public:
+	BreadboardLogoItem(ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
+	~BreadboardLogoItem();
+
+protected:
+	ViewLayer::ViewLayerID layer();
+	QString colorString();
+};
+
 class BoardLogoItem : public LogoItem
 {
 Q_OBJECT

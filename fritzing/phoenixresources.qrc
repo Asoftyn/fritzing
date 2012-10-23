@@ -161,6 +161,8 @@
         <file>resources/parts/core/copper0logoimage.fzp</file>
 	<file>resources/parts/core/schematiclogotext.fzp</file>
         <file>resources/parts/core/schematiclogoimage.fzp</file>
+	<file>resources/parts/core/breadboardlogotext.fzp</file>
+        <file>resources/parts/core/breadboardlogoimage.fzp</file>
         <file>resources/parts/core/boardlogoimage.fzp</file>
         <file>resources/parts/core/boardlogoimage_one_layer.fzp</file>
         <file>resources/parts/core/ground.fzp</file>
@@ -193,6 +195,8 @@
 	<file>resources/parts/svg/core/icon/copper1_logo.svg</file>
  	<file>resources/parts/svg/core/icon/schematic_text.svg</file>
 	<file>resources/parts/svg/core/icon/schematic_logo.svg</file>
+ 	<file>resources/parts/svg/core/icon/breadboard_text.svg</file>
+	<file>resources/parts/svg/core/icon/breadboard_logo.svg</file>
         <file>resources/parts/svg/core/icon/ground.svg</file>
         <file>resources/parts/svg/core/icon/cell.svg</file>
         <file>resources/parts/svg/core/icon/power.svg</file>
@@ -208,6 +212,7 @@
         <file>resources/parts/svg/core/breadboard/ruler.svg</file>
         <file>resources/parts/svg/core/breadboard/wire.svg</file>
         <file>resources/parts/svg/core/breadboard/30.20perfboard.svg</file>
+        <file>resources/parts/svg/core/breadboard/breadboardlogo.svg</file>
 	
         <file>resources/parts/svg/core/pcb/rectangle_pcb.svg</file>
         <file>resources/parts/svg/core/pcb/ellipse_pcb.svg</file>

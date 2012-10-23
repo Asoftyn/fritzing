@@ -149,9 +149,6 @@ protected:
 	ViewLayer::ViewLayerSpec wireViewLayerSpec(ConnectorItem *);
 	bool resizingJumperItemPress(QGraphicsItem * item);
 	bool resizingJumperItemRelease();
-	bool resizingBoardPress(QGraphicsItem * item);
-	bool resizingBoardRelease();
-	void resizeBoard();
 	void resizeJumperItem();
 	QPoint calcFixedToCenterItemOffset(const QRect & viewPortRect, const QSizeF & helpSize);
 	void dealWithDefaultParts();
@@ -193,7 +190,6 @@ protected:
 	CleanType m_cleanType;
 	QPointF m_jumperDragOffset;
 	QPointer<class JumperItem> m_resizingJumperItem;
-	QPointer<class ResizableBoard> m_resizingBoard;
 	QList<ConnectorItem *> * m_groundFillSeeds;
 
 protected:

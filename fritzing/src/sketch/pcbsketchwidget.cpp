@@ -480,6 +480,7 @@ bool PCBSketchWidget::canDropModelPart(ModelPart * modelPart) {
 	switch (modelPart->itemType()) {
 		case ModelPart::Logo:
             if (modelPart->moduleID().contains("schematic", Qt::CaseInsensitive)) return false;
+            if (modelPart->moduleID().contains("breadboard", Qt::CaseInsensitive)) return false;
 		case ModelPart::Jumper:
 		case ModelPart::Ruler:
 		case ModelPart::CopperFill:
@@ -1228,49 +1229,6 @@ void PCBSketchWidget::resizeJumperItem() {
 	cmd->setText("Resize Jumper");
 	m_undoStack->waitPush(cmd, 10);
 	m_resizingJumperItem = NULL;
-}
-
-bool PCBSketchWidget::resizingBoardPress(QGraphicsItem * item) {
-	// board's child items (at the moment) are the resize grips
-	ResizableBoard * rb = dynamic_cast<ResizableBoard *>(item);
-	if (rb == NULL) return false;
-	if (!rb->inResize()) return false;
-
-	m_resizingBoard = rb;
-	m_resizingBoard->saveParams();
-	return true;
-}
-
-bool PCBSketchWidget::resizingBoardRelease() {
-
-	if (m_resizingBoard == NULL) return false;
-
-	resizeBoard();
-	return true;
-}
-
-void PCBSketchWidget::resizeBoard() {
-	QSizeF oldSize;
-	QPointF oldPos;
-	m_resizingBoard->getParams(oldPos, oldSize);
-	QSizeF newSize;
-	QPointF newPos;
-	m_resizingBoard->saveParams();
-	m_resizingBoard->getParams(newPos, newSize);
-	QUndoCommand * parentCommand = new QUndoCommand(tr("Resize board to %1 %2").arg(newSize.width()).arg(newSize.height()));
-	rememberSticky(m_resizingBoard, parentCommand);
-	new ResizeBoardCommand(this, m_resizingBoard->id(), oldSize.width(), oldSize.height(), newSize.width(), newSize.height(), parentCommand);
-	if (oldPos != newPos) {
-		m_resizingBoard->saveGeometry();
-		ViewGeometry vg1 = m_resizingBoard->getViewGeometry();
-		ViewGeometry vg2 = vg1;
-		vg1.setLoc(oldPos);
-		vg2.setLoc(newPos);
-		new MoveItemCommand(this, m_resizingBoard->id(), vg1, vg2, false, parentCommand);
-	}
-	new CheckStickyCommand(this, BaseCommand::SingleView, m_resizingBoard->id(), true, CheckStickyCommand::RedoOnly, parentCommand);
-	m_undoStack->waitPush(parentCommand, 10);
-	m_resizingBoard = NULL;
 }
 
 bool PCBSketchWidget::canDragWire(Wire * wire) {

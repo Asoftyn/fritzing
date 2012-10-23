@@ -28,7 +28,7 @@ $Date$
 
 #include "../utils/misc.h"
 #include "../utils/textutils.h"
-#include "../debugdialog.h"
+//#include "../debugdialog.h"
 #include "svgpathparser.h"
 #include "svgpathlexer.h"
 #include "svgpathrunner.h"
@@ -494,7 +494,7 @@ bool SvgFileSplitter::normalizeAttribute(QDomElement & element, const char * att
         QString string;
         QTextStream stream(&string);
         element.save(stream, 0);
-        DebugDialog::debug("bad attribute " + string);
+        //DebugDialog::debug("bad attribute " + string);
     }
 
 	element.setAttribute(attributeName, QString::number(n));

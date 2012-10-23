@@ -111,9 +111,6 @@ static QNetworkAccessManager * NetworkAccessManager = NULL;
 #endif
 #endif
 
-QSet<QString> InstalledFonts::InstalledFontsList;
-QMultiHash<QString, QString> InstalledFonts::InstalledFontsNameMapper;   // family name to filename; SVG files seem to have to use filename
-
 static const double LoadProgressStart = 0.085;
 static const double LoadProgressEnd = 0.6;
 

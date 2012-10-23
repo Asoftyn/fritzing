@@ -440,15 +440,16 @@ void PEMainWindow::initDock()
 {
 	m_layerPalette = new LayerPalette(this);
 
-    //m_binManager = new BinManager(m_referenceModel, NULL, m_undoStack, this);
-    //m_binManager->openBin(":/resources/bins/pe.fzb");
-    //m_binManager->hideTabBar();
+    m_binManager = new BinManager(m_referenceModel, NULL, m_undoStack, this);
+    m_binManager->openBin(":/resources/bins/pe.fzb");
+    m_binManager->hideTabBar();
 }
 
 void PEMainWindow::moreInitDock()
 {
-    //static int MinHeight = 75;
-    //static int DefaultHeight = 100;
+    static int BinMinHeight = 75;
+    static int ToolDefaultHeight = 150;
+    static int SvgDefaultHeight = 50;
 
 
     m_peToolView = new PEToolView();
@@ -460,15 +461,15 @@ void PEMainWindow::moreInitDock()
     connect(m_peToolView, SIGNAL(pickModeChanged(bool)), this, SLOT(pickModeChanged(bool)));
     connect(m_peToolView, SIGNAL(busModeChanged(bool)), this, SLOT(busModeChanged(bool)));
     connect(m_peToolView, SIGNAL(connectorMetadataChanged(ConnectorMetadata *)), this, SLOT(connectorMetadataChanged(ConnectorMetadata *)), Qt::DirectConnection);
-    makeDock(tr("Connectors"), m_peToolView, DockMinWidth, DockMinHeight);
-    m_peToolView->setMinimumSize(DockMinWidth, DockMinHeight);
+    makeDock(tr("Connectors"), m_peToolView, DockMinWidth, ToolDefaultHeight);
+    m_peToolView->setMinimumSize(DockMinWidth, ToolDefaultHeight);
 
     m_peSvgView = new PESvgView();
-    makeDock(tr("SVG"), m_peSvgView, DockMinWidth, DockMinHeight);
-    m_peSvgView->setMinimumSize(DockMinWidth, DockMinHeight);
+    makeDock(tr("SVG"), m_peSvgView, DockMinWidth, SvgDefaultHeight);
+    m_peSvgView->setMinimumSize(DockMinWidth, SvgDefaultHeight);
 
-	//QDockWidget * dockWidget = makeDock(BinManager::Title, m_binManager, MinHeight, DefaultHeight);
-    //dockWidget->resize(0, 0);
+	QDockWidget * dockWidget = makeDock(BinManager::Title, m_binManager, DockMinWidth, BinMinHeight);
+    dockWidget->resize(0, 0);
 
     makeDock(tr("Layers"), m_layerPalette, DockMinWidth, DockMinHeight)->hide();
     m_layerPalette->setMinimumSize(DockMinWidth, DockMinHeight);

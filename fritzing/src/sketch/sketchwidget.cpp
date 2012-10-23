@@ -8202,13 +8202,49 @@ bool SketchWidget::resizingJumperItemPress(QGraphicsItem *) {
 	return false;
 }
 
-bool SketchWidget::resizingBoardRelease() {
-	return false;
+bool SketchWidget::resizingBoardPress(QGraphicsItem * item) {
+	// board's child items (at the moment) are the resize grips
+	ResizableBoard * rb = dynamic_cast<ResizableBoard *>(item);
+	if (rb == NULL) return false;
+	if (!rb->inResize()) return false;
+
+	m_resizingBoard = rb;
+	m_resizingBoard->saveParams();
+	return true;
 }
 
-bool SketchWidget::resizingBoardPress(QGraphicsItem *) {
-	return false;
+bool SketchWidget::resizingBoardRelease() {
+
+	if (m_resizingBoard == NULL) return false;
+
+	resizeBoard();
+	return true;
 }
+
+void SketchWidget::resizeBoard() {
+	QSizeF oldSize;
+	QPointF oldPos;
+	m_resizingBoard->getParams(oldPos, oldSize);
+	QSizeF newSize;
+	QPointF newPos;
+	m_resizingBoard->saveParams();
+	m_resizingBoard->getParams(newPos, newSize);
+	QUndoCommand * parentCommand = new QUndoCommand(tr("Resize board to %1 %2").arg(newSize.width()).arg(newSize.height()));
+	rememberSticky(m_resizingBoard, parentCommand);
+	new ResizeBoardCommand(this, m_resizingBoard->id(), oldSize.width(), oldSize.height(), newSize.width(), newSize.height(), parentCommand);
+	if (oldPos != newPos) {
+		m_resizingBoard->saveGeometry();
+		ViewGeometry vg1 = m_resizingBoard->getViewGeometry();
+		ViewGeometry vg2 = vg1;
+		vg1.setLoc(oldPos);
+		vg2.setLoc(newPos);
+		new MoveItemCommand(this, m_resizingBoard->id(), vg1, vg2, false, parentCommand);
+	}
+	new CheckStickyCommand(this, BaseCommand::SingleView, m_resizingBoard->id(), true, CheckStickyCommand::RedoOnly, parentCommand);
+	m_undoStack->waitPush(parentCommand, 10);
+	m_resizingBoard = NULL;
+}
+
 
 bool SketchWidget::hasAnyNets() {
 	return false;
