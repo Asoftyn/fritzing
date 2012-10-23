@@ -1039,7 +1039,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
 bool MainWindow::whatToDoWithAlienFiles() {
 	if (m_alienFiles.size() > 0) {
-        QString basename = QFileInfo(m_fwFilename).completeBaseName();
+        QString basename = QFileInfo(m_fwFilename).fileName();
 		QMessageBox::StandardButton reply;
 		reply = QMessageBox::question(this, tr("Save %1").arg(basename),
 						 m_alienPartsMsg
