@@ -30,7 +30,7 @@ $Date$
 #include <QTextStream>
 #include <qmath.h>
 
-static const double MaskClearance = 0.003;  // 3 mils clearance
+static const double MaskClearance = 0.005;  // 5 mils clearance
 
 bool fillNotStroke(QDomElement & element, SVG2gerber::ForWhy forWhy) {
 	if (forWhy == SVG2gerber::ForOutline) return false;
