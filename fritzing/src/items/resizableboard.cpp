@@ -460,13 +460,12 @@ void ResizableBoard::loadTemplates() {
 }
 
 double ResizableBoard::minWidth() {
-	return 0.5 * GraphicsUtils::SVGDPI;
+	return 0.25 * GraphicsUtils::SVGDPI;
 }
 
 double ResizableBoard::minHeight() {
-	return 0.5 * GraphicsUtils::SVGDPI;
+	return 0.25 * GraphicsUtils::SVGDPI;
 }
-
 
 void ResizableBoard::mousePressEvent(QGraphicsSceneMouseEvent * event) 
 {
@@ -536,16 +535,24 @@ void ResizableBoard::mouseMoveEvent(QGraphicsSceneMouseEvent * event) {
                         break;
 	}
 
-	if (size.width() < minWidth()) size.setWidth(minWidth());
-	if (size.height() < minHeight()) size.setHeight(minHeight());
+	if (size.width() < minWidth()) {
+        DebugDialog::debug("to min width");
+        size.setWidth(minWidth());
+    }
+	if (size.height() < minHeight()) {
+        DebugDialog::debug("to min height");
+        size.setHeight(minHeight());
+    }
 
 	if (m_keepAspectRatio) {
 		double cw = size.height() * m_aspectRatio.width() / m_aspectRatio.height();
 		double ch = size.width() * m_aspectRatio.height() / m_aspectRatio.width();
 		if (ch < minHeight()) {
+            DebugDialog::debug("from min height");
 			size.setWidth(cw);
 		}
 		else if (cw < minWidth()) {
+            DebugDialog::debug("from min width");
 			size.setHeight(ch);
 		}
 		else {

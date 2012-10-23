@@ -689,11 +689,25 @@ QString LogoItem::layerName()
 }
 
 double LogoItem::minWidth() {
-	return ResizableBoard::CornerHandleSize * 2;
+    double zoom = 1;
+	InfoGraphicsView * infoGraphicsView = InfoGraphicsView::getInfoGraphicsView(this);
+	if (infoGraphicsView != NULL) {
+		zoom = infoGraphicsView->currentZoom() / 100;
+        if (zoom == 0) zoom = 1;
+	}
+    
+	return ResizableBoard::CornerHandleSize * 2 / zoom;
 }
 
 double LogoItem::minHeight() {
-	return ResizableBoard::CornerHandleSize * 2;
+    double zoom = 1;
+	InfoGraphicsView * infoGraphicsView = InfoGraphicsView::getInfoGraphicsView(this);
+	if (infoGraphicsView != NULL) {
+		zoom = infoGraphicsView->currentZoom() / 100;
+        if (zoom == 0) zoom = 1;
+	}
+
+	return ResizableBoard::CornerHandleSize * 2 / zoom;
 }
 
 bool LogoItem::freeRotationAllowed(Qt::KeyboardModifiers modifiers) {

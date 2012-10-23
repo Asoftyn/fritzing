@@ -178,11 +178,11 @@ ViewLayer::ViewIdentifier Pad::theViewIdentifier() {
 }
 
 double Pad::minWidth() {
-	return 0.2;
+	return 1;
 }
 
 double Pad::minHeight() {
-	return 0.2;
+	return 1;
 }
 
 QString Pad::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi)
