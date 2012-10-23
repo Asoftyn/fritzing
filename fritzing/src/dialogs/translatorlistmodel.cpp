@@ -122,7 +122,7 @@ TranslatorListModel::TranslatorListModel(QFileInfoList & fileInfoList, QObject* 
 
 	if (m_localeList.count() == 0) {
 		foreach (QFileInfo fileinfo, fileInfoList) {
-			QString name = fileinfo.baseName();
+			QString name = fileinfo.completeBaseName();
 			name.replace("fritzing_", "");
 			QStringList names = name.split("_");
 			if (names.count() > 1) {

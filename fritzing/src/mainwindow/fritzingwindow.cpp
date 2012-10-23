@@ -240,7 +240,7 @@ QMessageBox::StandardButton FritzingWindow::beforeClosingMessage(const QString &
 
 void FritzingWindow::setBeforeClosingText(const QString & filename, QMessageBox & messageBox)
 {
-	QString basename = QFileInfo(filename).baseName();
+	QString basename = QFileInfo(filename).completeBaseName();
     messageBox.setWindowTitle(tr("Save \"%1\"").arg(basename));
     messageBox.setText(tr("Do you want to save the changes you made in the document \"%1\"?").arg(basename));
     messageBox.setInformativeText(tr("Your changes will be lost if you don't save them."));

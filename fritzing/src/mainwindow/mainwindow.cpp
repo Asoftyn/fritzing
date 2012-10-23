@@ -1039,10 +1039,11 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
 bool MainWindow::whatToDoWithAlienFiles() {
 	if (m_alienFiles.size() > 0) {
+        QString basename = QFileInfo(m_fwFilename).completeBaseName();
 		QMessageBox::StandardButton reply;
-		reply = QMessageBox::question(this, tr("Save %1").arg(QFileInfo(m_fwFilename).baseName()),
+		reply = QMessageBox::question(this, tr("Save %1").arg(basename),
 						 m_alienPartsMsg
-						 .arg(QFileInfo(m_fwFilename).baseName()),
+						 .arg(basename),
 						 QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
 		// TODO: translate button text
 		if (reply == QMessageBox::Yes) {

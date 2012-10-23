@@ -1057,7 +1057,7 @@ void FApplication::registerFont(const QString &fontFile, bool reallyRegister) {
 		QStringList familyNames = QFontDatabase::applicationFontFamilies(id);
 		QFileInfo finfo(fontFile);
 		foreach (QString family, familyNames) {
-			InstalledFonts::InstalledFontsNameMapper.insert(family, finfo.baseName());
+			InstalledFonts::InstalledFontsNameMapper.insert(family, finfo.completeBaseName());
 			InstalledFonts::InstalledFontsList << family;
 			//DebugDialog::debug("registering font family: "+family);
 		}

@@ -156,7 +156,7 @@ void ProgramWindow::initLanguages() {
 	nameFilters << "*.xml";
 	QFileInfoList list = dir.entryInfoList(nameFilters, QDir::Files | QDir::NoSymLinks);
 	foreach (QFileInfo fileInfo, list) {
-		if (fileInfo.baseName().compare("styles") == 0) {
+		if (fileInfo.completeBaseName().compare("styles") == 0) {
 			Highlighter::loadStyles(fileInfo.absoluteFilePath());
 		}
 		else {

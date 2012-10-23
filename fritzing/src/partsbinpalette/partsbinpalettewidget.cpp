@@ -475,7 +475,7 @@ void PartsBinPaletteWidget::load(const QString &filename, QWidget * progressTarg
 	    //DebugDialog::debug("after palette model");
 
 	    QString name = m_title;
-	    if (name.isEmpty()) name = QFileInfo(filename).baseName();
+	    if (name.isEmpty()) name = QFileInfo(filename).completeBaseName();
 
 	    bool deleteWhenDone = false;
         if (progressTarget != NULL) {
