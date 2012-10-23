@@ -54,7 +54,7 @@ const QString GerberGenerator::DrillSuffix = "_drill.txt";
 const QString GerberGenerator::OutlineSuffix = "_contour.gm1";
 const QString GerberGenerator::MagicBoardOutlineID = "boardoutline";
 
-const double GerberGenerator::MaskClearanceMils = 3;	
+const double GerberGenerator::MaskClearanceMils = 5;	
 
 ////////////////////////////////////////////
 
