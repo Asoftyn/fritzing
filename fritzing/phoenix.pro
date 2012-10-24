@@ -86,6 +86,9 @@ unix {
 
 	parts.path = $$PKGDATADIR
 	parts.files += parts
+	
+	pdb.path = $$PKGDATADIR
+	pdb.files += pdb
 
 	sketches.path = $$PKGDATADIR
 	sketches.files += sketches
