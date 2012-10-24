@@ -732,29 +732,8 @@ void PCBSketchWidget::resizeBoard(double mmW, double mmH, bool doEmit)
 
 	if (!handle) return SketchWidget::resizeBoard(mmW, mmH, doEmit);
 
+    resizeWithHandle(item, mmW, mmH);
 
-	double origw = item->modelPart()->localProp("width").toDouble();
-	double origh = item->modelPart()->localProp("height").toDouble();
-
-	if (mmH == 0 || mmW == 0) {
-		dynamic_cast<ResizableBoard *>(item)->setInitialSize();
-		double w = item->modelPart()->localProp("width").toDouble();
-		double h = item->modelPart()->localProp("height").toDouble();
-		if (origw == w && origh == h) {
-			// no change
-			return;
-		}
-
-		viewItemInfo(item);
-		mmW = w;
-		mmH = h;
-	}
-
-	QUndoCommand * parentCommand = new QUndoCommand(tr("Resize board to %1 %2").arg(mmW).arg(mmH));
-	rememberSticky(item, parentCommand);
-	new ResizeBoardCommand(this, item->id(), origw, origh, mmW, mmH, parentCommand);
-	new CheckStickyCommand(this, BaseCommand::SingleView, item->id(), true, CheckStickyCommand::RedoOnly, parentCommand);
-	m_undoStack->waitPush(parentCommand, PropChangeDelay);
 }
 
 void PCBSketchWidget::showLabelFirstTime(long itemID, bool show, bool doEmit) {

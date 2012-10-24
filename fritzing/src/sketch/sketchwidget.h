@@ -451,6 +451,7 @@ protected:
 	bool resizingBoardPress(QGraphicsItem * item);
 	bool resizingBoardRelease();
 	void resizeBoard();
+    void resizeWithHandle(ItemBase * itemBase, double mmW, double mmH);
 	virtual QPoint calcFixedToCenterItemOffset(const QRect & viewPortRect, const QSizeF & helpSize);
 	virtual bool acceptsTrace(const ViewGeometry &);
 	virtual ItemBase * placePartDroppedInOtherView(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry & viewGeometry, long id, SketchWidget * dropOrigin);

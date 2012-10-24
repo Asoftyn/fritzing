@@ -7354,7 +7354,6 @@ void SketchWidget::resizeBoard(long itemID, double mmW, double mmH) {
 void SketchWidget::resizeBoard(double mmW, double mmH, bool doEmit)
 {
 	Q_UNUSED(doEmit);
-	Q_UNUSED(mmH);
 
 	PaletteItem * item = getSelectedPart();
 	if (item == NULL) {
@@ -7364,6 +7363,8 @@ void SketchWidget::resizeBoard(double mmW, double mmH, bool doEmit)
 	switch (item->itemType()) {
 		case ModelPart::Ruler:
 			break;
+		case ModelPart::Logo:
+            resizeWithHandle(item, mmW, mmH);
 		default:
 			return;
 	}
@@ -7376,6 +7377,32 @@ void SketchWidget::resizeBoard(double mmW, double mmH, bool doEmit)
 	QUndoCommand * parentCommand = new QUndoCommand(tr("Resize ruler to %1%2").arg(mmW).arg((mmH == 0) ? "cm" : "in"));
 	new ResizeBoardCommand(this, item->id(), origw, origh, mmW, mmH, parentCommand);
 	m_undoStack->waitPush(parentCommand, PropChangeDelay);
+}
+
+void SketchWidget::resizeWithHandle(ItemBase * itemBase, double mmW, double mmH) {
+	double origw = itemBase->modelPart()->localProp("width").toDouble();
+	double origh = itemBase->modelPart()->localProp("height").toDouble();
+
+	if (mmH == 0 || mmW == 0) {
+		dynamic_cast<ResizableBoard *>(itemBase)->setInitialSize();
+		double w = itemBase->modelPart()->localProp("width").toDouble();
+		double h = itemBase->modelPart()->localProp("height").toDouble();
+		if (origw == w && origh == h) {
+			// no change
+			return;
+		}
+
+		viewItemInfo(itemBase);
+		mmW = w;
+		mmH = h;
+	}
+
+	QUndoCommand * parentCommand = new QUndoCommand(tr("Resize board to %1 %2").arg(mmW).arg(mmH));
+	rememberSticky(itemBase, parentCommand);
+	new ResizeBoardCommand(this, itemBase->id(), origw, origh, mmW, mmH, parentCommand);
+	new CheckStickyCommand(this, BaseCommand::SingleView, itemBase->id(), true, CheckStickyCommand::RedoOnly, parentCommand);
+	m_undoStack->waitPush(parentCommand, PropChangeDelay);
+
 }
 
 void SketchWidget::addBendpoint(ItemBase * lastHoverEnterItem, ConnectorItem * lastHoverEnterConnectorItem, QPointF lastLocation) {
