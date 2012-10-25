@@ -105,7 +105,7 @@ unix {
 	syntax.path = $$PKGDATADIR/translations/syntax
 	syntax.files += translations/syntax/*.xml
 
-	INSTALLS += target desktop manpage icon parts sketches bins translations syntax
+	INSTALLS += target desktop manpage icon parts sketches bins translations syntax pdb help
 }
 		
 ICON = resources/images/fritzing_icon.icns
