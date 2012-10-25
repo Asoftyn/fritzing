@@ -90,6 +90,9 @@ unix {
 	pdb.path = $$PKGDATADIR
 	pdb.files += pdb
 
+	help.path = $$PKGDATADIR
+	help.files += help
+
 	sketches.path = $$PKGDATADIR
 	sketches.files += sketches
 
