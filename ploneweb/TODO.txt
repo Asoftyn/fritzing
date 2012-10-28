@@ -1,19 +1,27 @@
+DEV
+* Fix SSHFS or find alternative
+
 OVERALL
 * plone.app.multilingual
-* Plone 4.3
+* http://pypi.python.org/pypi/Products.Doormat
 
 PROJECT
+* use more of Plone's built-in features: date, author, tags..
+* handle custom parts
 * SVG generation
-- in: feed Fritzing a URL instead of a file?
-- out: multi-part response?
-- alternative: use File System Access
-* also show SVGs as PNG (using inkscape)
+- embed Dimitris viewer
+- work around "private" state
+* also generate PNGs
 * rating
+* versioning (using Plone's mechanism?)
 
-
-PART
-
-
+PARTS
+* model current parts database
+- linked images
+- generated parts
+* import all parts
+* bins
+* versioning
 
 FAB
-* display Gerbers
+* display Gerbers (gerbv2png)

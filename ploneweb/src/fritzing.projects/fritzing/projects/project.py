@@ -167,7 +167,7 @@ def extractFZZ(project, event):
         
     # TODO fix svg generation, works out of Plone, but causes weird errors here
     #URLError: <urlopen error [Errno 111] Connection refused>
-    #generateSVGs(project)
+    generateSVGs(project)
 
     
     # Parse FZ
@@ -233,15 +233,18 @@ def extractFZZ(project, event):
 
 def generateSVGs(project):
     # connect to Fritzing service to load this fzz and export all SVGs
-    FRITZING_URL = "http://192.168.1.111:9999/svg-tcp/"
+    FRITZING_URL = "http://10.37.131.2:9999"
     sketchURL = project.absolute_url() + "/@@download/fritzingFile/" + urllib.quote(project.fritzingFile.filename)
-    serviceURL = FRITZING_URL + sketchURL
+    serviceURL = FRITZING_URL + "/svg-tcp/" + sketchURL
     try:
         remotezip = urllib2.urlopen(serviceURL)
     except urllib2.URLError as err:
-        raise Invalid(
-            _(u"Couldn't reach SVG service: "+serviceURL+" -- "+str(err.reason))
-        )
+        project.breadboardView = "<em>Fritzing image service not found</em>"
+        project.schematicView = project.breadboardView
+        project.pcbView = project.breadboardView
+        #raise Invalid(
+        #    _(u"Couldn't reach SVG service at " + serviceURL + "  ---  " + str(err.reason))
+        #)
     else:
         zipinmemory = StringIO(remotezip.read())
         zf = None
