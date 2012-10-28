@@ -37,6 +37,10 @@ $Date$
 
 		icon editor?
 
+        need simplified infoview
+
+        change color of breadboard text item
+
         for svg import check for flaws:
             multiple connector or terminal ids
 			trash any other matching id
@@ -53,8 +57,6 @@ $Date$
 
 		restore editable pin labels functionality
 			requires storing labels in the part rather than in the sketch
-
-        allow blank new part?
 
 		hidden connectors
 			allow multiple hits to the same place and add copies of the svg element if necessary
@@ -91,6 +93,8 @@ $Date$
             if any are invisible, tell user this is obsolete
 
         sort connector list alphabetically or numerically?
+
+        full svg outline view
 
         bendable legs
 			same as terminalID, but must be a line
@@ -234,7 +238,8 @@ void removeID(QDomElement & root, const QString & value) {
 	for (int i = 0; i < nodeList.count(); i++) {
         QDomNode node = nodeList.item(i);
         if (node.nodeType() == QDomNode::ElementNode) {
-		    removeID(node.toElement(), value);
+            QDomElement element = node.toElement();
+		    removeID(element, value);
         }
 	}
 }
