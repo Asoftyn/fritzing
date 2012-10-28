@@ -685,7 +685,7 @@ ItemBase * SketchWidget::addItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec
 
 	if (crossViewType == BaseCommand::CrossView) {
 		//DebugDialog::debug(QString("emit item added"));
-		emit itemAddedSignal(modelPart, viewLayerSpec, viewGeometry, id, originatingCommand ? originatingCommand->dropOrigin() : NULL);
+		emit itemAddedSignal(modelPart, newItem, viewLayerSpec, viewGeometry, id, originatingCommand ? originatingCommand->dropOrigin() : NULL);
 		//DebugDialog::debug(QString("after emit item added"));
 	}
 
@@ -1259,37 +1259,38 @@ ViewLayer::ViewLayerSpec SketchWidget::createWireViewLayerSpec(ConnectorItem * f
 }
 
 void SketchWidget::moveItem(long id, ViewGeometry & viewGeometry, bool updateRatsnest) {
-	ItemBase * pitem = findItem(id);
-	if (pitem != NULL) {
+	ItemBase * itemBase = findItem(id);
+	if (itemBase != NULL) {
 		if (updateRatsnest) {
-			ratsnestConnect(pitem, true);
+			ratsnestConnect(itemBase, true);
 		}
-		pitem->moveItem(viewGeometry);
+		itemBase->moveItem(viewGeometry);
 	}
 }
 
 void SketchWidget::simpleMoveItem(long id, QPointF p) {
-	ItemBase * pitem = findItem(id);
-	if (pitem != NULL) {
-		pitem->setItemPos(p);
+	ItemBase * itemBase = findItem(id);
+	if (itemBase != NULL) {
+		itemBase->setItemPos(p);
 	}
 }
 
 void SketchWidget::moveItem(long id, const QPointF & p, bool updateRatsnest) {
-	ItemBase * pitem = findItem(id);
-	if (pitem != NULL) {
-		pitem->setPos(p);
+	ItemBase * itemBase = findItem(id);
+	if (itemBase != NULL) {
+		itemBase->setPos(p);
 		if (updateRatsnest) {
-			ratsnestConnect(pitem, true);
+			ratsnestConnect(itemBase, true);
 		}
+        emit itemMovedSignal(itemBase);
 	}
 }
 
 void SketchWidget::updateWire(long id, const QString & connectorID, bool updateRatsnest) {
-	ItemBase * pitem = findItem(id);
-	if (pitem == NULL) return;
+	ItemBase * itemBase = findItem(id);
+	if (itemBase == NULL) return;
 
-	Wire * wire = qobject_cast<Wire *>(pitem);
+	Wire * wire = qobject_cast<Wire *>(itemBase);
 	if (wire == NULL) return;
 
 	ConnectorItem * connectorItem = findConnectorItem(wire, connectorID, ViewLayer::specFromID(wire->viewLayerID()));
@@ -1307,16 +1308,16 @@ void SketchWidget::rotateItem(long id, double degrees) {
 
 	if (!isVisible()) return;
 
-	ItemBase * pitem = findItem(id);
-	if (pitem != NULL) {
-		pitem->rotateItem(degrees);
+	ItemBase * itemBase = findItem(id);
+	if (itemBase != NULL) {
+		itemBase->rotateItem(degrees);
 	}
 
 }
 void SketchWidget::transformItem(long id, const QMatrix & matrix) {
-	ItemBase * pitem = findItem(id);
-	if (pitem != NULL) {
-		pitem->transformItem2(matrix);
+	ItemBase * itemBase = findItem(id);
+	if (itemBase != NULL) {
+		itemBase->transformItem2(matrix);
 	}
 }
 
@@ -1325,10 +1326,10 @@ void SketchWidget::flipItem(long id, Qt::Orientations orientation) {
 
 	if (!isVisible()) return;
 
-	ItemBase * pitem = findItem(id);
-	if (pitem != NULL) {
-		pitem->flipItem(orientation);
-		ratsnestConnect(pitem, true);
+	ItemBase * itemBase = findItem(id);
+	if (itemBase != NULL) {
+		itemBase->flipItem(orientation);
+		ratsnestConnect(itemBase, true);
 	}
 }
 
@@ -2107,13 +2108,7 @@ void SketchWidget::mousePressEvent(QMouseEvent *event)
 	m_mousePressGlobalPos = event->globalPos();
 
 	QList<QGraphicsItem *> items = this->items(event->pos());
-	QGraphicsItem* wasItem = NULL;
-	foreach (QGraphicsItem * gitem, items) {
-		if (gitem->acceptedMouseButtons() != Qt::NoButton) {
-			wasItem = gitem;
-			break;
-		}
-	}
+	QGraphicsItem* wasItem = getClickedItem(items);
 
 	m_anyInRotation = false;
 	// mouse event gets passed through to individual QGraphicsItems
@@ -2124,14 +2119,7 @@ void SketchWidget::mousePressEvent(QMouseEvent *event)
 	}
 
 	items = this->items(event->pos());
-	QGraphicsItem* item = NULL;
-	foreach (QGraphicsItem * gitem, items) {
-		if (gitem->acceptedMouseButtons() != Qt::NoButton) {
-			item = gitem;
-			break;
-		}
-	}
-
+	QGraphicsItem* item = getClickedItem(items);
 	if (item != wasItem) {
 		// if the item was deleted during mousePressEvent
 		// for example, by shift-clicking a connectorItem
@@ -3252,7 +3240,7 @@ void SketchWidget::setSketchModel(SketchModel * sketchModel) {
 	m_sketchModel = sketchModel;
 }
 
-void SketchWidget::itemAddedSlot(ModelPart * modelPart, ViewLayer::ViewLayerSpec viewLayerSpec, const ViewGeometry & viewGeometry, long id, SketchWidget * dropOrigin) {
+void SketchWidget::itemAddedSlot(ModelPart * modelPart, ItemBase *, ViewLayer::ViewLayerSpec viewLayerSpec, const ViewGeometry & viewGeometry, long id, SketchWidget * dropOrigin) {
 	if (dropOrigin != NULL && dropOrigin != this) {
 		placePartDroppedInOtherView(modelPart, viewLayerSpec, viewGeometry, id, dropOrigin);
 	}
@@ -7323,32 +7311,43 @@ void SketchWidget::resizeBoard(long itemID, double mmW, double mmH) {
 	ItemBase * item = findItem(itemID);
 	if (item == NULL) return;
 
+    bool resized = false;
 	switch (item->itemType()) {
 		case ModelPart::ResizableBoard:
 			qobject_cast<ResizableBoard *>(item)->resizeMM(mmW, mmH, m_viewLayers);
-			return;
+			resized = true;
+            break;
 
 		case ModelPart::Logo:
 			qobject_cast<LogoItem *>(item)->resizeMM(mmW, mmH, m_viewLayers);
-			return;
+			resized = true;
+            break;
 
 		case ModelPart::Ruler:
 			qobject_cast<Ruler *>(item)->resizeMM(mmW, mmH, m_viewLayers);
-			return;
+			resized = true;
+            break;
 	}
 
-	Pad * pad = qobject_cast<Pad *>(item);
-	if (pad) {
-		pad->resizeMM(mmW, mmH, m_viewLayers);
-        return;
-	}
+    if (!resized) {
+	    Pad * pad = qobject_cast<Pad *>(item);
+	    if (pad) {
+		    pad->resizeMM(mmW, mmH, m_viewLayers);
+			resized = true;
+	    }
+    }
 
-	SchematicFrame * schematicFrame = qobject_cast<SchematicFrame *>(item);
-	if (schematicFrame) {
-		schematicFrame->resizeMM(mmW, mmH, m_viewLayers);
-        return;
-	}
+    if (!resized) {
+	    SchematicFrame * schematicFrame = qobject_cast<SchematicFrame *>(item);
+	    if (schematicFrame) {
+		    schematicFrame->resizeMM(mmW, mmH, m_viewLayers);
+		    resized = true;
+	    }
+    }
 
+    if (resized) {
+        emit resizedSignal(item);
+    }
 }
 
 void SketchWidget::resizeBoard(double mmW, double mmH, bool doEmit)
@@ -9097,4 +9096,18 @@ void SketchWidget::selectItems(QList<ItemBase *> startingItemBases) {
 
 	scene()->clearSelection();
 	m_undoStack->push(parentCommand);
+}
+
+QGraphicsItem * SketchWidget::getClickedItem(QList<QGraphicsItem *> & items) {
+	foreach (QGraphicsItem * gitem, items) {
+		if (gitem->acceptedMouseButtons() != Qt::NoButton) {
+            bool ok = true;
+            emit clickedItemCandidateSignal(gitem, ok);
+            if (ok) {
+			    return gitem;
+            }
+		}
+	}
+
+    return NULL;
 }

@@ -28,6 +28,7 @@ $Date$
 #include "pegraphicsitem.h"
 #include "../debugdialog.h"
 #include "../sketch/infographicsview.h"
+#include "../items/itembase.h"
 
 #include <QBrush>
 #include <QColor>
@@ -51,11 +52,12 @@ static const QColor PickColor(255, 0, 255);
 ////////////////////////////////////////////////
 
 
-PEGraphicsItem::PEGraphicsItem(double x, double y, double w, double h) : QGraphicsRectItem(x, y, w, h) {
+PEGraphicsItem::PEGraphicsItem(double x, double y, double w, double h, ItemBase * itemBase) : QGraphicsRectItem(x, y, w, h) {
     if (Dashes.isEmpty()) {
         Dashes << DashLength << DashLength;
     }
 
+    m_itemBase = itemBase;
     m_pick = m_flash = false;
 
     m_terminalPoint = QPointF(w / 2, h / 2);
@@ -303,7 +305,7 @@ void PEGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent * event) {
 	}
 
 	bool ignore;
-	emit mousePressed(this, ignore);
+	emit mousePressedSignal(this, ignore);
 	if (ignore) {
 		event->ignore();
 		return;
@@ -325,6 +327,8 @@ void PEGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent * event) {
 
 		return;
     }
+
+    event->ignore();
 }
 
 void PEGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event) {
@@ -381,7 +385,7 @@ void PEGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *) {
     }
     else {
 		// relocate the connector
-        emit mouseReleased(this);
+        emit mouseReleasedSignal(this);
     }
 }
 
@@ -401,4 +405,8 @@ void PEGraphicsItem::restoreColor() {
     setBrush(m_pick ? PickColor : NormalColor);
     setOpacity(m_savedOpacity);
     update();
+}
+
+ItemBase * PEGraphicsItem::itemBase() {
+    return m_itemBase;
 }

@@ -483,16 +483,18 @@ protected:
     bool canConnect(ItemBase * from, ItemBase * to);
     virtual bool canConnect(Wire * from, ItemBase * to);
     void removeDragWire();
+    QGraphicsItem * getClickedItem(QList<QGraphicsItem *> & items);
 
 protected:
 	static bool lessThan(int a, int b);
 	static bool greaterThan(int a, int b);
 
 signals:
-	void itemAddedSignal(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, SketchWidget * dropOrigin);
+	void itemAddedSignal(ModelPart *, ItemBase *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, SketchWidget * dropOrigin);
 	void itemDeletedSignal(long id);
 	void clearSelectionSignal();
 	void itemSelectedSignal(long id, bool state);
+    void itemMovedSignal(ItemBase *);
 	void wireDisconnectedSignal(long fromID, QString fromConnectorID);
 	void wireConnectedSignal(long fromID,  QString fromConnectorID, long toID, QString toConnectorID);
 	void changeConnectionSignal(long fromID, QString fromConnectorID,
@@ -532,9 +534,11 @@ signals:
     void canConnectSignal(Wire * from, ItemBase * to, bool & connect);
     void swapStartSignal(SwapThing & swapThing, bool master);
 	void showing(SketchWidget *);
+    void clickedItemCandidateSignal(QGraphicsItem *, bool & ok);
+    void resizedSignal(ItemBase *);
 
 protected slots:
-	void itemAddedSlot(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, SketchWidget * dropOrigin);
+	void itemAddedSlot(ModelPart *, ItemBase *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, SketchWidget * dropOrigin);
 	void itemDeletedSlot(long id);
 	void clearSelectionSlot();
 	void itemSelectedSlot(long id, bool state);

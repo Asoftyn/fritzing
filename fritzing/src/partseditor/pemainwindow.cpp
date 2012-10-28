@@ -225,6 +225,20 @@ bool byID(QDomElement & c1, QDomElement & c2)
 	return c1id <= c2id;
 }
 
+void removeID(QDomElement & root, const QString & value) {
+    if (root.attribute("id") == value) {
+        root.removeAttribute("id");
+    }
+
+	QDomNodeList nodeList = root.childNodes();
+	for (int i = 0; i < nodeList.count(); i++) {
+        QDomNode node = nodeList.item(i);
+        if (node.nodeType() == QDomNode::ElementNode) {
+		    removeID(node.toElement(), value);
+        }
+	}
+}
+
 ////////////////////////////////////////////////////
 
 IconSketchWidget::IconSketchWidget(ViewLayer::ViewIdentifier viewIdentifier, QWidget *parent)
@@ -416,6 +430,13 @@ void PEMainWindow::initSketchWidgets()
         viewThing->everZoomed = true;
 		connect(viewThing->sketchWidget, SIGNAL(newWireSignal(Wire *)), this, SLOT(newWireSlot(Wire *)));
 		connect(viewThing->sketchWidget, SIGNAL(showing(SketchWidget *)), this, SLOT(showing(SketchWidget *)));
+		connect(viewThing->sketchWidget, SIGNAL(itemMovedSignal(ItemBase *)), this, SLOT(itemMovedSlot(ItemBase *)));
+		connect(viewThing->sketchWidget, SIGNAL(resizedSignal(ItemBase *)), this, SLOT(resizedSlot(ItemBase *)));
+		connect(viewThing->sketchWidget, SIGNAL(clickedItemCandidateSignal(QGraphicsItem *, bool &)), this, SLOT(clickedItemCandidateSlot(QGraphicsItem *, bool &)), Qt::DirectConnection);
+    	connect(viewThing->sketchWidget, SIGNAL(itemAddedSignal(ModelPart *, ItemBase *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long, SketchWidget *)),
+							 this, SLOT(itemAddedSlot(ModelPart *, ItemBase *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long, SketchWidget *)));
+
+
     }
 
     m_metadataView = new PEMetadataView(this);
@@ -799,6 +820,7 @@ bool PEMainWindow::setInitialItem(PaletteItem * paletteItem)
 		}
 		else {
 			// deal with copper0 and copper1 layers as parent/child
+            // have to remove whitespace in order to compare the two svgs
 			QRegExp white("\\s");
 			QStringList whiteList;
 			foreach (QString string, svgList) {
@@ -1293,13 +1315,6 @@ void PEMainWindow::initSvgTree(SketchWidget * sketchWidget, ItemBase * itemBase,
         else continue;
 
         QRectF bounds = getPixelBounds(renderer, element);
-        if (isSvg) {                
-            bounds.setWidth(0);             // skip top level element
-        }
-        else if (isG) {
-            // skip if it's too high up in the hierarchy?
-        }
-
         // known Qt bug: boundsOnElement returns zero width and height for text elements.
         if (bounds.width() > 0 && bounds.height() > 0) {
             PEGraphicsItem * pegi = makePegi(bounds.size(), bounds.topLeft(), itemBase, element, z++);
@@ -1739,9 +1754,9 @@ void PEMainWindow::reload(bool firstTime)
 
     foreach (ViewThing * viewThing, m_viewThings.values()) {
         // TODO: may have to revisit this and move all pegi items
-        viewThing->itemBase->setMoveLock(true);
+        //viewThing->itemBase->setMoveLock(true);
+		//viewThing->itemBase->setItemIsSelectable(false);
 		viewThing->itemBase->setAcceptsMousePressLegEvent(false);
-		viewThing->itemBase->setItemIsSelectable(false);
         viewThing->sketchWidget->hideConnectors(true);
         viewThing->everZoomed = false;
    }
@@ -1849,6 +1864,12 @@ void PEMainWindow::pegiMousePressed(PEGraphicsItem * pegi, bool & ignore)
 		relocateConnector(pegi);
 		return;
 	}
+
+    ViewThing * viewThing = m_viewThings.value(m_currentGraphicsView->viewIdentifier());
+    if (pegi->itemBase() != viewThing->itemBase) {
+        ignore = true;
+        return;
+    }
 
 	QString id = pegi->element().attribute("id");
 	if (id.isEmpty()) return;
@@ -2064,7 +2085,77 @@ bool PEMainWindow::saveAs(bool overWrite)
         QString currentSvgPath = layers.attribute("image");
         svgPaths.insert(viewIdentifier, currentSvgPath);
 
-        QString svg = viewThing->document->toString();
+		QMultiHash<ViewLayer::ViewLayerID, QString> extraSvg;
+        QDomDocument writeDoc = viewThing->document->cloneNode(true).toDocument();
+        QDomElement svgRoot = writeDoc.documentElement();    
+        double svgWidth, svgHeight, vbWidth, vbHeight;
+        bool svgOK = TextUtils::getSvgSizes(writeDoc, svgWidth, svgHeight, vbWidth, vbHeight);
+        if (svgOK) {
+            QHash<QString, QString> svgHash;
+            foreach (QGraphicsItem * item, viewThing->sketchWidget->scene()->items()) {
+                ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
+                if (itemBase == NULL) continue;
+
+                if (itemBase->layerKinChief() == viewThing->itemBase) continue;
+
+			    QString string = itemBase->layerKinChief()->retrieveSvg(itemBase->viewLayerID(), svgHash, false, vbWidth / svgWidth);
+			    if (!string.isEmpty()) {
+                    QPointF d = itemBase->pos() - viewThing->itemBase->pos();
+                    double dx = d.x() * (vbWidth / svgWidth) / GraphicsUtils::SVGDPI;
+                    double dy = d.y() * (vbWidth / svgWidth) / GraphicsUtils::SVGDPI;
+                    string = QString("<g transform='translate(%1,%2)'>\n%3\n</g>\n").arg(dx).arg(dy).arg(string);
+				    extraSvg.insert(itemBase->viewLayerID(), string);
+			    }
+            }
+        }
+
+
+        // deal with copper1 and copper0:
+        //      find innermost
+        //      don't save twice
+        QDomElement copperChild;
+        LayerList sketchLayers = viewThing->sketchWidget->viewLayers().keys();
+        if (sketchLayers.contains(ViewLayer::Copper0) && sketchLayers.contains(ViewLayer::Copper1)) {
+		    QDomElement copper0 = TextUtils::findElementWithAttribute(svgRoot, "id", "copper0");
+		    QDomElement copper1 = TextUtils::findElementWithAttribute(svgRoot, "id", "copper1");
+		    if (!copper0.isNull() && !copper1.isNull()) {
+			    QDomElement parent0 = copper0.parentNode().toElement();
+			    QDomElement parent1 = copper1.parentNode().toElement();
+			    if (parent0.attribute("id") == "copper1") {
+                    copperChild = copper0;
+                }
+			    else if (parent1.attribute("id") == "copper0") {
+                    copperChild = copper1;
+                }
+            }
+            if (!copperChild.isNull()) {
+                if (extraSvg.uniqueKeys().contains(ViewLayer::Copper0)) {
+                    extraSvg.remove(ViewLayer::Copper1);
+                }
+            }
+        }
+
+        foreach (ViewLayer::ViewLayerID viewLayerID, extraSvg.uniqueKeys()) {
+            QStringList svgList = extraSvg.values(viewLayerID);
+            QDomElement svgViewElement = (viewLayerID == ViewLayer::Copper0 && !copperChild.isNull()) 
+                        ? copperChild 
+                        : TextUtils::findElementWithAttribute(svgRoot, "id", ViewLayer::viewLayerXmlNameFromID(viewLayerID));
+            if (svgViewElement.isNull()) {
+                svgViewElement = svgRoot;
+            }
+
+            foreach (QString svg, svgList) { 
+                QDomDocument doc;
+                doc.setContent(svg, true);
+                QDomElement root = doc.documentElement();
+                foreach (ViewLayer::ViewLayerID vlid, sketchLayers) {
+                    removeID(root, ViewLayer::viewLayerXmlNameFromID(vlid));
+                }
+                svgViewElement.appendChild(doc.documentElement());
+            }
+        }
+
+        QString svg = writeDoc.toString();
         insertDesc(viewThing->referenceFile, svg);
 
         QString svgPath = makeSvgPath(viewThing->referenceFile, viewThing->sketchWidget, false);  // make a new path
@@ -2394,7 +2485,7 @@ void PEMainWindow::showInOS() {
 
 PEGraphicsItem * PEMainWindow::makePegi(QSizeF size, QPointF topLeft, ItemBase * itemBase, QDomElement & element, double z) 
 {
-    PEGraphicsItem * pegiItem = new PEGraphicsItem(0, 0, size.width(), size.height());
+    PEGraphicsItem * pegiItem = new PEGraphicsItem(0, 0, size.width(), size.height(), itemBase);
 	pegiItem->showTerminalPoint(false);
     pegiItem->setPos(itemBase->pos() + topLeft);
     pegiItem->setZValue(z);
@@ -2402,8 +2493,8 @@ PEGraphicsItem * PEMainWindow::makePegi(QSizeF size, QPointF topLeft, ItemBase *
     pegiItem->setElement(element);
     pegiItem->setOffset(topLeft);
     connect(pegiItem, SIGNAL(highlightSignal(PEGraphicsItem *)), this, SLOT(highlightSlot(PEGraphicsItem *)));
-    connect(pegiItem, SIGNAL(mouseReleased(PEGraphicsItem *)), this, SLOT(pegiMouseReleased(PEGraphicsItem *)));
-    connect(pegiItem, SIGNAL(mousePressed(PEGraphicsItem *, bool &)), this, SLOT(pegiMousePressed(PEGraphicsItem *, bool &)), Qt::DirectConnection);
+    connect(pegiItem, SIGNAL(mouseReleasedSignal(PEGraphicsItem *)), this, SLOT(pegiMouseReleased(PEGraphicsItem *)));
+    connect(pegiItem, SIGNAL(mousePressedSignal(PEGraphicsItem *, bool &)), this, SLOT(pegiMousePressed(PEGraphicsItem *, bool &)), Qt::DirectConnection);
     connect(pegiItem, SIGNAL(terminalPointMoved(PEGraphicsItem *, QPointF)), this, SLOT(pegiTerminalPointMoved(PEGraphicsItem *, QPointF)));
     connect(pegiItem, SIGNAL(terminalPointChanged(PEGraphicsItem *, QPointF, QPointF)), this, SLOT(pegiTerminalPointChanged(PEGraphicsItem *, QPointF, QPointF)));
     return pegiItem;
@@ -3632,3 +3723,53 @@ void PEMainWindow::insertDesc(const QString & referenceFile, QString & svg) {
     }
 }
 
+void PEMainWindow::itemAddedSlot(ModelPart *, ItemBase * itemBase, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, SketchWidget *) {
+    Q_UNUSED(id);
+
+    if (itemBase == NULL) return;
+    if (itemBase->viewIdentifier() != m_currentGraphicsView->viewIdentifier()) return;
+
+    QDomElement element;
+    double z = 0;
+    foreach (PEGraphicsItem * pegi, getPegiList(m_currentGraphicsView)) {
+        if (pegi->zValue() > z) z = pegi->zValue();
+    }
+
+    QRectF bounds = itemBase->boundingRect();
+    makePegi(bounds.size(), QPointF(0, 0), itemBase, element, z + 1);
+}
+
+void PEMainWindow::itemMovedSlot(ItemBase * itemBase) {
+    if (itemBase == NULL) return;
+    if (itemBase->viewIdentifier() != m_currentGraphicsView->viewIdentifier()) return;
+  
+    foreach (PEGraphicsItem * pegi, getPegiList(m_currentGraphicsView)) {
+        if (pegi->itemBase() == itemBase) {
+            pegi->setPos(itemBase->pos() + pegi->offset());
+        }
+    }
+
+}
+
+void PEMainWindow::resizedSlot(ItemBase * itemBase) {
+    if (itemBase == NULL) return;
+    if (itemBase->viewIdentifier() != m_currentGraphicsView->viewIdentifier()) return;
+  
+    foreach (PEGraphicsItem * pegi, getPegiList(m_currentGraphicsView)) {
+        if (pegi->itemBase() == itemBase) {
+            pegi->setPos(itemBase->pos() + pegi->offset());
+            QRectF bounds = itemBase->boundingRect();
+            pegi->setRect(bounds);
+        }
+    }
+}
+
+void PEMainWindow::clickedItemCandidateSlot(QGraphicsItem * item, bool & ok) {
+    PEGraphicsItem * pegi = dynamic_cast<PEGraphicsItem *>(item);
+    if (pegi == NULL) {
+        ok = true;
+        return;
+    }
+
+    ok = pegi->showingMarquee();
+}

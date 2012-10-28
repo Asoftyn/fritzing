@@ -531,8 +531,8 @@ void ResizableBoard::mouseMoveEvent(QGraphicsSceneMouseEvent * event) {
 			size.setWidth(size.width() - ds.x());
 			size.setHeight(size.height() - ds.y());
 			break;
-                default:
-                        break;
+        default:
+            break;
 	}
 
 	if (size.width() < minWidth()) {

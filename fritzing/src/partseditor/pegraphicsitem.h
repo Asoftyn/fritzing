@@ -41,7 +41,7 @@ class PEGraphicsItem : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 public:
-	PEGraphicsItem(double x, double y, double width, double height);
+	PEGraphicsItem(double x, double y, double width, double height, class ItemBase *);
 	~PEGraphicsItem();
 
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *);
@@ -67,11 +67,12 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 	void setPickAppearance(bool);
     void flash();
+    class ItemBase * itemBase();
 
 signals:
     void highlightSignal(PEGraphicsItem *);
-    void mousePressed(PEGraphicsItem *, bool & ignore);
-    void mouseReleased(PEGraphicsItem *);
+    void mousePressedSignal(PEGraphicsItem *, bool & ignore);
+    void mouseReleasedSignal(PEGraphicsItem *);
     void terminalPointMoved(PEGraphicsItem *, QPointF);
     void terminalPointChanged(PEGraphicsItem *, QPointF before, QPointF after);
 
@@ -94,6 +95,7 @@ protected:
     int m_wheelAccum;
     qreal m_savedOpacity;
     bool m_pick;
+    class ItemBase * m_itemBase;
 };
 
 #endif /* PEGRAPHICSITEM_H_ */
