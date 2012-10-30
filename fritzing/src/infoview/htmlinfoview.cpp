@@ -100,8 +100,6 @@ HtmlInfoView::HtmlInfoView(QWidget * parent) : QScrollArea(parent)
 {
     this->setWidgetResizable(true);
 	this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    QFrame * mainFrame = new QFrame(this);
-	mainFrame->setObjectName("infoViewMainFrame");
 
 	m_lastTitleItemBase = NULL;
 	m_lastTagsModelPart = NULL;
@@ -109,6 +107,8 @@ HtmlInfoView::HtmlInfoView(QWidget * parent) : QScrollArea(parent)
 	m_lastIconItemBase = NULL;
 	m_lastPropsModelPart = NULL;
 	m_lastPropsItemBase = NULL;
+
+    m_tinyMode = false;
 
 	m_partTitle = NULL;
 	m_partUrl = NULL;
@@ -123,7 +123,27 @@ HtmlInfoView::HtmlInfoView(QWidget * parent) : QScrollArea(parent)
 	m_setContentTimer.setSingleShot(true);
 	m_setContentTimer.setInterval(10);
 	connect(&m_setContentTimer, SIGNAL(timeout()), this, SLOT(setContent()));
-	QVBoxLayout *vlo = new QVBoxLayout(mainFrame);
+
+	m_currentItem = NULL;
+	m_currentSwappingEnabled = false;
+
+}
+
+
+HtmlInfoView::~HtmlInfoView() {
+	foreach (PropThing * propThing, m_propThings) {
+		delete propThing;
+	}
+	m_propThings.clear();
+}
+
+void HtmlInfoView::init(bool tinyMode) {
+    m_tinyMode = tinyMode;
+
+    QFrame * mainFrame = new QFrame(this);
+	mainFrame->setObjectName("infoViewMainFrame");
+
+    QVBoxLayout *vlo = new QVBoxLayout(mainFrame);
 	vlo->setSpacing(0);
 	vlo->setContentsMargins(0, 0, 0, 0);
 	vlo->setSizeConstraint( QLayout::SetMinAndMaxSize );
@@ -142,9 +162,11 @@ HtmlInfoView::HtmlInfoView(QWidget * parent) : QScrollArea(parent)
 
 	setInstanceTitleColors(m_titleEdit, QColor(0xaf, 0xaf, 0xb4), QColor(0x00, 0x00, 0x00)); //b3b3b3, 575757
 	m_titleEdit->setAutoFillBackground(true);
-	vlo->addWidget(m_titleEdit);
+	
+    vlo->addWidget(m_titleEdit);
+    if (tinyMode) m_titleEdit->setVisible(false);
 
-        /* Part Icons */
+    /* Part Icons */
 
 	if (NoIcon == NULL) {
 		NoIcon = new QPixmap(":/resources/images/icons/noicon.png");
@@ -203,12 +225,14 @@ HtmlInfoView::HtmlInfoView(QWidget * parent) : QScrollArea(parent)
 	m_partUrl->setObjectName("infoViewPartUrl");
 	m_partUrl->setOpenExternalLinks(true);
 	vlo->addWidget(m_partUrl);
+    if (tinyMode) m_partUrl->setVisible(false);
 
 	m_partTitle = new TagLabel(this);
 	m_partTitle->setWordWrap(true);
 	m_partTitle->setObjectName("infoViewPartTitle");
 	m_partTitle->setOpenExternalLinks(true);
 	vlo->addWidget(m_partTitle);
+    if (tinyMode) m_partTitle->setVisible(false);
 
 	m_proplabel = new QLabel(tr("Properties"), NULL);
 	m_proplabel->setObjectName("expandableViewLabel");
@@ -225,15 +249,18 @@ HtmlInfoView::HtmlInfoView(QWidget * parent) : QScrollArea(parent)
 	m_taglabel = new QLabel(tr("Tags"), NULL);
 	m_taglabel->setObjectName("expandableViewLabel");
 	vlo->addWidget(m_taglabel);
+    if (tinyMode) m_taglabel->setVisible(false);
 
 	m_tagsTextLabel = new TagLabel(this);
 	m_tagsTextLabel->setWordWrap(true);
 	m_tagsTextLabel->setObjectName("tagsValue");
 	vlo->addWidget(m_tagsTextLabel);
+    if (tinyMode) m_tagsTextLabel->setVisible(false);
 
 	m_connLabel = new QLabel(tr("Connections"), NULL);
 	m_connLabel->setObjectName("expandableViewLabel");
 	vlo->addWidget(m_connLabel);
+    if (tinyMode) m_connLabel->setVisible(false);
 
 	m_connFrame = new QFrame(this);
 	m_connFrame->setObjectName("connectionsFrame");
@@ -266,23 +293,15 @@ HtmlInfoView::HtmlInfoView(QWidget * parent) : QScrollArea(parent)
 
 	vlo->addWidget(m_connFrame);
 
+    if (m_tinyMode) m_connFrame->setVisible(false);
+
 	vlo->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
 	mainFrame->setLayout(vlo);
 
 	this->setWidget(mainFrame);
-
-	m_currentItem = NULL;
-	m_currentSwappingEnabled = false;
-
 }
 
-HtmlInfoView::~HtmlInfoView() {
-	foreach (PropThing * propThing, m_propThings) {
-		delete propThing;
-	}
-	m_propThings.clear();
-}
 
 void HtmlInfoView::cleanup() {
 	if (NoIcon) {
@@ -451,10 +470,12 @@ void HtmlInfoView::setContent()
 	setCurrentItem(m_pendingItemBase);
 	m_infoGraphicsView = m_pendingInfoGraphicsView;
 
-	m_connFrame->setVisible(true);
+    if (!m_tinyMode) {
+	    m_connFrame->setVisible(true);
+	    m_taglabel->setVisible(true);
+	    m_connLabel->setVisible(true);
+    }
 	m_proplabel->setVisible(true);
-	m_taglabel->setVisible(true);
-	m_connLabel->setVisible(true);
 	m_propFrame->setVisible(true);
 
 	m_setContentTimer.stop();
@@ -638,14 +659,16 @@ void HtmlInfoView::partTitle(const QString & title, const QString & version, con
 	m_lastPartTitle = title;
 	m_lastPartVersion = version;
 
-	if (url.isEmpty()) {
-		m_partUrl->setVisible(false);	
-		m_partUrl->setText("");
-	}
-	else {
-		m_partUrl->setText(QString("<a href=\"%1\">%1</a>").arg(url));
-		m_partUrl->setVisible(true);
-	}
+    if (!m_tinyMode) {
+	    if (url.isEmpty()) {
+		    m_partUrl->setVisible(false);	
+		    m_partUrl->setText("");
+	    }
+	    else {
+		    m_partUrl->setText(QString("<a href=\"%1\">%1</a>").arg(url));
+		    m_partUrl->setVisible(true);
+	    }
+    }
 
 	m_partTitle->setText(title);
 	if (!version.isEmpty()) {

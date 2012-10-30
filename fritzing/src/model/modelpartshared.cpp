@@ -595,6 +595,8 @@ QString ModelPartShared::imageFileName(ViewLayer::ViewIdentifier viewIdentifier,
     qulonglong one = 1;
     if ((viewImage->layers & (one << viewLayerID)) == 0) return "";
 
+    // DebugDialog::debug(QString("image filename %1 %2 %3").arg(viewImage->image).arg(viewIdentifier).arg(viewLayerID));
+
     return viewImage->image;
 }
 

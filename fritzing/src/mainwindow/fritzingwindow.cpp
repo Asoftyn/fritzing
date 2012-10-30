@@ -32,7 +32,6 @@ $Date$
 #include <QIcon>
 #include <QAction>
 #include <QAbstractButton>
-#include <QSettings>
 
 #include "fritzingwindow.h"
 #include "../debugdialog.h"

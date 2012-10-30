@@ -153,7 +153,7 @@ ItemBase::ItemBase( ModelPart* modelPart, ViewLayer::ViewIdentifier viewIdentifi
 	m_moveLockItem = NULL;
     m_stickyItem = NULL;
 
-	m_everVisible = true;
+	m_swappable = m_everVisible = true;
 
 	m_rightClickedConnector = NULL;
 
@@ -1142,7 +1142,11 @@ void ItemBase::doRotateFlipPartLabel(double degrees, Qt::Orientations orientatio
 }
 
 bool ItemBase::isSwappable() {
-	return true;
+	return m_swappable;
+}
+
+void ItemBase::setSwappable(bool swappable) {
+	m_swappable = swappable;
 }
 
 void ItemBase::ensureUniqueTitle(const QString & title, bool force) {
@@ -1416,7 +1420,10 @@ QString ItemBase::getSvgFilename(ModelPart * modelPart, const QString & baseName
 		}
 	}
 
-	return PartFactory::getSvgFilename(modelPart, baseName);
+	filename = PartFactory::getSvgFilename(modelPart, baseName);
+    if (!filename.isEmpty()) return filename;
+
+    return "";
 }
 
 void ItemBase::updateConnectionsAux() {

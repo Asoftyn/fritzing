@@ -86,6 +86,8 @@ public:
 	void unregisterCurrentItem();
 	void unregisterCurrentItemIf(long id);
 
+    void init(bool tinyMode);
+
 public:
 	static const int STANDARD_ICON_IMG_WIDTH;
 	static const int STANDARD_ICON_IMG_HEIGHT;
@@ -168,7 +170,7 @@ protected:
 	ModelPart * m_lastPropsModelPart;
 	ItemBase * m_lastPropsItemBase;
 	bool m_lastPropsSwappingEnabled;
-
+    bool m_tinyMode;
 
 
 };

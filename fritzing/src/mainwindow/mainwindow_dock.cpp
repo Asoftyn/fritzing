@@ -43,7 +43,6 @@ $Date$
 /////////////////////////////////////
 
 static const int PartsBinMinHeight = 100;
-static const int InfoViewMinHeight = 50;
 static const int NavigatorDefaultHeight = 60;
 static const int NavigatorMinHeight = 40;
 static const int UndoHistoryDefaultHeight = 70;
@@ -258,6 +257,7 @@ void MainWindow::initDock() {
 	m_layerPalette = new LayerPalette(this);
 
 	m_infoView = new HtmlInfoView();
+    m_infoView->init(false);
     connect(m_infoView, SIGNAL(clickObsoleteSignal()), this, SLOT(selectAllObsolete()));
 	//DebugDialog::debug("after html view");
 

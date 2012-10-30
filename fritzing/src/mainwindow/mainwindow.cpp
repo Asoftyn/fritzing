@@ -144,6 +144,8 @@ int MainWindow::AutosaveTimeoutMinutes = 10;   // in minutes
 bool MainWindow::AutosaveEnabled = true;
 QString MainWindow::BackupFolder;
 
+static QRegExp GuidMatcher("[A-Fa-f0-9]{32}");
+
 /////////////////////////////////////////////
 
 MainWindow::MainWindow(ReferenceModel *referenceModel, QWidget * parent) :
@@ -1203,15 +1205,7 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
                 QDomElement layers = view.firstChildElement("layers");
                 QString path = layers.attribute("image", "");
                 if (!path.isEmpty()) {
-                    int ix = path.indexOf("/");
-                    path = path.mid(ix + 1);
-                    for (int jx = svgEntryInfoList.count() - 1; jx >= 0; jx--) {
-                        QFileInfo svgInfo = svgEntryInfoList.at(jx);
-                        if (svgInfo.fileName().contains(path)) {
-                            copyToSvgFolder(svgInfo, false, PartFactory::folderPath(), "contrib");
-                            svgEntryInfoList.removeAt(jx);
-                        }
-                    }
+                    copySvg(path, svgEntryInfoList);
                 }
                 view = view.nextSiblingElement();
             }
@@ -1231,6 +1225,54 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
 	this->mainLoad(sketchName, "");
 	setCurrentFile(fileName, addToRecent, setAsLastOpened);
 }
+
+void MainWindow::copySvg(const QString & path, QFileInfoList & svgEntryInfoList) 
+{
+    int slash = path.indexOf("/");
+    QString subpath = path.mid(slash + 1);
+    bool gotOne = false;
+    for (int jx = svgEntryInfoList.count() - 1; jx >= 0; jx--) {
+        QFileInfo svgInfo = svgEntryInfoList.at(jx);
+        if (svgInfo.fileName().contains(subpath)) {
+            copyToSvgFolder(svgInfo, false, PartFactory::folderPath(), "contrib");
+            svgEntryInfoList.removeAt(jx);
+            // jrc 30 oct 2012: not sure why we can't just return at this point--can there be other matching files?
+            gotOne = true;
+        }
+    }
+
+    if (gotOne) return;
+
+    // deal with a bug in which all the svg files exist in the fzz but the fz file points to the wrong name
+
+    DebugDialog::debug(QString("svg matching fz path %1 not found").arg(path));
+    int guidix = GuidMatcher.lastIndexIn(subpath);
+    if (guidix < 0) return;
+
+    QString originalGuid = GuidMatcher.cap(0);
+    QString tryPath = subpath;
+    tryPath.replace(guidix, originalGuid.length(), "%%%%");
+    for (int jx = svgEntryInfoList.count() - 1; jx >= 0; jx--) {
+        QFileInfo svgInfo = svgEntryInfoList.at(jx);
+        QString tempPath = svgInfo.fileName();
+        guidix = GuidMatcher.lastIndexIn(tempPath);
+        if (guidix < 0) continue;
+
+        tempPath.replace(guidix, GuidMatcher.cap(0).length(), "%%%%");
+        if (!tempPath.contains(tryPath)) continue;
+
+        QString destPath = copyToSvgFolder(svgInfo, false, PartFactory::folderPath(), "contrib");
+        if (!destPath.isEmpty()) {
+            QFile file(destPath);
+            guidix = GuidMatcher.lastIndexIn(destPath);
+            destPath.replace(guidix, GuidMatcher.cap(0).length(), originalGuid);
+            file.copy(destPath);
+            svgEntryInfoList.removeAt(jx);
+            return;
+        }
+    }
+}
+
 
 void MainWindow::loadBundledNonAtomicEntity(const QString &fileName, Bundler* bundler, bool addToBin, bool dontAsk) {
 	QDir destFolder = QDir::temp();
@@ -1421,7 +1463,7 @@ QList<ModelPart*> MainWindow::moveToPartsFolder(QDir &unzipDir, MainWindow* mw, 
 	return retval;
 }
 
-void MainWindow::copyToSvgFolder(const QFileInfo& file, bool addToAlien, const QString & prefixFolder, const QString &destFolder) {
+QString MainWindow::copyToSvgFolder(const QFileInfo& file, bool addToAlien, const QString & prefixFolder, const QString &destFolder) {
 	QFile svgfile(file.filePath());
 	// let's make sure that we remove just the suffix
 	QString fileName = file.fileName().remove(QRegExp("^"+ZIP_SVG));
@@ -1436,7 +1478,10 @@ void MainWindow::copyToSvgFolder(const QFileInfo& file, bool addToAlien, const Q
 		if (addToAlien) {
 			m_alienFiles << destFilePath;
 		}
+        return destFilePath;
 	}
+
+    return "";
 }
 
 ModelPart* MainWindow::copyToPartsFolder(const QFileInfo& file, bool addToBin, bool addToAlien, const QString & prefixFolder, const QString &destFolder) {

@@ -190,3 +190,11 @@ ConnectorItem* LayerKinPaletteItem::newConnectorItem(Connector *connector)
 	return m_layerKinChief->newConnectorItem(this, connector);
 }
 
+
+bool LayerKinPaletteItem::isSwappable() {
+	return m_layerKinChief->isSwappable();
+}
+
+void LayerKinPaletteItem::setSwappable(bool swappable) {
+	m_layerKinChief->setSwappable(swappable);
+}

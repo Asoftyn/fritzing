@@ -438,7 +438,7 @@ protected:
 	void hideShowTraceMenu();
 
 	QList<ModelPart*> moveToPartsFolder(QDir &unzipDir, MainWindow* mw, bool addToBin, bool addToAlien, const QString & prefixFolder, const QString &destFolder);
-	void copyToSvgFolder(const QFileInfo& file, bool addToAlien, const QString & prefixFolder, const QString &destFolder);
+	QString copyToSvgFolder(const QFileInfo& file, bool addToAlien, const QString & prefixFolder, const QString &destFolder);
 	ModelPart* copyToPartsFolder(const QFileInfo& file, bool addToBin, bool addToAlien, const QString & prefixFolder, const QString &destFolder);
 
 	void closeIfEmptySketch(MainWindow* mw);
@@ -543,7 +543,7 @@ protected:
 	virtual void setCurrentTabIndex(int);
 	virtual QWidget * currentTabWidget();
 	virtual bool activeLayerWidgetAlwaysOn();
-
+    void copySvg(const QString & path, QFileInfoList & svgEntryInfoList);
 
 protected:
 	static void removeActionsStartingAt(QMenu *menu, int start=0);

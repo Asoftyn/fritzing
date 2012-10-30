@@ -145,7 +145,8 @@ public:
 	QString makePartLabelSvg(bool blackOnly, double dpi, double printerScale);
 	QPointF partLabelScenePos();
 	QRectF partLabelSceneBoundingRect();
-	bool isSwappable();
+	virtual bool isSwappable();
+    virtual void setSwappable(bool);
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void collectWireConnectees(QSet<class Wire *> & wires);
 	virtual bool collectFemaleConnectees(QSet<ItemBase *> & items);
@@ -347,6 +348,7 @@ protected:
 	QGraphicsSvgItem * m_stickyItem;
     FSvgRenderer * m_fsvgRenderer;
 	bool m_acceptsMousePressLegEvent;
+    bool m_swappable;
        
  protected:
 	static long nextID;

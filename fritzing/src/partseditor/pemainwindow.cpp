@@ -181,6 +181,7 @@ $Date$
 #include "../installedfonts.h"
 #include "../dock/layerpalette.h"
 #include "../utils/cursormaster.h"
+#include "../infoview/htmlinfoview.h"
 
 #include <QtDebug>
 #include <QApplication>
@@ -466,7 +467,10 @@ void PEMainWindow::initDock()
 {
 	m_layerPalette = new LayerPalette(this);
 
-    m_binManager = new BinManager(m_referenceModel, NULL, m_undoStack, this);
+    m_infoView = new HtmlInfoView();
+    m_infoView->init(true);
+
+    m_binManager = new BinManager(m_referenceModel, m_infoView, m_undoStack, this);
     m_binManager->openBin(":/resources/bins/pe.fzb");
     m_binManager->hideTabBar();
 }
@@ -496,6 +500,8 @@ void PEMainWindow::moreInitDock()
 
 	QDockWidget * dockWidget = makeDock(BinManager::Title, m_binManager, DockMinWidth, BinMinHeight);
     dockWidget->resize(0, 0);
+
+    makeDock(tr("Inspector"), m_infoView, InfoViewMinHeight, InfoViewHeightDefault);
 
     makeDock(tr("Layers"), m_layerPalette, DockMinWidth, DockMinHeight)->hide();
     m_layerPalette->setMinimumSize(DockMinWidth, DockMinHeight);
@@ -1762,6 +1768,7 @@ void PEMainWindow::reload(bool firstTime)
         //viewThing->itemBase->setMoveLock(true);
 		//viewThing->itemBase->setItemIsSelectable(false);
 		viewThing->itemBase->setAcceptsMousePressLegEvent(false);
+        viewThing->itemBase->setSwappable(false);
         viewThing->sketchWidget->hideConnectors(true);
         viewThing->everZoomed = false;
    }
