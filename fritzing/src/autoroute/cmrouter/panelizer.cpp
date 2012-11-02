@@ -55,6 +55,27 @@ $Date$
 static int OutlineLayer = 0;
 static int SilkTopLayer = 0;
 
+///////////////////////////////////////////////////////////
+
+void collectTexts(const QString & svg, QStringList & strings) {
+    QDomDocument doc;
+    doc.setContent(svg);
+    QDomElement root = doc.documentElement();
+    QDomNodeList domNodeList = root.elementsByTagName("text");
+	for (int i = 0; i < domNodeList.count(); i++) {
+        QDomElement textElement = domNodeList.at(i).toElement();
+        QString string;
+        QDomNodeList childList = textElement.childNodes();
+	    for (int j = 0; j < childList.count(); j++) {
+		    QDomNode child = childList.item(j);
+		    if (child.isText()) {
+			    string.append(child.nodeValue());
+		    }
+	    }
+        strings.append(string);
+    }
+}
+
 bool areaGreaterThan(PanelItem * p1, PanelItem * p2)
 {
 	return p1->boardSizeInches.width() * p1->boardSizeInches.height() > p2->boardSizeInches.width() * p2->boardSizeInches.height();
@@ -1234,6 +1255,7 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
 
 		QString maskTop;
 		QString maskBottom;
+        QStringList texts;
 
 		foreach (LayerThing layerThing, layerThingList) {					
 			SVG2gerber::ForWhy forWhy = layerThing.forWhy;
@@ -1250,7 +1272,7 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
 			QString one = mainWindow->pcbView()->renderToSVG(GraphicsUtils::SVGDPI, layerThing.layerList, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
 					
 			QString clipString;
-					
+		    bool wantText = false;	
 			switch (forWhy) {
 				case SVG2gerber::ForOutline:
 					one = GerberGenerator::cleanOutline(one);
@@ -1275,6 +1297,7 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
 					}
 					break;
 				case SVG2gerber::ForSilk:
+                    wantText = true;
 					if (name.contains("bottom")) {
 						clipString = maskBottom;
 					}
@@ -1283,8 +1306,13 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
 					}
 					break;
 				default:
+                    wantText = true;
 					break;
 			}
+
+            if (wantText) {
+                collectTexts(one, texts);
+            }
 					
 			one = GerberGenerator::clipToBoard(one, board, name, forWhy, clipString);
 			if (one.isEmpty()) continue;
@@ -1292,6 +1320,11 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
             QString filename = saveDir.absoluteFilePath(QString("%1_%2_%3.svg").arg(boardName).arg(board->id()).arg(name));
             TextUtils::writeUtf8(filename, one);
 		}
+
+        if (texts.count() > 0) {
+            QString filename = saveDir.absoluteFilePath(QString("%1_%2_%3.txt").arg(boardName).arg(board->id()).arg("texts"));
+            TextUtils::writeUtf8(filename, texts.join("\n"));
+        }
 	}
 	catch (const char * msg) {
 		DebugDialog::debug(QString("panelizer error 1 %1 %2").arg(boardName).arg(msg));
