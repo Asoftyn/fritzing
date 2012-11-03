@@ -24,7 +24,6 @@ def main():
         usage()
         sys.exit(2)
     fromName = None
-    toName = None
     
     for o, a in opts:
         #print o
@@ -40,7 +39,12 @@ def main():
     if(not(fromName)):
         usage()
         sys.exit(2)
-            
+        
+    outputDir = os.path.dirname(fromName)
+    if len(outputDir) == 0:
+        print "no output folder specified"
+        return
+           
     try:
         dom = xml.dom.minidom.parse(fromName)
     except xml.parsers.expat.ExpatError, err:
@@ -48,10 +52,6 @@ def main():
         return 
         
     root = dom.documentElement
-    outputDir = root.getAttribute("outputFolder")
-    if len(outputDir) == 0:
-        print "no output folder specified"
-        return
         
     boardsNodes = root.getElementsByTagName("boards")
     boards = None

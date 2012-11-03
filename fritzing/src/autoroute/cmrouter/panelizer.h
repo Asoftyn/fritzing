@@ -90,7 +90,6 @@ struct PanelParams
 	double panelSpacing;
 	double panelBorder;
 	QString prefix;
-	QString outputFolder;
 };
 
 struct LayerThing {
@@ -117,7 +116,7 @@ public:
 protected:
 	static bool initPanelParams(QDomElement & root, PanelParams &);
 	static PlanePair * makePlanePair(PanelParams &, bool big);
-	static void collectFiles(QDomElement & path, QHash<QString, QString> & fzzFilePaths);
+	static void collectFiles(const QDir & outputDir, QDomElement & path, QHash<QString, QString> & fzzFilePaths);
 	static bool checkBoards(QDomElement & board, QHash<QString, QString> & fzzFilePaths);
 	static bool openWindows(QDomElement & board, QHash<QString, QString> & fzzFilePaths, class FApplication *, PanelParams &, QDir & fzDir, QDir & svgDir, QList<PanelItem *> & refPanelItems, QList<LayerThing> & layerThingList, bool customPartsOnly);
 	static void bestFit(QList<PanelItem *> & insertPanelItems, PanelParams &, QList<PlanePair *> &, bool customPartsOnly);

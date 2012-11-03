@@ -235,7 +235,9 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 	PanelParams panelParams;
 	if (!initPanelParams(root, panelParams)) return;
 
-	QDir outputDir(panelParams.outputFolder);
+    QFileInfo pinfo(panelFilename);
+	QDir outputDir = pinfo.absoluteDir();
+
     if (customPartsOnly) {
         outputDir.mkdir("custom");
         outputDir.cd("custom");
@@ -248,7 +250,7 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 	QDir svgDir(outputDir);
 	svgDir.cd("svg");
 	if (!svgDir.exists()) {
-		DebugDialog::debug(QString("unable to create svg folder in '%1'").arg(panelParams.outputFolder));
+		DebugDialog::debug(QString("unable to create svg folder in '%1'").arg(pinfo.absolutePath()));
 		return;
 	}
 
@@ -257,7 +259,7 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 	QDir gerberDir(outputDir);
 	gerberDir.cd("gerber");
 	if (!gerberDir.exists()) {
-		DebugDialog::debug(QString("unable to create gerber folder in '%1'").arg(panelParams.outputFolder));
+		DebugDialog::debug(QString("unable to create gerber folder in '%1'").arg(pinfo.absolutePath()));
 		return;
 	}
 
@@ -266,7 +268,7 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 	QDir fzDir(outputDir);
 	fzDir.cd("fz");
 	if (!fzDir.exists()) {
-		DebugDialog::debug(QString("unable to create fz folder in '%1'").arg(panelParams.outputFolder));
+		DebugDialog::debug(QString("unable to create fz folder in '%1'").arg(pinfo.absolutePath()));
 		return;
 	}
 
@@ -288,7 +290,7 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 		return;
 	}
 
-	collectFiles(path, fzzFilePaths);
+	collectFiles(outputDir, path, fzzFilePaths);
 	if (fzzFilePaths.count() == 0) {
 		DebugDialog::debug(QString("no fzz files found in paths"));
 		return;
@@ -630,8 +632,11 @@ PlanePair * Panelizer::makePlanePair(PanelParams & panelParams, bool big)
 	return planePair;
 }
 
-void Panelizer::collectFiles(QDomElement & path, QHash<QString, QString> & fzzFilePaths)
+void Panelizer::collectFiles(const QDir & outputFolder, QDomElement & path, QHash<QString, QString> & fzzFilePaths)
 {
+    QList<QDir> dirList;
+    dirList << outputFolder;
+
 	while (!path.isNull()) {
 		QDomNode node = path.firstChild();
 		if (!node.isText()) {
@@ -639,24 +644,31 @@ void Panelizer::collectFiles(QDomElement & path, QHash<QString, QString> & fzzFi
 			return;
 		}
 
-		QString p = node.nodeValue();
+		QString p = node.nodeValue();  
+        if (p.startsWith(".")) {
+            p = outputFolder.absolutePath() + "/" + p;
+        }
+
 		QDir dir(p);
 		if (!dir.exists()) {
 			DebugDialog::debug(QString("Directory '%1' doesn't exist").arg(p));
 			return;
 		}
 
-		QStringList filepaths;
-        QStringList filters("*" + FritzingBundleExtension);
-        FolderUtils::collectFiles(dir, filters, filepaths);
-		foreach (QString filepath, filepaths) {
-			QFileInfo fileInfo(filepath);
-
-			fzzFilePaths.insert(fileInfo.fileName(), filepath);
-		}
-
+        dirList << dir;
 		path = path.nextSiblingElement("path");
 	}
+
+    foreach (QDir dir, dirList) {
+	    QStringList filepaths;
+        QStringList filters("*" + FritzingBundleExtension);
+        FolderUtils::collectFiles(dir, filters, filepaths);
+	    foreach (QString filepath, filepaths) {
+		    QFileInfo fileInfo(filepath);
+
+		    fzzFilePaths.insert(fileInfo.fileName(), filepath);
+	    }
+    }
 }
 
 bool Panelizer::checkBoards(QDomElement & board, QHash<QString, QString> & fzzFilePaths)
@@ -829,13 +841,6 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
 
 bool Panelizer::initPanelParams(QDomElement & root, PanelParams & panelParams)
 {
-	panelParams.outputFolder = root.attribute("outputFolder");
-	QDir outputDir(panelParams.outputFolder);
-	if (!outputDir.exists()) {
-		DebugDialog::debug(QString("Output folder '%1' doesn't exist").arg(panelParams.outputFolder));
-		return false;
-	}
-
 	panelParams.prefix = root.attribute("prefix");
 	if (panelParams.prefix.isEmpty()) {
 		DebugDialog::debug(QString("Output file prefix not specified"));
@@ -1115,12 +1120,11 @@ void Panelizer::inscribe(FApplication * app, const QString & panelFilename)
 	QDir fzDir(outputDir);
 	fzDir.cd("fz");
 	if (!fzDir.exists()) {
-		DebugDialog::debug(QString("unable to create fz folder in '%1'").arg(panelParams.outputFolder));
+		DebugDialog::debug(QString("unable to create fz folder in '%1'").arg(outputDir.absolutePath()));
 		return;
 	}
 
 	DebugDialog::debug(QString("fz folder '%1'\n").arg(fzDir.absolutePath()));
-
 
 	QDomElement boards = root.firstChildElement("boards");
 	QDomElement board = boards.firstChildElement("board");
@@ -1137,7 +1141,8 @@ void Panelizer::inscribe(FApplication * app, const QString & panelFilename)
 		return;
 	}
 
-	collectFiles(path, fzzFilePaths);
+    QFileInfo pinfo(panelFilename);
+	collectFiles(pinfo.absoluteDir(), path, fzzFilePaths);
 	if (fzzFilePaths.count() == 0) {
 		DebugDialog::debug(QString("no fzz files found in paths"));
 		return;
