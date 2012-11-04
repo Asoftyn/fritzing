@@ -1,5 +1,6 @@
 import urllib
 import re
+import DateTime
 
 from zope.component.hooks import getSite
 
@@ -78,6 +79,21 @@ def recalculatePrices(faborder):
     faborder.taxes = faborder.priceTotalNetto * faborder.taxesPercent / 100.0
     faborder.priceTotalBrutto = faborder.priceTotalNetto + faborder.taxes + faborder.priceShipping
 
+def getCurrentOrders(self, faborders):
+    """Get all current orders to be produced with the next batch
+    """
+    catalog = getToolByName(faborders, 'portal_catalog')
+    start = faborders.currentProductionOpeningDate
+    if not start:
+        start = DateTime.DateTime() - 7
+    end = DateTime.DateTime() + 0.1
+    results = catalog.searchResults({
+        'portal_type': 'faborder', 
+        'created' : {'query':(start, end), 'range': 'min:max'},
+        'sort_on':'Date',
+        'sort_order':'reverse',
+        'review_state': 'in_process'})
+    return results
 
 def sendStatusMail(context):
     """Sends notification on the order status to the orderer and faborders.salesEmail

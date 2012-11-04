@@ -1,7 +1,16 @@
 import string
 import random
+import csv
+from StringIO import StringIO
+import zipfile
+try:
+    import zlib
+    compression = zipfile.ZIP_DEFLATED
+except:
+    compression = zipfile.ZIP_STORED
 
 from five import grok
+from Acquisition import aq_inner
 
 from plone.directives import dexterity
 
@@ -26,6 +35,109 @@ class Index(grok.View):
         self.isOwner = member.has_role('Owner')
         if not (self.isManager):
             self.request.set('disable_border', 1)
+
+class CurrentOrders(grok.View):
+    """Overview of current orders
+    """
+    grok.name('currentorders')
+    grok.require('cmf.ModifyPortalContent')
+    grok.context(IFabOrders)
+    
+    # make tools availible to the template as view.toolname()
+    from fritzing.fab.tools \
+        import getCurrentOrders, encodeFilename, getStateId, getStateTitle, isStateId
+
+    def update(self):
+        pass
+    
+
+class CurrentOrdersCSV(grok.View):
+    """All current orders as CSV table
+    """
+    grok.name('currentorders-csv')
+    grok.require('cmf.ModifyPortalContent')
+    grok.context(IFabOrders)
+    
+    # make tools availible to the template as view.toolname()
+    from fritzing.fab.tools \
+        import getCurrentOrders, encodeFilename
+
+    def update(self):
+        pass
+    
+    def render(self):
+        """All current orders as CSV table
+        """
+        out = StringIO()
+        context = aq_inner(self.context)
+        writer = csv.writer(out)
+        
+        # Header
+        writer.writerow(('Date', 'User', 'Order#', 'Sketch', 'Count'))
+        # Content
+        for brain in self.getCurrentOrders(context):
+            order = brain.getObject()
+            for sketch in order.listFolderContents():
+                writer.writerow((
+                    order.Date(), 
+                    order.getOwner(),
+                    order.id,
+                    self.encodeFilename(sketch.orderItem.filename),
+                    sketch.copies
+                ))
+        
+        # Prepare response
+        filename = "fab-orders-%s.csv" % context.Date()
+        self.request.response.setHeader('Content-Type', 'text/csv')
+        self.request.response.setHeader('Content-Disposition', 'attachment; filename="%s"' % filename)
+        
+        return out.getvalue()
+
+
+class CurrentOrdersZIP(grok.View):
+    """All current orders as ZIP file
+    """
+    grok.name('currentorders-zip')
+    grok.require('cmf.ModifyPortalContent')
+    grok.context(IFabOrders)
+    
+    # make tools availible to the template as view.toolname()
+    from fritzing.fab.tools \
+        import getCurrentOrders, encodeFilename
+
+    def update(self):
+        pass
+    
+    def render(self):
+        """All current orders as ZIP file
+        """
+        out = StringIO()
+        context = aq_inner(self.context)
+        zipfilename = "fab-orders-%s.zip" % context.Date()
+        
+        zf = zipfile.ZipFile(
+            out, 
+            mode='w',
+            compression = compression)
+        try:
+            for brain in self.getCurrentOrders(context):
+                order = brain.getObject()
+                for sketch in order.listFolderContents():
+                    zf.writestr(
+                        self.encodeFilename(sketch.orderItem.filename),
+                        sketch.orderItem.data
+                    )
+        finally:
+            zf.close()
+
+        # Prepare response
+        self.request.response.setHeader('Content-Type', 'application/octet-stream')
+        self.request.response.setHeader('Content-Disposition', 'attachment; filename="%s"' % zipfilename)
+        
+        out.seek(0)
+        content = out.read()
+        out.close()
+        return content
 
 
 class PayPalIpn(grok.View):
@@ -67,8 +179,8 @@ class AddForm(dexterity.AddForm):
     def add(self, object):
         self.context._setObject(object.id, object)
         o = getattr(self.context, object.id)
-        o.setExcludeFromNav(True)
-        o.reindexObject()
+        #o.setExcludeFromNav(True)
+        #o.reindexObject()
     
     def render(self):
         """create faborder instance and redirect to its default view

@@ -223,7 +223,12 @@ class IFabOrders(form.Schema):
     
     nextProductionClosingDate = Date(
         title = _(u"Next production closing date"),
-        description = _(u"Orders must be send in before this date to be included in the next production run"),
+        description = _(u"Orders must be sent in before this date to be included in the next production run"),
+        required = False)
+
+    currentProductionOpeningDate = Date(
+        title = _(u"Current production opening date"),
+        description = _(u"Orders sent in after this date will be listed as current orders"),
         required = False)
     
     editableContent = RichText(

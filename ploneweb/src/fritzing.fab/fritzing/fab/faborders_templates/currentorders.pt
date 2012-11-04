@@ -1,0 +1,63 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:tal="http://xml.zope.org/namespaces/tal" xmlns:metal="http://xml.zope.org/namespaces/metal" xmlns:i18n="http://xml.zope.org/namespaces/i18n" xml:lang="en" lang="en" metal:use-macro="context/main_template/macros/master" i18n:domain="fritzing.fab">
+  <head>
+    <metal:block fill-slot="style_slot" tal:define="navroot context/@@plone_portal_state/navigation_root_url">
+      <link rel="stylesheet" type="text/css" tal:attributes="href string:${navroot}/++resource++fritzing.fab/styles.css"/>
+    </metal:block>
+    <metal:block fill-slot="javascript_head_slot" tal:define="navroot context/@@plone_portal_state/navigation_root_url">
+      <script type="text/javascript" tal:attributes="src string:${navroot}/++resource++fritzing.fab/fab.js">
+      </script>
+    </metal:block>
+  </head>
+  <body>
+    <metal:main fill-slot="main">
+      <tal:main-macro metal:define-macro="main" tal:define="navroot context/@@plone_portal_state/navigation_root_url">
+            <div>
+              <h2>Current orders</h2>
+              <p>Since <span tal:replace="context/currentProductionOpeningDate"/></p>
+              <p><a href="@@currentorders-csv">Download as CSV</a> -- <a href="@@currentorders-zip">Download as ZIP</a></p>
+              <table class="orderTable" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>User</th>
+                    <th>Order #</th>
+                    <th>Sketches</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr tal:repeat="brain python:view.getCurrentOrders(context)">
+                      <div tal:define="item brain/getObject" tal:omit-tag="">
+                      <td tal:content="item/Date | string:error"/>
+                      <td tal:content="item/getOwner | string:error"/>
+                      <td tal:content="item/id | string:error">title</td>
+                      <td>
+                        <span tal:condition="not:item/listFolderContents">no sketches</span>
+                        <ul tal:condition="item/listFolderContents">
+                          <li tal:repeat="sketch item/listFolderContents">
+                            <span tal:replace="sketch/copies"/>
+                              x 
+                            <a tal:define="filename sketch/orderItem/filename;                                              
+                                           filename_encoded python:view.encodeFilename(filename);"
+                               tal:content="filename"
+                               tal:attributes="href string:${sketch/absolute_url}/@@download/orderItem/${filename_encoded};                                                  
+                                               title string:Download ${filename}"/>
+                          </li>
+                        </ul>
+                      </td>
+                      <td tal:content="python:view.getStateTitle(item)">unknown</td>
+                      <td>
+                        <a class="viewOrderLink" tal:attributes="href string:${item/absolute_url}">view</a>
+                         -- 
+                        <a class="deleteOrderLink" tal:attributes="href string:${item/absolute_url}/delete_confirmation">delete</a>
+                    </td>
+                    </div>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+      </tal:main-macro>
+    </metal:main>
+  </body>
+</html>
