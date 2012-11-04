@@ -16,14 +16,14 @@ from pprint import pprint
 def usage():
     print """
 usage:
-    makepanelizerxml2.py -f folder-destination -u username -p password -w worksheet
+    makepanelizerxml2.py -f {order destination folder} -w {worksheet name in fritzing fab orders document}
     creates a panelizer.xml file that can be used for further steps
+    uses makepanelizer2.config file to load username, password, and document name
 """
     
-           
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hf:u:p:w:", ["help", "folder", "username", "password","worksheet"])
+        opts, args = getopt.getopt(sys.argv[1:], "hf:w:", ["help", "folder", "worksheet"])
     except getopt.GetoptError, err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -34,16 +34,13 @@ def main():
     username = None
     password = None
     worksheet = None
+    document = None
     
     for o, a in opts:
         #print o
         #print a
         if o in ("-f", "--folder"):
             destFolder = a
-        elif o in ("-u", "--username", "user"):
-            username = a
-        elif o in ("-p", "--password", "pwd"):
-            password = a
         elif o in ("-w", "--worksheet", "sheet"):
             worksheet = a
         elif o in ("-h", "--help"):
@@ -51,9 +48,48 @@ def main():
             sys.exit(2)
         else:
             assert False, "unhandled option"
-    
-    if not(destFolder) or not(username) or not(password) or not(worksheet):
+        
+    cdirname, cfilename = os.path.split(os.path.abspath(__file__))
+    cfile = os.path.join(cdirname, "makepanelizer2.config")
+    if not os.path.isfile(cfile):
         usage()
+        print "Configuration file %s is missing!" % cfile
+        sys.exit(2)
+        
+    c = ConfigParser.ConfigParser()
+    c.read(cfile)
+        
+    password = c.get('general', 'password').strip()
+    username = c.get('general', 'username').strip()
+    document = c.get('general', 'google_doc_name').strip()
+    
+    if username == None:
+        username = raw_input('Enter a user: ')
+        
+    if username == None:
+        usage()
+        sys.exit(2)
+    
+    if password == None:
+        password = raw_input('Enter a password: ')
+        
+    if password == None:
+        usage()
+        return None
+        
+    if not(destFolder):
+        usage()
+        print "destination folder missing"
+        sys.exit(2)
+        
+    if not(worksheet) :
+        usage()
+        print "worksheet name missing"
+        sys.exit(2)
+        
+    if not(document):
+        usage()
+        print "document name missing"
         sys.exit(2)
         
     try:
@@ -71,7 +107,7 @@ def main():
     # Query for the rows
     print "loading spreadsheet..."
     q = gdata.spreadsheet.service.DocumentQuery()
-    q['title'] = "Fritzing Fab Orders"
+    q['title'] = document
     q['title-exact'] = 'true'
     feed = gd_client.GetSpreadsheetsFeed(query=q)
     if feed == None:
