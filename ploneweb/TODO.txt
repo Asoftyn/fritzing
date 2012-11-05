@@ -4,6 +4,10 @@ DEV
 OVERALL
 * plone.app.multilingual
 * http://pypi.python.org/pypi/Products.Doormat
+* Ploneboard
+* Poi
+* Blog
+* Newsletter
 
 PROJECT
 * use more of Plone's built-in features: date, author, tags..
@@ -22,6 +26,13 @@ PARTS
 * import all parts
 * bins
 * versioning
+* GitHub integration http://plone.org/products/dexterity/documentation/manual/developer-manual/advanced/webdav-and-other-file-representations
 
 FAB
+* new view: status/date
+* new property "paid"
+* generate invoice
+* connect to PayPal
+* connect to SVN
+* connect to Google Docs
 * display Gerbers (gerbv2png)

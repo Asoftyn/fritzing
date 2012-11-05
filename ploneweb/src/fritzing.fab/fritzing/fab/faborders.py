@@ -73,17 +73,28 @@ class CurrentOrdersCSV(grok.View):
         writer = csv.writer(out)
         
         # Header
-        writer.writerow(('Date', 'User', 'Order#', 'Sketch', 'Count'))
+        writer.writerow(('date', 'order-id', 'filename', 'count', 'optional', 'boards', 'size', 'price', 'paid', 'checked', 'sent', 'invoiced', 'bloggable', 'name', 'e-mail', 'zone'))
         # Content
         for brain in self.getCurrentOrders(context):
             order = brain.getObject()
             for sketch in order.listFolderContents():
                 writer.writerow((
                     order.Date(), 
-                    order.getOwner(),
                     order.id,
-                    self.encodeFilename(sketch.orderItem.filename),
-                    sketch.copies
+                    order.id + "_" + self.encodeFilename(sketch.orderItem.filename),
+                    sketch.copies,
+                    "",
+                    "",
+                    sketch.area,
+                    order.priceNetto,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    order.getOwner(),
+                    order.email,
+                    order.shipTo
                 ))
         
         # Prepare response
@@ -124,7 +135,7 @@ class CurrentOrdersZIP(grok.View):
                 order = brain.getObject()
                 for sketch in order.listFolderContents():
                     zf.writestr(
-                        self.encodeFilename(sketch.orderItem.filename),
+                        order.id + "_" + self.encodeFilename(sketch.orderItem.filename),
                         sketch.orderItem.data
                     )
         finally:
