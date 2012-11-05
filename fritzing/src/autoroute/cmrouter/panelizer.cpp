@@ -290,7 +290,6 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 		return;
 	}
 
-    QFileInfo pinfo(panelFilename);
 	collectFiles(pinfo.absoluteDir(), path, fzzFilePaths);
     if (fzzFilePaths.count() == 0) {
 		DebugDialog::debug(QString("no fzz files found in paths"));
