@@ -290,8 +290,9 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 		return;
 	}
 
-	collectFiles(outputDir, path, fzzFilePaths);
-	if (fzzFilePaths.count() == 0) {
+    QFileInfo pinfo(panelFilename);
+	collectFiles(pinfo.absoluteDir(), path, fzzFilePaths);
+    if (fzzFilePaths.count() == 0) {
 		DebugDialog::debug(QString("no fzz files found in paths"));
 		return;
 	}
@@ -644,9 +645,10 @@ void Panelizer::collectFiles(const QDir & outputFolder, QDomElement & path, QHas
 			return;
 		}
 
-		QString p = node.nodeValue();  
-        if (p.startsWith(".")) {
-            p = outputFolder.absolutePath() + "/" + p;
+		QString p = node.nodeValue(); 
+        QString savep = p;
+        if (savep.startsWith(".")) {
+            p = outputFolder.absolutePath() + "/" + savep;
         }
 
 		QDir dir(p);
@@ -660,6 +662,7 @@ void Panelizer::collectFiles(const QDir & outputFolder, QDomElement & path, QHas
 	}
 
     foreach (QDir dir, dirList) {
+        DebugDialog::debug("directory " + dir.absolutePath());
 	    QStringList filepaths;
         QStringList filters("*" + FritzingBundleExtension);
         FolderUtils::collectFiles(dir, filters, filepaths);
