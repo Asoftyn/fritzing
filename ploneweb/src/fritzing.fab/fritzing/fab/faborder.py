@@ -136,6 +136,18 @@ class PayPalCheckout(grok.View):
         self.request.response.redirect(faborderURL)
 
 
+class StatusMail(grok.View):
+    """This is for debugging
+    """
+    grok.name('statusmail')
+    grok.require('zope2.View')
+    grok.context(IFabOrder)
+    
+    def render(self):
+        self.response.setHeader("Content-Type", "text/plain")
+        return sendStatusMail(self.context, justReturn=True)
+
+
 @grok.subscribe(IFabOrder, IActionSucceededEvent)
 def workflowTransitionHandler(faborder, event):
     """event-handler for workflow transitions on IFabOrder instances

@@ -14,6 +14,9 @@ from Acquisition import aq_inner
 
 from plone.directives import dexterity
 
+from plone.memoize.instance import memoize
+from Products.CMFCore.utils import getToolByName
+
 from fritzing.fab.interfaces import IFabOrders, IFabOrder
 from fritzing.fab import _
 
@@ -30,11 +33,44 @@ class Index(grok.View):
         import encodeFilename, getStateId, getStateTitle, isStateId, canDelete
     
     def update(self):
-        member = self.context.portal_membership.getAuthenticatedMember()
-        self.isManager = member.has_role('Manager')
-        self.isOwner = member.has_role('Owner')
+        self.member = self.context.portal_membership.getAuthenticatedMember()
+        self.isManager = self.member.has_role('Manager')
+        self.isOwner = self.member.has_role('Owner')
+        self.hasOrders = len(self.listOrders()) > 0
         if not (self.isManager):
             self.request.set('disable_border', 1)
+
+    @memoize
+    def listOrders(self):
+        """list orders visible for this user
+        """
+        catalog = getToolByName(self.context, 'portal_catalog')
+
+        query = {
+            'object_provides': IFabOrder.__identifier__,
+            'path': dict(query='/'.join(self.context.getPhysicalPath()),
+                         depth=1),
+            'sort_on': 'Date',
+            'Creator': self.member.id, }
+
+        return [orderBrain.getObject() for orderBrain in catalog(query)]
+
+    @memoize
+    def listOrdersManager(self):
+        """list orders visible for this user
+        """
+        catalog = getToolByName(self.context, 'portal_catalog')
+
+        query = {
+            'object_provides': IFabOrder.__identifier__,
+            'path': dict(query='/'.join(self.context.getPhysicalPath()),
+                         depth=1),
+            'sort_on': 'Date',
+            'review_state': 'in_process', }
+
+        return [orderBrain.getObject() for orderBrain in catalog(query)]
+
+
 
 class CurrentOrders(grok.View):
     """Overview of current orders
@@ -184,15 +220,15 @@ class AddForm(dexterity.AddForm):
         object.title = data['name']
         user = self.context.portal_membership.getAuthenticatedMember()
         object.email = user.getProperty('email')
+        object.exclude_from_nav = True
         object.reindexObject()
         return object
     
     def add(self, object):
         self.context._setObject(object.id, object)
         o = getattr(self.context, object.id)
-        #o.setExcludeFromNav(True)
-        #o.reindexObject()
-    
+        o.reindexObject()
+
     def render(self):
         """create faborder instance and redirect to its default view
         """

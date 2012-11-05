@@ -25,7 +25,7 @@
             <p tal:condition="python:context.aq_parent.nextProductionClosingDate and context.aq_parent.nextProductionDelivery">
               If you submit your sketch by <span class="important" tal:content="python:context.nextProductionClosingDate.strftime('%B %d, %Y')">...</span>, 
               we will ship the PCB to you on <span class="important" tal:content="python:context.nextProductionDelivery.strftime('%B %d, %Y')">...</span>.<br />
-              Note, submitted orders must be completed (paid for) by 16:00 Berlin time on <span class="important" tal:content="python:context.nextProductionClosingDate.strftime('%B %d, %Y')" />
+              Note, submitted orders must be completed (paid for) by noon Berlin time on <span class="important" tal:content="python:context.nextProductionClosingDate.strftime('%B %d, %Y')" />
             </p>
           </div>
         </div>
@@ -59,7 +59,10 @@
                          tal:attributes="href string:${sketch/absolute_url}/@@download/orderItem/${filename_encoded};
                                          title string:Download ${filename}"></a>
                     </div>
-                    <div tal:content="python: '%.2f cm × %.2f cm' % (sketch.width, sketch.height)"></div>
+                    <div tal:condition="python: len(sketch.boards) > 1" tal:content="python: '%s boards:' % len(sketch.boards)" />
+                    <tal:block tal:repeat="board sketch/boards">
+                        <div tal:content="python: '%.2f cm × %.2f cm' % (board['width'], board['height'])" />
+                    </tal:block>                    
                   </td>
                   <td class="actionCell">
                     <a class="deleteSketchLink" tal:condition="python:(view.isStateId(context, 'open'))" tal:attributes="href string:${sketch/absolute_url}/delete_confirmation">

@@ -8,6 +8,7 @@ from zope.lifecycleevent.interfaces import IObjectCreatedEvent, IObjectModifiedE
 @grok.subscribe(ISketch, IObjectCreatedEvent)
 @grok.subscribe(ISketch, IObjectModifiedEvent)
 def modifiedHandler(sketch, event):
-    sketch.width = sketch.orderItem.width
-    sketch.height = sketch.orderItem.height
-    sketch.area = sketch.width * sketch.height
+    sketch.boards = sketch.orderItem.boards
+    sketch.area = 0
+    for board in sketch.boards:
+        sketch.area += board['width'] * board['height']

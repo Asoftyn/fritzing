@@ -95,7 +95,7 @@ def getCurrentOrders(self, faborders):
         'review_state': 'in_process'})
     return results
 
-def sendStatusMail(context):
+def sendStatusMail(context, justReturn=False):
     """Sends notification on the order status to the orderer and faborders.salesEmail
     """
     mail_text = u""
@@ -109,7 +109,7 @@ def sendStatusMail(context):
     from_name = "Fritzing Fab"
     to_address = context.email
     user  = context.getOwner()
-    to_name = user.getProperty('fullname')
+    to_name = user.getProperty('fullname', '')
     # we expect a name to contain non-whitespace characters:
     if not re.search('\S', to_name):
         to_name = u"%s" % user
@@ -129,6 +129,9 @@ def sendStatusMail(context):
         faborder = context,
         ship_to = IFabOrder['shipTo'].vocabulary.getTerm(context.shipTo).title,
         )
+    
+    if justReturn:
+        return mail_text
     
     try:
         host = getToolByName(context, 'MailHost')

@@ -40,12 +40,13 @@ class SketchFileValidator(validator.SimpleFieldValidator):
             raise Invalid(
                 _(u"No boards found in '%s'." % fzzName))
         
-        if not (len(pairs) == 2):
+        if not (len(pairs)%2 == 0):
+            # uneven number of lengths
             raise Invalid(
-                _(u"Multiple boards found in '%s'. Sorry, we still work on the support for multiple boards per file." % fzzName))
+                _(u"Invalid board sizes in '%s'." % fzzName))
         
-        value.width = pairs[0] / 10
-        value.height = pairs[1] / 10
+        value.boards = [{'width':pairs[i] / 10, 'height':pairs[i+1] / 10} 
+                        for i in range(0, len(pairs), 2)]
         
         return True
 
