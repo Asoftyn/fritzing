@@ -238,8 +238,7 @@ bool FSvgRenderer::determineDefaultSize(QXmlStreamReader & xml)
 
 QSizeF FSvgRenderer::parseForWidthAndHeight(QXmlStreamReader & xml)
 {
-	QRectF viewBox;
-    QSizeF size = TextUtils::parseForWidthAndHeight(xml, viewBox);
+    QSizeF size = TextUtils::parseForWidthAndHeight(xml);
     if (size.width() != 0 && size.height() != 0) return size;
 
 	QIODevice * device = xml.device();

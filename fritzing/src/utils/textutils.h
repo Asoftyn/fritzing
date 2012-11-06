@@ -105,8 +105,9 @@ public:
 	static void expandAndFillAux(QDomElement &, const QString & color, double expandBy);
     static bool writeUtf8(const QString & fileName, const QString & text);
     static int getPinsAndSpacing(const QString & expectedFileName, QString & spacingString);
-	static QSizeF parseForWidthAndHeight(QXmlStreamReader &, QRectF & viewBox);
-	static QSizeF parseForWidthAndHeight(const QString & svg, QRectF & viewBox);
+	static QSizeF parseForWidthAndHeight(QXmlStreamReader &, QRectF & viewBox, bool getViewBox);
+	static QSizeF parseForWidthAndHeight(QXmlStreamReader &);
+	static QSizeF parseForWidthAndHeight(const QString & svg, QRectF & viewBox, bool getViewBox);
 	static QSizeF parseForWidthAndHeight(const QString & svg);
     static void gornTree(QDomDocument &);
     static bool elevateTransform(QDomElement &);
@@ -140,6 +141,7 @@ protected:
     static void fixStyleAttribute(QDomElement & element, QString & style, const QString & attributeName);
     static bool fixStrokeWidth(QDomDocument & svgDoc);
     static bool fixViewBox(QDomElement & root);
+    static void chopNotDigits(QString &);
 };
 
 #endif

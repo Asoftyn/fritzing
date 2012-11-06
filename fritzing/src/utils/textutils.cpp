@@ -213,11 +213,7 @@ double TextUtils::convertToInches(const QString & s, bool * ok, bool isIllustrat
 		divisor = 6.0;
 	}
 	else {
-		for (int ix = string.count() - 1; ix >= 0; ix--) {
-			if (string.at(ix).isDigit()) break;
-			
-			string.chop(1);
-		}
+        chopNotDigits(string);
 		divisor = 90.0;			// default to Qt's standard internal units if all else fails
 		chop = 0;
 	}
@@ -233,6 +229,16 @@ double TextUtils::convertToInches(const QString & s, bool * ok, bool isIllustrat
 
 	if (ok) *ok = true;
 	return result / divisor;
+}
+
+void TextUtils::chopNotDigits(QString & string) {
+	for (int ix = string.count() - 1; ix >= 0; ix--) {
+        QChar ch = string.at(ix);
+		if (ch.isDigit()) return;
+        if (ch == '.') return;
+			
+		string.chop(1);
+	}
 }
 
 bool TextUtils::squashElement(QDomDocument & doc, const QString & elementName, const QString &attName, const QRegExp &matchContent) {
@@ -955,7 +961,7 @@ bool TextUtils::fixInternalUnits(QString & svg)
 		result = true;
 		if (firstTime) {
 			// assumes width dpi = height dpi
-			size = parseForWidthAndHeight(svg, viewBox);
+			size = parseForWidthAndHeight(svg, viewBox, true);
 			if (size.width() == 0) {
 				// svg is messed up
 				return false;
@@ -975,7 +981,7 @@ bool TextUtils::fixInternalUnits(QString & svg)
 		result = true;
 		if (firstTime) {
 			// assumes width dpi = height dpi
-			size = parseForWidthAndHeight(svg, viewBox);
+			size = parseForWidthAndHeight(svg, viewBox, true);
 			if (size.width() == 0) {
 				// svg is messed up
 				return false;
@@ -1567,16 +1573,22 @@ int TextUtils::getPinsAndSpacing(const QString & expectedFileName, QString & spa
 QSizeF TextUtils::parseForWidthAndHeight(const QString & svg)
 {
 	QRectF viewBox;
-    return parseForWidthAndHeight(svg, viewBox);
+    return parseForWidthAndHeight(svg, viewBox, false);
 }
 
-QSizeF TextUtils::parseForWidthAndHeight(const QString & svg, QRectF & viewBox)
+QSizeF TextUtils::parseForWidthAndHeight(const QString & svg, QRectF & viewBox, bool getViewBox)
 {
 	QXmlStreamReader streamReader(svg);
-    return parseForWidthAndHeight(streamReader, viewBox);
+    return parseForWidthAndHeight(streamReader, viewBox, getViewBox);
 }
 
-QSizeF TextUtils::parseForWidthAndHeight(QXmlStreamReader & svg, QRectF & viewBox)
+QSizeF TextUtils::parseForWidthAndHeight(QXmlStreamReader & svg)
+{
+	QRectF viewBox;
+    return parseForWidthAndHeight(svg, viewBox, false);
+}
+
+QSizeF TextUtils::parseForWidthAndHeight(QXmlStreamReader & svg, QRectF & viewBox, bool getViewBox)
 {
     svg.setNamespaceProcessing(false);
 
@@ -1607,21 +1619,30 @@ QSizeF TextUtils::parseForWidthAndHeight(QXmlStreamReader & svg, QRectF & viewBo
 
 				size.setWidth(w);
 				size.setHeight(h);
-				viewBox.setRect(0, 0, w, h);
 
-				QString vb = svg.attributes().value("viewBox").toString();
-				QStringList vbs = vb.split(QRegExp(",| "));
-				if (vbs.count() == 4) {
-					bool ok = false;
-					double d[4];
-					for (int i = 0; i < 4; i++) {
-						d[i] = vbs.at(i).toDouble(&ok);
-						if (!ok) break;
-					}
-					if (ok) {
-						viewBox.setRect(d[0], d[1], d[2], d[3]);
-					}
-				}
+                if (getViewBox) {
+                    bool gotViewBox = false;
+				    QString vb = svg.attributes().value("viewBox").toString();
+				    QStringList vbs = vb.split(QRegExp(",| "));
+				    if (vbs.count() == 4) {
+					    bool ok = false;
+					    double d[4];
+					    for (int i = 0; i < 4; i++) {
+						    d[i] = vbs.at(i).toDouble(&ok);
+						    if (!ok) break;
+					    }
+					    if (ok) {
+                            gotViewBox = true;
+						    viewBox.setRect(d[0], d[1], d[2], d[3]);
+					    }
+				    }
+
+                    if (!gotViewBox) {
+                        chopNotDigits(hs);
+                        chopNotDigits(ws);
+                        viewBox.setRect(0, 0, ws.toDouble(), hs.toDouble());
+                    }
+                }
 
 				return size;
 			}
