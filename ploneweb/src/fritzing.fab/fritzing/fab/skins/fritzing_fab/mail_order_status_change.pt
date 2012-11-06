@@ -26,7 +26,7 @@ by <span tal:replace="options/to_name" /> (<span tal:replace="options/to_address
 
 <span tal:omit-tag="" tal:repeat="item options/faborder/listFolderContents"><span tal:replace="item/copies" /><span tal:replace="structure nbsp"/><span tal:replace="structure times"/> <span tal:replace="item/orderItem/filename" />
     <div tal:condition="python: len(item.boards) > 1" tal:replace="python: '%s boards:' % len(item.boards)" />
-    <tal:block tal:repeat="board item/boards"><span tal:replace="python: '%.2f�cm נ%.2f�cm' % (board['width'], board['height'])" /></tal:block>
+    <tal:block tal:repeat="board item/boards"><span tal:replace="python: '%.2f cm × %.2f cm' % (board['width'], board['height'])" /></tal:block>
     = <span tal:replace="python: '%.2f' % (item.area)" /><span tal:replace="structure nbsp"/>cm<span tal:replace="structure sup2"/>
     <span tal:replace="python: '%.2f' % (item.copies * item.area * item.pricePerSquareCm)" /><span tal:replace="structure nbsp"/>EUR
     4.00 EUR Checking

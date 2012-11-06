@@ -30,6 +30,7 @@
               and we will ship it on <span class="important" tal:content="python:context.nextProductionDelivery.strftime('%B %d, %Y')">...</span>.<br /><br />
               Submission deadline is <span class="important">noon Berlin time</span> on <span class="important" tal:content="python:context.nextProductionClosingDate.strftime('%B %d, %Y')">...</span>.
             </p>
+            <p tal:condition="view/isManager"><a href="@@curentorders">List all current orders</a></p>
             <div tal:condition="view/hasOrders">
               <h2>Your orders</h2>
               <table class="orderTable">
@@ -52,7 +53,7 @@
                       <span tal:condition="not:item/listFolderContents">no sketches</span>
                       <ul tal:condition="item/listFolderContents">
                         <li tal:repeat="sketch item/listFolderContents">
-                          <span tal:content="sketch/copies" />× 
+                          <span tal:content="sketch/copies" />Ã— 
                           <a tal:define="filename sketch/orderItem/filename;                                              
                                          filename_encoded python:view.encodeFilename(filename);"
                              tal:content="filename"
@@ -75,46 +76,6 @@
               </table>
             </div>
             
-            <div tal:condition="view/isManager">
-              <h2>Manage orders</h2>
-              <p>Only orders with the status "in process" are shown.</p>
-              <table class="orderTable">
-                <thead>
-                  <tr>
-                    <th>User</th>
-                    <th>Order #</th>
-                    <th>Sketches</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr tal:repeat="item view/listOrdersManager">
-                    <td>
-                      <p tal:content="item/getOwner | string:error"/>
-                    </td>
-                    <td tal:content="item/id | string:error">title</td>
-                    <td>
-                      <span tal:condition="not:item/listFolderContents">no sketches</span>
-                      <ul tal:condition="item/listFolderContents">
-                        <li tal:repeat="sketch item/listFolderContents">
-                          <span tal:content="sketch/copies" />× 
-                          <a tal:define="filename sketch/orderItem/filename;                                              
-                                         filename_encoded python:view.encodeFilename(filename);"
-                             tal:content="filename"
-                             tal:attributes="href string:${sketch/absolute_url}/@@download/orderItem/${filename_encoded};                                                  
-                                             title string:Download ${filename}"/>
-                        </li>
-                      </ul>
-                    </td>
-                    <td>
-                      <a class="viewOrderLink" tal:attributes="href string:${item/absolute_url}">view/edit</a>
-                      <br/>
-                      <a class="deleteOrderLink" tal:attributes="href string:${item/absolute_url}/delete_confirmation">delete</a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
             <div>
                 <a tal:attributes="href string:${navroot}/++resource++fritzing.fab/threePCBs1200.jpg">
                 <img alt="Picture of PCBs" class="adapt_width" tal:attributes="src string:${navroot}/++resource++fritzing.fab/threePCBs368.jpg" />

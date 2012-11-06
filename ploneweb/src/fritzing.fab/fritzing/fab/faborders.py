@@ -120,7 +120,7 @@ class CurrentOrdersCSV(grok.View):
                     order.id + "_" + self.encodeFilename(sketch.orderItem.filename),
                     sketch.copies,
                     "",
-                    "",
+                    len(sketch.boards),
                     sketch.area,
                     order.priceNetto,
                     "",
