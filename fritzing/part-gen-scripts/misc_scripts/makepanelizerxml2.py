@@ -171,7 +171,7 @@ def main():
             if not(required):
                 required = 0
             xml =  "<board name='{0}_{5}of{6}_x{1}c_x{4}b_{2}' requiredCount='{1}' maxOptionalCount='{3}' inscription='{0}' boardCount='{4}' thisFzz='{5}' fzzCount='{6}' inscriptionHeight='2mm' originalName='{7}' />\n"
-            if orderNumber == "products":
+            if orderNumber.lower() == "products":
                 xml =  "<board name='{7}' requiredCount='{1}' maxOptionalCount='{3}' inscription='' boardCount='{4}' thisFzz='{5}' fzzCount='{6}' inscriptionHeight='2mm' originalName='{7}' />\n"
             thisBoard = boardsInXml[orderNumber]
             boardsInXml[orderNumber] += 1
