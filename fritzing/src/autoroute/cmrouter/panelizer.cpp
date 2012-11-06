@@ -644,7 +644,8 @@ void Panelizer::collectFiles(const QDir & outputFolder, QDomElement & path, QHas
 			return;
 		}
 
-		QString p = node.nodeValue(); 
+        QString p = node.nodeValue().trimmed();
+        DebugDialog::debug("p folder " + p);
         QString savep = p;
         if (savep.startsWith(".")) {
             p = outputFolder.absolutePath() + "/" + savep;
@@ -1319,13 +1320,14 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
 
             if (wantText) {
                 collectTexts(one, texts);
+                //DebugDialog::debug("one " + one);
             }
 					
-			one = GerberGenerator::clipToBoard(one, board, name, forWhy, clipString);
-			if (one.isEmpty()) continue;
+            QString two = GerberGenerator::clipToBoard(one, board, name, forWhy, clipString);
+            if (two.isEmpty()) continue;
 
             QString filename = saveDir.absoluteFilePath(QString("%1_%2_%3.svg").arg(boardName).arg(board->id()).arg(name));
-            TextUtils::writeUtf8(filename, one);
+            TextUtils::writeUtf8(filename, two);
 		}
 
         if (texts.count() > 0) {

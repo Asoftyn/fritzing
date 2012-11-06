@@ -677,7 +677,7 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
 
 	if (clipImage) delete clipImage;
 
-	return svgString;
+    return QString(svgString);
 }
 
 QString GerberGenerator::cleanOutline(const QString & outlineSvg)
