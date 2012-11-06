@@ -30,7 +30,7 @@
               and we will ship it on <span class="important" tal:content="python:context.nextProductionDelivery.strftime('%B %d, %Y')">...</span>.<br /><br />
               Submission deadline is <span class="important">noon Berlin time</span> on <span class="important" tal:content="python:context.nextProductionClosingDate.strftime('%B %d, %Y')">...</span>.
             </p>
-            <p tal:condition="view/isManager"><a href="@@curentorders">List all current orders</a></p>
+            <p tal:condition="view/isManager"><a href="@@currentorders">List all current orders</a></p>
             <div tal:condition="view/hasOrders">
               <h2>Your orders</h2>
               <table class="orderTable">
