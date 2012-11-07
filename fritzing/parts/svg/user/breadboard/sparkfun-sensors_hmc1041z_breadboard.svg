@@ -5,76 +5,30 @@
  <g id="breadboard">
   <g id="icon">
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,170A30,30 0 0 1 0,230L0,400L500,400L500,0L0,0z"/>
-   <g transform="translate(166.291,167.004)">
-    <g transform="matrix(0.5, 0, 0, 0.5, 41.8543, 16.498)">
-     <rect width="19.685" x="24.6535" y="43.3071" fill="#F7BD13" connectorname="9" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="19.685" x="123.079" y="43.3071" fill="#F7BD13" connectorname="10" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.811" x="28.5905" y="2.18548e-15" fill="#F7BD13" connectorname="2" height="23.622" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.811" x="48.2755" y="2.18548e-15" fill="#F7BD13" connectorname="3" height="23.622" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.811" x="67.9605" y="2.18548e-15" fill="#F7BD13" connectorname="4" height="23.622" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.811" x="87.6455" y="2.18548e-15" fill="#F7BD13" connectorname="5" height="23.622" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.811" x="107.331" y="2.18548e-15" fill="#F7BD13" connectorname="6" height="23.622" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.811" x="127.016" y="2.18548e-15" fill="#F7BD13" connectorname="7" height="23.622" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.811" x="8.90549" y="2.18548e-15" fill="#F7BD13" connectorname="1" height="23.622" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.811" x="146.307" y="2.18548e-15" fill="#F7BD13" connectorname="8" height="23.622" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="167.417" x="0" y="14.248" fill="#303030" height="37.4961" stroke="none" stroke-width="0"/>
-     <polygon fill="#1f1f1f" points="0,14.248 167.417,14.248 157.417,24.248 10,24.248"/>
-     <polygon fill="#1f1f1f" points="0,51.7441 167.417,51.7441 157.417,41.7441 10,41.7441"/>
-     <polygon fill="#000000" points="0,14.248 0,51.7441 10,41.7441 10,24.248"/>
-     <polygon fill="#3d3d3d" points="167.417,14.248 167.417,51.7441 157.417,41.7441 157.417,24.248"/>
-     <circle fill="#1f1f1f" cx="30" cy="21.7441" stroke="none" r="10" stroke-width="0"/>
+   <g transform="translate(166.285,167)">
+    <rect width="167.431" x="0" y="0" fill="#4D4D4D" height="44.2778"/>
+    <rect width="167.431" x="0" y="34.5" fill="#333333" height="9.77778"/>
+    <rect width="167.431" x="0" y="44.2778" fill="#1A1A1A" height="21.7083"/>
+    <rect width="11.8194" x="9.29167" y="57.0833" fill="#CCCCCC" height="8.91667"/>
+    <rect width="11.8194" x="28.5694" y="57.0833" fill="#CCCCCC" height="8.91667"/>
+    <rect width="11.8194" x="48.2639" y="57.0833" fill="#CCCCCC" height="8.91667"/>
+    <rect width="11.8194" x="67.9444" y="57.0833" fill="#CCCCCC" height="8.91667"/>
+    <rect width="11.8194" x="87.625" y="57.0833" fill="#CCCCCC" height="8.91667"/>
+    <rect width="11.8333" x="107.306" y="57.0833" fill="#CCCCCC" height="8.91667"/>
+    <rect width="11.8194" x="127" y="57.0833" fill="#CCCCCC" height="8.91667"/>
+    <rect width="11.8333" x="146.667" y="57.0833" fill="#CCCCCC" height="8.91667"/>
+    <g opacity="0.2">
+     <rect width="11.8194" x="9.29167" y="64.6944" height="1.30556"/>
+     <rect width="11.8194" x="28.5694" y="64.6944" height="1.30556"/>
+     <rect width="11.8194" x="48.2639" y="64.6944" height="1.30556"/>
+     <rect width="11.8194" x="67.9444" y="64.6944" height="1.30556"/>
+     <rect width="11.8194" x="87.625" y="64.6944" height="1.30556"/>
+     <rect width="11.8333" x="107.306" y="64.6944" height="1.30556"/>
+     <rect width="11.8194" x="127" y="64.6944" height="1.30556"/>
+     <rect width="11.8333" x="146.667" y="64.6944" height="1.30556"/>
     </g>
-   </g>
-   <text x="50" y="224.375" font-family="OCRA" fill="white" text-anchor="start" stroke="none" id="label" stroke-width="0" font-size="65">HMC1041Z</text>
-   <g transform="translate(63.5,326.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">1</text>
-    </g>
-   </g>
-   <g transform="translate(63.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">10</text>
-    </g>
-   </g>
-   <g transform="translate(163.5,326.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">2</text>
-    </g>
-   </g>
-   <g transform="translate(163.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">9</text>
-    </g>
-   </g>
-   <g transform="translate(263.5,326.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">3</text>
-    </g>
-   </g>
-   <g transform="translate(263.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">8</text>
-    </g>
-   </g>
-   <g transform="translate(363.5,326.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">4</text>
-    </g>
-   </g>
-   <g transform="translate(363.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">7</text>
-    </g>
-   </g>
-   <g transform="translate(463.5,326.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">5</text>
-    </g>
-   </g>
-   <g transform="translate(463.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">6</text>
-    </g>
+    <rect width="167.431" x="0" opacity="0.2" y="0" fill="#FFFFFF" height="1.09722"/>
+    <rect width="167.431" x="0" opacity="0.2" y="43.1806" height="1.09722"/>
    </g>
   </g>
   <g transform="translate(34.035,334.05)">

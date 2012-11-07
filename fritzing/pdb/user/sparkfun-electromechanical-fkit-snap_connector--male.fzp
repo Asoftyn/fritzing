@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-Electromechanical-FKIT-SNAP_CONNECTOR--MALE'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-Electromechanical' FKIT-SNAP_CONNECTOR -MALE -->
 <version>4</version>
-<date>2012-10-22</date>
+<date>2012-11-07</date>
 <label>U</label>
 <author>www.fritzing.org</author>
 <description>Snap connector for Fabrick.it products</description>
@@ -36,7 +36,7 @@
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-electromechanical_fkit-snap_male_breadboard.svg'>
+<layers image='icon/FKIT-SNAP_MALE.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

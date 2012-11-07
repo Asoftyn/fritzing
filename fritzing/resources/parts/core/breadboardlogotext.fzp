@@ -16,6 +16,7 @@
    <property name="logo" >logo</property>
    <property name="shape" ></property>
    <property name="type" >text</property>
+   <property name="color" ></property>
  </properties>
  <taxonomy>discreteParts.breadboard.logo</taxonomy>
  <description>For adding text to the breadboard view</description>
