@@ -1,6 +1,7 @@
 import string
 import random
 import csv
+from DateTime import DateTime
 from StringIO import StringIO
 import zipfile
 try:
@@ -115,14 +116,14 @@ class CurrentOrdersCSV(grok.View):
             order = brain.getObject()
             for sketch in order.listFolderContents():
                 writer.writerow((
-                    order.Date(), 
+                    DateTime(order.Date()).strftime('%y-%m-%d %H:%M:%S'), 
                     order.id,
                     order.id + "_" + self.encodeFilename(sketch.orderItem.filename),
                     sketch.copies,
                     "",
                     len(sketch.boards),
-                    sketch.area,
-                    order.priceNetto,
+                    '%.2f' % sketch.area,
+                    '%.2f' % (sketch.copies * sketch.area * order.pricePerSquareCm + 4.0),
                     "",
                     "",
                     "",

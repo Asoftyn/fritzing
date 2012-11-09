@@ -13,47 +13,63 @@
       <tal:main-macro metal:define-macro="main" tal:define="navroot context/@@plone_portal_state/navigation_root_url">
             <div>
               <h2>Current orders</h2>
-              <p>Since <span tal:replace="context/currentProductionOpeningDate"/></p>
+              <p>Orders with status "in process" since <span tal:replace="context/currentProductionOpeningDate"/></p>
               <p><a href="@@currentorders-csv">Download as CSV</a> -- <a href="@@currentorders-zip">Download as ZIP</a></p>
-              <table class="orderTable" style="width:100%">
+              <table class="orderTable" style="width:100%; text-align: center">
                 <thead>
                   <tr>
-                    <th>Date</th>
-                    <th>User</th>
-                    <th>Order #</th>
-                    <th>Sketches</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th>date</th>
+                    <th>order-id</th>
+                    <th>filename</th>
+                    <th>count</th>
+                    <th>optional</th>
+                    <th>boards</th>
+                    <th>size</th>
+                    <th>price</th>
+                    <th>paid</th>
+                    <th>checked</th>
+                    <th>sent</th>
+                    <th>invoiced</th>
+                    <th>bloggable</th>
+                    <th>name</th>
+                    <th>e-mail</th>
+                    <th>zone</th>
+                    <th>actions</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr tal:repeat="brain python:view.getCurrentOrders(context)">
-                      <div tal:define="item brain/getObject" tal:omit-tag="">
-                      <td tal:content="item/Date | string:error"/>
-                      <td tal:content="item/getOwner | string:error"/>
-                      <td tal:content="item/id | string:error">title</td>
-                      <td>
-                        <span tal:condition="not:item/listFolderContents">no sketches</span>
-                        <ul tal:condition="item/listFolderContents">
-                          <li tal:repeat="sketch item/listFolderContents">
-                            <span tal:replace="sketch/copies"/>
-                              x 
-                            <a tal:define="filename sketch/orderItem/filename;                                              
-                                           filename_encoded python:view.encodeFilename(filename);"
-                               tal:content="filename"
-                               tal:attributes="href string:${sketch/absolute_url}/@@download/orderItem/${filename_encoded};                                                  
-                                               title string:Download ${filename}"/>
-                          </li>
-                        </ul>
-                      </td>
-                      <td tal:content="python:view.getStateTitle(item)">unknown</td>
-                      <td>
-                        <a class="viewOrderLink" tal:attributes="href string:${item/absolute_url}">view</a>
-                         -- 
-                        <a class="deleteOrderLink" tal:attributes="href string:${item/absolute_url}/delete_confirmation">delete</a>
-                    </td>
+                <tbody tal:define="DateTime python:modules['DateTime'].DateTime">
+                  <div tal:repeat="brain python:view.getCurrentOrders(context)" tal:omit-tag="">
+                    <div tal:define="order brain/getObject" tal:omit-tag="">
+                        <tr tal:repeat="sketch order/listFolderContents">
+                          <td tal:content="python: DateTime(order.Date()).strftime('%y-%m-%d %H:%M:%S')">date</td>
+                          <td><a tal:attributes="href string:${order/absolute_url}" tal:content="order/id | string:error">order-id</a></td>
+                          <td>
+                                <a tal:define="filename sketch/orderItem/filename;                                              
+                                               filename_encoded python:view.encodeFilename(filename);"
+                                   tal:content="python: order.id + '_' + filename_encoded"
+                                   tal:attributes="href string:${sketch/absolute_url}/@@download/orderItem/${filename_encoded};                                                  
+                                                   title string:Download ${filename}"/>
+                          </td>
+                          <td tal:content="sketch/copies">copies</td>
+                          <td></td>
+                          <td tal:content="python:len(sketch.boards)">boards</td>
+                          <td tal:content="python: '%.2f' % sketch.area">size</td>
+                          <td tal:content="python: '%.2f' % (sketch.copies * sketch.area * order.pricePerSquareCm + 4.0)">price</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td tal:content="order/getOwner | string:error">owner</td>
+                          <td tal:content="order/email | string:error">email</td>
+                          <td tal:content="order/shipTo| string:error">zone</td>
+                          <td>
+                            <a class="viewOrderLink" tal:attributes="href string:${order/absolute_url}">view</a> 
+                            <a class="deleteOrderLink" tal:attributes="href string:${order/absolute_url}/delete_confirmation">delete</a>
+                          </td>
+                        </tr>
                     </div>
-                  </tr>
+                  </div>
                 </tbody>
               </table>
             </div>
