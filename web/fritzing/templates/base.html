@@ -1,4 +1,4 @@
-{% load i18n pages_tags cache generic_content fritzing_tools %}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+{% load i18n pages_tags cache generic_content fritzing_tools news_tags %}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
@@ -181,28 +181,9 @@
                 <div id="portal-column-two">
                     <div class="visualPadding">
                         
-                        {% get_latest_objects news.NewsEntry 3 as latest_news %}
-                        {% if latest_news %}
                         <div class="portletWrapper">
-                            <dl class="portlet portletNews">
-                                <dt class="portletHeader">
-                                    <a href="/news/" class="tile">Blog</a>
-                                </dt>
-                                {% for news in latest_news %}
-                                <dd class="portletItem {% cycle 'odd' 'even' %}">
-                                    <a href="{{ news.get_absolute_url }}" class="tile" title="{{ news.title }}">{{ news.title }} <span class="portletItemDetails">{{ news.date|date:"N d, Y" }}</span></a>
-                                </dd>
-                                {% endfor %}
-                                <dd class="portletFooter">
-                                    <a href="/news/">More posts&hellip;</a>
-                                </dd>
-                            </dl>
-                        </div>
-                        {% endif %}
-
-                        {% get_recent_posts %}
-                       	
-                        
+                            {% get_recent_posts %}
+                        </div>                      	
                         
                         {% get_latest_timed_objects events.event 3 start_date >= today as latest_events %}
                         {% if latest_events %}
