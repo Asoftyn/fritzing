@@ -15,7 +15,7 @@
               <h2>Current orders</h2>
               <p>Orders with status "in process" since <span tal:replace="context/currentProductionOpeningDate"/></p>
               <p><a href="@@currentorders-csv">Download as CSV</a> -- <a href="@@currentorders-zip">Download as ZIP</a></p>
-              <table class="orderTable" style="width:100%; text-align: center">
+              <table class="orderTable" style="width: 100%; text-align: center; font-size: 80%;">
                 <thead>
                   <tr>
                     <th>date</th>
