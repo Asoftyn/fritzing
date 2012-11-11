@@ -1,5 +1,6 @@
 {% extends "site_base.html" %}
 {% load i18n %}
+{% load pagination_tags %}
 {% load fritzing_tools %}
 {% block title %}
   Projects
@@ -111,7 +112,8 @@
 		{% endif %}
 	</div>
 	{% if projects %}
-    <div id="projects "class="plain project">
+    <div id="projects "class="plain project">	
+    		{% autopaginate projects 30 %}
             {% for project in projects %}
                 <div class='project overview item {% cycle 'col1' 'col2' 'col3' %}'>
                   <div class="project overview image">
@@ -141,6 +143,12 @@
                 </div>
             {% endfor %}
     </div>
+    <style  type="text/css">
+		div.pagination {
+			clear: both;
+		}
+	</style>
+	{% paginate %}
     {% else %}
     	No projects found
     {% endif %}
