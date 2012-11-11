@@ -111,9 +111,15 @@
 		</div></div>
 		{% endif %}
 	</div>
-	{% if projects %}
-    <div id="projects "class="plain project">	
-    		{% autopaginate projects 30 %}
+	{% if projects %}	
+	{% autopaginate projects 30 %}
+    <style  type="text/css">
+		div.pagination {
+			clear: both;
+		}
+	</style>
+	{% paginate %}
+    <div id="projects "class="plain project">
             {% for project in projects %}
                 <div class='project overview item {% cycle 'col1' 'col2' 'col3' %}'>
                   <div class="project overview image">
@@ -143,11 +149,6 @@
                 </div>
             {% endfor %}
     </div>
-    <style  type="text/css">
-		div.pagination {
-			clear: both;
-		}
-	</style>
 	{% paginate %}
     {% else %}
     	No projects found
