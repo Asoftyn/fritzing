@@ -331,9 +331,6 @@ DRC::DRC(PCBSketchWidget * sketchWidget, ItemBase * board)
     m_displayImage = NULL;
     m_plusImage = NULL;
     m_minusImage = NULL;
-    foreach (QDomDocument * doc, m_masterDocs) {
-        delete doc;
-    }
 }
 
 DRC::~DRC(void)
@@ -349,6 +346,9 @@ DRC::~DRC(void)
     }
     if (m_displayImage) {
         delete m_displayImage;
+    }
+    foreach (QDomDocument * doc, m_masterDocs) {
+        delete doc;
     }
 }
 
@@ -663,7 +663,7 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
 void DRC::makeHoles(QDomDocument * masterDoc, QImage * image, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec) {
     QSet<QString> holeIDs;
 
-    foreach (QGraphicsItem * item, m_sketchWidget->scene()->items()) {
+    foreach (QGraphicsItem * item, m_sketchWidget->scene()->collidingItems(m_board)) {
         ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
         if (itemBase == NULL) continue;
         if (itemBase->itemType() != ModelPart::Hole) continue;
@@ -783,6 +783,13 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
             wireIDs.insert(QString::number(itemBase->id()));
         }
 
+        if (equ->connector() == NULL) {
+            // this shouldn't happen
+            itemBase->debugInfo("!!!!!!!!!!!!!!!!!!!!!!!!!!!!! missing connector !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            equ->debugInfo("missing connector");
+            continue;
+        }
+        
         SvgIdLayer * svgIdLayer = equ->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
         partIDs.insert(QString::number(itemBase->id()), svgIdLayer->m_svgId);
     }
