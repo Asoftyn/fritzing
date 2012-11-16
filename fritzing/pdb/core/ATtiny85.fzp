@@ -29,7 +29,6 @@
         <breadboardView>
             <layers image="breadboard/ATtiny85_breadboard.svg">
                 <layer layerId="breadboard"/>
-                <layer layerId="icon"/>
             </layers>
         </breadboardView>
         <schematicView>
