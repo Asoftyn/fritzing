@@ -126,7 +126,7 @@ void Hole::setBoth(const QString & holeDiameter, const QString & ringThickness) 
 
 ItemBase * Hole::setBothSvg(const QString & holeDiameter, const QString & ringThickness) 
 {
-	QString svg = makeSvg(holeDiameter, ringThickness, m_viewLayerID);
+	QString svg = makeSvg(holeDiameter, ringThickness, m_viewLayerID, true);
 	resetRenderer(svg);
 	//DebugDialog::debug("both");
 	//DebugDialog::debug(svg);
@@ -144,7 +144,7 @@ ItemBase * Hole::setBothSvg(const QString & holeDiameter, const QString & ringTh
 	}
 
 	if (otherLayer) {
-		osvg = makeSvg(holeDiameter, ringThickness, otherLayer->viewLayerID());
+		osvg = makeSvg(holeDiameter, ringThickness, otherLayer->viewLayerID(), true);
 		//DebugDialog::debug(osvg);
 		otherLayer->resetRenderer(osvg);
 	}
@@ -167,7 +167,7 @@ void Hole::setBothNonConnectors(ItemBase * itemBase, SvgIdLayer * svgIdLayer) {
 }
 
 
-QString Hole::makeSvg(const QString & holeDiameter, const QString & ringThickness, ViewLayer::ViewLayerID viewLayerID) 
+QString Hole::makeSvg(const QString & holeDiameter, const QString & ringThickness, ViewLayer::ViewLayerID viewLayerID, bool includeHole) 
 {
 	double offsetDPI = OffsetPixels / GraphicsUtils::SVGDPI;
 	double hd = TextUtils::convertToInches(holeDiameter);
@@ -205,9 +205,11 @@ QString Hole::makeSvg(const QString & holeDiameter, const QString & ringThicknes
 			.arg(rt)
 			.arg(setColor)
 			.arg(id);
-		svg += QString("<circle drill='0' fill='black' cx='%1' cy='%1' r='%2' stroke-width='0'  />")   // set the drill attribute to 0 for gerber translation
-			.arg((hd / 2) + rt + offsetDPI)
-			.arg(hd / 2);
+        if (includeHole) {
+		    svg += QString("<circle drill='0' fill='black' cx='%1' cy='%1' r='%2' stroke-width='0'  />")   // set the drill attribute to 0 for gerber translation
+			    .arg((hd / 2) + rt + offsetDPI)
+			    .arg(hd / 2);
+        }
 	}
   		
 	svg += "</g></svg>";
@@ -259,7 +261,7 @@ QString Hole::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QSt
 
 	QStringList holeSize = m_modelPart->localProp("hole size").toString().split(",");
 	if (holeSize.length() == 2) {
-		QString svg = makeSvg(holeSize.at(0), holeSize.at(1), viewLayerID);
+		QString svg = makeSvg(holeSize.at(0), holeSize.at(1), viewLayerID, false);
 		if (!svg.isEmpty()) {
             return PaletteItemBase::normalizeSvg(svg, viewLayerID, blackOnly, dpi);
 		}

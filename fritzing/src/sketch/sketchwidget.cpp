@@ -767,7 +767,9 @@ void SketchWidget::checkSticky(long id, bool doEmit, bool checkCurrent, CheckSti
 	ItemBase * itemBase = findItem(id);
 	if (itemBase == NULL) return;
 
-	if (itemBase->isBaseSticky()) {
+    if (itemBase->hidden()) {
+    }
+	else if (itemBase->isBaseSticky()) {
 		stickyScoop(itemBase, checkCurrent, checkStickyCommand);
 	}
 	else {

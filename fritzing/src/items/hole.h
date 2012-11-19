@@ -67,7 +67,7 @@ protected slots:
 	void changeUnits(bool);
 
 protected:
-	QString makeSvg(const QString & holeDiameter, const QString & ringThickness, ViewLayer::ViewLayerID);
+	QString makeSvg(const QString & holeDiameter, const QString & ringThickness, ViewLayer::ViewLayerID, bool includeHole);
 	virtual QString makeID();
 	ItemBase * setBothSvg(const QString & holeDiameter, const QString & ringThickness); 
 	void setBothNonConnectors(ItemBase * itemBase, SvgIdLayer * svgIdLayer);
