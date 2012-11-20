@@ -1094,7 +1094,7 @@ void Panelizer::addOptional(int optionalCount, QList<PanelItem *> & refPanelItem
 
 /////////////////////////////////////////////////////////////////////////////////
 
-void Panelizer::inscribe(FApplication * app, const QString & panelFilename) 
+void Panelizer::inscribe(FApplication * app, const QString & panelFilename, bool drc) 
 {
 	QFile file(panelFilename);
 
@@ -1160,7 +1160,7 @@ void Panelizer::inscribe(FApplication * app, const QString & panelFilename)
 
 	board = boards.firstChildElement("board");
 	while (!board.isNull()) {
-		MainWindow * mainWindow = inscribeBoard(board, fzzFilePaths, app, fzDir);
+		MainWindow * mainWindow = inscribeBoard(board, fzzFilePaths, app, fzDir, drc);
 		if (mainWindow) {
 			mainWindow->setCloseSilently(true);
 			mainWindow->close();
@@ -1173,7 +1173,7 @@ void Panelizer::inscribe(FApplication * app, const QString & panelFilename)
 
 }
 
-MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QString> & fzzFilePaths, FApplication * app, QDir & fzDir)
+MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QString> & fzzFilePaths, FApplication * app, QDir & fzDir, bool drc)
 {
 	QString boardName = board.attribute("name");
 	int optional = board.attribute("maxOptionalCount", "").toInt();
@@ -1251,10 +1251,12 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
 		DebugDialog::debug(QString("%1 filled:%2").arg(path).arg(filled));
 	}
 
-	foreach (ItemBase * boardItem, boards) {
-        mainWindow->pcbView()->selectAllItems(false, false);
-        boardItem->setSelected(true);
-        mainWindow->newDesignRulesCheck(false);
+    if (drc) {
+	    foreach (ItemBase * boardItem, boards) {
+            mainWindow->pcbView()->selectAllItems(false, false);
+            boardItem->setSelected(true);
+            mainWindow->newDesignRulesCheck(false);
+        }
     }
 
 	return mainWindow;

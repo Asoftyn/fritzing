@@ -1675,7 +1675,13 @@ void FApplication::runPanelizerService()
 void FApplication::runInscriptionService()
 {	
 	m_started = true;
-	Panelizer::inscribe(this, m_panelFilename);
+    bool drc = false;
+    foreach (QString arg, m_arguments) {
+        if (arg.compare("-drc", Qt::CaseInsensitive) == 0) {
+            drc = true;
+        }
+    }
+	Panelizer::inscribe(this, m_panelFilename, drc);
 }
 
 QList<MainWindow *> FApplication::orderedTopLevelMainWindows() {
