@@ -83,8 +83,6 @@ public:
 
 	void start();
 
-public:
-
 signals:
 	void setCycleMessage(const QString &);
 	void setCycleCount(int);
