@@ -1251,7 +1251,11 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
 		DebugDialog::debug(QString("%1 filled:%2").arg(path).arg(filled));
 	}
 
-    mainWindow->newDesignRulesCheck(false);
+	foreach (ItemBase * boardItem, boards) {
+        mainWindow->pcbView()->selectAllItems(false, false);
+        boardItem->setSelected(true);
+        mainWindow->newDesignRulesCheck(false);
+    }
 
 	return mainWindow;
 }
