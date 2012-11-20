@@ -352,7 +352,7 @@ DRC::~DRC(void)
     }
 }
 
-bool DRC::start() {
+bool DRC::start(bool showOkMessage) {
 	QString message;
     QStringList messages;
     QList<CollidingThing *> collidingThings;
@@ -377,11 +377,18 @@ bool DRC::start() {
     emit hideProgress();
 
 	if (messages.count() == 0) {
-		QMessageBox::information(m_sketchWidget->window(), tr("Fritzing"), message);
+        if (showOkMessage) {
+		    QMessageBox::information(m_sketchWidget->window(), tr("Fritzing"), message);
+        }
 	}
 	else {
 		DRCResultsDialog * dialog = new DRCResultsDialog(message, messages, collidingThings, m_displayItem, m_displayImage, m_sketchWidget, m_sketchWidget->window());
-        dialog->show();
+        if (showOkMessage) {
+            dialog->show();
+        }
+        else {
+            dialog->exec();
+        }
         m_displayItem = NULL;
         m_displayImage = NULL;
 	}

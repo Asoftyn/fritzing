@@ -40,6 +40,7 @@ $Date$
 #include "../viewgeometry.h"
 #include "../viewlayer.h"
 #include "../connectors/connectoritem.h"
+#include "../commands.h"
 
 class Autorouter : public QObject
 {
@@ -55,11 +56,23 @@ protected:
 	virtual void cleanUpNets();
 	virtual void updateRoutingStatus();
 	virtual class TraceWire * drawOneTrace(QPointF fromPos, QPointF toPos, double width, ViewLayer::ViewLayerSpec);
+    void initUndo(QUndoCommand * parentCommand);
+	void addUndoConnection(bool connect, class JumperItem *, QUndoCommand * parentCommand);
+	void addUndoConnection(bool connect, class Via *, QUndoCommand * parentCommand);
+	void addUndoConnection(bool connect, TraceWire *, QUndoCommand * parentCommand);
+	void addUndoConnection(bool connect, ConnectorItem *, BaseCommand::CrossViewType, QUndoCommand * parentCommand);
+	void restoreOriginalState(QUndoCommand * parentCommand);
+	void doCancel(QUndoCommand * parentCommand);
+	void clearTracesAndJumpers();
+	void addToUndo(QMultiHash<TraceWire *, long> &, QUndoCommand * parentCommand);
+	void addWireToUndo(Wire * wire, QUndoCommand * parentCommand);
+    void removeOffBoard(bool isPCBType);
 
 public slots:
 	virtual void cancel();
 	virtual void cancelTrace();
 	virtual void stopTracing();
+	void setMaxCycles(int);
 
 signals:
 	void setMaximumProgress(int);
@@ -78,6 +91,12 @@ protected:
 	bool m_bothSidesNow;
 	int m_maximumProgressPart;
 	int m_currentProgressPart;
+	ItemBase * m_board;
+	QMultiHash<TraceWire *, TraceWire *> m_splitDNA;
+	int m_maxCycles;
+    double m_keepout;
+	QRectF m_maxRect;
+	QSet<ConnectorItem *> m_offBoardConnectors;
 };
 
 #endif

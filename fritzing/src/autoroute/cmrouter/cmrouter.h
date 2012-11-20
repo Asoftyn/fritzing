@@ -196,17 +196,11 @@ public:
 	bool drc(CMRouter::OverlapType, CMRouter::OverlapType wiresOverlap, bool eliminateThin, bool combinePlanes); 
 	Plane * getPlane(ViewLayer::ViewLayerID);
 
-public slots:
-	void setMaxCycles(int);
-
 signals:
 	void setCycleMessage(const QString &);
 	void setCycleCount(int);
 
 protected:
-	void restoreOriginalState(QUndoCommand * parentCommand);
-	void addWireToUndo(Wire * wire, QUndoCommand * parentCommand);
-	void addToUndo(QMultiHash<TraceWire *, long> &, QUndoCommand * parentCommand);
 	void collectEdges(QList<Edge *> & edges);
 	//bool findShortcut(TileRect & tileRect, bool useX, bool targetGreater, JSubedge * subedge, QList<QPointF> & allPoints, int ix);
 	//void shortenUs(QList<QPointF> & allPoints, JSubedge *);
@@ -216,7 +210,6 @@ protected:
 	bool runEdges(QList<Edge *> &, QVector<int> & netCounters, struct RoutingStatus &, 
 					bool makeJumper, Ordering * bestOrdering);
 	void clearEdges(QList<Edge *> & edges);
-	void doCancel(QUndoCommand * parentCommand);
 	void updateProgress(int num, int denom);
 	GridEntry * drawGridItem(Tile * tile);
 	void seedNext(PathUnit *, QList<Tile *> &);
@@ -270,13 +263,7 @@ protected:
 	void clipParts();
 	void insertUnion(TileRect & tileRect, QGraphicsItem *, Tile::TileType tileType);
 	bool blockDirection(PathUnit * pathUnit, PathUnit::Direction direction, TileRect & nextRect, int tWidthNeeded);
-	void clearTracesAndJumpers();
 	void saveTracesAndJumpers(Ordering *);
-	void initUndo(QUndoCommand * parentCommand);
-	void addUndoConnection(bool connect, class JumperItem *, QUndoCommand * parentCommand);
-	void addUndoConnection(bool connect, class Via *, QUndoCommand * parentCommand);
-	void addUndoConnection(bool connect, TraceWire *, QUndoCommand * parentCommand);
-	void addUndoConnection(bool connect, ConnectorItem *, BaseCommand::CrossViewType, QUndoCommand * parentCommand);
 	bool reorder(QList<Ordering *> & orderings, Ordering *  currentOrdering, Ordering * & bestOrdering, QGraphicsLineItem * lineItem);
 	bool reorderEdges(QList<Ordering *> & orderings, Ordering * currentOrdering, QGraphicsLineItem *);
 	void drawTileRect(TileRect & tileRect, QColor & color);
@@ -294,7 +281,6 @@ protected:
 	void fixWidths();
 
 protected:
-	QRectF m_maxRect;
 	TileRect m_tileMaxRect;
 	QRectF m_maxRect90;
 	TileRect m_overlappingTileRect;
@@ -303,16 +289,11 @@ protected:
 	QHash<ViewLayer::ViewLayerID, Plane *> m_planeHash;
 	QHash<Plane*, ViewLayer::ViewLayerSpec> m_specHash;
 	QList<Plane *> m_planes;
-	QMultiHash<TraceWire *, TraceWire *> m_splitDNA;
 	Plane * m_unionPlane;
 	Plane * m_union90Plane;
 	QHash<Wire *, Edge *> m_tracesToEdges;
-	ItemBase * m_board;
-	int m_maxCycles;
-	QSet<ConnectorItem *> m_offBoardConnectors;
 	QHash<PathUnit *, TileRect> m_nearestSpaces;
 	bool m_hasOverlaps;
-	double m_keepout;
 	QString m_error;
 };
 

@@ -55,7 +55,7 @@ public:
 	DRC(class PCBSketchWidget *, class ItemBase * board);
 	virtual ~DRC(void);
 
-	bool start();
+	bool start(bool showOkMessage);
 
 public slots:
 	void cancel();

@@ -1199,7 +1199,6 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
         DebugDialog::debug(QString("\ncheckloadedtraces %1\n").arg(path)); 
     }
 
-
 	foreach (QGraphicsItem * item, mainWindow->pcbView()->scene()->items()) {
 		ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
 		if (itemBase == NULL) continue;
@@ -1251,6 +1250,8 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
 		mainWindow->saveAsShareable(path, true);
 		DebugDialog::debug(QString("%1 filled:%2").arg(path).arg(filled));
 	}
+
+    mainWindow->newDesignRulesCheck(false);
 
 	return mainWindow;
 }

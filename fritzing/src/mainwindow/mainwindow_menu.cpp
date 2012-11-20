@@ -36,6 +36,7 @@ $Date$
 #include "../partseditor/pemainwindow.h"
 #include "../help/aboutbox.h"
 #include "../autoroute/cmrouter/cmrouter.h"
+#include "../autoroute/mazerouter/mazerouter.h"
 #include "../autoroute/autorouteprogressdialog.h"
 #include "../autoroute/drc.h"
 #include "../items/virtualwire.h"
@@ -1298,6 +1299,7 @@ void MainWindow::createTraceMenus()
 {
 	m_pcbTraceMenu = menuBar()->addMenu(tr("&Routing"));
 	m_pcbTraceMenu->addAction(m_autorouteAct);
+	//m_pcbTraceMenu->addAction(m_newAutorouteAct);
 	m_pcbTraceMenu->addAction(m_newDesignRulesCheckAct);
 	m_pcbTraceMenu->addAction(m_newDesignRulesKeepoutAct);
 	m_pcbTraceMenu->addAction(m_checkLoadedTracesAct);
@@ -1718,6 +1720,7 @@ void MainWindow::updateTransformationActions() {
     bool result = updateExportActions();
 
     m_autorouteAct->setEnabled(result && m_currentGraphicsView->hasAnyNets());
+    m_newAutorouteAct->setEnabled(result && m_currentGraphicsView->hasAnyNets());
 }
 
 void MainWindow::updateItemMenu() {
@@ -1907,6 +1910,7 @@ void MainWindow::updateTraceMenu() {
 	m_excludeFromAutorouteAct->setChecked(exChecked);
 	m_changeTraceLayerAct->setEnabled(ctlEnabled);
 	m_autorouteAct->setEnabled(arEnabled && anyOrNo);
+	m_newAutorouteAct->setEnabled(arEnabled && anyOrNo);
 	m_orderFabAct->setEnabled(boardCount > 0);
 	m_showUnroutedAct->setEnabled(true);
 	m_selectAllTracesAct->setEnabled(tEnabled && anyOrNo);
@@ -2360,6 +2364,10 @@ void MainWindow::createTraceMenuActions() {
 	m_autorouteAct->setShortcut(tr("Shift+Ctrl+A"));
 	connect(m_autorouteAct, SIGNAL(triggered()), this, SLOT(autoroute()));
 
+	m_newAutorouteAct = new QAction(tr("Autoroute (new)"), this);
+	m_newAutorouteAct->setStatusTip(tr("Autoroute..."));
+	connect(m_newAutorouteAct, SIGNAL(triggered()), this, SLOT(newAutoroute()));
+
 	createOrderFabAct();
 	createActiveLayerActions();
 
@@ -2543,7 +2551,16 @@ void MainWindow::createOrderFabAct() {
 	connect(m_orderFabAct, SIGNAL(triggered()), this, SLOT(orderFab()));
 }
 
+
+void MainWindow::newAutoroute() {
+    autorouteAux(true);
+}
+
 void MainWindow::autoroute() {
+    autorouteAux(false);
+}
+
+void MainWindow::autorouteAux(bool useNew) {
 	PCBSketchWidget * pcbSketchWidget = qobject_cast<PCBSketchWidget *>(m_currentGraphicsView);
 	if (pcbSketchWidget == NULL) return;
 
@@ -2578,7 +2595,9 @@ void MainWindow::autoroute() {
 
 	pcbSketchWidget->scene()->clearSelection();
 	pcbSketchWidget->setIgnoreSelectionChangeEvents(true);
-	CMRouter * autorouter = new CMRouter(pcbSketchWidget, board, true);
+	Autorouter * autorouter = NULL;
+    if (useNew) autorouter = new MazeRouter(pcbSketchWidget, board, true);
+    else autorouter = new CMRouter(pcbSketchWidget, board, true);
 
 	connect(autorouter, SIGNAL(wantTopVisible()), this, SLOT(activeLayerTop()), Qt::DirectConnection);
 	connect(autorouter, SIGNAL(wantBottomVisible()), this, SLOT(activeLayerBottom()), Qt::DirectConnection);
@@ -3681,6 +3700,11 @@ void MainWindow::designRulesKeepout()
 
 void MainWindow::newDesignRulesCheck() 
 {
+    newDesignRulesCheck(true);
+}
+
+void MainWindow::newDesignRulesCheck(bool showOkMessage) 
+{
 	if (m_currentGraphicsView == NULL) return;
 
 	PCBSketchWidget * pcbSketchWidget = qobject_cast<PCBSketchWidget *>(m_currentGraphicsView);
@@ -3728,7 +3752,7 @@ void MainWindow::newDesignRulesCheck()
 
 	ProcessEventBlocker::processEvents();
 	ProcessEventBlocker::block();
-	drc.start();
+	drc.start(showOkMessage);
 	ProcessEventBlocker::unblock();
 
 	pcbSketchWidget->setLayerActive(ViewLayer::Copper1, copper1Active);
