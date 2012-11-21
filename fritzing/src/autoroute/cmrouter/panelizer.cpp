@@ -37,7 +37,6 @@ $Date$
 #include "../../fsvgrenderer.h"
 #include "../../fapplication.h"
 #include "../../svg/gerbergenerator.h"
-#include "../../autoroute/cmrouter/cmrouter.h"
 #include "../../referencemodel/referencemodel.h"
 #include "../../version/version.h"
 #include "../../processeventblocker.h"
