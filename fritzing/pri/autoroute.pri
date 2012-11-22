@@ -23,7 +23,7 @@ src/autoroute/cmrouter/cmrouter.h \
 src/autoroute/cmrouter/priorityqueue.h \
 src/autoroute/autorouteprogressdialog.h \
 src/autoroute/autoroutersettingsdialog.h \
-src/autoroute/cmrouter/panelizer.h  \
+src/autoroute/panelizer.h  \
 src/autoroute/cmrouter/tile.h  \
 src/autoroute/cmrouter/tileutils.h  \
 src/autoroute/mazerouter/mazerouter.h  \
@@ -35,7 +35,7 @@ src/autoroute/autorouter.cpp \
 src/autoroute/cmrouter/cmrouter.cpp \
 src/autoroute/autorouteprogressdialog.cpp \
 src/autoroute/autoroutersettingsdialog.cpp \
-src/autoroute/cmrouter/panelizer.cpp  \
+src/autoroute/panelizer.cpp  \
 src/autoroute/cmrouter/tile.cpp \
 src/autoroute/cmrouter/DBcell.cpp \
 src/autoroute/cmrouter/search.cpp \

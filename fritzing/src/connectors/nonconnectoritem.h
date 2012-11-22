@@ -59,6 +59,8 @@ public:
 	void setShape(QPainterPath &);
 	void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 	QPainterPath shape() const;
+    void setIsPath(bool);
+    bool isPath();
 
 protected:
 	bool doNotPaint();
@@ -83,6 +85,7 @@ protected:
 	double m_negativePenWidth;
 	bool m_negativeOffsetRect;
 	QPainterPath m_shape;
+    bool m_isPath;
 	
 };
 

@@ -454,6 +454,7 @@ void PaletteItemBase::setUpConnectors(FSvgRenderer * renderer, bool ignoreTermin
 		connectorItem->setRect(svgIdLayer->m_rect);
 		connectorItem->setTerminalPoint(svgIdLayer->m_point);
 		connectorItem->setRadius(svgIdLayer->m_radius, svgIdLayer->m_strokeWidth);
+        connectorItem->setIsPath(svgIdLayer->m_path);
 		if (!svgIdLayer->m_legId.isEmpty()) {
 			m_hasRubberBandLeg = true;
 			connectorItem->setRubberBandLeg(QColor(svgIdLayer->m_legColor), svgIdLayer->m_legStrokeWidth, svgIdLayer->m_legLine);
@@ -474,6 +475,7 @@ void PaletteItemBase::setUpConnectors(FSvgRenderer * renderer, bool ignoreTermin
 
 		nonConnectorItem->setRect(svgIdLayer->m_rect);
 		nonConnectorItem->setRadius(svgIdLayer->m_radius, svgIdLayer->m_strokeWidth);
+        nonConnectorItem->setIsPath(svgIdLayer->m_path);
 		//DebugDialog::debug(QString("terminal point %1 %2").arg(terminalPoint.x()).arg(terminalPoint.y()) );
 
 		delete svgIdLayer;

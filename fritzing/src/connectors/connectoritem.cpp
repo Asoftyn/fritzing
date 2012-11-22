@@ -322,7 +322,6 @@ ConnectorItem::ConnectorItem( Connector * connector, ItemBase * attachedTo )
 	m_connectorDetectT = m_connectorDrawT = 0;
 	m_draggingCurve = m_draggingLeg = m_rubberBandLeg = m_bigDot = m_hybrid = false;
 	m_marked = false;
-	m_checkedEffectively = false;
 	m_hoverEnterSpaceBarWasPressed = m_spaceBarWasPressed = false;
 	m_overConnectorItem = NULL;
 	m_connectorHovering = false;

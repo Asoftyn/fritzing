@@ -207,8 +207,7 @@ protected:
 	void removeCorners(QList<QPointF> & allPoints, Plane *);
 	void removeColinear(QList<QPointF> & allPoints);
 	bool checkProposed(const QPointF & proposed, const QPointF & p1, const QPointF & p3, Plane *, bool atStartOrEnd); 
-	bool runEdges(QList<Edge *> &, QVector<int> & netCounters, struct RoutingStatus &, 
-					bool makeJumper, Ordering * bestOrdering);
+	bool runEdges(QList<Edge *> &, QVector<int> & netCounters, struct RoutingStatus &, bool makeJumper, Ordering * bestOrdering);
 	void clearEdges(QList<Edge *> & edges);
 	void updateProgress(int num, int denom);
 	GridEntry * drawGridItem(Tile * tile);

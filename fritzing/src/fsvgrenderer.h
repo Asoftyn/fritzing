@@ -47,6 +47,7 @@ struct ConnectorInfo {
 	QString legColor;
 	QLineF legLine;
 	double legStrokeWidth;
+    bool gotPath;
 };
 
 typedef QHash<ViewLayer::ViewLayerID, class FSvgRenderer *> RendererHash;

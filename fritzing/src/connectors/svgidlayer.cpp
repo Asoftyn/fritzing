@@ -28,7 +28,7 @@ $Date$
 
 SvgIdLayer::SvgIdLayer(ViewLayer::ViewIdentifier viewIdentifier) {
     m_viewIdentifier = viewIdentifier;
-	m_processed = m_hybrid = false;
+	m_path = m_processed = m_hybrid = false;
 	m_radius = m_strokeWidth = 0;
 }
 

@@ -32,7 +32,7 @@ $Date$
 
 #include "../../mainwindow/mainwindow.h"
 #include "../../items/itembase.h"
-#include "tile.h"
+#include "cmrouter/tile.h"
 
 
 struct PlanePair

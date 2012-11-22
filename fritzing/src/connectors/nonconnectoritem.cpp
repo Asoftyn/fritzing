@@ -44,7 +44,7 @@ NonConnectorItem::NonConnectorItem(ItemBase * attachedTo) : QGraphicsRectItem(at
 {
 	m_effectively = EffectivelyUnknown;
 	m_radius = m_strokeWidth = 0;
-	m_inactive = m_hidden = false;
+	m_isPath = m_inactive = m_hidden = false;
 	m_attachedTo = attachedTo;
     setAcceptHoverEvents(false);
 	setAcceptedMouseButtons(Qt::NoButton);
@@ -173,6 +173,14 @@ void NonConnectorItem::setRadius(double radius, double strokeWidth) {
 	m_radius = radius;
 	m_strokeWidth = strokeWidth;
 	m_circular = (m_radius > 0);
+}
+
+void NonConnectorItem::setIsPath(bool path) {
+    m_isPath = path;
+}
+
+bool NonConnectorItem::isPath() {
+    return m_isPath;
 }
 
 double NonConnectorItem::radius() {

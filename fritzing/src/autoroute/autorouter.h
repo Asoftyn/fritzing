@@ -94,7 +94,7 @@ protected:
 	ItemBase * m_board;
 	QMultiHash<TraceWire *, TraceWire *> m_splitDNA;
 	int m_maxCycles;
-    double m_keepout;
+    double m_keepoutPixels;
 	QRectF m_maxRect;
 	QSet<ConnectorItem *> m_offBoardConnectors;
 };

@@ -48,6 +48,7 @@ struct SvgIdLayer
 	QString m_legColor;
 	double m_legStrokeWidth;
 	QLineF m_legLine;
+    bool m_path;
 
 	SvgIdLayer(ViewLayer::ViewIdentifier);
 	SvgIdLayer * copyLayer();

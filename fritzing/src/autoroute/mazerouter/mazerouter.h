@@ -70,6 +70,18 @@ struct NetOrdering {
 	double score();
 };
 
+struct Grid {
+    quint32 * data;
+    int _x;
+    int _y;
+    int _z;
+
+    Grid(int x, int y, int layers);
+
+    quint32 at(int x, int y, int z);
+    void setAt(int x, int y, int z, quint32 value);
+    void init(int x, int y, int z, int width, int height, const QImage &, quint32 value);
+};
 
 ////////////////////////////////////
 
@@ -93,12 +105,16 @@ protected:
 	void computeMD5(NetOrdering * ordering);
 	bool reorder(QList<NetOrdering *> & orderings, NetOrdering *  currentOrdering, NetOrdering * & bestOrdering);
     int findPinsWithin(QList<ConnectorItem *> * net);
-    bool makeBoard(QImage & image, double keepout);
+    bool makeBoard(QImage & image, double keepout, const QSizeF gridSize);
     bool makeMasters(QString &);
+	bool routeNets(NetOrdering *, QVector<int> & netCounters, struct RoutingStatus &, bool makeJumper, NetOrdering * bestOrdering, QImage & boardImage, const QSizeF gridSize);
+    void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int & nearesti, int & nearestj);
+    void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, int & nearesti, int & nearestj, double & shortest);
 
 protected:
 	LayerList m_viewLayerIDs;
     QHash<ViewLayer::ViewLayerSpec, QDomDocument *> m_masterDocs;
+    double m_keepoutMils;
 };
 
 #endif

@@ -54,7 +54,7 @@ FSvgRenderer::~FSvgRenderer()
 }
 
 void FSvgRenderer::initNames() {
-    VanillaConnectorInfo.gotCircle = false;	
+    VanillaConnectorInfo.gotPath = VanillaConnectorInfo.gotCircle = false;	
 }
 
 void FSvgRenderer::clearConnectorInfoHash(QHash<QString, ConnectorInfo *> & hash) {
@@ -401,7 +401,7 @@ void FSvgRenderer::initConnectorInfoAux(QDomElement & element, const QStringList
 ConnectorInfo * FSvgRenderer::initConnectorInfoStruct(QDomElement & connectorElement, const QString & filename) {
 	ConnectorInfo * connectorInfo = new ConnectorInfo();
 	connectorInfo->radius = connectorInfo->strokeWidth = 0;
-	connectorInfo->gotCircle = false;
+	connectorInfo->gotPath = connectorInfo->gotCircle = false;
 
 	if (connectorElement.isNull()) return connectorInfo;
 
@@ -420,6 +420,11 @@ bool FSvgRenderer::initConnectorInfoStructAux(QDomElement & element, ConnectorIn
 
 			child = child.nextSiblingElement();
 		}
+
+        if (element.nodeName().compare("path") == 0) {
+            connectorInfo->gotPath = true;
+        }
+
 		return false;
 	}
 
@@ -542,15 +547,20 @@ bool FSvgRenderer::setUpConnector(SvgIdLayer * svgIdLayer, bool ignoreTerminalPo
     QMatrix elementMatrix = this->matrixForElement(connectorID);
 	QRectF r1 = elementMatrix.mapRect(bounds);
 
-	if (connectorInfo && connectorInfo->gotCircle) {
-        QLineF l(0,0,connectorInfo->radius, 0);
-        QLineF lm = elementMatrix.map(l);
-		svgIdLayer->m_radius = lm.length() * defaultSizeF.width() / viewBox.width();
+	if (connectorInfo != NULL) {
+        if (connectorInfo->gotCircle) {
+            QLineF l(0,0,connectorInfo->radius, 0);
+            QLineF lm = elementMatrix.map(l);
+		    svgIdLayer->m_radius = lm.length() * defaultSizeF.width() / viewBox.width();
 
-        QLineF k(0,0,connectorInfo->strokeWidth, 0);
-        QLineF km = elementMatrix.map(l);
-		svgIdLayer->m_strokeWidth = km.length() * defaultSizeF.width() / viewBox.width();
-		//bounds = connectorInfo->cbounds;
+            QLineF k(0,0,connectorInfo->strokeWidth, 0);
+            QLineF km = elementMatrix.map(l);
+		    svgIdLayer->m_strokeWidth = km.length() * defaultSizeF.width() / viewBox.width();
+		    //bounds = connectorInfo->cbounds;
+        }
+        else if (connectorInfo->gotPath) {
+            svgIdLayer->m_path = true;
+        }
 	}
 
 

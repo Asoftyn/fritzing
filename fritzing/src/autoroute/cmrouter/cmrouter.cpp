@@ -549,7 +549,7 @@ void CMRouter::start()
 
 	m_maximumProgressPart = 1;
 	m_currentProgressPart = 0;
-	m_keepout = m_sketchWidget->getKeepout();			// 15 mils space
+	m_keepoutPixels = m_sketchWidget->getKeepout();			// 15 mils space (in pixels)
 
 	emit setMaximumProgress(MaximumProgress);
 	emit setProgressMessage("");
@@ -1179,7 +1179,7 @@ Plane * CMRouter::tilePlane(ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewL
 			QRectF r = itemBase->boundingRect();
 			r.moveTo(itemBase->pos());
 			TileRect partTileRect;
-			realsToTile(partTileRect, r.left() - m_keepout, r.top() - m_keepout, r.right() + m_keepout, r.bottom() + m_keepout);
+			realsToTile(partTileRect, r.left() - m_keepoutPixels, r.top() - m_keepoutPixels, r.right() + m_keepoutPixels, r.bottom() + m_keepoutPixels);
 			insertTile(thePlane, partTileRect, alreadyTiled, itemBase, Tile::OBSTACLE, overlapType);
 			if (alreadyTiled.count() > 0) {
 				m_hasOverlaps = true;
@@ -1195,7 +1195,7 @@ Plane * CMRouter::tilePlane(ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewL
 			foreach (ConnectorItem * connectorItem, itemBase->cachedConnectorItems()) {
 				QRectF r = itemBase->mapRectToScene(connectorItem->rect());
 				TileRect tileRect;
-				realsToTile(tileRect, r.left() - m_keepout, r.top() - m_keepout, r.right() + m_keepout, r.bottom() + m_keepout);
+				realsToTile(tileRect, r.left() - m_keepoutPixels, r.top() - m_keepoutPixels, r.right() + m_keepoutPixels, r.bottom() + m_keepoutPixels);
 				extendToBounds(tileRect, partTileRect);
 				Tile * newTile = insertTile(thePlane, tileRect, alreadyTiled, connectorItem, Tile::OBSTACLE, CMRouter::IgnoreAllOverlaps);
                 Q_UNUSED(newTile);
@@ -1492,7 +1492,7 @@ bool CMRouter::initBoard(ItemBase * board, Plane * thePlane, QList<Tile *> & alr
         if (ci != NULL) continue;
 
         nci->attachedTo()->debugInfo("nci");
-        QRectF r = nci->sceneBoundingRect().adjusted(-m_keepout, -m_keepout, m_keepout, m_keepout);
+        QRectF r = nci->sceneBoundingRect().adjusted(-m_keepoutPixels, -m_keepoutPixels, m_keepoutPixels, m_keepoutPixels);
         QPointF center = r.center() - board->sceneBoundingRect().topLeft();
         QString circle = QString("<circle cx='%1' cy='%2' r='%3' fill='#ffffff' stroke='none' stroke-width='0' />\n")
                             .arg(center.x()).arg(center.y()).arg(r.width() / 2);
@@ -1502,7 +1502,7 @@ bool CMRouter::initBoard(ItemBase * board, Plane * thePlane, QList<Tile *> & alr
 	GroundPlaneGenerator gpg;
 	QList<QRect> rects;
 	gpg.setMinRunSize(1, 1);
-	gpg.getBoardRects(boardByteArray, board, GraphicsUtils::SVGDPI, m_keepout, rects);
+	gpg.getBoardRects(boardByteArray, board, GraphicsUtils::SVGDPI, m_keepoutPixels, rects);
 	QRectF bsbr = board->sceneBoundingRect();
 	foreach (QRect r, rects) {
 		TileRect tileRect;
@@ -1602,35 +1602,35 @@ void CMRouter::tileWires(QList<Wire *> & wires, QList<Tile *> & alreadyTiled, Ti
 		double dy = qAbs(p1.y() - p2.y());
 		if (dx < CloseEnough) {
 			// vertical line
-			double x = qMin(p1.x(), p2.x()) - (wire->width() / 2) - m_keepout;
-			double y = qMin(p1.y(), p2.y()) - m_keepout;			
-			wireRects.insert(wire, QRectF(x, y, wire->width() + dx + m_keepout + m_keepout, dy + m_keepout + m_keepout));
+			double x = qMin(p1.x(), p2.x()) - (wire->width() / 2) - m_keepoutPixels;
+			double y = qMin(p1.y(), p2.y()) - m_keepoutPixels;			
+			wireRects.insert(wire, QRectF(x, y, wire->width() + dx + m_keepoutPixels + m_keepoutPixels, dy + m_keepoutPixels + m_keepoutPixels));
 			traceWire->setWireDirection(TraceWire::Vertical);
 		}
 		else if (dy < CloseEnough) {
 			// horizontal line
-			double y = qMin(p1.y(), p2.y()) - (wire->width() / 2) - m_keepout;
-			double x = qMin(p1.x(), p2.x()) - m_keepout;
-			wireRects.insert(wire, QRectF(x, y, qMax(p1.x(), p2.x()) - x + m_keepout + m_keepout, wire->width() + dy + m_keepout + m_keepout));
+			double y = qMin(p1.y(), p2.y()) - (wire->width() / 2) - m_keepoutPixels;
+			double x = qMin(p1.x(), p2.x()) - m_keepoutPixels;
+			wireRects.insert(wire, QRectF(x, y, qMax(p1.x(), p2.x()) - x + m_keepoutPixels + m_keepoutPixels, wire->width() + dy + m_keepoutPixels + m_keepoutPixels));
 			traceWire->setWireDirection(TraceWire::Horizontal);
 		}
 		else {
 			double factor = (eliminateThin ? StandardWireWidth : 1);
-			double w = (dx + m_keepout + m_keepout) / factor;
-			double h = (dy + m_keepout + m_keepout) / factor;
+			double w = (dx + m_keepoutPixels + m_keepoutPixels) / factor;
+			double h = (dy + m_keepoutPixels + m_keepoutPixels) / factor;
 			QImage image(w, h, QImage::Format_Mono);
 			image.fill(0xff000000);
 			QPainter painter(&image);
 			painter.setRenderHint(QPainter::Antialiasing);
 			painter.scale(1 / factor, 1 / factor);
-			double tx = m_keepout;
-			double ty = m_keepout;
+			double tx = m_keepoutPixels;
+			double ty = m_keepoutPixels;
 			if (p2.x() < p1.x()) tx += dx;
 			if (p2.y() < p1.y()) ty += dy;
 			painter.translate(tx, ty);
 			QPen pen = painter.pen();
 			pen.setColor(QColor(255,255,255,255));
-			pen.setWidth(StandardWireWidth + m_keepout + m_keepout);
+			pen.setWidth(StandardWireWidth + m_keepoutPixels + m_keepoutPixels);
 			painter.setPen(pen);
 			painter.drawLine(wire->line());
 			painter.end();
@@ -2538,7 +2538,7 @@ Tile * CMRouter::addTile(NonConnectorItem * nci, Tile::TileType type, Plane * th
 {
 	QRectF r = nci->attachedTo()->mapRectToScene(nci->rect());
 	TileRect tileRect;
-	realsToTile(tileRect, r.left() - m_keepout, r.top() - m_keepout, r.right() + m_keepout, r.bottom() + m_keepout);
+	realsToTile(tileRect, r.left() - m_keepoutPixels, r.top() - m_keepoutPixels, r.right() + m_keepoutPixels, r.bottom() + m_keepoutPixels);
 	Tile * tile = insertTile(thePlane, tileRect, alreadyTiled, nci, type, overlapType);
 	DGI(tile);
 	return tile;
@@ -3011,8 +3011,8 @@ bool CMRouter::addJumperItem(PriorityQueue<PathUnit *> & p1, PriorityQueue<PathU
 							QMultiHash<Tile *, PathUnit *> & tilePathUnits)
 {
 	QSizeF sizeNeeded(m_sketchWidget->jumperItemSize().width(), m_sketchWidget->jumperItemSize().height());
-    int tWidthNeeded = fasterRealToTile(sizeNeeded.width() + m_keepout + m_keepout);
-    int tHeightNeeded = fasterRealToTile(sizeNeeded.height() + m_keepout + m_keepout);
+    int tWidthNeeded = fasterRealToTile(sizeNeeded.width() + m_keepoutPixels + m_keepoutPixels);
+    int tHeightNeeded = fasterRealToTile(sizeNeeded.height() + m_keepoutPixels + m_keepoutPixels);
 
 	//hideTiles();
 
@@ -3656,12 +3656,12 @@ void CMRouter::traceViaPath(PathUnit * from, PathUnit * to, QList<Via *> & vias)
 		foreach (ViewLayer::ViewLayerID viewLayerID, m_planeHash.keys()) {
 			if (m_sketchWidget->sameElectricalLayer2(viewLayerID, viaConnectorItem->attachedToViewLayerID())) {
 				Tile * tile = addTile(viaConnectorItem, Tile::DESTINATION, m_planeHash.value(viewLayerID), alreadyTiled, CMRouter::IgnoreAllOverlaps);
-				//infoTile(QString("via tile a %1").arg(m_keepout), tile);
+				//infoTile(QString("via tile a %1").arg(m_keepoutPixels), tile);
 				pu1 = initPathUnit(NULL, tile, tempq, tempPathUnits);
 			}
 			else if (m_sketchWidget->sameElectricalLayer2(viewLayerID, otherViaConnectorItem->attachedToViewLayerID())) {
 				Tile * tile = addTile(otherViaConnectorItem, Tile::DESTINATION, m_planeHash.value(viewLayerID), alreadyTiled, CMRouter::IgnoreAllOverlaps);
-				//infoTile(QString("via tile b %1").arg(m_keepout), tile);
+				//infoTile(QString("via tile b %1").arg(m_keepoutPixels), tile);
 				pu2 = initPathUnit(NULL, tile, tempq, tempPathUnits);
 			}
 		}
@@ -3959,7 +3959,7 @@ TileRect CMRouter::boardRect() {
 void CMRouter::getViaSize(int & tWidthNeeded, int & tHeightNeeded) {
 	double ringThickness, holeSize;
 	m_sketchWidget->getViaSize(ringThickness, holeSize);
-	tHeightNeeded = tWidthNeeded = fasterRealToTile(ringThickness + ringThickness + holeSize + m_keepout + m_keepout);
+	tHeightNeeded = tWidthNeeded = fasterRealToTile(ringThickness + ringThickness + holeSize + m_keepoutPixels + m_keepoutPixels);
 }
 
 Via * CMRouter::makeVia(PathUnit * pathUnit) {
@@ -4038,7 +4038,7 @@ void CMRouter::setUpWidths(double width)
 }
 void CMRouter::setKeepout(double keepout)
 {
-	m_keepout = keepout;
+	m_keepoutPixels = keepout;
 }
 
 

@@ -65,15 +65,30 @@ $Date$
 //
 ///////////////////////////////////////////
 
+static const QString TreatAsNet = "alsoNet";
+const QString DRC::NotNet = "notnet";
+
+const uchar DRC::BitTable[] = { 128, 64, 32, 16, 8, 4, 2, 1 }; 
+
 bool pixelsCollide(QImage * image1, QImage * image2, QImage * image3, int x1, int y1, int x2, int y2, uint clr, QList<QPointF> & points) {
     bool result = false;
+    const uchar * bits1 = image1->constScanLine(0);
+    const uchar * bits2 = image2->constScanLine(0);
+    int bytesPerLine = image1->bytesPerLine();
 	for (int y = y1; y < y2; y++) {
+        int offset = y * bytesPerLine;
 		for (int x = x1; x < x2; x++) {
-			QRgb p1 = image1->pixel(x, y);
-			if (p1 == 0xffffffff) continue;
+			//QRgb p1 = image1->pixel(x, y);
+			//if (p1 == 0xffffffff) continue;
 
-			QRgb p2 = image2->pixel(x, y);
-			if (p2 == 0xffffffff) continue;
+			//QRgb p2 = image2->pixel(x, y);
+			//if (p2 == 0xffffffff) continue;
+
+            int byteOffset = (x >> 3) + offset;
+            uchar mask = DRC::BitTable[x & 7];
+
+            if (*(bits1 + byteOffset) & mask) continue;
+            if (*(bits2 + byteOffset) & mask) continue;
 
             image3->setPixel(x, y, clr);
 			//DebugDialog::debug(QString("p1:%1 p2:%2").arg(p1, 0, 16).arg(p2, 0, 16));
@@ -173,7 +188,7 @@ void DRCResultsDialog::pressedSlot(QListWidgetItem * item) {
     int ix = item->data(Qt::UserRole).toInt();
     CollidingThing * collidingThing = m_collidingThings.at(ix);
     foreach (QPointF p, collidingThing->atPixels) {
-        m_displayImage->setPixel(p.x(), p.y(), 0xffffff00);
+        m_displayImage->setPixel(p.x(), p.y(), 2 /* 0xffffff00 */);
     }
     QPixmap pixmap = QPixmap::fromImage(*m_displayImage);
     m_displayItem->setPixmap(pixmap);
@@ -188,7 +203,7 @@ void DRCResultsDialog::releasedSlot(QListWidgetItem * item) {
     int ix = item->data(Qt::UserRole).toInt();
     CollidingThing * collidingThing = m_collidingThings.at(ix);
     foreach (QPointF p, collidingThing->atPixels) {
-        m_displayImage->setPixel(p.x(), p.y(), 0x80ff0000);
+        m_displayImage->setPixel(p.x(), p.y(), 1 /* 0x80ff0000 */);
     }
     QPixmap pixmap = QPixmap::fromImage(*m_displayImage);
     m_displayItem->setPixmap(pixmap);
@@ -250,7 +265,7 @@ DRCKeepoutDialog::DRCKeepoutDialog(QWidget *parent) : QDialog(parent)
     frameLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
 
     bool inches;
-    m_keepout = getKeepoutSetting(inches);
+    m_keepoutMils = getKeepoutSetting(inches);
     if (inches) {
         toInches();
         m_inRadio->setChecked(true);
@@ -279,7 +294,7 @@ void DRCKeepoutDialog::toInches() {
     m_spinBox->blockSignals(true);
     m_spinBox->setRange(.001, 1);
     m_spinBox->setSingleStep(.001);
-    m_spinBox->setValue(m_keepout / 1000);
+    m_spinBox->setValue(m_keepoutMils / 1000);
     m_spinBox->blockSignals(false);
 }
 
@@ -287,17 +302,17 @@ void DRCKeepoutDialog::toMM() {
     m_spinBox->blockSignals(true);
     m_spinBox->setRange(.001 * 25.4, 1);
     m_spinBox->setSingleStep(.01);
-    m_spinBox->setValue(m_keepout * 25.4 / 1000);
+    m_spinBox->setValue(m_keepoutMils * 25.4 / 1000);
     m_spinBox->blockSignals(false);
 }
 
 void DRCKeepoutDialog::keepoutEntry() {
     double k = m_spinBox->value();
     if (m_inRadio->isChecked()) {
-        m_keepout = k * 1000;
+        m_keepoutMils = k * 1000;
     }
     else {
-        m_keepout = k * 1000 / 25.4;
+        m_keepoutMils = k * 1000 / 25.4;
     }
 }
 
@@ -305,10 +320,10 @@ void DRCKeepoutDialog::saveAndAccept() {
     QSettings settings;
     QString keepoutSetting;
     if (m_inRadio->isChecked()) {
-        keepoutSetting = QString("%1in").arg(m_keepout / 1000);
+        keepoutSetting = QString("%1in").arg(m_keepoutMils / 1000);
     }
     else {
-        keepoutSetting = QString("%1mm").arg(m_keepout * 25.4 / 1000);
+        keepoutSetting = QString("%1mm").arg(m_keepoutMils * 25.4 / 1000);
     }
     settings.setValue(KeepoutSetting, keepoutSetting);
     accept();
@@ -444,9 +459,9 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
 	ProcessEventBlocker::processEvents();
 
     bool inches;
-    double keepout = getKeepoutSetting(inches);  // keepout result is in mils
+    double keepoutMils = getKeepoutSetting(inches);  // keepout result is in mils
     
-    double dpi = (1000 / keepout);
+    double dpi = (1000 / keepoutMils);
     QRectF boardRect = m_board->sceneBoundingRect();
     QRectF sourceRes(0, 0, 
 					 boardRect.width() * dpi / GraphicsUtils::SVGDPI, 
@@ -460,7 +475,10 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
     m_minusImage = new QImage(imgSize, QImage::Format_Mono);
     m_minusImage->fill(0);
 
-    m_displayImage = new QImage(imgSize, QImage::Format_ARGB32);
+    m_displayImage = new QImage(imgSize, QImage::Format_Indexed8);
+    m_displayImage->setColor(0, 0);
+    m_displayImage->setColor(1, 0x80ff0000);
+    m_displayImage->setColor(2, 0xffffff00);
     m_displayImage->fill(0);
 
     if (!makeBoard(m_minusImage, sourceRes)) {
@@ -522,7 +540,7 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
         }
 
         QDomElement root = masterDoc->documentElement();
-        SvgFileSplitter::forceStrokeWidth(root, 2 * keepout, "#000000", true);
+        SvgFileSplitter::forceStrokeWidth(root, 2 * keepoutMils, "#000000", true);
 
         renderOne(masterDoc, m_plusImage, sourceRes);
         #ifndef QT_NO_DEBUG
@@ -536,8 +554,8 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
         }
 
         QList<QPointF> atPixels;
-        if (pixelsCollide(m_plusImage, m_minusImage, m_displayImage, 0, 0, imgSize.width(), imgSize.height(), 0x80ff0000, atPixels)) {
-            CollidingThing * collidingThing = findItemsAt(atPixels, m_board, viewLayerIDs, keepout, dpi, true, NULL);
+        if (pixelsCollide(m_plusImage, m_minusImage, m_displayImage, 0, 0, imgSize.width(), imgSize.height(), 1 /* 0x80ff0000 */, atPixels)) {
+            CollidingThing * collidingThing = findItemsAt(atPixels, m_board, viewLayerIDs, keepoutMils, dpi, true, NULL);
             QString msg = tr("Too close to a border or a hole (%1 layer)")
                 .arg(viewLayerSpec == ViewLayer::Top ? tr("top") : tr("bottom"))
                 ;
@@ -604,7 +622,7 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
             // we have a net;
             m_plusImage->fill(0xffffffff);
             m_minusImage->fill(0xffffffff);
-            splitNet(masterDoc, equi, m_minusImage, m_plusImage, sourceRes, viewLayerSpec, keepout, index++);
+            splitNet(masterDoc, equi, m_minusImage, m_plusImage, sourceRes, viewLayerSpec, keepoutMils, index++);
             
             QHash<ConnectorItem *, QRectF> rects;
             QList<Wire *> wires;
@@ -638,8 +656,8 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
                 double b = (rect.bottom() - boardRect.top()) * dpi / GraphicsUtils::SVGDPI;
                 //DebugDialog::debug(QString("l:%1 t:%2 r:%3 b:%4").arg(l).arg(t).arg(r).arg(b));
                 QList<QPointF> atPixels;
-                if (pixelsCollide(m_plusImage, m_minusImage, m_displayImage, l, t, r, b, 0x80ff0000, atPixels)) {
-                    CollidingThing * collidingThing = findItemsAt(atPixels, m_board, viewLayerIDs, keepout, dpi, false, equ);
+                if (pixelsCollide(m_plusImage, m_minusImage, m_displayImage, l, t, r, b, 1 /* 0x80ff0000 */, atPixels)) {
+                    CollidingThing * collidingThing = findItemsAt(atPixels, m_board, viewLayerIDs, keepoutMils, dpi, false, equ);
                     QStringList names = getNames(collidingThing);
                     QString name0 = names.at(0);
                     QString msg = tr("%1 is overlapping (%2 layer)")
@@ -779,83 +797,15 @@ bool DRC::makeBoard(QImage * image, QRectF & sourceRes) {
     return true;
 }
 
-void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QImage * minusImage, QImage * plusImage, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec, double keepout, int index) {
-    QMultiHash<QString, QString> partIDs;
-    QSet<QString> wireIDs;
-    foreach (ConnectorItem * equ, equi) {
-        ItemBase * itemBase = equ->attachedTo();
-        if (itemBase == NULL) continue;
-
-        if (itemBase->itemType() == ModelPart::Wire) {
-            wireIDs.insert(QString::number(itemBase->id()));
-        }
-
-        if (equ->connector() == NULL) {
-            // this shouldn't happen
-            itemBase->debugInfo("!!!!!!!!!!!!!!!!!!!!!!!!!!!!! missing connector !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            equ->debugInfo("missing connector");
-            continue;
-        }
-        
-        SvgIdLayer * svgIdLayer = equ->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
-        partIDs.insert(QString::number(itemBase->id()), svgIdLayer->m_svgId);
-    }
-
-    QList<QDomElement> todo;
+void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QImage * minusImage, QImage * plusImage, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec, double keepoutMils, int index) {
+    // TreatAsNet marks connectors on the same part even though they are not on the same net
+    // in other words, make sure there are no overlaps of connectors on the same part
     QList<QDomElement> net;
     QList<QDomElement> alsoNet;
     QList<QDomElement> notNet;
-    todo << masterDoc->documentElement();
-    bool firstTime = true;
-    while (!todo.isEmpty()) {
-        QDomElement element = todo.takeFirst();
-        QString string;
-        QTextStream stream(&string);
-        element.save(stream, 0);
-
-        QDomElement child = element.firstChildElement();
-        while (!child.isNull()) {
-            todo << child;
-            child = child.nextSiblingElement();
-        }
-        if (firstTime) {
-            // don't include the root <svg> element
-            firstTime = false;
-            continue;
-        }
-
-        QString partID = element.attribute("partID");
-        if (!partID.isEmpty()) {
-            QStringList svgIDs = partIDs.values(partID);
-            if (svgIDs.count() == 0) {
-                markSubs(element, "notnet");
-            }
-            else if (wireIDs.contains(partID)) {
-                markSubs(element, "net");
-            }
-            else {
-                splitSubs(element, "net", "alsoNet", svgIDs);
-            }
-        }
-
-        if (element.tagName() == "g") continue;
-
-        if (element.attribute("net") == "net") {
-            net.append(element);
-            SvgFileSplitter::forceStrokeWidth(element, -2 * keepout, "#000000", false);
-        }
-        else if (element.attribute("net") == "alsoNet") {
-            alsoNet.append(element);
-            element.setAttribute("former", element.tagName());
-            element.setTagName("g");
-        }
-        else {
-            // assume unmarked element belongs to notNet
-            notNet.append(element);
-            element.setAttribute("former", element.tagName());
-            element.setTagName("g");
-        }
-    }
+    splitNetPrep(masterDoc, equi, keepoutMils, TreatAsNet, net, alsoNet, notNet);
+    foreach (QDomElement element, notNet) element.setTagName("g");
+    foreach (QDomElement element, alsoNet) element.setTagName("g");
 
     renderOne(masterDoc, plusImage, sourceRes);
     #ifndef QT_NO_DEBUG
@@ -867,8 +817,7 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
 
     // restore doc without net
     foreach (QDomElement element, net) {
-        SvgFileSplitter::forceStrokeWidth(element, 2 * keepout, "#000000", false);
-        element.setAttribute("former", element.tagName());
+        SvgFileSplitter::forceStrokeWidth(element, 2 * keepoutMils, "#000000", false);
         element.removeAttribute("net");
         element.setTagName("g");
     }
@@ -892,7 +841,81 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
     }
 }
 
-void DRC::renderOne(QDomDocument * masterDoc, QImage * image, QRectF & sourceRes) {
+void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, double keepoutMils, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet) 
+{
+    QMultiHash<QString, QString> partIDs;
+    QSet<QString> wireIDs;
+    foreach (ConnectorItem * equ, equi) {
+        ItemBase * itemBase = equ->attachedTo();
+        if (itemBase == NULL) continue;
+
+        if (itemBase->itemType() == ModelPart::Wire) {
+            wireIDs.insert(QString::number(itemBase->id()));
+        }
+
+        if (equ->connector() == NULL) {
+            // this shouldn't happen
+            itemBase->debugInfo("!!!!!!!!!!!!!!!!!!!!!!!!!!!!! missing connector !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            equ->debugInfo("missing connector");
+            continue;
+        }
+        
+        SvgIdLayer * svgIdLayer = equ->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
+        partIDs.insert(QString::number(itemBase->id()), svgIdLayer->m_svgId);
+    }
+
+    QList<QDomElement> todo;
+    todo << masterDoc->documentElement();
+    bool firstTime = true;
+    while (!todo.isEmpty()) {
+        QDomElement element = todo.takeFirst();
+        QString string;
+        QTextStream stream(&string);
+        element.save(stream, 0);
+
+        QDomElement child = element.firstChildElement();
+        while (!child.isNull()) {
+            todo << child;
+            child = child.nextSiblingElement();
+        }
+        if (firstTime) {
+            // don't include the root <svg> element
+            firstTime = false;
+            continue;
+        }
+
+        QString partID = element.attribute("partID");
+        if (!partID.isEmpty()) {
+            QStringList svgIDs = partIDs.values(partID);
+            if (svgIDs.count() == 0) {
+                markSubs(element, NotNet);
+            }
+            else if (wireIDs.contains(partID)) {
+                markSubs(element, "net");
+            }
+            else {
+                splitSubs(element, "net", treatAs, svgIDs);
+            }
+        }
+
+        if (element.tagName() == "g") continue;
+
+        element.setAttribute("former", element.tagName());
+        if (element.attribute("net") == "net") {
+            net.append(element);
+            SvgFileSplitter::forceStrokeWidth(element, -2 * keepoutMils, "#000000", false);
+        }
+        else if (element.attribute("net") == TreatAsNet) {
+            alsoNet.append(element);
+        }
+        else {
+            // assume unmarked element belongs to notNet
+            notNet.append(element);
+        }
+    }
+}
+
+void DRC::renderOne(QDomDocument * masterDoc, QImage * image, const QRectF & sourceRes) {
     QByteArray byteArray = masterDoc->toByteArray();
 	QSvgRenderer renderer(byteArray);
 	QPainter painter;
@@ -972,10 +995,10 @@ void DRC::cancel() {
 	m_cancelled = true;
 }
 
-CollidingThing * DRC::findItemsAt(QList<QPointF> & atPixels, ItemBase * board, const LayerList & viewLayerIDs, double keepout, double dpi, bool skipHoles, ConnectorItem * already) {
+CollidingThing * DRC::findItemsAt(QList<QPointF> & atPixels, ItemBase * board, const LayerList & viewLayerIDs, double keepoutMils, double dpi, bool skipHoles, ConnectorItem * already) {
     Q_UNUSED(board);
     Q_UNUSED(viewLayerIDs);
-    Q_UNUSED(keepout);
+    Q_UNUSED(keepoutMils);
     Q_UNUSED(dpi);
     Q_UNUSED(skipHoles);
     

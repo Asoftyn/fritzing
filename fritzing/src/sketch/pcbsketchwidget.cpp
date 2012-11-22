@@ -48,7 +48,7 @@ $Date$
 #include "../processeventblocker.h"
 #include "../autoroute/cmrouter/cmrouter.h"
 #include "../autoroute/cmrouter/tileutils.h"
-#include "../autoroute/cmrouter/panelizer.h"
+#include "../autoroute/panelizer.h"
 #include "../autoroute/autoroutersettingsdialog.h"
 #include "../svg/groundplanegenerator.h"
 #include "../items/logoitem.h"

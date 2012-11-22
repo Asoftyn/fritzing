@@ -57,6 +57,10 @@ public:
 
 	bool start(bool showOkMessage);
 
+public:
+    static void splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, double keepout, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet);
+    static void renderOne(QDomDocument * masterDoc, QImage * image, const QRectF & sourceRes);
+
 public slots:
 	void cancel();
 
@@ -69,16 +73,21 @@ signals:
 	void wantBothVisible();
 	void setProgressMessage(const QString &);
 
+public:
+    static const QString NotNet;
+    static const uchar BitTable[];
+
 protected:
     void makeHoles(QDomDocument *, QImage *, QRectF & sourceRes, ViewLayer::ViewLayerSpec);
     bool makeBoard(QImage *, QRectF & sourceRes);
     void splitNet(QDomDocument *, QList<ConnectorItem *> & , QImage * minusImage, QImage * plusImage, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec, double keepout, int index);
-    void renderOne(QDomDocument * masterDoc, QImage * image, QRectF & sourceRes);
-    void markSubs(QDomElement & root, const QString & mark);
-    void splitSubs(QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs);
     void updateDisplay(double dpi);
 	bool startAux(QString & message, QStringList & messages, QList<CollidingThing *> &);
     CollidingThing * findItemsAt(QList<QPointF> &, ItemBase * board, const LayerList & viewLayerIDs, double keepout, double dpi, bool skipHoles, ConnectorItem * already);
+
+protected:
+    static void markSubs(QDomElement & root, const QString & mark);
+    static void splitSubs(QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs);
 	
 protected:
 	class PCBSketchWidget * m_sketchWidget;
@@ -128,7 +137,7 @@ protected slots:
     void saveAndAccept();
 
 protected:
-    double m_keepout;
+    double m_keepoutMils;
     bool m_inches;
     QDoubleSpinBox * m_spinBox;
     QRadioButton * m_inRadio;

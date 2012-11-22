@@ -214,7 +214,6 @@ protected:
 	bool m_connectorHovering;
 	bool m_spaceBarWasPressed;
 	bool m_hoverEnterSpaceBarWasPressed;
-	bool m_checkedEffectively;
 	bool m_marked;
 	bool m_hybrid;
 	bool m_bigDot;
