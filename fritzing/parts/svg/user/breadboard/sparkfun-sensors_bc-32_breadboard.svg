@@ -7,54 +7,54 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,270A30,30 0 0 1 0,330L0,600L1600,600L1600,0L0,0z"/>
    <g transform="translate(658.205,158.205)">
     <g transform="matrix(0.5, 0, 0, 0.5, 70.8976, 70.8976)">
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="141.796" x1="47.3072" y2="141.796" stroke-width="10" x2="78.8033"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="173.292" x1="47.3072" y2="173.292" stroke-width="10" x2="78.8033"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="110.299" x1="47.3072" y2="110.299" stroke-width="10" x2="78.8033"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="236.284" x1="110.299" y2="204.788" stroke-width="10" x2="110.299"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="204.788" x1="141.796" y2="236.284" stroke-width="10" x2="141.796"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="204.788" x1="173.292" y2="238.252" stroke-width="10" x2="173.292"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="173.292" x1="204.788" y2="173.292" stroke-width="10" x2="236.284"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="141.796" x1="202.819" y2="141.796" stroke-width="10" x2="236.284"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="110.299" x1="204.788" y2="110.299" stroke-width="10" x2="236.284"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="78.8033" x1="110.299" y2="47.3072" stroke-width="10" x2="110.299"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="78.8033" x1="141.796" y2="47.3072" stroke-width="10" x2="141.796"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="78.8033" x1="173.292" y2="45.3387" stroke-width="10" x2="173.292"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="78.8033" x1="47.3072" y2="47.3072" stroke-width="10" x2="78.8033"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="78.8033" x1="236.284" y2="47.3072" stroke-width="10" x2="204.788"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="236.284" x1="204.788" y2="204.788" stroke-width="10" x2="236.284"/>
-     <line class="other" stroke="#F7BD13" stroke-linecap="round" y1="204.788" x1="47.3072" y2="236.284" stroke-width="10" x2="78.8033"/>
-     <rect width="21.6536" x="225.457" y="130.969" fill="#F7BD13" connectorname="ST2" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="193.961" y="130.969" fill="#F7BD13" connectorname="4F" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="193.961" y="99.4726" fill="#F7BD13" connectorname="5F" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="193.961" y="162.465" fill="#F7BD13" connectorname="3F" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="225.457" y="162.465" fill="#F7BD13" connectorname="TEMP" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="225.457" y="99.4726" fill="#F7BD13" connectorname="ST1" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="225.457" y="67.9765" fill="#F7BD13" connectorname="PGND" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="225.457" y="193.961" fill="#F7BD13" connectorname="AGND" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="130.969" y="36.4804" fill="#F7BD13" connectorname="CP5" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="130.969" y="67.9765" fill="#F7BD13" connectorname="6D" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="99.4726" y="67.9765" fill="#F7BD13" connectorname="6C" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="162.465" y="67.9765" fill="#F7BD13" connectorname="6E" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="162.465" y="36.4804" fill="#F7BD13" connectorname="VDD" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="99.4726" y="36.4804" fill="#F7BD13" connectorname="CP3" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="67.9765" y="36.4804" fill="#F7BD13" connectorname="7B" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="193.961" y="36.4804" fill="#F7BD13" connectorname="7F" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="36.4804" y="130.969" fill="#F7BD13" connectorname="CP2" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="67.9765" y="130.969" fill="#F7BD13" connectorname="4B" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="67.9765" y="162.465" fill="#F7BD13" connectorname="3B" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="67.9765" y="99.4726" fill="#F7BD13" connectorname="5B" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="36.4804" y="99.4726" fill="#F7BD13" connectorname="CP1" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="36.4804" y="162.465" fill="#F7BD13" connectorname="AVCC" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="36.4804" y="193.961" fill="#F7BD13" connectorname="RATEOUT" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="36.4804" y="67.9765" fill="#F7BD13" connectorname="CP4" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="130.969" y="225.457" fill="#F7BD13" connectorname="NC" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="130.969" y="193.961" fill="#F7BD13" connectorname="2D" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="162.465" y="193.961" fill="#F7BD13" connectorname="2E" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="99.4726" y="193.961" fill="#F7BD13" connectorname="2C" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="99.4726" y="225.457" fill="#F7BD13" connectorname="SUMJ" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="162.465" y="225.457" fill="#F7BD13" connectorname="VRATIO" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="193.961" y="225.457" fill="#F7BD13" connectorname="1F" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6536" x="67.9765" y="225.457" fill="#F7BD13" connectorname="1B" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="141.796" x1="47.3072" y2="141.796" stroke-width="10" x2="78.8033"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="173.292" x1="47.3072" y2="173.292" stroke-width="10" x2="78.8033"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="110.299" x1="47.3072" y2="110.299" stroke-width="10" x2="78.8033"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="236.284" x1="110.299" y2="204.788" stroke-width="10" x2="110.299"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="204.788" x1="141.796" y2="236.284" stroke-width="10" x2="141.796"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="204.788" x1="173.292" y2="238.252" stroke-width="10" x2="173.292"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="173.292" x1="204.788" y2="173.292" stroke-width="10" x2="236.284"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="141.796" x1="202.819" y2="141.796" stroke-width="10" x2="236.284"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="110.299" x1="204.788" y2="110.299" stroke-width="10" x2="236.284"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="78.8033" x1="110.299" y2="47.3072" stroke-width="10" x2="110.299"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="78.8033" x1="141.796" y2="47.3072" stroke-width="10" x2="141.796"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="78.8033" x1="173.292" y2="45.3387" stroke-width="10" x2="173.292"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="78.8033" x1="47.3072" y2="47.3072" stroke-width="10" x2="78.8033"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="78.8033" x1="236.284" y2="47.3072" stroke-width="10" x2="204.788"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="236.284" x1="204.788" y2="204.788" stroke-width="10" x2="236.284"/>
+     <line class="other" stroke="#8c8c8c" stroke-linecap="round" y1="204.788" x1="47.3072" y2="236.284" stroke-width="10" x2="78.8033"/>
+     <rect width="21.6536" x="225.457" y="130.969" fill="#8c8c8c" connectorname="ST2" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="193.961" y="130.969" fill="#8c8c8c" connectorname="4F" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="193.961" y="99.4726" fill="#8c8c8c" connectorname="5F" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="193.961" y="162.465" fill="#8c8c8c" connectorname="3F" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="225.457" y="162.465" fill="#8c8c8c" connectorname="TEMP" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="225.457" y="99.4726" fill="#8c8c8c" connectorname="ST1" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="225.457" y="67.9765" fill="#8c8c8c" connectorname="PGND" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="225.457" y="193.961" fill="#8c8c8c" connectorname="AGND" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="130.969" y="36.4804" fill="#8c8c8c" connectorname="CP5" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="130.969" y="67.9765" fill="#8c8c8c" connectorname="6D" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="99.4726" y="67.9765" fill="#8c8c8c" connectorname="6C" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="162.465" y="67.9765" fill="#8c8c8c" connectorname="6E" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="162.465" y="36.4804" fill="#8c8c8c" connectorname="VDD" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="99.4726" y="36.4804" fill="#8c8c8c" connectorname="CP3" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="67.9765" y="36.4804" fill="#8c8c8c" connectorname="7B" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="193.961" y="36.4804" fill="#8c8c8c" connectorname="7F" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="36.4804" y="130.969" fill="#8c8c8c" connectorname="CP2" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="67.9765" y="130.969" fill="#8c8c8c" connectorname="4B" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="67.9765" y="162.465" fill="#8c8c8c" connectorname="3B" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="67.9765" y="99.4726" fill="#8c8c8c" connectorname="5B" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="36.4804" y="99.4726" fill="#8c8c8c" connectorname="CP1" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="36.4804" y="162.465" fill="#8c8c8c" connectorname="AVCC" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="36.4804" y="193.961" fill="#8c8c8c" connectorname="RATEOUT" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="36.4804" y="67.9765" fill="#8c8c8c" connectorname="CP4" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="130.969" y="225.457" fill="#8c8c8c" connectorname="NC" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="130.969" y="193.961" fill="#8c8c8c" connectorname="2D" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="162.465" y="193.961" fill="#8c8c8c" connectorname="2E" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="99.4726" y="193.961" fill="#8c8c8c" connectorname="2C" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="99.4726" y="225.457" fill="#8c8c8c" connectorname="SUMJ" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="162.465" y="225.457" fill="#8c8c8c" connectorname="VRATIO" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="193.961" y="225.457" fill="#8c8c8c" connectorname="1F" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6536" x="67.9765" y="225.457" fill="#8c8c8c" connectorname="1B" height="21.6536" stroke="none" stroke-linecap="round" stroke-width="0"/>
      <rect width="283.591" x="0" y="0" fill="#303030" height="283.591" stroke="none" stroke-width="0"/>
      <polygon fill="#1f1f1f" points="0,0 283.591,0 273.591,10 10,10"/>
      <polygon fill="#1f1f1f" points="0,283.591 283.591,283.591 273.591,273.591 10,273.591"/>

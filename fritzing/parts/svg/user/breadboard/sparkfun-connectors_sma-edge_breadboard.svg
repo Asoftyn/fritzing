@@ -6,11 +6,11 @@
   <g id="icon">
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,270A30,30 0 0 1 0,330L0,600L460,600L460,0L0,0z"/>
    <g transform="translate(100,220)">
-    <rect width="60" x="0" y="0" fill="#F7BD13" connectorname="GND@0" height="160" stroke="none" stroke-linecap="round" stroke-width="0"/>
-    <rect width="60" x="100" y="0" fill="#F7BD13" connectorname="SIG" height="160" stroke="none" stroke-linecap="round" stroke-width="0"/>
-    <rect width="60" x="200" y="0" fill="#F7BD13" connectorname="GND@1" height="160" stroke="none" stroke-linecap="round" stroke-width="0"/>
-    <rect width="60" x="0" y="0" fill="#F7BD13" connectorname="GND@2" height="160" stroke="none" stroke-linecap="round" stroke-width="0"/>
-    <rect width="60" x="200" y="0" fill="#F7BD13" connectorname="GND@3" height="160" stroke="none" stroke-linecap="round" stroke-width="0"/>
+    <rect width="60" x="0" y="0" fill="#8c8c8c" connectorname="GND@0" height="160" stroke="none" stroke-linecap="round" stroke-width="0"/>
+    <rect width="60" x="100" y="0" fill="#8c8c8c" connectorname="SIG" height="160" stroke="none" stroke-linecap="round" stroke-width="0"/>
+    <rect width="60" x="200" y="0" fill="#8c8c8c" connectorname="GND@1" height="160" stroke="none" stroke-linecap="round" stroke-width="0"/>
+    <rect width="60" x="0" y="0" fill="#8c8c8c" connectorname="GND@2" height="160" stroke="none" stroke-linecap="round" stroke-width="0"/>
+    <rect width="60" x="200" y="0" fill="#8c8c8c" connectorname="GND@3" height="160" stroke="none" stroke-linecap="round" stroke-width="0"/>
    </g>
   </g>
   <g transform="translate(114.035,534.05)">

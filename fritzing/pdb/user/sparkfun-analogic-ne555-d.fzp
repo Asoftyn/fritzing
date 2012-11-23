@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-AnalogIC-NE555-D'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-AnalogIC' NE555 D -->
 <version>4</version>
-<date>2012-11-07</date>
+<date>2012-11-23</date>
 <label>IC</label>
 <author>www.fritzing.org</author>
 <description>General purpose bipolar Timer</description>
@@ -21,7 +21,7 @@
 </properties>
 <views>
 <breadboardView>
-<layers image='breadboard/so08_breadboard.svg'>
+<layers image='breadboard/SO08_breadboard.svg'>
 <layer layerId='breadboard'/>
 </layers>
 </breadboardView>
@@ -37,7 +37,7 @@
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/so08_breadboard.svg'>
+<layers image='breadboard/SO08_breadboard.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

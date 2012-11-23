@@ -6,9 +6,9 @@
   <g id="icon">
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,270A30,30 0 0 1 0,330L0,600L463.78,600L463.78,0L0,0z"/>
    <g transform="translate(100,221.26)">
-    <rect width="66.9293" x="0" y="0" fill="#F7BD13" connectorname="1" height="157.48" stroke="none" stroke-linecap="round" stroke-width="0"/>
-    <rect width="59.0552" x="102.362" y="0" fill="#F7BD13" connectorname="2" height="157.48" stroke="none" stroke-linecap="round" stroke-width="0"/>
-    <rect width="66.9293" x="196.851" y="0" fill="#F7BD13" connectorname="3" height="157.48" stroke="none" stroke-linecap="round" stroke-width="0"/>
+    <rect width="66.9293" x="0" y="0" fill="#8c8c8c" connectorname="1" height="157.48" stroke="none" stroke-linecap="round" stroke-width="0"/>
+    <rect width="59.0552" x="102.362" y="0" fill="#8c8c8c" connectorname="2" height="157.48" stroke="none" stroke-linecap="round" stroke-width="0"/>
+    <rect width="66.9293" x="196.851" y="0" fill="#8c8c8c" connectorname="3" height="157.48" stroke="none" stroke-linecap="round" stroke-width="0"/>
    </g>
   </g>
   <g transform="translate(165.925,534.05)">

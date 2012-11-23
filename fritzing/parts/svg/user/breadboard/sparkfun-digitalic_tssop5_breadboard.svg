@@ -7,11 +7,11 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,170A30,30 0 0 1 0,230L0,400L300,400L300,0L0,0z"/>
    <g transform="translate(100,154.193)">
     <g transform="matrix(0.5, 0, 0, 0.5, 25, 22.9035)">
-     <rect width="21.6535" x="0" y="15.4921" fill="#F7BD13" connectorname="1" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6535" x="0" y="41.0827" fill="#F7BD13" connectorname="2" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6535" x="0" y="66.6732" fill="#F7BD13" connectorname="3" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6535" x="78.3465" y="66.6732" fill="#F7BD13" connectorname="4" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="21.6535" x="77.9528" y="15.0984" fill="#F7BD13" connectorname="5" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6535" x="0" y="15.4921" fill="#8c8c8c" connectorname="1" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6535" x="0" y="41.0827" fill="#8c8c8c" connectorname="2" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6535" x="0" y="66.6732" fill="#8c8c8c" connectorname="3" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6535" x="78.3465" y="66.6732" fill="#8c8c8c" connectorname="4" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="21.6535" x="77.9528" y="15.0984" fill="#8c8c8c" connectorname="5" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
      <rect width="56.1811" x="21.9094" y="0" fill="#303030" height="91.6142" stroke="none" stroke-width="0"/>
      <polygon fill="#1f1f1f" points="21.9094,0 78.0906,0 68.0906,10 31.9094,10"/>
      <polygon fill="#1f1f1f" points="21.9094,91.6142 78.0906,91.6142 68.0906,81.6142 31.9094,81.6142"/>

@@ -7,34 +7,34 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,270A30,30 0 0 1 0,330L0,600L1400,600L1400,0L0,0z"/>
    <g transform="translate(595.669,195.669)">
     <g transform="matrix(0.5, 0, 0, 0.5, 52.1654, 52.1654)">
-     <rect width="27.559" x="0" y="53.1495" fill="#F7BD13" connectorname="2" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="27.559" x="0" y="74.803" fill="#F7BD13" connectorname="3" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="27.559" x="0" y="96.4565" fill="#F7BD13" connectorname="4" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="27.559" x="0" y="118.11" fill="#F7BD13" connectorname="5" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="27.559" x="0" y="31.496" fill="#F7BD13" connectorname="1" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="27.559" x="0" y="139.763" fill="#F7BD13" connectorname="6" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="27.559" x="0" y="161.417" fill="#F7BD13" connectorname="7" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="53.1495" y="181.102" fill="#F7BD13" connectorname="9" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="74.803" y="181.102" fill="#F7BD13" connectorname="10" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="96.4565" y="181.102" fill="#F7BD13" connectorname="11" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="118.11" y="181.102" fill="#F7BD13" connectorname="12" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="31.496" y="181.102" fill="#F7BD13" connectorname="8" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="139.763" y="181.102" fill="#F7BD13" connectorname="13" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="161.417" y="181.102" fill="#F7BD13" connectorname="14" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="27.559" x="181.102" y="139.763" fill="#F7BD13" connectorname="16" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="27.559" x="181.102" y="118.11" fill="#F7BD13" connectorname="17" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="27.559" x="181.102" y="96.4565" fill="#F7BD13" connectorname="18" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="27.559" x="181.102" y="74.803" fill="#F7BD13" connectorname="19" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="27.559" x="181.102" y="161.417" fill="#F7BD13" connectorname="15" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="27.559" x="181.102" y="53.1495" fill="#F7BD13" connectorname="20" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="27.559" x="181.102" y="31.496" fill="#F7BD13" connectorname="21" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="139.763" y="0" fill="#F7BD13" connectorname="23" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="118.11" y="0" fill="#F7BD13" connectorname="24" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="96.4565" y="0" fill="#F7BD13" connectorname="25" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="74.803" y="0" fill="#F7BD13" connectorname="26" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="161.417" y="0" fill="#F7BD13" connectorname="22" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="53.1495" y="0" fill="#F7BD13" connectorname="27" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="31.496" y="0" fill="#F7BD13" connectorname="28" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="0" y="53.1495" fill="#8c8c8c" connectorname="2" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="0" y="74.803" fill="#8c8c8c" connectorname="3" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="0" y="96.4565" fill="#8c8c8c" connectorname="4" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="0" y="118.11" fill="#8c8c8c" connectorname="5" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="0" y="31.496" fill="#8c8c8c" connectorname="1" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="0" y="139.763" fill="#8c8c8c" connectorname="6" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="0" y="161.417" fill="#8c8c8c" connectorname="7" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="53.1495" y="181.102" fill="#8c8c8c" connectorname="9" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="74.803" y="181.102" fill="#8c8c8c" connectorname="10" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="96.4565" y="181.102" fill="#8c8c8c" connectorname="11" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="118.11" y="181.102" fill="#8c8c8c" connectorname="12" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="31.496" y="181.102" fill="#8c8c8c" connectorname="8" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="139.763" y="181.102" fill="#8c8c8c" connectorname="13" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="161.417" y="181.102" fill="#8c8c8c" connectorname="14" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="181.102" y="139.763" fill="#8c8c8c" connectorname="16" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="181.102" y="118.11" fill="#8c8c8c" connectorname="17" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="181.102" y="96.4565" fill="#8c8c8c" connectorname="18" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="181.102" y="74.803" fill="#8c8c8c" connectorname="19" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="181.102" y="161.417" fill="#8c8c8c" connectorname="15" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="181.102" y="53.1495" fill="#8c8c8c" connectorname="20" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="27.559" x="181.102" y="31.496" fill="#8c8c8c" connectorname="21" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="139.763" y="0" fill="#8c8c8c" connectorname="23" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="118.11" y="0" fill="#8c8c8c" connectorname="24" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="96.4565" y="0" fill="#8c8c8c" connectorname="25" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="74.803" y="0" fill="#8c8c8c" connectorname="26" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="161.417" y="0" fill="#8c8c8c" connectorname="22" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="53.1495" y="0" fill="#8c8c8c" connectorname="27" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="31.496" y="0" fill="#8c8c8c" connectorname="28" height="27.559" stroke="none" stroke-linecap="round" stroke-width="0"/>
      <rect width="201.85" x="3.40551" y="3.40551" fill="#303030" height="201.85" stroke="none" stroke-width="0"/>
      <polygon fill="#1f1f1f" points="3.40551,3.40551 205.256,3.40551 195.256,13.4055 13.4055,13.4055"/>
      <polygon fill="#1f1f1f" points="3.40551,205.256 205.256,205.256 195.256,195.256 13.4055,195.256"/>

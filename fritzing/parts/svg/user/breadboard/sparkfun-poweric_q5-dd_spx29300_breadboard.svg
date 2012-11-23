@@ -7,12 +7,12 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,370A30,30 0 0 1 0,430L0,800L422,800L422,0L0,0z"/>
    <g transform="translate(-11,78.0157)">
     <g transform="matrix(0.5, 0, 0, 0.5, 111, 160.992)">
-     <rect width="410" x="17" y="16.7047" fill="#F7BD13" connectorname="6" height="375" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="39.3701" x="202.315" y="510.111" fill="#F7BD13" connectorname="3" height="133.858" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="39.3701" x="68.4567" y="510.111" fill="#F7BD13" connectorname="1" height="133.858" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="39.3701" x="135.386" y="510.111" fill="#F7BD13" connectorname="2" height="133.858" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="39.3701" x="269.244" y="510.111" fill="#F7BD13" connectorname="4" height="133.858" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="39.3701" x="336.173" y="510.111" fill="#F7BD13" connectorname="5" height="133.858" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="410" x="17" y="16.7047" fill="#8c8c8c" connectorname="6" height="375" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="39.3701" x="202.315" y="510.111" fill="#8c8c8c" connectorname="3" height="133.858" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="39.3701" x="68.4567" y="510.111" fill="#8c8c8c" connectorname="1" height="133.858" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="39.3701" x="135.386" y="510.111" fill="#8c8c8c" connectorname="2" height="133.858" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="39.3701" x="269.244" y="510.111" fill="#8c8c8c" connectorname="4" height="133.858" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="39.3701" x="336.173" y="510.111" fill="#8c8c8c" connectorname="5" height="133.858" stroke="none" stroke-linecap="round" stroke-width="0"/>
      <rect width="444" x="0" y="104.455" fill="#303030" height="435.059" stroke="none" stroke-width="0"/>
      <polygon fill="#1f1f1f" points="0,104.455 444,104.455 434,114.455 10,114.455"/>
      <polygon fill="#1f1f1f" points="0,539.514 444,539.514 434,529.514 10,529.514"/>

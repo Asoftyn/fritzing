@@ -7,9 +7,9 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,270A30,30 0 0 1 0,330L0,600L397.866,600L397.866,0L0,0z"/>
    <g transform="translate(1.06693,91.3386)">
     <g transform="matrix(0.5, 0, 0, 0.5, 98.9331, 104.331)">
-     <circle fill="none" cx="163.386" cy="208.661" connectorname="SHELL" stroke="#F7BD13" r="50.2756" stroke-width="9.99999"/>
-     <circle fill="none" cx="309.055" cy="62.9922" connectorname="PIN" stroke="#F7BD13" r="50.2756" stroke-width="9.99999"/>
-     <circle fill="none" cx="309.055" cy="354.331" connectorname="SWITCH" stroke="#F7BD13" r="50.2756" stroke-width="9.99999"/>
+     <circle fill="none" cx="163.386" cy="208.661" connectorname="SHELL" stroke="#8c8c8c" r="50.2756" stroke-width="9.99999"/>
+     <circle fill="none" cx="309.055" cy="62.9922" connectorname="PIN" stroke="#8c8c8c" r="50.2756" stroke-width="9.99999"/>
+     <circle fill="none" cx="309.055" cy="354.331" connectorname="SWITCH" stroke="#8c8c8c" r="50.2756" stroke-width="9.99999"/>
      <circle fill="black" cx="41.3386" cy="41.3386" stroke="black" r="41.3386" id="nonconn0" stroke-width="0"/>
      <circle fill="black" cx="41.3386" cy="375.984" stroke="black" r="41.3386" id="nonconn1" stroke-width="0"/>
      <rect width="393.827" x="0.952756" y="7.81102" fill="#303030" height="401.701" stroke="none" stroke-width="0"/>

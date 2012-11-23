@@ -7,15 +7,15 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,270A30,30 0 0 1 0,330L0,600L500,600L500,0L0,0z"/>
    <g transform="translate(140.217,99.2126)">
     <g transform="matrix(0.5, 0, 0, 0.5, 54.8917, 100.394)">
-     <rect width="55.1181" x="164.449" y="192.913" fill="#F7BD13" connectorname="D+" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="55.1181" x="164.449" y="167.323" fill="#F7BD13" connectorname="D-" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="55.1181" x="164.449" y="141.732" fill="#F7BD13" connectorname="VBUS" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="55.1181" x="164.449" y="218.504" fill="#F7BD13" connectorname="ID" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="55.1181" x="164.449" y="244.095" fill="#F7BD13" connectorname="GND" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="74.8032" x="42.4016" y="112.205" fill="#F7BD13" connectorname="P$6" height="78.7402" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="74.8032" x="42.4016" y="210.63" fill="#F7BD13" connectorname="P$7" height="78.7402" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="74.8032" x="42.4016" y="0" fill="#F7BD13" connectorname="P$8" height="86.6142" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="74.8032" x="42.4016" y="314.961" fill="#F7BD13" connectorname="P$9" height="86.6142" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="55.1181" x="164.449" y="192.913" fill="#8c8c8c" connectorname="D+" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="55.1181" x="164.449" y="167.323" fill="#8c8c8c" connectorname="D-" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="55.1181" x="164.449" y="141.732" fill="#8c8c8c" connectorname="VBUS" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="55.1181" x="164.449" y="218.504" fill="#8c8c8c" connectorname="ID" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="55.1181" x="164.449" y="244.095" fill="#8c8c8c" connectorname="GND" height="15.748" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="74.8032" x="42.4016" y="112.205" fill="#8c8c8c" connectorname="P$6" height="78.7402" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="74.8032" x="42.4016" y="210.63" fill="#8c8c8c" connectorname="P$7" height="78.7402" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="74.8032" x="42.4016" y="0" fill="#8c8c8c" connectorname="P$8" height="86.6142" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="74.8032" x="42.4016" y="314.961" fill="#8c8c8c" connectorname="P$9" height="86.6142" stroke="none" stroke-linecap="round" stroke-width="0"/>
      <rect width="202.913" x="8.32677" y="34.3701" fill="#303030" height="332.835" stroke="none" stroke-width="0"/>
      <polygon fill="#1f1f1f" points="8.32677,34.3701 211.24,34.3701 201.24,44.3701 18.3268,44.3701"/>
      <polygon fill="#1f1f1f" points="8.32677,367.205 211.24,367.205 201.24,357.205 18.3268,357.205"/>

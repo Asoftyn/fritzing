@@ -7,9 +7,9 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,170A30,30 0 0 1 0,230L0,400L338,400L338,0L0,0z"/>
    <g transform="translate(31,137)">
     <g transform="matrix(0.5, 0, 0, 0.5, 69, 31.5)">
-     <rect width="50" x="13" y="13" fill="#F7BD13" connectorname="1" height="100" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="50" x="113" y="13" fill="#F7BD13" connectorname="2" height="100" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="50" x="213" y="13" fill="#F7BD13" connectorname="3" height="100" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="50" x="13" y="13" fill="#8c8c8c" connectorname="1" height="100" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="50" x="113" y="13" fill="#8c8c8c" connectorname="2" height="100" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="50" x="213" y="13" fill="#8c8c8c" connectorname="3" height="100" stroke="none" stroke-linecap="round" stroke-width="0"/>
      <rect width="276" x="0" y="0" fill="#303030" height="126" stroke="none" stroke-width="0"/>
      <polygon fill="#1f1f1f" points="0,0 276,0 266,10 10,10"/>
      <polygon fill="#1f1f1f" points="0,126 276,126 266,116 10,116"/>

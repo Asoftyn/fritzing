@@ -7,8 +7,8 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,270A30,30 0 0 1 0,330L0,600L392.913,600L392.913,0L0,0z"/>
    <g transform="translate(3.54331,134.583)">
     <g transform="matrix(0.5, 0, 0, 0.5, 96.4567, 82.7087)">
-     <rect width="149.606" x="0" y="137.858" fill="#F7BD13" connectorname="-" height="55.1182" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="149.606" x="236.221" y="137.858" fill="#F7BD13" connectorname="+" height="55.1182" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="149.606" x="0" y="137.858" fill="#8c8c8c" connectorname="-" height="55.1182" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="149.606" x="236.221" y="137.858" fill="#8c8c8c" connectorname="+" height="55.1182" stroke="none" stroke-linecap="round" stroke-width="0"/>
      <rect width="330.835" x="27.4961" y="0" fill="#303030" height="330.835" stroke="none" stroke-width="0"/>
      <polygon fill="#1f1f1f" points="27.4961,0 358.331,0 348.331,10 37.4961,10"/>
      <polygon fill="#1f1f1f" points="27.4961,330.835 358.331,330.835 348.331,320.835 37.4961,320.835"/>

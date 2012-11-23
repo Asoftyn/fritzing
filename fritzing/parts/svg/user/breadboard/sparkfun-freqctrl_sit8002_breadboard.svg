@@ -7,11 +7,11 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,270A30,30 0 0 1 0,330L0,600L339.496,600L339.496,0L0,0z"/>
    <g transform="translate(30.252,194.146)">
     <g transform="matrix(0.5, 0, 0, 0.5, 69.748, 52.9272)">
-     <rect width="62.9921" x="173.228" y="18.7953" fill="#F7BD13" connectorname="1" height="43.3072" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="62.9921" x="0" y="18.7953" fill="#F7BD13" connectorname="2" height="43.3072" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="62.9921" x="0" y="168.402" fill="#F7BD13" connectorname="3" height="43.3072" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="62.9921" x="173.228" y="168.402" fill="#F7BD13" connectorname="4" height="43.3072" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="70.8661" x="82.6771" y="69.9765" fill="#F7BD13" connectorname="N" height="90.5513" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="62.9921" x="173.228" y="18.7953" fill="#8c8c8c" connectorname="1" height="43.3072" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="62.9921" x="0" y="18.7953" fill="#8c8c8c" connectorname="2" height="43.3072" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="62.9921" x="0" y="168.402" fill="#8c8c8c" connectorname="3" height="43.3072" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="62.9921" x="173.228" y="168.402" fill="#8c8c8c" connectorname="4" height="43.3072" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="70.8661" x="82.6771" y="69.9765" fill="#8c8c8c" connectorname="N" height="90.5513" stroke="none" stroke-linecap="round" stroke-width="0"/>
      <rect width="27.3543" x="125.819" y="92.1772" fill="#303030" height="27.3543" stroke="none" stroke-width="0"/>
      <polygon fill="#1f1f1f" points="125.819,92.1772 153.173,92.1772 143.173,102.177 135.819,102.177"/>
      <polygon fill="#1f1f1f" points="125.819,119.531 153.173,119.531 143.173,109.531 135.819,109.531"/>

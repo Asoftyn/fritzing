@@ -7,23 +7,23 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,170A30,30 0 0 1 0,230L0,400L900,400L900,0L0,0z"/>
    <g transform="translate(375.197,125.197)">
     <g transform="matrix(0.5, 0, 0, 0.5, 37.4016, 37.4016)">
-     <rect width="11.0236" x="39.7637" y="116.142" fill="#F7BD13" connectorname="5" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.0236" x="59.4487" y="116.142" fill="#F7BD13" connectorname="6" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.0236" x="79.1337" y="116.142" fill="#F7BD13" connectorname="7" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.0236" x="98.8187" y="116.142" fill="#F7BD13" connectorname="8" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="33.4645" x="116.142" y="98.8187" fill="#F7BD13" connectorname="9" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="33.4645" x="116.142" y="79.1337" fill="#F7BD13" connectorname="10" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="33.4645" x="116.142" y="59.4487" fill="#F7BD13" connectorname="11" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="33.4645" x="116.142" y="39.7637" fill="#F7BD13" connectorname="12" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.0236" x="98.8187" y="0" fill="#F7BD13" connectorname="13" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.0236" x="79.1337" y="0" fill="#F7BD13" connectorname="14" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.0236" x="59.4487" y="0" fill="#F7BD13" connectorname="15" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.0236" x="39.7637" y="0" fill="#F7BD13" connectorname="16" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="33.4645" x="0" y="39.7637" fill="#F7BD13" connectorname="1" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="33.4645" x="0" y="59.4487" fill="#F7BD13" connectorname="2" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="33.4645" x="0" y="79.1337" fill="#F7BD13" connectorname="3" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="33.4645" x="0" y="98.8187" fill="#F7BD13" connectorname="4" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="66.929" x="41.3385" y="41.3385" fill="#F7BD13" connectorname="EXT" height="66.929" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.0236" x="39.7637" y="116.142" fill="#8c8c8c" connectorname="5" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.0236" x="59.4487" y="116.142" fill="#8c8c8c" connectorname="6" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.0236" x="79.1337" y="116.142" fill="#8c8c8c" connectorname="7" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.0236" x="98.8187" y="116.142" fill="#8c8c8c" connectorname="8" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="33.4645" x="116.142" y="98.8187" fill="#8c8c8c" connectorname="9" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="33.4645" x="116.142" y="79.1337" fill="#8c8c8c" connectorname="10" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="33.4645" x="116.142" y="59.4487" fill="#8c8c8c" connectorname="11" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="33.4645" x="116.142" y="39.7637" fill="#8c8c8c" connectorname="12" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.0236" x="98.8187" y="0" fill="#8c8c8c" connectorname="13" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.0236" x="79.1337" y="0" fill="#8c8c8c" connectorname="14" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.0236" x="59.4487" y="0" fill="#8c8c8c" connectorname="15" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.0236" x="39.7637" y="0" fill="#8c8c8c" connectorname="16" height="33.4645" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="33.4645" x="0" y="39.7637" fill="#8c8c8c" connectorname="1" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="33.4645" x="0" y="59.4487" fill="#8c8c8c" connectorname="2" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="33.4645" x="0" y="79.1337" fill="#8c8c8c" connectorname="3" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="33.4645" x="0" y="98.8187" fill="#8c8c8c" connectorname="4" height="11.0236" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="66.929" x="41.3385" y="41.3385" fill="#8c8c8c" connectorname="EXT" height="66.929" stroke="none" stroke-linecap="round" stroke-width="0"/>
      <rect width="133.984" x="7.81102" y="7.81102" fill="#303030" height="133.984" stroke="none" stroke-width="0"/>
      <polygon fill="#1f1f1f" points="7.81102,7.81102 141.795,7.81102 131.795,17.811 17.811,17.811"/>
      <polygon fill="#1f1f1f" points="7.81102,141.795 141.795,141.795 131.795,131.795 17.811,131.795"/>

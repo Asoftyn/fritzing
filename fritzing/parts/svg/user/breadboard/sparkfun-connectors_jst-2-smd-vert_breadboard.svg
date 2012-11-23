@@ -7,10 +7,10 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,270A30,30 0 0 1 0,330L0,600L367.386,600L367.386,0L0,0z"/>
    <g transform="translate(16.3071,145.441)">
     <g transform="matrix(0.5, 0, 0, 0.5, 83.6929, 77.2795)">
-     <rect width="62.9922" x="0.0629922" y="52.4252" fill="#F7BD13" connectorname="P$1" height="118.11" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="62.9922" x="267.78" y="52.4252" fill="#F7BD13" connectorname="P$2" height="118.11" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="39.3701" x="106.362" y="92.5826" fill="#F7BD13" connectorname="VCC" height="216.535" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="39.3701" x="185.103" y="92.5826" fill="#F7BD13" connectorname="GND" height="216.535" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="62.9922" x="0.0629922" y="52.4252" fill="#8c8c8c" connectorname="P$1" height="118.11" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="62.9922" x="267.78" y="52.4252" fill="#8c8c8c" connectorname="P$2" height="118.11" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="39.3701" x="106.362" y="92.5826" fill="#8c8c8c" connectorname="VCC" height="216.535" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="39.3701" x="185.103" y="92.5826" fill="#8c8c8c" connectorname="GND" height="216.535" stroke="none" stroke-linecap="round" stroke-width="0"/>
      <rect width="334.772" x="0" y="50.1654" fill="#303030" height="208.787" stroke="none" stroke-width="0"/>
      <polygon fill="#1f1f1f" points="0,50.1654 334.772,50.1654 324.772,60.1654 10,60.1654"/>
      <polygon fill="#1f1f1f" points="0,258.953 334.772,258.953 324.772,248.953 10,248.953"/>

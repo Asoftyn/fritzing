@@ -6,8 +6,8 @@
   <g id="icon">
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,170A30,30 0 0 1 0,230L0,400L260.433,400L260.433,0L0,0z"/>
    <g transform="translate(100,175)">
-    <rect width="25" x="0" y="0" fill="#F7BD13" connectorname="1" height="50" stroke="none" stroke-linecap="round" stroke-width="0"/>
-    <rect width="25" x="35.4331" y="0" fill="#F7BD13" connectorname="2" height="50" stroke="none" stroke-linecap="round" stroke-width="0"/>
+    <rect width="25" x="0" y="0" fill="#8c8c8c" connectorname="1" height="50" stroke="none" stroke-linecap="round" stroke-width="0"/>
+    <rect width="25" x="35.4331" y="0" fill="#8c8c8c" connectorname="2" height="50" stroke="none" stroke-linecap="round" stroke-width="0"/>
    </g>
   </g>
   <g transform="translate(114.252,334.05)">

@@ -7,14 +7,14 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,170A30,30 0 0 1 0,230L0,400L400,400L400,0L0,0z"/>
    <g transform="translate(90.2165,118.163)">
     <g transform="matrix(0.5, 0, 0, 0.5, 54.8917, 40.9183)">
-     <rect width="11.811" x="113.524" y="33.7519" fill="#F7BD13" connectorname="ONOFF" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.811" x="93.8386" y="33.7519" fill="#F7BD13" connectorname="1PPS" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.811" x="74.1536" y="33.7519" fill="#F7BD13" connectorname="GND" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.811" x="133.209" y="33.7519" fill="#F7BD13" connectorname="RX" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.811" x="152.894" y="33.7519" fill="#F7BD13" connectorname="TX" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="11.811" x="54.4685" y="33.7519" fill="#F7BD13" connectorname="VCC" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="13.1299" y="132.177" fill="#F7BD13" connectorname="P$7" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="190.295" y="132.177" fill="#F7BD13" connectorname="P$8" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.811" x="113.524" y="33.7519" fill="#8c8c8c" connectorname="ONOFF" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.811" x="93.8386" y="33.7519" fill="#8c8c8c" connectorname="1PPS" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.811" x="74.1536" y="33.7519" fill="#8c8c8c" connectorname="GND" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.811" x="133.209" y="33.7519" fill="#8c8c8c" connectorname="RX" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.811" x="152.894" y="33.7519" fill="#8c8c8c" connectorname="TX" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="11.811" x="54.4685" y="33.7519" fill="#8c8c8c" connectorname="VCC" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="13.1299" y="132.177" fill="#8c8c8c" connectorname="P$7" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="190.295" y="132.177" fill="#8c8c8c" connectorname="P$8" height="31.496" stroke="none" stroke-linecap="round" stroke-width="0"/>
      <rect width="219.567" x="0" y="42.4508" fill="#303030" height="78.7717" stroke="none" stroke-width="0"/>
      <polygon fill="#1f1f1f" points="0,42.4508 219.567,42.4508 209.567,52.4508 10,52.4508"/>
      <polygon fill="#1f1f1f" points="0,121.222 219.567,121.222 209.567,111.222 10,111.222"/>

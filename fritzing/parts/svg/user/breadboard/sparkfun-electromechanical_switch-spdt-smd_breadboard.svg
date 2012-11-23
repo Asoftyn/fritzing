@@ -7,9 +7,9 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,270A30,30 0 0 1 0,330L0,600L381.165,600L381.165,0L0,0z"/>
    <g transform="translate(9.41732,184.811)">
     <g transform="matrix(0.5, 0, 0, 0.5, 90.5827, 57.5945)">
-     <rect width="47.2441" x="59.1182" y="131.953" fill="#F7BD13" connectorname="1" height="98.4252" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="47.2441" x="157.543" y="131.953" fill="#F7BD13" connectorname="2" height="98.4252" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="47.2441" x="255.969" y="131.953" fill="#F7BD13" connectorname="3" height="98.4252" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="47.2441" x="59.1182" y="131.953" fill="#8c8c8c" connectorname="1" height="98.4252" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="47.2441" x="157.543" y="131.953" fill="#8c8c8c" connectorname="2" height="98.4252" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="47.2441" x="255.969" y="131.953" fill="#8c8c8c" connectorname="3" height="98.4252" stroke="none" stroke-linecap="round" stroke-width="0"/>
      <circle fill="black" cx="41.4016" cy="72.8977" stroke="black" r="17.7165" id="nonconn0" stroke-width="0"/>
      <circle fill="black" cx="320.929" cy="72.8977" stroke="black" r="17.7165" id="nonconn1" stroke-width="0"/>
      <rect width="362.331" x="0" y="42.2913" fill="#303030" height="145.795" stroke="none" stroke-width="0"/>

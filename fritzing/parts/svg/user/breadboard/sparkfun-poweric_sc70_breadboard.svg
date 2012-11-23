@@ -7,11 +7,11 @@
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,170A30,30 0 0 1 0,230L0,400L300,400L300,0L0,0z"/>
    <g transform="translate(108.13,152.756)">
     <g transform="matrix(0.5, 0, 0, 0.5, 20.935, 23.622)">
-     <rect width="15.748" x="8.40552" y="64.9606" fill="#F7BD13" connectorname="1" height="29.5276" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="33.9961" y="64.9606" fill="#F7BD13" connectorname="2" height="29.5276" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="59.5866" y="64.9606" fill="#F7BD13" connectorname="3" height="29.5276" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="59.5866" y="0" fill="#F7BD13" connectorname="4" height="29.5276" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="15.748" x="8.40552" y="0" fill="#F7BD13" connectorname="5" height="29.5276" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="8.40552" y="64.9606" fill="#8c8c8c" connectorname="1" height="29.5276" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="33.9961" y="64.9606" fill="#8c8c8c" connectorname="2" height="29.5276" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="59.5866" y="64.9606" fill="#8c8c8c" connectorname="3" height="29.5276" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="59.5866" y="0" fill="#8c8c8c" connectorname="4" height="29.5276" stroke="none" stroke-linecap="round" stroke-width="0"/>
+     <rect width="15.748" x="8.40552" y="0" fill="#8c8c8c" connectorname="5" height="29.5276" stroke="none" stroke-linecap="round" stroke-width="0"/>
      <rect width="83.7402" x="0" y="20.1378" fill="#303030" height="54.2126" stroke="none" stroke-width="0"/>
      <polygon fill="#1f1f1f" points="0,20.1378 83.7402,20.1378 73.7402,30.1378 10,30.1378"/>
      <polygon fill="#1f1f1f" points="0,74.3504 83.7402,74.3504 73.7402,64.3504 10,64.3504"/>
