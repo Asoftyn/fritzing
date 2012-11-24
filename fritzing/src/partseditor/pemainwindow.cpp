@@ -1195,8 +1195,12 @@ void PEMainWindow::connectorMetadataChanged(ConnectorMetadata * cmd)
 
     ChangeConnectorMetadataCommand * ccmc = new ChangeConnectorMetadataCommand(this, &oldcmd, cmd, NULL);
     ccmc->setText(tr("Change connector %1").arg(cmd->connectorName));
-    ccmc->setSkipFirstRedo();
-    changeConnectorElement(connector, cmd);
+    bool skipFirstRedo = (sender() == m_connectorsView);
+    if (skipFirstRedo) {
+        ccmc->setSkipFirstRedo();
+        changeConnectorElement(connector, cmd);
+        initConnectors(false);
+    }
     m_undoStack->waitPush(ccmc, SketchWidget::PropChangeDelay);
 }
 
@@ -1225,7 +1229,8 @@ void PEMainWindow::changeConnectorMetadata(ConnectorMetadata * cmd, bool updateD
 
     changeConnectorElement(connector, cmd);
     if (updateDisplay) {
-        initConnectors();
+        initConnectors(true);
+        m_peToolView->setCurrentConnector(index);
     }
 }
 
@@ -1379,7 +1384,7 @@ void PEMainWindow::highlightSlot(PEGraphicsItem * pegi) {
     }
 }
 
-void PEMainWindow::initConnectors() {
+void PEMainWindow::initConnectors(bool updateConnectorsView) {
     QDomElement root = m_fzpDocument.documentElement();
     QDomElement connectors = root.firstChildElement("connectors");
     QDomElement connector = connectors.firstChildElement("connector");
@@ -1391,7 +1396,9 @@ void PEMainWindow::initConnectors() {
 
     qSort(m_connectorList.begin(), m_connectorList.end(), byID);
 
-    m_connectorsView->initConnectors(&m_connectorList);
+    if (updateConnectorsView) {
+        m_connectorsView->initConnectors(&m_connectorList);
+    }
     m_peToolView->initConnectors(&m_connectorList);
 	updateAssignedConnectors();
 }
@@ -1760,7 +1767,7 @@ void PEMainWindow::reload(bool firstTime)
 		initSvgTree(viewThing->sketchWidget, viewThing->itemBase, *viewThing->document);
 	}
 
-    initConnectors();
+    initConnectors(true);
 	m_connectorsView->setSMD(modelPart->flippedSMD());
 
     foreach (ViewThing * viewThing, m_viewThings.values()) {

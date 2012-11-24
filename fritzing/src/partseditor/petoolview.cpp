@@ -453,4 +453,7 @@ void PEToolView::hideConnectorListStuff() {
 	}
 }
 
-
+void PEToolView::setCurrentConnector(int ix) {
+    m_connectorListWidget->setCurrentItem(m_connectorListWidget->topLevelItem(ix));
+    switchConnector(m_connectorListWidget->currentItem(), NULL);
+}

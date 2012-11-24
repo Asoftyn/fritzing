@@ -745,7 +745,12 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
 			return false;
 		}
 
-        if (customPartsOnly && !mainWindow->hasAnyAlien() && !mainWindow->hasCustomBoardShape() && (mainWindow->pcbView()->checkLoadedTraces() == 0)) {
+        if (customPartsOnly && 
+            !mainWindow->hasAnyAlien() && 
+            !mainWindow->hasCustomBoardShape() && 
+            (mainWindow->pcbView()->checkLoadedTraces() == 0) &&
+            (checkDonuts(mainWindow, false) == 0)) 
+        {
             mainWindow->close();
             delete mainWindow,
 			boardElement = boardElement.nextSiblingElement("board"); 
@@ -1251,28 +1256,7 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
 		DebugDialog::debug(QString("%1 filled:%2").arg(path).arg(filled));
 	}
 
-    QList<ConnectorItem *> donuts;
-    foreach (QGraphicsItem * item, mainWindow->pcbView()->scene()->items()) {
-        ConnectorItem * connectorItem = dynamic_cast<ConnectorItem *>(item);
-        if (connectorItem == NULL) continue;
-        if (!connectorItem->attachedTo()->isEverVisible()) continue;
-
-        if (connectorItem->isPath() && connectorItem->getCrossLayerConnectorItem() != NULL) {
-            connectorItem->debugInfo("is donut");
-            connectorItem->attachedTo()->debugInfo("\t");
-            donuts << connectorItem;
-        }
-    }
-
-    if (donuts.count() > 0) {
-        mainWindow->pcbView()->selectAllItems(false, false);
-        QSet<ItemBase *> itemBases;
-        foreach (ConnectorItem * connectorItem, donuts) {
-            itemBases.insert(connectorItem->attachedTo());
-        }
-        mainWindow->pcbView()->selectItems(itemBases.toList());
-        QMessageBox::warning(NULL, "Donuts", QString("There are %1 possible donut connectors").arg(donuts.count() / 2));
-    }
+    checkDonuts(mainWindow, true);
 
     if (drc) {
 	    foreach (ItemBase * boardItem, boards) {
@@ -1453,4 +1437,31 @@ void Panelizer::shrinkLastPanel( QList<PlanePair *> & planePairs, QList<PanelIte
         delete smallPlanePair;
     }
 
+}
+
+int Panelizer::checkDonuts(MainWindow * mainWindow, bool displayMessage) {
+    QList<ConnectorItem *> donuts;
+    foreach (QGraphicsItem * item, mainWindow->pcbView()->scene()->items()) {
+        ConnectorItem * connectorItem = dynamic_cast<ConnectorItem *>(item);
+        if (connectorItem == NULL) continue;
+        if (!connectorItem->attachedTo()->isEverVisible()) continue;
+
+        if (connectorItem->isPath() && connectorItem->getCrossLayerConnectorItem() != NULL) {
+            connectorItem->debugInfo("is donut");
+            connectorItem->attachedTo()->debugInfo("\t");
+            donuts << connectorItem;
+        }
+    }
+
+    if (displayMessage && donuts.count() > 0) {
+        mainWindow->pcbView()->selectAllItems(false, false);
+        QSet<ItemBase *> itemBases;
+        foreach (ConnectorItem * connectorItem, donuts) {
+            itemBases.insert(connectorItem->attachedTo());
+        }
+        mainWindow->pcbView()->selectItems(itemBases.toList());
+        QMessageBox::warning(NULL, "Donuts", QString("There are %1 possible donut connectors").arg(donuts.count() / 2));
+    }
+
+    return donuts.count() / 2;
 }

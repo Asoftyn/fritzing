@@ -77,10 +77,7 @@ $Date: 2012-10-12 15:09:05 +0200 (Fr, 12 Okt 2012) $
 using namespace std;
 
 static const int MaximumProgress = 1000;
-static int TileStandardWireWidth = 0;
-static int TileHalfStandardWireWidth = 0;
 static double StandardWireWidth = 0;
-static double HalfStandardWireWidth = 0;
 
 static QString CancelledMessage;
 
@@ -90,7 +87,20 @@ static const quint32 Obstacle = 0xffffffff;
 static const quint32 Source = 0xfffffffe;
 static const quint32 Target = 0xfffffffd;
 
+static const uint CrossLayerCost = 10;
+static const uint ViaCost = 50;
+
 ////////////////////////////////////////////////////////////////////
+
+QString getPartID(const QDomElement & element) {
+    QString partID = element.attribute("partID");
+    if (!partID.isEmpty()) return partID;
+
+    QDomNode parent = element.parentNode();
+    if (parent.isNull()) return "";
+
+    return getPartID(parent.toElement());
+}
 
 bool byPinsWithin(Net * n1, Net * n2)
 {
@@ -98,6 +108,10 @@ bool byPinsWithin(Net * n1, Net * n2)
     if (n1->pinsWithin > n2->pinsWithin) return false;
 
     return n1->net->count() <= n2->net->count();
+}
+
+inline double manhattanDistance(QPointF p1, QPointF p2) {
+    return qAbs(p1.x() - p2.x()) + qAbs(p1.y() - p2.y());
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -156,7 +170,8 @@ MazeRouter::MazeRouter(PCBSketchWidget * sketchWidget, ItemBase * board, bool ad
 			    m_maxRect.adjust(-m_maxRect.width() / 2, -m_maxRect.height() / 2, m_maxRect.width() / 2, m_maxRect.height() / 2);
 		}
 	}
-	setUpWidths(m_sketchWidget->getAutorouterTraceWidth());
+
+    StandardWireWidth = m_sketchWidget->getAutorouterTraceWidth();
 
 	ViewGeometry vg;
 	vg.setWireFlags(m_sketchWidget->getTraceFlag());
@@ -350,16 +365,6 @@ void MazeRouter::start()
 		}
         QMessageBox::information(NULL, QObject::tr("Fritzing"), tr("Note: the autorouter did not route %n parts, because they are not located entirely on the board.", "", parts.count()));
 	}
-}
-
-
-
-
-
-void MazeRouter::setUpWidths(double width)
-{
-	StandardWireWidth = width;
-	HalfStandardWireWidth = StandardWireWidth / 2;										
 }
 
 void MazeRouter::updateProgress(int num, int denom) 
@@ -628,6 +633,7 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
 
         int nearesti, nearestj;
         findNearestPair(subnets, nearesti, nearestj);
+        Grid * grid = new Grid(boardImage.width(), boardImage.height(), m_bothSidesNow ? 2 : 1);
 
         foreach (ViewLayer::ViewLayerSpec viewLayerSpec, layerSpecs) {  
             if (viewLayerSpec == ViewLayer::Top) emit wantTopVisible();
@@ -648,25 +654,28 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
             QImage obstaclesImage = boardImage.copy();
             DRC::renderOne(masterDoc, &obstaclesImage, r);
 
-
-            Grid * grid = new Grid(boardImage.width(), boardImage.height(), m_bothSidesNow ? 2 : 1);
             grid->init(0, 0, viewLayerSpec == ViewLayer::Bottom ? 0 : 1, grid->_x, grid->_y, obstaclesImage, Obstacle);
 
-            // convert obstacles
-            // render src and convert (use rect)
-            // render dest and convert (use rect)
-            // route the maze using A* (include hack for number of free neighbors)
-            // backtrace and remove maze flood
+            foreach (QDomElement element, notNetElements) {
+                element.setTagName("g");
+            }
 
-
-            // for each remaining connector in net
-            //      figure out nearest to src
-            //      render dest and convert (use rect)
-            //      route the maze using A* (include hack for number of free neighbors)
-            //      backtrace and remove maze flood
-
+            QList<ConnectorItem *> li = subnets.at(nearesti);
+            renderSource(masterDoc, viewLayerSpec, grid, netElements, li, Source, true, r);
+            QList<ConnectorItem *> lj = subnets.at(nearestj);
+            renderSource(masterDoc, viewLayerSpec, grid, netElements, lj, Target, false, r);
 
         }
+
+        // route the maze using A* (include hack for number of free neighbors)
+        // backtrace and remove maze flood
+
+
+        // for each remaining connector in net
+        //      figure out nearest to src
+        //      render dest and convert (use rect)
+        //      route the maze using A* (include hack for number of free neighbors)
+        //      backtrace and remove maze flood
 
     }
 
@@ -689,9 +698,21 @@ void MazeRouter::findNearestPair(QList< QList<ConnectorItem *> > & subnets, int 
         QList<ConnectorItem *> jnet = subnets.at(j);
         foreach (ConnectorItem * ic, inet) {
             QPointF ip = ic->sceneAdjustedTerminalPoint(NULL);
+            ConnectorItem * icc = ic->getCrossLayerConnectorItem();
             foreach (ConnectorItem * jc, jnet) {
+                ConnectorItem * jcc = jc->getCrossLayerConnectorItem();
+                if (jcc == ic) continue;
+
                 QPointF jp = jc->sceneAdjustedTerminalPoint(NULL);
-                double d = GraphicsUtils::distanceSqd(ip, jp);
+                double d = manhattanDistance(ip, jp) / StandardWireWidth;
+                if (ic->attachedToViewLayerID() != jc->attachedToViewLayerID()) {
+                    if (jcc != NULL && icc != NULL) {
+                        d += CrossLayerCost;
+                    }
+                    else {
+                        d += ViaCost;
+                    }
+                }
                 if (d < shortest) {
                     shortest = d;
                     nearesti = i;
@@ -700,4 +721,30 @@ void MazeRouter::findNearestPair(QList< QList<ConnectorItem *> > & subnets, int 
             }
         }
     }
+}
+
+void MazeRouter::renderSource(QDomDocument * masterDoc, ViewLayer::ViewLayerSpec viewLayerSpec, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, quint32 value, bool clearElements, const QRectF & r) {
+    if (clearElements) {
+        foreach (QDomElement element, netElements) {
+            element.setTagName("g");
+        }
+    }
+
+    QImage image(grid->_x, grid->_y, QImage::Format_Mono);
+    image.fill(0);
+    QStringList partIDs;
+    QRectF itemsBoundingRect;
+    foreach (ConnectorItem * connectorItem, subnet) {
+        partIDs.append(QString::number(connectorItem->attachedToID()));
+        itemsBoundingRect |= connectorItem->sceneBoundingRect();
+    }
+    foreach (QDomElement element, netElements) {
+        QString partID = getPartID(element);
+        if (partIDs.contains(partID)) {
+            element.setTagName(element.attribute("former"));
+        }
+    }
+
+    DRC::renderOne(masterDoc, &image, r);
+    grid->init(0, 0, viewLayerSpec == ViewLayer::Bottom ? 0 : 1, grid->_x, grid->_y, image, value);
 }

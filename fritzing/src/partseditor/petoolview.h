@@ -63,6 +63,7 @@ public:
     void initConnectors(QList<QDomElement> * connectorList);
     int currentConnectorIndex();
 	void setCurrentConnector(const QDomElement &);
+    void setCurrentConnector(int index);
     void setTerminalPointCoords(QPointF);
     void setTerminalPointLimits(QSizeF);
 	void setChildrenVisible(bool vis);

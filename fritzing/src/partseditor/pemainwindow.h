@@ -138,7 +138,7 @@ protected:
     QDomElement findConnector(const QString & id, int & index);
     void changeConnectorElement(QDomElement & connector, ConnectorMetadata *);
     void initSvgTree(SketchWidget *, ItemBase *, QDomDocument &);
-    void initConnectors();
+    void initConnectors(bool updateConnectorsView);
     QString createSvgFromImage(const QString &origFilePath);
     QString makeSvgPath(const QString & referenceFile, SketchWidget * sketchWidget, bool useIndex);
     QString saveFzp();
