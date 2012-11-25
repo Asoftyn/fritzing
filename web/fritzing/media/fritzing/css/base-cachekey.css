@@ -2576,6 +2576,11 @@ font-weight: normal;
 color: #999;
 }
 
+#content ul.errorlist {
+	color: red;
+	font-weight: bold;
+}
+
 div.listingBar .listingPrevious {
 float: left;
 }
@@ -2774,11 +2779,6 @@ span.help {
     color: #999;
 }
 
-
-ul.errorlist {
-	color: red;
-	font-weight: bold;
-}
 
 
 /*

@@ -237,7 +237,7 @@ Pick a license for your documentation
 
     
     def clean_main_image(self):
-        return self._clean_file_aux('main_image',required=True)
+        return self._clean_file_aux('main_image')
         
     def clean_fritzing_files(self):
         return self._clean_file_aux('fritzing_files',required=True)
