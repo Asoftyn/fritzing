@@ -40,17 +40,43 @@ $Date: 2012-10-12 15:09:05 +0200 (Fr, 12 Okt 2012) $
 #include <QPointer>
 
 #include <limits>
+#include <queue>
 
 #include "../../viewgeometry.h"
 #include "../../viewlayer.h"
 #include "../../commands.h"
 #include "../autorouter.h"
 
-
 struct Net {
     QList<class ConnectorItem *>* net;
     int pinsWithin;
     int id;
+};
+
+struct GridPoint {
+    int x, y, z, cost;
+    uchar flags;
+
+    bool operator<(const GridPoint&) const;
+    GridPoint(QPoint, int);
+    GridPoint();
+};
+
+struct Nearest {
+    int i, j;
+    double distance;
+    ConnectorItem * ic;
+    ConnectorItem * jc;
+    QPoint gridTarget;
+
+    void swap() {
+        int temp = i;
+        i = j;
+        j = temp;
+        ConnectorItem * tempc = ic;
+        ic = jc;
+        jc = tempc;
+    }
 };
 
 struct NetOrdering {
@@ -72,15 +98,15 @@ struct NetOrdering {
 
 struct Grid {
     quint32 * data;
-    int _x;
-    int _y;
-    int _z;
+    int x;
+    int y;
+    int z;
 
     Grid(int x, int y, int layers);
 
     quint32 at(int x, int y, int z);
     void setAt(int x, int y, int z, quint32 value);
-    void init(int x, int y, int z, int width, int height, const QImage &, quint32 value);
+    QList<QPoint> init(int x, int y, int z, int width, int height, const QImage &, quint32 value, bool collectPoints);
 };
 
 ////////////////////////////////////
@@ -108,14 +134,25 @@ protected:
     bool makeBoard(QImage & image, double keepout, const QSizeF gridSize);
     bool makeMasters(QString &);
 	bool routeNets(NetOrdering *, QVector<int> & netCounters, struct RoutingStatus &, bool makeJumper, NetOrdering * bestOrdering, QImage & boardImage, const QSizeF gridSize);
-    void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int & nearesti, int & nearestj);
-    void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, int & nearesti, int & nearestj, double & shortest);
-    void renderSource(QDomDocument * masterDoc, ViewLayer::ViewLayerSpec, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, quint32 value, bool clearElements, const QRectF & r);
+    void findNearestPair(QList< QList<ConnectorItem *> > & subnets, Nearest &);
+    void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, Nearest &);
+    QList<QPoint> renderSource(QDomDocument * masterDoc, ViewLayer::ViewLayerSpec, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, quint32 value, bool clearElements, const QRectF & r, bool collectPoints);
+    void route(Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest);
+    bool expand(GridPoint & gridPoint, Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest);
+    GridPoint expandOne(GridPoint gridPoint, Grid * grid, int dx, int dy, int dz, bool crossLayer);
+    bool viaWillFit(GridPoint gridPoint, Grid * grid);
+    void updateDisplay(int iz);
+    void updateDisplay(Grid *, int iz);
+    void updateDisplay(GridPoint);
 
 protected:
 	LayerList m_viewLayerIDs;
     QHash<ViewLayer::ViewLayerSpec, QDomDocument *> m_masterDocs;
     double m_keepoutMils;
+    int m_gridViaSize;
+    double m_standardWireWidth;
+    QImage * m_displayImage[2];
+    QGraphicsPixmapItem * m_displayItem[2];
 };
 
 #endif

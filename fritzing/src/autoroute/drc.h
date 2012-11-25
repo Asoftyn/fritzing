@@ -81,7 +81,7 @@ protected:
     void makeHoles(QDomDocument *, QImage *, QRectF & sourceRes, ViewLayer::ViewLayerSpec);
     bool makeBoard(QImage *, QRectF & sourceRes);
     void splitNet(QDomDocument *, QList<ConnectorItem *> & , QImage * minusImage, QImage * plusImage, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec, double keepout, int index);
-    void updateDisplay(double dpi);
+    void updateDisplay();
 	bool startAux(QString & message, QStringList & messages, QList<CollidingThing *> &);
     CollidingThing * findItemsAt(QList<QPointF> &, ItemBase * board, const LayerList & viewLayerIDs, double keepout, double dpi, bool skipHoles, ConnectorItem * already);
 

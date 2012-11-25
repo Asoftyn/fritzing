@@ -566,7 +566,7 @@ void CMRouter::start()
 	QHash<ConnectorItem *, int> indexer;
 	m_sketchWidget->collectAllNets(indexer, m_allPartConnectorItems, false, m_bothSidesNow);
 
-    removeOffBoard(isPCBType);
+    removeOffBoard(isPCBType, false);
 
 	if (m_allPartConnectorItems.count() == 0) {
         QString message = isPCBType ?  QObject::tr("No connections (on the PCB) to route.") : QObject::tr("No connections to route.");

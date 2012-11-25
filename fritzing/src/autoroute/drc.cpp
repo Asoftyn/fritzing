@@ -563,7 +563,7 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
             messages << msg;
             collidingThings << collidingThing;
             collisions = true;
-            updateDisplay(dpi);
+            updateDisplay();
         }
 
         emit setProgressValue(progress++);
@@ -668,7 +668,7 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
                     collidingThings << collidingThing;
                     emit setProgressMessage(msg);
                     collisions = true;
-                    updateDisplay(dpi);
+                    updateDisplay();
                 }
             }
 
@@ -975,19 +975,19 @@ void DRC::splitSubs(QDomElement & root, const QString & mark1, const QString & m
     }
 }
 
-void DRC::updateDisplay(double dpi) {
-    if (m_displayItem) {
-        delete m_displayItem;
-        m_displayItem = NULL;
-    }
-
+void DRC::updateDisplay() {
     QPixmap pixmap = QPixmap::fromImage(*m_displayImage);
-    m_displayItem = new QGraphicsPixmapItem(pixmap);
-    m_displayItem->setPos(m_board->sceneBoundingRect().topLeft());
-    m_sketchWidget->scene()->addItem(m_displayItem);
-    m_displayItem->setZValue(5000);
-    m_displayItem->setScale(GraphicsUtils::SVGDPI / dpi);
-    m_displayItem->setVisible(true);
+    if (m_displayItem == NULL) {
+        m_displayItem = new QGraphicsPixmapItem(pixmap);
+        m_displayItem->setPos(m_board->sceneBoundingRect().topLeft());
+        m_sketchWidget->scene()->addItem(m_displayItem);
+        m_displayItem->setZValue(5000);
+        m_displayItem->setScale(m_board->sceneBoundingRect().width() / m_displayImage->width());   // GraphicsUtils::SVGDPI / dpi
+        m_displayItem->setVisible(true);
+    }
+    else {
+        m_displayItem->setPixmap(pixmap);
+    }
     ProcessEventBlocker::processEvents();
 }
 

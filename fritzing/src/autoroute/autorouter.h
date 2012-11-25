@@ -66,7 +66,7 @@ protected:
 	void clearTracesAndJumpers();
 	void addToUndo(QMultiHash<TraceWire *, long> &, QUndoCommand * parentCommand);
 	void addWireToUndo(Wire * wire, QUndoCommand * parentCommand);
-    void removeOffBoard(bool isPCBType);
+    void removeOffBoard(bool isPCBType, bool removeSingletons);
 
 public slots:
 	virtual void cancel();

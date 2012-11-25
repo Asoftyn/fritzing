@@ -399,12 +399,22 @@ void Autorouter::setMaxCycles(int maxCycles)
 	settings.setValue("cmrouter/maxcycles", maxCycles);
 }
 
-void Autorouter::removeOffBoard(bool isPCBType) {
+void Autorouter::removeOffBoard(bool isPCBType, bool removeSingletons) {
     QRectF boardRect;
     if (m_board) boardRect = m_board->sceneBoundingRect();
 	// remove any vias or jumperItems that will be deleted, also remove off-board items
 	for (int i = m_allPartConnectorItems.count() - 1; i >= 0; i--) {
 		QList<ConnectorItem *> * connectorItems = m_allPartConnectorItems.at(i);
+        if (removeSingletons) {
+            if (connectorItems->count() < 2) {
+                connectorItems->clear();
+            }
+            else if (connectorItems->count() == 2) {
+                if (connectorItems->at(0) == connectorItems->at(1)->getCrossLayerConnectorItem()) {
+                    connectorItems->clear();
+                }
+            }
+        }
 		for (int j = connectorItems->count() - 1; j >= 0; j--) {
 			ConnectorItem * connectorItem = connectorItems->at(j);
 			//connectorItem->debugInfo("pci");
