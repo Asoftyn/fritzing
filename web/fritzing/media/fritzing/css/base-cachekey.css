@@ -2774,6 +2774,13 @@ span.help {
     color: #999;
 }
 
+
+ul.errorlist {
+	color: red;
+	font-weight: bold;
+}
+
+
 /*
 this style should be exactly the same as defined in the file
 media/tinymce/themes/advanced/skins/default/content.css
