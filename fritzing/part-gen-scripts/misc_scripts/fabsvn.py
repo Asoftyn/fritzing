@@ -107,7 +107,7 @@ def main():
                     if fn.endswith("identification.pdf"):
                         subprocess.call(["svn", "add", os.path.join(customsvgpath, fn)])
                         
-    subprocess.call(["svn", "commit", "-m", "automatic fab commit", inputdir])
+    subprocess.call(["svn", "commit", "-m", "fabsvn automated commit", inputdir])
 
 if __name__ == "__main__":
     main()
