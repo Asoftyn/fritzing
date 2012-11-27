@@ -531,10 +531,6 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
             return false;
         }
 
-        if (master.contains(FSvgRenderer::NonConnectorName)) {
-            makeHoles(masterDoc, m_minusImage, sourceRes, viewLayerSpec);
-        }
-
 	    ProcessEventBlocker::processEvents();
         if (m_cancelled) {
             message = CancelledMessage;
@@ -558,7 +554,7 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
         QList<QPointF> atPixels;
         if (pixelsCollide(m_plusImage, m_minusImage, m_displayImage, 0, 0, imgSize.width(), imgSize.height(), 1 /* 0x80ff0000 */, atPixels)) {
             CollidingThing * collidingThing = findItemsAt(atPixels, m_board, viewLayerIDs, keepoutMils, dpi, true, NULL);
-            QString msg = tr("Too close to a border or a hole (%1 layer)")
+            QString msg = tr("Too close to a border (%1 layer)")
                 .arg(viewLayerSpec == ViewLayer::Top ? tr("top") : tr("bottom"))
                 ;
             emit setProgressMessage(msg);
@@ -685,83 +681,6 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
     }
 
     return true;
-}
-
-void DRC::makeHoles(QDomDocument * masterDoc, QImage * image, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec) {
-    QSet<QString> holeIDs;
-
-    foreach (QGraphicsItem * item, m_sketchWidget->scene()->collidingItems(m_board)) {
-        ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
-        if (itemBase == NULL) continue;
-        if (itemBase->itemType() != ModelPart::Hole) continue;
-
-        holeIDs.insert(QString::number(itemBase->id()));
-    }
-
-    QList<QDomElement> todo;
-    QList<QDomElement> holes;
-    QList<QDomElement> notHoles;
-    todo << masterDoc->documentElement();
-    bool firstTime = true;
-    while (!todo.isEmpty()) {
-        QDomElement element = todo.takeFirst();
-        QDomElement child = element.firstChildElement();
-        while (!child.isNull()) {
-            todo << child;
-            child = child.nextSiblingElement();
-        }
-        if (firstTime) {
-            // don't include the root <svg> element
-            firstTime = false;
-            continue;
-        }
-
-        QString partID = element.attribute("partID");
-        if (!partID.isEmpty()) {
-            if (holeIDs.contains(partID)) {
-                // make sure all sub elements of Hole part will be added to the board image
-                QList<QDomElement> subtodo;
-                subtodo << element;
-                while (!subtodo.isEmpty()) {
-                    QDomElement subelement = subtodo.takeFirst();
-                    subelement.setAttribute("id", FSvgRenderer::NonConnectorName);
-                    QDomElement child = subelement.firstChildElement();
-                    while (!child.isNull()) {
-                        subtodo << child;
-                        child = child.nextSiblingElement();
-                    }
-                }
-            }
-        }
-
-        if (element.tagName() == "g") continue;
-
-        if (element.attribute("id").contains(FSvgRenderer::NonConnectorName)) {
-            holes.append(element);
-            element.setAttribute("fill", "black");
-        }
-        else {
-            notHoles.append(element);
-            element.setAttribute("former", element.tagName());
-            element.setTagName("g");
-        }
-
-    }
-
-    renderOne(masterDoc, image, sourceRes);
-    #ifndef QT_NO_DEBUG
-	    image->save(FolderUtils::getUserDataStorePath("") + QString("/testDRCBoardHoles%1.png").arg(viewLayerSpec));
-    #else
-        Q_UNUSED(viewLayerSpec);
-    #endif
-
-    // restore doc without holes
-    foreach (QDomElement element, holes) {
-        element.setTagName("g");
-    }
-    foreach (QDomElement element, notHoles) {
-        element.setTagName(element.attribute("former"));
-    }
 }
 
 bool DRC::makeBoard(QImage * image, QRectF & sourceRes) {

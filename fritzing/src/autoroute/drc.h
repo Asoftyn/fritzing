@@ -60,7 +60,7 @@ public:
 public:
     static void splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, double keepout, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool fill);
     static void renderOne(QDomDocument * masterDoc, QImage * image, const QRectF & sourceRes);
-    static void  extendBorder(double keepoutPixels, QImage * image);
+    static void extendBorder(double keepoutPixels, QImage * image);
 
 public slots:
 	void cancel();
