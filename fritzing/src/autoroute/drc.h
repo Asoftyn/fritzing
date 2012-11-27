@@ -58,8 +58,9 @@ public:
 	bool start(bool showOkMessage);
 
 public:
-    static void splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, double keepout, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet);
+    static void splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, double keepout, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool fill);
     static void renderOne(QDomDocument * masterDoc, QImage * image, const QRectF & sourceRes);
+    static void  extendBorder(double keepoutPixels, QImage * image);
 
 public slots:
 	void cancel();
@@ -87,7 +88,7 @@ protected:
 
 protected:
     static void markSubs(QDomElement & root, const QString & mark);
-    static void splitSubs(QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs);
+    static void splitSubs(QDomDocument *, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs);
 	
 protected:
 	class PCBSketchWidget * m_sketchWidget;

@@ -137,13 +137,17 @@ protected:
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, Nearest &);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, Nearest &);
     QList<QPoint> renderSource(QDomDocument * masterDoc, ViewLayer::ViewLayerSpec, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, quint32 value, bool clearElements, const QRectF & r, bool collectPoints);
-    void route(Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest);
-    bool expand(GridPoint & gridPoint, Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest);
-    GridPoint expandOne(GridPoint gridPoint, Grid * grid, int dx, int dy, int dz, bool crossLayer);
-    bool viaWillFit(GridPoint gridPoint, Grid * grid);
+    bool route(Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest);
+    bool expand(GridPoint &, Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest);
+    GridPoint expandOne(GridPoint &, Grid * grid, int dx, int dy, int dz, bool crossLayer);
+    bool viaWillFit(GridPoint &, Grid * grid);
+    QList<GridPoint> traceBack(GridPoint &, Grid * grid);
+    GridPoint traceOne(GridPoint &, Grid * grid, int val);
+    GridPoint traceBackOne(GridPoint &, Grid * grid, int dx, int dy, int dz, quint32 val);
     void updateDisplay(int iz);
     void updateDisplay(Grid *, int iz);
-    void updateDisplay(GridPoint);
+    void updateDisplay(GridPoint &);
+    void sourceToTarget(Grid * grid);
 
 protected:
 	LayerList m_viewLayerIDs;

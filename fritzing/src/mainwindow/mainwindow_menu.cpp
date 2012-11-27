@@ -1299,7 +1299,7 @@ void MainWindow::createTraceMenus()
 {
 	m_pcbTraceMenu = menuBar()->addMenu(tr("&Routing"));
 	m_pcbTraceMenu->addAction(m_autorouteAct);
-	//m_pcbTraceMenu->addAction(m_newAutorouteAct);
+	m_pcbTraceMenu->addAction(m_newAutorouteAct);
 	m_pcbTraceMenu->addAction(m_newDesignRulesCheckAct);
 	m_pcbTraceMenu->addAction(m_newDesignRulesKeepoutAct);
 	m_pcbTraceMenu->addAction(m_checkLoadedTracesAct);

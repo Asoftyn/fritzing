@@ -486,6 +486,8 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
         return false;
     }
 
+    extendBorder(1, m_minusImage);   // since the resolution = keepout, extend by 1
+
     QList<ViewLayer::ViewLayerSpec> layerSpecs;
     layerSpecs << ViewLayer::Bottom;
     if (bothSidesNow) layerSpecs << ViewLayer::Top;
@@ -540,7 +542,7 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
         }
 
         QDomElement root = masterDoc->documentElement();
-        SvgFileSplitter::forceStrokeWidth(root, 2 * keepoutMils, "#000000", true);
+        SvgFileSplitter::forceStrokeWidth(root, 2 * keepoutMils, "#000000", true, false);
 
         renderOne(masterDoc, m_plusImage, sourceRes);
         #ifndef QT_NO_DEBUG
@@ -803,7 +805,7 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
     QList<QDomElement> net;
     QList<QDomElement> alsoNet;
     QList<QDomElement> notNet;
-    splitNetPrep(masterDoc, equi, keepoutMils, TreatAsNet, net, alsoNet, notNet);
+    splitNetPrep(masterDoc, equi, keepoutMils, TreatAsNet, net, alsoNet, notNet, false);
     foreach (QDomElement element, notNet) element.setTagName("g");
     foreach (QDomElement element, alsoNet) element.setTagName("g");
 
@@ -817,7 +819,7 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
 
     // restore doc without net
     foreach (QDomElement element, net) {
-        SvgFileSplitter::forceStrokeWidth(element, 2 * keepoutMils, "#000000", false);
+        SvgFileSplitter::forceStrokeWidth(element, 2 * keepoutMils, "#000000", false, false);
         element.removeAttribute("net");
         element.setTagName("g");
     }
@@ -841,7 +843,7 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
     }
 }
 
-void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, double keepoutMils, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet) 
+void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, double keepoutMils, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool fill) 
 {
     QMultiHash<QString, QString> partIDs;
     QSet<QString> wireIDs;
@@ -869,9 +871,9 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
     bool firstTime = true;
     while (!todo.isEmpty()) {
         QDomElement element = todo.takeFirst();
-        QString string;
-        QTextStream stream(&string);
-        element.save(stream, 0);
+        //QString string;
+        //QTextStream stream(&string);
+        //element.save(stream, 0);
 
         QDomElement child = element.firstChildElement();
         while (!child.isNull()) {
@@ -894,7 +896,7 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
                 markSubs(element, "net");
             }
             else {
-                splitSubs(element, "net", treatAs, svgIDs);
+                splitSubs(masterDoc, element, "net", treatAs, svgIDs);
             }
         }
 
@@ -903,7 +905,7 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
         element.setAttribute("former", element.tagName());
         if (element.attribute("net") == "net") {
             net.append(element);
-            SvgFileSplitter::forceStrokeWidth(element, -2 * keepoutMils, "#000000", false);
+            SvgFileSplitter::forceStrokeWidth(element, -2 * keepoutMils, "#000000", false, fill);
         }
         else if (element.attribute("net") == TreatAsNet) {
             alsoNet.append(element);
@@ -939,8 +941,9 @@ void DRC::markSubs(QDomElement & root, const QString & mark) {
     }
 }
 
-void DRC::splitSubs(QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs)
+void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs)
 {
+    // split subelements of a part into separate nets
     QList<QDomElement> todo;
     todo << root;
     while (!todo.isEmpty()) {
@@ -1009,3 +1012,43 @@ CollidingThing * DRC::findItemsAt(QList<QPointF> & atPixels, ItemBase * board, c
     return collidingThing;
 }
 
+void DRC::extendBorder(double keepout, QImage * image) {
+    // TODO: scanlines
+
+    // keepout in terms of the board grid size
+
+    QImage copy = image->copy();
+
+    int h = image->height();
+    int w = image->width();
+    for (int x = 0; x < w; x++) {
+        for (int k = 0; k < keepout; k++) {
+            image->setPixel(x, k, 0);
+            image->setPixel(x, h - k - 1, 0);
+        }
+    }
+    int ikeepout = qCeil(keepout);
+    for (int y = 0; y < h; y++) {
+        for (int k = 0; k < keepout; k++) {
+            image->setPixel(k, y, 0);
+            image->setPixel(w - k - 1, y, 0);
+        }
+        for (int x = 0; x < w; x++) {
+            if (copy.pixel(x, y) != 0xff000000) {
+                continue;
+            }
+
+            for (int dy = y - ikeepout; dy <= y + ikeepout; dy++) {
+                if (dy < 0) continue;
+                if (dy >= h) continue;
+                for (int dx = x - ikeepout; dx <= x + ikeepout; dx++) {
+                    if (dx < 0) continue;
+                    if (dx >= w) continue;
+
+                    // extend border by keepout
+                    image->setPixel(dx, dy, 0);
+                }
+            }
+        }
+    }
+}

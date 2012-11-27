@@ -115,11 +115,13 @@ bool byPinsWithin(Net * n1, Net * n2)
 }
 
 inline double manhattanDistance(QPointF p1, QPointF p2) {
-    return qAbs(p1.x() - p2.x()) + qAbs(p1.y() - p2.y());
+    //return qAbs(p1.x() - p2.x()) + qAbs(p1.y() - p2.y());
+    return GraphicsUtils::distanceSqd(p1, p2);
 }
 
 inline int manhattanDistance(QPoint p1, QPoint p2) {
-    return qAbs(p1.x() - p2.x()) + qAbs(p1.y() - p2.y());
+    //return qAbs(p1.x() - p2.x()) * qAbs(p1.y() - p2.y());
+    return (int) GraphicsUtils::distanceSqd(p1, p2);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -490,44 +492,12 @@ bool MazeRouter::makeBoard(QImage & image, double keepout, const QSizeF gridSize
 
     // board should be white, borders should be black
 
-    QImage copy = image.copy();
 
 #ifndef QT_NO_DEBUG
 	image.save(FolderUtils::getUserDataStorePath("") + "/mazeMakeBoard.png");
 #endif
 
-    int h = image.height();
-    int w = image.width();
-    for (int x = 0; x < w; x++) {
-        for (int k = 0; k < keepout; k++) {
-            image.setPixel(x, k, 0);
-            image.setPixel(x, h - k - 1, 0);
-        }
-    }
-    int ikeepout = qCeil(keepout);
-    for (int y = 0; y < h; y++) {
-        for (int k = 0; k < keepout; k++) {
-            image.setPixel(k, y, 0);
-            image.setPixel(w - k - 1, y, 0);
-        }
-        for (int x = 0; x < w; x++) {
-            if (copy.pixel(x, y) != 0xff000000) {
-                continue;
-            }
-
-            for (int dy = y - ikeepout; dy <= y + ikeepout; dy++) {
-                if (dy < 0) continue;
-                if (dy >= h) continue;
-                for (int dx = x - ikeepout; dx <= x + ikeepout; dx++) {
-                    if (dx < 0) continue;
-                    if (dx >= w) continue;
-
-                    // extend border by keepout
-                    image.setPixel(dx, dy, 0);
-                }
-            }
-        }
-    }
+    DRC::extendBorder(keepout / m_standardWireWidth, &image);
 
 #ifndef QT_NO_DEBUG
 	image.save(FolderUtils::getUserDataStorePath("") + "/mazeMakeBoard2.png");
@@ -659,7 +629,7 @@ bool MazeRouter::makeMasters(QString & message) {
         }
 
         QDomElement root = masterDoc->documentElement();
-        SvgFileSplitter::forceStrokeWidth(root, 2 * m_keepoutMils, "#000000", true);
+        SvgFileSplitter::forceStrokeWidth(root, 2 * m_keepoutMils, "#000000", true, true);
     }
 
     return true;
@@ -711,7 +681,7 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
             QList<QDomElement> alsoNetElements;
             QList<QDomElement> notNetElements;
             QDomDocument * masterDoc = m_masterDocs.value(viewLayerSpec);
-            DRC::splitNetPrep(masterDoc, *(net->net), m_keepoutMils, DRC::NotNet, netElements, alsoNetElements, notNetElements);
+            DRC::splitNetPrep(masterDoc, *(net->net), m_keepoutMils, DRC::NotNet, netElements, alsoNetElements, notNetElements, true);
             foreach (QDomElement element, netElements) {
                 element.setTagName("g");
             }
@@ -719,6 +689,11 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
             DRC::renderOne(masterDoc, &obstaclesImage, r);
 
             int z = viewLayerSpec == ViewLayer::Bottom ? 0 : 1;
+
+#ifndef QT_NO_DEBUG
+            obstaclesImage.save(FolderUtils::getUserDataStorePath("") + QString("/obstacles%1.png").arg(z));
+#endif
+
             grid->init(0, 0, z, grid->x, grid->y, obstaclesImage, GridObstacle, false);
 
             updateDisplay(grid, z);
@@ -728,7 +703,7 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
             }
 
             QList<ConnectorItem *> li = subnets.at(nearest.i);
-            QList<QPoint> sourcePoints = renderSource(masterDoc, viewLayerSpec, grid, netElements, li, GridSource, true, r, true);
+            QList<QPoint> sourcePoints = renderSource(masterDoc, viewLayerSpec, grid, netElements, li, GridSource, false, r, true);
 
             int crossLayerCost = 0;
             if (nearest.ic->attachedToViewLayerID() == ViewLayer::Copper0 && viewLayerSpec == ViewLayer::Top) {
@@ -745,23 +720,28 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
             }
 
             QList<ConnectorItem *> lj = subnets.at(nearest.j);
-            renderSource(masterDoc, viewLayerSpec, grid, netElements, lj, GridTarget, false, r, false);
+            renderSource(masterDoc, viewLayerSpec, grid, netElements, lj, GridTarget, true, r, false);
 
             updateDisplay(grid, z);
+
+            // restore masterdoc
+            foreach (QDomElement element, netElements) {
+                element.setTagName(element.attribute("former"));
+                element.removeAttribute("net");
+            }
+            foreach (QDomElement element, notNetElements) {
+                element.setTagName(element.attribute("former"));
+                element.removeAttribute("notnet");
+            }
         }
 
-        route(grid, pq, nearest);
-
-        // route the maze using A* (include hack for number of free neighbors)
-        // backtrace and remove maze flood
-
+        bool result = route(grid, pq, nearest);
 
         // for each remaining connector in net
         //      figure out nearest to src
         //      render dest and convert (use rect)
         //      route the maze using A* (include hack for number of free neighbors)
         //      backtrace and remove maze flood
-
     }
 
 
@@ -825,7 +805,7 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, ViewLayer::View
     }
 
     QImage image(grid->x, grid->y, QImage::Format_Mono);
-    image.fill(0);
+    image.fill(0xffffffff);
     QStringList partIDs;
     QRectF itemsBoundingRect;
     foreach (ConnectorItem * connectorItem, subnet) {
@@ -846,21 +826,138 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, ViewLayer::View
     int y2 = qCeil((itemsBoundingRect.bottom() - boardRect.top()) / m_standardWireWidth);
 
     DRC::renderOne(masterDoc, &image, r);
+#ifndef QT_NO_DEBUG
+    static int rsi = 0;
+	image.save(FolderUtils::getUserDataStorePath("") + QString("/rendersource%1.png").arg(rsi++));
+#endif
     return grid->init(x1, y1, viewLayerSpec == ViewLayer::Bottom ? 0 : 1, x2 - x1, y2 - y1, image, value, collectPoints);
 }
 
-void MazeRouter::route(Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest)
+bool MazeRouter::route(Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest)
 {
+    bool result = false;
+    GridPoint target;
     while (!pq.empty()) {
         GridPoint gp = pq.top();
         pq.pop();
 
-        if (gp.flags & GridPointDone) break;
+        if (gp.flags & GridPointDone) {
+            result = true;
+            target = gp;
+            break;
+        }
 
         expand(gp, grid, pq, nearest);
     }
 
-    if (pq.empty()) {
+    if (!result) {
+        return false;
+    }
+
+    QList<GridPoint> points = traceBack(target, grid);
+    sourceToTarget(grid);
+    foreach (GridPoint gridPoint, points) {
+        grid->setAt(gridPoint.x, gridPoint.y, gridPoint.z, GridTarget);
+    }
+
+    updateDisplay(grid, 0);
+    if (m_bothSidesNow) {
+        updateDisplay(grid, 1);
+    }
+
+    return points.count() > 0;
+}
+
+QList<GridPoint> MazeRouter::traceBack(GridPoint & gridPoint, Grid * grid) {
+    QList<GridPoint> points;
+    points << gridPoint;
+    while (true) {
+        quint32 val = grid->at(gridPoint.x, gridPoint.y, gridPoint.z);
+        if (val == GridSource) {
+            break;
+        }
+
+        GridPoint next = traceBackOne(gridPoint, grid, -1, 0, 0, val);
+        if (next.cost != GridIllegal) {
+            points << next;
+            gridPoint = next;
+            continue;
+        }
+        next = traceBackOne(gridPoint, grid, 1, 0, 0, val);
+        if (next.cost != GridIllegal) {
+            points << next;
+            gridPoint = next;
+            continue;
+        }
+        next = traceBackOne(gridPoint, grid, 0, -1, 0, val);
+        if (next.cost != GridIllegal) {
+            points << next;
+            gridPoint = next;
+            continue;
+        }
+        next = traceBackOne(gridPoint, grid, 0, 1, 0, val);
+        if (next.cost != GridIllegal) {
+            points << next;
+            gridPoint = next;
+            continue;
+        }
+        next = traceBackOne(gridPoint, grid, 0, 0, -1, val);
+        if (next.cost != GridIllegal) {
+            points << next;
+            gridPoint = next;
+            continue;
+        }
+        next = traceBackOne(gridPoint, grid, 0, 0, 1, val);
+        if (next.cost != GridIllegal) {
+            points << next;
+            gridPoint = next;
+            continue;
+        }
+
+        // traceback failed--is this possible?
+        points.clear();
+        break;      
+    }
+
+    return points;
+}
+
+GridPoint MazeRouter::traceBackOne(GridPoint & gridPoint, Grid * grid, int dx, int dy, int dz, quint32 val) {
+    GridPoint next;
+    next.cost = GridIllegal;
+
+    next.x = gridPoint.x + dx;
+    if (next.x < 0 || next.x >= grid->x) {
+        return next;
+    }
+
+    next.y = gridPoint.y + dy;
+    if (next.y < 0 || next.y >= grid->y) {
+        return next;
+    }
+
+    next.z = gridPoint.z + dz;
+    if (next.z < 0 || next.z >= grid->z) {
+        return next;
+    }
+
+    quint32 nextval = grid->at(next.x, next.y, next.z);
+    switch (nextval) {
+        case GridObstacle:
+            return next;
+        case GridTarget:
+            return next;
+        case GridSource:
+            next.cost = GridSource;
+            return next;
+        case 0:
+            // never got involved
+            return next;
+        default:
+            if (nextval < val) {
+                next.cost = nextval;
+            }
+            return next;
     }
 
 }
@@ -889,7 +986,7 @@ bool MazeRouter::expand(GridPoint & gridPoint, Grid * grid, std::priority_queue<
     return false;
 }
 
-GridPoint MazeRouter::expandOne(GridPoint gridPoint, Grid * grid, int dx, int dy, int dz, bool crossLayer) {
+GridPoint MazeRouter::expandOne(GridPoint & gridPoint, Grid * grid, int dx, int dy, int dz, bool crossLayer) {
     GridPoint next;
     next.cost = GridIllegal;
 
@@ -985,7 +1082,7 @@ GridPoint MazeRouter::expandOne(GridPoint gridPoint, Grid * grid, int dx, int dy
     return next;
 }
 
-bool MazeRouter::viaWillFit(GridPoint gridPoint, Grid * grid) {
+bool MazeRouter::viaWillFit(GridPoint & gridPoint, Grid * grid) {
     int z = gridPoint.z == 1 ? 0 : 1;
     for (int y = 0; y < m_gridViaSize; y++) {
         for (int x = 0; x < m_gridViaSize; x++) {
@@ -1056,7 +1153,27 @@ void MazeRouter::updateDisplay(Grid * grid, int iz) {
     updateDisplay(iz);
 }
 
-void MazeRouter::updateDisplay(GridPoint gridPoint) {
+void MazeRouter::updateDisplay(GridPoint & gridPoint) {
     m_displayImage[gridPoint.z]->setPixel(gridPoint.x, gridPoint.y, 0xff000000 | gridPoint.cost);
     updateDisplay(gridPoint.z);
+}
+
+void MazeRouter::sourceToTarget(Grid * grid) {
+    for (int z = 0; z < grid->z; z++) {
+        for (int y = 0; y < grid->y; y++) {
+            for (int x = 0; x < grid->x; x++) {
+                switch (grid->at(x, y, z)) {
+                    case GridObstacle:
+                    case GridTarget:
+                        break;
+                    case GridSource:
+                        grid->setAt(x, y, z, GridTarget);
+                        break;
+                    default:
+                        grid->setAt(x, y, z, 0);
+                        break;
+                }
+            }
+        }
+    }
 }

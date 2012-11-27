@@ -77,7 +77,7 @@ public:
 	static bool getSvgSizeAttributes(const QString & svg, QString & width, QString & height, QString & viewBox);
 	static bool changeStrokeWidth(const QString & svg, double delta, bool absolute, bool changeOpacity, QByteArray &);
 	static void changeStrokeWidth(QDomElement & element, double delta, bool absolute, bool changeOpacity);
-	static void forceStrokeWidth(QDomElement & element, double delta, const QString & stroke, bool recurse);
+	static void forceStrokeWidth(QDomElement & element, double delta, const QString & stroke, bool recurse, bool fill);
 	static bool changeColors(const QString & svg, QString & toColor, QStringList & exceptions, QByteArray &);
 	static void changeColors(QDomElement & element, QString & toColor, QStringList & exceptions);
 	static void fixStyleAttributeRecurse(QDomElement & element);
