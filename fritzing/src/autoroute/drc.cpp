@@ -821,7 +821,10 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
             }
         }
 
-        if (element.tagName() == "g") continue;
+        if (element.tagName() == "g") {
+            element.removeAttribute("net");
+            continue;
+        }
 
         element.setAttribute("former", element.tagName());
         if (element.attribute("net") == "net") {

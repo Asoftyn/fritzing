@@ -27,21 +27,35 @@ $Date: 2012-10-12 15:09:05 +0200 (Fr, 12 Okt 2012) $
 // TODO:
 //
 //      schematic view
+//          use a different cost function: cost is manhattandistance + penalty for direction changes
+//          netlabels are the equivalent of jumpers. Use successive numbers for the labels.
 //
-//      net reordering (how to decide the best so far?)
+//      net reordering/rip-up-and-reroute
+//          is there a better way than just move by one?
 //
 //      keepout dialog
 //   
 //      jumperitem
 //
 //      feedback
+//          use qgraphicpixmapitems but update only at new trace time
 //
-//      rip-up-and-reroute
+//      raster back to vector
 //
-//      stop-now and best-ordering?  how is best ordering determined?
+//      hold the set of successful traces
+//          plus sets of points for vias or jumpers?
 //
-//      dynamic cost function based on distance to any target point
+//      stop-now and best-ordering?  
+//          how is best ordering determined: completed traces, via count, jumper count?
 //
+//      dynamic cost function based on distance to any target point?
+//
+//      how to determine splitDNA
+//          the other way to do it would be to allow overlaps and draw a second trace back to the nearest connector
+//
+//      to check if ordering already exists
+//          foreach ordering, compare ids like a string
+
 
 #include "mazerouter.h"
 #include "../../sketch/pcbsketchwidget.h"
@@ -117,9 +131,9 @@ inline double manhattanDistance(QPointF p1, QPointF p2) {
     return GraphicsUtils::distanceSqd(p1, p2);
 }
 
-inline int manhattanDistance(QPoint p1, QPoint p2) {
+inline long manhattanDistance(QPoint p1, QPoint p2) {
     //return qAbs(p1.x() - p2.x()) * qAbs(p1.y() - p2.y());
-    return (int) GraphicsUtils::distanceSqd(p1, p2);
+    return GraphicsUtils::distanceSqd(p1, p2);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -286,13 +300,32 @@ void MazeRouter::start()
 		netCounters[i] = (m_allPartConnectorItems[i]->count() - 1) * 2;			// since we use two connectors at a time on a net
         Net * net = new Net;
         net->net = m_allPartConnectorItems[i];
+
+        QList<ConnectorItem *> todo;
+        todo.append(*(net->net));
+        while (todo.count() > 0) {
+            ConnectorItem * first = todo.takeFirst();
+            QList<ConnectorItem *> equi;
+            equi.append(first);
+	        ConnectorItem::collectEqualPotential(equi, m_bothSidesNow, (ViewGeometry::RatsnestFlag | ViewGeometry::NormalFlag | ViewGeometry::PCBTraceFlag | ViewGeometry::SchematicTraceFlag) ^ m_sketchWidget->getTraceFlag());
+            foreach (ConnectorItem * equ, equi) {
+                todo.removeOne(equ);
+            }
+            net->subnets.append(equi);
+        }
+
+        if (net->subnets.count() < 2) {
+            // net is already routed
+            delete net;
+            continue;
+        }
+
         net->id = i;
         net->pinsWithin = findPinsWithin(net->net);
         bestOrdering->nets << net;
 	}
 
     qSort(bestOrdering->nets.begin(), bestOrdering->nets.end(), byPinsWithin);
-	computeMD5(bestOrdering);
 
 	QUndoCommand * parentCommand = new QUndoCommand("Autoroute");
 	new CleanUpWiresCommand(m_sketchWidget, CleanUpWiresCommand::UndoOnly, parentCommand);
@@ -379,33 +412,21 @@ void MazeRouter::start()
 	}
 
 
-	QMultiHash<TraceWire *, long> splitDNA;
 	if (!allDone) {
 		if (orderingIndex == 0) {
 			// stop where we are
-			foreach (TraceWire * fromWire, m_splitDNA.keys()) {
-				foreach (TraceWire * toWire, m_splitDNA.values(fromWire)) {
-					splitDNA.insert(fromWire, toWire->id());
-				}
-			}
 		}
 		else {
 			clearTracesAndJumpers();
-			m_sketchWidget->pasteHeart(bestOrdering->saved, true);
-			splitDNA = bestOrdering->splitDNA;
+			//m_sketchWidget->pasteHeart(bestOrdering->saved, true);
 			ProcessEventBlocker::processEvents();
 		}
-	}
-	else {
-		splitDNA = bestOrdering->splitDNA;
 	}
 
 	foreach (NetOrdering * ordering, orderings) delete ordering;
 	orderings.clear();
 
 	cleanUpNets();
-
-	addToUndo(splitDNA, parentCommand);
 
 	clearTracesAndJumpers();
 
@@ -427,16 +448,6 @@ void MazeRouter::start()
 void MazeRouter::updateProgress(int num, int denom) 
 {
 	emit setProgressValue((int) MaximumProgress * (m_currentProgressPart + (num / (double) denom)) / (double) m_maximumProgressPart);
-}
-
-void MazeRouter::computeMD5(NetOrdering * ordering) {
-	QByteArray buffer;
-	foreach (Net * net, ordering->nets) {
-		QByteArray b((const char *) &net->id, sizeof(int));
-		buffer.append(b);
-	}
-
-	ordering->md5sum = QCryptographicHash::hash(buffer, QCryptographicHash::Md5);
 }
 
 bool MazeRouter::reorder(QList<NetOrdering *> & orderings, NetOrdering * currentOrdering, NetOrdering * & bestOrdering) {
@@ -544,7 +555,6 @@ bool MazeRouter::makeMasters(QString & message) {
     }
 
     return true;
-
 }
 
 bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, RoutingStatus & routingStatus, bool makeJumper, NetOrdering * bestOrdering, QImage & boardImage, const QSizeF gridSize)
@@ -556,22 +566,13 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
 
     foreach (Net * net, ordering->nets) {
         QList< QList<ConnectorItem *> > subnets;
-        QList<ConnectorItem *> todo;
-        todo.append(*(net->net));
-        while (todo.count() > 0) {
-            ConnectorItem * first = todo.takeFirst();
-            QList<ConnectorItem *> equi;
-            equi.append(first);
-	        ConnectorItem::collectEqualPotential(equi, m_bothSidesNow, (ViewGeometry::RatsnestFlag | ViewGeometry::NormalFlag | ViewGeometry::PCBTraceFlag | ViewGeometry::SchematicTraceFlag) ^ m_sketchWidget->getTraceFlag());
-            foreach (ConnectorItem * equ, equi) {
-                todo.removeOne(equ);
-            }
-            subnets.append(equi);
+        foreach (QList<ConnectorItem *> subnet, net->subnets) {
+            QList<ConnectorItem *> copy(subnet);
+            subnets.append(copy);
         }
-
         Nearest nearest;
         findNearestPair(subnets, nearest);
-        if (subnets.at(nearest.i).count() > subnets.at(nearest.j).count()) {
+        if (subnets.at(nearest.i).count() < subnets.at(nearest.j).count()) {
             nearest.swap();
         }
 
@@ -580,84 +581,180 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
         Grid * grid = new Grid(boardImage.width(), boardImage.height(), m_bothSidesNow ? 2 : 1);
         std::priority_queue<GridPoint> pq;
 
+        QList<QDomElement> netElements0;
+        QList<QDomElement> netElements1;
+        QList<QDomElement> notNetElements0;
+        QList<QDomElement> notNetElements1;
+
         foreach (ViewLayer::ViewLayerSpec viewLayerSpec, layerSpecs) {  
-            if (viewLayerSpec == ViewLayer::Top) emit wantTopVisible();
+            int z = viewLayerSpec == ViewLayer::Bottom ? 0 : 1;
+
+            if (z == 1) emit wantTopVisible();
             else emit wantBottomVisible();
 
-	        LayerList viewLayerIDs = ViewLayer::copperLayers(viewLayerSpec);
-            viewLayerIDs.removeOne(ViewLayer::GroundPlane0);
-            viewLayerIDs.removeOne(ViewLayer::GroundPlane1);
-
-            QList<QDomElement> netElements;
             QList<QDomElement> alsoNetElements;
-            QList<QDomElement> notNetElements;
             QDomDocument * masterDoc = m_masterDocs.value(viewLayerSpec);
-            DRC::splitNetPrep(masterDoc, *(net->net), m_keepoutMils, DRC::NotNet, netElements, alsoNetElements, notNetElements, true, true);
-            foreach (QDomElement element, netElements) {
+
+            QString temp = masterDoc->toString();
+            DRC::splitNetPrep(masterDoc, *(net->net), m_keepoutMils, DRC::NotNet, z == 0 ? netElements0 : netElements1, alsoNetElements, z == 0 ? notNetElements0 : notNetElements1, true, true);
+            foreach (QDomElement element, z == 0 ? netElements0 : netElements1) {
                 element.setTagName("g");
             }
             QImage obstaclesImage = boardImage.copy();
             DRC::renderOne(masterDoc, &obstaclesImage, r);
 
-            int z = viewLayerSpec == ViewLayer::Bottom ? 0 : 1;
 
 #ifndef QT_NO_DEBUG
             obstaclesImage.save(FolderUtils::getUserDataStorePath("") + QString("/obstacles%1.png").arg(z));
 #endif
 
             grid->init(0, 0, z, grid->x, grid->y, obstaclesImage, GridObstacle, false);
-
             updateDisplay(grid, z);
 
-            foreach (QDomElement element, notNetElements) {
-                element.setTagName("g");
-            }
+            prepSourceAndTarget(masterDoc, grid, subnets, z, pq, z == 0 ? netElements0 : netElements1, z == 0 ? notNetElements0 : notNetElements1, nearest, r);
+        }
 
-            QList<ConnectorItem *> li = subnets.at(nearest.i);
-            QList<QPoint> sourcePoints = renderSource(masterDoc, viewLayerSpec, grid, netElements, li, GridSource, false, r, true);
+        foreach (Net * prevNet, ordering->nets) {
+            if (prevNet == net) break;
 
-            int crossLayerCost = 0;
-            if (nearest.ic->attachedToViewLayerID() == ViewLayer::Copper0 && viewLayerSpec == ViewLayer::Top) {
-                crossLayerCost = Layer1Cost;
-            }
-            else if (nearest.ic->attachedToViewLayerID() == ViewLayer::Copper1 && viewLayerSpec == ViewLayer::Bottom) {
-                crossLayerCost = Layer1Cost;
-            }
-
-            foreach (QPoint p, sourcePoints) {
-                GridPoint gridPoint(p, z);
-                gridPoint.cost = manhattanDistance(p, nearest.gridTarget) + crossLayerCost;
-                pq.push(gridPoint);
-            }
-
-            QList<ConnectorItem *> lj = subnets.at(nearest.j);
-            renderSource(masterDoc, viewLayerSpec, grid, netElements, lj, GridTarget, true, r, false);
-
-            updateDisplay(grid, z);
-
-            // restore masterdoc
-            foreach (QDomElement element, netElements) {
-                element.setTagName(element.attribute("former"));
-                element.removeAttribute("net");
-                SvgFileSplitter::forceStrokeWidth(element, 2 * m_keepoutMils, "#000000", false, false);
-            }
-            foreach (QDomElement element, notNetElements) {
-                element.setTagName(element.attribute("former"));
-                element.removeAttribute("notnet");
+            foreach (QList<GridPoint> tracePoints, prevNet->traces) {
+                foreach (GridPoint gridPoint, tracePoints) {
+                    grid->setAt(gridPoint.x, gridPoint.y, gridPoint.z, GridObstacle);
+                }
             }
         }
 
-        bool result = route(grid, pq, nearest);
+        updateDisplay(grid, 0);
+        if (m_bothSidesNow) updateDisplay(grid, 1);
 
-        // for each remaining connector in net
-        //      figure out nearest to src
-        //      render dest and convert (use rect)
-        //      route the maze using A* (include hack for number of free neighbors)
-        //      backtrace and remove maze flood
+        QList<GridPoint> points = route(grid, pq, nearest);
+        if (points.count() == 0) {
+            // rip up and reroute
+        }
+        else {
+            net->traces.append(points);
+        }
+
+        while (subnets.count() > 2) {
+            QList<ConnectorItem *> combined;
+            combined.append(subnets.at(nearest.i));
+            combined.append(subnets.at(nearest.j));
+            if (nearest.i < nearest.j) {
+                subnets.removeAt(nearest.j);
+                subnets.removeAt(nearest.i);
+            }
+            else {
+                subnets.removeAt(nearest.i);
+                subnets.removeAt(nearest.j);
+            }
+            subnets.prepend(combined);
+            nearest.i = 0;
+            nearest.j = -1;
+            nearest.distance = std::numeric_limits<double>::max();
+            findNearestPair(subnets, 0, combined, nearest);
+            quint32 value = GridSource;
+            if (subnets.at(nearest.i).count() < subnets.at(nearest.j).count()) {
+                nearest.swap();
+                value = GridTarget;
+            }
+
+            QPointF jp = nearest.jc->sceneAdjustedTerminalPoint(NULL) - m_board->sceneBoundingRect().topLeft();
+            nearest.gridTarget = QPoint(jp.x() / m_standardWireWidth, jp.y() / m_standardWireWidth);
+
+            pq = std::priority_queue<GridPoint>();
+
+            foreach (ViewLayer::ViewLayerSpec viewLayerSpec, layerSpecs) {  
+                int z = viewLayerSpec == ViewLayer::Bottom ? 0 : 1;
+                QDomDocument * masterDoc = m_masterDocs.value(viewLayerSpec);
+                prepSourceAndTarget(masterDoc, grid, subnets, z, pq, z == 0 ? netElements0 : netElements1, z == 0 ? notNetElements0 : notNetElements1, nearest, r);
+            }
+
+            if (value == GridTarget) {
+                foreach (QList<GridPoint> tracePoints, net->traces) {
+                    foreach (GridPoint gridPoint, tracePoints) {
+                        grid->setAt(gridPoint.x, gridPoint.y, gridPoint.z, GridTarget);
+                    }
+                }
+            }
+            else {
+                foreach (QList<GridPoint> tracePoints, net->traces) {
+                    foreach (GridPoint gridPoint, tracePoints) {
+                        grid->setAt(gridPoint.x, gridPoint.y, gridPoint.z, GridSource);
+                        int crossLayerCost = 0;
+                        if (nearest.jc->attachedToViewLayerID() == ViewLayer::Copper0 && gridPoint.z == 1) {
+                            crossLayerCost = Layer1Cost;
+                        }
+                        else if (nearest.ic->attachedToViewLayerID() == ViewLayer::Copper1 && gridPoint.z == 0) {
+                            crossLayerCost = Layer1Cost;
+                        }
+
+                        gridPoint.cost = manhattanDistance(QPoint(gridPoint.x, gridPoint.y), nearest.gridTarget) + crossLayerCost;
+                        pq.push(gridPoint);                  
+                    }
+                }
+            }
+
+            updateDisplay(grid, 0);
+            if (m_bothSidesNow) updateDisplay(grid, 1);
+
+            QList<GridPoint> points = route(grid, pq, nearest);
+            if (points.count() == 0) {
+                // rip up and reroute
+            }
+            else {
+                net->traces.append(points);
+            }
+        }
+
+        // restore masterdoc
+        foreach (QDomElement element, netElements0) {
+            SvgFileSplitter::forceStrokeWidth(element, 2 * m_keepoutMils, "#000000", false, false);
+        }
+        foreach (QDomElement element, netElements1) {
+            SvgFileSplitter::forceStrokeWidth(element, 2 * m_keepoutMils, "#000000", false, false);
+        }
     }
 
-
     return true;
+}
+
+void MazeRouter::prepSourceAndTarget(QDomDocument * masterDoc, Grid * grid, QList< QList<ConnectorItem *> > & subnets, int z, std::priority_queue<GridPoint> & pq, QList<QDomElement> & netElements, QList<QDomElement> & notNetElements, Nearest & nearest, QRectF & r) 
+{
+    foreach (QDomElement element, notNetElements) {
+        element.setTagName("g");
+    }
+
+    QList<ConnectorItem *> li = subnets.at(nearest.i);
+    QList<QPoint> sourcePoints = renderSource(masterDoc, z, grid, netElements, li, GridSource, false, r, true);
+
+    int crossLayerCost = 0;
+    if (nearest.jc->attachedToViewLayerID() == ViewLayer::Copper0 && z == 1) {
+        crossLayerCost = Layer1Cost;
+    }
+    else if (nearest.jc->attachedToViewLayerID() == ViewLayer::Copper1 && z == 0) {
+        crossLayerCost = Layer1Cost;
+    }
+
+    foreach (QPoint p, sourcePoints) {
+        GridPoint gridPoint(p, z);
+        gridPoint.cost = manhattanDistance(p, nearest.gridTarget) + crossLayerCost;
+        pq.push(gridPoint);
+    }
+
+    QList<ConnectorItem *> lj = subnets.at(nearest.j);
+    renderSource(masterDoc, z, grid, netElements, lj, GridTarget, true, r, false);
+
+    updateDisplay(grid, z);
+
+    // restore masterdoc (except for netElements stroke-width)
+    foreach (QDomElement element, netElements) {
+        element.setTagName(element.attribute("former"));
+        element.removeAttribute("net");
+    }
+    foreach (QDomElement element, notNetElements) {
+        element.setTagName(element.attribute("former"));
+        element.removeAttribute("net");
+    }
 }
 
 void MazeRouter::findNearestPair(QList< QList<ConnectorItem *> > & subnets, Nearest & nearest) {
@@ -669,8 +766,8 @@ void MazeRouter::findNearestPair(QList< QList<ConnectorItem *> > & subnets, Near
     }
 }
 
-void MazeRouter::findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, Nearest & nearest) {
-    for (int j = i + 1; j < subnets.count(); j++) {
+void MazeRouter::findNearestPair(QList< QList<ConnectorItem *> > & subnets, int inetix, QList<ConnectorItem *> & inet, Nearest & nearest) {
+    for (int j = inetix + 1; j < subnets.count(); j++) {
         QList<ConnectorItem *> jnet = subnets.at(j);
         foreach (ConnectorItem * ic, inet) {
             QPointF ip = ic->sceneAdjustedTerminalPoint(NULL);
@@ -699,7 +796,7 @@ void MazeRouter::findNearestPair(QList< QList<ConnectorItem *> > & subnets, int 
                 }
                 if (d < nearest.distance) {
                     nearest.distance = d;
-                    nearest.i = i;
+                    nearest.i = inetix;
                     nearest.j = j;
                     nearest.ic = ic;
                     nearest.jc = jc;
@@ -709,7 +806,7 @@ void MazeRouter::findNearestPair(QList< QList<ConnectorItem *> > & subnets, int 
     }
 }
 
-QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, ViewLayer::ViewLayerSpec viewLayerSpec, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, quint32 value, bool clearElements, const QRectF & r, bool collectPoints) {
+QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, quint32 value, bool clearElements, const QRectF & r, bool collectPoints) {
     if (clearElements) {
         foreach (QDomElement element, netElements) {
             element.setTagName("g");
@@ -742,10 +839,10 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, ViewLayer::View
     static int rsi = 0;
 	image.save(FolderUtils::getUserDataStorePath("") + QString("/rendersource%1.png").arg(rsi++));
 #endif
-    return grid->init(x1, y1, viewLayerSpec == ViewLayer::Bottom ? 0 : 1, x2 - x1, y2 - y1, image, value, collectPoints);
+    return grid->init(x1, y1, z, x2 - x1, y2 - y1, image, value, collectPoints);
 }
 
-bool MazeRouter::route(Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest)
+QList<GridPoint> MazeRouter::route(Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest)
 {
     bool result = false;
     GridPoint target;
@@ -763,21 +860,16 @@ bool MazeRouter::route(Grid * grid, std::priority_queue<GridPoint> & pq, Nearest
     }
 
     if (!result) {
-        return false;
+        QList<GridPoint> points;
+        return points;
     }
 
     QList<GridPoint> points = traceBack(target, grid);
-    sourceToTarget(grid);
-    foreach (GridPoint gridPoint, points) {
-        grid->setAt(gridPoint.x, gridPoint.y, gridPoint.z, GridTarget);
-    }
-
+    clearExpansion(grid);  
     updateDisplay(grid, 0);
-    if (m_bothSidesNow) {
-        updateDisplay(grid, 1);
-    }
+    if (m_bothSidesNow) updateDisplay(grid, 1);
 
-    return points.count() > 0;
+    return points;
 }
 
 QList<GridPoint> MazeRouter::traceBack(GridPoint & gridPoint, Grid * grid) {
@@ -1066,21 +1158,22 @@ void MazeRouter::updateDisplay(Grid * grid, int iz) {
 }
 
 void MazeRouter::updateDisplay(GridPoint & gridPoint) {
-    m_displayImage[gridPoint.z]->setPixel(gridPoint.x, gridPoint.y, 0xff000000 | gridPoint.cost);
+    m_displayImage[gridPoint.z]->setPixel(gridPoint.x, gridPoint.y, 0xff000000 | ((int) gridPoint.cost));
     updateDisplay(gridPoint.z);
 }
 
-void MazeRouter::sourceToTarget(Grid * grid) {
+void MazeRouter::clearExpansion(Grid * grid) {
+    // TODO: keep a list of points expansion points instead?
+
     for (int z = 0; z < grid->z; z++) {
         for (int y = 0; y < grid->y; y++) {
             for (int x = 0; x < grid->x; x++) {
                 switch (grid->at(x, y, z)) {
                     case GridObstacle:
+                    case 0:
+                        break;
                     case GridTarget:
-                        break;
                     case GridSource:
-                        grid->setAt(x, y, z, GridTarget);
-                        break;
                     default:
                         grid->setAt(x, y, z, 0);
                         break;
@@ -1089,3 +1182,4 @@ void MazeRouter::sourceToTarget(Grid * grid) {
         }
     }
 }
+
