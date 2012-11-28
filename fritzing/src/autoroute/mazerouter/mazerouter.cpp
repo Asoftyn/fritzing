@@ -34,15 +34,13 @@ $Date: 2012-10-12 15:09:05 +0200 (Fr, 12 Okt 2012) $
 //   
 //      jumperitem
 //
-//      via search
-//
-//      datastructure for grid
-//
 //      feedback
 //
-//      copper0, then copper1, then vias, then rip-up-and-reroute
+//      rip-up-and-reroute
 //
 //      stop-now and best-ordering?  how is best ordering determined?
+//
+//      dynamic cost function based on distance to any target point
 //
 
 #include "mazerouter.h"
@@ -492,7 +490,6 @@ bool MazeRouter::makeBoard(QImage & image, double keepout, const QSizeF gridSize
 
     // board should be white, borders should be black
 
-
 #ifndef QT_NO_DEBUG
 	image.save(FolderUtils::getUserDataStorePath("") + "/mazeMakeBoard.png");
 #endif
@@ -503,94 +500,8 @@ bool MazeRouter::makeBoard(QImage & image, double keepout, const QSizeF gridSize
 	image.save(FolderUtils::getUserDataStorePath("") + "/mazeMakeBoard2.png");
 #endif
 
-	viewLayerIDs.clear();
-    viewLayerIDs << ViewLayer::Copper0 << ViewLayer::Copper1;
-    QRectF copperImageRect;
-	QString master = m_sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, copperImageRect, m_board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
-    if (!master.contains(FSvgRenderer::NonConnectorName)) {
-        // no holes found
-        return true;
-    }
-       
-    QString errorStr;
-	int errorLine;
-	int errorColumn;	
-    QDomDocument doc;
-    doc.setContent(master, &errorStr, &errorLine, &errorColumn);
-
-    QSet<QString> holeIDs;
-
-    foreach (QGraphicsItem * item, m_sketchWidget->scene()->collidingItems(m_board)) {
-        ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
-        if (itemBase == NULL) continue;
-        if (itemBase->itemType() != ModelPart::Hole) continue;
-
-        holeIDs.insert(QString::number(itemBase->id()));
-    }
-
-    if (holeIDs.count() == 0) {
-        // shouldn't happen
-        return true;
-    }
-
-    QList<QDomElement> todo;
-    todo << doc.documentElement();
-    bool firstTime = true;
-    while (!todo.isEmpty()) {
-        QDomElement element = todo.takeFirst();
-        QDomElement child = element.firstChildElement();
-        while (!child.isNull()) {
-            todo << child;
-            child = child.nextSiblingElement();
-        }
-        if (firstTime) {
-            // don't include the root <svg> element
-            firstTime = false;
-            continue;
-        }
-
-        QString partID = element.attribute("partID");
-        if (!partID.isEmpty()) {
-            if (holeIDs.contains(partID)) {
-                // make sure all sub elements of Hole part will be added to the board image
-                QList<QDomElement> subtodo;
-                subtodo << element;
-                while (!subtodo.isEmpty()) {
-                    QDomElement subelement = subtodo.takeFirst();
-                    subelement.setAttribute("id", FSvgRenderer::NonConnectorName);
-                    QDomElement child = subelement.firstChildElement();
-                    while (!child.isNull()) {
-                        subtodo << child;
-                        child = child.nextSiblingElement();
-                    }
-                }
-            }
-        }
-
-        if (element.tagName() == "g") continue;
-
-        if (element.attribute("id").contains(FSvgRenderer::NonConnectorName)) {
-            element.setAttribute("fill", "black");
-            element.setAttribute("stroke", "black");
-            QString sw = element.attribute("stroke-width", "0");
-            double strokeWidth = sw.toDouble();
-            strokeWidth += m_keepoutMils;
-            element.setAttribute("stroke-width", strokeWidth);
-        }
-        else {
-            element.setTagName("g");
-        }
-    }
-
-    DRC::renderOne(&doc, &image, r);
-
-#ifndef QT_NO_DEBUG
-	image.save(FolderUtils::getUserDataStorePath("") + "/mazeMakeHoles.png");
-#endif
-
     return true;
 }
-
 
 bool MazeRouter::makeMasters(QString & message) {
     QList<ViewLayer::ViewLayerSpec> layerSpecs;
@@ -681,7 +592,7 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
             QList<QDomElement> alsoNetElements;
             QList<QDomElement> notNetElements;
             QDomDocument * masterDoc = m_masterDocs.value(viewLayerSpec);
-            DRC::splitNetPrep(masterDoc, *(net->net), m_keepoutMils, DRC::NotNet, netElements, alsoNetElements, notNetElements, true);
+            DRC::splitNetPrep(masterDoc, *(net->net), m_keepoutMils, DRC::NotNet, netElements, alsoNetElements, notNetElements, true, true);
             foreach (QDomElement element, netElements) {
                 element.setTagName("g");
             }
@@ -728,6 +639,7 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
             foreach (QDomElement element, netElements) {
                 element.setTagName(element.attribute("former"));
                 element.removeAttribute("net");
+                SvgFileSplitter::forceStrokeWidth(element, 2 * m_keepoutMils, "#000000", false, false);
             }
             foreach (QDomElement element, notNetElements) {
                 element.setTagName(element.attribute("former"));

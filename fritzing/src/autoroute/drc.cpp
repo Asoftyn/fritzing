@@ -724,7 +724,7 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
     QList<QDomElement> net;
     QList<QDomElement> alsoNet;
     QList<QDomElement> notNet;
-    splitNetPrep(masterDoc, equi, keepoutMils, TreatAsNet, net, alsoNet, notNet, false);
+    splitNetPrep(masterDoc, equi, keepoutMils, TreatAsNet, net, alsoNet, notNet, false, false);
     foreach (QDomElement element, notNet) element.setTagName("g");
     foreach (QDomElement element, alsoNet) element.setTagName("g");
 
@@ -762,9 +762,10 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
     }
 }
 
-void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, double keepoutMils, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool fill) 
+void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, double keepoutMils, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool fill, bool checkIntersection) 
 {
     QMultiHash<QString, QString> partIDs;
+    QMultiHash<QString, ItemBase *> itemBases;
     QSet<QString> wireIDs;
     foreach (ConnectorItem * equ, equi) {
         ItemBase * itemBase = equ->attachedTo();
@@ -783,6 +784,7 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
         
         SvgIdLayer * svgIdLayer = equ->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
         partIDs.insert(QString::number(itemBase->id()), svgIdLayer->m_svgId);
+        itemBases.insert(QString::number(itemBase->id()), itemBase);
     }
 
     QList<QDomElement> todo;
@@ -815,7 +817,7 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
                 markSubs(element, "net");
             }
             else {
-                splitSubs(masterDoc, element, "net", treatAs, svgIDs);
+                splitSubs(masterDoc, element, "net", treatAs, svgIDs, itemBases.values(partID), checkIntersection);
             }
         }
 
@@ -860,19 +862,41 @@ void DRC::markSubs(QDomElement & root, const QString & mark) {
     }
 }
 
-void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs)
+void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs, const QList<ItemBase *> & itemBases, bool checkIntersection)
 {
+    //QString string;
+    //QTextStream stream(&string);
+    //root.save(stream, 0);
+
+    QStringList notSvgIDs;    
+    if (checkIntersection && itemBases.count() > 0) {
+        ItemBase * itemBase = itemBases.at(0);
+        foreach (ConnectorItem * connectorItem, itemBase->cachedConnectorItems()) {
+            SvgIdLayer * svgIdLayer = connectorItem->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
+            if (!svgIDs.contains(svgIdLayer->m_svgId)) {
+                notSvgIDs.append(svgIdLayer->m_svgId);
+            }
+        }
+    }
+
     // split subelements of a part into separate nets
     QList<QDomElement> todo;
+    QList<QDomElement> netElements;
     todo << root;
     while (!todo.isEmpty()) {
         QDomElement element = todo.takeFirst();
         QString svgID = element.attribute("id");
         if (!svgID.isEmpty()) {
             if (svgIDs.contains(svgID)) {
+                netElements << element;
                 markSubs(element, mark1);
                 // all children are marked so don't add these to todo
                 continue;
+            }
+            else if (notSvgIDs.contains(svgID)) {
+                markSubs(element, mark2);
+                // all children are marked so don't add these to todo
+                continue;            
             }
         }
 
@@ -882,17 +906,87 @@ void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark
             child = child.nextSiblingElement();
         }
     }
+
+    QList<QDomElement> toCheck;
+
     todo << root;
     while (!todo.isEmpty()) {
         QDomElement element = todo.takeFirst();
-        if (element.attribute("net") != mark1) {
+        QString net = element.attribute("net");
+        if (net == mark1) continue;
+        else if (!checkIntersection) {
             element.setAttribute("net", mark2);
+        }
+        else if (net == mark2) continue;
+        else if (element.tagName() != "g") {
+            element.setAttribute("oldid", element.attribute("id"));
+            element.setAttribute("id", toCheck.count());
+            toCheck << element;
         }
 
         QDomElement child = element.firstChildElement();
         while (!child.isNull()) {
             todo << child;
             child = child.nextSiblingElement();
+        }
+    }
+
+    if (toCheck.count() > 0) {
+        // deal with elements that are effectively part of a connector, but aren't separately labeled
+        // such as a rect which overlaps a circle
+        QDomElement masterRoot = doc->documentElement();
+        QString svg = QString("<svg width='%1' height='%2' viewBox='%3'>\n")
+            .arg(masterRoot.attribute("width"))
+            .arg(masterRoot.attribute("height"))
+            .arg(masterRoot.attribute("viewBox"));
+        foreach (QDomElement element, netElements) {
+            QString string;
+            QTextStream stream(&string);
+            element.save(stream, 0);
+            svg += string;
+        }
+        foreach (QDomElement element, toCheck) {
+            QString string;
+            QTextStream stream(&string);
+            element.save(stream, 0);
+            svg += string;
+            element.setAttribute("id", element.attribute("oldid"));
+        }
+
+        svg += "</svg>";
+        QSvgRenderer renderer;
+        renderer.load(svg.toUtf8());
+        QList<QRectF> netRects;
+        foreach (QDomElement element, netElements) {
+            QString id = element.attribute("id");
+            QRectF r = renderer.matrixForElement(id).mapRect(renderer.boundsOnElement(id));
+            netRects << r;
+        }
+        QList<QRectF> checkRects;
+        foreach (QDomElement element, toCheck) {
+            QString id = element.attribute("id");
+            QRectF r = renderer.matrixForElement(id).mapRect(renderer.boundsOnElement(id));
+            checkRects << r;
+        }
+        for (int i = 0; i < checkRects.count(); i++) {
+            QRectF checkr = checkRects.at(i);
+            QDomElement checkElement = toCheck.at(i);
+            bool gotOne = false;
+            double carea = checkr.width() * checkr.height();
+            foreach (QRectF netr, netRects) {
+                QRectF sect = netr.intersected(checkr);
+                if (sect.isEmpty()) continue;
+
+                double area = sect.width() * sect.height();
+                if ((area > netr.width() * netr.height() / 2) && (area > carea / 2)) {
+                    checkElement.setAttribute("net", mark1);
+                    gotOne = true;
+                    break;
+                }
+            }
+            if (!gotOne) {
+                checkElement.setAttribute("net", mark2);
+            }
         }
     }
 }
