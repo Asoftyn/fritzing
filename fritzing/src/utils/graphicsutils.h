@@ -50,7 +50,7 @@ public:
 	static double pixels2mils(double p, double dpi);
 	static double pixels2ins(double p, double dpi);
 	static double distanceSqd(QPointF p1, QPointF p2);
-	static long distanceSqd(QPoint p1, QPoint p2);
+	static double distanceSqd(QPoint p1, QPoint p2);
 	static double getNearestOrdinate(double ordinate, double units);
 
 	static double mm2mils(double mm);

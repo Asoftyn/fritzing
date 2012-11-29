@@ -923,7 +923,7 @@ void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark
         else if (net == mark2) continue;
         else if (element.tagName() != "g") {
             element.setAttribute("oldid", element.attribute("id"));
-            element.setAttribute("id", toCheck.count());
+            element.setAttribute("id", QString("_____toCheck_____%1").arg(toCheck.count()));
             toCheck << element;
         }
 
@@ -942,20 +942,10 @@ void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark
             .arg(masterRoot.attribute("width"))
             .arg(masterRoot.attribute("height"))
             .arg(masterRoot.attribute("viewBox"));
-        foreach (QDomElement element, netElements) {
-            QString string;
-            QTextStream stream(&string);
-            element.save(stream, 0);
-            svg += string;
-        }
-        foreach (QDomElement element, toCheck) {
-            QString string;
-            QTextStream stream(&string);
-            element.save(stream, 0);
-            svg += string;
-            element.setAttribute("id", element.attribute("oldid"));
-        }
-
+        QString string;
+        QTextStream stream(&string);
+        root.save(stream, 0);
+        svg += string;
         svg += "</svg>";
         QSvgRenderer renderer;
         renderer.load(svg.toUtf8());
@@ -970,6 +960,7 @@ void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark
             QString id = element.attribute("id");
             QRectF r = renderer.matrixForElement(id).mapRect(renderer.boundsOnElement(id));
             checkRects << r;
+            element.setAttribute("id", element.attribute("oldid"));
         }
         for (int i = 0; i < checkRects.count(); i++) {
             QRectF checkr = checkRects.at(i);

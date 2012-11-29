@@ -50,7 +50,7 @@ $Date: 2012-10-12 15:09:05 +0200 (Fr, 12 Okt 2012) $
 
 struct GridPoint {
     int x, y, z;
-    long cost;
+    double cost;
     uchar flags;
 
     bool operator<(const GridPoint&) const;
@@ -154,6 +154,7 @@ protected:
 	LayerList m_viewLayerIDs;
     QHash<ViewLayer::ViewLayerSpec, QDomDocument *> m_masterDocs;
     double m_keepoutMils;
+    double m_keepoutGrid;
     int m_gridViaSize;
     double m_standardWireWidth;
     QImage * m_displayImage[2];
