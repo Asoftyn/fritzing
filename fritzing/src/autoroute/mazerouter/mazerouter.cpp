@@ -762,6 +762,7 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
                         }
 
                         gridPoint.cost = initialCost(QPoint(gridPoint.x, gridPoint.y), nearest.gridTarget) + crossLayerCost;
+                        gridPoint.flags = 0;
                         pq.push(gridPoint);                  
                     }
                 }
@@ -1105,15 +1106,15 @@ GridPoint MazeRouter::expandOne(GridPoint & gridPoint, Grid * grid, int dx, int 
         return next;
     }
 
-    next.cost = grid->at(gridPoint.x, gridPoint.y, gridPoint.z);
-    if (next.cost == GridSource) {
-        next.cost = 0;
+    quint32 cost = grid->at(gridPoint.x, gridPoint.y, gridPoint.z);
+    if (cost == GridSource) {
+        cost = 0;
     }
     if (crossLayer) {
-        next.cost += ViaCost;
+        cost += ViaCost;
         next.flags |= GridPointVia;
     }
-    next.cost++;
+    cost++;
 
     /*
     int increment = 5;
@@ -1154,9 +1155,10 @@ GridPoint MazeRouter::expandOne(GridPoint & gridPoint, Grid * grid, int dx, int 
     */
 
     if (nextval != GridTarget) {
-        grid->setAt(next.x, next.y, next.z, next.cost);
+        grid->setAt(next.x, next.y, next.z, cost);
     }
 
+    next.cost = cost;
     updateDisplay(next);
 
     return next;
