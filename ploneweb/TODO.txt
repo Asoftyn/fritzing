@@ -1,6 +1,3 @@
-DEV
-* Fix SSHFS or find alternative
-
 OVERALL
 * plone.app.multilingual
 * http://pypi.python.org/pypi/Products.Doormat
