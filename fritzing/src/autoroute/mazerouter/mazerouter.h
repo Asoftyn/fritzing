@@ -61,9 +61,37 @@ struct GridPoint {
 struct Net {
     QList<class ConnectorItem *>* net;
     QList< QList<ConnectorItem *> > subnets;
-    QList< QList<GridPoint> > traces;
     int pinsWithin;
     int id;
+};
+
+struct NetList {
+    QList<Net *> nets;
+};
+
+struct Trace {
+    int netIndex;
+    int subnetIndexI;
+    int subnetIndexJ;
+    QList<GridPoint> gridPoints;
+};
+
+
+struct NetOrdering {
+    QList<int> order;
+};
+
+struct Score {
+    NetOrdering ordering;
+    QMultiHash<int, Trace> traces;
+    QHash<int, int> unroutedCount;
+    QHash<int, int> viaCount;
+	int totalUnroutedCount;
+	int totalViaCount;
+    int reorderNet;
+
+	Score();
+    void setOrdering(const NetOrdering &);
 };
 
 struct Nearest {
@@ -72,6 +100,7 @@ struct Nearest {
     ConnectorItem * ic;
     ConnectorItem * jc;
     QPoint gridTarget;
+    bool unrouted;
 
     void swap() {
         int temp = i;
@@ -81,20 +110,6 @@ struct Nearest {
         ic = jc;
         jc = tempc;
     }
-};
-
-struct NetOrdering {
-    QList<Net *> nets;
-	int unroutedCount;
-	int jumperCount;
-	int viaCount;
-	int totalViaCount;
-
-	NetOrdering() {
-		unroutedCount = jumperCount = viaCount = totalViaCount = 0;
-	}
-
-	double score();
 };
 
 struct Grid {
@@ -129,11 +144,11 @@ signals:
 protected:
     void setUpWidths(double width);
 	void updateProgress(int num, int denom);
-	bool reorder(QList<NetOrdering *> & orderings, NetOrdering *  currentOrdering, NetOrdering * & bestOrdering);
     int findPinsWithin(QList<ConnectorItem *> * net);
     bool makeBoard(QImage & image, double keepout, const QSizeF gridSize);
     bool makeMasters(QString &);
-	bool routeNets(NetOrdering *, QVector<int> & netCounters, struct RoutingStatus &, bool makeJumper, NetOrdering * bestOrdering, QImage & boardImage, const QSizeF gridSize);
+	bool routeNets(NetList &, bool makeJumper, Score & currentScore, Score & bestScore, QImage & boardImage, const QSizeF gridSize, QList<NetOrdering> & allOrderings);
+    bool routeOne(Score & currentScore, Score & bestScore, int netIndex, Grid *, std::priority_queue<GridPoint> &, Nearest &, QList<NetOrdering> & allOrderings);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, Nearest &);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, Nearest &);
     QList<QPoint> renderSource(QDomDocument * masterDoc, int z, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, quint32 value, bool clearElements, const QRectF & r, bool collectPoints);
@@ -149,6 +164,7 @@ protected:
     void updateDisplay(GridPoint &);
     void clearExpansion(Grid * grid);
     void prepSourceAndTarget(QDomDocument * masterdoc, Grid * grid, QList< QList<ConnectorItem *> > & subnets, int z, std::priority_queue<GridPoint> &, QList<QDomElement> & netElements, QList<QDomElement> & notNetElements, Nearest & nearest, QRectF &); 
+    bool moveBack(Score & currentScore, int index, QList<NetOrdering> & allOrderings);
 
 protected:
 	LayerList m_viewLayerIDs;

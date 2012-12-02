@@ -26,8 +26,6 @@ $Date: 2012-10-12 15:09:05 +0200 (Fr, 12 Okt 2012) $
 
 // TODO:
 //
-//      when drawing new traces as obstacles, expand by keepout
-//          draw expanded vias as well
 //
 //      schematic view
 //          use a different cost function: cost is manhattandistance + penalty for direction changes
@@ -35,33 +33,35 @@ $Date: 2012-10-12 15:09:05 +0200 (Fr, 12 Okt 2012) $
 //
 //      net reordering/rip-up-and-reroute
 //          is there a better way than just move by one?
-//          how is best ordering determined: completed traces, via count, uncompleted nets
-//          run through all nets anyway even if one net gets blocked, then add blocked count
-//          only need to keep best ordering + traces, plus the list of every ordering attempted
-//
+//          must fix up unrouted and via count when currentScore is reordered
 //
 //      keepout dialog
 //   
 //      jumperitem
+//          need to place this at the moment the route fails
+//              can possibly use the expansion for one end of the jumper, but need a new search for the other end
+//              must ensure minimum distance from connector
 //
 //      feedback
 //          use qgraphicpixmapitems but update only at new trace time
+//              use trace colors for top and bottom, and set at appropriate z level
 //
 //      raster back to vector
 //
 //      hold the set of successful traces
 //          plus sets of points for vias or jumpers?
 //
-//      stop-now, cancel  
+//      stop-now  
 //
 //      dynamic cost function based on distance to any target point?
 //
 //      how to determine splitDNA
 //          the other way to do it would be to allow overlaps and draw a second trace back to the nearest connector
 //
-//      to check if ordering already exists
-//          foreach ordering, compare ids like a string
-
+//      via placement must ensure minimum distance from source
+//
+//      check clean up is really clearing pointers
+//
 
 #include "mazerouter.h"
 #include "../../sketch/pcbsketchwidget.h"
@@ -226,6 +226,33 @@ QList<QPoint> Grid::init(int sx, int sy, int sz, int width, int height, const QI
 
 ////////////////////////////////////////////////////////////////////
 
+
+Score::Score() {
+	totalUnroutedCount = totalViaCount = 0;
+    reorderNet = -1;
+}
+
+void Score::setOrdering(const NetOrdering & _ordering) {
+    reorderNet = -1;
+    if (ordering.order.count() > 0) {
+        for (int i = 0; i < ordering.order.count(); i++) {
+            if (ordering.order.at(i) == _ordering.order.at(i)) continue;
+
+            int netIndex = ordering.order.at(i);
+            traces.remove(netIndex);
+            int c = unroutedCount.value(netIndex);
+            unroutedCount.remove(netIndex);
+            totalUnroutedCount -= c;
+            c = viaCount.value(netIndex);
+            viaCount.remove(netIndex);
+            totalViaCount -= c;
+        }
+    }
+    ordering = _ordering;
+}
+
+////////////////////////////////////////////////////////////////////
+
 MazeRouter::MazeRouter(PCBSketchWidget * sketchWidget, ItemBase * board, bool adjustIf) : Autorouter(sketchWidget)
 {
     m_displayItem[0] = m_displayItem[1] = NULL;
@@ -324,7 +351,7 @@ void MazeRouter::start()
 	routingStatus.m_netCount = m_allPartConnectorItems.count();
 
 	QVector<int> netCounters(m_allPartConnectorItems.count());
-    NetOrdering * bestOrdering = new NetOrdering();   
+    NetList netList;
 	for (int i = 0; i < m_allPartConnectorItems.count(); i++) {
 		netCounters[i] = (m_allPartConnectorItems[i]->count() - 1) * 2;			// since we use two connectors at a time on a net
         Net * net = new Net;
@@ -349,12 +376,18 @@ void MazeRouter::start()
             continue;
         }
 
-        net->id = i;
         net->pinsWithin = findPinsWithin(net->net);
-        bestOrdering->nets << net;
+        netList.nets << net;
 	}
 
-    qSort(bestOrdering->nets.begin(), bestOrdering->nets.end(), byPinsWithin);
+    qSort(netList.nets.begin(), netList.nets.end(), byPinsWithin);
+    NetOrdering initialOrdering;
+    int ix = 0;
+    foreach (Net * net, netList.nets) {
+        // id is the same as the order in netList
+        initialOrdering.order << ix;
+        net->id = ix++;
+    }
 
 	QUndoCommand * parentCommand = new QUndoCommand("Autoroute");
 	new CleanUpWiresCommand(m_sketchWidget, CleanUpWiresCommand::UndoOnly, parentCommand);
@@ -397,35 +430,38 @@ void MazeRouter::start()
 		return;
 	}
 
-	bool allDone = false;
-	QList<NetOrdering *> orderings;
-	orderings.append(bestOrdering);
-
-	bestOrdering->unroutedCount = m_allPartConnectorItems.count() + 1;	// so runEdges doesn't bail out the first time through
-
-	int orderingIndex = 0;
-	for (int run = 0; run < m_maxCycles && orderingIndex < orderings.count(); run++) {
-		NetOrdering * currentOrdering = orderings.at(orderingIndex++);
-		QString score;
+	QList<NetOrdering> allOrderings;
+    allOrderings << initialOrdering;
+    Score bestScore;
+    bestScore.totalUnroutedCount = std::numeric_limits<int>::max();   // so that first run doesn't exit too soon
+    Score currentScore;
+    int run = 0;
+	for (; run < m_maxCycles && run < allOrderings.count(); run++) {
+		QString msg;
 		if (run > 0) {
-			score = tr("best so far: %1 unrouted").arg(bestOrdering->unroutedCount);
+			msg = tr("best so far: %1 unrouted").arg(bestScore.totalUnroutedCount);
 			if (m_sketchWidget->usesJumperItem()) {
-				score += tr("/%n jumpers", "", bestOrdering->jumperCount) + tr("/%n vias", "", bestOrdering->totalViaCount);
+				msg +=  tr("/%n vias", "", bestScore.totalViaCount);
 			}
-			emit setProgressMessage(score);
+			emit setProgressMessage(msg);
 		}
 		emit setCycleMessage(tr("round %1 of:").arg(run + 1));
 		ProcessEventBlocker::processEvents();
+        currentScore.setOrdering(allOrderings.at(run));
+		routeNets(netList, m_sketchWidget->usesJumperItem(), currentScore, bestScore, boardImage, gridSize, allOrderings);
+		if (m_cancelled || currentScore.totalUnroutedCount == 0 || m_stopTracing) break;
 
-		allDone = routeNets(currentOrdering, netCounters, routingStatus, m_sketchWidget->usesJumperItem(), bestOrdering, boardImage, gridSize);
-		if (m_cancelled || allDone || m_stopTracing) break;
-
-		ProcessEventBlocker::processEvents();
-		reorder(orderings, currentOrdering, bestOrdering);
-
-		// TODO: only delete the edges that have been reordered
-		clearTracesAndJumpers();
-		ProcessEventBlocker::processEvents();
+		if (bestScore.ordering.order.count() == 0) {
+            bestScore = currentScore;
+        }
+        else {
+            if (currentScore.totalUnroutedCount < bestScore.totalUnroutedCount) {
+                bestScore = currentScore;
+            }
+            else if (currentScore.totalUnroutedCount == bestScore.totalUnroutedCount && currentScore.totalViaCount < bestScore.totalViaCount) {
+                bestScore = currentScore;
+            }
+        }
 	}
 
 
@@ -435,14 +471,12 @@ void MazeRouter::start()
 	if (m_cancelled) {
 		clearTracesAndJumpers();
 		doCancel(parentCommand);
-		foreach (NetOrdering * ordering, orderings) delete ordering;
-		orderings.clear();
 		return;
 	}
 
 
-	if (!allDone) {
-		if (orderingIndex == 0) {
+	if (currentScore.totalUnroutedCount != 0) {
+		if (run == 0) {
 			// stop where we are
 		}
 		else {
@@ -451,9 +485,6 @@ void MazeRouter::start()
 			ProcessEventBlocker::processEvents();
 		}
 	}
-
-	foreach (NetOrdering * ordering, orderings) delete ordering;
-	orderings.clear();
 
 	cleanUpNets();
 
@@ -477,10 +508,6 @@ void MazeRouter::start()
 void MazeRouter::updateProgress(int num, int denom) 
 {
 	emit setProgressValue((int) MaximumProgress * (m_currentProgressPart + (num / (double) denom)) / (double) m_maximumProgressPart);
-}
-
-bool MazeRouter::reorder(QList<NetOrdering *> & orderings, NetOrdering * currentOrdering, NetOrdering * & bestOrdering) {
-    return false;
 }
 
 int MazeRouter::findPinsWithin(QList<ConnectorItem *> * net) {
@@ -586,7 +613,7 @@ bool MazeRouter::makeMasters(QString & message) {
     return true;
 }
 
-bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, RoutingStatus & routingStatus, bool makeJumper, NetOrdering * bestOrdering, QImage & boardImage, const QSizeF gridSize)
+bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentScore, Score & bestScore, QImage & boardImage, const QSizeF gridSize, QList<NetOrdering> & allOrderings)
 {
     QRectF r(QPointF(0, 0), gridSize);
     QList<ViewLayer::ViewLayerSpec> layerSpecs;
@@ -594,10 +621,19 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
     if (m_bothSidesNow) layerSpecs << ViewLayer::Top;
     int ikeepout = qCeil(m_keepoutGrid);
 
-    foreach (Net * net, ordering->nets) {
+    bool result = true;
+
+    foreach (int netIndex, currentScore.ordering.order) {
         if (m_cancelled || m_stopTracing) {
             return false;
         }
+
+        if (currentScore.traces.values(netIndex).count() > 0) {
+            // traces were generated in a previous run
+            continue;
+        }
+
+        Net * net = netList.nets.at(netIndex);
 
         //foreach (ConnectorItem * connectorItem, *(net->net)) {
         //    if (connectorItem->attachedTo()->layerKinChief()->id() == 12407630) {
@@ -627,24 +663,23 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
         QList<QDomElement> notNetElements0;
         QList<QDomElement> notNetElements1;
 
-        foreach (Net * prevNet, ordering->nets) {
-            if (prevNet == net) break;
+        // treat traces from previous nets as obstacles
+        foreach (Trace trace, currentScore.traces.values()) {
+            if (trace.netIndex == netIndex) continue;
 
-            foreach (QList<GridPoint> tracePoints, prevNet->traces) {
-                foreach (GridPoint gridPoint, tracePoints) {
-                    if (gridPoint.flags & GridPointVia) {
-                        for (int y = 0; y < m_gridViaSize; y++) {
-                            for (int x = 0; x < m_gridViaSize; x++) {
-                                grid->setAt(gridPoint.x + x, gridPoint.y + y, 0, GridObstacle);
-                                grid->setAt(gridPoint.x + x, gridPoint.y + y, 1, GridObstacle);
-                            }
+            foreach (GridPoint gridPoint, trace.gridPoints) {
+                if (gridPoint.flags & GridPointVia) {
+                    for (int y = 0; y < m_gridViaSize; y++) {
+                        for (int x = 0; x < m_gridViaSize; x++) {
+                            grid->setAt(gridPoint.x + x, gridPoint.y + y, 0, GridObstacle);
+                            grid->setAt(gridPoint.x + x, gridPoint.y + y, 1, GridObstacle);
                         }
                     }
-                    else {
-                        for (int y = -ikeepout; y <= ikeepout; y++) {
-                            for (int x = -ikeepout; x <= ikeepout; x++) {
-                                grid->setAt(gridPoint.x + x, gridPoint.y + y, gridPoint.z, GridObstacle);
-                            }
+                }
+                else {
+                    for (int y = -ikeepout; y <= ikeepout; y++) {
+                        for (int x = -ikeepout; x <= ikeepout; x++) {
+                            grid->setAt(gridPoint.x + x, gridPoint.y + y, gridPoint.z, GridObstacle);
                         }
                     }
                 }
@@ -674,26 +709,19 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
 #endif
 
             grid->init(0, 0, z, grid->x, grid->y, obstaclesImage, GridObstacle, false);
-            updateDisplay(grid, z);
+            //updateDisplay(grid, z);
 
             prepSourceAndTarget(masterDoc, grid, subnets, z, pq, z == 0 ? netElements0 : netElements1, z == 0 ? notNetElements0 : notNetElements1, nearest, r);
         }
 
-
-        updateDisplay(grid, 0);
-        if (m_bothSidesNow) updateDisplay(grid, 1);
-
-        QList<GridPoint> points = route(grid, pq, nearest);
-        if (m_cancelled || m_stopTracing) {
-            return false;
+        nearest.unrouted = false;
+        if (!routeOne(currentScore, bestScore, netIndex, grid, pq, nearest, allOrderings)) {
+            result = false;
+            break;
         }
 
-        if (points.count() == 0) {
-            // rip up and reroute
-        }
-        else {
-            net->traces.append(points);
-        }
+        //updateDisplay(grid, 0);
+        //if (m_bothSidesNow) updateDisplay(grid, 1);
 
         while (subnets.count() > 2) {
             /*
@@ -710,15 +738,27 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
             */
 
             QList<ConnectorItem *> combined;
-            combined.append(subnets.at(nearest.i));
-            combined.append(subnets.at(nearest.j));
-            if (nearest.i < nearest.j) {
-                subnets.removeAt(nearest.j);
-                subnets.removeAt(nearest.i);
+            if (nearest.unrouted) {
+                if (nearest.i < nearest.j) {
+                    subnets.removeAt(nearest.j);
+                    combined = subnets.takeAt(nearest.i);
+                }
+                else {
+                    combined = subnets.takeAt(nearest.i);
+                    subnets.removeAt(nearest.j);
+                }
             }
             else {
-                subnets.removeAt(nearest.i);
-                subnets.removeAt(nearest.j);
+                combined.append(subnets.at(nearest.i));
+                combined.append(subnets.at(nearest.j));
+                if (nearest.i < nearest.j) {
+                    subnets.removeAt(nearest.j);
+                    subnets.removeAt(nearest.i);
+                }
+                else {
+                    subnets.removeAt(nearest.i);
+                    subnets.removeAt(nearest.j);
+                }
             }
             subnets.prepend(combined);
             nearest.i = 0;
@@ -742,16 +782,15 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
                 prepSourceAndTarget(masterDoc, grid, subnets, z, pq, z == 0 ? netElements0 : netElements1, z == 0 ? notNetElements0 : notNetElements1, nearest, r);
             }
 
-            if (value == GridTarget) {
-                foreach (QList<GridPoint> tracePoints, net->traces) {
-                    foreach (GridPoint gridPoint, tracePoints) {
+            // redraw traces from this net
+            foreach (Trace trace, currentScore.traces.values(netIndex)) {
+                if (value == GridTarget) {
+                    foreach (GridPoint gridPoint, trace.gridPoints) {
                         grid->setAt(gridPoint.x, gridPoint.y, gridPoint.z, GridTarget);
                     }
                 }
-            }
-            else {
-                foreach (QList<GridPoint> tracePoints, net->traces) {
-                    foreach (GridPoint gridPoint, tracePoints) {
+                else {
+                    foreach (GridPoint gridPoint, trace.gridPoints) {
                         grid->setAt(gridPoint.x, gridPoint.y, gridPoint.z, GridSource);
                         int crossLayerCost = 0;
                         if (nearest.jc->attachedToViewLayerID() == ViewLayer::Copper0 && gridPoint.z == 1) {
@@ -768,19 +807,13 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
                 }
             }
 
-            updateDisplay(grid, 0);
-            if (m_bothSidesNow) updateDisplay(grid, 1);
+            //updateDisplay(grid, 0);
+            //if (m_bothSidesNow) updateDisplay(grid, 1);
 
-            QList<GridPoint> points = route(grid, pq, nearest);
-            if (m_cancelled || m_stopTracing) {
-                return false;
-            }
-
-            if (points.count() == 0) {
-                // rip up and reroute
-            }
-            else {
-                net->traces.append(points);
+            nearest.unrouted = false;
+            if (!routeOne(currentScore, bestScore, netIndex, grid, pq, nearest, allOrderings)) {
+                result = false;
+                break;
             }
         }
 
@@ -791,9 +824,80 @@ bool MazeRouter::routeNets(NetOrdering * ordering, QVector<int> & netCounters, R
         foreach (QDomElement element, netElements1) {
             SvgFileSplitter::forceStrokeWidth(element, 2 * m_keepoutMils, "#000000", false, false);
         }
+
+        if (result == false) break;
+    }
+
+    return result;
+}
+
+bool MazeRouter::routeOne(Score & currentScore, Score & bestScore, int netIndex, Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest, QList<NetOrdering> & allOrderings) {
+    Trace newTrace;
+    newTrace.gridPoints = route(grid, pq, nearest);
+    if (m_cancelled || m_stopTracing) {
+        return false;
+    }
+
+    if (newTrace.gridPoints.count() == 0) {
+        nearest.unrouted = true;
+        if (currentScore.reorderNet < 0) {
+            for (int i = 0; i < currentScore.ordering.order.count(); i++) {
+                if (currentScore.ordering.order.at(i) == netIndex) {
+                    if (moveBack(currentScore, i, allOrderings)) {
+                        currentScore.reorderNet = netIndex;
+                    }
+                    break;
+                }
+            }
+        }
+
+        currentScore.unroutedCount.insert(netIndex, currentScore.unroutedCount.value(netIndex) + 1);
+        if (++currentScore.totalUnroutedCount > bestScore.totalUnroutedCount) {
+            // no need to try to route this to the end
+            return false;
+        }
+    }
+    else {
+        newTrace.netIndex = netIndex;
+        newTrace.subnetIndexI = nearest.i;
+        newTrace.subnetIndexJ = nearest.j;
+        currentScore.traces.insert(netIndex, newTrace);
     }
 
     return true;
+}
+
+
+bool MazeRouter::moveBack(Score & currentScore, int index, QList<NetOrdering> & allOrderings) {
+    if (index == 0) return false;  // nowhere to move back to
+
+    QList<int> order(currentScore.ordering.order);
+    int netIndex = order.takeAt(index);
+    for (int i = index - 1; i >= 0; i--) {
+        bool done = true;
+        order.insert(i, netIndex);
+        foreach (NetOrdering ordering, allOrderings) {
+            bool gotOne = true;
+            for (int j = 0; j < order.count(); j++) {
+                if (order.at(j) != ordering.order.at(j)) {
+                    gotOne = false;
+                    break;
+                }
+            }
+            if (gotOne) {
+                done = false;
+                break; 
+            }
+        }
+        if (done == true) {
+            NetOrdering newOrdering;
+            newOrdering.order = order;
+            allOrderings.append(newOrdering);
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void MazeRouter::prepSourceAndTarget(QDomDocument * masterDoc, Grid * grid, QList< QList<ConnectorItem *> > & subnets, int z, std::priority_queue<GridPoint> & pq, QList<QDomElement> & netElements, QList<QDomElement> & notNetElements, Nearest & nearest, QRectF & r) 
@@ -822,7 +926,7 @@ void MazeRouter::prepSourceAndTarget(QDomDocument * masterDoc, Grid * grid, QLis
     QList<ConnectorItem *> lj = subnets.at(nearest.j);
     renderSource(masterDoc, z, grid, netElements, lj, GridTarget, true, r, false);
 
-    updateDisplay(grid, z);
+    //updateDisplay(grid, z);
 
     // restore masterdoc (except for netElements stroke-width)
     foreach (QDomElement element, netElements) {
@@ -941,15 +1045,18 @@ QList<GridPoint> MazeRouter::route(Grid * grid, std::priority_queue<GridPoint> &
         }
     }
 
+
     if (!result) {
+        updateDisplay(grid, 0);
+        if (m_bothSidesNow) updateDisplay(grid, 1);
         QList<GridPoint> points;
         return points;
     }
 
     QList<GridPoint> points = traceBack(target, grid);
-    clearExpansion(grid);  
     updateDisplay(grid, 0);
     if (m_bothSidesNow) updateDisplay(grid, 1);
+    clearExpansion(grid);  
 
     return points;
 }
@@ -1236,8 +1343,11 @@ void MazeRouter::updateDisplay(Grid * grid, int iz) {
 }
 
 void MazeRouter::updateDisplay(GridPoint & gridPoint) {
-    m_displayImage[gridPoint.z]->setPixel(gridPoint.x, gridPoint.y, 0xffff0000);
-    updateDisplay(gridPoint.z);
+    static int counter = 0;
+    if (counter++ % 20 == 0) {
+        m_displayImage[gridPoint.z]->setPixel(gridPoint.x, gridPoint.y, 0xffff0000);
+        updateDisplay(gridPoint.z);
+    }
 }
 
 void MazeRouter::clearExpansion(Grid * grid) {
