@@ -706,7 +706,7 @@ bool DRC::makeBoard(QImage * image, QRectF & sourceRes) {
 	painter.begin(image);
 	painter.setRenderHint(QPainter::Antialiasing, false);
 	DebugDialog::debug("boardbounds", sourceRes);
-	renderer.render(&painter, sourceRes);
+	renderer.render(&painter  /*, sourceRes */);
 	painter.end();
 
     // board should be white, borders should be black
@@ -847,7 +847,7 @@ void DRC::renderOne(QDomDocument * masterDoc, QImage * image, const QRectF & sou
 	QPainter painter;
 	painter.begin(image);
 	painter.setRenderHint(QPainter::Antialiasing, false);
-	renderer.render(&painter, sourceRes);
+	renderer.render(&painter /*, sourceRes */);
 	painter.end();
 }
 

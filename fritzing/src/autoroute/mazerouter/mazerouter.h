@@ -18,9 +18,9 @@ along with Fritzing.  If not, see <http://www.gnu.org/licenses/>.
 
 ********************************************************************
 
-$Revision: 6557 $:
-$Author: irascibl@gmail.com $:
-$Date: 2012-10-12 15:09:05 +0200 (Fr, 12 Okt 2012) $
+$Revision$:
+$Author$:
+$Date$
 
 ********************************************************************/
 
@@ -76,6 +76,11 @@ struct Trace {
     QList<GridPoint> gridPoints;
 };
 
+struct RouteThing {
+    QRectF r;
+    QList<ViewLayer::ViewLayerSpec> layerSpecs;
+    int ikeepout;
+};
 
 struct NetOrdering {
     QList<int> order;
@@ -95,6 +100,10 @@ struct Score {
 };
 
 struct Nearest {
+    QList<QDomElement> netElements0;
+    QList<QDomElement> netElements1;
+    QList<QDomElement> notNetElements0;
+    QList<QDomElement> notNetElements1;
     int i, j;
     double distance;
     ConnectorItem * ic;
@@ -152,12 +161,11 @@ protected:
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, Nearest &);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, Nearest &);
     QList<QPoint> renderSource(QDomDocument * masterDoc, int z, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, quint32 value, bool clearElements, const QRectF & r, bool collectPoints);
-    QList<GridPoint> route(Grid * grid, std::priority_queue<GridPoint> &, Nearest &);
+    QList<GridPoint> route(Grid * grid, std::priority_queue<GridPoint> &, Nearest &, int & viaCount);
     bool expand(GridPoint &, Grid * grid, std::priority_queue<GridPoint> &, Nearest &);
     GridPoint expandOne(GridPoint &, Grid * grid, int dx, int dy, int dz, bool crossLayer);
     bool viaWillFit(GridPoint &, Grid * grid);
-    QList<GridPoint> traceBack(GridPoint &, Grid * grid);
-    GridPoint traceOne(GridPoint &, Grid * grid, int val);
+    QList<GridPoint> traceBack(GridPoint &, Grid * grid, int & viaCount);
     GridPoint traceBackOne(GridPoint &, Grid * grid, int dx, int dy, int dz, quint32 val);
     void updateDisplay(int iz);
     void updateDisplay(Grid *, int iz);
@@ -165,6 +173,11 @@ protected:
     void clearExpansion(Grid * grid);
     void prepSourceAndTarget(QDomDocument * masterdoc, Grid * grid, QList< QList<ConnectorItem *> > & subnets, int z, std::priority_queue<GridPoint> &, QList<QDomElement> & netElements, QList<QDomElement> & notNetElements, Nearest & nearest, QRectF &); 
     bool moveBack(Score & currentScore, int index, QList<NetOrdering> & allOrderings);
+    void drawTrace(Trace &);
+    void initTraceDisplay();
+    void traceObstacles(QList<Trace> & traces, int netIndex, Grid * grid, int ikeepout);
+    bool routeNext(RouteThing &, QList< QList<ConnectorItem *> > & subnets,Score & currentScore, Score & bestScore, int netIndex, Grid *, std::priority_queue<GridPoint> &, Nearest &, QList<NetOrdering> & allOrderings);
+    void cleanUpNets(NetList &);
 
 protected:
 	LayerList m_viewLayerIDs;
@@ -172,6 +185,7 @@ protected:
     double m_keepoutMils;
     double m_keepoutGrid;
     int m_gridViaSize;
+    int m_halfGridViaSize;
     double m_standardWireWidth;
     QImage * m_displayImage[2];
     QGraphicsPixmapItem * m_displayItem[2];
