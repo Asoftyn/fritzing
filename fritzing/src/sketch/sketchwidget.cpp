@@ -4028,7 +4028,6 @@ void SketchWidget::setLayerActive(ViewLayer::ViewLayerID viewLayerID, bool activ
 	}
 }
 
-
 void SketchWidget::setLayerActive(ViewLayer * viewLayer, bool active) {
 
 	LayerList viewLayerIDs;
@@ -4044,14 +4043,21 @@ void SketchWidget::setLayerActive(ViewLayer * viewLayer, bool active) {
 	foreach (QGraphicsItem * item, scene()->items()) {
 		// want all items, not just topLevel
 		ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
-		if (itemBase && (viewLayerIDs.contains(itemBase->viewLayerID()))) {
-			itemBase->setInactive(!active);
-			//DebugDialog::debug(QString("setting visible %1").arg(viewLayer->visible()));
+		if (itemBase != NULL) {
+            //itemBase->debugInfo("setActive");
+            if (viewLayerIDs.contains(itemBase->viewLayerID())) {
+			    itemBase->setInactive(!active);
+			    //DebugDialog::debug(QString("setting visible %1").arg(viewLayer->visible()));
+            }
+            continue;
 		}
 
 		PartLabel * partLabel = dynamic_cast<PartLabel *>(item);
-		if (partLabel && (viewLayerIDs.contains(partLabel->viewLayerID()))) {
-			partLabel->setInactive(!active);
+		if (partLabel != NULL) {
+            if (viewLayerIDs.contains(partLabel->viewLayerID())) {
+			    partLabel->setInactive(!active);
+            }
+            continue;
 		}
 	}
 }

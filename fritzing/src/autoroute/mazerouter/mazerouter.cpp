@@ -32,24 +32,22 @@ $Date$
 //          netlabels are the equivalent of jumpers. Use successive numbers for the labels.
 //
 //      net reordering/rip-up-and-reroute
-//          is there a better way than just move by one?
-//          stop at the point of first failure rather than continuing, then when going back to "best" route the rest of it?
+//          is there a better way than move back by one?
+//          stop at the point of first failure rather than continuing, 
+//              then using "best", route the rest of it
+//              set a flag to place jumpers
 //
 //      keepout dialog
 //   
 //      jumperitem
-//          need to place this at the moment the route fails
-//              can possibly use the expansion for one end of the jumper, but need a new search for the other end
-//              must ensure minimum distance from connector
+//          can possibly use the expansion for one end of the jumper, but need a new search for the other end
 //
 //      feedback
 //          use qgraphicpixmapitems but update only at new trace time
 //              use trace colors for top and bottom, and set at appropriate z level
 //
 //      raster back to vector
-//
-//      hold the set of successful traces
-//          plus sets of points for vias or jumpers?
+//          curve-fitting? use a bezier?
 //
 //      stop-now  
 //
@@ -293,6 +291,7 @@ MazeRouter::MazeRouter(PCBSketchWidget * sketchWidget, ItemBase * board, bool ad
 
     m_standardWireWidth = m_sketchWidget->getAutorouterTraceWidth();
 
+    /*
     // for debugging leave the last result hanging around
     QList<QGraphicsPixmapItem *> pixmapItems;
     foreach (QGraphicsItem * item, m_sketchWidget->scene()->items()) {
@@ -302,6 +301,7 @@ MazeRouter::MazeRouter(PCBSketchWidget * sketchWidget, ItemBase * board, bool ad
     foreach (QGraphicsPixmapItem * pixmapItem, pixmapItems) {
         delete pixmapItem;
     }
+    */
 
 	ViewGeometry vg;
 	vg.setWireFlags(m_sketchWidget->getTraceFlag());
@@ -319,10 +319,10 @@ MazeRouter::~MazeRouter()
         delete doc;
     }
     if (m_displayItem[0]) {
-        //delete m_displayItem[0];
+        delete m_displayItem[0];
     }
     if (m_displayItem[1]) {
-        //delete m_displayItem[1];
+        delete m_displayItem[1];
     }
     if (m_displayImage[0]) {
         delete m_displayImage[0];
@@ -1424,6 +1424,7 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
         QList<Trace> traces = bestScore.traces.values(netIndex);
         qSort(traces.begin(), traces.end(), byOrder);
         QList<TraceWire *> newTraces;
+        QList<Via *> newVias;
         foreach (Trace trace, traces) {
             QList<GridPoint> gridPoints = trace.gridPoints;
             // TODO: nicer curve-fitting
@@ -1433,46 +1434,57 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
             Net * net = netList.nets.at(netIndex);
             bool onTraceS, onTraceD;
             QPointF traceAnchorS, traceAnchorD;
-            ConnectorItem * sourceConnectorItem = findAnchor(gridPoints.first(), topLeft, net, newTraces, traceAnchorS, onTraceS);
-            ConnectorItem * destConnectorItem = findAnchor(gridPoints.last(), topLeft, net, newTraces, traceAnchorD, onTraceD);
+            ConnectorItem * sourceConnectorItem = findAnchor(gridPoints.first(), topLeft, net, newTraces, newVias, traceAnchorS, onTraceS);
+            ConnectorItem * destConnectorItem = findAnchor(gridPoints.last(), topLeft, net, newTraces, newVias, traceAnchorD, onTraceD);
 
-            if (sourceConnectorItem == NULL) {
-            }
-            else if (destConnectorItem == NULL) {
+            if (sourceConnectorItem == NULL) continue;
+            if (destConnectorItem == NULL) continue;
+
+            GridPoint gp = gridPoints.takeFirst();
+            QRectF gridRect(gp.x * m_standardWireWidth + topLeft.x(), gp.y * m_standardWireWidth + topLeft.y(), m_standardWireWidth, m_standardWireWidth);
+            QPointF center = gridRect.center();
+            int lastz = gp.z;
+            if (onTraceS) {
+                newTraces << drawOneTrace(sourceConnectorItem->sceneAdjustedTerminalPoint(NULL), traceAnchorS, m_standardWireWidth, sourceConnectorItem->attachedToViewLayerSpec());
+                newTraces << drawOneTrace(traceAnchorS, center, m_standardWireWidth, sourceConnectorItem->attachedToViewLayerSpec());
             }
             else {
-                GridPoint gp = gridPoints.takeFirst();
+                newTraces << drawOneTrace(sourceConnectorItem->sceneAdjustedTerminalPoint(NULL), center, m_standardWireWidth, sourceConnectorItem->attachedToViewLayerSpec());
+            }
+
+            foreach (GridPoint gp, gridPoints) {
                 QRectF gridRect(gp.x * m_standardWireWidth + topLeft.x(), gp.y * m_standardWireWidth + topLeft.y(), m_standardWireWidth, m_standardWireWidth);
-                QPointF center = gridRect.center();
-                int lastz = gp.z;
-                if (onTraceS) {
-                    newTraces << drawOneTrace(sourceConnectorItem->sceneAdjustedTerminalPoint(NULL), traceAnchorS, m_standardWireWidth, sourceConnectorItem->attachedToViewLayerSpec());
-                    newTraces << drawOneTrace(traceAnchorS, center, m_standardWireWidth, sourceConnectorItem->attachedToViewLayerSpec());
+                if (gp.z == lastz) {
+                    newTraces << drawOneTrace(center, gridRect.center(), m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
                 }
                 else {
-                    newTraces << drawOneTrace(sourceConnectorItem->sceneAdjustedTerminalPoint(NULL), center, m_standardWireWidth, sourceConnectorItem->attachedToViewLayerSpec());
-                }
+	                long newID = ItemBase::getNextID();
+	                ViewGeometry viewGeometry;
+	                double ringThickness, holeSize;
+	                m_sketchWidget->getViaSize(ringThickness, holeSize);
+                    double halfVia = (ringThickness + ringThickness + holeSize) / 2;
 
-                foreach (GridPoint gp, gridPoints) {
-                    if (gp.z == lastz) {
-                        QRectF gridRect(gp.x * m_standardWireWidth + topLeft.x(), gp.y * m_standardWireWidth + topLeft.y(), m_standardWireWidth, m_standardWireWidth);
-                        newTraces << drawOneTrace(center, gridRect.center(), m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
-                        center = gridRect.center();
-                    }
-                    else {
-                        // place a via
-                        lastz = gp.z;
-                    }
-                }
+	                viewGeometry.setLoc(QPointF(gridRect.center().x() - halfVia - Hole::OffsetPixels, gridRect.center().y() - halfVia - Hole::OffsetPixels));
+	                ItemBase * itemBase = m_sketchWidget->addItem(m_sketchWidget->referenceModel()->retrieveModelPart(ModuleIDNames::ViaModuleIDName), 
+										                ViewLayer::ThroughHoleThroughTop_TwoLayers, BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
 
-                if (onTraceD) {
-                    newTraces << drawOneTrace(center, traceAnchorD, m_standardWireWidth, destConnectorItem->attachedToViewLayerSpec());
-                    newTraces << drawOneTrace(traceAnchorD, destConnectorItem->sceneAdjustedTerminalPoint(NULL), m_standardWireWidth, destConnectorItem->attachedToViewLayerSpec());
+	                //DebugDialog::debug(QString("back from adding via %1").arg((long) itemBase, 0, 16));
+	                Via * via = qobject_cast<Via *>(itemBase);
+	                via->setAutoroutable(true);
+	                via->setHoleSize(QString("%1in,%2in") .arg(holeSize / GraphicsUtils::SVGDPI) .arg(ringThickness / GraphicsUtils::SVGDPI), false);
+                    newVias << via;
+                    lastz = gp.z;
                 }
-                else {
-                    newTraces << drawOneTrace(center, destConnectorItem->sceneAdjustedTerminalPoint(NULL), m_standardWireWidth, destConnectorItem->attachedToViewLayerSpec());
-                }
-               
+                center = gridRect.center();
+
+            }
+
+            if (onTraceD) {
+                newTraces << drawOneTrace(center, traceAnchorD, m_standardWireWidth, destConnectorItem->attachedToViewLayerSpec());
+                newTraces << drawOneTrace(traceAnchorD, destConnectorItem->sceneAdjustedTerminalPoint(NULL), m_standardWireWidth, destConnectorItem->attachedToViewLayerSpec());
+            }
+            else {
+                newTraces << drawOneTrace(center, destConnectorItem->sceneAdjustedTerminalPoint(NULL), m_standardWireWidth, destConnectorItem->attachedToViewLayerSpec());
             }
         }
 
@@ -1480,15 +1492,27 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
             addWireToUndo(traceWire, parentCommand);
         }
 
+        foreach (Via * via, newVias) {
+			new AddItemCommand(m_sketchWidget, BaseCommand::CrossView, ModuleIDNames::ViaModuleIDName, via->viewLayerSpec(), via->getViewGeometry(), via->id(), false, -1, parentCommand);
+			new CheckStickyCommand(m_sketchWidget, BaseCommand::SingleView, via->id(), false, CheckStickyCommand::RemoveOnly, parentCommand);
+			new SetPropCommand(m_sketchWidget, via->id(), "hole size", via->holeSize(), via->holeSize(), true, parentCommand);
+        }
+
         // add connections
 
         foreach (TraceWire * traceWire, newTraces) {
             delete traceWire;
         }
+        foreach (Via * via, newVias) {
+            foreach (ItemBase * layerKin, via->layerKin()) {
+                delete layerKin;
+            }
+            delete via;
+        }
     }
 }
 
-ConnectorItem * MazeRouter::findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QPointF & p, bool & onTrace) {
+ConnectorItem * MazeRouter::findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace) {
     QRectF gridRect(gp.x * m_standardWireWidth + topLeft.x(), gp.y * m_standardWireWidth + topLeft.y(), m_standardWireWidth, m_standardWireWidth);
     QList<TraceWire *> traceWires;
     foreach (QGraphicsItem * item, m_sketchWidget->scene()->items(gridRect)) {
@@ -1506,7 +1530,11 @@ ConnectorItem * MazeRouter::findAnchor(GridPoint gp, QPointF topLeft, Net * net,
             if (net->net->contains(connectorItem)) ;
             else {
                 TraceWire * traceWire = qobject_cast<TraceWire *>(connectorItem->attachedTo());
-                if (traceWire == NULL) isCandidate = false;
+                if (traceWire == NULL) {
+                    Via * via = qobject_cast<Via *>(connectorItem->attachedTo());
+                    if (via == NULL) isCandidate = false;
+                    else isCandidate = newVias.contains(via);
+                }
                 else isCandidate = newTraces.contains(traceWire);
             }
             if (!isCandidate) continue;

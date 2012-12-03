@@ -180,7 +180,7 @@ protected:
     void createTraces(NetList & netList, Score & bestScore, QUndoCommand * parentCommand);
     void removeColinear(QList<GridPoint> & gridPoints);
     void removeSteps(QList<GridPoint> & gridPoints);
-    ConnectorItem * findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QPointF & p, bool & onTrace);
+    ConnectorItem * findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace);
 
 protected:
 	LayerList m_viewLayerIDs;
