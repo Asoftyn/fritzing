@@ -71,8 +71,7 @@ struct NetList {
 
 struct Trace {
     int netIndex;
-    int subnetIndexI;
-    int subnetIndexJ;
+    int order;
     QList<GridPoint> gridPoints;
 };
 
@@ -162,8 +161,8 @@ protected:
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, Nearest &);
     QList<QPoint> renderSource(QDomDocument * masterDoc, int z, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, quint32 value, bool clearElements, const QRectF & r, bool collectPoints);
     QList<GridPoint> route(Grid * grid, std::priority_queue<GridPoint> &, Nearest &, int & viaCount);
-    bool expand(GridPoint &, Grid * grid, std::priority_queue<GridPoint> &, Nearest &);
-    GridPoint expandOne(GridPoint &, Grid * grid, int dx, int dy, int dz, bool crossLayer);
+    void expand(GridPoint &, Grid * grid, std::priority_queue<GridPoint> &, Nearest &);
+    void expandOne(GridPoint &, Grid * grid, std::priority_queue<GridPoint> &, Nearest &, int dx, int dy, int dz, bool crossLayer);
     bool viaWillFit(GridPoint &, Grid * grid);
     QList<GridPoint> traceBack(GridPoint &, Grid * grid, int & viaCount);
     GridPoint traceBackOne(GridPoint &, Grid * grid, int dx, int dy, int dz, quint32 val);
@@ -178,6 +177,10 @@ protected:
     void traceObstacles(QList<Trace> & traces, int netIndex, Grid * grid, int ikeepout);
     bool routeNext(RouteThing &, QList< QList<ConnectorItem *> > & subnets,Score & currentScore, Score & bestScore, int netIndex, Grid *, std::priority_queue<GridPoint> &, Nearest &, QList<NetOrdering> & allOrderings);
     void cleanUpNets(NetList &);
+    void createTraces(NetList & netList, Score & bestScore, QUndoCommand * parentCommand);
+    void removeColinear(QList<GridPoint> & gridPoints);
+    void removeSteps(QList<GridPoint> & gridPoints);
+    ConnectorItem * findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QPointF & p, bool & onTrace);
 
 protected:
 	LayerList m_viewLayerIDs;

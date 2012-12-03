@@ -2021,11 +2021,11 @@ void CMRouter::removeColinear(QList<QPointF> & allPoints) {
 		QPointF p3 = allPoints[ix + 2];
 		if (p1.x() == p2.x() && p2.x() == p3.x()) {
 			allPoints.removeAt(ix + 1);
-			ix--;
+			continue;
 		}
 		else if (p1.y() == p2.y() && p2.y() == p3.y()) {
 			allPoints.removeAt(ix + 1);
-			ix--;
+			continue;
 		}
 		ix++;
 	}

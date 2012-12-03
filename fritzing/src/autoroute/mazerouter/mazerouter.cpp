@@ -33,7 +33,7 @@ $Date$
 //
 //      net reordering/rip-up-and-reroute
 //          is there a better way than just move by one?
-//          must fix up unrouted and via count when currentScore is reordered
+//          stop at the point of first failure rather than continuing, then when going back to "best" route the rest of it?
 //
 //      keepout dialog
 //   
@@ -58,9 +58,11 @@ $Date$
 //      how to determine splitDNA
 //          the other way to do it would be to allow overlaps and draw a second trace back to the nearest connector
 //
-//      via placement must ensure minimum distance from source
+//      via/jumper placement must ensure minimum distance from source
 //
 //      check clean up is really clearing pointers
+//
+//      crash after 25 or so rounds with amadeus bridge
 //
 
 #include "mazerouter.h"
@@ -153,6 +155,10 @@ bool byPinsWithin(Net * n1, Net * n2)
     if (n1->pinsWithin > n2->pinsWithin) return false;
 
     return n1->net->count() <= n2->net->count();
+}
+
+bool byOrder(Trace & t1, Trace & t2) {
+    return (t1.order < t2.order);
 }
 
 inline double initialCost(QPointF p1, QPointF p2) {
@@ -468,8 +474,6 @@ void MazeRouter::start()
 		ProcessEventBlocker::processEvents();
         currentScore.setOrdering(allOrderings.at(run));
 		routeNets(netList, m_sketchWidget->usesJumperItem(), currentScore, bestScore, boardImage, gridSize, allOrderings);
-		if (m_cancelled || currentScore.totalUnroutedCount == 0 || m_stopTracing) break;
-
 		if (bestScore.ordering.order.count() == 0) {
             bestScore = currentScore;
         }
@@ -481,6 +485,7 @@ void MazeRouter::start()
                 bestScore = currentScore;
             }
         }
+		if (m_cancelled || bestScore.totalUnroutedCount == 0 || m_stopTracing) break;
 	}
 
 
@@ -488,26 +493,13 @@ void MazeRouter::start()
 
 
 	if (m_cancelled) {
-		clearTracesAndJumpers();
 		doCancel(parentCommand);
 		return;
 	}
 
-
-	if (currentScore.totalUnroutedCount != 0) {
-		if (run == 0) {
-			// stop where we are
-		}
-		else {
-			clearTracesAndJumpers();
-			//m_sketchWidget->pasteHeart(bestOrdering->saved, true);
-			ProcessEventBlocker::processEvents();
-		}
-	}
+    createTraces(netList, bestScore, parentCommand);
 
 	cleanUpNets(netList);
-
-	clearTracesAndJumpers();
 
 	new CleanUpWiresCommand(m_sketchWidget, CleanUpWiresCommand::RedoOnly, parentCommand);
 
@@ -788,8 +780,7 @@ bool MazeRouter::routeOne(Score & currentScore, Score & bestScore, int netIndex,
     }
     else {
         newTrace.netIndex = netIndex;
-        newTrace.subnetIndexI = nearest.i;
-        newTrace.subnetIndexJ = nearest.j;
+        newTrace.order = currentScore.traces.values(netIndex).count();
         currentScore.traces.insert(netIndex, newTrace);
         currentScore.viaCount.insert(netIndex, currentScore.viaCount.value(netIndex, 0) + viaCount);
         currentScore.totalViaCount += viaCount;
@@ -1168,49 +1159,27 @@ GridPoint MazeRouter::traceBackOne(GridPoint & gridPoint, Grid * grid, int dx, i
 
 }
 
-bool MazeRouter::expand(GridPoint & gridPoint, Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest)
+void MazeRouter::expand(GridPoint & gridPoint, Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest)
 {
-    QList<GridPoint> nexts;
-    nexts << expandOne(gridPoint, grid, -1, 0, 0, false) <<
-                expandOne(gridPoint, grid, 1, 0, 0, false) <<
-                expandOne(gridPoint, grid, 0, -1, 0, false) <<
-                expandOne(gridPoint, grid, 0, 1, 0, false) <<
-                expandOne(gridPoint, grid, 0, 0, -1, true) <<
-                expandOne(gridPoint, grid, 0, 0, 1, true);
-    foreach (GridPoint next, nexts) {
-        if (next.cost == GridIllegal || next.cost == GridSource || next.cost == GridObstacle) continue;
-                
-        next.cost += aStarCost(QPoint(next.x, next.y), nearest.gridTarget);
-        pq.push(next);
-    }
-
-    return false;
+    if (gridPoint.x > 0) expandOne(gridPoint, grid, pq, nearest, -1, 0, 0, false);
+    if (gridPoint.x < grid->x - 1) expandOne(gridPoint, grid, pq, nearest, 1, 0, 0, false);
+    if (gridPoint.y > 0) expandOne(gridPoint, grid, pq, nearest, 0, -1, 0, false);
+    if (gridPoint.y < grid->y - 1) expandOne(gridPoint, grid, pq, nearest, 0, 1, 0, false);
+    if (gridPoint.z > 0) expandOne(gridPoint, grid, pq, nearest, 0, 0, -1, true);
+    if (gridPoint.z < grid->z - 1) expandOne(gridPoint, grid, pq, nearest, 0, 0, 1, true);
 }
 
-GridPoint MazeRouter::expandOne(GridPoint & gridPoint, Grid * grid, int dx, int dy, int dz, bool crossLayer) {
+void MazeRouter::expandOne(GridPoint & gridPoint, Grid * grid, std::priority_queue<GridPoint> & pq, Nearest & nearest, int dx, int dy, int dz, bool crossLayer) {
     GridPoint next;
-    next.cost = GridIllegal;
-
     next.x = gridPoint.x + dx;
-    if (next.x < 0 || next.x >= grid->x) {
-        return next;
-    }
-
     next.y = gridPoint.y + dy;
-    if (next.y < 0 || next.y >= grid->y) {
-        return next;
-    }
-
     next.z = gridPoint.z + dz;
-    if (next.z < 0 || next.z >= grid->z) {
-        return next;
-    }
 
     quint32 nextval = grid->at(next.x, next.y, next.z);
     switch (nextval) {
         case GridObstacle:
         case GridSource:
-            return next;
+            return;
         case GridTarget:
             next.flags |= GridPointDone;
             break;
@@ -1219,11 +1188,12 @@ GridPoint MazeRouter::expandOne(GridPoint & gridPoint, Grid * grid, int dx, int 
             break;
         default:
             // already been here
-            return next;
+            return;
     }
 
+    // any way to skip viaWillFit or put it off until actually needed?
     if (crossLayer && !viaWillFit(next, grid)) {
-        return next;
+        return;
     }
 
     quint32 cost = grid->at(gridPoint.x, gridPoint.y, gridPoint.z);
@@ -1279,14 +1249,16 @@ GridPoint MazeRouter::expandOne(GridPoint & gridPoint, Grid * grid, int dx, int 
 
     next.cost = cost;
     //updateDisplay(next);
-
-    return next;
+                
+    next.cost += aStarCost(QPoint(next.x, next.y), nearest.gridTarget);
+    pq.push(next);
 }
 
 bool MazeRouter::viaWillFit(GridPoint & gridPoint, Grid * grid) {
     int z = gridPoint.z == 1 ? 0 : 1;
     for (int y = -m_halfGridViaSize; y <= m_halfGridViaSize; y++) {
         for (int x = -m_halfGridViaSize; x <= m_halfGridViaSize; x++) {
+            // check each layer
             switch(grid->at(gridPoint.x + x, gridPoint.y + y, gridPoint.z)) {
                 case GridObstacle:
                 case GridSource:
@@ -1445,3 +1417,223 @@ void MazeRouter::cleanUpNets(NetList & netList) {
     netList.nets.clear();
     Autorouter::cleanUpNets();
 }
+
+void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand * parentCommand) {
+    QPointF topLeft = m_board->sceneBoundingRect().topLeft();
+    foreach (int netIndex, bestScore.ordering.order) {
+        QList<Trace> traces = bestScore.traces.values(netIndex);
+        qSort(traces.begin(), traces.end(), byOrder);
+        QList<TraceWire *> newTraces;
+        foreach (Trace trace, traces) {
+            QList<GridPoint> gridPoints = trace.gridPoints;
+            // TODO: nicer curve-fitting
+            removeColinear(gridPoints);
+            removeSteps(gridPoints);
+
+            Net * net = netList.nets.at(netIndex);
+            bool onTraceS, onTraceD;
+            QPointF traceAnchorS, traceAnchorD;
+            ConnectorItem * sourceConnectorItem = findAnchor(gridPoints.first(), topLeft, net, newTraces, traceAnchorS, onTraceS);
+            ConnectorItem * destConnectorItem = findAnchor(gridPoints.last(), topLeft, net, newTraces, traceAnchorD, onTraceD);
+
+            if (sourceConnectorItem == NULL) {
+            }
+            else if (destConnectorItem == NULL) {
+            }
+            else {
+                GridPoint gp = gridPoints.takeFirst();
+                QRectF gridRect(gp.x * m_standardWireWidth + topLeft.x(), gp.y * m_standardWireWidth + topLeft.y(), m_standardWireWidth, m_standardWireWidth);
+                QPointF center = gridRect.center();
+                int lastz = gp.z;
+                if (onTraceS) {
+                    newTraces << drawOneTrace(sourceConnectorItem->sceneAdjustedTerminalPoint(NULL), traceAnchorS, m_standardWireWidth, sourceConnectorItem->attachedToViewLayerSpec());
+                    newTraces << drawOneTrace(traceAnchorS, center, m_standardWireWidth, sourceConnectorItem->attachedToViewLayerSpec());
+                }
+                else {
+                    newTraces << drawOneTrace(sourceConnectorItem->sceneAdjustedTerminalPoint(NULL), center, m_standardWireWidth, sourceConnectorItem->attachedToViewLayerSpec());
+                }
+
+                foreach (GridPoint gp, gridPoints) {
+                    if (gp.z == lastz) {
+                        QRectF gridRect(gp.x * m_standardWireWidth + topLeft.x(), gp.y * m_standardWireWidth + topLeft.y(), m_standardWireWidth, m_standardWireWidth);
+                        newTraces << drawOneTrace(center, gridRect.center(), m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+                        center = gridRect.center();
+                    }
+                    else {
+                        // place a via
+                        lastz = gp.z;
+                    }
+                }
+
+                if (onTraceD) {
+                    newTraces << drawOneTrace(center, traceAnchorD, m_standardWireWidth, destConnectorItem->attachedToViewLayerSpec());
+                    newTraces << drawOneTrace(traceAnchorD, destConnectorItem->sceneAdjustedTerminalPoint(NULL), m_standardWireWidth, destConnectorItem->attachedToViewLayerSpec());
+                }
+                else {
+                    newTraces << drawOneTrace(center, destConnectorItem->sceneAdjustedTerminalPoint(NULL), m_standardWireWidth, destConnectorItem->attachedToViewLayerSpec());
+                }
+               
+            }
+        }
+
+        foreach (TraceWire * traceWire, newTraces) {
+            addWireToUndo(traceWire, parentCommand);
+        }
+
+        // add connections
+
+        foreach (TraceWire * traceWire, newTraces) {
+            delete traceWire;
+        }
+    }
+}
+
+ConnectorItem * MazeRouter::findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QPointF & p, bool & onTrace) {
+    QRectF gridRect(gp.x * m_standardWireWidth + topLeft.x(), gp.y * m_standardWireWidth + topLeft.y(), m_standardWireWidth, m_standardWireWidth);
+    QList<TraceWire *> traceWires;
+    foreach (QGraphicsItem * item, m_sketchWidget->scene()->items(gridRect)) {
+        ConnectorItem * connectorItem = dynamic_cast<ConnectorItem *>(item);
+        if (connectorItem) {
+            if (!connectorItem->attachedTo()->isEverVisible()) continue;
+            bool isCandidate = 
+                (gp.z == 0 && connectorItem->attachedToViewLayerID() == ViewLayer::Copper0) ||
+                (gp.z == 0 && connectorItem->attachedToViewLayerID() == ViewLayer::Copper0Trace) || 
+                (gp.z == 1 && connectorItem->attachedToViewLayerID() == ViewLayer::Copper1) ||
+                (gp.z == 1 && connectorItem->attachedToViewLayerID() == ViewLayer::Copper1Trace) 
+             ;
+            if (!isCandidate) continue;
+
+            if (net->net->contains(connectorItem)) ;
+            else {
+                TraceWire * traceWire = qobject_cast<TraceWire *>(connectorItem->attachedTo());
+                if (traceWire == NULL) isCandidate = false;
+                else isCandidate = newTraces.contains(traceWire);
+            }
+            if (!isCandidate) continue;
+
+            onTrace = false;
+            p = connectorItem->sceneAdjustedTerminalPoint(NULL);
+            return connectorItem;
+        }
+
+        TraceWire * traceWire = dynamic_cast<TraceWire *>(item);
+        if (traceWire == NULL) continue;
+        if (!traceWire->isEverVisible()) continue;
+
+        // only do traces if no connectorItem is found
+        traceWires.append(traceWire);
+    }
+
+    foreach (TraceWire * traceWire, traceWires) {
+        bool isCandidate = (gp.z == 0 && traceWire->viewLayerID() == ViewLayer::Copper0Trace) 
+                        || (gp.z == 1 && traceWire->viewLayerID() == ViewLayer::Copper1Trace);
+        if (!isCandidate) continue;
+
+        if (newTraces.contains(traceWire)) ;
+        else if (net->net->contains(traceWire->connector0())) ;
+        else continue;
+
+        onTrace = true;
+        QPointF center = gridRect.center();
+        QPointF p0 = traceWire->connector0()->sceneAdjustedTerminalPoint(NULL);
+        QPointF p1 = traceWire->connector1()->sceneAdjustedTerminalPoint(NULL);
+        double d0 = GraphicsUtils::distanceSqd(p0, center);
+        double d1 = GraphicsUtils::distanceSqd(p1, center);
+        double dx, dy, distanceSegment;
+        bool atEndpoint;
+        GraphicsUtils::distanceFromLine(center.x(), center.y(), p0.x(), p0.y(), p1.x(), p1.y(), dx, dy, distanceSegment, atEndpoint);
+        if (atEndpoint) {
+            DebugDialog::debug("at endpoint shouldn't happen");
+        }
+        p.setX(dx);
+        p.setY(dy);
+        if (d0 <= d1) {
+            return traceWire->connector0();
+        }
+        else {
+            return traceWire->connector1();
+        }
+    }
+
+    DebugDialog::debug("overlap not found");
+    return NULL;
+}
+
+void MazeRouter::removeColinear(QList<GridPoint> & gridPoints) {
+    	// eliminate redundant colinear points
+	int ix = 0;
+	while (ix < gridPoints.count() - 2) {
+		GridPoint p1 = gridPoints[ix];
+		GridPoint p2 = gridPoints[ix + 1];
+        if (p1.z == p2.z) {
+		    GridPoint p3 = gridPoints[ix + 2];
+            if (p2.z == p3.z) {
+		        if (p1.x == p2.x && p2.x == p3.x) {
+			        gridPoints.removeAt(ix + 1);
+			        continue;
+		        }
+		        else if (p1.y == p2.y && p2.y == p3.y) {
+			        gridPoints.removeAt(ix + 1);
+			        continue;
+		        }
+            }
+        }
+		ix++;
+	}
+}
+
+void MazeRouter::removeSteps(QList<GridPoint> & gridPoints) {
+    // eliminate 45 degree runs
+	int ix = 0;
+	while (ix < gridPoints.count() - 2) {
+		GridPoint p1 = gridPoints[ix];
+		GridPoint p2 = gridPoints[ix + 1];
+        if (p1.z == p2.z) {
+            int dx1 = p2.x - p1.x;
+            int dy1 = p2.y - p1.y;
+            if ((qAbs(dx1) == 1 && dy1 == 0) || (dx1 == 0 && qAbs(dy1) == 1)) {
+		        GridPoint p3 = gridPoints[ix + 2];
+                if (p2.z == p3.z) {
+                    int dx2 = p3.x - p2.x;
+                    int dy2 = p3.y - p2.y;
+                    bool step = false;
+                    if (dx1 == 0) {
+                        step = (dy2 == 0 && qAbs(dx2) == 1);
+                    }
+                    else {
+                       step = (dx2 == 0 && qAbs(dy2) == 1);
+                    }
+                    if (step) {
+                        int count = 1;
+                        int flag = 0;
+                        for (int jx = ix + 3; jx < gridPoints.count(); jx++, flag++) {
+                            GridPoint p4 = gridPoints[jx];
+                            int dx3 = p4.x - p3.x;
+                            int dy3 = p4.y - p3.y;
+                            if (flag % 2 == 0) {
+                                if (dx3 == dx1 && dy3 == dy1) {
+                                    count++;
+                                }
+                                else break;
+                            }
+                            else {
+                                if (dx3 == dx2 && dy3 == dy2) {
+                                    count++;
+                                }
+                                else break;
+                            }
+                            p3 = p4;
+                        }
+                        while (--count >= 0) {
+                            gridPoints.removeAt(ix + 1);
+                        }
+                        continue;
+                    }
+                }
+            }
+        }
+		ix++;
+	}
+}
+
+
