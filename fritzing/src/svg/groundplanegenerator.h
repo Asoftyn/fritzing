@@ -83,7 +83,7 @@ protected:
 									QGraphicsItem * board, double res, double & bWidth, double & bHeight, QList<QRectF> &); 
 	void makeConnector(QList<QPolygon> & polygons, double res, double pixelFactor, const QString & colorString, int minX, int minY, QString & svg);
 	bool tryNextPoint(int x, int y, QImage & image, QList<QPoint> & points);
-	void collectBorderPoints(QImage & image, QList<QPoint> & points);
+	bool collectBorderPoints(QImage & image, QList<QPoint> & points);
     bool try8(int x, int y, QImage & image, QList<QPoint> & points);
 
 

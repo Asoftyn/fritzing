@@ -47,7 +47,7 @@ $Date$
 //              use trace colors for top and bottom, and set at appropriate z level
 //
 //      raster back to vector
-//          curve-fitting? use a bezier?
+//          curve-fitting? use a bezier?  http://kobus.ca/seminars/ugrad/NM5_curve_s02.pdf
 //
 //      stop-now  
 //
@@ -876,7 +876,9 @@ bool MazeRouter::routeNext(RouteThing & routeThing, QList< QList<ConnectorItem *
 }
 
 bool MazeRouter::moveBack(Score & currentScore, int index, QList<NetOrdering> & allOrderings) {
-    if (index == 0) return false;  // nowhere to move back to
+    if (index == 0) {
+        return false;  // nowhere to move back to
+    }
 
     QList<int> order(currentScore.ordering.order);
     //printOrder("start", order);
@@ -1376,7 +1378,7 @@ void MazeRouter::drawTrace(Trace & trace) {
             }
         }
         else {
-            uint color = (gridPoint.z == 0) ? 0x80F28A80 : 0x808af280;
+            uint color = (gridPoint.z == 0) ? 0xa0F28A00 : 0xa0FFCB33;
             m_displayImage[gridPoint.z]->setPixel(gridPoint.x, gridPoint.y, color);
         }
         lastz = gridPoint.z;
