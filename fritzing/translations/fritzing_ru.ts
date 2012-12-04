@@ -582,11 +582,11 @@ Use the file?</source>
         <translation type="unfinished">Fritzing</translation>
     </message>
     <message>
-        <source>Too close to a border or a hole (%1 layer)</source>
+        <source>%1 is overlapping (%2 layer)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 is overlapping (%2 layer)</source>
+        <source>Too close to a border (%1 layer)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2937,6 +2937,45 @@ Go ahead and revert?</source>
         <source>Set the minimum distance between parts for the DRC (Design Rules Check)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Autoroute (new)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MazeRouter</name>
+    <message>
+        <source>Autorouter was cancelled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>best so far: %1 unrouted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>/%n vias</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>round %1 of:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Note: the autorouter did not route %n parts, because they are not located entirely on the board.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Unexpected SVG rendering failure--contact fritzing.org</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ModelBase</name>
@@ -2986,10 +3025,6 @@ Reason: %2 (errcode %3)</source>
     <message>
         <source>Click this connector to drag out a new trace.</source>
         <translation type="unfinished">Щёлкните на данном соединении для прокладывания нового маршрута.</translation>
-    </message>
-    <message>
-        <source>Resize board to %1 %2</source>
-        <translation type="unfinished">Изменить размер на %1 %2</translation>
     </message>
     <message>
         <source>Change trace layer</source>
@@ -3614,6 +3649,10 @@ Go ahead and save?</source>
     <message>
         <source>Unable to load image file &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inspector</source>
+        <translation type="unfinished">Инспектор</translation>
     </message>
 </context>
 <context>
@@ -5807,6 +5846,10 @@ Note: you can also trigger this display by mousing down on the routing status te
     <message>
         <source>Part &apos;%1&apos; not found in sketch</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resize board to %1 %2</source>
+        <translation type="unfinished">Изменить размер на %1 %2</translation>
     </message>
 </context>
 <context>
