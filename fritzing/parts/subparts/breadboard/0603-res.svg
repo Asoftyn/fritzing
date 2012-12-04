@@ -6,9 +6,9 @@
 	 viewBox="0 0 7.938 2.834" enable-background="new 0 0 7.938 2.834" xml:space="preserve">
 <g>
 	<g>
-		<rect x="-0.019" fill="#4D4D4D" width="7.966" height="2.681"/>
+		<rect x="-0.019" fill="#333333" width="7.966" height="2.681"/>
 		<rect x="-0.019" opacity="0.2" fill="#FFFFFF" enable-background="new    " width="7.966" height="0.046"/>
-		<rect x="-0.019" y="2.03" fill="#333333" width="7.966" height="0.799"/>
+		<rect x="-0.019" y="2.03" fill="#1A1A1A" width="7.966" height="0.799"/>
 		<rect x="-0.019" y="2.802" opacity="0.2" enable-background="new    " width="7.966" height="0.032"/>
 	</g>
 	<g>
@@ -25,6 +25,6 @@
 		<line fill="none" x1="0.743" y1="2.834" x2="0.743" y2="2.834"/>
 	</g>
 </g>
-<rect x="7.828" y="2.136" fill="#999999" width="0.118" height="0.692"/>
+<rect x="7.828" y="2.136" fill="#999999" width="0.117" height="0.692"/>
 <rect x="0.004" y="2.136" fill="#999999" width="0.119" height="0.692"/>
 </svg>
