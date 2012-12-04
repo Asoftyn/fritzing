@@ -680,7 +680,8 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
         Grid * grid = new Grid(boardImage.width(), boardImage.height(), m_bothSidesNow ? 2 : 1);
         std::priority_queue<GridPoint> pq;
 
-        traceObstacles(currentScore.traces.values(), netIndex, grid, routeThing.ikeepout);
+        QList<Trace> traceList = currentScore.traces.values();
+        traceObstacles(traceList, netIndex, grid, routeThing.ikeepout);
         static int oi = 0;
 
         foreach (ViewLayer::ViewLayerSpec viewLayerSpec, routeThing.layerSpecs) {  
