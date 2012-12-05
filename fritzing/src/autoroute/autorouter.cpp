@@ -66,6 +66,7 @@ void Autorouter::updateRoutingStatus() {
 
 TraceWire * Autorouter::drawOneTrace(QPointF fromPos, QPointF toPos, double width, ViewLayer::ViewLayerSpec viewLayerSpec)
 {
+    DebugDialog::debug(QString("trace %1,%2 %3,%4").arg(fromPos.x()).arg(fromPos.y()).arg(toPos.x()).arg(toPos.y()));
     if (qAbs(fromPos.x() - toPos.x()) < 0.01 && qAbs(fromPos.y() - toPos.y()) < 0.01) {
         DebugDialog::debug("zero length trace", fromPos);
     }

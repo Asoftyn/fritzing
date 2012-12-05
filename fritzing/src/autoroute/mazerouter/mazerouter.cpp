@@ -34,8 +34,6 @@ $Date$
 //      net reordering/rip-up-and-reroute
 //          is there a better way than move back by one?
 //          stop at the point of first failure rather than continuing, 
-//              then using "best", route the rest of it
-//              set a flag to place jumpers
 //
 //      keepout dialog
 //   
@@ -49,7 +47,10 @@ $Date$
 //      raster back to vector
 //          curve-fitting? use a bezier?  http://kobus.ca/seminars/ugrad/NM5_curve_s02.pdf
 //
-//      stop-now  
+//      stop-now just means stop now and draw any traces you have
+//
+//      when hitting cycle limit, finish routing the current net order
+//          set a flag to place jumpers
 //
 //      dynamic cost function based on distance to any target point?
 //
@@ -774,10 +775,11 @@ bool MazeRouter::routeOne(Score & currentScore, Score & bestScore, int netIndex,
         }
 
         currentScore.unroutedCount.insert(netIndex, currentScore.unroutedCount.value(netIndex) + 1);
-        if (++currentScore.totalUnroutedCount > bestScore.totalUnroutedCount) {
+        ++currentScore.totalUnroutedCount;
+        //if (++currentScore.totalUnroutedCount > bestScore.totalUnroutedCount) {
             // no need to try to route this to the end
             return false;
-        }
+        //}
     }
     else {
         newTrace.netIndex = netIndex;
@@ -907,6 +909,22 @@ bool MazeRouter::moveBack(Score & currentScore, int index, QList<NetOrdering> & 
             newOrdering.order = order;
             allOrderings.append(newOrdering);
             //printOrder("done ", newOrdering.order);
+
+            /*
+            const static int watch[] = { 0, 1, 2, 3, 6, 12, 14, 4, 5, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 };
+            // {0, 1, 2, 4, 3, 12, 6, 14, 5, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64};
+            
+            bool matches = true;
+            for (int i = 0; i < order.count(); i++) {
+                if (order.at(i) != watch[i]) {
+                    matches = false;
+                    break;
+                }
+            }
+            if (matches) {
+                DebugDialog::debug("order matches");
+            }
+            */
             return true;
         }
         order.removeAt(i);
@@ -1086,6 +1104,37 @@ QList<GridPoint> MazeRouter::traceBack(GridPoint & gridPoint, Grid * grid, int &
             break;
         }
 
+        GridPoint nexts[6];
+        nexts[0] = traceBackOne(gridPoint, grid, -1, 0, 0, val);
+        nexts[1] = traceBackOne(gridPoint, grid, 1, 0, 0, val);
+        nexts[2] = traceBackOne(gridPoint, grid, 0, -1, 0, val);
+        nexts[3] = traceBackOne(gridPoint, grid, 0, 1, 0, val);
+        nexts[4] = traceBackOne(gridPoint, grid, 0, 0, -1, val);
+        nexts[5] = traceBackOne(gridPoint, grid, 0, 0, 1, val);
+        int ix = 0;
+        for (int i = 1; i < 6; i++) {
+            if (nexts[i].cost < nexts[ix].cost) {
+                ix = i;
+            }
+        }
+
+        GridPoint next = nexts[ix];
+        if (next.cost == GridIllegal) {
+            points.clear();
+            break; 
+        }
+        if (next.cost == -1) {
+            next.cost = GridSource;
+        }
+
+        points << next;
+        if (next.z != gridPoint.z) viaCount++;
+        gridPoint = next;
+
+        if (next.cost == GridSource) break;
+        
+        /*
+
         GridPoint next = traceBackOne(gridPoint, grid, -1, 0, 0, val);
         if (next.cost != GridIllegal) ;
         else {
@@ -1117,6 +1166,9 @@ QList<GridPoint> MazeRouter::traceBack(GridPoint & gridPoint, Grid * grid, int &
         points << next;
         if (next.z != gridPoint.z) viaCount++;
         gridPoint = next;
+*/
+
+
     }
 
     return points;
@@ -1148,7 +1200,7 @@ GridPoint MazeRouter::traceBackOne(GridPoint & gridPoint, Grid * grid, int dx, i
         case GridTarget:
             return next;
         case GridSource:
-            next.cost = GridSource;
+            next.cost = -1;
             return next;
         case 0:
             // never got involved
@@ -1424,6 +1476,7 @@ void MazeRouter::cleanUpNets(NetList & netList) {
 void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand * parentCommand) {
     QPointF topLeft = m_board->sceneBoundingRect().topLeft();
     foreach (int netIndex, bestScore.ordering.order) {
+        DebugDialog::debug(QString("tracing net %1").arg(netIndex));
         QList<Trace> traces = bestScore.traces.values(netIndex);
         qSort(traces.begin(), traces.end(), byOrder);
         QList<TraceWire *> newTraces;
@@ -1447,18 +1500,35 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
             QRectF gridRect(gp.x * m_standardWireWidth + topLeft.x(), gp.y * m_standardWireWidth + topLeft.y(), m_standardWireWidth, m_standardWireWidth);
             QPointF center = gridRect.center();
             int lastz = gp.z;
+            ConnectorItem * nextSource = NULL;
             if (onTraceS) {
-                newTraces << drawOneTrace(sourceConnectorItem->sceneAdjustedTerminalPoint(NULL), traceAnchorS, m_standardWireWidth, sourceConnectorItem->attachedToViewLayerSpec());
-                newTraces << drawOneTrace(traceAnchorS, center, m_standardWireWidth, sourceConnectorItem->attachedToViewLayerSpec());
+                TraceWire * traceWire1 = drawOneTrace(sourceConnectorItem->sceneAdjustedTerminalPoint(NULL), traceAnchorS, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+                addWireToUndo(traceWire1, parentCommand);
+                addConnectionToUndo(sourceConnectorItem, traceWire1->connector0(), parentCommand);
+                newTraces << traceWire1;
+               
+                TraceWire* traceWire2 = drawOneTrace(traceAnchorS, center, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+                addWireToUndo(traceWire2, parentCommand);
+                addConnectionToUndo(traceWire1->connector1(), traceWire2->connector0(), parentCommand);
+                nextSource = traceWire2->connector1();
+                newTraces << traceWire2;
             }
             else {
-                newTraces << drawOneTrace(sourceConnectorItem->sceneAdjustedTerminalPoint(NULL), center, m_standardWireWidth, sourceConnectorItem->attachedToViewLayerSpec());
+                TraceWire * traceWire = drawOneTrace(sourceConnectorItem->sceneAdjustedTerminalPoint(NULL), center, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+                addWireToUndo(traceWire, parentCommand);
+                addConnectionToUndo(sourceConnectorItem, traceWire->connector0(), parentCommand);
+                nextSource = traceWire->connector1();
+                newTraces << traceWire;
             }
 
             foreach (GridPoint gp, gridPoints) {
                 QRectF gridRect(gp.x * m_standardWireWidth + topLeft.x(), gp.y * m_standardWireWidth + topLeft.y(), m_standardWireWidth, m_standardWireWidth);
                 if (gp.z == lastz) {
-                    newTraces << drawOneTrace(center, gridRect.center(), m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+                    TraceWire * traceWire = drawOneTrace(center, gridRect.center(), m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+                    addWireToUndo(traceWire, parentCommand);
+                    addConnectionToUndo(nextSource, traceWire->connector0(), parentCommand);
+                    nextSource = traceWire->connector1();
+                    newTraces << traceWire;
                 }
                 else {
 	                long newID = ItemBase::getNextID();
@@ -1475,6 +1545,9 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
 	                Via * via = qobject_cast<Via *>(itemBase);
 	                via->setAutoroutable(true);
 	                via->setHoleSize(QString("%1in,%2in") .arg(holeSize / GraphicsUtils::SVGDPI) .arg(ringThickness / GraphicsUtils::SVGDPI), false);
+                    addViaToUndo(via, parentCommand);
+                    addConnectionToUndo(nextSource, via->connectorItem(), parentCommand);
+                    nextSource = via->connectorItem();
                     newVias << via;
                     lastz = gp.z;
                 }
@@ -1483,25 +1556,25 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
             }
 
             if (onTraceD) {
-                newTraces << drawOneTrace(center, traceAnchorD, m_standardWireWidth, destConnectorItem->attachedToViewLayerSpec());
-                newTraces << drawOneTrace(traceAnchorD, destConnectorItem->sceneAdjustedTerminalPoint(NULL), m_standardWireWidth, destConnectorItem->attachedToViewLayerSpec());
+                TraceWire * traceWire1 = drawOneTrace(center, traceAnchorD, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+                addWireToUndo(traceWire1, parentCommand);
+                addConnectionToUndo(nextSource, traceWire1->connector0(), parentCommand);
+                newTraces << traceWire1;
+
+                TraceWire * traceWire2 = drawOneTrace(traceAnchorD, destConnectorItem->sceneAdjustedTerminalPoint(NULL), m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+                addWireToUndo(traceWire2, parentCommand);
+                addConnectionToUndo(traceWire1->connector1(), traceWire2->connector0(), parentCommand);
+                addConnectionToUndo(traceWire2->connector1(), destConnectorItem, parentCommand);
+                newTraces << traceWire2;
             }
             else {
-                newTraces << drawOneTrace(center, destConnectorItem->sceneAdjustedTerminalPoint(NULL), m_standardWireWidth, destConnectorItem->attachedToViewLayerSpec());
+                TraceWire * traceWire = drawOneTrace(center, destConnectorItem->sceneAdjustedTerminalPoint(NULL), m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+                addWireToUndo(traceWire, parentCommand);
+                addConnectionToUndo(nextSource, traceWire->connector0(), parentCommand);
+                addConnectionToUndo(traceWire->connector1(), destConnectorItem, parentCommand);
+                newTraces << traceWire;
             }
         }
-
-        foreach (TraceWire * traceWire, newTraces) {
-            addWireToUndo(traceWire, parentCommand);
-        }
-
-        foreach (Via * via, newVias) {
-			new AddItemCommand(m_sketchWidget, BaseCommand::CrossView, ModuleIDNames::ViaModuleIDName, via->viewLayerSpec(), via->getViewGeometry(), via->id(), false, -1, parentCommand);
-			new CheckStickyCommand(m_sketchWidget, BaseCommand::SingleView, via->id(), false, CheckStickyCommand::RemoveOnly, parentCommand);
-			new SetPropCommand(m_sketchWidget, via->id(), "hole size", via->holeSize(), via->holeSize(), true, parentCommand);
-        }
-
-        // add connections
 
         foreach (TraceWire * traceWire, newTraces) {
             delete traceWire;
@@ -1667,4 +1740,19 @@ void MazeRouter::removeSteps(QList<GridPoint> & gridPoints) {
 	}
 }
 
+void MazeRouter::addConnectionToUndo(ConnectorItem * from, ConnectorItem * to, QUndoCommand * parentCommand) 
+{
+	ChangeConnectionCommand * ccc = new ChangeConnectionCommand(m_sketchWidget, BaseCommand::CrossView, 
+											from->attachedToID(), from->connectorSharedID(),
+											to->attachedToID(), to->connectorSharedID(),
+											ViewLayer::specFromID(from->attachedToViewLayerID()),
+											true, parentCommand);
+	ccc->setUpdateConnections(false);
+}
+
+void MazeRouter::addViaToUndo(Via * via, QUndoCommand * parentCommand) {
+	new AddItemCommand(m_sketchWidget, BaseCommand::CrossView, ModuleIDNames::ViaModuleIDName, via->viewLayerSpec(), via->getViewGeometry(), via->id(), false, -1, parentCommand);
+	new CheckStickyCommand(m_sketchWidget, BaseCommand::SingleView, via->id(), false, CheckStickyCommand::RemoveOnly, parentCommand);
+	new SetPropCommand(m_sketchWidget, via->id(), "hole size", via->holeSize(), via->holeSize(), true, parentCommand);
+}
 

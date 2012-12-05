@@ -181,6 +181,8 @@ protected:
     void removeColinear(QList<GridPoint> & gridPoints);
     void removeSteps(QList<GridPoint> & gridPoints);
     ConnectorItem * findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace);
+    void addConnectionToUndo(ConnectorItem * from, ConnectorItem * to, QUndoCommand * parentCommand);
+    void addViaToUndo(Via * via, QUndoCommand * parentCommand);
 
 protected:
 	LayerList m_viewLayerIDs;
