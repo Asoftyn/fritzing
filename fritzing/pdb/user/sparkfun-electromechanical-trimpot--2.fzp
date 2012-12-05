@@ -35,7 +35,7 @@
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-electromechanical_trimpot_tc33_breadboard.svg'>
+<layers image='icon/TRIMPOT_TC33.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

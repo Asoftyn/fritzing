@@ -35,7 +35,7 @@ End launch SMA connector. The paste layer has been removed so that the connector
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-connectors_sma-edge_breadboard.svg'>
+<layers image='icon/SMA-EDGE.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

@@ -35,7 +35,7 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-passives_0402-res_breadboard.svg'>
+<layers image='icon/0402-RES.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

@@ -36,7 +36,7 @@ Simple slide switch. Spark Fun Electronics SKU : COM-00102</description>
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-electromechanical_switch-spdt-smd_breadboard.svg'>
+<layers image='icon/SWITCH-SPDT-SMD.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

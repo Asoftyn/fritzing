@@ -34,7 +34,7 @@
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-connectors_ffc_16_breadboard.svg'>
+<layers image='icon/FFC_16.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

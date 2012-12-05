@@ -26,7 +26,7 @@ USART&lt;p&gt;
 </properties>
 <views>
 <breadboardView>
-<layers image='breadboard/sparkfun-digitalic_dil28-3-simon_breadboard.svg'>
+<layers image='breadboard/generic_ic_dip_28_300mil_bread.svg'>
 <layer layerId='breadboard'/>
 </layers>
 </breadboardView>
@@ -43,7 +43,7 @@ USART&lt;p&gt;
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-digitalic_dil28-3-simon_breadboard.svg'>
+<layers image='breadboard/generic_ic_dip_28_300mil_bread.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

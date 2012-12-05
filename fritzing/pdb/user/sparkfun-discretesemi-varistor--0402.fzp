@@ -38,7 +38,7 @@ Varistor is equivalent with Zener diode of two series connection.</description>
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-discretesemi_0402-res_breadboard.svg'>
+<layers image='icon/0402-RES.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

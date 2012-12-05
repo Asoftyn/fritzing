@@ -23,7 +23,7 @@ ULN2803 Darlington array. 500mA max per channel, 8-channel package. Spark Fun El
 </properties>
 <views>
 <breadboardView>
-<layers image='breadboard/sparkfun-poweric_dil18_breadboard.svg'>
+<layers image='breadboard/generic_ic_dip_18_300mil_bread.svg'>
 <layer layerId='breadboard'/>
 </layers>
 </breadboardView>
@@ -40,7 +40,7 @@ ULN2803 Darlington array. 500mA max per channel, 8-channel package. Spark Fun El
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-poweric_dil18_breadboard.svg'>
+<layers image='breadboard/generic_ic_dip_18_300mil_bread.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

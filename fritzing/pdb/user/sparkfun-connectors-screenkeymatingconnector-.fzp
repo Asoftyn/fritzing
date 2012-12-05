@@ -33,7 +33,7 @@
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-connectors_screenkeymatingconnector_breadboard.svg'>
+<layers image='icon/SCREENKEYMATINGCONNECTOR.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>
