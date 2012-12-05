@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-Passives-CAP_POL-PTH1'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-Passives' CAP_POL PTH1 -->
 <version>4</version>
-<date>2012-11-23</date>
+<date>2012-12-05</date>
 <label>C</label>
 <author>www.fritzing.org</author>
 <description>&lt;b&gt;Capacitor Polarized&lt;/b&gt;
@@ -20,7 +20,7 @@ These are standard SMD and PTH capacitors. Normally 10uF, 47uF, and 100uF in ele
 </properties>
 <views>
 <breadboardView>
-<layers image='breadboard/sparkfun-passives_cpol-radial-100uf-25v_breadboard.svg'>
+<layers image='breadboard/electrolytic_capacitor_small_leg.svg'>
 <layer layerId='breadboard'/>
 </layers>
 </breadboardView>
@@ -37,7 +37,7 @@ These are standard SMD and PTH capacitors. Normally 10uF, 47uF, and 100uF in ele
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-passives_cpol-radial-100uf-25v_breadboard.svg'>
+<layers image='breadboard/electrolytic_capacitor_small_leg.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>
