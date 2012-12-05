@@ -33,24 +33,23 @@ $Date$
 //
 //      net reordering/rip-up-and-reroute
 //          is there a better way than move back by one?
-//          stop at the point of first failure rather than continuing, 
 //
 //      keepout dialog
 //   
 //      jumperitem
 //          can possibly use the expansion for one end of the jumper, but need a new search for the other end
-//
-//      feedback
-//          use qgraphicpixmapitems but update only at new trace time
-//              use trace colors for top and bottom, and set at appropriate z level
-//
+////
 //      raster back to vector
 //          curve-fitting? use a bezier?  http://kobus.ca/seminars/ugrad/NM5_curve_s02.pdf
 //
 //      stop-now just means stop now and draw any traces you have
 //
-//      when hitting cycle limit, finish routing the current net order
+//      when hitting cycle limit, finish routing the current net order or go back to "best"
 //          set a flag to place jumpers
+//
+//      feedback should say "x of y nets routed"
+//     
+//      when converting to vector, must check that diagonals are clear
 //
 //      dynamic cost function based on distance to any target point?
 //
@@ -63,6 +62,17 @@ $Date$
 //
 //      crash after 25 or so rounds with amadeus bridge
 //
+//      when multiple traces connect to one via, traces tend to connect to each other instead of the via
+//
+//      remove zero length traces
+//
+//      figure out what is taking so long once the router is creating traces
+//          and/or put up dialog "cleaning up..."
+//
+//      huge memory leak during routing: what's going on?
+//
+//      test it still works when there are unroutable traces or vias
+
 
 #include "mazerouter.h"
 #include "../../sketch/pcbsketchwidget.h"
@@ -223,6 +233,35 @@ QList<QPoint> Grid::init(int sx, int sy, int sz, int width, int height, const QI
             uchar mask = DRC::BitTable[ix & 7];
 
             if (*(bits1 + byteOffset) & mask) continue;
+
+            setAt(ix, iy, sz, value);
+            if (collectPoints) {
+                points.append(QPoint(ix, iy));
+            }
+			//DebugDialog::debug(QString("p1:%1 p2:%2").arg(p1, 0, 16).arg(p2, 0, 16));
+		}
+	}
+
+    return points;
+}
+
+
+QList<QPoint> Grid::init4(int sx, int sy, int sz, int width, int height, const QImage & image, quint32 value, bool collectPoints) {
+    // pixels are 4 x 4 bits
+    QList<QPoint> points;
+    const uchar * bits1 = image.constScanLine(0);
+    int bytesPerLine = image.bytesPerLine();
+	for (int iy = sy; iy < sy + height; iy++) {
+        int offset = iy * bytesPerLine * 4;
+		for (int ix = sx; ix < sx + width; ix++) {
+            int byteOffset = (ix >> 1) + offset;
+            uchar mask = ix & 1 ? 0x0f : 0xf0;
+
+            if ((*(bits1 + byteOffset) & mask) != mask) ;
+            else if ((*(bits1 + byteOffset + bytesPerLine) & mask) != mask) ;
+            else if ((*(bits1 + byteOffset + bytesPerLine + bytesPerLine) & mask) != mask) ;
+            else if ((*(bits1 + byteOffset + bytesPerLine + bytesPerLine + bytesPerLine) & mask) != mask) ;
+            else continue;  // "pixel" is all white
 
             setAt(ix, iy, sz, value);
             if (collectPoints) {
@@ -432,8 +471,9 @@ void MazeRouter::start()
 		return;
 	}
 
-    QSizeF gridSize(m_maxRect.width() / m_standardWireWidth, m_maxRect.height() / m_standardWireWidth);    
-    QImage boardImage(qCeil(gridSize.width()), qCeil(gridSize.height()), QImage::Format_Mono);
+    QSizeF gridSize(m_maxRect.width() / m_standardWireWidth, m_maxRect.height() / m_standardWireWidth);   
+    QSize boardImageSize(qCeil(gridSize.width()), qCeil(gridSize.height())); 
+    QImage boardImage(boardImageSize.width() * 4, boardImageSize.height() * 4, QImage::Format_Mono);
     boardImage.fill(0);
     makeBoard(boardImage, m_keepoutGrid, gridSize);       
 	ProcessEventBlocker::processEvents(); // to keep the app  from freezing
@@ -443,9 +483,9 @@ void MazeRouter::start()
 		return;
 	}
 
-    m_displayImage[0] = new QImage(boardImage.size(), QImage::Format_ARGB32);
+    m_displayImage[0] = new QImage(boardImageSize, QImage::Format_ARGB32);
     m_displayImage[0]->fill(0);
-    m_displayImage[1] = new QImage(boardImage.size(), QImage::Format_ARGB32);
+    m_displayImage[1] = new QImage(boardImageSize, QImage::Format_ARGB32);
     m_displayImage[1]->fill(0);
 
     QString message;
@@ -573,7 +613,8 @@ bool MazeRouter::makeBoard(QImage & image, double keepoutGrid, const QSizeF grid
 	image.save(FolderUtils::getUserDataStorePath("") + "/mazeMakeBoard.png");
 #endif
 
-    DRC::extendBorder(keepoutGrid, &image);
+    // extend it given that the board image is * 4
+    DRC::extendBorder(keepoutGrid * 4, &image);
 
 #ifndef QT_NO_DEBUG
 	image.save(FolderUtils::getUserDataStorePath("") + "/mazeMakeBoard2.png");
@@ -678,7 +719,7 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
 
         QPointF jp = nearest.jc->sceneAdjustedTerminalPoint(NULL) - m_board->sceneBoundingRect().topLeft();
         nearest.gridTarget = QPoint(jp.x() / m_standardWireWidth, jp.y() / m_standardWireWidth);
-        Grid * grid = new Grid(boardImage.width(), boardImage.height(), m_bothSidesNow ? 2 : 1);
+        Grid * grid = new Grid(qCeil(gridSize.width()), qCeil(gridSize.height()), m_bothSidesNow ? 2 : 1);
         std::priority_queue<GridPoint> pq;
 
         QList<Trace> traceList = currentScore.traces.values();
@@ -706,8 +747,7 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
 #ifndef QT_NO_DEBUG
             obstaclesImage.save(FolderUtils::getUserDataStorePath("") + QString("/obstacles%1.png").arg(oi));
 #endif
-
-            grid->init(0, 0, z, grid->x, grid->y, obstaclesImage, GridObstacle, false);
+            grid->init4(0, 0, z, grid->x, grid->y, obstaclesImage, GridObstacle, false);
             //updateDisplay(grid, z);
 
             prepSourceAndTarget(masterDoc, grid, subnets, z, pq, z == 0 ? nearest.netElements0 : nearest.netElements1, z == 0 ? nearest.notNetElements0 : nearest.notNetElements1, nearest, routeThing.r);

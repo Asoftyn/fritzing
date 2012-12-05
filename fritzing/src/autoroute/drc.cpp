@@ -847,6 +847,7 @@ void DRC::renderOne(QDomDocument * masterDoc, QImage * image, const QRectF & sou
 	QPainter painter;
 	painter.begin(image);
 	painter.setRenderHint(QPainter::Antialiasing, false);
+    //painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 	renderer.render(&painter /*, sourceRes */);
 	painter.end();
 }

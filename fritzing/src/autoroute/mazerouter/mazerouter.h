@@ -131,6 +131,7 @@ struct Grid {
     quint32 at(int x, int y, int z);
     void setAt(int x, int y, int z, quint32 value);
     QList<QPoint> init(int x, int y, int z, int width, int height, const QImage &, quint32 value, bool collectPoints);
+    QList<QPoint> init4(int x, int y, int z, int width, int height, const QImage &, quint32 value, bool collectPoints);
 };
 
 ////////////////////////////////////
