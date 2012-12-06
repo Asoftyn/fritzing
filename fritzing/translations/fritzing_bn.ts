@@ -235,6 +235,14 @@ href = &apos;http://www.fritzing.org &quot;&gt; www.fritzing.org &lt;/ a&gt;</tr
     </message>
 </context>
 <context>
+    <name>Autorouter</name>
+    <message>
+        <location filename="../src/autoroute/autorouter.cpp" line="303"/>
+        <source>Routing canceled! Now cleaning up...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AutorouterSettingsDialog</name>
     <message>
         <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="81"/>
@@ -520,7 +528,7 @@ href = &apos;http://www.fritzing.org &quot;&gt; www.fritzing.org &lt;/ a&gt;</tr
 <context>
     <name>Board</name>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="87"/>
+        <location filename="../src/items/resizableboard.cpp" line="88"/>
         <source>
 
 A custom board svg typically has one silkscreen layer and one board layer.
@@ -531,121 +539,164 @@ A custom board svg typically has one silkscreen layer and one board layer.
 একটি স্বনির্ধারিত বোর্ড SVG, এবং  সাধারন silkscreenএক স্তরবোর্ড আছে</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="88"/>
+        <location filename="../src/items/resizableboard.cpp" line="89"/>
         <source>Have a look at the circle_pcb.svg file in your Fritzing installation folder at parts/svg/core/pcb/.
 
 </source>
         <translation> আপনার firtzing ইনস্টলেশন ফোল্ডারে একটি করে  parts/svg/core/pcb.&apos;আর বর্ণনা আছে।</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="114"/>
+        <location filename="../src/items/resizableboard.cpp" line="115"/>
         <source>one layer (single-sided)</source>
         <translatorcomment>এক &apos;স্তর&apos; (একক পার্শ্বযুক্ত)</translatorcomment>
         <translation>এক স্তর অর্ধেক পাস</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="117"/>
+        <location filename="../src/items/resizableboard.cpp" line="118"/>
         <source>two layers (double-sided)</source>
         <translatorcomment>দু &apos;স্তর&apos; (দুই পাশে)</translatorcomment>
         <translation>দুই স্তর (দুই পাস)</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="199"/>
+        <location filename="../src/items/resizableboard.cpp" line="200"/>
         <source>image file</source>
         <translatorcomment>চিত্র &apos;ফাইল</translatorcomment>
         <translation>ইমেজ ফাইল</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="218"/>
+        <location filename="../src/items/resizableboard.cpp" line="219"/>
         <source>load image file</source>
         <translatorcomment>লোড &apos;চিত্র&apos; ফাইল</translatorcomment>
         <translation>লোড ইমেজ ফাইল</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="277"/>
+        <location filename="../src/items/resizableboard.cpp" line="278"/>
         <source>Images</source>
         <translatorcomment> &apos;চিত্র&apos; </translatorcomment>
         <translation>ইমেজ</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="291"/>
+        <location filename="../src/items/resizableboard.cpp" line="292"/>
         <source>Select an image file to load</source>
         <translatorcomment>নির্বাচন &apos;একটি&apos; চিত্র &apos;ফাইল&apos;. লোডের জন্য</translatorcomment>
         <translation>একটি&apos; চিত্র &apos;ফাইল লোডের জন্য নির্বাচন </translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="313"/>
+        <location filename="../src/items/resizableboard.cpp" line="314"/>
         <source>due to an xml problem: %1 line:%2 column:%3</source>
         <translation>সমাধানের জন্যঃ %1 লাইনঃ %2 কলামঃ%3 উদাহারন </translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="319"/>
+        <location filename="../src/items/resizableboard.cpp" line="320"/>
         <source>because the xml is not correctly formatted</source>
         <translatorcomment>উদাহরন ঠিক না থাকলে মুছাফেলা</translatorcomment>
         <translation> কোন কারনে xml সটীক বিন্যাস না হলে </translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="347"/>
+        <location filename="../src/items/resizableboard.cpp" line="348"/>
         <source>the &lt;board&gt; element contains no shape elements</source>
         <translatorcomment>&lt;bord&gt; &apos;উপাদান&apos;</translatorcomment>
         <translation>দি&lt;bord&gt;  &apos;উপাদান&apos;</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="354"/>
+        <location filename="../src/items/resizableboard.cpp" line="358"/>
         <source>because there are multiple &lt;board&gt; layers</source>
         <translatorcomment>সেখানে&apos;একাধিক &lt;bord&gt; দেয়া আছে</translatorcomment>
         <translation>এখানে একাধিক&lt;bord&gt; লেয়ার আছে  </translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="359"/>
+        <location filename="../src/items/resizableboard.cpp" line="363"/>
         <source>because there are multiple &lt;silkscreen&gt; layers</source>
         <translatorcomment>সেখানে &lt;silkscreen&gt;লেয়ার আছে</translatorcomment>
         <translation>এখানেআকাধিক&lt;silkscreen&gt;লেয়ার</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="364"/>
+        <location filename="../src/items/resizableboard.cpp" line="368"/>
         <source>because there is no &lt;board&gt; layer</source>
         <translatorcomment>&apos;সেখানে&apos;  কোন &apos;&lt;board&gt;লেয়ার নাই </translatorcomment>
         <translation>এখানে কোন &lt;board&gt;লেয়ার নাই </translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="369"/>
+        <location filename="../src/items/resizableboard.cpp" line="373"/>
         <source>the svg contains no shape elements</source>
         <translatorcomment>svg আকার নিরধারনের  &apos;উপাদান&apos; নেই </translatorcomment>
         <translation>SVG গড়ন  উপস্থিত নেই</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="374"/>
+        <location filename="../src/items/resizableboard.cpp" line="378"/>
         <source>but the pcb itself will have no silkscreen layer</source>
         <translatorcomment>পি সি বি লেয়ারে কোন ছাপ পড়ে নাই</translatorcomment>
         <translation>কিন্তু PCB  তে নিজস্ব কোন silkscreen&apos;স্তর নেই</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="377"/>
+        <location filename="../src/items/resizableboard.cpp" line="383"/>
         <source>the svg doesn&apos;t fit the custom board format</source>
         <translatorcomment>svg বোর্ড পরিবর্তন  ফিট হচ্ছে না </translatorcomment>
         <translation>SVG কাস্টম bord বিন্যাসে ফিট  হচ্ছে না</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="384"/>
+        <location filename="../src/items/resizableboard.cpp" line="417"/>
+        <source>Fritzing thinks the custom shape has no cutouts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/items/resizableboard.cpp" line="420"/>
+        <source>Fritzing thinks the custom shape has %n cutouts.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../src/items/resizableboard.cpp" line="422"/>
+        <source>
+However, the cutouts may not be formatted correctly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/items/resizableboard.cpp" line="425"/>
+        <source>
+
+If you intended your custom shape to have cutouts and you did not get the expected result </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/items/resizableboard.cpp" line="426"/>
+        <source>it is because Fritzing requires that you make cutouts using a shape &apos;subtraction&apos; or &apos;difference&apos; operation in your vector graphics editor.
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/items/resizableboard.cpp" line="427"/>
+        <source>In any case we recommend that you test your custom shape by using the &apos;File &gt; Export for Production &gt; Extended Gerber&apos; option </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/items/resizableboard.cpp" line="428"/>
+        <source>and looking at the result with a Gerber viewer application.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/items/resizableboard.cpp" line="496"/>
         <source>Unable to load</source>
         <translatorcomment>গ্রহন করার জন্য  অপ্রস্তুত </translatorcomment>
         <translation>লোড করতে অসমর্থ</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="385"/>
+        <location filename="../src/items/resizableboard.cpp" line="497"/>
         <source>Unable to load image from %1 %2</source>
         <translatorcomment>এবং চিত্র পুনঃধারন %১ %২ করতে অক্ষম</translatorcomment>
         <translation>এবং% 1%2 থেকে চিত্র লোড করতে অক্ষম </translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="392"/>
+        <location filename="../src/items/resizableboard.cpp" line="504"/>
         <source>Can load, but</source>
         <translatorcomment>ধারন সস্মব কিন্তু</translatorcomment>
         <translation>&apos;লোড করতে পারে, কিন্তু</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="393"/>
+        <location filename="../src/items/resizableboard.cpp" line="505"/>
         <source>The image from %1 can be loaded, but %2
 Use the file?</source>
         <translatorcomment>% 1 থেকে চিত্র %2&apos;লোড&apos; করতে পারেন, কিন্ত 
@@ -657,7 +708,7 @@ Use the file?</source>
 <context>
     <name>BoardLogoItem</name>
     <message>
-        <location filename="../src/items/logoitem.cpp" line="1014"/>
+        <location filename="../src/items/logoitem.cpp" line="952"/>
         <source>shape</source>
         <translatorcomment>আকার রূপদানকারি</translatorcomment>
         <translation>গঠন</translation>
@@ -3862,17 +3913,17 @@ Please check all views for potential side-effects.</source>
 <context>
     <name>MazeRouter</name>
     <message>
-        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="274"/>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="328"/>
         <source>Autorouter was cancelled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="467"/>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="522"/>
         <source>best so far: %1 unrouted</source>
         <translation type="unfinished">সব মিলে ভাল %১ আন রাউটেড</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="469"/>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="524"/>
         <source>/%n vias</source>
         <translation type="unfinished">
             <numerusform>/%n vias</numerusform>
@@ -3880,12 +3931,28 @@ Please check all views for potential side-effects.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="473"/>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="528"/>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="562"/>
         <source>round %1 of:</source>
         <translation type="unfinished">রাউন্ড %১ অফ</translation>
     </message>
+    <message>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="556"/>
+        <source>Routing stopped! Now cleaning up...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="559"/>
+        <source>Routing complete! Now cleaning up...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="563"/>
+        <source>Last round--routing stopped. Now cleaning up...</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="515"/>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="582"/>
         <source>Note: the autorouter did not route %n parts, because they are not located entirely on the board.</source>
         <translation type="unfinished">
             <numerusform>নোটঃঅটো রাউট  রাউট করতে পারছেনা</numerusform>
@@ -3893,7 +3960,7 @@ Please check all views for potential side-effects.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="610"/>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="678"/>
         <source>Unexpected SVG rendering failure--contact fritzing.org</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5969,9 +6036,9 @@ shift key swaps scroll axis</source>
         <location filename="../src/autoroute/cmrouter/cmrouter.cpp" line="638"/>
         <location filename="../src/autoroute/cmrouter/cmrouter.cpp" line="748"/>
         <location filename="../src/autoroute/cmrouter/cmrouter.cpp" line="952"/>
-        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="339"/>
-        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="371"/>
-        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="515"/>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="393"/>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="425"/>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="582"/>
         <location filename="../src/autoroute/panelizer.cpp" line="1203"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="50"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="143"/>
@@ -5998,19 +6065,19 @@ shift key swaps scroll axis</source>
     </message>
     <message>
         <location filename="../src/autoroute/cmrouter/cmrouter.cpp" line="546"/>
-        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="339"/>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="393"/>
         <source>Cannot autoroute: no board (or multiple boards) found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/autoroute/cmrouter/cmrouter.cpp" line="572"/>
-        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="370"/>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="424"/>
         <source>No connections (on the PCB) to route.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/autoroute/cmrouter/cmrouter.cpp" line="572"/>
-        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="370"/>
+        <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="424"/>
         <source>No connections to route.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7025,37 +7092,37 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
 <context>
     <name>ResizableBoard</name>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="856"/>
+        <location filename="../src/items/resizableboard.cpp" line="968"/>
         <source>shape</source>
         <translation>আকৃতি</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="872"/>
+        <location filename="../src/items/resizableboard.cpp" line="984"/>
         <source>width: %1mm</source>
         <translation>প্রস্থঃ%১ মিলি মিটার</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="877"/>
+        <location filename="../src/items/resizableboard.cpp" line="989"/>
         <source>height: %1mm</source>
         <translation>উচ্চতাঃ%১মিলি মিটার</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1125"/>
+        <location filename="../src/items/resizableboard.cpp" line="1237"/>
         <source>width(mm)</source>
         <translation>প্রস্ত(মিলিমিটার)</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1137"/>
+        <location filename="../src/items/resizableboard.cpp" line="1249"/>
         <source>height(mm)</source>
         <translation>উচ্চতা (মিলিমিটার)</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1175"/>
+        <location filename="../src/items/resizableboard.cpp" line="1287"/>
         <source>keep aspect ratio</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1189"/>
+        <location filename="../src/items/resizableboard.cpp" line="1301"/>
         <source>Revert</source>
         <translation>্
 
@@ -7066,68 +7133,68 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
 পিছনে ফিরে</translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1203"/>
+        <location filename="../src/items/resizableboard.cpp" line="1315"/>
         <source>size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1211"/>
-        <location filename="../src/items/resizableboard.cpp" line="1322"/>
+        <location filename="../src/items/resizableboard.cpp" line="1323"/>
+        <location filename="../src/items/resizableboard.cpp" line="1434"/>
         <source>custom</source>
         <translation type="unfinished">বিধি </translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1332"/>
+        <location filename="../src/items/resizableboard.cpp" line="1444"/>
         <source>A0 (1030x1456)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1332"/>
+        <location filename="../src/items/resizableboard.cpp" line="1444"/>
         <source>A1 (728x1030)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1332"/>
+        <location filename="../src/items/resizableboard.cpp" line="1444"/>
         <source>A2 (515x728)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1332"/>
+        <location filename="../src/items/resizableboard.cpp" line="1444"/>
         <source>A3 (364x515)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1332"/>
+        <location filename="../src/items/resizableboard.cpp" line="1444"/>
         <source>A4 (257x364)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1332"/>
+        <location filename="../src/items/resizableboard.cpp" line="1444"/>
         <source>A5 (182x257)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1332"/>
+        <location filename="../src/items/resizableboard.cpp" line="1444"/>
         <source>A6 (128x182)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1333"/>
+        <location filename="../src/items/resizableboard.cpp" line="1445"/>
         <source>Letter (8.5x11)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1333"/>
+        <location filename="../src/items/resizableboard.cpp" line="1445"/>
         <source>Legal (8.5x14)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1333"/>
+        <location filename="../src/items/resizableboard.cpp" line="1445"/>
         <source>Ledger (17x11)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/resizableboard.cpp" line="1333"/>
+        <location filename="../src/items/resizableboard.cpp" line="1445"/>
         <source>Tabloid (11x17</source>
         <translation type="unfinished"></translation>
     </message>

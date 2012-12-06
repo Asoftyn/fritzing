@@ -184,6 +184,13 @@
     </message>
 </context>
 <context>
+    <name>Autorouter</name>
+    <message>
+        <source>Routing canceled! Now cleaning up...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AutorouterSettingsDialog</name>
     <message>
         <source>Production type</source>
@@ -479,6 +486,41 @@ A custom board svg typically has one silkscreen layer and one board layer.
     <message>
         <source>The image from %1 can be loaded, but %2
 Use the file?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fritzing thinks the custom shape has no cutouts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Fritzing thinks the custom shape has %n cutouts.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>
+However, the cutouts may not be formatted correctly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+
+If you intended your custom shape to have cutouts and you did not get the expected result </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>it is because Fritzing requires that you make cutouts using a shape &apos;subtraction&apos; or &apos;difference&apos; operation in your vector graphics editor.
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In any case we recommend that you test your custom shape by using the &apos;File &gt; Export for Production &gt; Extended Gerber&apos; option </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and looking at the result with a Gerber viewer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2953,6 +2995,18 @@ Go ahead and revert?</source>
     </message>
     <message>
         <source>Unexpected SVG rendering failure--contact fritzing.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Routing stopped! Now cleaning up...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Routing complete! Now cleaning up...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last round--routing stopped. Now cleaning up...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

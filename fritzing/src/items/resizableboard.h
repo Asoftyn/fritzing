@@ -68,6 +68,10 @@ protected:
 	virtual void prepLoadImageAux(const QString & fileName, bool addName);
     ViewLayer::ViewIdentifier useViewIdentifierForPixmap(ViewLayer::ViewIdentifier, bool swappingEnabled);
 
+protected:
+    static void moreCheckImage(const QString & filename);
+    static QString setBoardOutline(const QString & svg);
+
 public:
 	static QString OneLayerTranslated;
 	static QString TwoLayersTranslated;

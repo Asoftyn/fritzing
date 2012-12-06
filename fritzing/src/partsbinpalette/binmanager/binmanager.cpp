@@ -843,7 +843,12 @@ void BinManager::updateBinCombinedMenu(PartsBinPaletteWidget * bin) {
 	ItemBase *itemBase = bin->selectedItemBase();
 	bool enabled = (itemBase != NULL);
 	m_editPartNewAction->setEnabled(enabled && itemBase->canEditPart());
-	m_exportPartAction->setEnabled(enabled && !itemBase->modelPart()->isCore());
+
+    bool enableAnyway = false;
+#ifndef QT_NO_DEBUG
+    enableAnyway = true;
+#endif
+	m_exportPartAction->setEnabled(enabled && (!itemBase->modelPart()->isCore() || enableAnyway));
 	m_removePartAction->setEnabled(enabled && bin->allowsChanges());
 	m_findPartAction->setEnabled(enabled);
 }

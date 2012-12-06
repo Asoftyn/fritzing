@@ -933,70 +933,8 @@ bool BoardLogoItem::reloadImage(const QString & svg, const QSizeF & aspectRatio,
     return result;
 }
 
-
-QString BoardLogoItem::setBoardOutline(const QString & svg) {
-    QString errorStr;
-	int errorLine;
-	int errorColumn;
-
-	QDomDocument domDocument;
-	if (!domDocument.setContent(svg, true, &errorStr, &errorLine, &errorColumn)) {
-		return svg;
-	}
-
-    QDomElement root = domDocument.documentElement();
-	if (root.tagName() != "svg") {
-		return svg;
-	}
-
-    QDomElement board = TextUtils::findElementWithAttribute(root, "id", "board");
-    if (board.isNull()) {
-        board = root;
-    }
-
-    QList<QDomElement> leaves;
-    TextUtils::collectLeaves(board, leaves);
-
-    if (leaves.count() == 1) {
-        QDomElement leaf = leaves.at(0);
-        leaf.setAttribute("id", GerberGenerator::MagicBoardOutlineID);
-        return TextUtils::removeXMLEntities(domDocument.toString());
-    }
-
-    int ix = 0;
-    QStringList ids;
-    foreach (QDomElement leaf, leaves) {
-        ids.append(leaf.attribute("id", ""));
-        leaf.setAttribute("id", QString("____%1____").arg(ix++));
-    }
-
-    QSvgRenderer renderer(domDocument.toByteArray());
-
-    ix = 0;
-    foreach (QDomElement leaf, leaves) {    
-        leaf.setAttribute("id", ids.at(ix++));
-    }
-
-    double maxArea = 0;
-    int maxIndex = -1;
-    for (int i = 0; i < leaves.count(); i++) {
-        QRectF r = renderer.boundsOnElement(QString("____%1____").arg(i));
-        if (r.width() * r.height() > maxArea) {
-            maxArea = r.width() * r.height();
-            maxIndex = i;
-        }
-    }
-
-    if (maxIndex >= 0) {
-        QDomElement leaf = leaves.at(maxIndex);
-        leaf.setAttribute("id", GerberGenerator::MagicBoardOutlineID);
-        return TextUtils::removeXMLEntities(domDocument.toString());
-    }
-
-    return svg;
-}
-
 bool BoardLogoItem::checkImage(const QString & filename) {
+    // override logoitem
     return ResizableBoard::checkImage(filename);
 }
 

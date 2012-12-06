@@ -36,6 +36,7 @@ $Date$
 #include "moduleidnames.h"
 #include "../layerattributes.h"
 #include "../debugdialog.h"
+#include "../svg/gerbergenerator.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -323,7 +324,7 @@ bool Board::checkImage(const QString & filename) {
     QList<QDomElement> elements;
     TextUtils::findElementsWithAttribute(root, "id", elements);
     int layers = 0;
-    int boardLayers = 0;
+    QList<QDomElement> boardElements;
     int silk1Layers = 0;
     bool boardHasChildren = false;
     foreach (QDomElement element, elements) {
@@ -332,7 +333,7 @@ bool Board::checkImage(const QString & filename) {
         if (viewLayerID != ViewLayer::UnknownLayer) {
             layers++;
             if (viewLayerID == ViewLayer::Board) {
-                boardLayers++;
+                boardElements << element;
                 if (element.childNodes().count() > 0) {
                     boardHasChildren = true;
                 }
@@ -343,14 +344,17 @@ bool Board::checkImage(const QString & filename) {
         }
     }
 
-    if (boardLayers == 1 && !boardHasChildren) {
+    if (boardElements.count() == 1 && !boardHasChildren) {
         unableToLoad(filename, tr("the <board> element contains no shape elements") + StandardCustomBoardExplanation);
         return false;
     }
 
-    if ((boardLayers == 1) && (silk1Layers == 1)) return true;
+    if ((boardElements.count() == 1) && (silk1Layers == 1)) {
+        moreCheckImage(filename);
+        return true;
+    }
 
-    if (boardLayers > 1) {
+    if (boardElements.count() > 1) {
         unableToLoad(filename, tr("because there are multiple <board> layers") + StandardCustomBoardExplanation);
         return false;
     }
@@ -360,7 +364,7 @@ bool Board::checkImage(const QString & filename) {
         return false;
     }
 
-    if (layers > 0 && boardLayers == 0) {
+    if (layers > 0 && boardElements.count() == 0) {
         unableToLoad(filename, tr("because there is no <board> layer") + StandardCustomBoardExplanation);
         return false;
     }
@@ -370,14 +374,122 @@ bool Board::checkImage(const QString & filename) {
         return false;
     }
 
-    if (layers == 0 || (boardLayers == 1 && silk1Layers == 0)) {
-        return canLoad(filename, tr("but the pcb itself will have no silkscreen layer") + StandardCustomBoardExplanation);
+    if (layers == 0 || (boardElements.count() == 1 && silk1Layers == 0)) {
+        bool result = canLoad(filename, tr("but the pcb itself will have no silkscreen layer") + StandardCustomBoardExplanation);
+        if (result) moreCheckImage(filename);
+        return result;
     }
 
     unableToLoad(filename, tr("the svg doesn't fit the custom board format") + StandardCustomBoardExplanation);
     return false;
 }
 
+void Board::moreCheckImage(const QString & filename) {
+    QFile file(filename);
+    file.open(QFile::ReadOnly);
+    QString svg = file.readAll();
+    file.close();
+
+    QString nsvg = setBoardOutline(svg);
+
+	QString errorStr;
+	int errorLine;
+	int errorColumn;
+	QDomDocument domDocument;
+	domDocument.setContent(nsvg, &errorStr, &errorLine, &errorColumn);
+    QDomElement element = TextUtils::findElementWithAttribute(domDocument.documentElement(), "id", GerberGenerator::MagicBoardOutlineID);
+
+    int subpaths = 1;
+    int mCount = 0;
+    if (element.tagName() == "path") {
+        QString originalPath = element.attribute("d", "").trimmed();
+        if (GerberGenerator::MultipleZs.indexIn(originalPath) >= 0) {
+            QStringList ds = element.attribute("d").split("z", QString::SkipEmptyParts);
+            subpaths = ds.count();
+            foreach (QString d, ds) {
+                if (d.trimmed().startsWith("M")) mCount++;
+            }
+        }
+    }
+
+    QString msg;
+    if (subpaths == 1) {
+        msg = tr("Fritzing thinks the custom shape has no cutouts.");
+    }
+    else {
+        msg = tr("Fritzing thinks the custom shape has %n cutouts.", "", subpaths - 1);
+        if (subpaths != mCount) {
+            msg += tr("\nHowever, the cutouts may not be formatted correctly.");
+        }
+    }
+    msg +=  tr("\n\nIf you intended your custom shape to have cutouts and you did not get the expected result ");
+    msg += tr("it is because Fritzing requires that you make cutouts using a shape 'subtraction' or 'difference' operation in your vector graphics editor.\n\n");
+    msg += tr("In any case we recommend that you test your custom shape by using the 'File > Export for Production > Extended Gerber' option ");
+    msg += tr("and looking at the result with a Gerber viewer application.");
+    QMessageBox::information(NULL, "Custom Shape", msg);
+}
+
+QString Board::setBoardOutline(const QString & svg) {
+    QString errorStr;
+	int errorLine;
+	int errorColumn;
+
+	QDomDocument domDocument;
+	if (!domDocument.setContent(svg, true, &errorStr, &errorLine, &errorColumn)) {
+		return svg;
+	}
+
+    QDomElement root = domDocument.documentElement();
+	if (root.tagName() != "svg") {
+		return svg;
+	}
+
+    QDomElement board = TextUtils::findElementWithAttribute(root, "id", "board");
+    if (board.isNull()) {
+        board = root;
+    }
+
+    QList<QDomElement> leaves;
+    TextUtils::collectLeaves(board, leaves);
+
+    if (leaves.count() == 1) {
+        QDomElement leaf = leaves.at(0);
+        leaf.setAttribute("id", GerberGenerator::MagicBoardOutlineID);
+        return TextUtils::removeXMLEntities(domDocument.toString());
+    }
+
+    int ix = 0;
+    QStringList ids;
+    foreach (QDomElement leaf, leaves) {
+        ids.append(leaf.attribute("id", ""));
+        leaf.setAttribute("id", QString("____%1____").arg(ix++));
+    }
+
+    QSvgRenderer renderer(domDocument.toByteArray());
+
+    ix = 0;
+    foreach (QDomElement leaf, leaves) {    
+        leaf.setAttribute("id", ids.at(ix++));
+    }
+
+    double maxArea = 0;
+    int maxIndex = -1;
+    for (int i = 0; i < leaves.count(); i++) {
+        QRectF r = renderer.boundsOnElement(QString("____%1____").arg(i));
+        if (r.width() * r.height() > maxArea) {
+            maxArea = r.width() * r.height();
+            maxIndex = i;
+        }
+    }
+
+    if (maxIndex >= 0) {
+        QDomElement leaf = leaves.at(maxIndex);
+        leaf.setAttribute("id", GerberGenerator::MagicBoardOutlineID);
+        return TextUtils::removeXMLEntities(domDocument.toString());
+    }
+
+    return svg;
+}
 void Board::unableToLoad(const QString & fileName, const QString & reason) {
 	QMessageBox::information(
 		NULL,

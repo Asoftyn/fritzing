@@ -40,7 +40,7 @@ $Date$
 #include "../utils/folderutils.h"
 
 static QRegExp AaCc("[aAcCqQtTsS]");
-static QRegExp MultipleZs("z\\s*[^\\s]");
+const QRegExp GerberGenerator::MultipleZs("z\\s*[^\\s]");
 
 const QString GerberGenerator::SilkTopSuffix = "_silkTop.gto";
 const QString GerberGenerator::SilkBottomSuffix = "_silkBottom.gbo";
