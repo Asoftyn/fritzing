@@ -196,10 +196,6 @@ public:
 	bool drc(CMRouter::OverlapType, CMRouter::OverlapType wiresOverlap, bool eliminateThin, bool combinePlanes); 
 	Plane * getPlane(ViewLayer::ViewLayerID);
 
-signals:
-	void setCycleMessage(const QString &);
-	void setCycleCount(int);
-
 protected:
 	void collectEdges(QList<Edge *> & edges);
 	//bool findShortcut(TileRect & tileRect, bool useX, bool targetGreater, JSubedge * subedge, QList<QPointF> & allPoints, int ix);

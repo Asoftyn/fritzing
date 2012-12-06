@@ -81,6 +81,8 @@ signals:
 	void wantBottomVisible();	
 	void wantBothVisible();
 	void setProgressMessage(const QString &);
+	void setCycleMessage(const QString &);
+	void setCycleCount(int);
 
 protected:
 	class PCBSketchWidget * m_sketchWidget;

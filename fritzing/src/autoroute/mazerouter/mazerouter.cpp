@@ -26,7 +26,6 @@ $Date$
 
 // TODO:
 //
-//
 //      schematic view
 //          use a different cost function: cost is manhattandistance + penalty for direction changes
 //          netlabels are the equivalent of jumpers. Use successive numbers for the labels.
@@ -42,6 +41,10 @@ $Date$
 //      raster back to vector
 //          curve-fitting? use a bezier?  http://kobus.ca/seminars/ugrad/NM5_curve_s02.pdf
 //
+//      many examples too close to the border
+//      
+//      wecker example: some connectors not properly connected and some ratsnests incomplete
+//
 //      stop-now just means stop now and draw any traces you have
 //
 //      when hitting cycle limit, finish routing the current net order or go back to "best"
@@ -50,6 +53,7 @@ $Date$
 //      feedback should say "x of y nets routed"
 //     
 //      when converting to vector, must check that diagonals are clear
+//          handle this at traceback time, set some flags for neighbors being clear
 //
 //      dynamic cost function based on distance to any target point?
 //
@@ -63,15 +67,18 @@ $Date$
 //      crash after 25 or so rounds with amadeus bridge
 //
 //      when multiple traces connect to one via, traces tend to connect to each other instead of the via
-//
-//      remove zero length traces
+//          see shift register example
 //
 //      figure out what is taking so long once the router is creating traces
-//          and/or put up dialog "cleaning up..."
 //
 //      huge memory leak during routing: what's going on?
 //
-//      test it still works when there are unroutable traces or vias
+//      test it still works when there are do-not-autoroute traces or vias
+//
+//      dangling trace bug routing big_v7
+//
+//      allow multiple routes to reach GridTarget--eliminate all queued GridPoints with greater cost
+//      
 
 
 #include "mazerouter.h"
@@ -122,7 +129,14 @@ static const uint ViaCost = 1000;
 
 static const uchar GridPointDone = 1;
 
+static const double MinTraceManhattanLength = 0.1;  // pixels
+
 ////////////////////////////////////////////////////////////////////
+
+
+bool atLeast(const QPointF & p1, const QPointF & p2) {
+    return (qAbs(p1.x() - p2.x()) >= MinTraceManhattanLength) || (qAbs(p1.y() - p2.y()) >= MinTraceManhattanLength);
+}
 
 void printOrder(const QString & msg, QList<int> & order) {
     QString string(msg);
@@ -538,6 +552,18 @@ void MazeRouter::start()
 		return;
 	}
 
+    if (m_stopTracing) {
+        emit setProgressMessage(tr("Routing stopped! Now cleaning up..."));
+    }
+    else if (bestScore.totalUnroutedCount == 0) {
+        emit setProgressMessage(tr("Routing complete! Now cleaning up..."));
+    }
+    else {
+		emit setCycleMessage(tr("round %1 of:").arg(run + 1));
+        emit setProgressMessage(tr("Last round--routing stopped. Now cleaning up..."));
+    }    
+	ProcessEventBlocker::processEvents();
+
     createTraces(netList, bestScore, parentCommand);
 
 	cleanUpNets(netList);
@@ -816,10 +842,12 @@ bool MazeRouter::routeOne(Score & currentScore, Score & bestScore, int netIndex,
 
         currentScore.unroutedCount.insert(netIndex, currentScore.unroutedCount.value(netIndex) + 1);
         ++currentScore.totalUnroutedCount;
-        //if (++currentScore.totalUnroutedCount > bestScore.totalUnroutedCount) {
-            // no need to try to route this to the end
+        if (currentScore.reorderNet >= 0) {
+            // rip up and reroute
             return false;
-        //}
+        }
+
+        // unable to move the 0th net so keep going
     }
     else {
         newTrace.netIndex = netIndex;
@@ -1144,55 +1172,19 @@ QList<GridPoint> MazeRouter::traceBack(GridPoint & gridPoint, Grid * grid, int &
             break;
         }
 
-        GridPoint nexts[6];
-        nexts[0] = traceBackOne(gridPoint, grid, -1, 0, 0, val);
-        nexts[1] = traceBackOne(gridPoint, grid, 1, 0, 0, val);
-        nexts[2] = traceBackOne(gridPoint, grid, 0, -1, 0, val);
-        nexts[3] = traceBackOne(gridPoint, grid, 0, 1, 0, val);
-        nexts[4] = traceBackOne(gridPoint, grid, 0, 0, -1, val);
-        nexts[5] = traceBackOne(gridPoint, grid, 0, 0, 1, val);
-        int ix = 0;
-        for (int i = 1; i < 6; i++) {
-            if (nexts[i].cost < nexts[ix].cost) {
-                ix = i;
-            }
-        }
-
-        GridPoint next = nexts[ix];
-        if (next.cost == GridIllegal) {
-            points.clear();
-            break; 
-        }
-        if (next.cost == -1) {
-            next.cost = GridSource;
-        }
-
-        points << next;
-        if (next.z != gridPoint.z) viaCount++;
-        gridPoint = next;
-
-        if (next.cost == GridSource) break;
-        
-        /*
-
+        // can only be one neighbor with lower value
         GridPoint next = traceBackOne(gridPoint, grid, -1, 0, 0, val);
-        if (next.cost != GridIllegal) ;
-        else {
+        if (next.cost == GridIllegal) {
             next = traceBackOne(gridPoint, grid, 1, 0, 0, val);
-            if (next.cost != GridIllegal) ;
-            else {
+            if (next.cost == GridIllegal) {
                 next = traceBackOne(gridPoint, grid, 0, -1, 0, val);
-                if (next.cost != GridIllegal) ;
-                else {
+                if (next.cost == GridIllegal) {
                     next = traceBackOne(gridPoint, grid, 0, 1, 0, val);
-                    if (next.cost != GridIllegal) ;
-                    else {
+                    if (next.cost == GridIllegal) {
                         next = traceBackOne(gridPoint, grid, 0, 0, -1, val);
-                        if (next.cost != GridIllegal) ;
-                        else {
+                        if (next.cost == GridIllegal) {
                             next = traceBackOne(gridPoint, grid, 0, 0, 1, val);
-                            if (next.cost != GridIllegal) ;
-                            else {
+                            if (next.cost == GridIllegal) {
                                 // traceback failed--is this possible?
                                 points.clear();
                                 break;      
@@ -1206,8 +1198,6 @@ QList<GridPoint> MazeRouter::traceBack(GridPoint & gridPoint, Grid * grid, int &
         points << next;
         if (next.z != gridPoint.z) viaCount++;
         gridPoint = next;
-*/
-
 
     }
 
@@ -1531,18 +1521,43 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
             bool onTraceS, onTraceD;
             QPointF traceAnchorS, traceAnchorD;
             ConnectorItem * sourceConnectorItem = findAnchor(gridPoints.first(), topLeft, net, newTraces, newVias, traceAnchorS, onTraceS);
-            ConnectorItem * destConnectorItem = findAnchor(gridPoints.last(), topLeft, net, newTraces, newVias, traceAnchorD, onTraceD);
-
             if (sourceConnectorItem == NULL) continue;
+            
+            ConnectorItem * destConnectorItem = findAnchor(gridPoints.last(), topLeft, net, newTraces, newVias, traceAnchorD, onTraceD);
             if (destConnectorItem == NULL) continue;
+            
+            QPointF sourcePoint = sourceConnectorItem->sceneAdjustedTerminalPoint(NULL);
+            QPointF destPoint = destConnectorItem->sceneAdjustedTerminalPoint(NULL);
 
-            GridPoint gp = gridPoints.takeFirst();
+            GridPoint gp = gridPoints.last();
             QRectF gridRect(gp.x * m_standardWireWidth + topLeft.x(), gp.y * m_standardWireWidth + topLeft.y(), m_standardWireWidth, m_standardWireWidth);
             QPointF center = gridRect.center();
+            if (!atLeast(center, destPoint)) {
+                // don't need this last point
+                gridPoints.takeLast();
+            }
+
+            gp = gridPoints.takeFirst();
+            gridRect.setRect(gp.x * m_standardWireWidth + topLeft.x(), gp.y * m_standardWireWidth + topLeft.y(), m_standardWireWidth, m_standardWireWidth);
+            center = gridRect.center();
+            if (!atLeast(center, sourcePoint)) {
+                gp = gridPoints.takeFirst();
+                gridRect.setRect(gp.x * m_standardWireWidth + topLeft.x(), gp.y * m_standardWireWidth + topLeft.y(), m_standardWireWidth, m_standardWireWidth);
+                center = gridRect.center();
+            }
+
             int lastz = gp.z;
             ConnectorItem * nextSource = NULL;
             if (onTraceS) {
-                TraceWire * traceWire1 = drawOneTrace(sourceConnectorItem->sceneAdjustedTerminalPoint(NULL), traceAnchorS, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+                if (!atLeast(sourcePoint, traceAnchorS)) {
+                    onTraceS = false;
+                }
+                else if (atLeast(center, traceAnchorS)) {
+                    onTraceS = false;
+                }
+            }
+            if (onTraceS) {
+                TraceWire * traceWire1 = drawOneTrace(sourcePoint, traceAnchorS, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
                 addWireToUndo(traceWire1, parentCommand);
                 addConnectionToUndo(sourceConnectorItem, traceWire1->connector0(), parentCommand);
                 newTraces << traceWire1;
@@ -1554,7 +1569,7 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
                 newTraces << traceWire2;
             }
             else {
-                TraceWire * traceWire = drawOneTrace(sourceConnectorItem->sceneAdjustedTerminalPoint(NULL), center, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+                TraceWire * traceWire = drawOneTrace(sourcePoint, center, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
                 addWireToUndo(traceWire, parentCommand);
                 addConnectionToUndo(sourceConnectorItem, traceWire->connector0(), parentCommand);
                 nextSource = traceWire->connector1();
@@ -1592,23 +1607,29 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
                     lastz = gp.z;
                 }
                 center = gridRect.center();
-
             }
-
+            if (onTraceD) {
+                if (!atLeast(destPoint, traceAnchorD)) {
+                    onTraceD = false;
+                }
+                else if (!atLeast(center, traceAnchorD)) {
+                    onTraceD = false;
+                }
+            }
             if (onTraceD) {
                 TraceWire * traceWire1 = drawOneTrace(center, traceAnchorD, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
                 addWireToUndo(traceWire1, parentCommand);
                 addConnectionToUndo(nextSource, traceWire1->connector0(), parentCommand);
                 newTraces << traceWire1;
 
-                TraceWire * traceWire2 = drawOneTrace(traceAnchorD, destConnectorItem->sceneAdjustedTerminalPoint(NULL), m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+                TraceWire * traceWire2 = drawOneTrace(traceAnchorD, destPoint, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
                 addWireToUndo(traceWire2, parentCommand);
                 addConnectionToUndo(traceWire1->connector1(), traceWire2->connector0(), parentCommand);
                 addConnectionToUndo(traceWire2->connector1(), destConnectorItem, parentCommand);
                 newTraces << traceWire2;
             }
             else {
-                TraceWire * traceWire = drawOneTrace(center, destConnectorItem->sceneAdjustedTerminalPoint(NULL), m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+                TraceWire * traceWire = drawOneTrace(center, destPoint, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
                 addWireToUndo(traceWire, parentCommand);
                 addConnectionToUndo(nextSource, traceWire->connector0(), parentCommand);
                 addConnectionToUndo(traceWire->connector1(), destConnectorItem, parentCommand);

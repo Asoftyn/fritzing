@@ -146,10 +146,6 @@ public:
 
 	void start();
 
-signals:
-	void setCycleMessage(const QString &);
-	void setCycleCount(int);
-
 protected:
     void setUpWidths(double width);
 	void updateProgress(int num, int denom);
