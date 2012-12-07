@@ -39,7 +39,8 @@ $Date$
 #include "../utils/textutils.h"
 #include "../utils/folderutils.h"
 
-static QRegExp AaCc("[aAcCqQtTsS]");
+static const QRegExp AaCc("[aAcCqQtTsS]");
+static const QRegExp MFinder("([mM])\\s*([0-9.]*)[\\s,]*([0-9.]*)");
 const QRegExp GerberGenerator::MultipleZs("z\\s*[^\\s]");
 
 const QString GerberGenerator::SilkTopSuffix = "_silkTop.gto";
@@ -135,7 +136,7 @@ void GerberGenerator::exportToGerber(const QString & prefix, const QString & exp
 
 	svgOutline = cleanOutline(svgOutline);
     // at this point svgOutline must be a single element; a path element may contain cutouts
-	svgOutline = clipToBoard(svgOutline, board, "board", SVG2gerber::ForOutline, "");
+	svgOutline = clipToBoard(svgOutline, board, "board", SVG2gerber::ForOutline, "", displayMessageBoxes);
 	QSizeF svgSize = TextUtils::parseForWidthAndHeight(svgOutline);
 
     // create outline gerber from svg
@@ -172,7 +173,7 @@ int GerberGenerator::doCopper(ItemBase * board, PCBSketchWidget * sketchWidget, 
 
 	QSizeF svgSize = TextUtils::parseForWidthAndHeight(svg);
 
-	svg = clipToBoard(svg, board, copperName, SVG2gerber::ForCopper, "");
+	svg = clipToBoard(svg, board, copperName, SVG2gerber::ForCopper, "", displayMessageBoxes);
 	if (svg.isEmpty()) {
 		displayMessage(QObject::tr("%1 file export failure (3)").arg(copperName), displayMessageBoxes);
 		return 0;
@@ -205,7 +206,7 @@ int GerberGenerator::doSilk(LayerList silkLayerIDs, const QString & silkName, co
 
 	QSizeF svgSize = TextUtils::parseForWidthAndHeight(svgSilk);
 
-	svgSilk = clipToBoard(svgSilk, board, silkName, SVG2gerber::ForSilk, clipString);
+	svgSilk = clipToBoard(svgSilk, board, silkName, SVG2gerber::ForSilk, clipString, displayMessageBoxes);
 	if (svgSilk.isEmpty()) {
 		displayMessage(QObject::tr("silk export failure"), displayMessageBoxes);
 		return 0;
@@ -241,7 +242,7 @@ int GerberGenerator::doDrill(ItemBase * board, PCBSketchWidget * sketchWidget, c
 
 	QSizeF svgSize = TextUtils::parseForWidthAndHeight(svgDrill);
 
-	svgDrill = clipToBoard(svgDrill, board, "Copper0", SVG2gerber::ForDrill, "");
+	svgDrill = clipToBoard(svgDrill, board, "Copper0", SVG2gerber::ForDrill, "", displayMessageBoxes);
 	if (svgDrill.isEmpty()) {
 		displayMessage(QObject::tr("drill export failure"), displayMessageBoxes);
 		return 0;
@@ -279,7 +280,7 @@ int GerberGenerator::doMask(LayerList maskLayerIDs, const QString &maskName, con
 
 	QSizeF svgSize = TextUtils::parseForWidthAndHeight(svgMask);
 
-	svgMask = clipToBoard(svgMask, board, maskName, SVG2gerber::ForCopper, "");
+	svgMask = clipToBoard(svgMask, board, maskName, SVG2gerber::ForCopper, "", displayMessageBoxes);
 	if (svgMask.isEmpty()) {
 		displayMessage(QObject::tr("mask export failure"), displayMessageBoxes);
 		return 0;
@@ -319,7 +320,7 @@ int GerberGenerator::doPasteMask(LayerList maskLayerIDs, const QString &maskName
 
 	QSizeF svgSize = TextUtils::parseForWidthAndHeight(svgMask);
 
-	svgMask = clipToBoard(svgMask, board, maskName, SVG2gerber::ForCopper, "");
+	svgMask = clipToBoard(svgMask, board, maskName, SVG2gerber::ForCopper, "", displayMessageBoxes);
 	if (svgMask.isEmpty()) {
 		displayMessage(QObject::tr("mask export failure"), displayMessageBoxes);
 		return 0;
@@ -368,13 +369,13 @@ void GerberGenerator::displayMessage(const QString & message, bool displayMessag
 	DebugDialog::debug(message);
 }
 
-QString GerberGenerator::clipToBoard(QString svgString, ItemBase * board, const QString & layerName, SVG2gerber::ForWhy forWhy, const QString & clipString) {
+QString GerberGenerator::clipToBoard(QString svgString, ItemBase * board, const QString & layerName, SVG2gerber::ForWhy forWhy, const QString & clipString, bool displayMessageBoxes) {
 	QRectF source = board->sceneBoundingRect();
 	source.moveTo(0, 0);
-	return clipToBoard(svgString, source, layerName, forWhy, clipString);
+	return clipToBoard(svgString, source, layerName, forWhy, clipString, displayMessageBoxes);
 }
 
-QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, const QString & layerName, SVG2gerber::ForWhy forWhy, const QString & clipString) {
+QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, const QString & layerName, SVG2gerber::ForWhy forWhy, const QString & clipString, bool displayMessageBoxes) {
 	// document 1 will contain svg that is easy to convert to gerber
 	QDomDocument domDocument1;
 	QString errorStr;
@@ -392,28 +393,7 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
 
     bool multipleContours = false;
     if (forWhy == SVG2gerber::ForOutline) { 
-        // split path into multiple contours
-        QDomNodeList paths = root1.elementsByTagName("path");
-        // should only be one
-        for (int p = 0; p < paths.count(); p++) {
-            QDomElement path = paths.at(p).toElement();
-            QString originalPath = path.attribute("d", "").trimmed();
-            if (MultipleZs.indexIn(originalPath) >= 0) {
-                multipleContours = true;
-                QStringList ds = path.attribute("d").split("z", QString::SkipEmptyParts);
-                for (int i = 1; i < ds.count(); i++) {
-                    QDomElement newPath = path.cloneNode(true).toElement();
-                    QString z = ((i < ds.count() - 1) || originalPath.endsWith("z", Qt::CaseInsensitive)) ? "z" : "";
-                    QString d = ds.at(i).trimmed() + z;
-                    if (!d.startsWith("M")) {
-                        DebugDialog::debug("subpath doesn't start with M: " + originalPath);
-                    }
-                    newPath.setAttribute("d",  d);
-                    path.parentNode().appendChild(newPath);
-                }
-                path.setAttribute("d", ds.at(0) + "z");
-            }
-        }
+        multipleContours = dealWithMultipleContours(root1, displayMessageBoxes);
     }
 
 	// document 2 will contain svg that must be rasterized for gerber conversion
@@ -781,4 +761,64 @@ QString GerberGenerator::makePath(QImage & image, double unit, const QString & c
 
     QString path = QString("<path fill='none' stroke='%1' stroke-width='%2' stroke-linecap='square' d='").arg(colorString).arg(unit);
     return path + paths + "' />\n";
+}
+
+bool GerberGenerator::dealWithMultipleContours(QDomElement & root, bool displayMessageBoxes) {
+    bool multipleContours = false;
+    bool contoursOK = true;
+
+    // split path into multiple contours
+    QDomNodeList paths = root.elementsByTagName("path");
+    // should only be one
+    for (int p = 0; p < paths.count() && contoursOK; p++) {
+        QDomElement path = paths.at(p).toElement();
+        QString originalPath = path.attribute("d", "").trimmed();
+        if (MultipleZs.indexIn(originalPath) < 0) continue;
+
+        multipleContours = true;
+        QStringList subpaths = path.attribute("d").split("z", QString::SkipEmptyParts);
+        foreach (QString subpath, subpaths) {
+            if (!subpath.trimmed().startsWith("m", Qt::CaseInsensitive)) {
+                contoursOK = false;
+                break;
+            }
+        }
+    }
+
+    if (!multipleContours) return false;
+
+    if (!contoursOK) {
+        QString msg =
+            QObject::tr("Fritzing is unable to process the cutouts in this custom PCB shape. ") +
+            QObject::tr("You may need to reload the shape SVG. ") +
+            QObject::tr("Fritzing requires that you make cutouts using a shape 'subtraction' or 'difference' operation in your vector graphics editor.");
+        displayMessage(msg, displayMessageBoxes);
+        return false;
+    }
+
+    for (int p = 0; p < paths.count(); p++) {
+        QDomElement path = paths.at(p).toElement();
+        QString originalPath = path.attribute("d", "").trimmed();
+        if (MultipleZs.indexIn(originalPath) >= 0) {
+            QStringList subpaths = path.attribute("d").split("z", QString::SkipEmptyParts);
+            QString priorM;
+            MFinder.indexIn(subpaths.at(0).trimmed());
+            priorM += MFinder.cap(1) + MFinder.cap(2) + "," + MFinder.cap(3) + " ";
+            for (int i = 1; i < subpaths.count(); i++) {
+                QDomElement newPath = path.cloneNode(true).toElement();
+                QString z = ((i < subpaths.count() - 1) || originalPath.endsWith("z", Qt::CaseInsensitive)) ? "z" : "";
+                QString d = subpaths.at(i).trimmed() + z;
+                MFinder.indexIn(d);
+                if (d.startsWith("m", Qt::CaseSensitive)) {
+                    d = priorM + d;    
+                }
+                priorM += MFinder.cap(1) + MFinder.cap(2) + "," + MFinder.cap(3) + " ";
+                newPath.setAttribute("d",  d);
+                path.parentNode().appendChild(newPath);
+            }
+            path.setAttribute("d", subpaths.at(0) + "z");
+        }
+    }
+
+    return true;
 }

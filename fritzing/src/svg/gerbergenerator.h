@@ -37,8 +37,8 @@ class GerberGenerator
 
 public:
 	static void exportToGerber(const QString & prefix, const QString & exportDir, class ItemBase * board, class PCBSketchWidget *, bool displayMessageBoxes);
-	static QString clipToBoard(QString svgString, QRectF & boardRect, const QString & layerName, SVG2gerber::ForWhy, const QString & clipString);
-	static QString clipToBoard(QString svgString, ItemBase * board, const QString & layerName, SVG2gerber::ForWhy, const QString & clipString);
+	static QString clipToBoard(QString svgString, QRectF & boardRect, const QString & layerName, SVG2gerber::ForWhy, const QString & clipString, bool displayMessageBoxes);
+	static QString clipToBoard(QString svgString, ItemBase * board, const QString & layerName, SVG2gerber::ForWhy, const QString & clipString, bool displayMessageBoxes);
 	static int doEnd(const QString & svg, int boardLayers, const QString & layerName, SVG2gerber::ForWhy forWhy, QSizeF svgSize, 
 						const QString & exportDir, const QString & prefix, const QString & suffix, bool displayMessageBoxes);
 	static QString cleanOutline(const QString & svgOutline);
@@ -70,7 +70,7 @@ protected:
 	static bool saveEnd(const QString & layerName, const QString & exportDir, const QString & prefix, const QString & suffix, bool displayMessageBoxes, SVG2gerber & gerber);
     static void mergeOutlineElement(QImage & image, QRectF & target, double res, QDomDocument & document, QString & svgString, int ix, const QString & layerName);
     static QString makePath(QImage & image, double unit, const QString & colorString);
-
+    static bool dealWithMultipleContours(QDomElement & root, bool displayMessageBoxes);
 };
 
 #endif // GERBERGENERATOR_H

@@ -655,9 +655,6 @@ bool MazeRouter::makeMasters(QString & message) {
     if (m_bothSidesNow) layerSpecs << ViewLayer::Top;
 
     foreach (ViewLayer::ViewLayerSpec viewLayerSpec, layerSpecs) {  
-        if (viewLayerSpec == ViewLayer::Top) emit wantTopVisible();
-        else emit wantBottomVisible();
-
 	    LayerList viewLayerIDs = ViewLayer::copperLayers(viewLayerSpec);
         viewLayerIDs.removeOne(ViewLayer::GroundPlane0);
         viewLayerIDs.removeOne(ViewLayer::GroundPlane1);
@@ -754,9 +751,6 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
 
         foreach (ViewLayer::ViewLayerSpec viewLayerSpec, routeThing.layerSpecs) {  
             int z = viewLayerSpec == ViewLayer::Bottom ? 0 : 1;
-
-            if (z == 1) emit wantTopVisible();
-            else emit wantBottomVisible();
 
             QList<QDomElement> alsoNetElements;
             QDomDocument * masterDoc = m_masterDocs.value(viewLayerSpec);

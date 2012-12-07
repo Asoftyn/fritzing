@@ -407,7 +407,7 @@ void Board::moreCheckImage(const QString & filename) {
             QStringList ds = element.attribute("d").split("z", QString::SkipEmptyParts);
             subpaths = ds.count();
             foreach (QString d, ds) {
-                if (d.trimmed().startsWith("M")) mCount++;
+                if (d.trimmed().startsWith("m", Qt::CaseInsensitive)) mCount++;
             }
         }
     }
@@ -425,7 +425,7 @@ void Board::moreCheckImage(const QString & filename) {
     msg +=  tr("\n\nIf you intended your custom shape to have cutouts and you did not get the expected result ");
     msg += tr("it is because Fritzing requires that you make cutouts using a shape 'subtraction' or 'difference' operation in your vector graphics editor.\n\n");
     msg += tr("In any case we recommend that you test your custom shape by using the 'File > Export for Production > Extended Gerber' option ");
-    msg += tr("and looking at the result with a Gerber viewer application.");
+    msg += tr("and checking the resulting contour file with a Gerber viewer application.");
     QMessageBox::information(NULL, "Custom Shape", msg);
 }
 

@@ -1337,7 +1337,7 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
                 //DebugDialog::debug("one " + one);
             }
 					
-            QString two = GerberGenerator::clipToBoard(one, board, name, forWhy, clipString);
+            QString two = GerberGenerator::clipToBoard(one, board, name, forWhy, clipString, true);
             if (two.isEmpty()) continue;
 
             QString filename = saveDir.absoluteFilePath(QString("%1_%2_%3.svg").arg(boardName).arg(board->id()).arg(name));
