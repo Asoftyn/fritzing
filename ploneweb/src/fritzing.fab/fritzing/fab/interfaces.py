@@ -1,6 +1,6 @@
 from five import grok
 
-from zope.schema import Text, TextLine, ASCIILine, Int, Float, Choice, Bool, Date
+from zope.schema import Text, TextLine, ASCIILine, Int, Float, Choice, Bool, Date, Datetime
 
 from z3c.form import validator
 
@@ -66,6 +66,23 @@ class IFabOrder(form.Schema):
     """Fritzing Fab order details
     """
     
+    #shippingName
+    #shippingStreet1
+    #shippingStreet2
+    #shippingCity
+    #shippingCountry
+
+    #invoiceName
+    #invoiceStreet1
+    #invoiceStreet2
+    #invoiceCity
+    #invoiceCountry
+    
+    email = TextLine(
+        title = _(u"E-Mail"),
+        description = _(u"Your e-mail address"),
+        constraint = checkEMail)
+
     shipTo = Choice(
         title = _(u"Shipping Area"),
         description = _(u"Where you are located"),
@@ -74,11 +91,6 @@ class IFabOrder(form.Schema):
             SimpleTerm(value = u'eu', title = _(u'European Union (EU)')),
             SimpleTerm(value = u'world', title = _(u'Worldwide'))
         ]))
-    
-    email = TextLine(
-        title = _(u"E-Mail"),
-        description = _(u"Your e-mail address"),
-        constraint = checkEMail)
     
     form.omitted(
         'telephone',
@@ -92,7 +104,10 @@ class IFabOrder(form.Schema):
         'taxes', 
         'priceTotalNetto', 
         'priceTotalBrutto',
-        'trackingNumber')
+        'trackingNumber',
+	'productionRound',
+        'paid'
+    )
     
     telephone = ASCIILine(
         title = _(u"Telephone number"),
@@ -162,6 +177,17 @@ class IFabOrder(form.Schema):
         title = _(u"Tracking Number"),
         description = _(u"The tracking number assigned by the parcel service"))
 
+    productionRound = Int(
+        title=_(u"Production Round #"),
+        description=_(u"The production round that this order belongs to")
+    )
+
+    paid = Bool(
+	title=_(u"Payment Received"),
+	description=_(u"The payment status of this order"),
+        default = False
+    )
+
 
 class IFabOrders(form.Schema):
     """Fritzing Fab orders Folder
@@ -184,7 +210,7 @@ class IFabOrders(form.Schema):
         title = _(u"Shipping Costs Germany"),
         description = _(u"The shipping costs for Germany in Euro"),
         min = 0.0,
-        default = 4.0)
+        default = 5.3)
     
     shippingEU = Float(
         title = _(u"Shipping Costs EU"),
@@ -221,18 +247,24 @@ class IFabOrders(form.Schema):
         description = _(u"Estimated delivery date of PCBs from the next production"),
         required = False)
     
-    nextProductionClosingDate = Date(
+    nextProductionClosingDate = Datetime(
         title = _(u"Next production closing date"),
         description = _(u"Orders must be sent in before this date to be included in the next production run"),
         required = False)
 
-    currentProductionOpeningDate = Date(
+    currentProductionRound = Int(
+        title = _(u"Current production round ID"),
+        description = _(u"Identification number of the current production round"),
+        required = False)
+
+    currentProductionOpeningDate = Datetime(
         title = _(u"Current production opening date"),
         description = _(u"Orders sent in after this date will be listed as current orders"),
         required = False)
-    
+
     editableContent = RichText(
         title = _(u"Order-folder text"),
         description = _(u"The text of this fab-instance"))
+
 
 

@@ -222,3 +222,4 @@ class AddForm(dexterity.AddForm):
             self.context._setObject(object.id, object)
 
 
+
