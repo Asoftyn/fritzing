@@ -85,6 +85,7 @@ void PEGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *) {
 void PEGraphicsItem::wheelEvent(QGraphicsSceneWheelEvent * event) {
     if (event->orientation() != Qt::Vertical) return;
     if (event->delta() == 0) return;
+    if ((event->modifiers() & Qt::ShiftModifier) == 0) return;
 
     //DebugDialog::debug(QString("wheel %1 %2").arg(event->delta()).arg(QTime::currentTime().msec()));
 

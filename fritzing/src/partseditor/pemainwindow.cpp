@@ -430,7 +430,7 @@ void PEMainWindow::initSketchWidgets()
 	viewThing->document = &m_iconDocument;
 	
     foreach (ViewThing * viewThing, m_viewThings.values()) {
-        viewThing->sketchWidget->setAcceptWheelEvents(false);
+        viewThing->sketchWidget->setAcceptWheelEvents(true);
 		viewThing->sketchWidget->setChainDrag(false);				// no bendpoints
         viewThing->firstTime = true;
         viewThing->everZoomed = true;

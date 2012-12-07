@@ -66,6 +66,10 @@ void ZoomableGraphicsView::wheelEvent(QWheelEvent* event) {
 		QGraphicsView::wheelEvent(event);
 		return;
 	}
+    if ((event->modifiers() & Qt::ShiftModifier) != 0) {
+		QGraphicsView::wheelEvent(event);
+		return;
+    }
 
 	bool doZoom = false;
 	bool doHorizontal = false;
