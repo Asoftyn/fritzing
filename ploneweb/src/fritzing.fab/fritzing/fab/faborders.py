@@ -1,6 +1,8 @@
 import string
 import random
 import csv
+from urllib import urlencode
+from urllib2 import urlopen, Request
 from DateTime import DateTime
 from StringIO import StringIO
 import zipfile
@@ -199,11 +201,56 @@ class PayPalIpn(grok.View):
     grok.require('zope2.View')
     grok.context(IFabOrders)
     
+    def verify_ipn(self, data):
+        # see https://www.x.com/developers/paypal/documentation-tools/ipn/integration-guide/IPNIntro
+        # prepares provided data set to inform PayPal we wish to validate the response
+        data["cmd"] = "_notify-validate"
+        params = urlencode(data)
+        # sends the data and request to the PayPal Sandbox
+        req = Request("""https://www.sandbox.paypal.com/cgi-bin/webscr""", params)
+        req.add_header("Content-type", "application/x-www-form-urlencoded")
+        # reads the response back from PayPal
+        response = urlopen(req)
+        status = response.read()
+     
+        # verify recipient
+        if not status == "VERIFIED":
+            # TODO: log for inspection
+            return False
+        if not data["receiver_email"] == "order@ixds.de":
+            return False
+        #if not data["receiver_id"] == "???":
+        #    return False
+        if not data["residence_country"] == "DE":
+            return False
+        return True
+
+
+    def process_ipn(self, data):
+        if not data["paymentStatus"] == "Completed":
+            return False
+        if not data["mc_currency"] == "EUR":
+            return False
+        # TODO check that txnId has not been previously processed
+        # TODO check that paymentAmount/paymentCurrency are correct
+        # TODO process payment, update order
+
+
     def update(self):
-        pass
+        data = self.request.form
+        # If there is no txn_id in the received arguments don't proceed
+        if not "txn_id" in data:
+            return "No Parameters"
+ 
+        # Verify the data received with Paypal
+        if not verify_ipn(data):
+            return "Unable to Verify"
+ 
+        process_ipn(data)
+
     
     def render(self):
-        pass
+        return "PAYPAL IPN"
 
 
 class AddForm(dexterity.AddForm):
