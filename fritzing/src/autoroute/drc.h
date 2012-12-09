@@ -87,7 +87,7 @@ protected:
 
 protected:
     static void markSubs(QDomElement & root, const QString & mark);
-    static void splitSubs(QDomDocument *, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs, const QList<ItemBase *> &, bool checkIntersection);
+    static void splitSubs(QDomDocument *, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs,  const QStringList & terminalIDs, const QList<ItemBase *> &, bool checkIntersection);
 	
 protected:
 	class PCBSketchWidget * m_sketchWidget;

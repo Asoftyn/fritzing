@@ -1334,6 +1334,7 @@ void MainWindow::createTraceMenus()
 
 	m_schematicTraceMenu = menuBar()->addMenu(tr("&Routing"));
 	m_schematicTraceMenu->addAction(m_autorouteAct);
+	m_schematicTraceMenu->addAction(m_newAutorouteAct);
 	m_schematicTraceMenu->addAction(m_excludeFromAutorouteAct);
 	m_schematicTraceMenu->addAction(m_showUnroutedAct);
 	m_schematicTraceMenu->addAction(m_selectAllTracesAct);

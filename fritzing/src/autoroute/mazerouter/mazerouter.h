@@ -153,7 +153,7 @@ class MazeRouter : public Autorouter
 	Q_OBJECT
 
 public:
-	MazeRouter(class PCBSketchWidget *, ItemBase * board, bool adjustIf);
+	MazeRouter(class PCBSketchWidget *, QGraphicsItem * board, bool adjustIf);
 	~MazeRouter(void);
 
 	void start();
@@ -162,9 +162,9 @@ protected:
     void setUpWidths(double width);
 	void updateProgress(int num, int denom);
     int findPinsWithin(QList<ConnectorItem *> * net);
-    bool makeBoard(QImage & image, double keepout, const QSizeF gridSize);
+    bool makeBoard(QImage *, double keepout, const QSizeF gridSize);
     bool makeMasters(QString &);
-	bool routeNets(NetList &, bool makeJumper, Score & currentScore, QImage & boardImage, const QSizeF gridSize, QList<NetOrdering> & allOrderings);
+	bool routeNets(NetList &, bool makeJumper, Score & currentScore, QImage * boardImage, const QSizeF gridSize, QList<NetOrdering> & allOrderings);
     bool routeOne(bool makeJumper, Score & currentScore, int netIndex, RouteThing &, QList<NetOrdering> & allOrderings);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, Nearest &);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, Nearest &);
@@ -209,6 +209,7 @@ protected:
     double m_standardWireWidth;
     QImage * m_displayImage[2];
     QGraphicsPixmapItem * m_displayItem[2];
+    bool m_temporaryBoard;
 };
 
 #endif

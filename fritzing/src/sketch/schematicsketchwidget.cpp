@@ -373,7 +373,7 @@ bool SchematicSketchWidget::sameElectricalLayer2(ViewLayer::ViewLayerID, ViewLay
 }
 
 double SchematicSketchWidget::getKeepout() {
-	return 0.1 * GraphicsUtils::SVGDPI;
+	return 1; // 0.1 * GraphicsUtils::SVGDPI;
 }
 
 bool SchematicSketchWidget::acceptsTrace(const ViewGeometry & viewGeometry) {
@@ -473,4 +473,19 @@ bool SchematicSketchWidget::canConnect(Wire *, ItemBase *) {
 
 QString SchematicSketchWidget::checkDroppedModuleID(const QString & moduleID) {
     return moduleID;
+}
+
+LayerList SchematicSketchWidget::routingLayers(ViewLayer::ViewLayerSpec) {
+    LayerList layerList;
+    layerList << ViewLayer::Schematic;
+    return layerList;
+}
+
+bool SchematicSketchWidget::attachedToBottomLayer(ConnectorItem * connectorItem) {
+    return (connectorItem->attachedToViewLayerID() == ViewLayer::Schematic) ||
+           (connectorItem->attachedToViewLayerID() == ViewLayer::SchematicTrace);
+}
+
+bool SchematicSketchWidget::attachedToTopLayer(ConnectorItem *) {
+    return false;
 }

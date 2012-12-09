@@ -94,7 +94,7 @@ protected:
 	bool m_bothSidesNow;
 	int m_maximumProgressPart;
 	int m_currentProgressPart;
-	ItemBase * m_board;
+	QGraphicsItem * m_board;
 	QMultiHash<TraceWire *, TraceWire *> m_splitDNA;
 	int m_maxCycles;
     double m_keepoutPixels;

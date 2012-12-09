@@ -109,6 +109,9 @@ public:
     int checkLoadedTraces();
 	bool hasCustomBoardShape();
     QSizeF jumperItemSize();
+    virtual LayerList routingLayers(ViewLayer::ViewLayerSpec);
+    virtual bool attachedToTopLayer(ConnectorItem *);
+    virtual bool attachedToBottomLayer(ConnectorItem *);
 
 public:
 	static void getDefaultViaSize(QString & ringThickness, QString & holeSize);

@@ -1108,7 +1108,7 @@ Plane * CMRouter::tilePlane(ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewL
 
 	if (m_sketchWidget->autorouteTypePCB()) {
 	    // if board is not rectangular, add tiles for the outside edges; also deal with holes
-	    if (!initBoard(m_board, thePlane, alreadyTiled)) return thePlane;
+	    if (!initBoard(dynamic_cast<ItemBase *>(m_board), thePlane, alreadyTiled)) return thePlane;
 
         QList<QGraphicsItem *> collidingItems = m_sketchWidget->scene()->collidingItems(m_board);
 		// deal with "rectangular" elements first

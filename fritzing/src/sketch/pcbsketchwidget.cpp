@@ -2542,3 +2542,19 @@ ViewLayer::ViewLayerSpec PCBSketchWidget::getViewLayerSpec(ModelPart * modelPart
     return SketchWidget::getViewLayerSpec(modelPart, instance, view, viewGeometry);
 }
 
+LayerList PCBSketchWidget::routingLayers(ViewLayer::ViewLayerSpec spec) {
+    LayerList layerList = ViewLayer::copperLayers(spec);
+    layerList.removeOne(ViewLayer::GroundPlane0);
+    layerList.removeOne(ViewLayer::GroundPlane1);
+    return layerList;
+}
+
+bool PCBSketchWidget::attachedToBottomLayer(ConnectorItem * connectorItem) {
+    return (connectorItem->attachedToViewLayerID() == ViewLayer::Copper0) ||
+           (connectorItem->attachedToViewLayerID() == ViewLayer::Copper0Trace);
+}
+
+bool PCBSketchWidget::attachedToTopLayer(ConnectorItem * connectorItem) {
+    return (connectorItem->attachedToViewLayerID() == ViewLayer::Copper1) ||
+           (connectorItem->attachedToViewLayerID() == ViewLayer::Copper1Trace);
+}

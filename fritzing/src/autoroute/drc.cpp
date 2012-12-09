@@ -119,6 +119,15 @@ QStringList getNames(CollidingThing * collidingThing) {
     return names;
 }
 
+void allGs(QDomElement & element) {
+    element.setTagName("g");
+    QDomElement child = element.firstChildElement();
+    while (!child.isNull()) {
+        allGs(child);
+        child = child.nextSiblingElement();
+    }
+}
+
 ///////////////////////////////////////////////
 
 DRCResultsDialog::DRCResultsDialog(const QString & message, const QStringList & messages, const QList<CollidingThing *> & collidingThings, 
@@ -764,7 +773,8 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
 
 void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, double keepoutMils, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool fill, bool checkIntersection) 
 {
-    QMultiHash<QString, QString> partIDs;
+    QMultiHash<QString, QString> partSvgIDs;
+    QMultiHash<QString, QString> partTerminalIDs;
     QMultiHash<QString, ItemBase *> itemBases;
     QSet<QString> wireIDs;
     foreach (ConnectorItem * equ, equi) {
@@ -783,7 +793,10 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
         }
         
         SvgIdLayer * svgIdLayer = equ->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
-        partIDs.insert(QString::number(itemBase->id()), svgIdLayer->m_svgId);
+        partSvgIDs.insert(QString::number(itemBase->id()), svgIdLayer->m_svgId);
+        if (!svgIdLayer->m_terminalId.isEmpty()) {
+            partTerminalIDs.insert(QString::number(itemBase->id()), svgIdLayer->m_terminalId);
+        }
         itemBases.insert(QString::number(itemBase->id()), itemBase);
     }
 
@@ -809,7 +822,8 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
 
         QString partID = element.attribute("partID");
         if (!partID.isEmpty()) {
-            QStringList svgIDs = partIDs.values(partID);
+            QStringList svgIDs = partSvgIDs.values(partID);
+            QStringList terminalIDs = partTerminalIDs.values(partID);
             if (svgIDs.count() == 0) {
                 markSubs(element, NotNet);
             }
@@ -817,7 +831,7 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
                 markSubs(element, "net");
             }
             else {
-                splitSubs(masterDoc, element, "net", treatAs, svgIDs, itemBases.values(partID), checkIntersection);
+                splitSubs(masterDoc, element, "net", treatAs, svgIDs, terminalIDs, itemBases.values(partID), checkIntersection);
             }
         }
 
@@ -841,7 +855,7 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
     }
 }
 
-void DRC::renderOne(QDomDocument * masterDoc, QImage * image, const QRectF & sourceRes) {
+void DRC::renderOne(QDomDocument * masterDoc, QImage * image, const QRectF &) {
     QByteArray byteArray = masterDoc->toByteArray();
 	QSvgRenderer renderer(byteArray);
 	QPainter painter;
@@ -866,19 +880,23 @@ void DRC::markSubs(QDomElement & root, const QString & mark) {
     }
 }
 
-void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs, const QList<ItemBase *> & itemBases, bool checkIntersection)
+void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs, const QStringList & terminalIDs, const QList<ItemBase *> & itemBases, bool checkIntersection)
 {
     //QString string;
     //QTextStream stream(&string);
     //root.save(stream, 0);
 
-    QStringList notSvgIDs;    
+    QStringList notSvgIDs;   
+    QStringList notTerminalIDs;
     if (checkIntersection && itemBases.count() > 0) {
         ItemBase * itemBase = itemBases.at(0);
         foreach (ConnectorItem * connectorItem, itemBase->cachedConnectorItems()) {
             SvgIdLayer * svgIdLayer = connectorItem->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
             if (!svgIDs.contains(svgIdLayer->m_svgId)) {
                 notSvgIDs.append(svgIdLayer->m_svgId);
+                if (!svgIdLayer->m_terminalId.isEmpty()) {
+                    notTerminalIDs.append(svgIdLayer->m_terminalId);
+                }
             }
         }
     }
@@ -901,6 +919,14 @@ void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark
                 markSubs(element, mark2);
                 // all children are marked so don't add these to todo
                 continue;            
+            }
+            else if (terminalIDs.contains(svgID)) {
+                allGs(element);
+                continue;
+            }
+            else if (notTerminalIDs.contains(svgID)) {
+                allGs(element);
+                continue;
             }
         }
 

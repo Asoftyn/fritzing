@@ -6897,7 +6897,7 @@ void SketchWidget::resizeNote(long itemID, const QSizeF & size)
 }
 
 QString SketchWidget::renderToSVG(double printerScale, const LayerList & layers, 
-								  bool blackOnly, QRectF & imageRect, ItemBase * board, double dpi, 
+								  bool blackOnly, QRectF & imageRect, QGraphicsItem * board, double dpi, 
 								  bool selectedItems, bool renderBlocker, bool & empty)
 {
 	QRectF offsetRect;
@@ -6909,7 +6909,7 @@ QString SketchWidget::renderToSVG(double printerScale, const LayerList & layers,
 
 
 QString SketchWidget::renderToSVG(double printerScale, const LayerList & layers, 
-								  bool blackOnly, QRectF & imageRect, ItemBase * board, QRectF & offsetRect, double dpi, 
+								  bool blackOnly, QRectF & imageRect, QGraphicsItem * board, QRectF & offsetRect, double dpi, 
 								  bool selectedItems, bool renderBlocker, bool & empty)
 {
 

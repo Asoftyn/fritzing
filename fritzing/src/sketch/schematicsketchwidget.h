@@ -77,6 +77,9 @@ public:
 	void rotatePartLabels(double degrees, QTransform &, QPointF center, QUndoCommand * parentCommand);
 	void loadFromModelParts(QList<ModelPart *> & modelParts, BaseCommand::CrossViewType, QUndoCommand * parentCommand, 
 							bool offsetPaste, const QRectF * boundingRect, bool seekOutsideConnections, QList<long> & newIDs);
+    LayerList routingLayers(ViewLayer::ViewLayerSpec);
+    bool attachedToTopLayer(ConnectorItem *);
+    bool attachedToBottomLayer(ConnectorItem *);
 
 public slots:
 	void setVoltage(double voltage, bool doEmit);
