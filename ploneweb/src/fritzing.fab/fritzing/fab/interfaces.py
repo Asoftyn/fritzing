@@ -456,12 +456,19 @@ class IFabOrder(form.Schema):
         default = False,
         required = False
     )
+
+    paypalId = TextLine(
+        title = _(u"PayPal Transaction Id"),
+        description = _(u"The payment id associated with this order"),
+        required = False)
+
     checked = Bool(
         title=_(u"Quality checked"),
         description=_(u"The checking status of this order"),
         default = False,
         required = False
     )
+
     invoiced = Bool(
         title=_(u"Invoice sent"),
         description=_(u"The invoicing status of this order"),

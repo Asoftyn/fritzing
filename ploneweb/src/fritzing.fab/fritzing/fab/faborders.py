@@ -1,6 +1,8 @@
 import string
 import random
 import csv
+import logging
+logger = logging.getLogger("Plone")
 from urllib import urlencode
 from urllib2 import urlopen, Request
 from DateTime import DateTime
@@ -19,6 +21,7 @@ from plone.directives import dexterity
 
 from plone.memoize.instance import memoize
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.WorkflowCore import WorkflowException
 
 from fritzing.fab.interfaces import IFabOrders, IFabOrder
 from fritzing.fab import _
@@ -202,8 +205,10 @@ class PayPalIpn(grok.View):
     grok.context(IFabOrders)
     
     def verify_ipn(self, data):
+        """ verify payment notification
+        """
         context = aq_inner(self.context)
-        
+
         # see https://www.x.com/developers/paypal/documentation-tools/ipn/integration-guide/IPNIntro
         # prepares provided data set to inform PayPal we wish to validate the response
         data["cmd"] = "_notify-validate"
@@ -215,40 +220,64 @@ class PayPalIpn(grok.View):
         response = urlopen(req)
         status = response.read()
      
-        # verify recipient
+        # verify validity
         if not status == "VERIFIED":
-            # TODO: log for inspection
+            logger.info("Could not verify PayPal IPN: " + data)
             return False
         if not data["receiver_email"] == context.paypalEmail:
             return False
         if not data["receiver_id"] == context.paypalAccountId:
             return False
+        if not data["item_name1"] == "Fritzing Fab order":
+            return False
         if not data["residence_country"] == "DE":
+            return False
+        if not data["payment_status"] == "Completed":
+            return False
+        if not data["mc_currency"] == "EUR":
             return False
         return True
 
 
     def process_ipn(self, data):
-        if not data["payment_status"] == "Completed":
+        """ process payment
+        """
+        # find associated order
+        catalog = getToolByName(self.context, 'portal_catalog')
+        query = {
+            'id': data['item_number1'],
+            'object_provides': IFabOrder.__identifier__,
+        }
+        results = catalog.unrestrictedSearchResults(query)
+        if len(results) <> 1:
             return False
-        if not data["mc_currency"] == "EUR":
+        faborder = results[0]._unrestrictedGetObject()
+
+        # check if payment data fits
+        if faborder.paypalId <> data['txn_id']:
+            faborder.paypalId = data['txn_id']
+        else:
             return False
-        # TODO check that txnId has not been previously processed
-        # TODO check that paymentAmount/paymentCurrency are correct
-        # TODO process payment, update order
+        # TODO check that paymentAmount is correct
+
+        # update order
+        faborder.paid = True
+        workflowTool = getToolByName(self.context, "portal_workflow")
+        try:
+            workflowTool.doActionFor(faborder, "submit")
+        except WorkflowException:
+            logger.info("Could not submit:" + str(faborder.getId()) + " already in process?")
+            pass
 
 
     def update(self):
         data = self.request.form
-        # If there is no txn_id in the received arguments don't proceed
-        if not "txn_id" in data:
-            return "No Parameters"
- 
-        # Verify the data received with Paypal
+
         if not self.verify_ipn(data):
-            return "Unable to Verify"
- 
-        self.process_ipn(data)
+            return "Unable to verify PayPal payment"
+        
+        if not self.process_ipn(data):
+            return "Could not process PayPal payment"
 
     
     def render(self):
