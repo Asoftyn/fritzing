@@ -55,13 +55,13 @@
                           <td tal:content="sketch/copies">copies</td>
                           <td></td>
                           <td tal:content="python:len(sketch.boards)">boards</td>
-                          <td tal:content="python: '%.2f' % sketch.area">size</td>
+                          <td tal:content="python: '%.2f' % (sketch.copies * sketch.area)">size</td>
                           <td tal:content="python: '%.2f' % (sketch.copies * sketch.area * order.pricePerSquareCm + 4.0)">price</td>
                           <td><span tal:condition="order/paid" tal:replace="order/paid | string:error"/></td>
                           <td><span tal:condition="order/checked" tal:replace="order/checked | string:error"/></td>
                           <td><span tal:condition="order/invoiced" tal:replace="order/invoiced | string:error"/></td>
                           <td><span tal:condition="sketch/publishable" tal:replace="sketch/publishable | string:error"/></td>
-                          <td tal:content="order/getOwner | string:error">owner</td>
+                          <td><a tal:attributes="href string:${portal_url}/author/${order/getOwner}" tal:content="order/getOwner | string:error">owner</a></td>
                           <td>
                             <span tal:replace="order/shippingCompany | nothing"/><br tal:condition="order/shippingCompany | nothing"/>
                             <span tal:replace="order/shippingFirstName | nothing"/> <span tal:replace="order/shippingLastName"/><br/>
