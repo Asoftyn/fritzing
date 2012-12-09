@@ -57,10 +57,10 @@
                           <td tal:content="python:len(sketch.boards)">boards</td>
                           <td tal:content="python: '%.2f' % sketch.area">size</td>
                           <td tal:content="python: '%.2f' % (sketch.copies * sketch.area * order.pricePerSquareCm + 4.0)">price</td>
-                          <td tal:content="order/paid | string:error">paid</td>
-                          <td tal:content="order/checked | string:error">checked</td>
-                          <td tal:content="order/invoiced | string:error">invoiced</td>
-                          <td tal:content="order/publishable | string:error">publishable</td>
+                          <td><span tal:condition="order/paid" tal:replace="order/paid | string:error"/></td>
+                          <td><span tal:condition="order/checked" tal:replace="order/checked | string:error"/></td>
+                          <td><span tal:condition="order/invoiced" tal:replace="order/invoiced | string:error"/></td>
+                          <td><span tal:condition="sketch/publishable" tal:replace="sketch/publishable | string:error"/></td>
                           <td tal:content="order/getOwner | string:error">owner</td>
                           <td>
                             <span tal:replace="order/shippingCompany | nothing"/><br tal:condition="order/shippingCompany | nothing"/>
@@ -68,13 +68,13 @@
                             <span tal:replace="order/shippingStreet | nothing"/><br/>
                             <span tal:replace="order/shippingAdditional | nothing"/><br tal:condition="order/shippingAdditional | nothing"/>
                             <span tal:replace="order/shippingZIP | nothing"/> <span tal:replace="order/shippingCity | nothing"/><br/>
-                            <span tal:replace="order/shippingCountry | nothing"/>
+                            <span tal:replace="python: view.getShippingCountry(order.shippingCountry)"/>
                           </td>
                           <td tal:content="order/email | string:error">email</td>
                           <td tal:content="order/shipTo| string:error">zone</td>
                           <td>
-                            <a class="viewOrderLink" tal:attributes="href string:${order/absolute_url}">view</a> 
-                            <a class="deleteOrderLink" tal:attributes="href string:${order/absolute_url}/delete_confirmation">delete</a>
+                            <a class="viewOrderLink" tal:attributes="href string:${order/absolute_url}">view</a>
+                            <a class="viewOrderLink" tal:attributes="href string:${order/absolute_url}/edit">edit</a> 
                           </td>
                         </tr>
                     </div>

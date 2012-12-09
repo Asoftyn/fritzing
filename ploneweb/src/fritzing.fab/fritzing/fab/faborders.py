@@ -86,6 +86,10 @@ class CurrentOrders(grok.View):
 
     def update(self):
         pass
+
+    def getShippingCountry(self, value):
+        return IFabOrder['shippingCountry'].vocabulary.getTerm(value).title     
+        
     
 
 class CurrentOrdersCSV(grok.View):
