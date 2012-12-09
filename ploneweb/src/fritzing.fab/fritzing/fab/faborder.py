@@ -1,9 +1,12 @@
-from five import grok
+import zipfile
+from cStringIO import StringIO
 
-from zope.lifecycleevent.interfaces import IObjectModifiedEvent, IObjectMovedEvent
+from five import grok
+from z3c.form import field, button
+from zope.lifecycleevent.interfaces import IObjectAddedEvent, IObjectModifiedEvent, IObjectMovedEvent
 from zope.component import createObject
 
-from plone.directives import dexterity
+from plone.directives import dexterity, form
 from plone.dexterity.content import Item
 
 from Products.statusmessages.interfaces import IStatusMessage
@@ -11,7 +14,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import IActionSucceededEvent
 
 from fritzing.fab.interfaces import IFabOrder, ISketch
-from fritzing.fab.tools import getStateId, sendStatusMail, recalculatePrices
+from fritzing.fab import getboardsize
+from fritzing.fab.tools import getStateId, sendStatusMail, sendSketchUpdateMail, recalculatePrices
 from fritzing.fab import _
 
 
@@ -36,6 +40,9 @@ class Index(grok.View):
         
         if self.context.shipTo:
             self.shipToTitle = IFabOrder['shipTo'].vocabulary.getTerm(self.context.shipTo).title
+
+        if self.context.shippingCountry:
+            self.shippingCountryTitle = IFabOrder['shippingCountry'].vocabulary.getTerm(self.context.shippingCountry).title
         
         primeCostsPerSquareCm = 0.21
         earningsPerSquareCm = 0.7 * (self.context.pricePerSquareCm - primeCostsPerSquareCm)
@@ -156,8 +163,26 @@ def workflowTransitionHandler(faborder, event):
         sendStatusMail(faborder)
 
 
+@grok.subscribe(IFabOrder, IObjectAddedEvent)
+def orderAddedHandler(faborder, event):
+    faborders = faborder.aq_parent
+    faborder.productionRound = faborders.currentProductionRound
+
+
 @grok.subscribe(IFabOrder, IObjectModifiedEvent)
 def orderModifiedHandler(faborder, event):
+    # see http://www.postsitter.de/briefversand/europa.htm
+    if faborder.shippingCountry in ['DE']:
+        faborder.shipTo = 'germany'
+    elif faborder.shippingCountry in [
+            'AL', 'AD', 'AM', 'AZ', 'BY', 'BE', 'BA', 'BG', 'HR', 'DK', 'EE', 
+            'FO', 'FI', 'FR', 'GF', 'GE', 'GR', 'GL', 'UK', 'GP', 'IE', 'IS', 
+            'IT', 'KZ', 'LT', 'LI', 'LU', 'MK', 'MT', 'MQ', 'YT', 'MD', 'MC', 
+            'NL', 'NO', 'AT', 'PL', 'PT', 'RE', 'RO', 'RU', 'SM', 'SE', 'SI', 
+            'SK', 'CH', 'ES', 'PM', 'CZ', 'TR', 'UA', 'HU', 'VA', 'YU', 'CY']:
+        faborder.shipTo = 'eu'
+    else:
+        faborder.shipTo = 'world'
     recalculatePrices(faborder)
 
 
@@ -205,7 +230,7 @@ class AddForm(dexterity.AddForm):
         sketch = createObject('sketch')
         sketch.id = data['orderItem'].filename.encode("ascii")
         
-        # lets make shure this file doesn't already exist
+        # lets make sure this file doesn't already exist
         if self.context.hasObject(sketch.id):
             IStatusMessage(self.request).addStatusMessage(
                 _(u"A Sketch with this name already exists."), "error")
@@ -222,4 +247,78 @@ class AddForm(dexterity.AddForm):
             self.context._setObject(object.id, object)
 
 
+class SketchUpdateForm(form.EditForm):
+    """ updates the sketch file for an order
+    """
+    grok.name('update')
+    grok.require('cmf.ModifyPortalContent')
+    grok.context(ISketch)
+
+    fields = field.Fields(ISketch).select(
+        'orderItem',
+    )
+
+    label = _(u"Update sketch file")
+    description = _(u"As long as the size of the board is not changing, you may replace your sketch file until the deadline.")
+
+    @button.buttonAndHandler(_(u'Save'))
+    def handleApply(self, action):
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+
+        newSketchFile = data['orderItem']
+        fzzData = StringIO(newSketchFile.data)
+        zf = None
+        zf = zipfile.ZipFile(fzzData)
+        pairs = getboardsize.fromZipFile(zf, newSketchFile.filename)
+        boards = [
+            {'width':pairs[i] / 10, 'height':pairs[i+1] / 10} 
+            for i in range(0, len(pairs), 2)
+        ]
+        totalArea = 0
+        for board in boards:
+            totalArea += board['width'] * board['height']
+
+        oldSketch = self.aq_parent
+        if abs(totalArea - oldSketch.area) > 0.1:
+            self.status = _(u"Sorry, you can only replace the sketch if the board size has not changed. "
+                "If you want to proceed, please contact us to cancel the current order and submit a new one.")
+            return
+        else:
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"The sketch has been successfully updated."), "info")
+            sendSketchUpdateMail(self.aq_parent)
+            contextURL = self.context.absolute_url()
+            self.request.response.redirect(contextURL)
+
+    @button.buttonAndHandler(_(u'Cancel'))
+    def handleCancel(self, action):
+        contextURL = self.context.absolute_url()
+        self.request.response.redirect(contextURL)
+    
+
+class ShippingEditForm(form.EditForm):
+    """ edits the shipping info
+    """
+    grok.name('edit-shipping-info')
+    grok.require('cmf.ModifyPortalContent')
+    grok.context(IFabOrder)
+
+    fields = field.Fields(IFabOrder).select(
+        'shippingFirstName',
+        'shippingLastName',
+        'shippingCompany',
+        'shippingStreet',
+        'shippingAdditional',
+        'shippingCity',
+        'shippingZIP',
+        'shippingCountry',
+        'shippingExpress',
+        'email'
+    )
+
+    label = _(u"Provide shipping info")
+    description = u'Where should we send these boards to?'
 

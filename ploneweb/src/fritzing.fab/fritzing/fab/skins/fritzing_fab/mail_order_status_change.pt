@@ -7,11 +7,11 @@
 <span tal:omit-tag="" tal:condition="python: options['state_id'] == 'in_process'"
 >Dear <span tal:replace="options/to_name" />,
 
-Thank you for placing your order with Fritzing Fab. We hope that you will be satisfied and have fun with your PCB.
+Thank you for submitting your board to Fritzing Fab.
 
-Your order will ship on <span tal:replace="options/delivery_date" />.
+This email is generated before payment is complete. If your order is paid by <span tal:replace="options/closing_date" />, your PCBs will ship on <span tal:replace="options/delivery_date" />. 
 
-Below you will find an overview of your order. If you have any questions or concerns, please do not hesitate to contact us.
+Below you will find an overview of your order. If you have any questions or concerns, please do not hesitate to contact us at this e-mail address (best in English or German).
 
 Best regards,
 

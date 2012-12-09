@@ -17,17 +17,23 @@
   <body>
     <metal:main fill-slot="main">
       <tal:main-macro metal:define-macro="main" tal:define="navroot context/@@plone_portal_state/navigation_root_url">
+
         <div id="content-core" class="row">
           <div class="cell width-11 position-0">
             <h1 tal:condition="python:view.isStateId(context, 'open')" class="documentFirstHeading">Order your Fritzing Fab PCB</h1>
-            <h1 tal:condition="python: not view.isStateId(context, 'open')" class="documentFirstHeading">Review your Fritzing Fab Order</h1>
-	  <p>Thanks for ordering through Fritzing Fab, the easy and professional PCB production service.</p>
-            <p tal:condition="python:context.aq_parent.nextProductionClosingDate and context.aq_parent.nextProductionDelivery">
+            <h1 tal:condition="python: not view.isStateId(context, 'open')" class="documentFirstHeading">Review your Fritzing Fab order <span tal:replace="context/id | nothing"/></h1>
+            <p>Thank you for ordering through Fritzing Fab, the easy and professional PCB production service.</p>
+            <p tal:condition="python: view.isStateId(context, 'open')">
               If you submit your sketch by <span class="important" tal:content="python:context.nextProductionClosingDate.strftime('%B %d')">...</span>, 
-              we will ship the PCB to you on <span class="important" tal:content="python:context.nextProductionDelivery.strftime('%B %d')">...</span>.<br />
+              we will ship your boards to you on <span class="important" tal:content="python:context.nextProductionDelivery.strftime('%B %d')">...</span>.<br />
               Note, submitted orders must be completed (and paid for) by <span class="important">
-		<span tal:replace="python:context.nextProductionClosingDate.strftime('%H:%M')" /> (Berlin time) on 
-		<span tal:replace="python:context.nextProductionClosingDate.strftime('%B %d')" /></span> to be produced.
+              <span tal:replace="python:context.nextProductionClosingDate.strftime('%H:%M')" /> (Berlin time) on 
+              <span tal:replace="python:context.nextProductionClosingDate.strftime('%B %d')" /></span> to be produced.
+            </p>
+            <p tal:condition="python: view.isStateId(context, 'in_process')">
+              If your payment has come through by <span tal:replace="python:context.nextProductionClosingDate.strftime('%H:%M')" /> (Berlin time) on 
+              <span class="important" tal:replace="python:context.nextProductionClosingDate.strftime('%B %d')"/>, 
+              we will ship your boards to you on <span class="important" tal:content="python:context.nextProductionDelivery.strftime('%B %d')">...</span>!
             </p>
           </div>
         </div>
@@ -70,6 +76,9 @@
                     <a class="deleteSketchLink" tal:condition="python:(view.isStateId(context, 'open'))" tal:attributes="href string:${sketch/absolute_url}/delete_confirmation">
                       <img alt="remove" tal:attributes="src string:${navroot}/++resource++fritzing.fab/icon_remove.png" />
                     </a>
+                    <a class="updateSketchLink" tal:condition="python:(view.isStateId(context, 'in_process'))" tal:attributes="href string:${sketch/absolute_url}/update">
+                      Update
+                    </a>
                   </td>
                   <td class="copiesCell">
                     <span tal:content="sketch/copies | nothing"></span>
@@ -89,10 +98,10 @@
                     <div>+ Checking 4.00 EUR</div>
                   </td>
                 </tr>
-                <tr>
+                <tr tal:condition="python:view.isStateId(context, 'open')">
                   <td class="actionCell">
                     <span class="genericButton">
-                      <a tal:condition="python:view.isStateId(context, 'open')" class="addSketchLink" href="#" tal:attributes="href string:${context/absolute_url}/++add++sketch">
+                      <a class="addSketchLink" href="#" tal:attributes="href string:${context/absolute_url}/++add++sketch">
                         Add Sketch
                       </a>
                     </span>
@@ -109,59 +118,47 @@
             <div tal:condition="container/listFolderContents" tal:omit-tag="">
               <h3>Shipping Information</h3>
               
-              <div tal:condition="python: not context.shipTo" tal:omit-tag="">
+              <div tal:condition="python: not context.shippingLastName" tal:omit-tag="">
                 <p>
                   Please add your e-mail address and shipping destination to complete your order.<br />
                 </p>
               </div>
               
-              <div tal:condition="python: context.shipTo" tal:omit-tag="">
-                <p>
-                    <strong>E-Mail: </strong><br />
-                    <span tal:content="context/email"></span>
-                </p>
-                <p>
-                    <strong>Shipping Area: </strong><br />
-                    <span tal:content="view/shipToTitle"></span>
-                </p>
+              <div tal:condition="python: context.shippingLastName" tal:omit-tag="">
+                <dl>
+                    <dt>Name</dt>
+                    <dd>
+                      <span tal:replace="context/shippingFirstName | nothing"/> <span tal:replace="context/shippingLastName"/>
+                    </dd>
+                    <dt tal:condition="context/shippingCompany | nothing">Company</dt>
+                    <dd tal:condition="context/shippingCompany | nothing" tal:content="context/shippingCompany | nothing"/>
+                    <dt>Address</dt>
+                    <dd tal:content="context/shippingStreet | nothing"/>
+                    <dd tal:content="context/shippingAdditional | nothing"/>
+                    <dd>
+                       <span tal:replace="context/shippingZIP | nothing"/> <span tal:replace="context/shippingCity | nothing"/>
+                    </dd>
+                    <dd tal:content="view/shippingCountryTitle | nothing"/>
+                    <dt>E-Mail</dt>
+                    <dd tal:content="context/email | nothing"/>
+                </dl>
               </div>
               
-              <p>Shipping and invoice addresses will be taken from your PayPal account. You can still change it in the PayPal payment process.</p>
-              
               <span class="genericButton" tal:condition="python:view.isStateId(context, 'open')">
-                <div tal:condition="python: not context.shipTo" tal:omit-tag="">
-                   <a class="editAddressLink" tal:attributes="href string:${context/absolute_url}/edit">Provide info</a>
+                <div tal:condition="python: not context.shippingLastName" tal:omit-tag="">
+                   <a class="editAddressLink" tal:attributes="href string:${context/absolute_url}/@@edit-shipping-info">Provide info</a>
                 </div>
-                <div tal:condition="python: context.shipTo" tal:omit-tag="">
-                   <a class="editAddressLink" tal:attributes="href string:${context/absolute_url}/edit">Change info</a>
+                <div tal:condition="python: context.shippingLastName" tal:omit-tag="">
+                   <a class="editAddressLink" tal:attributes="href string:${context/absolute_url}/@@edit-shipping-info">Change info</a>
                 </div>
               </span>
               
-              
-<!--          TESTING
-              
-              <div class="shipping_and_contact">
-                <table class="blind" tal:condition="python: context.shipTo">
-                  <tr>
-                    <td>E-Mail: </td>
-                    <td tal:content="context/email"></td>
-                  </tr>
-                  <tr>
-                    <td>Shipping Area: </td>
-                    <td tal:content="view/shipToTitle"></td>
-                  </tr>
-                  <tr tal:condition="python:view.isStateId(context, 'open')">
-                    <td colspan="2"><a class="editAddressLink" href="#" tal:attributes="href string:${context/absolute_url}/edit">Edit</a></td>
-                  </tr>
-                </table>
-              </div>
--->
             </div>
           </div>
           
           
           <div class="cell width-5 position-11">
-            <div tal:condition="python:(context.area > 0 and context.shipTo and context.email)" tal:omit-tag="">
+            <div tal:condition="python:(context.area > 0 and context.shippingLastName and context.email)" tal:omit-tag="">
               <h3>Summary</h3>
               
               <div class="orderSummary">
@@ -187,7 +184,8 @@
                     <td class="align_right" tal:content="python: '%.2f EUR' % (context.taxes)"></td>
                   </tr>
                   <tr>
-                    <td>Shipping to <span tal:replace="view/shipToTitle | string:unknown" /></td>
+                    <td>Shipping to <span tal:replace="view/shipToTitle | nothing" />
+                    <span tal:condition="context/shippingExpress | nothing"> Express</span></td>
                     <td class="align_right" tal:content="python: '%.2f EUR' % (context.priceShipping)"></td>
                   </tr>
                   <tr>
@@ -207,7 +205,7 @@
                   </p>
                   <div class="clear"></div>
                   <p>
-                    If you habe trouble paying with PayPal, or don‘t want to use it, please 
+                    If you have trouble paying with PayPal, or don‘t want to use it, please 
 		<a target="_blank" tal:attributes="href string:${navroot}/contact-info">contact us</a>.
                   </p>
                 </div>
@@ -218,6 +216,43 @@
                   Thank you!
                 </div>
               </div>
+
+              <div tal:condition="python:(view.isStateId(context, 'in_process'))" tal:omit-tag="">
+                <div class="checkout">
+                  <p>
+                    Your order is submitted!
+                  </p>
+                  <p>
+                    If you think that your PayPal payment has not succeeded, 
+                    <a tal:attributes="href string:${context/absolute_url}/paypal_checkout">you can try paying again.</a><br/>
+                    If you have trouble paying with PayPal, or don't want to use it, please 
+                    <a target="_blank" tal:attributes="href string:${navroot}/contact-info">contact us</a>.
+                  </p>
+                  <div class="clear"></div>
+                </div>
+                
+                <div class="supportBox">
+                  With this order, you are supporting the development of Fritzing for 
+                  <strong><span tal:content="python: '%d' % (view.devMinutes)"></span> minutes</strong>! <br />
+                  Thank you!
+                </div>
+              </div>
+
+
+              <div tal:condition="python:(view.isStateId(context, 'completed'))" tal:omit-tag="">
+                <div class="checkout">
+                  <p>
+                    Your order has been shipped!
+                  </p>
+                  <div class="clear"></div>
+                </div>
+                <div class="supportBox">
+                  With this order, you have supported the development of Fritzing for 
+                  <strong><span tal:content="python: '%d' % (view.devMinutes)"></span> minutes</strong>! <br />
+                  Thank you!
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

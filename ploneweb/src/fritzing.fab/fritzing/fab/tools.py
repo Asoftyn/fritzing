@@ -68,16 +68,23 @@ def recalculatePrices(faborder):
     # shipping and taxes
     faborders = faborder.aq_parent
     faborder.priceShipping = faborders.shippingWorld
+    if faborder.shippingExpress:
+        faborder.priceShipping = faborders.shippingWorldExpress
     faborder.taxesPercent = faborders.taxesWorld
     if faborder.shipTo == u'germany':
         faborder.priceShipping = faborders.shippingGermany
+        if faborder.shippingExpress:
+            faborder.priceShipping = faborders.shippingGermanyExpress
         faborder.taxesPercent = faborders.taxesGermany
     elif faborder.shipTo == u'eu':
         faborder.priceShipping = faborders.shippingEU
+        if faborder.shippingExpress:
+            faborder.priceShipping = faborders.shippingEuExpress
         faborder.taxesPercent = faborders.taxesEU
     
     faborder.taxes = faborder.priceTotalNetto * faborder.taxesPercent / 100.0
     faborder.priceTotalBrutto = faborder.priceTotalNetto + faborder.taxes + faborder.priceShipping
+
 
 def getCurrentOrders(self, faborders):
     """Get all current orders to be produced with the next batch
@@ -116,6 +123,7 @@ def sendStatusMail(context, justReturn=False):
     
     state_id = getStateId(False, context)
     state_title = getStateTitle(False, context)
+    closing_date = faborders.nextProductionClosingDate
     delivery_date = faborders.nextProductionDelivery
     
     mail_subject = _(u"Your Fritzing Fab order #%s is now %s") % (context.id, state_title.lower())
@@ -125,9 +133,70 @@ def sendStatusMail(context, justReturn=False):
         to_address = to_address,
         state_id = state_id,
         state_title = state_title,
+        closing_date = closing_date,
         delivery_date = delivery_date,
         faborder = context,
         ship_to = IFabOrder['shipTo'].vocabulary.getTerm(context.shipTo).title,
+        )
+    
+    if justReturn:
+        return mail_text
+    
+    try:
+        host = getToolByName(context, 'MailHost')
+        # send our copy:
+        host.send(
+            MIMEText(mail_text, 'plain', charset), 
+            mto = formataddr((from_name, from_address)),
+            mfrom = formataddr((from_name, from_address)),
+            subject = mail_subject,
+            charset = charset,
+            msg_type="text/plain",
+        )
+        # send notification for the orderer:
+        host.send(
+            MIMEText(mail_text, 'plain', charset), 
+            mto = formataddr((to_name, to_address)),
+            mfrom = formataddr((from_name, from_address)),
+            subject = mail_subject,
+            charset = charset,
+            msg_type="text/plain",
+        )
+    except SMTPRecipientsRefused:
+        # Don't disclose email address on failure
+        raise SMTPRecipientsRefused('Recipient address rejected by server')
+
+
+def sendSketchUpdateMail(context, justReturn=False):
+    """Sends notification when a sketch file has been replaced
+    """
+    mail_text = u""
+    charset = 'utf-8'
+    
+    portal = getSite()
+    mail_template = portal.mail_sketch_update
+    sketch = context
+    faborder = context.aq_parent
+    faborders = faborder.aq_parent
+    
+    from_address = faborders.salesEmail
+    from_name = "Fritzing Fab"
+    to_address = faborder.email
+    closing_date = faborders.nextProductionClosingDate
+    user  = faborder.getOwner()
+    to_name = user.getProperty('fullname', '')
+    # we expect a name to contain non-whitespace characters:
+    if not re.search('\S', to_name):
+        to_name = u"%s" % user
+        
+    mail_subject = _(u"Your Fritzing Fab order #%s has been updated") % (faborder.id,)
+    
+    mail_text = mail_template(
+        to_name = to_name,
+        to_address = to_address,
+        closing_date = closing_date,
+        faborder = faborder,
+        sketch = sketch,
         )
     
     if justReturn:

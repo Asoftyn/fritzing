@@ -1,31 +1,33 @@
-from zope.interface import Invalid
+# -*- coding:utf-8 -*-
+import re
+import zipfile
+from cStringIO import StringIO
 
 from z3c.form import validator
-
-import re
+from zope.interface import Invalid
 
 from fritzing.fab import getboardsize
 from fritzing.fab import _
 
-from cStringIO import StringIO
-
-import zipfile
-
 
 class SketchFileValidator(validator.SimpleFieldValidator):
     
-    def validate(self, value):
-        super(SketchFileValidator, self).validate(value)
+    def validate(self, sketchFile):
+        super(SketchFileValidator, self).validate(sketchFile)
         
-        fzzName = value.filename
+        fzzName = sketchFile.filename
         fzzNameLower = fzzName.lower()
         
         if not (fzzNameLower.endswith('.fzz')):
             raise Invalid(
                 _(u"We can only produce from shareable Fritzing sketch files (.fzz)"))
         
+        if any(c in fzzName for c in '+*/?$&\#'):
+            raise Invalid(
+                _(u"Please change the sketch name to not contain any special characters such as +*/?$§&"))
+
         # use StringIO to make the blob to look like a file object:
-        fzzData = StringIO(value.data)
+        fzzData = StringIO(sketchFile.data)
         
         zf = None
         try:
@@ -44,10 +46,7 @@ class SketchFileValidator(validator.SimpleFieldValidator):
             # uneven number of lengths
             raise Invalid(
                 _(u"Invalid board sizes in '%s'." % fzzName))
-        
-        value.boards = [{'width':pairs[i] / 10, 'height':pairs[i+1] / 10} 
-                        for i in range(0, len(pairs), 2)]
-        
+
         return True
 
 

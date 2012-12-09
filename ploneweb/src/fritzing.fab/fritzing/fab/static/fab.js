@@ -64,6 +64,20 @@ jQuery(function($) {
         width: '50%'
     }
     );
+
+    // Update dialog
+    $('a.updateSketchLink').prepOverlay(
+    {
+        subtype: 'ajax',
+        filter: common_content_filter,
+        formselector: '#content-core>form',
+        noform: function(el) {
+            return noformerrorshow(el, 'reload');
+        },
+        closeselector: '[name=form.button.Cancel]',
+        width: '50%'
+    }
+    );
     
     // address edit dialog
     $('a.editAddressLink').prepOverlay(
