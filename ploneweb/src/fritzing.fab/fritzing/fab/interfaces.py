@@ -487,7 +487,16 @@ class IFabOrders(form.Schema):
         description = _(u"Order status changes are e-mailed to this address"),
         default = _(u"fab@fritzing.org"),
         constraint = checkEMail)
+
+    paypalEmail = TextLine(
+        title = _(u"Paypal e-mail"),
+        description = _(u"The mail address use by the PayPal seller account"),
+        constraint = checkEMail)
     
+    paypalAccountId = TextLine(
+        title = _(u"PayPal account id"),
+        description = _(u"The Paypal account's seller id"))
+
     shippingGermany = Float(
         title = _(u"Shipping Costs Germany"),
         description = _(u"The shipping costs for Germany in Euro"),
