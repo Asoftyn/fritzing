@@ -2613,6 +2613,7 @@ void MainWindow::autorouteAux(bool useNew) {
 	connect(autorouter, SIGNAL(setProgressMessage(const QString &)), &progress, SLOT(setMessage(const QString &)));
 	connect(autorouter, SIGNAL(setCycleMessage(const QString &)), &progress, SLOT(setSpinLabel(const QString &)));
 	connect(autorouter, SIGNAL(setCycleCount(int)), &progress, SLOT(setSpinValue(int)));
+	connect(autorouter, SIGNAL(disableButtons()), &progress, SLOT(disableButtons()));
 
 	ProcessEventBlocker::processEvents();
 	ProcessEventBlocker::block();

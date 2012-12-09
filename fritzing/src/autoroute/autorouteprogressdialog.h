@@ -31,6 +31,7 @@ $Date$
 #include <QProgressBar>
 #include <QLabel>
 #include <QSpinBox>
+#include <QDialogButtonBox>
 
 class AutorouteProgressDialog : public QDialog
 {
@@ -53,6 +54,7 @@ public slots:
 	void setSpinLabel(const QString &);
 	void setMessage(const QString &);
 	void setSpinValue(int);
+    void disableButtons();
 
 signals:
 	void skip();
@@ -68,6 +70,7 @@ protected:
 	QLabel * m_spinLabel;
 	QLabel * m_message;
 	QSpinBox * m_spinBox;
+    QDialogButtonBox * m_buttonBox;
 };
 
 class ArrowButton : public QLabel {

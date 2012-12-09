@@ -72,13 +72,12 @@ struct NetList {
 struct Trace {
     int netIndex;
     int order;
+    uchar flags;
     QList<GridPoint> gridPoints;
-};
-
-struct RouteThing {
-    QRectF r;
-    QList<ViewLayer::ViewLayerSpec> layerSpecs;
-    int ikeepout;
+    
+    Trace() {
+        flags = 0;
+    }
 };
 
 struct NetOrdering {
@@ -88,27 +87,22 @@ struct NetOrdering {
 struct Score {
     NetOrdering ordering;
     QMultiHash<int, Trace> traces;
-    QHash<int, int> unroutedCount;
+    QHash<int, int> routedCount;
     QHash<int, int> viaCount;
-	int totalUnroutedCount;
+	int totalRoutedCount;
 	int totalViaCount;
     int reorderNet;
+    bool anyUnrouted;
 
 	Score();
     void setOrdering(const NetOrdering &);
 };
 
 struct Nearest {
-    QList<QDomElement> netElements0;
-    QList<QDomElement> netElements1;
-    QList<QDomElement> notNetElements0;
-    QList<QDomElement> notNetElements1;
     int i, j;
     double distance;
     ConnectorItem * ic;
     ConnectorItem * jc;
-    QPoint gridTarget;
-    bool unrouted;
 
     void swap() {
         int temp = i;
@@ -134,6 +128,24 @@ struct Grid {
     QList<QPoint> init4(int x, int y, int z, int width, int height, const QImage &, quint32 value, bool collectPoints);
 };
 
+struct RouteThing {
+    QRectF r;
+    QList<ViewLayer::ViewLayerSpec> layerSpecs;
+    int ikeepout;
+    Grid * grid;
+    Nearest nearest;
+    std::priority_queue<GridPoint> pq;
+    bool makeJumper;
+    double jumperDistance;
+    GridPoint jumperLocation;
+    QList<QDomElement> netElements0;
+    QList<QDomElement> netElements1;
+    QList<QDomElement> notNetElements0;
+    QList<QDomElement> notNetElements1;
+    QPoint gridTarget;
+    bool unrouted;
+};
+
 ////////////////////////////////////
 
 class MazeRouter : public Autorouter
@@ -152,42 +164,48 @@ protected:
     int findPinsWithin(QList<ConnectorItem *> * net);
     bool makeBoard(QImage & image, double keepout, const QSizeF gridSize);
     bool makeMasters(QString &);
-	bool routeNets(NetList &, bool makeJumper, Score & currentScore, Score & bestScore, QImage & boardImage, const QSizeF gridSize, QList<NetOrdering> & allOrderings);
-    bool routeOne(Score & currentScore, Score & bestScore, int netIndex, Grid *, std::priority_queue<GridPoint> &, Nearest &, QList<NetOrdering> & allOrderings);
+	bool routeNets(NetList &, bool makeJumper, Score & currentScore, QImage & boardImage, const QSizeF gridSize, QList<NetOrdering> & allOrderings);
+    bool routeOne(bool makeJumper, Score & currentScore, int netIndex, RouteThing &, QList<NetOrdering> & allOrderings);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, Nearest &);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, Nearest &);
     QList<QPoint> renderSource(QDomDocument * masterDoc, int z, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, quint32 value, bool clearElements, const QRectF & r, bool collectPoints);
-    QList<GridPoint> route(Grid * grid, std::priority_queue<GridPoint> &, Nearest &, int & viaCount);
-    void expand(GridPoint &, Grid * grid, std::priority_queue<GridPoint> &, Nearest &);
-    void expandOne(GridPoint &, Grid * grid, std::priority_queue<GridPoint> &, Nearest &, int dx, int dy, int dz, bool crossLayer);
+    QList<GridPoint> route(RouteThing &, int & viaCount);
+    void expand(GridPoint &, RouteThing &);
+    void expandOne(GridPoint &, RouteThing &, int dx, int dy, int dz, bool crossLayer);
     bool viaWillFit(GridPoint &, Grid * grid);
-    QList<GridPoint> traceBack(GridPoint &, Grid * grid, int & viaCount);
+    QList<GridPoint> traceBack(GridPoint &, Grid * grid, int & viaCount, quint32 destination);
     GridPoint traceBackOne(GridPoint &, Grid * grid, int dx, int dy, int dz, quint32 val);
     void updateDisplay(int iz);
     void updateDisplay(Grid *, int iz);
     void updateDisplay(GridPoint &);
     void clearExpansion(Grid * grid);
-    void prepSourceAndTarget(QDomDocument * masterdoc, Grid * grid, QList< QList<ConnectorItem *> > & subnets, int z, std::priority_queue<GridPoint> &, QList<QDomElement> & netElements, QList<QDomElement> & notNetElements, Nearest & nearest, QRectF &); 
+    void prepSourceAndTarget(QDomDocument * masterdoc, RouteThing &, QList< QList<ConnectorItem *> > & subnets, int z); 
     bool moveBack(Score & currentScore, int index, QList<NetOrdering> & allOrderings);
     void drawTrace(Trace &);
     void initTraceDisplay();
     void traceObstacles(QList<Trace> & traces, int netIndex, Grid * grid, int ikeepout);
-    bool routeNext(RouteThing &, QList< QList<ConnectorItem *> > & subnets,Score & currentScore, Score & bestScore, int netIndex, Grid *, std::priority_queue<GridPoint> &, Nearest &, QList<NetOrdering> & allOrderings);
+    bool routeNext(bool makeJumper, RouteThing &, QList< QList<ConnectorItem *> > & subnets, Score & currentScore, int netIndex, QList<NetOrdering> & allOrderings);
     void cleanUpNets(NetList &);
     void createTraces(NetList & netList, Score & bestScore, QUndoCommand * parentCommand);
     void removeColinear(QList<GridPoint> & gridPoints);
     void removeSteps(QList<GridPoint> & gridPoints);
     ConnectorItem * findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace);
     void addConnectionToUndo(ConnectorItem * from, ConnectorItem * to, QUndoCommand * parentCommand);
-    void addViaToUndo(Via * via, QUndoCommand * parentCommand);
+    void addViaToUndo(Via *, QUndoCommand * parentCommand);
+    void addJumperToUndo(JumperItem *, QUndoCommand * parentCommand);
+    void removeStep(int ix, QList<GridPoint> & gridPoints);
+    void clearExpansionForJumper(Grid * grid, quint32 sourceOrTarget, std::priority_queue<GridPoint> & pq);
+    void routeJumper(int netIndex, RouteThing &, Score & currentScore);
+    void jumperWillFit(GridPoint & gridPoint, RouteThing &);
+    void insertTrace(Trace & newTrace, int netIndex, Score & currentScore, int viaCount);
 
 protected:
 	LayerList m_viewLayerIDs;
     QHash<ViewLayer::ViewLayerSpec, QDomDocument *> m_masterDocs;
     double m_keepoutMils;
     double m_keepoutGrid;
-    int m_gridViaSize;
     int m_halfGridViaSize;
+    int m_halfGridJumperSize;
     double m_standardWireWidth;
     QImage * m_displayImage[2];
     QGraphicsPixmapItem * m_displayItem[2];

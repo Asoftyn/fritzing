@@ -83,6 +83,7 @@ signals:
 	void setProgressMessage(const QString &);
 	void setCycleMessage(const QString &);
 	void setCycleCount(int);
+    void disableButtons();
 
 protected:
 	class PCBSketchWidget * m_sketchWidget;

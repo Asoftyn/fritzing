@@ -74,7 +74,7 @@ static const double StrokeWidthIncrement = 50;
 static QString PCBTraceColor1 = "trace1";
 static QString PCBTraceColor = "trace";
 
-QSizeF PCBSketchWidget::m_jumperItemSize;
+QSizeF PCBSketchWidget::m_jumperItemSize = QSizeF(0, 0);
 
 struct DistanceThing {
 	int distance;
@@ -1255,6 +1255,18 @@ bool PCBSketchWidget::hasAnyNets() {
 }
 
 QSizeF PCBSketchWidget::jumperItemSize() {
+    if (m_jumperItemSize.width() == 0) {
+	    long newID = ItemBase::getNextID();
+	    ViewGeometry viewGeometry;
+	    viewGeometry.setLoc(QPointF(0, 0));
+	    ItemBase * itemBase = addItem(referenceModel()->retrieveModelPart(ModuleIDNames::JumperModuleIDName), defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
+	    if (itemBase) {
+		    JumperItem * jumperItem = qobject_cast<JumperItem *>(itemBase);
+             m_jumperItemSize = jumperItem->connector0()->rect().size();
+             deleteItem(itemBase, true, false, false);
+        }
+    }
+
 	return m_jumperItemSize;
 }
 

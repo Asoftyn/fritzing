@@ -109,9 +109,9 @@ public:
 	void convertToBendpoint();
     int checkLoadedTraces();
 	bool hasCustomBoardShape();
+    QSizeF jumperItemSize();
 
 public:
-	static QSizeF jumperItemSize();
 	static void getDefaultViaSize(QString & ringThickness, QString & holeSize);
 
 public slots:

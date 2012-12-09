@@ -32,7 +32,6 @@ $Date$
 #include <QComboBox>
 #include <QPushButton>
 #include <QLocale>
-#include <QDialogButtonBox>
 #include <QGroupBox>
 #include <QScrollBar>
 
@@ -132,16 +131,16 @@ AutorouteProgressDialog::AutorouteProgressDialog(const QString & title, bool zoo
 	//connect(button, SIGNAL(clicked()), this, SLOT(sendSkip()));
 	//vLayout->addWidget(button);
 
-	QDialogButtonBox * buttonBox = new QDialogButtonBox(stopButton ? QDialogButtonBox::Ok | QDialogButtonBox::Cancel : QDialogButtonBox::Cancel);
+	m_buttonBox = new QDialogButtonBox(stopButton ? QDialogButtonBox::Ok | QDialogButtonBox::Cancel : QDialogButtonBox::Cancel);
 	if (stopButton) {
-		buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Stop Now"));
-		connect(buttonBox, SIGNAL(accepted()), this, SLOT(sendStop()));
+		m_buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Stop Now"));
+		connect(m_buttonBox, SIGNAL(accepted()), this, SLOT(sendStop()));
 	}
 
-	buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-	connect(buttonBox, SIGNAL(rejected()), this, SLOT(sendCancel()));
+	m_buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+	connect(m_buttonBox, SIGNAL(rejected()), this, SLOT(sendCancel()));
 
-	vLayout->addWidget(buttonBox);
+	vLayout->addWidget(m_buttonBox);
 
 	this->setLayout(vLayout);
 }
@@ -196,4 +195,8 @@ void AutorouteProgressDialog::setSpinValue(int value)
 
 void AutorouteProgressDialog::internalSpinChange(int value) {
 	emit spinChange(value);
+}
+
+void AutorouteProgressDialog::disableButtons() {
+	m_buttonBox->setEnabled(false);
 }
