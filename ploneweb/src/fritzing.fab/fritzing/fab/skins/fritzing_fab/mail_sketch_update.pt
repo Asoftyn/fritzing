@@ -1,0 +1,22 @@
+<tal:root define="lt string:&lt;;
+                  gt string:&gt;;
+                  nbsp string:&nbsp;;
+                  times string:&times;;
+                  sup2 string:&sup2;;
+                  ">
+Dear <span tal:replace="options/to_name" />,
+
+Your sketch file <span tal:replace="options/sketch/orderItem/filename"/> has been updated successfully.
+
+As long as the board size does not change, you can still update the file until the deadline on <span tal:replace="options/closing_date" />.
+
+Best regards,
+
+Your Fritzing Team
+
+- - - - - - - - - - - - - - - 
+
+Here's your order again: 
+<span tal:replace="python: options['faborder'].absolute_url()"/>
+
+</tal:root>
