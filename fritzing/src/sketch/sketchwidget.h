@@ -290,7 +290,7 @@ public:
 	void prepLegCurveChange(ConnectorItem * from, int index, const class Bezier * oldB, const class Bezier * newB, bool triggerFirstTime);
 	void prepLegBendpointChange(ConnectorItem * from, int oldCount, int newCount, int index, QPointF pos, const class Bezier *, const class Bezier *, const class Bezier *, bool triggerFirstTime);
 	void prepLegSelection(ItemBase *);
-	void changeWireCurve(long id, const Bezier *);
+	void changeWireCurve(long id, const Bezier *, bool autoroutable);
 	void changeLegCurve(long id, const QString & connectorID, int index, const Bezier *);
 	void addLegBendpoint(long id, const QString & connectorID, int index, QPointF, const class Bezier *, const class Bezier *);
 	void removeLegBendpoint(long id, const QString & connectorID, int index, const class Bezier *);

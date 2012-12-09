@@ -499,11 +499,12 @@ QString ChangeWireCommand::getParamString() const {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ChangeWireCurveCommand::ChangeWireCurveCommand(SketchWidget* sketchWidget, long fromID,
-									 const Bezier * oldBezier, const Bezier * newBezier, 
+									 const Bezier * oldBezier, const Bezier * newBezier, bool wasAutoroutable,
 									 QUndoCommand *parent)
     : BaseCommand(BaseCommand::SingleView, sketchWidget, parent)
 {
     m_fromID = fromID;
+    m_wasAutoroutable = wasAutoroutable;
 	m_oldBezier = m_newBezier = NULL;
 	if (oldBezier) {
 		m_oldBezier = new Bezier;
@@ -518,7 +519,7 @@ ChangeWireCurveCommand::ChangeWireCurveCommand(SketchWidget* sketchWidget, long 
 void ChangeWireCurveCommand::undo()
 {
 	if (!m_redoOnly) {
-		m_sketchWidget->changeWireCurve(m_fromID, m_oldBezier);
+		m_sketchWidget->changeWireCurve(m_fromID, m_oldBezier, m_wasAutoroutable);
 	}
 }
 
@@ -529,7 +530,7 @@ void ChangeWireCurveCommand::redo()
 			m_skipFirstRedo = false;
 		}
 		else {
-			m_sketchWidget->changeWireCurve(m_fromID, m_newBezier);
+			m_sketchWidget->changeWireCurve(m_fromID, m_newBezier, false);
 		}
 	}
 }

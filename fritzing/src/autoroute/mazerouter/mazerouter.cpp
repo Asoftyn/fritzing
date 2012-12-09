@@ -24,13 +24,16 @@ $Date$
 
 ********************************************************************/
 
+
+// with lots of suggestions from http://cc.ee.ntu.edu.tw/~ywchang/Courses/PD/unit6.pdf
+// and a bit of help from http://workbench.lafayette.edu/~nestorj/cadapplets/MazeApplet/src/
+// mostly unused suggestions at http://embedded.eecs.berkeley.edu/Alumni/pinhong/ee244/4-routing.PDF
+
 // TODO:
 //
 //      schematic view
 //          use a different cost function: cost is manhattandistance + penalty for direction changes
 //          netlabels are the equivalent of jumpers. Use successive numbers for the labels.
-//
-//      routing right after routing doesn't work, but it works again the next time.
 //
 //      net reordering/rip-up-and-reroute
 //          is there a better way than move back by one?
@@ -53,11 +56,11 @@ $Date$
 //      via/jumper placement must ensure minimum distance from source
 //          jumper placement must be away from vias
 //
-//      make sure one-sided board works
+//      curvy wires
 //
 //      check clean up is really clearing pointers
 //
-//      crash after 25 or so rounds with amadeus bridge (no longer, but do see a crash at various times)
+//      crash after 25 or so rounds with amadeus bridge (no longer there, but do see a crash at various times)
 //
 //      when multiple traces connect to one via, traces tend to connect to each other instead of the via
 //          see shift register example
@@ -426,9 +429,6 @@ void MazeRouter::start()
 	emit setCycleMessage("round 1 of:");
 	emit setCycleCount(m_maxCycles);
 
-	RoutingStatus routingStatus;
-	routingStatus.zero();
-
 	m_sketchWidget->ensureTraceLayersVisible();
 
 	QHash<ConnectorItem *, int> indexer;
@@ -443,8 +443,9 @@ void MazeRouter::start()
 		return;
 	}
 
-	// will list connectors on both sides separately
-	routingStatus.m_netCount = m_allPartConnectorItems.count();
+	QUndoCommand * parentCommand = new QUndoCommand("Autoroute");
+	new CleanUpWiresCommand(m_sketchWidget, CleanUpWiresCommand::UndoOnly, parentCommand);
+	initUndo(parentCommand);
 
 	QVector<int> netCounters(m_allPartConnectorItems.count());
     NetList netList;
@@ -486,15 +487,10 @@ void MazeRouter::start()
         net->id = ix++;
     }
 
-	QUndoCommand * parentCommand = new QUndoCommand("Autoroute");
-	new CleanUpWiresCommand(m_sketchWidget, CleanUpWiresCommand::UndoOnly, parentCommand);
-
 	if (m_bothSidesNow) {
 		emit wantBothVisible();
 		ProcessEventBlocker::processEvents();
 	}
-
-	initUndo(parentCommand);
 
 	ProcessEventBlocker::processEvents(); // to keep the app  from freezing
 	if (m_cancelled || m_stopTracing) {
@@ -1842,15 +1838,11 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
             delete traceWire;
         }
         foreach (Via * via, newVias) {
-            foreach (ItemBase * layerKin, via->layerKin()) {
-                delete layerKin;
-            }
+            via->removeLayerKin();
             delete via;
         }
         foreach (JumperItem * jumperItem, newJumperItems) {
-            foreach (ItemBase * layerKin, jumperItem->layerKin()) {
-                delete layerKin;
-            }
+            jumperItem->removeLayerKin();
             delete jumperItem;
         }
     }

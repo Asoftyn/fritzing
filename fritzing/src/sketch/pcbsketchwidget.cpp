@@ -1705,11 +1705,6 @@ void PCBSketchWidget::prereleaseTempWireForDragging(Wire* wire)
 	}
 }
 
-bool PCBSketchWidget::curvyWiresIndicated(Qt::KeyboardModifiers)
-{
-	return false;
-}
-
 void PCBSketchWidget::rotatePartLabels(double degrees, QTransform & transform, QPointF center, QUndoCommand * parentCommand)
 {
     QSet<ItemBase *> boards;

@@ -28,18 +28,6 @@ $Date$
 
 curvy To Do
 
-	* pixel turds
-
-	* undo/redo
-
-	* save/load
-
-	* copy/paste
-
-	* make-straight function
-
-	* export
-
 	curvy to begin with? would have to vary with some function of angle and distance
 		could convert control points to t values?
 
@@ -1646,7 +1634,7 @@ void Wire::setPen(const QPen &pen)
 }
 
 bool Wire::canHaveCurve() {
-	return m_canHaveCurve && (m_viewIdentifier == ViewLayer::BreadboardView);
+	return m_canHaveCurve && !getRatsnest();
 }
 
 void Wire::dragCurve(QPointF eventPos, Qt::KeyboardModifiers)

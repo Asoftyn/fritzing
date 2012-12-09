@@ -3680,7 +3680,7 @@ void SketchWidget::dragWireChanged(Wire* wire, ConnectorItem * fromOnWire, Conne
 	}
 
 	if (m_bendpointWire) {
-		ChangeWireCurveCommand * cwcc = new ChangeWireCurveCommand(this, m_bendpointWire->id(), m_bendpointWire->undoCurve(), m_bendpointWire->curve(), parentCommand);
+		ChangeWireCurveCommand * cwcc = new ChangeWireCurveCommand(this, m_bendpointWire->id(), m_bendpointWire->undoCurve(), m_bendpointWire->curve(), m_bendpointWire->getAutoroutable(), parentCommand);
 		cwcc->setUndoOnly();
 
 		// puts the wire in position at redo time
@@ -3710,8 +3710,8 @@ void SketchWidget::dragWireChanged(Wire* wire, ConnectorItem * fromOnWire, Conne
 										ViewLayer::specFromID(wire->viewLayerID()),
 										true, parentCommand);
 
-		new ChangeWireCurveCommand(this, wire->id(), NULL, wire->curve(), parentCommand);
-		cwcc = new ChangeWireCurveCommand(this, m_bendpointWire->id(), m_bendpointWire->undoCurve(), m_bendpointWire->curve(), parentCommand);
+		new ChangeWireCurveCommand(this, wire->id(), NULL, wire->curve(), wire->getAutoroutable(), parentCommand);
+		cwcc = new ChangeWireCurveCommand(this, m_bendpointWire->id(), m_bendpointWire->undoCurve(), m_bendpointWire->curve(), m_bendpointWire->getAutoroutable(), parentCommand);
 		cwcc->setRedoOnly();
 
 		// puts the wire in position at undo time
@@ -4938,7 +4938,7 @@ void SketchWidget::makeDeleteItemCommandPrepSlot(ItemBase * itemBase, bool forei
 	if (wire) {
 		const Bezier * bezier = wire->curve();
 		if (bezier && !bezier->isEmpty()) {
-			ChangeWireCurveCommand * cwcc = new ChangeWireCurveCommand(this, itemBase->id(), bezier, NULL, parentCommand);
+			ChangeWireCurveCommand * cwcc = new ChangeWireCurveCommand(this, itemBase->id(), bezier, NULL, wire->getAutoroutable(), parentCommand);
 			cwcc->setUndoOnly();
 		}
 	}
@@ -5413,9 +5413,9 @@ void SketchWidget::wireJoinSlot(Wire* wire, ConnectorItem * clickedConnectorItem
 
 	BaseCommand::CrossViewType crossView = BaseCommand::CrossView; // wireSplitCrossView();
 
-	ChangeWireCurveCommand * cwcc = new ChangeWireCurveCommand(this, wire->id(), wire->curve(), NULL, parentCommand);
+	ChangeWireCurveCommand * cwcc = new ChangeWireCurveCommand(this, wire->id(), wire->curve(), NULL, wire->getAutoroutable(), parentCommand);
 	cwcc->setUndoOnly();
-	cwcc = new ChangeWireCurveCommand(this, toWire->id(), toWire->curve(), NULL, parentCommand);
+	cwcc = new ChangeWireCurveCommand(this, toWire->id(), toWire->curve(), NULL, toWire->getAutoroutable(),parentCommand);
 	cwcc->setUndoOnly();
 
 
@@ -5465,7 +5465,7 @@ void SketchWidget::wireJoinSlot(Wire* wire, ConnectorItem * clickedConnectorItem
 	new ChangeWireCommand(this, wire->id(), wire->line(), newLine, wire->pos(), newPos, true, false, parentCommand);
 	Bezier joinBezier = b0.join(&b1);
 	if (!joinBezier.isEmpty()) {
-		ChangeWireCurveCommand * cwcc = new ChangeWireCurveCommand(this, wire->id(), wire->curve(), &joinBezier, parentCommand);
+		ChangeWireCurveCommand * cwcc = new ChangeWireCurveCommand(this, wire->id(), wire->curve(), &joinBezier, wire->getAutoroutable(), parentCommand);
 		cwcc->setRedoOnly();
 	}
 
@@ -8524,7 +8524,7 @@ void SketchWidget::wireChangedCurveSlot(Wire* wire, const Bezier * oldB, const B
 	this->clearHoldingSelectItem();
 	this->m_moveEventCount = 0;  // clear this so an extra MoveItemCommand isn't posted
 
-	ChangeWireCurveCommand * cwcc = new ChangeWireCurveCommand(this, wire->id(), oldB, newB, NULL);
+	ChangeWireCurveCommand * cwcc = new ChangeWireCurveCommand(this, wire->id(), oldB, newB, wire->getAutoroutable(), NULL);
 	cwcc->setText("Change wire curvature");
 	if (!triggerFirstTime) {
 		cwcc->setSkipFirstRedo();
@@ -8532,11 +8532,12 @@ void SketchWidget::wireChangedCurveSlot(Wire* wire, const Bezier * oldB, const B
 	m_undoStack->push(cwcc);
 }
 
-void SketchWidget::changeWireCurve(long id, const Bezier * bezier) {
+void SketchWidget::changeWireCurve(long id, const Bezier * bezier, bool autoroutable) {
 	Wire * wire = qobject_cast<Wire *>(findItem(id));
 	if (wire == NULL) return;
 
 	wire->changeCurve(bezier);
+    wire->setAutoroutable(autoroutable);
 }
 
 

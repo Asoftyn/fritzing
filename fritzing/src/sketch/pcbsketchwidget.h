@@ -95,7 +95,6 @@ public:
 	void clearGroundFillSeeds();
 	QString generateCopperFillUnit(ItemBase * itemBase, QPointF whereToStart);
 	double getWireStrokeWidth(Wire *, double wireWidth);
-	bool curvyWiresIndicated(Qt::KeyboardModifiers);
 	ItemBase * addCopperLogoItem(ViewLayer::ViewLayerSpec viewLayerSpec);
 	QString characterizeGroundFill(ViewLayer::ViewLayerID);
 	ViewGeometry::WireFlag getTraceFlag();

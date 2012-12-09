@@ -316,7 +316,7 @@ class ChangeWireCurveCommand : public BaseCommand
 {
 public:
     ChangeWireCurveCommand(class SketchWidget *sketchWidget, long fromID,
-    					const class Bezier * oldBezier, const class Bezier * newBezier,
+    					const class Bezier * oldBezier, const class Bezier * newBezier, bool wasAutoroutable,
     					QUndoCommand *parent);
     void undo();
     void redo();
@@ -328,6 +328,7 @@ protected:
     long m_fromID;
     class Bezier * m_newBezier;
     class Bezier * m_oldBezier;
+    bool m_wasAutoroutable;
 };
 
 /////////////////////////////////////////////
