@@ -21,9 +21,9 @@ from plone.directives import dexterity
 
 from plone.memoize.instance import memoize
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.WorkflowCore import WorkflowException
 
 from fritzing.fab.interfaces import IFabOrders, IFabOrder
+from fritzing.fab.tools import sendStatusMail
 from fritzing.fab import _
 
 
@@ -207,7 +207,7 @@ class PayPalIpn(grok.View):
     def verify_ipn(self, data):
         """ verify payment notification
         """
-        context = aq_inner(self.context)
+        faborders = aq_inner(self.context)
 
         # see https://www.x.com/developers/paypal/documentation-tools/ipn/integration-guide/IPNIntro
         # prepares provided data set to inform PayPal we wish to validate the response
@@ -221,22 +221,23 @@ class PayPalIpn(grok.View):
         status = response.read()
      
         # verify validity
+        error_msg = "could not verify PayPal IPN: " + str(data)
         if not status == "VERIFIED":
-            logger.info("Could not verify PayPal IPN: " + data)
-            return False
-        if not data["receiver_email"] == context.paypalEmail:
-            return False
-        if not data["receiver_id"] == context.paypalAccountId:
-            return False
-        if not data["item_name1"] == "Fritzing Fab order":
-            return False
-        if not data["residence_country"] == "DE":
-            return False
-        if not data["payment_status"] == "Completed":
-            return False
+            return False, "Wrong status - " + error_msg
+        if not data["receiver_email"].lower() == faborders.paypalEmail.lower():
+            return False, "Wrong receiver_email - " + error_msg
+        # doesn't seem to get sent:
+        #if not data["receiver_id"] == faborders.paypalAccountId:
+        #    return False, "Wrong receiver_id - " + error_msg
+        if not data["item_name"].lower() == "fritzing fab order":
+            return False, "Wrong item_name - " + error_msg
+        if not data["payment_status"].lower() == "completed":
+            # TODO: check for pending_reason
+            return False, "Wrong payment_status - " + error_msg
         if not data["mc_currency"] == "EUR":
-            return False
-        return True
+            return False, "Wrong mc_currency - " + error_msg
+
+        return True, "PayPal IPN verified: " + str(data)
 
 
     def process_ipn(self, data):
@@ -245,39 +246,61 @@ class PayPalIpn(grok.View):
         # find associated order
         catalog = getToolByName(self.context, 'portal_catalog')
         query = {
-            'id': data['item_number1'],
+            'id': data['item_number'],
             'object_provides': IFabOrder.__identifier__,
         }
         results = catalog.unrestrictedSearchResults(query)
         if len(results) <> 1:
-            return False
+            return False, "Could not find fab order " + data['item_number1']
         faborder = results[0]._unrestrictedGetObject()
 
-        # check if payment data fits
+        # check that payment hasn't been processed yet
         if faborder.paypalId <> data['txn_id']:
             faborder.paypalId = data['txn_id']
         else:
-            return False
-        # TODO check that paymentAmount is correct
+            return False, "Payment " + data['txn_id'] + " already received"
+
+        # check that paymentAmount is correct
+        if faborder.priceTotalBrutto <> data['mc_gross']:
+            return False, "PayPal IPN price does not match: " + data['mc_gross']
 
         # update order
         faborder.paid = True
-        workflowTool = getToolByName(self.context, "portal_workflow")
-        try:
-            workflowTool.doActionFor(faborder, "submit")
-        except WorkflowException:
-            logger.info("Could not submit:" + str(faborder.getId()) + " already in process?")
-            pass
+
+        portal_workflow = getToolByName(self, 'portal_workflow')
+        review_state = portal_workflow.getInfoFor(faborder, 'review_state')
+        if review_state <> 'open':
+            return False, "Order status not open, instead " + review_state
+        # Change workflow state.  Don't use portal_workflow.doActionFor but
+        # portal_workflow._invokeWithNotification to avoid security checks:
+        wfs = portal_workflow.getWorkflowsFor(faborder)
+        wf = wfs[0]
+        portal_workflow._invokeWithNotification(wfs, faborder, 'submit', wf._changeStateOf, 
+            (faborder, wf.transitions.get('submit')), {})
+        faborder.reindexObjectSecurity()
+        review_state = portal_workflow.getInfoFor(faborder, 'review_state')
+        if review_state <> 'in_process':
+            return False, "Could not set order status to in_process"
+
+        return True, "PayPal transaction " + data['txn_id'] + " for order " + faborder.id + " successfully processed"        
 
 
     def update(self):
         data = self.request.form
 
-        if not self.verify_ipn(data):
-            return "Unable to verify PayPal payment"
+        verified, msg = self.verify_ipn(data)
+        if not verified:
+            logger.error(msg)
+            return msg
         
-        if not self.process_ipn(data):
-            return "Could not process PayPal payment"
+        processed, msg = self.process_ipn(data)
+        if not processed:
+            logger.error(msg)
+            return msg
+
+        # TODO show status message to customer
+        logger.info(msg)
+        return msg
 
     
     def render(self):

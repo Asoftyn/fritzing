@@ -120,20 +120,20 @@ class PayPalCheckout(grok.View):
     
     
     def update(self):
-        portal_workflow = getToolByName(self, 'portal_workflow')
-        review_state = getStateId(None, self.context, portal_workflow)
+        # = getToolByName(self, 'portal_workflow')
+        #review_state = getStateId(None, self.context, portal_workflow)
         
         #if review_state != 'open':
         #    self.addStatusMessage(_(u"Already checked out."), "info")
         #    return
-        if not self.context.area > 0:
-            self.addStatusMessage(_(u"Sketches missing/invalid, checkout aborted."), "error")
-            return
+        #if not self.context.area > 0:
+        #    self.addStatusMessage(_(u"Sketches missing/invalid, checkout aborted."), "error")
+        #    return
         
-        portal_workflow.doActionFor(self.context, action='submit')
+        #portal_workflow.doActionFor(self.context, action='submit')
         
         # send e-mails
-        sendStatusMail(self.context)
+        #sendStatusMail(self.context)
         
         self.request.set('disable_border', 1)
     
@@ -159,7 +159,7 @@ class StatusMail(grok.View):
 def workflowTransitionHandler(faborder, event):
     """event-handler for workflow transitions on IFabOrder instances
     """
-    if event.action == 'complete':
+    if event.action in ('submit', 'complete'):
         sendStatusMail(faborder)
 
 
