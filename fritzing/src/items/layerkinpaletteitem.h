@@ -56,6 +56,8 @@ public:
 	QString retrieveSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
 	bool isSwappable();
     void setSwappable(bool);
+	bool inRotation();
+	void setInRotation(bool);
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);

@@ -76,7 +76,6 @@ public:
 	void setProp(const QString & prop, const QString & value);
 	const QCursor * getCursor(Qt::KeyboardModifiers);
 	void cursorKeyEvent(Qt::KeyboardModifiers modifiers);
-	bool inRotation();
 
 	/*
 	// for debugging
@@ -113,7 +112,6 @@ protected:
  	bool m_syncSelected;
  	QPointF m_syncMoved;
  	bool m_svg;
-	bool m_inRotation;
 };
 
 

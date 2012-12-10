@@ -195,19 +195,19 @@ bool byOrder(Trace & t1, Trace & t2) {
     return (t1.order < t2.order);
 }
 
-inline double initialCost(QPointF p1, QPointF p2) {
-    //return qAbs(p1.x() - p2.x()) + qAbs(p1.y() - p2.y());
-    return qSqrt(GraphicsUtils::distanceSqd(p1, p2));
-}
-
+/* 
 inline double initialCost(QPoint p1, QPoint p2) {
     //return qAbs(p1.x() - p2.x()) + qAbs(p1.y() - p2.y());
     return qSqrt(GraphicsUtils::distanceSqd(p1, p2));
 }
+*/
 
-inline double aStarCost(QPoint p1, QPoint p2) {
-    //return qAbs(p1.x() - p2.x()) * qAbs(p1.y() - p2.y());
+inline double distanceCost(const QPoint & p1, const QPoint & p2) {
     return GraphicsUtils::distanceSqd(p1, p2);
+}
+
+inline double manhattanCost(const QPoint & p1, const QPoint & p2) {
+    return qMax(qAbs(p1.x() - p2.x()), qAbs(p1.y() - p2.y()));
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -419,6 +419,9 @@ void MazeRouter::start()
 		QMessageBox::warning(NULL, QObject::tr("Fritzing"), QObject::tr("Cannot autoroute: no board (or multiple boards) found"));
 		return;
 	}
+
+    if (isPCBType) m_costFunction = distanceCost;
+    else m_costFunction = manhattanCost;
 
 	m_maximumProgressPart = 1;
 	m_currentProgressPart = 0;
@@ -804,7 +807,7 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
                 DRC::renderOne(masterDoc, &obstaclesImage, routeThing.r);
                 routeThing.grid->init4(0, 0, z, routeThing.grid->x, routeThing.grid->y, obstaclesImage, GridObstacle, false);
                 #ifndef QT_NO_DEBUG
-                    obstaclesImage.save(FolderUtils::getUserDataStorePath("") + QString("/obstacles%1.png").arg(oi));
+                    obstaclesImage.save(FolderUtils::getUserDataStorePath("") + QString("/obstacles%1.png").arg(oi++));
                 #endif
             }
             else {
@@ -825,7 +828,7 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
 	            painter.end();
                 routeThing.grid->init(0, 0, z, routeThing.grid->x, routeThing.grid->y, obstaclesImage, GridObstacle, false);
                 #ifndef QT_NO_DEBUG
-                    obstaclesImage.save(FolderUtils::getUserDataStorePath("") + QString("/obstacles%1.png").arg(oi));
+                    obstaclesImage.save(FolderUtils::getUserDataStorePath("") + QString("/obstacles%1.png").arg(oi++));
                 #endif
             }
 
@@ -839,8 +842,8 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
             result = false;
         }
 
-        //updateDisplay(grid, 0);
-        //if (m_bothSidesNow) updateDisplay(grid, 1);
+        updateDisplay(routeThing.grid, 0);
+        if (m_bothSidesNow) updateDisplay(routeThing.grid, 1);
 
         while (result && subnets.count() > 2) {
             /*
@@ -1028,7 +1031,7 @@ bool MazeRouter::routeNext(bool makeJumper, RouteThing & routeThing, QList< QLis
                     }
                 }
 
-                gridPoint.cost = initialCost(QPoint(gridPoint.x, gridPoint.y), routeThing.gridTarget) + crossLayerCost;
+                gridPoint.cost = /* initialCost(QPoint(gridPoint.x, gridPoint.y), routeThing.gridTarget) + */ crossLayerCost;
                 gridPoint.flags = 0;
                 routeThing.pq.push(gridPoint);                  
             }
@@ -1123,7 +1126,7 @@ void MazeRouter::prepSourceAndTarget(QDomDocument * masterDoc, RouteThing & rout
 
     foreach (QPoint p, sourcePoints) {
         GridPoint gridPoint(p, z);
-        gridPoint.cost = initialCost(p, routeThing.gridTarget) + crossLayerCost;
+        gridPoint.cost = /* initialCost(p, routeThing.gridTarget) + */ crossLayerCost;
         routeThing.pq.push(gridPoint);
     }
 
@@ -1164,7 +1167,7 @@ void MazeRouter::findNearestPair(QList< QList<ConnectorItem *> > & subnets, int 
                 if (jc == ic || jcc == ic) continue;
 
                 QPointF jp = jc->sceneAdjustedTerminalPoint(NULL);
-                double d = initialCost(ip, jp) / m_standardWireWidth;
+                double d = qSqrt(GraphicsUtils::distanceSqd(ip, jp)) / m_standardWireWidth;
                 if (ic->attachedToViewLayerID() != jc->attachedToViewLayerID()) {
                     if (jcc != NULL || icc != NULL) {
                         // may not need a via
@@ -1445,7 +1448,7 @@ void MazeRouter::expandOne(GridPoint & gridPoint, RouteThing & routeThing, int d
     next.cost = cost;
     //updateDisplay(next);
                 
-    next.cost += aStarCost(QPoint(next.x, next.y), routeThing.gridTarget);
+    next.cost += (m_costFunction)(QPoint(next.x, next.y), routeThing.gridTarget);
     routeThing.pq.push(next);
 }
 
@@ -1543,7 +1546,7 @@ void MazeRouter::updateDisplay(Grid * grid, int iz) {
                 case 0:
                     continue;
                 default:
-                    color = 0xffff0000;
+                    color = 0xffff00ff;
                     break;
             }
 

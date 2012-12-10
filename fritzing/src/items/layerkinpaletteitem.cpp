@@ -105,24 +105,6 @@ void LayerKinPaletteItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 	m_layerKinChief->mousePressEvent(this, event);
 }
 
-/*
-void LayerKinPaletteItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) 
-{
-	if (m_layerKinChief->inRotation()) {
-		event->ignore();
-		//m_layerKinChief->mouseMoveEvent(event);
-	}
-}
-
-void LayerKinPaletteItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) 
-{
-	if (m_layerKinChief->inRotation()) {
-		event->ignore();
-		//m_layerKinChief->mouseReleaseEvent(event);
-	}
-}
-*/
-
 void LayerKinPaletteItem::setHidden(bool hide) {
 	ItemBase::setHidden(hide);
 	m_layerKinChief->figureHover();
@@ -197,4 +179,12 @@ bool LayerKinPaletteItem::isSwappable() {
 
 void LayerKinPaletteItem::setSwappable(bool swappable) {
 	m_layerKinChief->setSwappable(swappable);
+}
+
+bool LayerKinPaletteItem::inRotation() {
+	return layerKinChief()->inRotation();
+}
+
+void LayerKinPaletteItem::setInRotation(bool val) {
+    layerKinChief()->setInRotation(val);
 }

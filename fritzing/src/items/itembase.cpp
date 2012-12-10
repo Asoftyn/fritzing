@@ -166,9 +166,7 @@ ItemBase::ItemBase( ModelPart* modelPart, ViewLayer::ViewIdentifier viewIdentifi
 		m_modelPart->addViewItem(this);
 	}
 	m_id = id;
-	m_inactive = m_hidden = false;
-	m_sticky = false;
-	m_canFlipHorizontal = m_canFlipVertical = false;
+	m_canFlipHorizontal = m_canFlipVertical = m_sticky = m_inRotation = m_inactive = m_hidden = false;
 
 	setCursor(*CursorMaster::MoveCursor);
 
@@ -2138,4 +2136,12 @@ void ItemBase::showConnectors(const QStringList & connectorIDs) {
 
 void ItemBase::setItemIsSelectable(bool selectable) {
 	setFlag(QGraphicsItem::ItemIsSelectable, selectable);
+}
+
+bool ItemBase::inRotation() {
+	return m_inRotation;
+}
+
+void ItemBase::setInRotation(bool val) {
+	m_inRotation = val;
 }

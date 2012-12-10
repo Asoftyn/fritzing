@@ -831,7 +831,7 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
                 markSubs(element, "net");
             }
             else {
-                splitSubs(masterDoc, element, "net", treatAs, svgIDs, terminalIDs, itemBases.values(partID), checkIntersection);
+                splitSubs(masterDoc, element, "net", treatAs, svgIDs, terminalIDs, itemBases.values(partID), checkIntersection, keepoutMils);
             }
         }
 
@@ -880,7 +880,7 @@ void DRC::markSubs(QDomElement & root, const QString & mark) {
     }
 }
 
-void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs, const QStringList & terminalIDs, const QList<ItemBase *> & itemBases, bool checkIntersection)
+void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs, const QStringList & terminalIDs, const QList<ItemBase *> & itemBases, bool checkIntersection, double keepoutMils)
 {
     //QString string;
     //QTextStream stream(&string);
@@ -979,13 +979,19 @@ void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark
         QList<QRectF> netRects;
         foreach (QDomElement element, netElements) {
             QString id = element.attribute("id");
-            QRectF r = renderer.matrixForElement(id).mapRect(renderer.boundsOnElement(id));
+            QRectF b = renderer.boundsOnElement(id);
+            // elements have been thickened for keepout, so return to normal size
+            b.adjust(keepoutMils / 2, keepoutMils / 2, -keepoutMils / 2, -keepoutMils / 2);
+            QRectF r = renderer.matrixForElement(id).mapRect(b);         
             netRects << r;
         }
         QList<QRectF> checkRects;
         foreach (QDomElement element, toCheck) {
             QString id = element.attribute("id");
-            QRectF r = renderer.matrixForElement(id).mapRect(renderer.boundsOnElement(id));
+            QRectF b = renderer.boundsOnElement(id);
+            // elements have been thickened for keepout, so return to normal size
+            b.adjust(keepoutMils / 2, keepoutMils / 2, -keepoutMils / 2, -keepoutMils / 2);
+            QRectF r = renderer.matrixForElement(id).mapRect(b);         
             checkRects << r;
             element.setAttribute("id", element.attribute("oldid"));
         }
@@ -999,7 +1005,7 @@ void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark
                 if (sect.isEmpty()) continue;
 
                 double area = sect.width() * sect.height();
-                if ((area > (netr.width() * netr.height() * .75)) && (area > (carea * .25))) {
+                if ((area > (netr.width() * netr.height() * .5)) && (area > (carea * .5))) {
                     checkElement.setAttribute("net", mark1);
                     gotOne = true;
                     break;

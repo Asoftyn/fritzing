@@ -47,6 +47,7 @@ $Date$
 #include "../../commands.h"
 #include "../autorouter.h"
 
+typedef double (*CostFunction)(const QPoint & p1, const QPoint & p2);
 
 struct GridPoint {
     int x, y, z;
@@ -210,6 +211,7 @@ protected:
     QImage * m_displayImage[2];
     QGraphicsPixmapItem * m_displayItem[2];
     bool m_temporaryBoard;
+    CostFunction m_costFunction;
 };
 
 #endif

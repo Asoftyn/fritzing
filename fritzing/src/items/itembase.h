@@ -216,6 +216,8 @@ public:
     class FSvgRenderer * setUpImage(class ModelPart * modelPart, ViewLayer::ViewIdentifier, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, class LayerAttributes &, QString & error);
 	void showConnectors(const QStringList &);
 	void setItemIsSelectable(bool selectable);
+	virtual bool inRotation();
+	virtual void setInRotation(bool);
 
 public:
 	virtual void getConnectedColor(ConnectorItem *, QBrush * &, QPen * &, double & opacity, double & negativePenWidth, bool & negativeOffsetRect);
@@ -349,7 +351,8 @@ protected:
     FSvgRenderer * m_fsvgRenderer;
 	bool m_acceptsMousePressLegEvent;
     bool m_swappable;
-       
+ 	bool m_inRotation;
+      
  protected:
 	static long nextID;
 	static QPointer<class ReferenceModel> TheReferenceModel;

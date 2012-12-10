@@ -58,7 +58,7 @@ static QTransform OriginalTransform;
 PaletteItemBase::PaletteItemBase(ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu ) :
 	ItemBase(modelPart, viewIdentifier, viewGeometry, id, itemMenu)
 {
-	m_inRotation = m_syncSelected = false;
+	m_syncSelected = false;
 	m_offset.setX(0);
 	m_offset.setY(0);
  	m_blockItemSelectedChange = false;
@@ -227,12 +227,12 @@ void PaletteItemBase::mousePressEvent(PaletteItemBase * originalItem, QGraphicsS
 {
 	Q_UNUSED(originalItem);
 
-	m_inRotation = false;
+	setInRotation(false);
 
 	QPointF corner;
 	if (freeRotationAllowed(event->modifiers()) && inRotationLocation(event->scenePos(), event->modifiers(), corner)) {
 		this->saveGeometry();
-		m_inRotation = true;
+		setInRotation(true);
 		RotationCenter = mapToScene(this->boundingRectWithoutLegs().center());
 		RotationAxis = event->scenePos(); 
 		OriginalTransform = this->transform();
@@ -261,7 +261,7 @@ void PaletteItemBase::mousePressEvent(PaletteItemBase * originalItem, QGraphicsS
 
 void PaletteItemBase::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (!m_inRotation) {
+	if (!inRotation()) {
 		ItemBase::mouseMoveEvent(event);
 		return;
 	}
@@ -308,12 +308,12 @@ void PaletteItemBase::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void PaletteItemBase::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (!m_inRotation) {
+	if (!inRotation()) {
 		ItemBase::mouseReleaseEvent(event);
 		return;
 	}
 
-	m_inRotation = false;
+	setInRotation(false);
 	InfoGraphicsView * infoGraphicsView = InfoGraphicsView::getInfoGraphicsView(this);
 	if (infoGraphicsView) {
 		// TODO: doesn't account for scaling
@@ -729,10 +729,6 @@ bool PaletteItemBase::inRotationLocation(QPointF scenePos, Qt::KeyboardModifiers
 	}
 
 	return false;
-}
-
-bool PaletteItemBase::inRotation() {
-	return m_inRotation;
 }
 
 void PaletteItemBase::checkFreeRotation(Qt::KeyboardModifiers modifiers, QPointF scenePos)
