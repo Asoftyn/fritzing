@@ -452,6 +452,9 @@ void MainWindow::pasteAux(bool pasteInPlace)
         m_pcbGraphicsView->setPasting(false);
         m_schematicGraphicsView->setPasting(false);
 	}
+
+
+    m_currentGraphicsView->updateInfoView();
 }
 
 void MainWindow::duplicate() {

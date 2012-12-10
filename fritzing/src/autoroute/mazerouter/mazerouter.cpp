@@ -798,7 +798,7 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
             QList<QDomElement> & netElements = (z == 0 ? routeThing.netElements0 : routeThing.netElements1);
             QList<QDomElement> & notNetElements = (z == 0 ? routeThing.notNetElements0 : routeThing.notNetElements1);
 
-            DRC::splitNetPrep(masterDoc, *(net->net), m_keepoutMils, DRC::NotNet, netElements, alsoNetElements, notNetElements, true, true);
+            DRC::splitNetPrep(masterDoc, *(net->net), DRC::NotNet, netElements, alsoNetElements, notNetElements, true, true);
             foreach (QDomElement element, netElements) {
                 element.setTagName("g");
             }
@@ -863,14 +863,6 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
         }
 
         delete routeThing.grid;
-
-        // restore masterdoc
-        foreach (QDomElement element, routeThing.netElements0) {
-            SvgFileSplitter::forceStrokeWidth(element, 2 * m_keepoutMils, "#000000", false, false);
-        }
-        foreach (QDomElement element, routeThing.netElements1) {
-            SvgFileSplitter::forceStrokeWidth(element, 2 * m_keepoutMils, "#000000", false, false);
-        }
 
         routeThing.netElements0.clear();
         routeThing.netElements1.clear();
@@ -1111,6 +1103,10 @@ void MazeRouter::prepSourceAndTarget(QDomDocument * masterDoc, RouteThing & rout
         element.setTagName("g");
     }
 
+    foreach (QDomElement element, netElements) {
+        SvgFileSplitter::forceStrokeWidth(element, -2 * m_keepoutMils, "#000000", false, false);
+    }
+
     QList<ConnectorItem *> li = subnets.at(routeThing.nearest.i);
     QList<QPoint> sourcePoints = renderSource(masterDoc, z, routeThing.grid, netElements, li, GridSource, true, routeThing.r, true);
 
@@ -1132,6 +1128,10 @@ void MazeRouter::prepSourceAndTarget(QDomDocument * masterDoc, RouteThing & rout
 
     QList<ConnectorItem *> lj = subnets.at(routeThing.nearest.j);
     renderSource(masterDoc, z, routeThing.grid, netElements, lj, GridTarget, true, routeThing.r, false);
+
+    foreach (QDomElement element, netElements) {
+        SvgFileSplitter::forceStrokeWidth(element, 2 * m_keepoutMils, "#000000", false, false);
+    }
 
     //updateDisplay(grid, z);
 

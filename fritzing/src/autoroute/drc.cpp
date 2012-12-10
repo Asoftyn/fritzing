@@ -629,7 +629,7 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
             // we have a net;
             m_plusImage->fill(0xffffffff);
             m_minusImage->fill(0xffffffff);
-            splitNet(masterDoc, equi, m_minusImage, m_plusImage, sourceRes, viewLayerSpec, keepoutMils, index++);
+            splitNet(masterDoc, equi, m_minusImage, m_plusImage, sourceRes, viewLayerSpec, index++, keepoutMils);
             
             QHash<ConnectorItem *, QRectF> rects;
             QList<Wire *> wires;
@@ -727,17 +727,25 @@ bool DRC::makeBoard(QImage * image, QRectF & sourceRes) {
     return true;
 }
 
-void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QImage * minusImage, QImage * plusImage, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec, double keepoutMils, int index) {
+void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QImage * minusImage, QImage * plusImage, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec, int index, double keepoutMils) {
     // TreatAsNet marks connectors on the same part even though they are not on the same net
     // in other words, make sure there are no overlaps of connectors on the same part
     QList<QDomElement> net;
     QList<QDomElement> alsoNet;
     QList<QDomElement> notNet;
-    splitNetPrep(masterDoc, equi, keepoutMils, TreatAsNet, net, alsoNet, notNet, false, false);
+    splitNetPrep(masterDoc, equi, TreatAsNet, net, alsoNet, notNet, false, false);
     foreach (QDomElement element, notNet) element.setTagName("g");
     foreach (QDomElement element, alsoNet) element.setTagName("g");
+    foreach (QDomElement element, net) {
+        SvgFileSplitter::forceStrokeWidth(element, -2 * keepoutMils, "#000000", false, false);
+    }
 
     renderOne(masterDoc, plusImage, sourceRes);
+
+    foreach (QDomElement element, net) {
+        SvgFileSplitter::forceStrokeWidth(element, 2 * keepoutMils, "#000000", false, false);
+    }
+
     #ifndef QT_NO_DEBUG
 	    plusImage->save(FolderUtils::getUserDataStorePath("") + QString("/testDRCNet%1_%2.png").arg(viewLayerSpec).arg(index));
     #else
@@ -747,7 +755,6 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
 
     // restore doc without net
     foreach (QDomElement element, net) {
-        SvgFileSplitter::forceStrokeWidth(element, 2 * keepoutMils, "#000000", false, false);
         element.removeAttribute("net");
         element.setTagName("g");
     }
@@ -771,7 +778,7 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
     }
 }
 
-void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, double keepoutMils, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool fill, bool checkIntersection) 
+void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool fill, bool checkIntersection) 
 {
     QMultiHash<QString, QString> partSvgIDs;
     QMultiHash<QString, QString> partTerminalIDs;
@@ -831,7 +838,7 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
                 markSubs(element, "net");
             }
             else {
-                splitSubs(masterDoc, element, "net", treatAs, svgIDs, terminalIDs, itemBases.values(partID), checkIntersection, keepoutMils);
+                splitSubs(masterDoc, element, "net", treatAs, svgIDs, terminalIDs, itemBases.values(partID), checkIntersection);
             }
         }
 
@@ -843,7 +850,6 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
         element.setAttribute("former", element.tagName());
         if (element.attribute("net") == "net") {
             net.append(element);
-            SvgFileSplitter::forceStrokeWidth(element, -2 * keepoutMils, "#000000", false, fill);
         }
         else if (element.attribute("net") == TreatAsNet) {
             alsoNet.append(element);
@@ -880,7 +886,7 @@ void DRC::markSubs(QDomElement & root, const QString & mark) {
     }
 }
 
-void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs, const QStringList & terminalIDs, const QList<ItemBase *> & itemBases, bool checkIntersection, double keepoutMils)
+void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs, const QStringList & terminalIDs, const QList<ItemBase *> & itemBases, bool checkIntersection)
 {
     //QString string;
     //QTextStream stream(&string);
@@ -979,19 +985,13 @@ void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark
         QList<QRectF> netRects;
         foreach (QDomElement element, netElements) {
             QString id = element.attribute("id");
-            QRectF b = renderer.boundsOnElement(id);
-            // elements have been thickened for keepout, so return to normal size
-            b.adjust(keepoutMils / 2, keepoutMils / 2, -keepoutMils / 2, -keepoutMils / 2);
-            QRectF r = renderer.matrixForElement(id).mapRect(b);         
+            QRectF r = renderer.matrixForElement(id).mapRect(renderer.boundsOnElement(id));         
             netRects << r;
         }
         QList<QRectF> checkRects;
         foreach (QDomElement element, toCheck) {
             QString id = element.attribute("id");
-            QRectF b = renderer.boundsOnElement(id);
-            // elements have been thickened for keepout, so return to normal size
-            b.adjust(keepoutMils / 2, keepoutMils / 2, -keepoutMils / 2, -keepoutMils / 2);
-            QRectF r = renderer.matrixForElement(id).mapRect(b);         
+            QRectF r = renderer.matrixForElement(id).mapRect(renderer.boundsOnElement(id));         
             checkRects << r;
             element.setAttribute("id", element.attribute("oldid"));
         }
@@ -1005,7 +1005,8 @@ void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark
                 if (sect.isEmpty()) continue;
 
                 double area = sect.width() * sect.height();
-                if ((area > (netr.width() * netr.height() * .5)) && (area > (carea * .5))) {
+                double netArea = netr.width() * netr.height();
+                if ((area > netArea * .5) && (netArea * 2 > carea)) {
                     checkElement.setAttribute("net", mark1);
                     gotOne = true;
                     break;

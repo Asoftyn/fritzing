@@ -58,7 +58,7 @@ public:
 	bool start(bool showOkMessage);
 
 public:
-    static void splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, double keepout, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool fill, bool checkIntersection);
+    static void splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool fill, bool checkIntersection);
     static void renderOne(QDomDocument * masterDoc, QImage * image, const QRectF & sourceRes);
     static void extendBorder(double keepoutPixels, QImage * image);
 
@@ -80,14 +80,14 @@ public:
 
 protected:
     bool makeBoard(QImage *, QRectF & sourceRes);
-    void splitNet(QDomDocument *, QList<ConnectorItem *> & , QImage * minusImage, QImage * plusImage, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec, double keepout, int index);
+    void splitNet(QDomDocument *, QList<ConnectorItem *> & , QImage * minusImage, QImage * plusImage, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec, int index, double keepoutMils);
     void updateDisplay();
 	bool startAux(QString & message, QStringList & messages, QList<CollidingThing *> &);
     CollidingThing * findItemsAt(QList<QPointF> &, ItemBase * board, const LayerList & viewLayerIDs, double keepout, double dpi, bool skipHoles, ConnectorItem * already);
 
 protected:
     static void markSubs(QDomElement & root, const QString & mark);
-    static void splitSubs(QDomDocument *, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs,  const QStringList & terminalIDs, const QList<ItemBase *> &, bool checkIntersection, double keepoutMils);
+    static void splitSubs(QDomDocument *, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs,  const QStringList & terminalIDs, const QList<ItemBase *> &, bool checkIntersection);
 	
 protected:
 	class PCBSketchWidget * m_sketchWidget;
