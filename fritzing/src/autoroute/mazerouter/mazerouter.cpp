@@ -34,7 +34,8 @@ $Date$
 //      schematic view
 //          use a different cost function: cost is manhattandistance + penalty for direction changes
 //          netlabels are the equivalent of jumpers. Use successive numbers for the labels.
-//          connector terminals
+//
+//      remove terminal ids just once at make master time?
 //
 //      net reordering/rip-up-and-reroute
 //          is there a better way than move back by one?
@@ -46,6 +47,8 @@ $Date$
 //
 //      many examples too close to the border
 //          shift-register-2x, weckerino
+//
+//      put drawlines in extendborder
 //     
 //      when converting to vector, must check that diagonals are clear
 //          handle this at traceback time? 
@@ -1197,7 +1200,7 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * g
         }
     }
 
-    QImage image(grid->x, grid->y, QImage::Format_Mono);
+    QImage image(grid->x * 4, grid->y * 4, QImage::Format_Mono);
     image.fill(0xffffffff);
     QMultiHash<QString, QString> partIDs;
     QRectF itemsBoundingRect;
@@ -1223,7 +1226,7 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * g
     static int rsi = 0;
 	image.save(FolderUtils::getUserDataStorePath("") + QString("/rendersource%1.png").arg(rsi++));
 #endif
-    return grid->init(x1, y1, z, x2 - x1, y2 - y1, image, value, collectPoints);
+    return grid->init4(x1, y1, z, x2 - x1, y2 - y1, image, value, collectPoints);
 }
 
 QList<GridPoint> MazeRouter::route(RouteThing & routeThing, int & viaCount)

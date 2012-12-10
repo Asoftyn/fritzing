@@ -861,7 +861,7 @@ void DRC::renderOne(QDomDocument * masterDoc, QImage * image, const QRectF &) {
 	QPainter painter;
 	painter.begin(image);
 	painter.setRenderHint(QPainter::Antialiasing, false);
-    //painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, false);
 	renderer.render(&painter /*, sourceRes */);
 	painter.end();
 }
@@ -999,7 +999,7 @@ void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & mark
                 if (sect.isEmpty()) continue;
 
                 double area = sect.width() * sect.height();
-                if ((area > netr.width() * netr.height() / 2) && (area > carea / 2)) {
+                if ((area > (netr.width() * netr.height() * .75)) && (area > (carea * .25))) {
                     checkElement.setAttribute("net", mark1);
                     gotOne = true;
                     break;
