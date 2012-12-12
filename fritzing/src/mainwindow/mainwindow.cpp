@@ -747,7 +747,7 @@ SketchToolButton *MainWindow::createFlipButton(SketchAreaWidget *parent) {
 }
 
 SketchToolButton *MainWindow::createAutorouteButton(SketchAreaWidget *parent) {
-	SketchToolButton *autorouteButton = new SketchToolButton("Autoroute",parent, m_autorouteAct);
+	SketchToolButton *autorouteButton = new SketchToolButton("Autoroute",parent, m_newAutorouteAct);
 	autorouteButton->setText(tr("Autoroute"));
 
 	return autorouteButton;

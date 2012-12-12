@@ -33,7 +33,6 @@ $Date$
 #include "../debugdialog.h"
 #include "../waitpushundostack.h"
 #include "../help/aboutbox.h"
-#include "../autoroute/cmrouter/cmrouter.h"
 #include "../autoroute/autorouteprogressdialog.h"
 #include "../items/virtualwire.h"
 #include "../items/jumperitem.h"

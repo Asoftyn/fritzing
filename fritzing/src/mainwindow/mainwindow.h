@@ -295,7 +295,6 @@ protected slots:
 	void setInfoViewOnHover(bool infoViewOnHover);
 	void updateItemMenu();
 
-	void autoroute();
 	void newAutoroute();
 	void orderFab();
 	void activeLayerTop();
@@ -546,7 +545,6 @@ protected:
 	virtual QWidget * currentTabWidget();
 	virtual bool activeLayerWidgetAlwaysOn();
     void copySvg(const QString & path, QFileInfoList & svgEntryInfoList);
-    void autorouteAux(bool useNew);
 
 protected:
 	static void removeActionsStartingAt(QMenu *menu, int start=0);
@@ -726,7 +724,6 @@ protected:
 	QMenu *m_pcbTraceMenu;
 	QMenu *m_schematicTraceMenu;
 	QMenu *m_breadboardTraceMenu;
-	QAction *m_autorouteAct;
 	QAction *m_newAutorouteAct;
 	QAction *m_orderFabAct;
 	QAction *m_activeLayerTopAct;

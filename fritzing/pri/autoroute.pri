@@ -20,7 +20,6 @@
 HEADERS += \
 src/autoroute/autorouter.h \
 src/autoroute/cmrouter/cmrouter.h \
-src/autoroute/cmrouter/priorityqueue.h \
 src/autoroute/autorouteprogressdialog.h \
 src/autoroute/autoroutersettingsdialog.h \
 src/autoroute/panelizer.h  \

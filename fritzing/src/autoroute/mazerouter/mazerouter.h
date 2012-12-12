@@ -48,10 +48,12 @@ $Date$
 #include "../autorouter.h"
 
 typedef double (*CostFunction)(const QPoint & p1, const QPoint & p2);
+typedef quint64 GridValue;
 
 struct GridPoint {
     int x, y, z;
-    double cost;
+    GridValue baseCost;
+    double qCost;
     uchar flags;
 
     bool operator<(const GridPoint&) const;
@@ -116,17 +118,24 @@ struct Nearest {
 };
 
 struct Grid {
-    quint32 * data;
+    GridValue * data;
     int x;
     int y;
     int z;
 
     Grid(int x, int y, int layers);
 
-    quint32 at(int x, int y, int z);
-    void setAt(int x, int y, int z, quint32 value);
-    QList<QPoint> init(int x, int y, int z, int width, int height, const QImage &, quint32 value, bool collectPoints);
-    QList<QPoint> init4(int x, int y, int z, int width, int height, const QImage &, quint32 value, bool collectPoints);
+    GridValue at(int x, int y, int z);
+    void setAt(int x, int y, int z, GridValue value);
+    QList<QPoint> init(int x, int y, int z, int width, int height, const QImage &, GridValue value, bool collectPoints);
+    QList<QPoint> init4(int x, int y, int z, int width, int height, const QImage &, GridValue value, bool collectPoints);
+};
+
+
+struct NetElements {
+    QList<QDomElement> net;
+    QList<QDomElement> alsoNet;
+    QList<QDomElement> notNet;
 };
 
 struct RouteThing {
@@ -139,12 +148,13 @@ struct RouteThing {
     bool makeJumper;
     double jumperDistance;
     GridPoint jumperLocation;
-    QList<QDomElement> netElements0;
-    QList<QDomElement> netElements1;
-    QList<QDomElement> notNetElements0;
-    QList<QDomElement> notNetElements1;
     QPoint gridTarget;
     bool unrouted;
+    NetElements netElements[2];
+    QSet <int> avoids;
+
+    bool isAvoid(GridPoint &);
+    bool isAvoid(int x, int y);
 };
 
 ////////////////////////////////////
@@ -169,13 +179,13 @@ protected:
     bool routeOne(bool makeJumper, Score & currentScore, int netIndex, RouteThing &, QList<NetOrdering> & allOrderings);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, Nearest &);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, Nearest &);
-    QList<QPoint> renderSource(QDomDocument * masterDoc, int z, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, quint32 value, bool clearElements, const QRectF & r, bool collectPoints);
+    QList<QPoint> renderSource(QDomDocument * masterDoc, int z, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, GridValue value, bool clearElements, const QRectF & r, bool collectPoints);
     QList<GridPoint> route(RouteThing &, int & viaCount);
     void expand(GridPoint &, RouteThing &);
     void expandOne(GridPoint &, RouteThing &, int dx, int dy, int dz, bool crossLayer);
     bool viaWillFit(GridPoint &, Grid * grid);
-    QList<GridPoint> traceBack(GridPoint &, Grid * grid, int & viaCount, quint32 destination);
-    GridPoint traceBackOne(GridPoint &, Grid * grid, int dx, int dy, int dz, quint32 val);
+    QList<GridPoint> traceBack(GridPoint, Grid *, int & viaCount);
+    GridPoint traceBackOne(GridPoint &, Grid *, int dx, int dy, int dz);
     void updateDisplay(int iz);
     void updateDisplay(Grid *, int iz);
     void updateDisplay(GridPoint &);
@@ -185,17 +195,19 @@ protected:
     void drawTrace(Trace &);
     void initTraceDisplay();
     void traceObstacles(QList<Trace> & traces, int netIndex, Grid * grid, int ikeepout);
+    void traceAvoids(QList<Trace> & traces, int netIndex, RouteThing & routeThing);
     bool routeNext(bool makeJumper, RouteThing &, QList< QList<ConnectorItem *> > & subnets, Score & currentScore, int netIndex, QList<NetOrdering> & allOrderings);
     void cleanUpNets(NetList &);
     void createTraces(NetList & netList, Score & bestScore, QUndoCommand * parentCommand);
     void removeColinear(QList<GridPoint> & gridPoints);
     void removeSteps(QList<GridPoint> & gridPoints);
     ConnectorItem * findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace);
+    ConnectorItem * findAnchor(GridPoint gp, const QRectF &, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace);
     void addConnectionToUndo(ConnectorItem * from, ConnectorItem * to, QUndoCommand * parentCommand);
     void addViaToUndo(Via *, QUndoCommand * parentCommand);
     void addJumperToUndo(JumperItem *, QUndoCommand * parentCommand);
     void removeStep(int ix, QList<GridPoint> & gridPoints);
-    void clearExpansionForJumper(Grid * grid, quint32 sourceOrTarget, std::priority_queue<GridPoint> & pq);
+    void clearExpansionForJumper(Grid * grid, GridValue sourceOrTarget, std::priority_queue<GridPoint> & pq);
     void routeJumper(int netIndex, RouteThing &, Score & currentScore);
     void jumperWillFit(GridPoint & gridPoint, RouteThing &);
     void insertTrace(Trace & newTrace, int netIndex, Score & currentScore, int viaCount);
@@ -212,6 +224,7 @@ protected:
     QGraphicsPixmapItem * m_displayItem[2];
     bool m_temporaryBoard;
     CostFunction m_costFunction;
+    uint m_traceColors[2];
 };
 
 #endif

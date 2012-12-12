@@ -46,6 +46,13 @@ struct CollidingThing {
     QList<QPointF> atPixels;
 };
 
+struct Markers {
+    QString inSvgID;
+    QString inSvgAndID;
+    QString inTerminalID;
+    QString inNoID;
+    QString outID;
+};
 
 class DRC : public QObject
 {
@@ -58,7 +65,7 @@ public:
 	bool start(bool showOkMessage);
 
 public:
-    static void splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, const QString & treatAs, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool fill, bool checkIntersection);
+    static void splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, const Markers &, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool fill, bool checkIntersection);
     static void renderOne(QDomDocument * masterDoc, QImage * image, const QRectF & sourceRes);
     static void extendBorder(double keepoutPixels, QImage * image);
 
@@ -76,6 +83,8 @@ signals:
 
 public:
     static const QString NotNet;
+    static const QString AlsoNet;
+    static const QString Net;
     static const uchar BitTable[];
 
 protected:
@@ -87,7 +96,7 @@ protected:
 
 protected:
     static void markSubs(QDomElement & root, const QString & mark);
-    static void splitSubs(QDomDocument *, QDomElement & root, const QString & mark1, const QString & mark2, const QStringList & svgIDs,  const QStringList & terminalIDs, const QList<ItemBase *> &, bool checkIntersection);
+    static void splitSubs(QDomDocument *, QDomElement & root, const QString & partID, const Markers &, const QStringList & svgIDs,  const QStringList & terminalIDs, const QList<ItemBase *> &, QHash<QString, QString> & both, bool checkIntersection);
 	
 protected:
 	class PCBSketchWidget * m_sketchWidget;

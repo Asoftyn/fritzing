@@ -373,7 +373,7 @@ bool SchematicSketchWidget::sameElectricalLayer2(ViewLayer::ViewLayerID, ViewLay
 }
 
 double SchematicSketchWidget::getKeepout() {
-	return 3; // 0.1 * GraphicsUtils::SVGDPI;
+	return 0.1 * GraphicsUtils::SVGDPI;
 }
 
 bool SchematicSketchWidget::acceptsTrace(const ViewGeometry & viewGeometry) {
