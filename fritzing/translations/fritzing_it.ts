@@ -521,7 +521,7 @@ If you intended your custom shape to have cutouts and you did not get the expect
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>and looking at the result with a Gerber viewer application.</source>
+        <source>and checking the resulting contour file with a Gerber viewer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2989,17 +2989,6 @@ Go ahead and revert?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>best so far: %1 unrouted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <source>/%n vias</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message>
         <source>round %1 of:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3023,7 +3012,18 @@ Go ahead and revert?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Last round--routing stopped. Now cleaning up...</source>
+        <source>best so far: %1 of %2 routed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source> with %n vias</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Routing reached round %1. Now cleaning up...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5378,6 +5378,18 @@ is already there, we won&apos;t add it again, right?</source>
     </message>
     <message>
         <source>Part %1 &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fritzing is unable to process the cutouts in this custom PCB shape. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You may need to reload the shape SVG. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fritzing requires that you make cutouts using a shape &apos;subtraction&apos; or &apos;difference&apos; operation in your vector graphics editor.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
