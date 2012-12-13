@@ -2358,8 +2358,8 @@ void MainWindow::hideShowTraceMenu() {
 }
 
 void MainWindow::createTraceMenuActions() {
-	m_newAutorouteAct = new QAction(tr("Autoroute (new)"), this);
-	m_newAutorouteAct->setStatusTip(tr("Autoroute..."));
+	m_newAutorouteAct = new QAction(tr("Autoroute"), this);
+	m_newAutorouteAct->setStatusTip(tr("Autoroute connections..."));
 	m_newAutorouteAct->setShortcut(tr("Shift+Ctrl+A"));
 	connect(m_newAutorouteAct, SIGNAL(triggered()), this, SLOT(newAutoroute()));
 
@@ -2572,7 +2572,7 @@ void MainWindow::newAutoroute() {
 	bool copper0Active = pcbSketchWidget->layerIsActive(ViewLayer::Copper0);
 	bool copper1Active = pcbSketchWidget->layerIsActive(ViewLayer::Copper1);
 
-	AutorouteProgressDialog progress(tr("Autorouting Progress..."), true, true, true, pcbSketchWidget, this);
+	AutorouteProgressDialog progress(tr("Autorouting Progress..."), true, true, true, true, pcbSketchWidget, this);
 	progress.setModal(true);
 	progress.show();
 	QRect pr = progress.frameGeometry();
@@ -2592,6 +2592,7 @@ void MainWindow::newAutoroute() {
 	connect(&progress, SIGNAL(cancel()), autorouter, SLOT(cancel()), Qt::DirectConnection);
 	connect(&progress, SIGNAL(skip()), autorouter, SLOT(cancelTrace()), Qt::DirectConnection);
 	connect(&progress, SIGNAL(stop()), autorouter, SLOT(stopTracing()), Qt::DirectConnection);
+	connect(&progress, SIGNAL(best()), autorouter, SLOT(useBest()), Qt::DirectConnection);
 	connect(&progress, SIGNAL(spinChange(int)), autorouter, SLOT(setMaxCycles(int)), Qt::DirectConnection);
 
 	connect(autorouter, SIGNAL(setMaximumProgress(int)), &progress, SLOT(setMaximum(int)), Qt::DirectConnection);
@@ -3716,7 +3717,7 @@ void MainWindow::newDesignRulesCheck(bool showOkMessage)
 	bool copper0Active = pcbSketchWidget->layerIsActive(ViewLayer::Copper0);
 	bool copper1Active = pcbSketchWidget->layerIsActive(ViewLayer::Copper1);
 
-	AutorouteProgressDialog progress(tr("DRC Progress..."), true, false, false, pcbSketchWidget, this);
+	AutorouteProgressDialog progress(tr("DRC Progress..."), true, false, false, false, pcbSketchWidget, this);
 	progress.setModal(true);
 	progress.show();
 	QRect pr = progress.frameGeometry();

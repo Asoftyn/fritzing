@@ -1077,18 +1077,8 @@ void DRC::extendBorder(double keepout, QImage * image) {
 
     int h = image->height();
     int w = image->width();
-    for (int x = 0; x < w; x++) {
-        for (int k = 0; k < keepout; k++) {
-            image->setPixel(x, k, 0);
-            image->setPixel(x, h - k - 1, 0);
-        }
-    }
     int ikeepout = qCeil(keepout);
     for (int y = 0; y < h; y++) {
-        for (int k = 0; k < keepout; k++) {
-            image->setPixel(k, y, 0);
-            image->setPixel(w - k - 1, y, 0);
-        }
         for (int x = 0; x < w; x++) {
             if (copy.pixel(x, y) != 0xff000000) {
                 continue;

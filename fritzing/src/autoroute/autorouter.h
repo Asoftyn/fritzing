@@ -72,6 +72,7 @@ public slots:
 	virtual void cancel();
 	virtual void cancelTrace();
 	virtual void stopTracing();
+    virtual void useBest();
 	void setMaxCycles(int);
 
 signals:
@@ -91,6 +92,7 @@ protected:
 	bool m_cancelled;
 	bool m_cancelTrace;
 	bool m_stopTracing;
+    bool m_useBest;
 	bool m_bothSidesNow;
 	int m_maximumProgressPart;
 	int m_currentProgressPart;

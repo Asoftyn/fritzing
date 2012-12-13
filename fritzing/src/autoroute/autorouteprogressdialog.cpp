@@ -58,7 +58,7 @@ void ArrowButton::mousePressEvent(QMouseEvent *event) {
 
 /////////////////////////////////////
 
-AutorouteProgressDialog::AutorouteProgressDialog(const QString & title, bool zoomAndPan, bool stopButton, bool spin, ZoomableGraphicsView * view, QWidget *parent) : QDialog(parent) 
+AutorouteProgressDialog::AutorouteProgressDialog(const QString & title, bool zoomAndPan, bool stopButton, bool bestButton, bool spin, ZoomableGraphicsView * view, QWidget *parent) : QDialog(parent) 
 {
 	Qt::WindowFlags flags = windowFlags();
 	flags ^= Qt::WindowCloseButtonHint;
@@ -136,6 +136,12 @@ AutorouteProgressDialog::AutorouteProgressDialog(const QString & title, bool zoo
 		m_buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Stop Now"));
 		connect(m_buttonBox, SIGNAL(accepted()), this, SLOT(sendStop()));
 	}
+    if (bestButton) {
+        QPushButton * best = new QPushButton(tr("Best So Far"));
+        m_buttonBox->addButton(best, QDialogButtonBox::ActionRole);
+        connect(best, SIGNAL(clicked()), this, SLOT(sendBest()));
+    }
+
 
 	m_buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 	connect(m_buttonBox, SIGNAL(rejected()), this, SLOT(sendCancel()));
@@ -170,6 +176,10 @@ void AutorouteProgressDialog::sendCancel() {
 
 void AutorouteProgressDialog::sendStop() {
 	emit stop();
+}
+
+void AutorouteProgressDialog::sendBest() {
+	emit best();
 }
 
 void AutorouteProgressDialog::closeEvent(QCloseEvent *event)

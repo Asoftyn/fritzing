@@ -128,8 +128,9 @@ struct Grid {
     GridValue at(int x, int y, int z);
     void setAt(int x, int y, int z, GridValue value);
     QList<QPoint> init(int x, int y, int z, int width, int height, const QImage &, GridValue value, bool collectPoints);
-    QList<QPoint> init4(int x, int y, int z, int width, int height, const QImage &, GridValue value, bool collectPoints);
+    QList<QPoint> init4(int x, int y, int z, int width, int height, const QImage *, GridValue value, bool collectPoints);
     void clear();
+    void free();
 };
 
 
@@ -143,7 +144,6 @@ struct RouteThing {
     QRectF r;
     QList<ViewLayer::ViewLayerSpec> layerSpecs;
     int ikeepout;
-    Grid * grid;
     Nearest nearest;
     std::priority_queue<GridPoint> pq;
     bool makeJumper;
@@ -154,8 +154,8 @@ struct RouteThing {
     NetElements netElements[2];
     QSet <int> avoids;
 
-    bool isAvoid(GridPoint &);
-    bool isAvoid(int x, int y);
+    bool isAvoid(GridPoint &, Grid *);
+    bool isAvoid(int x, int y, Grid *);
 };
 
 ////////////////////////////////////
@@ -176,7 +176,7 @@ protected:
     int findPinsWithin(QList<ConnectorItem *> * net);
     bool makeBoard(QImage *, double keepout, const QSizeF gridSize);
     bool makeMasters(QString &);
-	bool routeNets(NetList &, bool makeJumper, Score & currentScore, QImage * boardImage, const QSizeF gridSize, QList<NetOrdering> & allOrderings);
+	bool routeNets(NetList &, bool makeJumper, Score & currentScore, const QSizeF gridSize, QList<NetOrdering> & allOrderings);
     bool routeOne(bool makeJumper, Score & currentScore, int netIndex, RouteThing &, QList<NetOrdering> & allOrderings);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, Nearest &);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, Nearest &);
@@ -220,12 +220,16 @@ protected:
     double m_keepoutGrid;
     int m_halfGridViaSize;
     int m_halfGridJumperSize;
+    double m_gridPixels;
     double m_standardWireWidth;
     QImage * m_displayImage[2];
+    QImage * m_boardImage;
+    QImage * m_spareImage;
     QGraphicsPixmapItem * m_displayItem[2];
     bool m_temporaryBoard;
     CostFunction m_costFunction;
     uint m_traceColors[2];
+    Grid * m_grid;
 };
 
 #endif

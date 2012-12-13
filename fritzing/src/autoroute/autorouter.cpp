@@ -44,7 +44,7 @@ $Date$
 Autorouter::Autorouter(PCBSketchWidget * sketchWidget)
 {
 	m_sketchWidget = sketchWidget;
-	m_stopTracing = m_cancelTrace = m_cancelled = false;
+	m_useBest = m_stopTracing = m_cancelTrace = m_cancelled = false;
 }
 
 Autorouter::~Autorouter(void)
@@ -115,6 +115,10 @@ void Autorouter::cancelTrace() {
 
 void Autorouter::stopTracing() {
 	m_stopTracing = true;
+}
+
+void Autorouter::useBest() {
+	m_useBest = m_stopTracing = true;
 }
 
 void Autorouter::initUndo(QUndoCommand * parentCommand) 
