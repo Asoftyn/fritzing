@@ -129,6 +129,7 @@ struct Grid {
     void setAt(int x, int y, int z, GridValue value);
     QList<QPoint> init(int x, int y, int z, int width, int height, const QImage &, GridValue value, bool collectPoints);
     QList<QPoint> init4(int x, int y, int z, int width, int height, const QImage &, GridValue value, bool collectPoints);
+    void clear();
 };
 
 
