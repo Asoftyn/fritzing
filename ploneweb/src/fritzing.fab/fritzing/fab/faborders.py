@@ -131,7 +131,7 @@ class CurrentOrdersCSV(grok.View):
                     sketch.copies,
                     "",
                     len(sketch.boards),
-                    '%.2f' % sketch.area,
+                    '%.2f' % (sketch.area * sketch.copies),
                     '%.2f' % (sketch.copies * sketch.area * order.pricePerSquareCm + 4.0),
                     "",
                     "",
@@ -203,6 +203,8 @@ class PayPalIpn(grok.View):
     grok.name('paypal_ipn')
     grok.require('zope2.View')
     grok.context(IFabOrders)
+
+    sample_ipn = "mc_gross=19.95&protection_eligibility=Eligible&address_status=confirmed&payer_id=LPLWNMTBWMFAY&tax=0.00&address_street=1+Main+St&payment_date=20%3A12%3A59+Jan+13%2C+2009+PST&payment_status=Completed&charset=windows-1252&address_zip=95131&first_name=Test&mc_fee=0.88&address_country_code=US&address_name=Test+User&notify_version=2.6&custom=&payer_status=verified&address_country=United+States&address_city=San+Jose&quantity=1&verify_sign=AtkOfCXbDm2hu0ZELryHFjY-Vb7PAUvS6nMXgysbElEn9v-1XcmSoGtf&payer_email=gpmac_1231902590_per%40paypal.com&txn_id=61E67681CH3238416&payment_type=instant&last_name=User&address_state=CA&receiver_email=order@ixds.de&payment_fee=0.88&receiver_id=S8XGHLYDW9T3S&txn_type=express_checkout&item_name=&mc_currency=USD&item_number=&residence_country=US&test_ipn=1&handling_amount=0.00&transaction_subject=&payment_gross=19.95&shipping=5.30"
     
     def verify_ipn(self, data):
         """ verify payment notification
@@ -223,26 +225,14 @@ class PayPalIpn(grok.View):
         # verify validity
         error_msg = "could not verify PayPal IPN: " + str(data)
         if not status == "VERIFIED":
-            return False, "Wrong status - " + error_msg
+            return None, "Wrong status - " + error_msg
         if not data["receiver_email"].lower() == faborders.paypalEmail.lower():
-            return False, "Wrong receiver_email - " + error_msg
-        # doesn't seem to get sent:
-        #if not data["receiver_id"] == faborders.paypalAccountId:
-        #    return False, "Wrong receiver_id - " + error_msg
+            return None, "Wrong receiver_email - " + error_msg
         if not data["item_name"].lower() == "fritzing fab order":
-            return False, "Wrong item_name - " + error_msg
-        if not data["payment_status"].lower() == "completed":
-            # TODO: check for pending_reason
-            return False, "Wrong payment_status - " + error_msg
+            return None, "Wrong item_name - " + error_msg
         if not data["mc_currency"] == "EUR":
-            return False, "Wrong mc_currency - " + error_msg
+            return None, "Wrong mc_currency - " + error_msg
 
-        return True, "PayPal IPN verified: " + str(data)
-
-
-    def process_ipn(self, data):
-        """ process payment
-        """
         # find associated order
         catalog = getToolByName(self.context, 'portal_catalog')
         query = {
@@ -251,26 +241,40 @@ class PayPalIpn(grok.View):
         }
         results = catalog.unrestrictedSearchResults(query)
         if len(results) <> 1:
-            return False, "Could not find fab order " + data['item_number1']
+            return None, "Could not find fab order - " + error_msg
         faborder = results[0]._unrestrictedGetObject()
 
-        # check that payment hasn't been processed yet
-        if faborder.paypalId <> data['txn_id']:
-            faborder.paypalId = data['txn_id']
-        else:
-            return False, "Payment " + data['txn_id'] + " already received"
+        return faborder, "PayPal IPN verified"
+
+
+    def process_ipn(self, faborder, data):
+        """ process payment
+        """
+
+        # check payment status
+        if not data["payment_status"].lower() == "completed":
+            # TODO: check for pending_reason
+            msg = "Payment incomplete: status " + data["payment_status"]
+            faborder.paymentMsg = msg
+            return False, msg
 
         # check that paymentAmount is correct
         if faborder.priceTotalBrutto <> data['mc_gross']:
-            return False, "PayPal IPN price does not match: " + data['mc_gross']
+            msg = "Payment sum does not match: Received " + data['mc_gross'] + \
+                " instead of " + faborder.priceTotalBrutto
+            faborder.paymentMsg = msg
+            return False, msg
 
         # update order
-        faborder.paid = True
+        if data['txn_id'] == faborder.paymentId:
+            return True, "Payment already processed"
+        else:
+            faborder.paymentId = data['txn_id']
 
         portal_workflow = getToolByName(self, 'portal_workflow')
         review_state = portal_workflow.getInfoFor(faborder, 'review_state')
         if review_state <> 'open':
-            return False, "Order status not open, instead " + review_state
+            return True, "Order is already " + review_state
         # Change workflow state.  Don't use portal_workflow.doActionFor but
         # portal_workflow._invokeWithNotification to avoid security checks:
         wfs = portal_workflow.getWorkflowsFor(faborder)
@@ -280,27 +284,29 @@ class PayPalIpn(grok.View):
         faborder.reindexObjectSecurity()
         review_state = portal_workflow.getInfoFor(faborder, 'review_state')
         if review_state <> 'in_process':
-            return False, "Could not set order status to in_process"
+            msg = "Could not set order status from " + faborder.review_state + " to in_process"
+            faborder.paymentMsg = msg
+            return False, msg
 
-        return True, "PayPal transaction " + data['txn_id'] + " for order " + faborder.id + " successfully processed"        
+        faborder.paymentMsg = "PayPal transaction " + data['txn_id'] + " successfully processed"
+        return True, msg        
 
 
     def update(self):
         data = self.request.form
 
-        verified, msg = self.verify_ipn(data)
-        if not verified:
+        faborder, msg = self.verify_ipn(data)
+        if not faborder:
             logger.error(msg)
             return msg
         
-        processed, msg = self.process_ipn(data)
+        processed, msg = self.process_ipn(faborder, data)
         if not processed:
             logger.error(msg)
             return msg
-
-        # TODO show status message to customer
-        logger.info(msg)
-        return msg
+        else:
+            logger.info(msg)
+            return msg
 
     
     def render(self):

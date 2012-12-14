@@ -29,7 +29,6 @@
                     <th>price</th>
                     <th>paid</th>
                     <th>checked</th>
-                    <th>invoiced</th>
                     <th>publishable</th>
                     <th>username</th>
                     <th>address</th>
@@ -57,9 +56,8 @@
                           <td tal:content="python:len(sketch.boards)">boards</td>
                           <td tal:content="python: '%.2f' % (sketch.copies * sketch.area)">size</td>
                           <td tal:content="python: '%.2f' % (sketch.copies * sketch.area * order.pricePerSquareCm + 4.0)">price</td>
-                          <td><span tal:condition="order/paid" tal:replace="order/paid | string:error"/></td>
-                          <td><span tal:condition="order/checked" tal:replace="order/checked | string:error"/></td>
-                          <td><span tal:condition="order/invoiced" tal:replace="order/invoiced | string:error"/></td>
+                          <td><span tal:replace="order/paymentType | string:error"/> <span tal:replace="order/paymentId | string:error"/></td>
+                          <td><span tal:condition="sketch/checked" tal:replace="sketch/checked | string:error"/></td>
                           <td><span tal:condition="sketch/publishable" tal:replace="sketch/publishable | string:error"/></td>
                           <td><a tal:attributes="href string:${portal_url}/author/${order/getOwner}" tal:content="order/getOwner | string:error">owner</a></td>
                           <td>

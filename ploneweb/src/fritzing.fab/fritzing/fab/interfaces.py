@@ -25,13 +25,19 @@ class ISketch(form.Schema):
         min = 1,
         default = 1)
 
-    form.omitted('publishable')
+    form.omitted('check')
     publishable = Bool(
         title=_(u"Publish in project gallery"),
         description=_(u"Make this project visible in the public gallery"),
         default = False,
-        required = False
-    )
+        required = False)
+
+    form.omitted('check')
+    checked = Bool(
+        title=_(u"Quality checked"),
+        description=_(u"The checking status of this sketch"),
+        default = False,
+        required = False)
     
     form.omitted('check')
     check = Bool(
@@ -73,34 +79,34 @@ class IFabOrder(form.Schema):
     
     shippingFirstName = TextLine(
         title = _(u"First Name"),
-        description = u''
-    )
+        description = u'')
+
     shippingLastName = TextLine(
         title = _(u"Last Name"),
-        description = u''
-    )
+        description = u'')
+
     shippingCompany = TextLine(
         title = _(u"Company"),
         description = _(u"optional"),
-        required = False
-    )
+        required = False)
+
     shippingStreet = TextLine(
         title = _(u"Street and Number"),
-        description = u''
-    )
+        description = u'')
+
     shippingAdditional = TextLine(
         title = _(u"Additional info"),
         description = _(u"optional"),
-        required = False
-    )
+        required = False)
+
     shippingCity = TextLine(
         title = _(u"City"),
-        description = u''
-    )
+        description = u'')
+
     shippingZIP = TextLine(
         title = _(u"ZIP"),
-        description = u''
-    )
+        description = u'')
+
     shippingCountry = Choice(
         title = _(u"Country"),
         description = u'',
@@ -337,15 +343,13 @@ class IFabOrder(form.Schema):
             SimpleTerm(value=u'ZM', title=_(u'Zambia')),
             SimpleTerm(value=u'ZW', title=_(u'Zimbabwe')),
         ]),
-        default = 'DE'
-    )
+        default = 'DE')
 
     shippingExpress = Bool(
         title=_(u"Express Shipping"),
         description=_(u"Ships with super-fast DHL express (more info under ''Pricing')"),
         default = False,
-        required = False
-    )
+        required = False)
 
     email = TextLine(
         title = _(u"E-Mail"),
@@ -371,8 +375,7 @@ class IFabOrder(form.Schema):
         'taxesPercent', 
         'taxes', 
         'priceTotalNetto', 
-        'priceTotalBrutto'
-    )
+        'priceTotalBrutto')
     
     telephone = ASCIILine(
         title = _(u"Telephone number"),
@@ -447,34 +450,25 @@ class IFabOrder(form.Schema):
     productionRound = Int(
         title=_(u"Production Round #"),
         description=_(u"The production round that this order belongs to"),
-        required = False
-    )
-
-    paid = Bool(
-        title=_(u"Payment Received"),
-        description=_(u"The payment status of this order"),
-        default = False,
-        required = False
-    )
-
-    paypalId = TextLine(
-        title = _(u"PayPal Transaction Id"),
-        description = _(u"The payment id associated with this order"),
         required = False)
 
-    checked = Bool(
-        title=_(u"Quality checked"),
-        description=_(u"The checking status of this order"),
-        default = False,
-        required = False
-    )
+    paymentType = Choice(
+        title = _(u"Payment Type"),
+        description = _(u"How would you like to pay?"),
+        vocabulary = SimpleVocabulary([
+            SimpleTerm(value = u'paypal', title = _(u'PayPal')),
+            SimpleTerm(value = u'transfer', title = _(u'Bank Transfer')),
+        ]))
 
-    invoiced = Bool(
-        title=_(u"Invoice sent"),
-        description=_(u"The invoicing status of this order"),
-        default = False,
-        required = False
-    )
+    paymentId = TextLine(
+        title = _(u"Payment ID"),
+        description = _(u"The PayPal transaction number or other accounting number associated with this order"),
+        required = False)
+
+    paymentStatusMsg = TextLine(
+        title = _(u"Payment Status Message"),
+        description = _(u"Additional information about the payment status"),
+        required = False)
 
 
 class IFabOrders(form.Schema):
@@ -488,21 +482,39 @@ class IFabOrders(form.Schema):
     description = Text(
         title = _(u"Order-folder description"),
         description = _(u"The description (also subtitle) of this fab-instance"))
-    
-    salesEmail = TextLine(
-        title = _(u"Sales e-mail"),
-        description = _(u"Order status changes are e-mailed to this address"),
-        default = _(u"fab@fritzing.org"),
-        constraint = checkEMail)
 
-    paypalEmail = TextLine(
-        title = _(u"Paypal e-mail"),
-        description = _(u"The mail address use by the PayPal seller account"),
-        constraint = checkEMail)
+    form.fieldset(
+        'productionRound', 
+        label=_(u"Current Production Round"),
+        fields=['currentProductionRound', 'currentProductionOpeningDate',
+            'nextProductionClosingDate', 'nextProductionDelivery'])
+
+    currentProductionRound = Int(
+        title = _(u"Current production round ID"),
+        description = _(u"Identification number of the current production round"),
+        required = False)
     
-    paypalAccountId = TextLine(
-        title = _(u"PayPal account id"),
-        description = _(u"The Paypal account's seller id"))
+    currentProductionOpeningDate = Datetime(
+        title = _(u"Current production opening date"),
+        description = _(u"Orders sent in after this date will be listed as current orders"),
+        required = False)
+
+    nextProductionClosingDate = Datetime(
+        title = _(u"Current production closing date"),
+        description = _(u"Orders must be sent in before this date to be included in the next production run"),
+        required = False)
+
+    nextProductionDelivery = Date(
+        title = _(u"Current production delivery date"),
+        description = _(u"Estimated delivery date of PCBs from the next production"),
+        required = False)
+
+    form.fieldset(
+        'fees', 
+        label=_(u"Fees"),
+        fields=['shippingGermany', 'shippingGermanyExpress',
+            'shippingEU', 'shippingEuExpress', 'shippingWorld', 'shippingWorldExpress',
+            'taxesGermany', 'taxesEU', 'taxesWorld'])
 
     shippingGermany = Float(
         title = _(u"Shipping Costs Germany"),
@@ -557,27 +569,23 @@ class IFabOrders(form.Schema):
         description = _(u"The taxes for outside of the EU in Percent"),
         min = 0.0,
         default = 0.0)
+
+    form.fieldset(
+        'general', 
+        label=_(u"General Settings"),
+        fields=['salesEmail', 'paypalEmail'])
+
+    salesEmail = TextLine(
+        title = _(u"Sales e-mail"),
+        description = _(u"Order status changes are e-mailed to this address"),
+        default = _(u"fab@fritzing.org"),
+        constraint = checkEMail)
+
+    paypalEmail = TextLine(
+        title = _(u"Paypal e-mail"),
+        description = _(u"The mail address use by the PayPal seller account"),
+        constraint = checkEMail)
     
-    nextProductionDelivery = Date(
-        title = _(u"Next production delivery date"),
-        description = _(u"Estimated delivery date of PCBs from the next production"),
-        required = False)
-    
-    nextProductionClosingDate = Datetime(
-        title = _(u"Next production closing date"),
-        description = _(u"Orders must be sent in before this date to be included in the next production run"),
-        required = False)
-
-    currentProductionRound = Int(
-        title = _(u"Current production round ID"),
-        description = _(u"Identification number of the current production round"),
-        required = False)
-
-    currentProductionOpeningDate = Datetime(
-        title = _(u"Current production opening date"),
-        description = _(u"Orders sent in after this date will be listed as current orders"),
-        required = False)
-
     editableContent = RichText(
         title = _(u"Order-folder text"),
         description = _(u"The text of this fab-instance"))

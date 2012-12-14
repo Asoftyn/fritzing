@@ -24,16 +24,11 @@
             <h1 tal:condition="python: not view.isStateId(context, 'open')" class="documentFirstHeading">Review your Fritzing Fab order <span tal:replace="context/id | nothing"/></h1>
             <p>Thank you for ordering through Fritzing Fab, the easy and professional PCB production service.</p>
             <p tal:condition="python: view.isStateId(context, 'open')">
-              If you submit your sketch by <span class="important" tal:content="python:context.nextProductionClosingDate.strftime('%B %d')">...</span>, 
-              we will ship your boards to you on <span class="important" tal:content="python:context.nextProductionDelivery.strftime('%B %d')">...</span>.<br />
-              Note, submitted orders must be completed (and paid for) by <span class="important">
-              <span tal:replace="python:context.nextProductionClosingDate.strftime('%H:%M')" /> (Berlin time) on 
-              <span tal:replace="python:context.nextProductionClosingDate.strftime('%B %d')" /></span> to be produced.
+              If you submit your sketch by <strong class="important" tal:content="python:context.nextProductionClosingDate.strftime('%B %d')"/>
+              we will ship your boards to you on <strong class="important" tal:content="python:context.nextProductionDelivery.strftime('%B %d')"/>.
             </p>
             <p tal:condition="python: view.isStateId(context, 'in_process')">
-              If your payment has come through by <span tal:replace="python:context.nextProductionClosingDate.strftime('%H:%M')" /> (Berlin time) on 
-              <span class="important" tal:replace="python:context.nextProductionClosingDate.strftime('%B %d')"/>, 
-              we will ship your boards to you on <span class="important" tal:content="python:context.nextProductionDelivery.strftime('%B %d')">...</span>!
+              Your boards will be shipped to you on <strong class="important" tal:content="python:context.nextProductionDelivery.strftime('%B %d')"/>!
             </p>
           </div>
         </div>
@@ -197,6 +192,7 @@
               
               <div tal:condition="python:(view.isStateId(context, 'open'))" tal:omit-tag="">
                 <div class="checkout">
+                  <p tal:content="context/paymentMsg | nothing"/>
                   <p>
                     <span class="paypalCheckoutCaption">PayPal Checkout:</span>
                     <a class="paypalCheckoutLink" tal:attributes="href string:${context/absolute_url}/paypal_checkout">
@@ -222,12 +218,7 @@
                   <p>
                     Your order is submitted!
                   </p>
-                  <p>
-                    If you think that your PayPal payment has not succeeded, 
-                    <a tal:attributes="href string:${context/absolute_url}/paypal_checkout">you can try paying again.</a><br/>
-                    If you have trouble paying with PayPal, or don't want to use it, please 
-                    <a target="_blank" tal:attributes="href string:${navroot}/contact-info">contact us</a>.
-                  </p>
+                  <p tal:content="context/paymentMsg | nothing"/>
                   <div class="clear"></div>
                 </div>
                 

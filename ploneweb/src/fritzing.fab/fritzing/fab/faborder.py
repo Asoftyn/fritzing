@@ -88,8 +88,10 @@ class CheckoutFail(grok.View):
     label = _(u"Checkout")
     description = _(u"Order checkout")
     
-    def render(self):
+    def render(self):       
         faborderURL = self.context.absolute_url()
+        IStatusMessage(self.request).addStatusMessage(
+            _(u"Your payment was not completed. If you cannot solve the problem, please don't hesitate to contact us."), "warning")
         self.request.response.redirect(faborderURL)
 
 
@@ -105,6 +107,8 @@ class CheckoutSuccess(grok.View):
     
     def render(self):
         faborderURL = self.context.absolute_url()
+        IStatusMessage(self.request).addStatusMessage(
+            _(u"Your payment was successful!"), "info")
         self.request.response.redirect(faborderURL)
 
 
@@ -239,7 +243,6 @@ class AddForm(dexterity.AddForm):
         sketch.title = data['orderItem'].filename
         sketch.orderItem = data['orderItem']
         sketch.copies = data['copies']
-        sketch.check = True
         return sketch
     
     def add(self, object):
@@ -287,11 +290,13 @@ class SketchUpdateForm(form.EditForm):
                 "If you want to proceed, please contact us to cancel the current order and submit a new one.")
             return
         else:
+            # TODO: set status to "not checked"
             IStatusMessage(self.request).addStatusMessage(
                 _(u"The sketch has been successfully updated."), "info")
             sendSketchUpdateMail(self.aq_parent)
             contextURL = self.context.absolute_url()
             self.request.response.redirect(contextURL)
+
 
     @button.buttonAndHandler(_(u'Cancel'))
     def handleCancel(self, action):
