@@ -31,6 +31,7 @@ $Date$
 #include "../debugdialog.h"
 #include "../viewlayer.h"
 #include "../fsvgrenderer.h"
+#include "../utils/misc.h"
 
 #include <QFile>
 #include <QTextStream>
@@ -259,7 +260,7 @@ QString KicadSchematic2Svg::convertField(const QString & xString, const QString 
 	}
 
 	QFont font;
-	font.setFamily("OCRA");
+	font.setFamily(OCRAFontName);
 	font.setWeight(QFont::Normal);
 	font.setPointSizeF(72.0 * fontSize / GraphicsUtils::StandardFritzingDPI);
 
@@ -313,14 +314,16 @@ QString KicadSchematic2Svg::convertField(const QString & xString, const QString 
 	checkYLimit(brf.top());
 	checkYLimit(brf.bottom());
 
-	QString s = QString("<text x='%1' y='%2' font-size='%3' font-family='OCRA' stroke='none' fill='#000000' text-anchor='%4' %5 %6>%7</text>\n")
+	QString s = QString("<text x='%1' y='%2' font-size='%3' font-family='%8' stroke='none' fill='#000000' text-anchor='%4' %5 %6>%7</text>\n")
 					.arg(x)		
 					.arg(y + (fontSize / 3))		
 					.arg(fontSize)		
 					.arg(anchor)
 					.arg(style)
 					.arg(rotation)
-					.arg(TextUtils::escapeAnd(unquote(text)));		
+					.arg(TextUtils::escapeAnd(unquote(text)))
+                    .arg(OCRAFontName)
+                    ;		
 	if (notName) {
 		s += QString("<line fill='none' stroke='#000000' x1='%1' y1='%2' x2='%3' y2='%4' stroke-width='2' />\n")
 			.arg(brf.left())

@@ -309,7 +309,7 @@ QString Dip::makeBreadboardDipSvg(const QString & expectedFileName)
 					"<path id='slot' fill='#262626' d='M0.56,{{13.58}}v5.83c1.47-0.17,2.62-1.4,2.62-2.92C3.18,{{14.97}},2.04,{{13.75}},0.56,{{13.58}}z'/>\n"
 					"<path id='cover' fill='#303030' d='M0.75,5.46V{{11.45}}c2.38,0.45,4.19,2.53,4.19,5.04c0,2.51-1.8,4.6-4.19,5.05V{{21.55}}h5.0V5.46H0.75z'/>\n"
 					"<circle fill='#212121' cx='6.5' cy='[23.47]' r='2.06'/>\n"
-					"<text id='label' x='6.5' y='{{16.5}}' fill='#e6e6e6' stroke='none' font-family='OCRA' text-anchor='start' font-size='8' >IC</text>\n"
+					"<text id='label' x='6.5' y='{{16.5}}' fill='#e6e6e6' stroke='none' font-family='%5' text-anchor='start' font-size='8' >IC</text>\n"
 
 					"<rect id='connector0pin' x='3.5' y='[28.66]' fill='#8C8C8C' width='3' height='4.34'/>\n"
 					"<rect id='connector0terminal' x='3.5' y='[30.0]' fill='#8C8C8C' width='3' height='3'/>\n"
@@ -336,7 +336,12 @@ QString Dip::makeBreadboardDipSvg(const QString & expectedFileName)
 	// header came from a 300mil dip, so base case is spacing - (increment * 3)
 
 	header = TextUtils::incrementTemplateString(header, 1, spacing - (increment * 3), TextUtils::incMultiplyPinFunction, TextUtils::noCopyPinFunction, NULL);
-	header = header.arg(TextUtils::getViewBoxCoord(header, 3) / 100.0).arg(pins - 1).arg((pins / 2) - 1).arg(pins / 2);
+	header = header
+        .arg(TextUtils::getViewBoxCoord(header, 3) / 100.0)
+        .arg(pins - 1)
+        .arg((pins / 2) - 1)
+        .arg(pins / 2)
+        .arg(OCRAFontName);
 	header.replace("{{", "[");
 	header.replace("}}", "]");
 	header = TextUtils::incrementTemplateString(header, 1, (spacing - (increment * 3)) / 2, TextUtils::incMultiplyPinFunction, TextUtils::noCopyPinFunction, NULL);

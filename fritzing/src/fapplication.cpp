@@ -659,8 +659,7 @@ void FApplication::registerFonts() {
 	registerFont(":/resources/fonts/DroidSans.ttf", true);
 	registerFont(":/resources/fonts/DroidSans-Bold.ttf", false);
 	registerFont(":/resources/fonts/DroidSansMono.ttf", false);
-	//registerFont(":/resources/fonts/ocra10.ttf", true);
-	registerFont(":/resources/fonts/OCRA.otf", true);
+	registerFont(":/resources/fonts/OCRA.ttf", true);
 
 	/*	
 		QFontDatabase database;

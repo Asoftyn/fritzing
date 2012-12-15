@@ -2802,7 +2802,7 @@ bool SketchWidget::draggingWireEnd() {
 		wire = qobject_cast<Wire *>(connectorItem->attachedTo());
 	}
 
-    wire->debugInfo("mouse grabber");
+    // wire->debugInfo("mouse grabber");
 	return wire->draggingEnd();
 }
 

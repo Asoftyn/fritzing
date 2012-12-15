@@ -546,11 +546,12 @@ bool Panelizer::bestFitOne(PanelItem * panelItem, PanelParams & panelParams, QLi
 		double cy = GraphicsUtils::StandardFritzingDPI * (panelItem->y + (h  / 2));
 		cy -= ((strings.count() - 1) * fontSize2 / 2);
 		foreach (QString string, strings) {
-			planePair->layoutSVG += QString("<text x='%1' y='%2' anchor='middle' font-family='OCRA' stroke='none' fill='#000000' text-anchor='middle' font-size='%3'>%4</text>\n")
+			planePair->layoutSVG += QString("<text x='%1' y='%2' anchor='middle' font-family='%5' stroke='none' fill='#000000' text-anchor='middle' font-size='%3'>%4</text>\n")
 				.arg(cx)
 				.arg(cy)
 				.arg(fontSize)
-				.arg(string);
+				.arg(string)
+                .arg(OCRAFontName);
 			cy += fontSize;
 			if (fontSize == fontSize1) fontSize = fontSize2;
 		}
