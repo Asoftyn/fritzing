@@ -16,9 +16,10 @@ except:
 
 from five import grok
 from Acquisition import aq_inner
-
+from AccessControl.SecurityManagement import newSecurityManager, getSecurityManager, setSecurityManager
+from zope.lifecycleevent import ObjectModifiedEvent
+from zope.event import notify
 from plone.directives import dexterity
-
 from plone.memoize.instance import memoize
 from Products.CMFCore.utils import getToolByName
 
@@ -90,7 +91,12 @@ class CurrentOrders(grok.View):
         import getCurrentOrders, encodeFilename, getStateId, getStateTitle, isStateId
 
     def update(self):
-        pass
+        context = aq_inner(self.context)
+
+        self.productionRound = self.request.get('productionRound', None)
+        if not self.productionRound:
+            self.productionRound = context.currentProductionRound
+
 
     def getShippingCountry(self, value):
         return IFabOrder['shippingCountry'].vocabulary.getTerm(value).title     
@@ -109,7 +115,12 @@ class CurrentOrdersCSV(grok.View):
         import getCurrentOrders, encodeFilename
 
     def update(self):
-        pass
+        context = aq_inner(self.context)
+
+        self.productionRound = self.request.get('productionRound', None)
+        if not self.productionRound:
+            self.productionRound = context.currentProductionRound
+
     
     def render(self):
         """All current orders as CSV table
@@ -121,7 +132,7 @@ class CurrentOrdersCSV(grok.View):
         # Header
         writer.writerow(('date', 'order-id', 'filename', 'count', 'optional', 'boards', 'size', 'price', 'paid', 'checked', 'sent', 'invoiced', 'bloggable', 'name', 'e-mail', 'zone'))
         # Content
-        for brain in self.getCurrentOrders(context):
+        for brain in self.getCurrentOrders(context, self.productionRound):
             order = brain.getObject()
             for sketch in order.listFolderContents():
                 writer.writerow((
@@ -163,7 +174,12 @@ class CurrentOrdersZIP(grok.View):
         import getCurrentOrders, encodeFilename
 
     def update(self):
-        pass
+        context = aq_inner(self.context)
+
+        self.productionRound = self.request.get('productionRound', None)
+        if not self.productionRound:
+            self.productionRound = context.currentProductionRound
+
     
     def render(self):
         """All current orders as ZIP file
@@ -177,7 +193,7 @@ class CurrentOrdersZIP(grok.View):
             mode='w',
             compression = compression)
         try:
-            for brain in self.getCurrentOrders(context):
+            for brain in self.getCurrentOrders(context, self.productionRound):
                 order = brain.getObject()
                 for sketch in order.listFolderContents():
                     zf.writestr(
@@ -252,17 +268,19 @@ class PayPalIpn(grok.View):
         """
 
         # check payment status
+        """
         if not data["payment_status"].lower() == "completed":
             # TODO: check for pending_reason
             msg = "Payment incomplete: status " + data["payment_status"]
-            faborder.paymentMsg = msg
+            faborder.paymentStatusMsg = msg
             return False, msg
+        """
 
         # check that paymentAmount is correct
-        if faborder.priceTotalBrutto <> data['mc_gross']:
-            msg = "Payment sum does not match: Received " + data['mc_gross'] + \
-                " instead of " + faborder.priceTotalBrutto
-            faborder.paymentMsg = msg
+        if abs(faborder.priceTotalBrutto - float(data['mc_gross'])) > 0.1:
+            msg = "Payment sum did not match: Received " + data['mc_gross'] + \
+                " instead of " + str(faborder.priceTotalBrutto)
+            faborder.paymentStatusMsg = msg
             return False, msg
 
         # update order
@@ -275,6 +293,8 @@ class PayPalIpn(grok.View):
         review_state = portal_workflow.getInfoFor(faborder, 'review_state')
         if review_state <> 'open':
             return True, "Order is already " + review_state
+        #portal_workflow.doActionFor(faborder, 'submit')
+        
         # Change workflow state.  Don't use portal_workflow.doActionFor but
         # portal_workflow._invokeWithNotification to avoid security checks:
         wfs = portal_workflow.getWorkflowsFor(faborder)
@@ -282,14 +302,16 @@ class PayPalIpn(grok.View):
         portal_workflow._invokeWithNotification(wfs, faborder, 'submit', wf._changeStateOf, 
             (faborder, wf.transitions.get('submit')), {})
         faborder.reindexObjectSecurity()
+        
         review_state = portal_workflow.getInfoFor(faborder, 'review_state')
         if review_state <> 'in_process':
             msg = "Could not set order status from " + faborder.review_state + " to in_process"
-            faborder.paymentMsg = msg
+            faborder.paymentStatusMsg = msg
             return False, msg
 
-        faborder.paymentMsg = "PayPal transaction " + data['txn_id'] + " successfully processed"
-        return True, msg        
+        msg = "PayPal transaction " + data['txn_id'] + " successfully processed"
+        faborder.paymentStatusMsg = msg
+        return True, msg
 
 
     def update(self):
@@ -297,16 +319,14 @@ class PayPalIpn(grok.View):
 
         faborder, msg = self.verify_ipn(data)
         if not faborder:
-            logger.error(msg)
+            logger.error("fritzing.fab PayPal: " + msg)
             return msg
-        
+
         processed, msg = self.process_ipn(faborder, data)
         if not processed:
-            logger.error(msg)
-            return msg
+            logger.error("fritzing.fab PayPal: " + msg)
         else:
-            logger.info(msg)
-            return msg
+            logger.info("fritzing.fab PayPal: " + msg)
 
     
     def render(self):

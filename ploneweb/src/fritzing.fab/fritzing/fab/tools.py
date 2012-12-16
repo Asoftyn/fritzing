@@ -86,21 +86,29 @@ def recalculatePrices(faborder):
     faborder.priceTotalBrutto = faborder.priceTotalNetto + faborder.taxes + faborder.priceShipping
 
 
-def getCurrentOrders(self, faborders):
-    """Get all current orders to be produced with the next batch
+def getCurrentOrders(self, faborders, productionRound=None):
+    """Get all current orders to be produced
+       options: specify an old production round
     """
+    if not productionRound:
+        productionRound = faborders.currentProductionRound
+
     catalog = getToolByName(faborders, 'portal_catalog')
-    start = faborders.currentProductionOpeningDate
-    if not start:
-        start = DateTime.DateTime() - 7
-    end = DateTime.DateTime() + 0.1
+
+    #start = faborders.currentProductionOpeningDate
+    #if not start:
+    #    start = DateTime.DateTime() - 7
+    #end = DateTime.DateTime()
     results = catalog.searchResults({
-        'portal_type': 'faborder', 
-        'created' : {'query':(start, end), 'range': 'min:max'},
+        'portal_type':'faborder', 
+        #'created' : {'query':(start, end), 'range': 'min:max'},
+        'productionRound':int(productionRound),
         'sort_on':'Date',
         'sort_order':'reverse',
-        'review_state': 'in_process'})
+        'review_state':'in_process'})
+    
     return results
+
 
 def sendStatusMail(context, justReturn=False):
     """Sends notification on the order status to the orderer and faborders.salesEmail
@@ -110,6 +118,7 @@ def sendStatusMail(context, justReturn=False):
     
     portal = getSite()
     mail_template = portal.mail_order_status_change
+    faborder = context
     faborders = context.aq_parent
     
     from_address = faborders.salesEmail
@@ -135,7 +144,15 @@ def sendStatusMail(context, justReturn=False):
         state_title = state_title,
         closing_date = closing_date,
         delivery_date = delivery_date,
-        faborder = context,
+        faborder = faborder,
+        faborder_id = faborder.id,
+        faborder_url = faborder.absolute_url(),
+        faborder_items = faborder.listFolderContents(),
+        faborder_price_netto = faborder.priceTotalNetto,
+        faborder_price_brutto = faborder.priceTotalBrutto,
+        faborder_price_shipping = faborder.priceShipping,
+        faborder_taxes = faborder.taxes,
+        faborder_taxes_percent = faborder.taxesPercent,
         ship_to = IFabOrder['shipTo'].vocabulary.getTerm(context.shipTo).title,
         )
     

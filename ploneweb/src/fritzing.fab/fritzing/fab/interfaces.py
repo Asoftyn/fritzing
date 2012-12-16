@@ -3,7 +3,7 @@ from zope.schema import Text, TextLine, ASCIILine, Int, Float, Choice, Bool, Dat
 from z3c.form import validator
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
-from plone.directives import form
+from plone.directives import form, dexterity
 from plone.namedfile.field import NamedBlobFile
 from plone.app.textfield import RichText
 
@@ -25,14 +25,14 @@ class ISketch(form.Schema):
         min = 1,
         default = 1)
 
-    form.omitted('check')
+    dexterity.write_permission(publishable='cmf.ReviewPortalContent')
     publishable = Bool(
         title=_(u"Publish in project gallery"),
         description=_(u"Make this project visible in the public gallery"),
         default = False,
         required = False)
 
-    form.omitted('check')
+    dexterity.write_permission(checked='cmf.ReviewPortalContent')
     checked = Bool(
         title=_(u"Quality checked"),
         description=_(u"The checking status of this sketch"),
@@ -355,6 +355,11 @@ class IFabOrder(form.Schema):
         title = _(u"E-Mail"),
         description = u'',
         constraint = checkEMail)
+    
+    telephone = ASCIILine(
+        title = _(u"Telephone number"),
+        description = u'',
+        required = False)
 
     shipTo = Choice(
         title = _(u"Shipping Area"),
@@ -376,11 +381,6 @@ class IFabOrder(form.Schema):
         'taxes', 
         'priceTotalNetto', 
         'priceTotalBrutto')
-    
-    telephone = ASCIILine(
-        title = _(u"Telephone number"),
-        description = u'',
-        required = False)
     
     area = Float(
         title = _(u"Area"),

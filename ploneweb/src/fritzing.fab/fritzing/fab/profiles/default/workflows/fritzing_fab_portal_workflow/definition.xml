@@ -3,10 +3,10 @@
  <permission>Access contents information</permission>
  <permission>Add portal content</permission>
  <permission>Copy or Move</permission>
+ <permission>Delete objects</permission>
  <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
- <permission>Delete objects</permission>
  <state state_id="private" title="Private">
   <description>Can only be seen and edited by the owner.</description>
   <exit-transition transition_id="publish"/>

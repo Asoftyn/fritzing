@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="fritzing_fab_order_workflow" title="Fritzing Fab Order Workflow" description="Workflow for Fritzing Fab orders." state_variable="review_state" initial_state="open" manager_bypass="False">
+<dc-workflow workflow_id="fritzing_fab_order_workflow" title="Fritzing Fab Order Workflow" description="Workflow for Fritzing Fab orders." state_variable="review_state" initial_state="open" manager_bypass="True">
  <instance-creation-conditions>
    <guard>
     <guard-permission>Add portal content</guard-permission>
    </guard>
  </instance-creation-conditions>
- <permission>Add portal content</permission>
- <permission>View</permission>
- <permission>Modify portal content</permission>
  <permission>Access contents information</permission>
+ <permission>Add portal content</permission>
  <permission>Copy or Move</permission>
  <permission>Delete objects</permission>
  <permission>Manage properties</permission>
+ <permission>Modify portal content</permission>
  <permission>Modify view template</permission>
  <permission>Take ownership</permission>
  <permission>Undo changes</permission>
+ <permission>View</permission>
  <permission>View management screens</permission>
  <state state_id="completed" title="Complete">
   <description>Order processing has been completed.</description>
@@ -179,10 +179,10 @@
  </transition>
  <transition transition_id="submit" title="Submit" new_state="in_process" trigger="USER" before_script="" after_script="">
   <description>Submits the order.</description>
-  
+  <action url="%(content_url)s/content_status_modify?workflow_action=submit" category="workflow" icon="">Process order</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
-   <guard-role>Owner</guard-role>
+   <guard-role>Manager</guard-role>
   </guard>
  </transition>
  <worklist worklist_id="reviewer_queue" title="">

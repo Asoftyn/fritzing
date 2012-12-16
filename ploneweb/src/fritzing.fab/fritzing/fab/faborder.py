@@ -107,8 +107,14 @@ class CheckoutSuccess(grok.View):
     
     def render(self):
         faborderURL = self.context.absolute_url()
-        IStatusMessage(self.request).addStatusMessage(
-            _(u"Your payment was successful!"), "info")
+        portal_workflow = getToolByName(self, 'portal_workflow')
+        review_state = portal_workflow.getInfoFor(self.context, 'review_state')
+        if review_state == 'in_process':
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"Your payment was successful!"), "info")
+        elif review_state == 'open':
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"Your payment was not completed. If you cannot solve the problem, please don't hesitate to contact us."), "warning")
         self.request.response.redirect(faborderURL)
 
 
@@ -187,6 +193,7 @@ def orderModifiedHandler(faborder, event):
         faborder.shipTo = 'eu'
     else:
         faborder.shipTo = 'world'
+
     recalculatePrices(faborder)
 
 
