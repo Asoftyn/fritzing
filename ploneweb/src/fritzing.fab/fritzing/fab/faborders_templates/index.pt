@@ -36,18 +36,22 @@
                 <thead>
                   <tr>
                     <th tal:condition="view/isManager">User</th>
+                    <th>Date</th>
                     <th>Order #</th>
                     <th>Sketches</th>
                     <th>Status</th>
-                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr tal:repeat="item view/listOrders">
                     <td tal:condition="view/isManager">
-                      <p tal:content="item/getOwner | string:error"/>
+                      <span tal:replace="item/getOwner | string:error"/>
                     </td>
-                    <td tal:content="item/id | string:error">title</td>
+                    <td>
+                      <span tal:replace="python: context.toLocalizedTime(item.Date())"/>
+                    </td>
+                    <td><a tal:attributes="href string:${item/absolute_url}" 
+                      tal:content="item/id | string:error">title</a></td>
                     <td>
                       <span tal:condition="not:item/listFolderContents">no sketches</span>
                       <ul tal:condition="item/listFolderContents">
@@ -63,12 +67,6 @@
                     </td>
                     <td>
                       <div tal:content="python:view.getStateTitle(item)">unknown</div>
-                    </td>
-                    <td>
-                      <a class="viewOrderLink" tal:condition="not:python:view.isOwner or view.isManager" tal:attributes="href string:${item/absolute_url}">view</a>
-                      <a class="viewOrderLink" tal:condition="python:view.isOwner or view.isManager" tal:attributes="href string:${item/absolute_url}">view/edit</a>
-                      <br/>
-                      <a class="deleteOrderLink" tal:condition="python:view.canDelete(item)" tal:attributes="href string:${item/absolute_url}/delete_confirmation">delete</a>
                     </td>
                   </tr>
                 </tbody>

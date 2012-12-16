@@ -58,6 +58,7 @@ class Index(grok.View):
             'path': dict(query='/'.join(self.context.getPhysicalPath()),
                          depth=1),
             'sort_on': 'Date',
+            'sort_order':'reverse',
             'Creator': self.member.id, }
 
         return [orderBrain.getObject() for orderBrain in catalog(query)]
@@ -268,13 +269,11 @@ class PayPalIpn(grok.View):
         """
 
         # check payment status
-        """
         if not data["payment_status"].lower() == "completed":
             # TODO: check for pending_reason
             msg = "Payment incomplete: status " + data["payment_status"]
             faborder.paymentStatusMsg = msg
             return False, msg
-        """
 
         # check that paymentAmount is correct
         if abs(faborder.priceTotalBrutto - float(data['mc_gross'])) > 0.1:
@@ -293,7 +292,6 @@ class PayPalIpn(grok.View):
         review_state = portal_workflow.getInfoFor(faborder, 'review_state')
         if review_state <> 'open':
             return True, "Order is already " + review_state
-        #portal_workflow.doActionFor(faborder, 'submit')
         
         # Change workflow state.  Don't use portal_workflow.doActionFor but
         # portal_workflow._invokeWithNotification to avoid security checks:

@@ -23,7 +23,7 @@
           If the redirection doesn't work please click the PayPal-Button below again.
         </p>
         <div id="content-core">
-          <form id="orderform" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+          <form id="orderform" action="https://www.paypal.com/cgi-bin/webscr" method="post">
             <input name="cmd" type="hidden" value="_xclick" />
             <input name="currency_code" type="hidden" value="EUR" />
             <input name="lc" type="hidden" value="de" />
@@ -36,9 +36,9 @@
             <input name="shipping" type="hidden" tal:attributes="value python: '%.2f&nbsp;EUR' % (context.priceShipping)" />
             <input name="return" type="hidden" tal:attributes="value string:${context/absolute_url}/checkout_success" />
             <input name="cancel_return" type="hidden" tal:attributes="value string:${context/absolute_url}/checkout_fail" />
-            <input name="notify_url" type="hidden" value="http://aknoerig.no-ip.org/Plone/fab/paypal_ipn" />
-            <!--<input name="notify_url" type="hidden" tal:attributes="value string:${context/aq_parent/absolute_url}/paypal_ipn" />-->
-            <input type="image" alt="Checkout" src="https://www.sandbox.paypal.com/en_US/DE/i/btn/btn_buynowCC_LG.gif" />
+            <!--<input name="notify_url" type="hidden" value="http://aknoerig.no-ip.org/Plone/fab/paypal_ipn" />-->
+            <input name="notify_url" type="hidden" tal:attributes="value string:${context/aq_parent/absolute_url}/paypal_ipn" />
+            <input type="image" alt="Checkout" src="https://www.paypal.com/en_US/DE/i/btn/btn_buynowCC_LG.gif" />
           </form>
         </div>
       </tal:main-macro>
