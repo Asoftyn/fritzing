@@ -220,7 +220,7 @@ MainWindow::MainWindow(ReferenceModel *referenceModel, QWidget * parent) :
 	connect(m_locationLabel, SIGNAL(clicked()), this, SLOT(locationLabelClicked()));
 	m_statusBar->addPermanentWidget(m_locationLabel);
 
-	m_zoomSlider = new ZoomSlider(m_statusBar);
+	m_zoomSlider = new ZoomSlider(ZoomableGraphicsView::MaxScaleValue, m_statusBar);
 	connect(m_zoomSlider, SIGNAL(zoomChanged(double)), this, SLOT(updateViewZoom(double)));
 	m_statusBar->addPermanentWidget(m_zoomSlider);
 

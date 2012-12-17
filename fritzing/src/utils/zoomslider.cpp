@@ -41,7 +41,6 @@ double ZoomSlider::ZoomStep;
 QList<double> ZoomSlider::ZoomFactors;
 
 static const int MIN_VALUE = 10;
-static const int MAX_VALUE = 2010;
 static const int STARTING_VALUE = 100;
 static const int HEIGHT = 16;
 static const int STEP = 100;
@@ -135,7 +134,7 @@ void ZoomLabel::mouseReleaseEvent(QMouseEvent * event)
 
 /////////////////////////////////////////////
 
-ZoomSlider::ZoomSlider(QWidget * parent) : QFrame(parent) 
+ZoomSlider::ZoomSlider(int maxValue, QWidget * parent) : QFrame(parent) 
 {
 	// layout doesn't seem to work: the slider appears too far down in the status bar
 	// because the status bar layout is privileged for the message text
@@ -151,7 +150,7 @@ ZoomSlider::ZoomSlider(QWidget * parent) : QFrame(parent)
 	m_lineEdit = new QLineEdit(this);
     m_lineEdit->setObjectName("ZoomSliderValue");
 	m_lineEdit->setText(QString("%1").arg(STARTING_VALUE));
-	m_lineEdit->setValidator(new QIntValidator(MIN_VALUE, MAX_VALUE, this));
+	m_lineEdit->setValidator(new QIntValidator(MIN_VALUE, maxValue + MIN_VALUE, this));
 	m_lineEdit->setAttribute(Qt::WA_MacShowFocusRect, 0);
 	m_lineEdit->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
@@ -167,7 +166,7 @@ ZoomSlider::ZoomSlider(QWidget * parent) : QFrame(parent)
     m_slider = new QSlider(this);
 	m_slider->setObjectName("ZoomSliderSlider");
 	m_slider->setOrientation(Qt::Horizontal);
-	m_slider->setRange(MIN_VALUE, MAX_VALUE);
+	m_slider->setRange(MIN_VALUE, maxValue + MIN_VALUE);
 	m_slider->setValue(STARTING_VALUE);
     m_slider->setTickPosition(QSlider::TicksBelow);
     m_slider->setTickInterval(500);

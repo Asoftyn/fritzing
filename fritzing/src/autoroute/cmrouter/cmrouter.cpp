@@ -594,7 +594,7 @@ Tile * CMRouter::insertTile(Plane * thePlane, TileRect & tileRect, QList<Tile *>
 		DebugDialog::debug("!!!!!!!!!!!!!!!!!!!!!!! overlaps not allowed !!!!!!!!!!!!!!!!!!!!!!");
 		return NULL;
 	}
-	Tile * newTile = newTile = TiInsertTile(thePlane, &tileRect, item, tileType);
+	Tile * newTile = TiInsertTile(thePlane, &tileRect, item, tileType);
 	insertUnion(tileRect, item, tileType);
 
 	DGI(newTile);

@@ -61,6 +61,16 @@ struct GridPoint {
     GridPoint();
 };
 
+struct PointZ {
+    QPointF p;
+    int z;
+
+    PointZ(QPointF _p, int _z) {
+        p = _p;
+        z = _z;
+    }
+};
+
 struct Net {
     QList<class ConnectorItem *>* net;
     QList< QList<ConnectorItem *> > subnets;
@@ -131,6 +141,7 @@ struct Grid {
     QList<QPoint> init4(int x, int y, int z, int width, int height, const QImage *, GridValue value, bool collectPoints);
     void clear();
     void free();
+    void copy(int fromIndex, int toIndex);
 };
 
 
@@ -152,10 +163,6 @@ struct RouteThing {
     QPoint gridTarget;
     bool unrouted;
     NetElements netElements[2];
-    QSet <int> avoids;
-
-    bool isAvoid(GridPoint &, Grid *);
-    bool isAvoid(int x, int y, Grid *);
 };
 
 ////////////////////////////////////
@@ -193,7 +200,7 @@ protected:
     void clearExpansion(Grid * grid);
     void prepSourceAndTarget(QDomDocument * masterdoc, RouteThing &, QList< QList<ConnectorItem *> > & subnets, int z); 
     bool moveBack(Score & currentScore, int index, QList<NetOrdering> & allOrderings);
-    void drawTrace(Trace &);
+    void displayTrace(Trace &);
     void initTraceDisplay();
     void traceObstacles(QList<Trace> & traces, int netIndex, Grid * grid, int ikeepout);
     void traceAvoids(QList<Trace> & traces, int netIndex, RouteThing & routeThing);
@@ -202,16 +209,17 @@ protected:
     void createTraces(NetList & netList, Score & bestScore, QUndoCommand * parentCommand);
     void removeColinear(QList<GridPoint> & gridPoints);
     void removeSteps(QList<GridPoint> & gridPoints);
+    void removeStep(int ix, QList<GridPoint> & gridPoints);
     ConnectorItem * findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace);
     ConnectorItem * findAnchor(GridPoint gp, const QRectF &, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace);
     void addConnectionToUndo(ConnectorItem * from, ConnectorItem * to, QUndoCommand * parentCommand);
     void addViaToUndo(Via *, QUndoCommand * parentCommand);
     void addJumperToUndo(JumperItem *, QUndoCommand * parentCommand);
-    void removeStep(int ix, QList<GridPoint> & gridPoints);
     void clearExpansionForJumper(Grid * grid, GridValue sourceOrTarget, std::priority_queue<GridPoint> & pq);
     void routeJumper(int netIndex, RouteThing &, Score & currentScore);
     void jumperWillFit(GridPoint & gridPoint, RouteThing &);
     void insertTrace(Trace & newTrace, int netIndex, Score & currentScore, int viaCount);
+    void handleAvoid(int dx, int dy, GridPoint & next, GridValue baseCost, RouteThing & routeThing);
 
 protected:
 	LayerList m_viewLayerIDs;
@@ -230,6 +238,7 @@ protected:
     CostFunction m_costFunction;
     uint m_traceColors[2];
     Grid * m_grid;
+    bool m_pcbType;
 };
 
 #endif

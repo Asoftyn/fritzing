@@ -42,7 +42,7 @@ class InfoGraphicsView : public ZoomableGraphicsView
 public:
 	InfoGraphicsView(QWidget* parent = 0);
 
-	void viewItemInfo(ItemBase * item);
+	virtual void viewItemInfo(ItemBase * item);
 	virtual void hoverEnterItem(QGraphicsSceneHoverEvent * event, ItemBase * item);
 	virtual void hoverLeaveItem(QGraphicsSceneHoverEvent * event, ItemBase * item);
 

@@ -33,6 +33,8 @@ $Date$
 #include "../utils/zoomslider.h"
 #include "../utils/misc.h"
 
+const int ZoomableGraphicsView::MaxScaleValue = 3000;
+
 
 ZoomableGraphicsView::WheelMapping ZoomableGraphicsView::m_wheelMapping =
 #ifdef Q_WS_WIN
@@ -47,7 +49,7 @@ ZoomableGraphicsView::ZoomableGraphicsView( QWidget * parent )
 	: QGraphicsView(parent)
 {
 	m_scaleValue = 100;
-	m_maxScaleValue = 2000;
+	m_maxScaleValue = MaxScaleValue;
 	m_minScaleValue = 1;
 	m_acceptWheelEvents = true;
 	if (FirstTime) {

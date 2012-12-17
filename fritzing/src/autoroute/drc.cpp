@@ -737,7 +737,7 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
     Markers markers;
     markers.outID = AlsoNet;
     markers.inTerminalID = markers.inSvgID = markers.inSvgAndID = markers.inNoID = Net;
-    splitNetPrep(masterDoc, equi, markers, net, alsoNet, notNet, false, false);
+    splitNetPrep(masterDoc, equi, markers, net, alsoNet, notNet, false);
     foreach (QDomElement element, notNet) element.setTagName("g");
     foreach (QDomElement element, alsoNet) element.setTagName("g");
     foreach (QDomElement element, net) {
@@ -782,7 +782,7 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
     }
 }
 
-void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, const Markers & markers, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool fill, bool checkIntersection) 
+void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, const Markers & markers, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool checkIntersection) 
 {
     QMultiHash<QString, QString> partSvgIDs;
     QMultiHash<QString, QString> partTerminalIDs;

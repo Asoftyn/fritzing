@@ -46,7 +46,7 @@ public:
 	void setAcceptWheelEvents(bool);
 	virtual void ensureFixedToBottomRightItems() {}
 
-
+    static const int MaxScaleValue;
 	
 public:	
 	enum WheelMapping {

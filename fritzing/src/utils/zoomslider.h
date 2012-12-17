@@ -70,7 +70,7 @@ class ZoomSlider: public QFrame {
 Q_OBJECT
 
 public:
-	ZoomSlider(QWidget * parent=0);
+	ZoomSlider(int maxValue, QWidget * parent=0);
 
 	void setValue(double);
 	double value();

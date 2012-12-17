@@ -117,6 +117,7 @@ const int SketchWidget::MoveAutoScrollThreshold = 5;
 const int SketchWidget::DragAutoScrollThreshold = 10;
 static const int AutoRepeatDelay = 750;
 const int SketchWidget::PropChangeDelay = 100;
+bool SketchWidget::m_blockUI = false;
 
 /////////////////////////////////////////////////////////////////////
 
@@ -645,11 +646,15 @@ ItemBase * SketchWidget::addItem(const QString & moduleID, ViewLayer::ViewLayerS
 	ModelPart * modelPart = m_referenceModel->retrieveModelPart(moduleID);
 
 	if (modelPart != NULL) {
-		QApplication::setOverrideCursor(Qt::WaitCursor);
-		statusMessage(tr("loading part"));
+        if (!m_blockUI) {
+		    QApplication::setOverrideCursor(Qt::WaitCursor);
+		    statusMessage(tr("loading part"));
+        }
 		itemBase = addItem(modelPart, viewLayerSpec, crossViewType, viewGeometry, id, modelIndex, originatingCommand);
-		statusMessage(tr("done loading"), 2000);
-		QApplication::restoreOverrideCursor();
+        if (!m_blockUI) {
+		    statusMessage(tr("done loading"), 2000);
+		    QApplication::restoreOverrideCursor();
+        }
 	}
 
 	return itemBase;
@@ -1426,7 +1431,7 @@ void SketchWidget::selectItem(long id, bool state, bool updateInfoView, bool doE
 		item->setSelected(state);
 		if(updateInfoView) {
 			// show something in the info view, even if it's not selected
-			InfoGraphicsView::viewItemInfo(item);
+			viewItemInfo(item);
 		}
 		if (doEmit) {
 			emit itemSelectedSignal(id, state);
@@ -2147,7 +2152,7 @@ void SketchWidget::mousePressEvent(QMouseEvent *event)
 
 	PartLabel * partLabel =  dynamic_cast<PartLabel *>(item);
 	if (partLabel != NULL) {
-		InfoGraphicsView::viewItemInfo(partLabel->owner());
+		viewItemInfo(partLabel->owner());
 		setLastPaletteItemSelectedIf(partLabel->owner());
 		return;
 	}
@@ -2163,7 +2168,7 @@ void SketchWidget::mousePressEvent(QMouseEvent *event)
 
 	ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
 	if (itemBase) {
-		InfoGraphicsView::viewItemInfo(itemBase);
+		viewItemInfo(itemBase);
 		setLastPaletteItemSelectedIf(itemBase);
 	}
 
@@ -5628,7 +5633,7 @@ void SketchWidget::partLabelChanged(ItemBase * pitem,const QString & oldText, co
 
 	//if (currentlyInfoviewed(pitem))  {
 		// TODO: just change the affected item in the info view
-		//InfoGraphicsView::viewItemInfo(pitem);
+		//viewItemInfo(pitem);
 	//}
 
 	partLabelChangedAux(pitem, oldText, newText);
@@ -5648,6 +5653,8 @@ void SketchWidget::setInfoViewOnHover(bool infoViewOnHover) {
 }
 
 void SketchWidget::updateInfoView() {
+    if (m_blockUI) return;
+
 	QTimer::singleShot(50, this,  SLOT(updateInfoViewSlot()));
 }
 
@@ -5658,11 +5665,11 @@ void SketchWidget::updateInfoViewSlot() {
 		if (itemBase == NULL) continue;
 
 		ItemBase * chief = itemBase->layerKinChief();
-		InfoGraphicsView::viewItemInfo(chief);
+		viewItemInfo(chief);
 		return;
 	}
 
-	InfoGraphicsView::viewItemInfo(m_lastPaletteItemSelected);
+	viewItemInfo(m_lastPaletteItemSelected);
 }
 
 long SketchWidget::setUpSwap(SwapThing & swapThing, bool master)
@@ -6769,7 +6776,7 @@ void SketchWidget::setInstanceTitle(long itemID, const QString & oldText, const 
 		itemBase->setInstanceTitle(newText);
 		if (doEmit && currentlyInfoviewed(itemBase))  {
 			// TODO: just change the affected item in the info view
-			InfoGraphicsView::viewItemInfo(itemBase);
+			viewItemInfo(itemBase);
 		}
 
 		if (doEmit) {
@@ -8918,8 +8925,8 @@ bool SketchWidget::canConnect(Wire *, ItemBase *) {
 void SketchWidget::canConnect(Wire * from, ItemBase * to, bool & connect) {
     if (!from->isTraceType(getTraceFlag())) return;
 
-    from->debugInfo("can connect");
-    to->debugInfo("\t");
+    //from->debugInfo("can connect");
+    //to->debugInfo("\t");
     from = qobject_cast<Wire *>(findItem(from->id()));
     to = findItem(to->id());
     connect = canConnect(from, to);
@@ -9119,4 +9126,14 @@ QGraphicsItem * SketchWidget::getClickedItem(QList<QGraphicsItem *> & items) {
 	}
 
     return NULL;
+}
+
+void SketchWidget::blockUI(bool block) {
+    m_blockUI = block;
+}
+
+void SketchWidget::viewItemInfo(ItemBase * item) {
+    if (m_blockUI) return;
+
+    InfoGraphicsView::viewItemInfo(item);
 }

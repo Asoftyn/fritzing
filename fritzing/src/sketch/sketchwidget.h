@@ -317,7 +317,8 @@ public:
     void showUnrouted();
 	QPointF alignOneToGrid(ItemBase * itemBase);
 	void showEvent(QShowEvent * event);
-
+    void blockUI(bool);
+    void viewItemInfo(ItemBase * item);
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
@@ -715,6 +716,7 @@ protected:
 public:
 	static ViewLayer::ViewLayerID defaultConnectorLayer(ViewLayer::ViewIdentifier viewId);
 	static const int PropChangeDelay;
+    static bool m_blockUI;
 
 protected:
 	static const int MoveAutoScrollThreshold;
