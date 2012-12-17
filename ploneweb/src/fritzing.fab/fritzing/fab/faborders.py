@@ -233,7 +233,7 @@ class PayPalIpn(grok.View):
         data["cmd"] = "_notify-validate"
         params = urlencode(data)
         # sends the data and request to the PayPal Sandbox
-        req = Request("""https://www.sandbox.paypal.com/cgi-bin/webscr""", params)
+        req = Request("""https://www.paypal.com/cgi-bin/webscr""", params)
         req.add_header("Content-type", "application/x-www-form-urlencoded")
         # reads the response back from PayPal
         response = urlopen(req)

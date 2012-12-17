@@ -20,8 +20,8 @@
                       <input type="submit" value="Update">
               </form>
               </h2>
-              <p>All orders with status "in process" and production round 
-                <span tal:replace="view/productionRound"/></p>
+              <p>All orders with status "in process" from production round 
+                <span tal:replace="view/productionRound"/> (current production round is: <span tal:replace="context/currentProductionRound"/>)</p>
               <p><a tal:attributes="href string:@@currentorders-csv?productionRound=${view/productionRound}">Download as CSV</a> -- 
                 <a tal:attributes="href string:@@currentorders-zip?productionRound=${view/productionRound}">Download as ZIP</a>
               </p>

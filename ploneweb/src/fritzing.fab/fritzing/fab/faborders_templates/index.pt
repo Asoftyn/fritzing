@@ -27,7 +27,7 @@
             </a>
             <p tal:condition="python:context.nextProductionClosingDate and context.nextProductionDelivery">
               Submit your layout by <span class="important" tal:replace="python:context.nextProductionClosingDate.strftime('%B %d at %H:%M')"/> (Berlin time)<br />
-              and we will ship it on <span class="important" tal:replace="python:context.nextProductionDelivery.strftime('%B %d')"/>.<br /><br />.
+              and we will ship it on <span class="important" tal:replace="python:context.nextProductionDelivery.strftime('%B %d')"/>.<br />
             </p>
             <p tal:condition="view/isManager"><a href="@@currentorders">List all current orders</a></p>
             <div tal:condition="view/hasOrders">
