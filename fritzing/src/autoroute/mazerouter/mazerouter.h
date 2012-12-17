@@ -163,6 +163,7 @@ struct RouteThing {
     QPoint gridTarget;
     bool unrouted;
     NetElements netElements[2];
+    QSet<int> avoids;
 };
 
 ////////////////////////////////////
@@ -219,7 +220,6 @@ protected:
     void routeJumper(int netIndex, RouteThing &, Score & currentScore);
     void jumperWillFit(GridPoint & gridPoint, RouteThing &);
     void insertTrace(Trace & newTrace, int netIndex, Score & currentScore, int viaCount);
-    void handleAvoid(int dx, int dy, GridPoint & next, GridValue baseCost, RouteThing & routeThing);
 
 protected:
 	LayerList m_viewLayerIDs;
