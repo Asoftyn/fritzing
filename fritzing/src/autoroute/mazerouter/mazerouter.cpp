@@ -34,22 +34,6 @@ $Date$
 //
 //      schematic netlabels are the equivalent of jumpers. Use successive numbers for the labels.
 //
-//      net reordering/rip-up-and-reroute
-//          is there a better way than move back by one?
-//
-//      keepout dialog
-//
-//      vias are overlapping
-//
-//      raster back to vector
-//          curve-fitting? use a bezier?  http://kobus.ca/seminars/ugrad/NM5_curve_s02.pdf
-//     
-//      when converting to vector, must check that diagonals are clear?
-//          handle this at traceback time? 
-//              set some flags for neighbors being clear and keep the flagged grid points as part of the trace?
-//
-//      dynamic cost function based on distance to any target point?
-//
 //      via/jumper placement must ensure minimum distance from source
 //          jumper placement must be away from vias
 //          and previous traces (GridAvoid)
@@ -62,12 +46,30 @@ $Date$
 //
 //      crash placing jumper using 'PhoenixV3 (2) no traces' after 39 rounds 
 //
-//      bad jumper placement in atmega256
+//      bad jumper placement in atmega256?
+//
+//      render needs render to true rectangle (or pad svg to nearest gridsize)?
+//
+//      schematic traces still run along earlier traces
+
+// LATER:
+//
+//      net reordering/rip-up-and-reroute
+//          is there a better way than move back by one?
+//
+//      keepout dialog
+//
+//      raster back to vector
+//          curve-fitting? use a bezier?  http://kobus.ca/seminars/ugrad/NM5_curve_s02.pdf
+//     
+//      when converting to vector, must check that diagonals are clear?
+//          handle this at traceback time? 
+//              set some flags for neighbors being clear and keep the flagged grid points as part of the trace?
+//
+//      dynamic cost function based on distance to any target point?
 //
 //      allow multiple routes to reach GridTarget--eliminate all queued GridPoints with greater cost
 //      
-//      render needs render to true rectangle (or pad svg to nearest gridsize)?
-//
 
 #include "mazerouter.h"
 #include "../../sketch/pcbsketchwidget.h"
@@ -477,10 +479,10 @@ MazeRouter::~MazeRouter()
         delete doc;
     }
     if (m_displayItem[0]) {
-        //delete m_displayItem[0];
+        delete m_displayItem[0];
     }
     if (m_displayItem[1]) {
-        //delete m_displayItem[1];
+        delete m_displayItem[1];
     }
     if (m_displayImage[0]) {
         delete m_displayImage[0];
