@@ -706,7 +706,12 @@ void MazeRouter::start()
     }
     else {
 		emit setCycleMessage(tr("round %1 of:").arg(run));
-        emit setProgressMessage(tr("Routing reached round %1. Now cleaning up...").arg(qMin(run, m_maxCycles)));
+        QString msg;
+        if (run < m_maxCycles) msg = tr("Routing cannot complete; stopping at round %1.").arg(run);
+        else msg = tr("Routing reached maximum round %1.").arg(m_maxCycles);
+        msg += " ";
+        msg += tr("Now cleaning up...");
+        emit setProgressMessage(msg);
         routeNets(netList, true, bestScore, gridSize, allOrderings);
     }    
 	ProcessEventBlocker::processEvents();
@@ -954,8 +959,8 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
             prepSourceAndTarget(masterDoc, routeThing, subnets, z);
         }
 
-        updateDisplay(m_grid, 0);
-        if (m_bothSidesNow) updateDisplay(m_grid, 1);
+        //updateDisplay(m_grid, 0);
+        //if (m_bothSidesNow) updateDisplay(m_grid, 1);
 
         routeThing.unrouted = false;
         if (!routeOne(makeJumper, currentScore, netIndex, routeThing, allOrderings)) {
@@ -1152,8 +1157,8 @@ bool MazeRouter::routeNext(bool makeJumper, RouteThing & routeThing, QList< QLis
         }
     }
 
-    updateDisplay(m_grid, 0);
-    if (m_bothSidesNow) updateDisplay(m_grid, 1);
+    //updateDisplay(m_grid, 0);
+    //if (m_bothSidesNow) updateDisplay(m_grid, 1);
 
     routeThing.unrouted = false;
     result = routeOne(makeJumper, currentScore, netIndex, routeThing, allOrderings);
@@ -1392,11 +1397,12 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * g
         }
 
         double y1, y2, x1, x2;
-        double yp = qRound((p.y() - m_maxRect.top()) / m_gridPixels);
-        double xp = qRound((p.x() - m_maxRect.left()) / m_gridPixels);
+        double yp = (p.y() - m_maxRect.top()) / m_gridPixels;
+        double xp = (p.x() - m_maxRect.left()) / m_gridPixels;
+        double yc = (closest.y() - m_maxRect.top()) / m_gridPixels;
+        double xc = (closest.x() - m_maxRect.left()) / m_gridPixels;
         if (closest.x() == p.x()) {
             x1 = x2 = qRound((p.x() - m_maxRect.left()) / m_gridPixels);
-            double yc = qRound((closest.y() - m_maxRect.top()) / m_gridPixels);
             y1 = (yp < yc) ? qFloor(yp) : qCeil(yp);
             y2 = (yp < yc) ? qCeil(yc) : qFloor(yc);
             if (y2 < y1) {
@@ -1407,7 +1413,6 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * g
         }
         else {
             y1 = y2 = qRound((p.y() - m_maxRect.top()) / m_gridPixels);
-            double xc = qRound((closest.x() - m_maxRect.left()) / m_gridPixels);
             x1 = (xp < xc) ? qFloor(xp) : qCeil(xp);
             x2 = (xp < xc) ? qCeil(xc) : qFloor(xc);
             if (x2 < x1) {
@@ -1416,6 +1421,18 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * g
                 x1 = temp;
             }
         }
+
+        int xo = qRound(xc);
+        int yo = qRound(yc);
+        // remove obstacles we can draw through
+        while (true) {
+            xo += dx;
+            yo += dy;
+            if (grid->at(xo, yo, z) != GridAvoid) break;
+
+            grid->setAt(xo, yo, z, 0);
+        }  
+
         for (int iy = y1; iy <= y2; iy++) {
             for (int ix = x1; ix <= x2; ix++) {
                 GridValue val = grid->at(ix, iy, z);
@@ -1425,21 +1442,13 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * g
                 }
             }
         }
-        int x = qRound(xp);
-        int y = qRound(yp);
-        if (grid->at(x, y, z) != GridBoardObstacle) {
-            grid->setAt(x, y, z, value);
-            points << QPoint(x, y);
+        int xr = qRound(xp);
+        int yr = qRound(yp);
+        if (grid->at(xr, yr, z) != GridBoardObstacle) {
+            grid->setAt(xr, yr, z, value);
+            points << QPoint(xr, yr);
         }
         
-        // remove obstacles we can draw through
-        while (true) {
-            x += dx;
-            y += dy;
-            if (grid->at(x, y, z) != GridAvoid) break;
-
-            grid->setAt(x, y, z, 0);
-        }  
     }
 
     return points;
@@ -1730,7 +1739,7 @@ void MazeRouter::expandOne(GridPoint & gridPoint, RouteThing & routeThing, int d
         m_grid->setAt(next.x, next.y, next.z, next.baseCost);
     }
 
-    updateDisplay(next);
+    //updateDisplay(next);
 }
 
 bool MazeRouter::viaWillFit(GridPoint & gridPoint, Grid * grid) {
