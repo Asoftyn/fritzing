@@ -868,14 +868,14 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
     }
 }
 
-void DRC::renderOne(QDomDocument * masterDoc, QImage * image, const QRectF &) {
+void DRC::renderOne(QDomDocument * masterDoc, QImage * image, const QRectF & renderRect) {
     QByteArray byteArray = masterDoc->toByteArray();
 	QSvgRenderer renderer(byteArray);
 	QPainter painter;
 	painter.begin(image);
 	painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, false);
-	renderer.render(&painter /*, sourceRes */);
+	renderer.render(&painter, renderRect);
 	painter.end();
 }
 

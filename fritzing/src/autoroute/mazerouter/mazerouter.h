@@ -153,6 +153,7 @@ struct NetElements {
 
 struct RouteThing {
     QRectF r;
+    QRectF r4;
     QList<ViewLayer::ViewLayerSpec> layerSpecs;
     int ikeepout;
     Nearest nearest;
@@ -182,7 +183,7 @@ protected:
     void setUpWidths(double width);
 	void updateProgress(int num, int denom);
     int findPinsWithin(QList<ConnectorItem *> * net);
-    bool makeBoard(QImage *, double keepout, const QSizeF gridSize);
+    bool makeBoard(QImage *, double keepout, const QRectF & r);
     bool makeMasters(QString &);
 	bool routeNets(NetList &, bool makeJumper, Score & currentScore, const QSizeF gridSize, QList<NetOrdering> & allOrderings);
     bool routeOne(bool makeJumper, Score & currentScore, int netIndex, RouteThing &, QList<NetOrdering> & allOrderings);
