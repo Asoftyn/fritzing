@@ -50,9 +50,8 @@ $Date$
 //
 //      bad jumper placement in atmega256?
 //
-//      render needs render to true rectangle (or pad svg to nearest gridsize)?
-//
 //      timer no traces missing connection bug
+//
 
 // LATER:
 //
@@ -2039,17 +2038,22 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
                 sourceConnectorItem = trace.flags == JumperStart ? jumperItem->connector0() : jumperItem->connector1();
             }
             else {
-                sourceConnectorItem = findAnchor(gridPoints.first(), topLeft, net, newTraces, newVias, traceAnchorS, onTraceS);
+                sourceConnectorItem = findAnchor(gridPoints.first(), topLeft, net, newTraces, newVias, traceAnchorS, onTraceS, NULL);
             }
             if (sourceConnectorItem == NULL) {
                 DebugDialog::debug("missing source connector");
                 continue;
             }
             
-            ConnectorItem * destConnectorItem = findAnchor(gridPoints.last(), topLeft, net, newTraces, newVias, traceAnchorD, onTraceD);
+            ConnectorItem * destConnectorItem = findAnchor(gridPoints.last(), topLeft, net, newTraces, newVias, traceAnchorD, onTraceD, sourceConnectorItem);
             if (destConnectorItem == NULL) {
                 DebugDialog::debug("missing dest connector");
                 continue;
+            }
+
+            if (sourceConnectorItem->attachedTo() == destConnectorItem->attachedTo()) {
+                sourceConnectorItem->debugInfo("source");
+                destConnectorItem->debugInfo("dest");
             }
             
             QPointF sourcePoint = sourceConnectorItem->sceneAdjustedTerminalPoint(NULL);
@@ -2207,23 +2211,36 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
     }
 }
 
-ConnectorItem * MazeRouter::findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace) 
+ConnectorItem * MazeRouter::findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace, ConnectorItem * already) 
 {
     QRectF gridRect(gp.x * m_gridPixels + topLeft.x(), gp.y * m_gridPixels + topLeft.y(), m_gridPixels, m_gridPixels);
-    ConnectorItem * connectorItem = findAnchor(gp, gridRect, net, newTraces, newVias, p, onTrace);
+    ConnectorItem * connectorItem = findAnchor(gp, gridRect, net, newTraces, newVias, p, onTrace, already);
     if (connectorItem) return connectorItem;
 
     gridRect.adjust(-m_gridPixels, -m_gridPixels, m_gridPixels, m_gridPixels);
-    return findAnchor(gp, gridRect, net, newTraces, newVias, p, onTrace);
+    return findAnchor(gp, gridRect, net, newTraces, newVias, p, onTrace, already);
 }
 
-ConnectorItem * MazeRouter::findAnchor(GridPoint gp, const QRectF & gridRect, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace) 
+ConnectorItem * MazeRouter::findAnchor(GridPoint gp, const QRectF & gridRect, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace, ConnectorItem * already) 
 {
+    ConnectorItem * alreadyCross = NULL;
+    if (already != NULL) alreadyCross = already->getCrossLayerConnectorItem();
     QList<TraceWire *> traceWires;
     foreach (QGraphicsItem * item, m_sketchWidget->scene()->items(gridRect)) {
         ConnectorItem * connectorItem = dynamic_cast<ConnectorItem *>(item);
         if (connectorItem) {
             if (!connectorItem->attachedTo()->isEverVisible()) continue;
+            if (connectorItem == already) continue;
+            if (connectorItem == alreadyCross) continue;
+
+            if (already != NULL && connectorItem->attachedTo() == already->attachedTo()) {
+                ConnectorItem * cross = connectorItem->getCrossLayerConnectorItem();
+                if (cross != NULL) {
+                    if (cross == already) continue;
+                    if (cross == alreadyCross) continue;
+                }
+            }
+
             bool isCandidate = 
                 (gp.z == 0 && m_sketchWidget->attachedToBottomLayer(connectorItem)) ||
                 (gp.z == 1 && m_sketchWidget->attachedToTopLayer(connectorItem))

@@ -212,8 +212,8 @@ protected:
     void removeColinear(QList<GridPoint> & gridPoints);
     void removeSteps(QList<GridPoint> & gridPoints);
     void removeStep(int ix, QList<GridPoint> & gridPoints);
-    ConnectorItem * findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace);
-    ConnectorItem * findAnchor(GridPoint gp, const QRectF &, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace);
+    ConnectorItem * findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace, ConnectorItem * already);
+    ConnectorItem * findAnchor(GridPoint gp, const QRectF &, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace, ConnectorItem * already);
     void addConnectionToUndo(ConnectorItem * from, ConnectorItem * to, QUndoCommand * parentCommand);
     void addViaToUndo(Via *, QUndoCommand * parentCommand);
     void addJumperToUndo(JumperItem *, QUndoCommand * parentCommand);
