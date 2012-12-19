@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-DiscreteSemi-TRIAC-PTH'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-DiscreteSemi' TRIAC PTH -->
 <version>4</version>
-<date>2012-12-05</date>
+<date>2012-12-19</date>
 <label>U</label>
 <author>www.fritzing.org</author>
 <description>Low-power generic TRIAC packages</description>
@@ -19,7 +19,7 @@
 </properties>
 <views>
 <breadboardView>
-<layers image='breadboard/transistor_npn.svg'>
+<layers image='breadboard/triac.svg'>
 <layer layerId='breadboard'/>
 </layers>
 </breadboardView>
@@ -36,7 +36,7 @@
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/transistor_npn.svg'>
+<layers image='breadboard/triac.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

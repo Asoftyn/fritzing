@@ -5,64 +5,19 @@
  <g id="breadboard">
   <g id="icon">
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,270A30,30 0 0 1 0,330L0,600L400,600L400,0L0,0z"/>
-   <g transform="translate(59.5669,150.331)">
-    <g transform="matrix(0.5, 0, 0, 0.5, 70.2165, 74.8346)">
-     <rect width="70.8661" x="0" y="58.9213" fill="#8c8c8c" connectorname="1" height="31.4961" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="70.8661" x="0" y="108.921" fill="#8c8c8c" connectorname="2" height="31.4961" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="70.8661" x="0" y="158.921" fill="#8c8c8c" connectorname="3" height="31.4961" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="70.8661" x="0" y="208.922" fill="#8c8c8c" connectorname="4" height="31.4961" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="70.8661" x="210" y="208.922" fill="#8c8c8c" connectorname="5" height="31.4961" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="70.8661" x="210" y="158.921" fill="#8c8c8c" connectorname="6" height="31.4961" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="70.8661" x="210" y="108.921" fill="#8c8c8c" connectorname="7" height="31.4961" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="70.8661" x="210" y="58.9213" fill="#8c8c8c" connectorname="8" height="31.4961" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="200.126" x="40.3701" y="0" fill="#303030" height="299.339" stroke="none" stroke-width="0"/>
-     <polygon fill="#1f1f1f" points="40.3701,0 240.496,0 230.496,10 50.3701,10"/>
-     <polygon fill="#1f1f1f" points="40.3701,299.339 240.496,299.339 230.496,289.339 50.3701,289.339"/>
-     <polygon fill="#000000" points="40.3701,0 40.3701,299.339 50.3701,289.339 50.3701,10"/>
-     <polygon fill="#3d3d3d" points="240.496,0 240.496,299.339 230.496,289.339 230.496,10"/>
-     <circle fill="#1f1f1f" cx="70.3701" cy="269.339" stroke="none" r="10" stroke-width="0"/>
+   <g transform="translate(103.945,129.917)">
+    <path fill="#4D4D4D" d="M0,269.514l0,56.7639c0,7.63889,5.95833,13.8889,13.25,13.8889l13.25,0l5.56944,-21.8194l127.972,0l5.58333,21.8194l13.2361,0c7.27778,0,13.2361,-6.25,13.2361,-13.8889l0,-56.7639L0,269.514z"/>
+    <path fill="#999999" d="M178.222,0L13.8889,0C6.25,0,0,6.25,0,13.8889l0,263.569c0,7.63889,5.95833,13.8889,13.25,13.8889c0.444444,0,13.25,0,13.25,0l5.55556,-21.8194l128.028,0l5.55556,21.8194c0,0,11.9722,0,13.2361,0c7.27778,0,13.2361,-6.25,13.2361,-13.8889L192.111,13.8889C192.111,6.25,185.861,0,178.222,0z"/>
+    <g>
+     <polygon fill="#333333" points="26.4861,291.333,32.0694,269.514,32.0694,318.347,26.4861,340.167"/>
+     <polygon fill="#333333" points="165.639,291.333,159.833,269.292,159.833,318.125,165.639,340.167"/>
+     <rect width="97.2083" x="47.4583" y="62.5972" fill="#333333" height="23.625"/>
     </g>
-   </g>
-   <text x="50" y="324.375" font-family="OCRA" fill="white" text-anchor="start" stroke="none" id="label" stroke-width="0" font-size="65">SHT1X</text>
-   <g transform="translate(63.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">1</text>
-    </g>
-   </g>
-   <g transform="translate(63.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">8</text>
-    </g>
-   </g>
-   <g transform="translate(163.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">2</text>
-    </g>
-   </g>
-   <g transform="translate(163.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">7</text>
-    </g>
-   </g>
-   <g transform="translate(263.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">3</text>
-    </g>
-   </g>
-   <g transform="translate(263.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">6</text>
-    </g>
-   </g>
-   <g transform="translate(363.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">4</text>
-    </g>
-   </g>
-   <g transform="translate(363.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">5</text>
-    </g>
+    <path opacity="0.2" fill="#FFFFFF" d="M0,15.9861c0,-7.63889,6.25,-13.8889,13.8889,-13.8889l164.333,0c7.63889,0,13.8889,6.25,13.8889,13.8889L192.111,13.8889c0,-7.63889,-6.25,-13.8889,-13.8889,-13.8889L13.8889,0C6.25,0,0,6.25,0,13.8889L0,15.9861z"/>
+    <rect width="97.2083" x="47.4583" opacity="0.2" y="62.5972" height="2.44444"/>
+    <rect width="97.2083" x="47.4583" opacity="0.2" y="86.2222" fill="#FFFFFF" height="2.44444"/>
+    <path opacity="0.2" d="M192.111,281.361c0,7.63889,-5.95833,13.8889,-13.2361,13.8889c-1.26389,0,-13.2361,0,-13.2361,0l-5.55556,-21.8194L32.0417,273.431l-5.55556,21.8194c0,0,-12.7917,0,-13.25,0c-7.29167,0,-13.25,-6.25,-13.25,-13.8889l0,-3.90278c0,7.63889,5.95833,13.8889,13.25,13.8889c0.444444,0,13.25,0,13.25,0l5.55556,-21.8194l128.028,0l5.55556,21.8194c0,0,11.9722,0,13.2361,0c7.27778,0,13.2361,-6.25,13.2361,-13.8889L192.097,281.361z"/>
+    <path opacity="0.2" d="M192.111,326.278c0,7.63889,-5.95833,13.8889,-13.2361,13.8889c-1.26389,0,-13.2361,0,-13.2361,0l-5.55556,-21.8194L32.0417,318.347l-5.55556,21.8194c0,0,-12.7917,0,-13.25,0c-7.29167,0,-13.25,-6.25,-13.25,-13.8889l0,-3.90278c0,7.63889,5.95833,13.8889,13.25,13.8889c0.444444,0,13.25,0,13.25,0l5.55556,-21.8194l128.028,0l5.55556,21.8194c0,0,11.9722,0,13.2361,0c7.27778,0,13.2361,-6.25,13.2361,-13.8889L192.097,326.278z"/>
    </g>
   </g>
   <g transform="translate(34.035,534.05)">

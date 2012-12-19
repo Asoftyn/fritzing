@@ -5,123 +5,34 @@
  <g id="breadboard">
   <g id="icon">
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,270A30,30 0 0 1 0,330L0,600L900,600L900,0L0,0z"/>
-   <g transform="translate(300.984,152.953)">
-    <g transform="matrix(0.5, 0, 0, 0.5, 74.5079, 73.5236)">
-     <rect width="19.685" x="211.023" y="215.354" fill="#8c8c8c" connectorname="DVSS" height="78.74" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="19.685" x="179.134" y="215.354" fill="#8c8c8c" connectorname="DVDD" height="78.74" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="19.685" x="147.638" y="215.354" fill="#8c8c8c" connectorname="CLK" height="78.74" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="19.685" x="116.535" y="215.354" fill="#8c8c8c" connectorname="DRDY" height="78.74" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="19.685" x="85.0392" y="215.354" fill="#8c8c8c" connectorname="TRIG" height="78.74" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="19.685" x="53.5432" y="215.354" fill="#8c8c8c" connectorname="ATST" height="78.74" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="19.685" x="211.023" y="1.74838e-14" fill="#8c8c8c" connectorname="SCK/SCL" height="78.74" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="19.685" x="179.134" y="1.74838e-14" fill="#8c8c8c" connectorname="MOSI/SDA" height="78.74" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="19.685" x="147.638" y="1.74838e-14" fill="#8c8c8c" connectorname="MISO" height="78.74" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="19.685" x="116.142" y="1.74838e-14" fill="#8c8c8c" connectorname="CSB" height="78.74" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="19.685" x="85.0392" y="1.74838e-14" fill="#8c8c8c" connectorname="AVDD" height="78.74" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="19.685" x="53.1495" y="1.74838e-14" fill="#8c8c8c" connectorname="AVSS" height="78.74" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="59.055" x="0" y="105.512" fill="#8c8c8c" connectorname="AVSS@1" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="59.055" x="0.3937" y="168.504" fill="#8c8c8c" connectorname="ATST@1" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="59.055" x="0.3937" y="137.008" fill="#8c8c8c" connectorname="DUMMY2" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="59.055" x="238.976" y="105.512" fill="#8c8c8c" connectorname="PD" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="59.055" x="238.976" y="168.504" fill="#8c8c8c" connectorname="DVDDS" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="59.055" x="238.976" y="137.008" fill="#8c8c8c" connectorname="DUMMY1" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="67.0551" x="115.488" y="113.52" fill="#303030" height="67.0551" stroke="none" stroke-width="0"/>
-     <polygon fill="#1f1f1f" points="115.488,113.52 182.543,113.52 172.543,123.52 125.488,123.52"/>
-     <polygon fill="#1f1f1f" points="115.488,180.575 182.543,180.575 172.543,170.575 125.488,170.575"/>
-     <polygon fill="#000000" points="115.488,113.52 115.488,180.575 125.488,170.575 125.488,123.52"/>
-     <polygon fill="#3d3d3d" points="182.543,113.52 182.543,180.575 172.543,170.575 172.543,123.52"/>
-     <circle fill="#1f1f1f" cx="145.488" cy="150.575" stroke="none" r="10" stroke-width="0"/>
-    </g>
-   </g>
-   <text x="50" y="324.375" font-family="OCRA" fill="white" text-anchor="start" stroke="none" id="label" stroke-width="0" font-size="65">SCP1000-LG</text>
-   <g transform="translate(63.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">ATST@1</text>
-    </g>
-   </g>
-   <g transform="translate(63.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">TRIG</text>
-    </g>
-   </g>
-   <g transform="translate(163.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">AVSS@1</text>
-    </g>
-   </g>
-   <g transform="translate(163.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">SCK/SCL</text>
-    </g>
-   </g>
-   <g transform="translate(263.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">DUMMY1</text>
-    </g>
-   </g>
-   <g transform="translate(263.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">PD</text>
-    </g>
-   </g>
-   <g transform="translate(363.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">DUMMY2</text>
-    </g>
-   </g>
-   <g transform="translate(363.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">MOSI/SDA</text>
-    </g>
-   </g>
-   <g transform="translate(463.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">ATST</text>
-    </g>
-   </g>
-   <g transform="translate(463.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">MISO</text>
-    </g>
-   </g>
-   <g transform="translate(563.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">AVDD</text>
-    </g>
-   </g>
-   <g transform="translate(563.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">DVSS</text>
-    </g>
-   </g>
-   <g transform="translate(663.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">AVSS</text>
-    </g>
-   </g>
-   <g transform="translate(663.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">DVDDS</text>
-    </g>
-   </g>
-   <g transform="translate(763.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">CLK</text>
-    </g>
-   </g>
-   <g transform="translate(763.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">DVDD</text>
-    </g>
-   </g>
-   <g transform="translate(863.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">CSB</text>
-    </g>
-   </g>
-   <g transform="translate(863.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">DRDY</text>
+   <g transform="translate(302.632,144.639)">
+    <g>
+     <g>
+      <path fill="#4D4D4D" d="M236.958,278.639c-24.3889,20.0417,-55.5833,32.0833,-89.5972,32.0833c-77.9583,0,-141.153,-63.2222,-141.153,-141.167c0,-77.9583,63.1944,-141.167,141.153,-141.167c34.0417,0,65.2361,12.0417,89.625,32.1111L236.958,278.639z"/>
+      <path fill="#4D4D4D" d="M236.958,278.639c-24.3889,20.0417,-55.5833,32.0833,-89.5972,32.0833c-77.9583,0,-141.153,-63.2222,-141.153,-141.167"/>
+      <path opacity="0.2" d="M6.20833,168.222c0,77.9444,63.1944,141.167,141.153,141.167c34.0139,0,65.2083,-12.0278,89.5972,-32.0833l0,1.33333c-24.3889,20.0417,-55.5833,32.0833,-89.5972,32.0833c-77.9583,0,-141.153,-63.2222,-141.153,-141.167L6.20833,168.222z"/>
+      <circle fill="#666666" cx="147.375" cy="155.667" r="147.375"/>
+      <circle fill="#808080" cx="147.375" cy="147.375" r="147.375"/>
+      <circle fill="#4D4D4D" cx="147.361" cy="147.375" r="123.403"/>
+      <circle fill="#666666" cx="147.361" cy="127.681" r="123.403"/>
+      <rect width="68.6111" x="113.069" y="172.653" fill="#333333" height="68.5972"/>
+      <rect width="68.6111" x="113.069" y="172.653" fill="#4D4D4D" height="14.7917"/>
+      <rect width="43.7639" x="125.486" y="185.083" fill="#808080" height="9.54167"/>
+      <rect width="55.3333" x="119.694" y="233.694" fill="#808080" height="7.56944"/>
+      <polygon fill="#999999" points="138.889,232.542,126.903,220.542,126.903,203.569,138.889,191.569,155.847,191.569,167.833,203.569,167.833,220.542,155.847,232.542"/>
+      <polygon opacity="0.2" points="167.833,205.514,155.847,193.528,138.889,193.528,126.903,205.514,126.903,203.569,138.889,191.569,155.847,191.569,167.833,203.569"/>
+      <polygon opacity="0.2" fill="#FFFFFF" points="126.903,218.597,138.889,230.583,155.861,230.583,167.833,218.597,167.833,220.542,155.861,232.542,138.889,232.542,126.903,220.542"/>
+      <path fill="#999999" d="M119.694,179.292l0,55.3333l55.3333,0l0,-55.3333L119.694,179.292zM169.25,228.833L125.486,228.833l0,-43.75l43.7639,0L169.25,228.833z"/>
+     </g>
+     <g opacity="0.2">
+      <path fill="#FFFFFF" d="M294.736,152.944c0,-81.3889,-66,-147.375,-147.375,-147.375C65.9722,5.56944,0,71.5556,0,152.944l0,-5.56944C0,65.9861,65.9722,0,147.361,0c81.375,0,147.375,65.9861,147.375,147.375L294.736,152.944z"/>
+      <path fill="#FFFFFF" d="M270.764,133.25c0,-68.1528,-55.2639,-123.403,-123.389,-123.403c-68.1528,0,-123.403,55.2639,-123.403,123.403L23.9722,127.681c0,-68.1528,55.25,-123.403,123.403,-123.403c68.1389,0,123.389,55.2639,123.389,123.403L270.764,133.25z"/>
+     </g>
+     <g opacity="0.1">
+      <path d="M0,150.153c0,81.375,65.9722,147.375,147.361,147.375c81.375,0,147.375,-66,147.375,-147.375l0,-2.77778c0,81.375,-66,147.375,-147.375,147.375C65.9722,294.75,0,228.75,0,147.375L0,150.153z"/>
+      <path d="M23.9722,152.944c0,68.1389,55.25,123.417,123.403,123.417c68.1389,0,123.389,-55.2639,123.389,-123.417l0,-5.56944c0,68.1389,-55.2639,123.417,-123.389,123.417c-68.1528,0,-123.403,-55.2639,-123.403,-123.417L23.9722,152.944z"/>
+      <path d="M23.9722,133.25c0,68.1389,55.25,123.417,123.403,123.417c68.1389,0,123.389,-55.2639,123.389,-123.417L270.764,127.681c0,68.1389,-55.2639,123.417,-123.389,123.417c-68.1528,0,-123.403,-55.2639,-123.403,-123.417L23.9722,133.25z"/>
+     </g>
     </g>
    </g>
   </g>

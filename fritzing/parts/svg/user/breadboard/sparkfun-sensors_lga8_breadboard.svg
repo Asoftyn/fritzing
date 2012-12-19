@@ -5,63 +5,16 @@
  <g id="breadboard">
   <g id="icon">
    <path fill="#1F7A34" stroke="none" stroke-width="0" d="M0,0L0,270A30,30 0 0 1 0,330L0,600L400,600L400,0L0,0z"/>
-   <g transform="translate(129.134,199.075)">
-    <g transform="matrix(0.5, 0, 0, 0.5, 35.4331, 50.4626)">
-     <rect width="47.244" x="0" y="17.2637" fill="#8c8c8c" connectorname="1" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="47.244" x="0" y="66.4762" fill="#8c8c8c" connectorname="2" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="47.244" x="0" y="115.689" fill="#8c8c8c" connectorname="3" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="47.244" x="0" y="164.901" fill="#8c8c8c" connectorname="4" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="47.244" x="94.488" y="17.2637" fill="#8c8c8c" connectorname="8" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="47.244" x="94.488" y="66.4762" fill="#8c8c8c" connectorname="7" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="47.244" x="94.488" y="115.689" fill="#8c8c8c" connectorname="6" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="47.244" x="94.488" y="164.901" fill="#8c8c8c" connectorname="5" height="19.685" stroke="none" stroke-linecap="round" stroke-width="0"/>
-     <rect width="123.11" x="9.31102" y="0" fill="#303030" height="201.85" stroke="none" stroke-width="0"/>
-     <polygon fill="#1f1f1f" points="9.31102,0 132.421,0 122.421,10 19.311,10"/>
-     <polygon fill="#1f1f1f" points="9.31102,201.85 132.421,201.85 122.421,191.85 19.311,191.85"/>
-     <polygon fill="#000000" points="9.31102,0 9.31102,201.85 19.311,191.85 19.311,10"/>
-     <polygon fill="#3d3d3d" points="132.421,0 132.421,201.85 122.421,191.85 122.421,10"/>
-     <circle fill="#1f1f1f" cx="39.311" cy="171.85" stroke="none" r="10" stroke-width="0"/>
-    </g>
-   </g>
-   <text x="50" y="324.375" font-family="OCRA" fill="white" text-anchor="start" stroke="none" id="label" stroke-width="0" font-size="65">LGA8</text>
-   <g transform="translate(63.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">1</text>
-    </g>
-   </g>
-   <g transform="translate(63.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">8</text>
-    </g>
-   </g>
-   <g transform="translate(163.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">2</text>
-    </g>
-   </g>
-   <g transform="translate(163.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">7</text>
-    </g>
-   </g>
-   <g transform="translate(263.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">3</text>
-    </g>
-   </g>
-   <g transform="translate(263.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">6</text>
-    </g>
-   </g>
-   <g transform="translate(363.5,526.05)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="start" stroke="none" stroke-width="0" font-size="45">4</text>
-    </g>
-   </g>
-   <g transform="translate(363.5,73.95)">
-    <g transform="rotate(-90)">
-     <text x="0" y="0" font-family="OCRA" fill="white" text-anchor="end" stroke="none" stroke-width="0" font-size="45">5</text>
+   <g transform="translate(136.097,193.493)">
+    <g>
+     <path fill="#B3B3B3" d="M127.806,199.125c0,7.625,-6.23611,13.8889,-13.8889,13.8889L13.8889,213.014c-7.63889,0,-13.8889,-6.26389,-13.8889,-13.8889L0,13.8889c0,-7.63889,6.25,-13.8889,13.8889,-13.8889l100.028,0c7.65278,0,13.8889,6.25,13.8889,13.8889L127.806,199.125z"/>
+     <path fill="#999999" d="M122.944,193.611c0,7.625,-6.23611,13.8889,-13.8889,13.8889L18.7361,207.5c-7.63889,0,-13.8889,-6.26389,-13.8889,-13.8889L4.84722,26.9028c0,-7.63889,6.25,-13.8889,13.8889,-13.8889l90.3194,0c7.65278,0,13.8889,6.25,13.8889,13.8889L122.944,193.611z"/>
+     <path fill="#CCCCCC" d="M122.944,182.958c0,7.625,-6.23611,13.8889,-13.8889,13.8889L18.7361,196.847c-7.63889,0,-13.8889,-6.26389,-13.8889,-13.8889L4.84722,16.25c0,-7.63889,6.25,-13.8889,13.8889,-13.8889l90.3194,0c7.65278,0,13.8889,6.25,13.8889,13.8889L122.944,182.958z"/>
+     <path opacity="0.2" d="M4.84722,185.458c0,7.65278,6.25,13.8889,13.8889,13.8889l90.3194,0c7.65278,0,13.8889,-6.23611,13.8889,-13.8889l0,-2.5c0,7.625,-6.23611,13.8889,-13.8889,13.8889L18.7361,196.847c-7.63889,0,-13.8889,-6.26389,-13.8889,-13.8889L4.84722,185.458z"/>
+     <path opacity="0.2" fill="#FFFFFF" d="M122.944,19.9583c0,-7.63889,-6.23611,-13.8889,-13.8889,-13.8889L18.7361,6.06944c-7.63889,0,-13.8889,6.25,-13.8889,13.8889L4.84722,16.25c0,-7.63889,6.25,-13.8889,13.8889,-13.8889l90.3194,0c7.65278,0,13.8889,6.25,13.8889,13.8889L122.944,19.9583z"/>
+     <circle fill="#1A1A1A" cx="63.9028" cy="160.931" r="12.4444"/>
+     <path opacity="0.2" fill="#FFFFFF" d="M127.806,16.25c0,-7.63889,-6.23611,-13.8889,-13.8889,-13.8889L13.8889,2.36111c-7.63889,0,-13.8889,6.25,-13.8889,13.8889L0,13.8889c0,-7.63889,6.25,-13.8889,13.8889,-13.8889l100.028,0c7.65278,0,13.8889,6.25,13.8889,13.8889L127.806,16.25z"/>
+     <path opacity="0.2" d="M0,199.125c0,7.625,6.25,13.8889,13.8889,13.8889l100.028,0c7.65278,0,13.8889,-6.26389,13.8889,-13.8889l0,-1.44444c0,7.625,-6.23611,13.8889,-13.8889,13.8889L13.8889,211.569c-7.63889,0,-13.8889,-6.26389,-13.8889,-13.8889L0,199.125z"/>
     </g>
    </g>
   </g>
