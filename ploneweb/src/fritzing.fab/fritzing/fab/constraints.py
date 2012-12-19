@@ -22,9 +22,11 @@ class SketchFileValidator(validator.SimpleFieldValidator):
             raise Invalid(
                 _(u"We can only produce from shareable Fritzing sketch files (.fzz)"))
         
-        if any(c in fzzName for c in '+*/?$&\#'):
+        filenameMatch = re.compile(
+            r"^[a-zA-Z0-9_\.\(\)\-\+]+$").match
+        if not filenameMatch(fzzName):
             raise Invalid(
-                _(u"Please change the sketch name to not contain any special characters such as +*/?$§&"))
+                _(u"Please change the sketch name to not contain any special characters such as */?$§&"))
 
         # use StringIO to make the blob to look like a file object:
         fzzData = StringIO(sketchFile.data)
