@@ -57,6 +57,7 @@ protected:
 	virtual void updateRoutingStatus();
 	virtual class TraceWire * drawOneTrace(QPointF fromPos, QPointF toPos, double width, ViewLayer::ViewLayerSpec);
     void initUndo(QUndoCommand * parentCommand);
+	void addUndoConnection(bool connect, class SymbolPaletteItem *, QUndoCommand * parentCommand);
 	void addUndoConnection(bool connect, class JumperItem *, QUndoCommand * parentCommand);
 	void addUndoConnection(bool connect, class Via *, QUndoCommand * parentCommand);
 	void addUndoConnection(bool connect, TraceWire *, QUndoCommand * parentCommand);
@@ -64,7 +65,7 @@ protected:
 	void restoreOriginalState(QUndoCommand * parentCommand);
 	void doCancel(QUndoCommand * parentCommand);
 	void clearTracesAndJumpers();
-	void addToUndo(QMultiHash<TraceWire *, long> &, QUndoCommand * parentCommand);
+	void addToUndo(QUndoCommand * parentCommand);
 	void addWireToUndo(Wire * wire, QUndoCommand * parentCommand);
     void removeOffBoard(bool isPCBType, bool removeSingletons);
 
@@ -73,7 +74,7 @@ public slots:
 	virtual void cancelTrace();
 	virtual void stopTracing();
     virtual void useBest();
-	void setMaxCycles(int);
+	virtual void setMaxCycles(int);
 
 signals:
 	void setMaximumProgress(int);
@@ -97,11 +98,11 @@ protected:
 	int m_maximumProgressPart;
 	int m_currentProgressPart;
 	QGraphicsItem * m_board;
-	QMultiHash<TraceWire *, TraceWire *> m_splitDNA;
 	int m_maxCycles;
     double m_keepoutPixels;
 	QRectF m_maxRect;
 	QSet<ConnectorItem *> m_offBoardConnectors;
+    bool m_pcbType;
 };
 
 #endif

@@ -158,7 +158,7 @@ struct RouteThing {
     int ikeepout;
     Nearest nearest;
     std::priority_queue<GridPoint> pq;
-    bool makeJumper;
+    bool searchForJumper;
     double jumperDistance;
     GridPoint jumperLocation;
     QPoint gridTarget;
@@ -181,7 +181,6 @@ public:
 
 protected:
     void setUpWidths(double width);
-	void updateProgress(int num, int denom);
     int findPinsWithin(QList<ConnectorItem *> * net);
     bool makeBoard(QImage *, double keepout, const QRectF & r);
     bool makeMasters(QString &);
@@ -221,6 +220,12 @@ protected:
     void routeJumper(int netIndex, RouteThing &, Score & currentScore);
     void jumperWillFit(GridPoint & gridPoint, RouteThing &);
     void insertTrace(Trace & newTrace, int netIndex, Score & currentScore, int viaCount);
+    SymbolPaletteItem * makeNetLabel(GridPoint & center, int netLabelIndex);
+    void addNetLabelToUndo(SymbolPaletteItem * netLabel, QUndoCommand * parentCommand);
+
+public slots:
+     void incProgress();
+	 void setMaxCycles(int);
 
 protected:
 	LayerList m_viewLayerIDs;
@@ -239,7 +244,7 @@ protected:
     CostFunction m_costFunction;
     uint m_traceColors[2];
     Grid * m_grid;
-    bool m_pcbType;
+    int m_cleanupCount;
 };
 
 #endif

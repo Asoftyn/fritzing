@@ -37,6 +37,8 @@ $Date$
 
 #include <limits>
 
+QSizeF SchematicSketchWidget::m_jumperItemSize = QSizeF(0, 0);
+
 static QString SchematicTraceColor = "black";
 static const double TraceHoverStrokeFactor = 3;
 
@@ -49,6 +51,8 @@ bool sameGround(ConnectorItem * c1, ConnectorItem * c2)
 			
 	return (c1Grounded == c2Grounded);
 }
+
+///////////////////////////////////////////////////
 
 SchematicSketchWidget::SchematicSketchWidget(ViewLayer::ViewIdentifier viewIdentifier, QWidget *parent)
     : PCBSketchWidget(viewIdentifier, parent)
@@ -123,10 +127,6 @@ double SchematicSketchWidget::getRatsnestOpacity() {
 
 double SchematicSketchWidget::getRatsnestWidth() {
 	return 0.7;
-}
-
-bool SchematicSketchWidget::usesJumperItem() {
-	return false;
 }
 
 void SchematicSketchWidget::setClipEnds(ClipableWire * vw, bool) {
@@ -488,4 +488,21 @@ bool SchematicSketchWidget::attachedToBottomLayer(ConnectorItem * connectorItem)
 
 bool SchematicSketchWidget::attachedToTopLayer(ConnectorItem *) {
     return false;
+}
+
+QSizeF SchematicSketchWidget::jumperItemSize() {
+    if (SchematicSketchWidget::m_jumperItemSize.width() == 0) {
+	    long newID = ItemBase::getNextID();
+	    ViewGeometry viewGeometry;
+	    viewGeometry.setLoc(QPointF(0, 0));
+	    ItemBase * itemBase = addItem(referenceModel()->retrieveModelPart(ModuleIDNames::NetLabelModuleIDName), defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
+	    if (itemBase) {
+		    SymbolPaletteItem * netLabel = qobject_cast<SymbolPaletteItem *>(itemBase);
+            netLabel->setLabel("000");
+            SchematicSketchWidget::m_jumperItemSize = netLabel->boundingRect().size();
+            deleteItem(itemBase, true, false, false);
+        }
+    }
+
+	return SchematicSketchWidget::m_jumperItemSize;
 }

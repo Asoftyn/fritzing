@@ -638,11 +638,6 @@ int PCBSketchWidget::calcDistance(Wire * wire, ConnectorItem * end, int distance
 	return d1;
 }
 
-
-bool PCBSketchWidget::usesJumperItem() {
-	return true;
-}
-
 void PCBSketchWidget::showGroundTraces(QList<ConnectorItem *> & connectorItems, bool show) {
 
 	foreach (ConnectorItem * connectorItem, connectorItems) {

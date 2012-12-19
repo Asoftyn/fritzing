@@ -24,7 +24,6 @@ $Date$
 
 ********************************************************************/
 
-
 #include "commands.h"
 #include "debugdialog.h"
 #include "sketch/sketchwidget.h"
@@ -34,9 +33,35 @@ $Date$
 #include "items/moduleidnames.h"
 #include "utils/bezier.h"
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CommandProgress::CommandProgress() {
+    m_active = false;
+}
+
+void CommandProgress::setActive(bool active) {
+    m_active = active;
+}
+
+bool CommandProgress::active() {
+    return m_active;
+}
+
+void CommandProgress::emitUndo() {
+    emit incUndo();
+}
+
+void CommandProgress::emitRedo() {
+    emit incRedo();
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 int SelectItemCommand::selectItemCommandID = 3;
 int ChangeNoteTextCommand::changeNoteTextCommandID = 5;
 int BaseCommand::nextIndex = 0;
+CommandProgress BaseCommand::m_commandProgress;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -145,6 +170,32 @@ int BaseCommand::index() const {
 	return m_index;
 }
 
+void BaseCommand::undo() {
+    if (m_commandProgress.active()) m_commandProgress.emitUndo();
+}
+
+void BaseCommand::redo() {
+    if (m_commandProgress.active()) m_commandProgress.emitRedo();
+}
+
+CommandProgress * BaseCommand::initProgress() {
+    m_commandProgress.setActive(true);
+    return &m_commandProgress;
+}
+
+void BaseCommand::clearProgress() {
+    m_commandProgress.setActive(false);
+}
+
+int BaseCommand::totalChildCount(const QUndoCommand * command) {
+    int cc = command->childCount();
+    int tcc = cc;
+    for (int i = 0; i < cc; i++) {
+        tcc += totalChildCount(command->child(i));
+    }
+    return tcc;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 AddDeleteItemCommand::AddDeleteItemCommand(SketchWidget* sketchWidget, BaseCommand::CrossViewType crossViewType, QString moduleID, ViewLayer::ViewLayerSpec viewLayerSpec, ViewGeometry & viewGeometry, qint64 id, long modelIndex, QUndoCommand *parent)
@@ -191,6 +242,7 @@ AddItemCommand::AddItemCommand(SketchWidget* sketchWidget, BaseCommand::CrossVie
 void AddItemCommand::undo()
 {
     m_sketchWidget->deleteItem(m_itemID, true, true, false);
+    BaseCommand::undo();
 }
 
 void AddItemCommand::redo()
@@ -199,6 +251,7 @@ void AddItemCommand::redo()
 		m_sketchWidget->addItem(m_moduleID, m_viewLayerSpec, m_crossViewType, m_viewGeometry, m_itemID, m_modelIndex, this);
 	}
 	m_skipFirstRedo = false;
+    BaseCommand::redo();
 }
 
 QString AddItemCommand::getParamString() const {
@@ -220,11 +273,13 @@ DeleteItemCommand::DeleteItemCommand(SketchWidget* sketchWidget,BaseCommand::Cro
 void DeleteItemCommand::undo()
 {
     m_sketchWidget->addItem(m_moduleID, m_viewLayerSpec, m_crossViewType, m_viewGeometry, m_itemID, m_modelIndex, this);
+    BaseCommand::undo();
 }
 
 void DeleteItemCommand::redo()
 {
 	m_sketchWidget->deleteItem(m_itemID, true, m_crossViewType == BaseCommand::CrossView, false);
+    BaseCommand::redo();
 }
 
 QString DeleteItemCommand::getParamString() const {
@@ -245,11 +300,13 @@ MoveItemCommand::MoveItemCommand(SketchWidget* sketchWidget, long itemID, ViewGe
 void MoveItemCommand::undo()
 {
     m_sketchWidget->moveItem(m_itemID, m_old, m_updateRatsnest);
+    BaseCommand::undo();
 }
 
 void MoveItemCommand::redo()
 {
     m_sketchWidget->moveItem(m_itemID, m_new, m_updateRatsnest);
+    BaseCommand::redo();
 }
 
 QString MoveItemCommand::getParamString() const {
@@ -281,11 +338,13 @@ SimpleMoveItemCommand::SimpleMoveItemCommand(SketchWidget* sketchWidget, long it
 void SimpleMoveItemCommand::undo()
 {
     m_sketchWidget->simpleMoveItem(m_itemID, m_old);
+    BaseCommand::undo();
 }
 
 void SimpleMoveItemCommand::redo()
 {
     m_sketchWidget->simpleMoveItem(m_itemID, m_new);
+    BaseCommand::redo();
 }
 
 QString SimpleMoveItemCommand::getParamString() const {
@@ -316,6 +375,7 @@ void MoveItemsCommand::undo()
 	foreach (long id, m_wires.keys()) {
 		m_sketchWidget->updateWire(id, m_wires.value(id), m_updateRatsnest);
 	}
+    BaseCommand::undo();
 }
 
 void MoveItemsCommand::redo()
@@ -326,6 +386,7 @@ void MoveItemsCommand::redo()
 	foreach (long id, m_wires.keys()) {
 		m_sketchWidget->updateWire(id, m_wires.value(id), m_updateRatsnest);
 	}
+    BaseCommand::redo();
 }
 
 void MoveItemsCommand::addWire(long id, const QString & connectorID)
@@ -363,11 +424,13 @@ RotateItemCommand::RotateItemCommand(SketchWidget* sketchWidget, long itemID, do
 void RotateItemCommand::undo()
 {
     m_sketchWidget->rotateItem(m_itemID, -m_degrees);
+    BaseCommand::undo();
 }
 
 void RotateItemCommand::redo()
 {
     m_sketchWidget->rotateItem(m_itemID, m_degrees);
+    BaseCommand::redo();
 }
 
 QString RotateItemCommand::getParamString() const {
@@ -390,11 +453,13 @@ FlipItemCommand::FlipItemCommand(SketchWidget* sketchWidget, long itemID, Qt::Or
 void FlipItemCommand::undo()
 {
     redo();
+    BaseCommand::undo();
 }
 
 void FlipItemCommand::redo()
 {
     m_sketchWidget->flipItem(m_itemID, m_orientation);
+    BaseCommand::redo();
 }
 
 
@@ -428,11 +493,13 @@ ChangeConnectionCommand::ChangeConnectionCommand(SketchWidget * sketchWidget, Ba
 void ChangeConnectionCommand::undo()
 {
     m_sketchWidget->changeConnection(m_fromID, m_fromConnectorID, m_toID, m_toConnectorID, m_viewLayerSpec, !m_connect,  m_crossViewType == CrossView,  m_updateConnections);
+    BaseCommand::undo();
 }
 
 void ChangeConnectionCommand::redo()
 {
     m_sketchWidget->changeConnection(m_fromID, m_fromConnectorID, m_toID, m_toConnectorID, m_viewLayerSpec, m_connect,  m_crossViewType == CrossView, m_updateConnections);
+    BaseCommand::redo();
 }
 
 void ChangeConnectionCommand::setUpdateConnections(bool updatem) {
@@ -475,6 +542,7 @@ void ChangeWireCommand::undo()
 	if (!m_redoOnly) {
 		m_sketchWidget->changeWire(m_fromID, m_oldLine, m_oldPos, m_updateConnections, m_updateRatsnest);
 	}
+    BaseCommand::undo();
 }
 
 void ChangeWireCommand::redo()
@@ -482,6 +550,7 @@ void ChangeWireCommand::redo()
 	if (!m_undoOnly) {
 		m_sketchWidget->changeWire(m_fromID, m_newLine, m_newPos, m_updateConnections, m_updateRatsnest);
 	}
+    BaseCommand::redo();
 }
 
 QString ChangeWireCommand::getParamString() const {
@@ -521,6 +590,7 @@ void ChangeWireCurveCommand::undo()
 	if (!m_redoOnly) {
 		m_sketchWidget->changeWireCurve(m_fromID, m_oldBezier, m_wasAutoroutable);
 	}
+    BaseCommand::undo();
 }
 
 void ChangeWireCurveCommand::redo()
@@ -533,6 +603,7 @@ void ChangeWireCurveCommand::redo()
 			m_sketchWidget->changeWireCurve(m_fromID, m_newBezier, false);
 		}
 	}
+    BaseCommand::redo();
 }
 
 QString ChangeWireCurveCommand::getParamString() const {
@@ -578,6 +649,7 @@ void ChangeLegCommand::undo()
 	if (!m_redoOnly) {
 		m_sketchWidget->changeLeg(m_fromID, m_fromConnectorID, m_oldLeg, m_relative, m_why);
 	}
+    BaseCommand::undo();
 }
 
 void ChangeLegCommand::setSimple()
@@ -595,6 +667,7 @@ void ChangeLegCommand::redo()
 			m_sketchWidget->recalcLeg(m_fromID, m_fromConnectorID, m_newLeg, m_relative, m_active, m_why);
 		}
 	}
+    BaseCommand::redo();
 }
 
 QString ChangeLegCommand::getParamString() const {
@@ -636,6 +709,7 @@ void MoveLegBendpointCommand::undo()
 	if (!m_redoOnly) {
 		m_sketchWidget->moveLegBendpoint(m_fromID, m_fromConnectorID, m_index, m_oldPos);
 	}
+    BaseCommand::undo();
 }
 
 void MoveLegBendpointCommand::redo()
@@ -643,6 +717,7 @@ void MoveLegBendpointCommand::redo()
 	if (!m_undoOnly) {
 		m_sketchWidget->moveLegBendpoint(m_fromID, m_fromConnectorID, m_index, m_newPos);
 	}
+    BaseCommand::redo();
 }
 
 QString MoveLegBendpointCommand::getParamString() const {
@@ -684,6 +759,7 @@ ChangeLegCurveCommand::ChangeLegCurveCommand(SketchWidget* sketchWidget, long fr
 void ChangeLegCurveCommand::undo()
 {
     m_sketchWidget->changeLegCurve(m_fromID, m_fromConnectorID, m_index,  m_oldBezier);
+    BaseCommand::undo();
 }
 
 void ChangeLegCurveCommand::redo()
@@ -694,6 +770,7 @@ void ChangeLegCurveCommand::redo()
 	else if (!m_undoOnly) {
 		m_sketchWidget->changeLegCurve(m_fromID, m_fromConnectorID, m_index, m_newBezier);
 	}
+    BaseCommand::redo();
 }
 
 QString ChangeLegCurveCommand::getParamString() const {
@@ -748,12 +825,13 @@ ChangeLegBendpointCommand::ChangeLegBendpointCommand(SketchWidget* sketchWidget,
 
 void ChangeLegBendpointCommand::undo()
 {
-		if (m_newCount < m_oldCount) {
-			m_sketchWidget->addLegBendpoint(m_fromID, m_fromConnectorID, m_index, m_pos, m_bezier0, m_bezier1);
-		}
-		else {
-			m_sketchWidget->removeLegBendpoint(m_fromID, m_fromConnectorID, m_index, m_bezier0);
-		}
+	if (m_newCount < m_oldCount) {
+		m_sketchWidget->addLegBendpoint(m_fromID, m_fromConnectorID, m_index, m_pos, m_bezier0, m_bezier1);
+	}
+	else {
+		m_sketchWidget->removeLegBendpoint(m_fromID, m_fromConnectorID, m_index, m_bezier0);
+	}
+    BaseCommand::undo();
 }
 
 void ChangeLegBendpointCommand::redo()
@@ -769,6 +847,7 @@ void ChangeLegBendpointCommand::redo()
 			m_sketchWidget->removeLegBendpoint(m_fromID, m_fromConnectorID, m_index, m_bezier2);
 		}
 	}
+    BaseCommand::redo();
 }
 
 QString ChangeLegBendpointCommand::getParamString() const {
@@ -800,11 +879,13 @@ RotateLegCommand::RotateLegCommand(SketchWidget* sketchWidget, long fromID, cons
 
 void RotateLegCommand::undo()
 {
+    BaseCommand::undo();
 }
 
 void RotateLegCommand::redo()
 {
 	m_sketchWidget->rotateLeg(m_fromID, m_fromConnectorID, m_oldLeg, m_active);
+    BaseCommand::redo();
 }
 
 QString RotateLegCommand::getParamString() const {
@@ -840,11 +921,13 @@ ChangeLayerCommand::ChangeLayerCommand(SketchWidget *sketchWidget, long fromID,
 void ChangeLayerCommand::undo()
 {
     m_sketchWidget->changeLayer(m_fromID, m_oldZ, m_oldLayer);
+    BaseCommand::undo();
 }
 
 void ChangeLayerCommand::redo()
 {
     m_sketchWidget->changeLayer(m_fromID, m_newZ, m_newLayer);
+    BaseCommand::redo();
 }
 
 QString ChangeLayerCommand::getParamString() const {
@@ -921,6 +1004,7 @@ bool SelectItemCommand::mergeWith(const QUndoCommand *other)
 void SelectItemCommand::undo()
 {
 	selectAllFromStack(m_undoIDs, true, true);
+    BaseCommand::undo();
 }
 
 void SelectItemCommand::redo()
@@ -939,6 +1023,7 @@ void SelectItemCommand::redo()
 			m_sketchWidget->selectAllItems(false, m_crossViewType == BaseCommand::CrossView); 
 			break;
 	}
+    BaseCommand::redo();
 }
 
 void SelectItemCommand::selectAllFromStack(QList<long> & stack, bool select, bool updateInfoView) {
@@ -996,11 +1081,13 @@ void ChangeZCommand::addTriplet(long id, double oldZ, double newZ) {
 void ChangeZCommand::undo()
 {
    m_sketchWidget->changeZ(m_triplets, first);
+    BaseCommand::undo();
 }
 
 void ChangeZCommand::redo()
 {
    m_sketchWidget->changeZ(m_triplets, second);
+    BaseCommand::redo();
 }
 
 double ChangeZCommand::first(RealPair * pair) {
@@ -1047,6 +1134,7 @@ void CheckStickyCommand::undo()
 			stickyThing->sketchWidget->stickem(stickyThing->fromID, stickyThing->toID, stickyThing->stickem);
 		}
 	}
+    BaseCommand::undo();
 }
 
 void CheckStickyCommand::redo()
@@ -1062,6 +1150,7 @@ void CheckStickyCommand::redo()
 			stickyThing->sketchWidget->stickem(stickyThing->fromID, stickyThing->toID, stickyThing->stickem);
 		}
 	}
+    BaseCommand::redo();
 }
 
 QString CheckStickyCommand::getParamString() const {
@@ -1101,6 +1190,7 @@ void CleanUpWiresCommand::undo()
 	if (m_direction == UndoOnly) {
 		m_sketchWidget->cleanUpWires(m_crossViewType == BaseCommand::CrossView, NULL);  
 	}
+    BaseCommand::undo();
 }
 
 void CleanUpWiresCommand::redo()
@@ -1116,6 +1206,7 @@ void CleanUpWiresCommand::redo()
 	if (m_direction == RedoOnly) {
 		m_sketchWidget->cleanUpWires(m_crossViewType == BaseCommand::CrossView, this);  
 	}
+    BaseCommand::redo();
 }
 
 void CleanUpWiresCommand::addRatsnestConnect(long id, const QString & connectorID, bool connect)
@@ -1201,10 +1292,12 @@ WireColorChangeCommand::WireColorChangeCommand(SketchWidget* sketchWidget, long 
 
 void WireColorChangeCommand::undo() {
 	m_sketchWidget->changeWireColor(m_wireId, m_oldColor, m_oldOpacity);
+    BaseCommand::undo();
 }
 
 void WireColorChangeCommand::redo() {
 	m_sketchWidget->changeWireColor(m_wireId, m_newColor, m_newOpacity);
+    BaseCommand::redo();
 }
 
 QString WireColorChangeCommand::getParamString() const {
@@ -1227,10 +1320,12 @@ WireWidthChangeCommand::WireWidthChangeCommand(SketchWidget* sketchWidget, long 
 
 void WireWidthChangeCommand::undo() {
 	m_sketchWidget->changeWireWidth(m_wireId, m_oldWidth);
+    BaseCommand::undo();
 }
 
 void WireWidthChangeCommand::redo() {
 	m_sketchWidget->changeWireWidth(m_wireId, m_newWidth);
+    BaseCommand::redo();
 }
 
 
@@ -1253,10 +1348,12 @@ RoutingStatusCommand::RoutingStatusCommand(SketchWidget * sketchWidget, const Ro
 
 void RoutingStatusCommand::undo() {
 	m_sketchWidget->forwardRoutingStatus(m_oldRoutingStatus);
+    BaseCommand::undo();
 }
 
 void RoutingStatusCommand::redo() {
 	m_sketchWidget->forwardRoutingStatus(m_newRoutingStatus);
+    BaseCommand::redo();
 }
 
 QString RoutingStatusCommand::getParamString() const {
@@ -1280,11 +1377,13 @@ ShowLabelFirstTimeCommand::ShowLabelFirstTimeCommand(SketchWidget *sketchWidget,
 
 void ShowLabelFirstTimeCommand::undo()
 {
+    BaseCommand::undo();
 }
 
 void ShowLabelFirstTimeCommand::redo()
 {
     m_sketchWidget->showLabelFirstTime(m_itemID, m_newVis, true);
+    BaseCommand::redo();
 }
 
 QString ShowLabelFirstTimeCommand::getParamString() const {
@@ -1307,11 +1406,13 @@ RestoreLabelCommand::RestoreLabelCommand(SketchWidget *sketchWidget,long id, QDo
 
 void RestoreLabelCommand::undo()
 {
+    BaseCommand::undo();
 }
 
 void RestoreLabelCommand::redo()
 {
     m_sketchWidget->restorePartLabel(m_itemID, m_element);
+    BaseCommand::redo();
 }
 
 QString RestoreLabelCommand::getParamString() const {
@@ -1337,11 +1438,13 @@ MoveLabelCommand::MoveLabelCommand(SketchWidget *sketchWidget, long id, QPointF 
 void MoveLabelCommand::undo()
 {
     m_sketchWidget->movePartLabel(m_itemID, m_oldPos, m_oldOffset);
+    BaseCommand::undo();
 }
 
 void MoveLabelCommand::redo()
 {
     m_sketchWidget->movePartLabel(m_itemID, m_newPos, m_newOffset);
+    BaseCommand::redo();
 }
 
 
@@ -1366,11 +1469,13 @@ MoveLockCommand::MoveLockCommand(SketchWidget *sketchWidget, long id, bool oldLo
 void MoveLockCommand::undo()
 {
     m_sketchWidget->setMoveLock(m_itemID, m_oldLock);
+    BaseCommand::undo();
 }
 
 void MoveLockCommand::redo()
 {
     m_sketchWidget->setMoveLock(m_itemID, m_newLock);
+    BaseCommand::redo();
 }
 
 
@@ -1398,10 +1503,12 @@ ChangeLabelTextCommand::ChangeLabelTextCommand(SketchWidget *sketchWidget, long 
 
 void ChangeLabelTextCommand::undo() {
 	m_sketchWidget->setInstanceTitle(m_itemID, m_newText, m_oldText, false, true);
+    BaseCommand::undo();
 }
 
 void ChangeLabelTextCommand::redo() {
     m_sketchWidget->setInstanceTitle(m_itemID, m_oldText, m_newText, false, true);
+    BaseCommand::redo();
 }
 
 QString ChangeLabelTextCommand::getParamString() const {
@@ -1422,12 +1529,14 @@ IncLabelTextCommand::IncLabelTextCommand(SketchWidget *sketchWidget, long id,  Q
 
 void IncLabelTextCommand::undo() { 
 	// only used when creating new parts via paste
+    BaseCommand::undo();
 }
 
 void IncLabelTextCommand::redo() {
 	if (!m_skipFirstRedo) {
 		m_sketchWidget->incInstanceTitle(m_itemID);
 	}
+    BaseCommand::redo();
 }
 
 QString IncLabelTextCommand::getParamString() const {
@@ -1455,6 +1564,7 @@ void ChangeNoteTextCommand::undo() {
 	if (m_oldSize != m_newSize) {
 		m_sketchWidget->resizeNote(m_itemID, m_oldSize);
 	}
+    BaseCommand::undo();
 }
 
 void ChangeNoteTextCommand::redo() {
@@ -1467,6 +1577,7 @@ void ChangeNoteTextCommand::redo() {
 	if (m_oldSize != m_newSize) {
 		m_sketchWidget->resizeNote(m_itemID, m_newSize);
 	}
+    BaseCommand::redo();
 }
 
 int ChangeNoteTextCommand::id() const {
@@ -1515,11 +1626,13 @@ RotateFlipLabelCommand::RotateFlipLabelCommand(SketchWidget* sketchWidget, long 
 void RotateFlipLabelCommand::undo()
 {
     m_sketchWidget->rotateFlipPartLabel(m_itemID, -m_degrees, m_orientation);
+    BaseCommand::undo();
 }
 
 void RotateFlipLabelCommand::redo()
 {
     m_sketchWidget->rotateFlipPartLabel(m_itemID, m_degrees, m_orientation);
+    BaseCommand::redo();
 }
 
 QString RotateFlipLabelCommand::getParamString() const {
@@ -1543,11 +1656,13 @@ ResizeNoteCommand::ResizeNoteCommand(SketchWidget* sketchWidget, long itemID, co
 void ResizeNoteCommand::undo()
 {
     m_sketchWidget->resizeNote(m_itemID, m_oldSize);
+    BaseCommand::undo();
 }
 
 void ResizeNoteCommand::redo()
 {
     m_sketchWidget->resizeNote(m_itemID, m_newSize);
+    BaseCommand::redo();
 }
 
 QString ResizeNoteCommand::getParamString() const {
@@ -1575,12 +1690,14 @@ void ResizeBoardCommand::undo() {
     if (!m_redoOnly) {
 	    m_sketchWidget->resizeBoard(m_itemID, m_oldWidth, m_oldHeight);
     }
+    BaseCommand::undo();
 }
 
 void ResizeBoardCommand::redo() {
     if (!m_undoOnly) {
 	    m_sketchWidget->resizeBoard(m_itemID, m_newWidth, m_newHeight);
     }
+    BaseCommand::redo();
 }
 
 QString ResizeBoardCommand::getParamString() const {
@@ -1608,11 +1725,13 @@ TransformItemCommand::TransformItemCommand(SketchWidget *sketchWidget, long id, 
 void TransformItemCommand::undo()
 {
     m_sketchWidget->transformItem(m_itemID, m_oldMatrix);
+    BaseCommand::undo();
 }
 
 void TransformItemCommand::redo()
 {
     m_sketchWidget->transformItem(m_itemID, m_newMatrix);
+    BaseCommand::redo();
 }
 
 QString TransformItemCommand::getParamString() const {
@@ -1636,10 +1755,12 @@ SetResistanceCommand::SetResistanceCommand(SketchWidget * sketchWidget, long ite
 
 void SetResistanceCommand::undo() {
 	m_sketchWidget->setResistance(m_itemID, m_oldResistance, m_oldPinSpacing, true);
+    BaseCommand::undo();
 }
 
 void SetResistanceCommand::redo() {
 	m_sketchWidget->setResistance(m_itemID, m_newResistance, m_newPinSpacing, true);
+    BaseCommand::redo();
 }
 
 QString SetResistanceCommand::getParamString() const {
@@ -1666,10 +1787,12 @@ SetPropCommand::SetPropCommand(SketchWidget * sketchWidget, long itemID, QString
 
 void SetPropCommand::undo() {
 	m_sketchWidget->setProp(m_itemID, m_prop, m_oldValue, m_redraw, true);
+    BaseCommand::undo();
 }
 
 void SetPropCommand::redo() {
 	m_sketchWidget->setProp(m_itemID, m_prop, m_newValue, m_redraw, true);
+    BaseCommand::redo();
 }
 
 QString SetPropCommand::getParamString() const {
@@ -1699,10 +1822,12 @@ ResizeJumperItemCommand::ResizeJumperItemCommand(SketchWidget * sketchWidget, lo
 
 void ResizeJumperItemCommand::undo() {
 	m_sketchWidget->resizeJumperItem(m_itemID, m_oldPos, m_oldC0, m_oldC1);
+    BaseCommand::undo();
 }
 
 void ResizeJumperItemCommand::redo() {
 	m_sketchWidget->resizeJumperItem(m_itemID, m_newPos, m_newC0, m_newC1);
+    BaseCommand::redo();
 }
 
 QString ResizeJumperItemCommand::getParamString() const {
@@ -1732,6 +1857,7 @@ void ShowLabelCommand::undo()
 	foreach (long id, m_idStates.keys()) {
 		m_sketchWidget->showPartLabel(id, (m_idStates.value(id) & 2) != 0);
 	}
+    BaseCommand::undo();
 }
 
 void ShowLabelCommand::redo()
@@ -1739,6 +1865,7 @@ void ShowLabelCommand::redo()
 	foreach (long id, m_idStates.keys()) {
 		m_sketchWidget->showPartLabel(id, (m_idStates.value(id) & 1) != 0);
 	}
+    BaseCommand::redo();
 }
 
 void ShowLabelCommand::add(long id, bool prev, bool post)
@@ -1775,6 +1902,7 @@ void LoadLogoImageCommand::undo() {
     if (!m_redoOnly) {
 	    m_sketchWidget->loadLogoImage(m_itemID, m_oldSvg, m_oldAspectRatio, m_oldFilename);
     }
+    BaseCommand::undo();
 }
 
 void LoadLogoImageCommand::redo() {
@@ -1783,6 +1911,7 @@ void LoadLogoImageCommand::redo() {
 	else if (!m_undoOnly) {
 		m_sketchWidget->loadLogoImage(m_itemID, m_newFilename, m_addName);
 	}
+    BaseCommand::redo();
 }
 
 QString LoadLogoImageCommand::getParamString() const {
@@ -1807,6 +1936,7 @@ void ChangeBoardLayersCommand::undo() {
 	for (int i = childCount() - 1; i >= 0; i--) {
 		((QUndoCommand *) child(i))->undo();
 	}
+    BaseCommand::undo();
 }
 
 void ChangeBoardLayersCommand::redo() {
@@ -1814,6 +1944,7 @@ void ChangeBoardLayersCommand::redo() {
 	for (int i = 0; i < childCount(); i++) {
 		((QUndoCommand *) child(i))->redo();
 	}
+    BaseCommand::redo();
 }
 
 QString ChangeBoardLayersCommand::getParamString() const {
@@ -1836,10 +1967,12 @@ SetDropOffsetCommand::SetDropOffsetCommand(SketchWidget *sketchWidget, long id, 
 
 void SetDropOffsetCommand::undo() { 
 	// only used when creating new parts
+    BaseCommand::undo();
 }
 
 void SetDropOffsetCommand::redo() {
 	m_sketchWidget->setItemDropOffset(m_itemID, m_dropOffset);
+    BaseCommand::redo();
 
 }
 
@@ -1864,10 +1997,12 @@ RenamePinsCommand::RenamePinsCommand(SketchWidget *sketchWidget, long id, const 
 
 void RenamePinsCommand::undo() {
 	m_sketchWidget->renamePins(m_itemID, m_oldLabels, m_singleRow);
+    BaseCommand::undo();
 }
 
 void RenamePinsCommand::redo() {
 	m_sketchWidget->renamePins(m_itemID, m_newLabels, m_singleRow);
+    BaseCommand::redo();
 }
 
 QString RenamePinsCommand::getParamString() const {
@@ -1891,6 +2026,7 @@ void GroundFillSeedCommand::undo()
 	foreach(GFSThing gfsThing, m_items) {
 		m_sketchWidget->setGroundFillSeed(gfsThing.id, gfsThing.connectorID, !gfsThing.seed);
 	}
+    BaseCommand::undo();
 }
 
 void GroundFillSeedCommand::redo()
@@ -1898,6 +2034,7 @@ void GroundFillSeedCommand::redo()
 	foreach(GFSThing gfsThing, m_items) {
 		m_sketchWidget->setGroundFillSeed(gfsThing.id, gfsThing.connectorID, gfsThing.seed);
 	}
+    BaseCommand::redo();
 }
 
 void GroundFillSeedCommand::addItem(long id, const QString & connectorID, bool seed)
@@ -1935,6 +2072,7 @@ void WireExtrasCommand::undo()
 	if (!m_redoOnly) {
 		m_sketchWidget->setWireExtras(m_fromID, m_oldExtras);
 	}
+    BaseCommand::undo();
 }
 
 void WireExtrasCommand::redo()
@@ -1942,6 +2080,7 @@ void WireExtrasCommand::redo()
 	if (!m_undoOnly) {
 		m_sketchWidget->setWireExtras(m_fromID, m_newExtras);
 	}
+    BaseCommand::redo();
 }
 
 QString WireExtrasCommand::getParamString() const {

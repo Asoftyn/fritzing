@@ -57,7 +57,6 @@ public:
 	virtual void ensureTraceLayerVisible();
 	bool canChainMultiple();
 	void setNewPartVisible(ItemBase *);
-	virtual bool usesJumperItem();
 	void setClipEnds(class ClipableWire *, bool);
 	void showGroundTraces(QList<ConnectorItem *> & seeds, bool show);
     virtual double getLabelFontSizeTiny();
@@ -108,7 +107,7 @@ public:
 	void convertToBendpoint();
     int checkLoadedTraces();
 	bool hasCustomBoardShape();
-    QSizeF jumperItemSize();
+    virtual QSizeF jumperItemSize();
     virtual LayerList routingLayers(ViewLayer::ViewLayerSpec);
     virtual bool attachedToTopLayer(ConnectorItem *);
     virtual bool attachedToBottomLayer(ConnectorItem *);

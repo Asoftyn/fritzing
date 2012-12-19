@@ -46,7 +46,6 @@ public:
 	void tidyWires();
 	void ensureTraceLayersVisible();
 	void ensureTraceLayerVisible();
-	bool usesJumperItem();
 	void setClipEnds(ClipableWire * vw, bool);
 	void getBendpointWidths(class Wire *, double w, double & w1, double & w2, bool & negativeOffsetRect);
 	void getLabelFont(QFont &, QColor &, ViewLayer::ViewLayerSpec);
@@ -80,6 +79,7 @@ public:
     LayerList routingLayers(ViewLayer::ViewLayerSpec);
     bool attachedToTopLayer(ConnectorItem *);
     bool attachedToBottomLayer(ConnectorItem *);
+    QSizeF jumperItemSize();
 
 public slots:
 	void setVoltage(double voltage, bool doEmit);
@@ -103,6 +103,8 @@ protected:
 
 protected:
 	QTimer m_updateDotsTimer;
+
+    static QSizeF m_jumperItemSize;
 
 };
 

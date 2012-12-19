@@ -39,6 +39,27 @@ $Date$
 
 /////////////////////////////////////////////
 
+class CommandProgress : public QObject {
+    Q_OBJECT
+
+public:
+    CommandProgress();
+
+    void setActive(bool);
+    bool active();
+    void emitUndo();
+    void emitRedo();
+
+signals:
+    void incUndo();
+    void incRedo();
+
+protected:
+    bool m_active;
+};
+
+/////////////////////////////////////////////
+
 class BaseCommand : public QUndoCommand
 {
 public:
@@ -67,6 +88,12 @@ public:
 	void setUndoOnly();
 	void setRedoOnly();
     void setSkipFirstRedo();
+    void undo();
+    void redo();
+
+    static int totalChildCount(const QUndoCommand *);
+    static CommandProgress * initProgress();
+    static void clearProgress();
 
 protected:
 	virtual QString getParamString() const;
@@ -82,6 +109,8 @@ protected:
 	bool m_undoOnly;
 	bool m_redoOnly;
     bool m_skipFirstRedo;
+
+    static CommandProgress m_commandProgress;
 };
 
 /////////////////////////////////////////////

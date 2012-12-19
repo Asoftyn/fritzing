@@ -565,3 +565,11 @@ QString SymbolPaletteItem::getLabel() {
 QString SymbolPaletteItem::getDirection() {
     return  modelPart()->localProp("direction").toString();
 }
+
+void SymbolPaletteItem::setAutoroutable(bool ar) {
+	m_viewGeometry.setAutoroutable(ar);
+}
+
+bool SymbolPaletteItem::getAutoroutable() {
+	return m_viewGeometry.getAutoroutable();
+}

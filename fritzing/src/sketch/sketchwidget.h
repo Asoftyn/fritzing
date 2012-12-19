@@ -88,7 +88,7 @@ public:
     SketchWidget(ViewLayer::ViewIdentifier, QWidget *parent=0, int size=400, int minSize=300);
 	~SketchWidget();
 
-	void pushCommand(QUndoCommand *);
+	void pushCommand(QUndoCommand *, QObject * signalTarget);
     class WaitPushUndoStack * undoStack();
     ItemBase * addItem(ModelPart *, ViewLayer::ViewLayerSpec, BaseCommand::CrossViewType, const ViewGeometry &, long id, long modelIndex, AddDeleteItemCommand * originatingCommand);
 	ItemBase * addItem(const QString & moduleID, ViewLayer::ViewLayerSpec, BaseCommand::CrossViewType, const ViewGeometry &, long id, long modelIndex, AddDeleteItemCommand * originatingCommand);
