@@ -361,6 +361,7 @@ class IFabOrder(form.Schema):
         description = u'',
         required = False)
 
+    dexterity.write_permission(shipTo='cmf.ReviewPortalContent')
     shipTo = Choice(
         title = _(u"Shipping Area"),
         description = u'',
@@ -442,11 +443,13 @@ class IFabOrder(form.Schema):
         min = 0.0,
         default = 0.0)
     
+    dexterity.write_permission(trackingNumber='cmf.ReviewPortalContent')
     trackingNumber = TextLine(
         title = _(u"Tracking Number"),
         description = _(u"The tracking number assigned by the parcel service"),
         required = False)
 
+    dexterity.write_permission(productionRound='cmf.ReviewPortalContent')
     productionRound = Int(
         title=_(u"Production Round #"),
         description=_(u"The production round that this order belongs to"),
@@ -460,11 +463,13 @@ class IFabOrder(form.Schema):
             SimpleTerm(value = u'transfer', title = _(u'Bank Transfer')),
         ]))
 
+    dexterity.write_permission(paymentId='cmf.ReviewPortalContent')
     paymentId = TextLine(
         title = _(u"Payment ID"),
         description = _(u"The PayPal transaction number or other accounting number associated with this order"),
         required = False)
 
+    dexterity.write_permission(paymentStatusMsg='cmf.ReviewPortalContent')
     paymentStatusMsg = TextLine(
         title = _(u"Payment Status Message"),
         description = _(u"Additional information about the payment status"),

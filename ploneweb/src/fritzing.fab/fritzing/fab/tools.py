@@ -184,7 +184,7 @@ def sendStatusMail(context, justReturn=False):
         raise SMTPRecipientsRefused('Recipient address rejected by server')
 
 
-def sendSketchUpdateMail(context, justReturn=False):
+def sendSketchUpdateMail(sketch, justReturn=False):
     """Sends notification when a sketch file has been replaced
     """
     mail_text = u""
@@ -192,9 +192,8 @@ def sendSketchUpdateMail(context, justReturn=False):
     
     portal = getSite()
     mail_template = portal.mail_sketch_update
-    sketch = context
-    faborder = context.aq_parent
-    faborders = faborder.aq_parent
+    faborder = sketch.__parent__
+    faborders = faborder.__parent__
     
     from_address = faborders.salesEmail
     from_name = "Fritzing Fab"
@@ -220,7 +219,7 @@ def sendSketchUpdateMail(context, justReturn=False):
         return mail_text
     
     try:
-        host = getToolByName(context, 'MailHost')
+        host = getToolByName(sketch, 'MailHost')
         # send our copy:
         host.send(
             MIMEText(mail_text, 'plain', charset), 

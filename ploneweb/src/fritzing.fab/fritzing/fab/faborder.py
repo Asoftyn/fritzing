@@ -2,6 +2,7 @@ import zipfile
 from cStringIO import StringIO
 import DateTime
 
+from Acquisition import aq_inner, aq_parent
 from five import grok
 from z3c.form import field, button
 from zope.lifecycleevent.interfaces import IObjectAddedEvent, IObjectModifiedEvent, IObjectMovedEvent
@@ -151,9 +152,10 @@ def workflowTransitionHandler(faborder, event):
     """event-handler for workflow transitions on IFabOrder instances
     """
     if event.action in ('submit'):
-        faborders = faborder.aq_parent
-        faborder.productionRound = faborders.currentProductionRound
+        faborders = faborder.__parent__
         faborder.setEffectiveDate(DateTime.DateTime())
+        faborder.productionRound = faborders.currentProductionRound
+        faborder.reindexObject(idxs=['productionRound'])
 
     if event.action in ('submit', 'complete'):
         sendStatusMail(faborder)
@@ -241,6 +243,7 @@ class SketchUpdateForm(form.EditForm):
     """ updates the sketch file for an order
     """
     grok.name('update')
+    # XXX: owner doesn't have modify permission when order is in_process
     grok.require('cmf.ModifyPortalContent')
     grok.context(ISketch)
 
@@ -253,6 +256,9 @@ class SketchUpdateForm(form.EditForm):
 
     @button.buttonAndHandler(_(u'Save'))
     def handleApply(self, action):
+        sketch = aq_inner(self.context)
+        faborder = sketch.__parent__
+
         data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
@@ -263,26 +269,29 @@ class SketchUpdateForm(form.EditForm):
         zf = None
         zf = zipfile.ZipFile(fzzData)
         pairs = getboardsize.fromZipFile(zf, newSketchFile.filename)
-        boards = [
-            {'width':pairs[i] / 10, 'height':pairs[i+1] / 10} 
-            for i in range(0, len(pairs), 2)
-        ]
+        boards = [{'width':pairs[i] / 10, 'height':pairs[i+1] / 10} 
+            for i in range(0, len(pairs), 2)]
         totalArea = 0
         for board in boards:
             totalArea += board['width'] * board['height']
 
-        oldSketch = self.aq_parent
-        if abs(totalArea - oldSketch.area) > 0.1:
+        if abs(totalArea - sketch.area) > 0.1:
             self.status = _(u"Sorry, you can only replace the sketch if the board size has not changed. "
                 "If you want to proceed, please contact us to cancel the current order and submit a new one.")
             return
         else:
-            # TODO: set status to "not checked"
             IStatusMessage(self.request).addStatusMessage(
                 _(u"The sketch has been successfully updated."), "info")
-            sendSketchUpdateMail(self.aq_parent)
-            contextURL = self.context.absolute_url()
-            self.request.response.redirect(contextURL)
+
+            # XXX: doesn't update correctly
+            sketch.id = newSketchFile.filename.encode("ascii")
+            sketch.title = newSketchFile.filename
+            sketch.orderItem = newSketchFile
+            sketch.checked = False
+
+            sendSketchUpdateMail(sketch)
+            orderURL = faborder.absolute_url()
+            self.request.response.redirect(orderURL)
 
 
     @button.buttonAndHandler(_(u'Cancel'))
