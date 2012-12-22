@@ -72,9 +72,9 @@
                     <a class="deleteSketchLink" tal:condition="python:(view.isStateId(context, 'open'))" tal:attributes="href string:${sketch/absolute_url}/delete_confirmation">
                       <img alt="remove" tal:attributes="src string:${navroot}/++resource++fritzing.fab/icon_remove.png" />
                     </a>
-                    <!--<a class="updateSketchLink" tal:condition="python:(view.isStateId(context, 'in_process'))" tal:attributes="href string:${sketch/absolute_url}/update">
+                    <a class="updateSketchLink" tal:condition="python:(view.isStateId(context, 'in_process'))" tal:attributes="href string:${sketch/absolute_url}/update">
                       Update file
-                    </a>-->
+                    </a>
                   </td>
                   <td class="copiesCell">
                     <span tal:content="sketch/copies | nothing"></span>

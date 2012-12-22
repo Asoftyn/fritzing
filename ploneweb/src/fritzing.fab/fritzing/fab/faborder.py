@@ -243,8 +243,7 @@ class SketchUpdateForm(form.EditForm):
     """ updates the sketch file for an order
     """
     grok.name('update')
-    # XXX: owner doesn't have modify permission when order is in_process
-    grok.require('cmf.ModifyPortalContent')
+    grok.require('zope2.View')
     grok.context(ISketch)
 
     fields = field.Fields(ISketch).select(
@@ -280,18 +279,25 @@ class SketchUpdateForm(form.EditForm):
                 "If you want to proceed, please contact us to cancel the current order and submit a new one.")
             return
         else:
-            IStatusMessage(self.request).addStatusMessage(
-                _(u"The sketch has been successfully updated."), "info")
+            faborder.manage_permission('Add portal content', roles=['Manager', 'Owner'], acquire=True)
+            sketch.manage_permission('Modify portal content', roles=['Manager', 'Owner'], acquire=True)
+            sketch.manage_permission('Copy or Move', roles=['Manager', 'Owner'], acquire=True)
 
-            # XXX: doesn't update correctly
-            sketch.id = newSketchFile.filename.encode("ascii")
+            newSketchId = newSketchFile.filename.encode("ascii")
+            faborder.manage_renameObject(sketch.getId(), newSketchId)
             sketch.title = newSketchFile.filename
             sketch.orderItem = newSketchFile
             sketch.checked = False
+            sketch.reindexObject()
+
+            faborder.manage_permission('Add portal content', roles=['Manager'], acquire=True)
+            sketch.manage_permission('Modify portal content', roles=['Manager'], acquire=True)
+            sketch.manage_permission('Copy or Move', roles=['Manager'], acquire=True)
 
             sendSketchUpdateMail(sketch)
-            orderURL = faborder.absolute_url()
-            self.request.response.redirect(orderURL)
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"The sketch has been successfully updated."), "info")
+            self.request.response.redirect(faborder.absolute_url())
 
 
     @button.buttonAndHandler(_(u'Cancel'))
