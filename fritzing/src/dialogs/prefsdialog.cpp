@@ -76,13 +76,13 @@ void PrefsDialog::initLayout(QFileInfoList & list)
 	m_tabWidget = new QTabWidget();
 	m_general = new QWidget();
 	m_breadboard = new QWidget();
-	//m_schematic = new QWidget();
-	//m_pcb = new QWidget();
+	m_schematic = new QWidget();
+	m_pcb = new QWidget();
 
 	m_tabWidget->addTab(m_general, tr("General"));
 	m_tabWidget->addTab(m_breadboard, m_viewInfoThings[0].viewName);
-	//m_tabWidget->addTab(m_schematic, m_viewInfoThings[1].viewName);
-	//m_tabWidget->addTab(m_pcb, m_viewInfoThings[2].viewName);
+	m_tabWidget->addTab(m_schematic, m_viewInfoThings[1].viewName);
+	m_tabWidget->addTab(m_pcb, m_viewInfoThings[2].viewName);
 
 	QVBoxLayout * vLayout = new QVBoxLayout();
 	vLayout->addWidget(m_tabWidget);
@@ -90,8 +90,8 @@ void PrefsDialog::initLayout(QFileInfoList & list)
 	initGeneral(m_general, list);
 
 	initBreadboard(m_breadboard, &m_viewInfoThings[0]);
-	//initSchematic(m_schematic, &m_viewInfoThings[1]);
-	//initPCB(m_pcb, &m_viewInfoThings[2]);
+	initSchematic(m_schematic, &m_viewInfoThings[1]);
+	initPCB(m_pcb, &m_viewInfoThings[2]);
 
     QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 	buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -134,9 +134,8 @@ void PrefsDialog::initBreadboard(QWidget * widget, ViewInfoThing * viewInfoThing
 
 void PrefsDialog::initSchematic(QWidget * widget, ViewInfoThing * viewInfoThing)
 {
-    Q_UNUSED(viewInfoThing);
 	QVBoxLayout * vLayout = new QVBoxLayout();
-
+    vLayout->addWidget(createCurvyForm(viewInfoThing));
 	vLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Preferred, QSizePolicy::Expanding));
 
 	widget->setLayout(vLayout);
@@ -144,9 +143,8 @@ void PrefsDialog::initSchematic(QWidget * widget, ViewInfoThing * viewInfoThing)
 
 void PrefsDialog::initPCB(QWidget * widget, ViewInfoThing * viewInfoThing)
 {
-    Q_UNUSED(viewInfoThing);
 	QVBoxLayout * vLayout = new QVBoxLayout();
-
+    vLayout->addWidget(createCurvyForm(viewInfoThing));
 	vLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Preferred, QSizePolicy::Expanding));
 
 	widget->setLayout(vLayout);

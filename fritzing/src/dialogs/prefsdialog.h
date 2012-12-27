@@ -89,6 +89,8 @@ protected:
 	QPointer<QTabWidget> m_tabWidget;
 	QPointer<QWidget> m_general;
 	QPointer<QWidget> m_breadboard;
+	QPointer<QWidget> m_schematic;
+	QPointer<QWidget> m_pcb;
 	QPointer<QLabel> m_wheelLabel[3];
 	QHash<QString, QString> m_settings;
 	QHash<QString, QString> m_tempSettings;

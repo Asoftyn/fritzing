@@ -220,7 +220,7 @@ protected:
     void routeJumper(int netIndex, RouteThing &, Score & currentScore);
     void jumperWillFit(GridPoint & gridPoint, RouteThing &);
     void insertTrace(Trace & newTrace, int netIndex, Score & currentScore, int viaCount);
-    SymbolPaletteItem * makeNetLabel(GridPoint & center, int netLabelIndex);
+    SymbolPaletteItem * makeNetLabel(GridPoint & center, SymbolPaletteItem * pairedNetLabel);
     void addNetLabelToUndo(SymbolPaletteItem * netLabel, QUndoCommand * parentCommand);
 
 public slots:

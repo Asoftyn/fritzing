@@ -18,34 +18,35 @@
 # ********************************************************************/
 
 TRANSLATIONS += translations/fritzing_de.ts \
-	translations/fritzing_fr.ts \
+	translations/fritzing_ar.ts \
+	translations/fritzing_bg.ts \
+	translations/fritzing_bn.ts \
+	translations/fritzing_cs.ts \
 	translations/fritzing_el.ts \
 	translations/fritzing_en.ts \
 	translations/fritzing_es.ts \
-	translations/fritzing_ja.ts \
-	translations/fritzing_pt_br.ts \
-	translations/fritzing_pt_pt.ts \
-	translations/fritzing_it.ts \
-	translations/fritzing_ru.ts \
-	translations/fritzing_zh_cn.ts \
-	translations/fritzing_zh_tw.ts \
 	translations/fritzing_et.ts \
+	translations/fritzing_fa.ts \
+	translations/fritzing_fr.ts \
+	translations/fritzing_gl.ts \
+	translations/fritzing_hi.ts \
 	translations/fritzing_hu.ts \
-	translations/fritzing_th.ts \
+	translations/fritzing_id.ts \
+	translations/fritzing_it.ts \
+	translations/fritzing_ja.ts \
+	translations/fritzing_ko.ts \
 	translations/fritzing_nl.ts \
 	translations/fritzing_pl.ts \
-	translations/fritzing_cs.ts \
-	translations/fritzing_ar.ts \
-	translations/fritzing_tr.ts \
+	translations/fritzing_pt_br.ts \
+	translations/fritzing_pt_pt.ts \
 	translations/fritzing_ro.ts \
-	translations/fritzing_sv.ts \
-	translations/fritzing_bg.ts \
-	translations/fritzing_hi.ts \
-	translations/fritzing_gl.ts \
-	translations/fritzing_ko.ts \
-	translations/fritzing_id.ts \
+	translations/fritzing_ru.ts \
 	translations/fritzing_sk.ts \
-	translations/fritzing_bn.ts \
+	translations/fritzing_sv.ts \
+	translations/fritzing_th.ts \
+	translations/fritzing_tr.ts \
+	translations/fritzing_zh_cn.ts \
+	translations/fritzing_zh_tw.ts \
 
 
 

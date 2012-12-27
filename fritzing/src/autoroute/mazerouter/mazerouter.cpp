@@ -39,14 +39,16 @@ $Date$
 //          jumper placement must be away from vias
 //          and previous traces (GridAvoid)
 //
-//      curvy wire prefs
-//
 //      when multiple traces connect to one via, traces tend to connect to each other instead of the via
 //          see shift register example
 //
-//      crash placing jumper using 'PhoenixV3 (2) no traces' after 39 rounds 
+//      cleanup feedback stops dead with phoenix_no_traces after 8% is reached 
 //
 //      bad jumper placement in atmega256?
+//
+//      keepout dialog
+//
+//      lines for all 1 x N patterns?
 //
 
 // LATER:
@@ -56,8 +58,6 @@ $Date$
 //
 //      net reordering/rip-up-and-reroute
 //          is there a better way than move back by one?
-//
-//      keepout dialog
 //
 //      raster back to vector
 //          curve-fitting? use a bezier?  http://kobus.ca/seminars/ugrad/NM5_curve_s02.pdf
@@ -415,8 +415,9 @@ void Score::setOrdering(const NetOrdering & _ordering) {
 
 MazeRouter::MazeRouter(PCBSketchWidget * sketchWidget, QGraphicsItem * board, bool adjustIf) : Autorouter(sketchWidget)
 {
+    m_grid = NULL;
     m_displayItem[0] = m_displayItem[1] = NULL;
-    m_displayImage[0] = m_displayImage[1] = NULL;
+    m_boardImage = m_spareImage = m_displayImage[0] = m_displayImage[1] = NULL;
 
     CancelledMessage = tr("Autorouter was cancelled.");
 
@@ -873,8 +874,8 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
         }
 
         if (previousTraces) {
-            updateDisplay(0);
-            if (m_bothSidesNow) updateDisplay(1);
+            updateDisplay(m_grid, 0);
+            if (m_bothSidesNow) updateDisplay(m_grid, 1);
         }
 
         if (currentScore.routedCount.value(netIndex) > 0) {
@@ -1039,6 +1040,7 @@ bool MazeRouter::routeOne(bool makeJumper, Score & currentScore, int netIndex, R
 
 void MazeRouter::routeJumper(int netIndex, RouteThing & routeThing, Score & currentScore) {
     routeThing.searchForJumper = true;
+    updateDisplay(m_grid, 0);
 
     bool routeBothEnds = true;
     Trace sourceTrace;
@@ -1060,7 +1062,13 @@ void MazeRouter::routeJumper(int netIndex, RouteThing & routeThing, Score & curr
         int viaCount;
         routeThing.jumperDistance = std::numeric_limits<double>::max();
         clearExpansionForJumper(m_grid, GridSource, routeThing.pq);
-        route(routeThing, viaCount);
+        if (!m_pcbType) {
+            QList<Trace> traces = currentScore.traces.values();
+            traceAvoids(traces, netIndex, routeThing);
+        }
+        updateDisplay(m_grid, 0);
+        DebugDialog::debug(QString("grid target 1 %1,%2").arg(routeThing.gridTarget.x()).arg(routeThing.gridTarget.y()));
+        QList<GridPoint> points = route(routeThing, viaCount);   // points should be empty
         if (routeThing.jumperDistance < std::numeric_limits<double>::max()) {
             sourceTrace.flags = JumperStart;
             sourceTrace.gridPoints = traceBack(routeThing.jumperLocation, m_grid, sourceViaCount);
@@ -1074,8 +1082,14 @@ void MazeRouter::routeJumper(int netIndex, RouteThing & routeThing, Score & curr
         routeThing.gridTarget.setX(gp.x);
         routeThing.gridTarget.setY(gp.y);
         clearExpansionForJumper(m_grid, GridTarget, routeThing.pq);
+        if (!m_pcbType) {
+            QList<Trace> traces = currentScore.traces.values();
+            traceAvoids(traces, netIndex, routeThing);
+        }
+        updateDisplay(m_grid, 0);
         int viaCount;
-        route(routeThing, viaCount);
+        DebugDialog::debug(QString("grid target 2 %1,%2").arg(routeThing.gridTarget.x()).arg(routeThing.gridTarget.y()));
+        QList<GridPoint> points = route(routeThing, viaCount);  // points should be empty
         if (routeThing.jumperDistance < std::numeric_limits<double>::max()) {
             Trace destTrace;
             destTrace.flags = JumperEnd;
@@ -1760,7 +1774,9 @@ void MazeRouter::expandOne(GridPoint & gridPoint, RouteThing & routeThing, int d
         m_grid->setAt(next.x, next.y, next.z, next.baseCost);
     }
 
-    //updateDisplay(next);
+    if (routeThing.searchForJumper) {
+        updateDisplay(next);
+    }
 }
 
 bool MazeRouter::viaWillFit(GridPoint & gridPoint, Grid * grid) {
@@ -1876,7 +1892,7 @@ void MazeRouter::clearExpansionForJumper(Grid * grid, GridValue sourceOrTarget, 
                         gp.y = y;
                         gp.z = z;
                         gp.qCost = gp.baseCost = 0;
-                        //DebugDialog::debug(QString("pushing jumper 1 %1 %2 %3, %4, %5").arg(gp.x).arg(gp.y).arg(gp.z).arg(gp.qCost).arg(pq.size()));
+                        DebugDialog::debug(QString("pushing jumper 1 %1 %2 %3, %4, %5").arg(gp.x).arg(gp.y).arg(gp.z).arg(gp.qCost).arg(pq.size()));
                         pq.push(gp);
                     }
                 }
@@ -1886,13 +1902,14 @@ void MazeRouter::clearExpansionForJumper(Grid * grid, GridValue sourceOrTarget, 
                         gp.x = x;
                         gp.y = y;
                         gp.z = z;
-                        //DebugDialog::debug(QString("pushing jumper 2 %1 %2 %3, %4, %5").arg(gp.x).arg(gp.y).arg(gp.z).arg(gp.qCost).arg(pq.size()));
-
+                        DebugDialog::debug(QString("pushing jumper 2 %1 %2 %3, %4, %5").arg(gp.x).arg(gp.y).arg(gp.z).arg(gp.qCost).arg(pq.size()));
                         gp.qCost = gp.baseCost = 0;
                         pq.push(gp);
                     }
                 }
-                else grid->setAt(x, y, z, 0);
+                else {
+                    grid->setAt(x, y, z, 0);
+                }
             }
         }
     }
@@ -1984,10 +2001,10 @@ void MazeRouter::traceAvoids(QList<Trace> & traces, int netIndex, RouteThing & r
             for (int y = -routeThing.ikeepout; y <= routeThing.ikeepout; y++) {
                 for (int x = -routeThing.ikeepout; x <= routeThing.ikeepout; x++) {
                     GridValue val = m_grid->at(gridPoint.x + x, gridPoint.y + y, 0);
-                    if (val != GridPartObstacle && val != GridBoardObstacle) {
-                        m_grid->setAt(gridPoint.x + x, gridPoint.y + y, 0, GridAvoid);
-                        routeThing.avoids.insert(((gridPoint.y + y) * m_grid->x) + x + gridPoint.x);
-                    }
+                    if (val == GridPartObstacle || val == GridBoardObstacle || val == GridSource || val == GridTarget) continue;
+                        
+                    m_grid->setAt(gridPoint.x + x, gridPoint.y + y, 0, GridAvoid);
+                    routeThing.avoids.insert(((gridPoint.y + y) * m_grid->x) + x + gridPoint.x);
                 }
             }
         }
@@ -2012,18 +2029,6 @@ void MazeRouter::cleanUpNets(NetList & netList) {
 }
 
 void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand * parentCommand) {
-    int netLabelIndex = 0;
-    if (!m_pcbType) {
-        foreach (QGraphicsItem * item, m_sketchWidget->scene()->items()) {
-            SymbolPaletteItem * netLabel = dynamic_cast<SymbolPaletteItem *>(item);
-            if (netLabel == NULL || !netLabel->isNetLabel()) continue;
-
-            bool ok;
-            int ix = netLabel->getLabel().toInt(&ok);
-            if (ok && ix > netLabelIndex) netLabelIndex = ix;
-        }
-        netLabelIndex++;
-    }
     QPointF topLeft = m_maxRect.topLeft();
     foreach (int netIndex, bestScore.ordering.order) {
         //DebugDialog::debug(QString("tracing net %1").arg(netIndex));
@@ -2061,7 +2066,7 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
                     newJumperItems << jumperItem;
                 }
                 else {
-                    netLabel = makeNetLabel(trace.gridPoints.first(), netLabelIndex);
+                    netLabel = makeNetLabel(trace.gridPoints.first(), NULL);
                     addNetLabelToUndo(netLabel, parentCommand);
                     newNetLabels << netLabel;
                 }
@@ -2071,7 +2076,7 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
                     // keep the jumperItem we have from JumperStart
                 }
                 else {
-                    netLabel = makeNetLabel(trace.gridPoints.first(), netLabelIndex++);
+                    netLabel = makeNetLabel(trace.gridPoints.first(), netLabel);
                     addNetLabelToUndo(netLabel, parentCommand);
                     newNetLabels << netLabel;
                 }
@@ -2516,7 +2521,23 @@ void MazeRouter::setMaxCycles(int maxCycles)
     emit setMaximumProgress(maxCycles);
 }
 
-SymbolPaletteItem * MazeRouter::makeNetLabel(GridPoint & center, int netLabelIndex) {
+SymbolPaletteItem * MazeRouter::makeNetLabel(GridPoint & center, SymbolPaletteItem * pairedNetLabel) {
+    int netLabelIndex = 0;
+    if (pairedNetLabel == NULL) {
+        foreach (QGraphicsItem * item, m_sketchWidget->scene()->items()) {
+            SymbolPaletteItem * netLabel = dynamic_cast<SymbolPaletteItem *>(item);
+            if (netLabel == NULL || !netLabel->isNetLabel()) continue;
+
+            bool ok;
+            int ix = netLabel->getLabel().toInt(&ok);
+            if (ok && ix > netLabelIndex) netLabelIndex = ix;
+        }
+        netLabelIndex++;
+    }
+    else {
+        netLabelIndex = pairedNetLabel->getLabel().toInt();
+    }
+
 	long newID = ItemBase::getNextID();
     ViewGeometry viewGeometry;
 	ItemBase * itemBase = m_sketchWidget->addItem(m_sketchWidget->referenceModel()->retrieveModelPart(ModuleIDNames::NetLabelModuleIDName), 
