@@ -182,6 +182,10 @@
         <source>zoom and pan controls</source>
         <translation>缩放旋转控制</translation>
     </message>
+    <message>
+        <source>Best So Far</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Autorouter</name>
@@ -535,35 +539,6 @@ If you intended your custom shape to have cutouts and you did not get the expect
     <message>
         <source>shape</source>
         <translation>形状</translation>
-    </message>
-</context>
-<context>
-    <name>CMRouter</name>
-    <message>
-        <source>round %1 of:</source>
-        <translation>round %1 of:</translation>
-    </message>
-    <message>
-        <source>best so far: %1 unrouted</source>
-        <translation>至此:%1没有布线</translation>
-    </message>
-    <message numerus="yes">
-        <source>/%n jumpers</source>
-        <translation>
-            <numerusform>/%n 跳线</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>/%n vias</source>
-        <translation>
-            <numerusform>/%n 通孔</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>Note: the autorouter did not route %n parts, because they are not located entirely on the board.</source>
-        <translation>
-            <numerusform>注意：自动布线不能布%n个元件，因为它们没有完整的位于板上。</numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -1989,14 +1964,6 @@ We&apos;re working to avoid this message, and only let you choose between proper
         <translation>导出网络表...</translation>
     </message>
     <message>
-        <source>&amp;Autoroute</source>
-        <translation>自动布线(&amp;A)</translation>
-    </message>
-    <message>
-        <source>Autoroute...</source>
-        <translation>自动布线...</translation>
-    </message>
-    <message>
         <source>Select All Traces</source>
         <translation>选择所有引导线</translation>
     </message>
@@ -2995,7 +2962,7 @@ Go ahead and revert?</source>
         <translation>设置元件间DRC（设计规则检查）的最小距离</translation>
     </message>
     <message>
-        <source>Autoroute (new)</source>
+        <source>Autoroute connections...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3038,7 +3005,15 @@ Go ahead and revert?</source>
         </translation>
     </message>
     <message>
-        <source>Routing reached round %1. Now cleaning up...</source>
+        <source>Routing cannot complete; stopping at round %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Routing reached maximum round %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Now cleaning up...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5106,20 +5081,12 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
         <translation>元件图像</translation>
     </message>
     <message>
-        <source>Cannot autoroute: parts or traces are overlapping</source>
-        <translation>不能自动布线:元件或者覆铜过大</translation>
-    </message>
-    <message>
         <source>Error reading file %1: %2.</source>
         <translation>读取文件%1错误:%2.</translation>
     </message>
     <message>
         <source>Select locked parts</source>
         <translation>选择锁定的元件</translation>
-    </message>
-    <message>
-        <source>Cannot autoroute: maybe all traces are marked &apos;do not autoroute&apos;.</source>
-        <translation>不能自动布线:可能因为所有的覆铜层都被标记为&apos;不自动布线&apos;.</translation>
     </message>
     <message>
         <source>Auorouter Settings</source>
@@ -5160,10 +5127,6 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
     <message>
         <source>Tools</source>
         <translation>工具</translation>
-    </message>
-    <message>
-        <source>tiling failure: possibly due wire crossing layers bug. Wire at %1,%2 %3,%4 (in)</source>
-        <translation>tiling失败：可能是因为线穿过层的bug。线位于%1，%2，%3，%4(in)</translation>
     </message>
     <message>
         <source>Frame</source>

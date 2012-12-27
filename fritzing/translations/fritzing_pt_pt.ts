@@ -182,6 +182,10 @@
         <source>zoom and pan controls</source>
         <translation>zoom e comandos de pan</translation>
     </message>
+    <message>
+        <source>Best So Far</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Autorouter</name>
@@ -530,38 +534,6 @@ If you intended your custom shape to have cutouts and you did not get the expect
     <message>
         <source>shape</source>
         <translation type="unfinished">forma</translation>
-    </message>
-</context>
-<context>
-    <name>CMRouter</name>
-    <message>
-        <source>round %1 of:</source>
-        <translation>round %1 de:</translation>
-    </message>
-    <message>
-        <source>best so far: %1 unrouted</source>
-        <translation>Melhor até agora: %1 não encaminhados</translation>
-    </message>
-    <message numerus="yes">
-        <source>/%n jumpers</source>
-        <translation>
-            <numerusform>/%n jumper</numerusform>
-            <numerusform>/%n jumpers</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>/%n vias</source>
-        <translation>
-            <numerusform>/%n via</numerusform>
-            <numerusform>/%n vias</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>Note: the autorouter did not route %n parts, because they are not located entirely on the board.</source>
-        <translation>
-            <numerusform>Nota: o auto-encaminhamento não foi efectivo no componente %n, porque este não está colocado inteiramente dentro da placa.</numerusform>
-            <numerusform>Nota: o auto-encaminhamento não foi efectivo nos componentes %n, porque estes não estão colocados inteiramente dentro da placa.</numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -1816,14 +1788,6 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation>Exportar lista de material (BoM)...</translation>
     </message>
     <message>
-        <source>&amp;Autoroute</source>
-        <translation>&amp;Autoroute</translation>
-    </message>
-    <message>
-        <source>Autoroute...</source>
-        <translation>Autoroute...</translation>
-    </message>
-    <message>
         <source>Select All Traces</source>
         <translation>Seleccionar todos os traços</translation>
     </message>
@@ -2978,7 +2942,7 @@ Go ahead and revert?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Autoroute (new)</source>
+        <source>Autoroute connections...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3023,7 +2987,15 @@ Go ahead and revert?</source>
         </translation>
     </message>
     <message>
-        <source>Routing reached round %1. Now cleaning up...</source>
+        <source>Routing cannot complete; stopping at round %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Routing reached maximum round %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Now cleaning up...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5079,20 +5051,12 @@ já se encontrava lá, não vais adicionar outravez, Ok?!?</translation>
         <translation>Imagem do componente</translation>
     </message>
     <message>
-        <source>Cannot autoroute: parts or traces are overlapping</source>
-        <translation>Autoencaminhamento automático é impossível: componentes ou pistas estão sobrepostos</translation>
-    </message>
-    <message>
         <source>Error reading file %1: %2.</source>
         <translation>Erro ao ler o ficheiro %1: %2.</translation>
     </message>
     <message>
         <source>Select locked parts</source>
         <translation>Seleccionar componentes bloqueados</translation>
-    </message>
-    <message>
-        <source>Cannot autoroute: maybe all traces are marked &apos;do not autoroute&apos;.</source>
-        <translation>Autoencaminhamento automático é impossível: talvez todos os traços estejam marcados como &apos;não efectuar autoencaminhamento&apos;.</translation>
     </message>
     <message>
         <source>Auorouter Settings</source>
@@ -5133,10 +5097,6 @@ já se encontrava lá, não vais adicionar outravez, Ok?!?</translation>
     <message>
         <source>Tools</source>
         <translation>Ferramentas</translation>
-    </message>
-    <message>
-        <source>tiling failure: possibly due wire crossing layers bug. Wire at %1,%2 %3,%4 (in)</source>
-        <translation>Falha na cobertura: possívelmente devido ao bug existente quando os fios cruzam as camadas. Fio em %1,%2 %3,%4 (polegadas)</translation>
     </message>
     <message>
         <source>Frame</source>

@@ -182,6 +182,10 @@
         <source>zoom and pan controls</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Best So Far</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Autorouter</name>
@@ -531,41 +535,6 @@ If you intended your custom shape to have cutouts and you did not get the expect
     <message>
         <source>shape</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CMRouter</name>
-    <message>
-        <source>round %1 of:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>best so far: %1 unrouted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <source>/%n jumpers</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>/%n vias</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>Note: the autorouter did not route %n parts, because they are not located entirely on the board.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -1987,14 +1956,6 @@ We&apos;re working to avoid this message, and only let you choose between proper
         <translation>Эспортировать Netlist...</translation>
     </message>
     <message>
-        <source>&amp;Autoroute</source>
-        <translation>&amp;Автотрассировка</translation>
-    </message>
-    <message>
-        <source>Autoroute...</source>
-        <translation>Автотрассировка...</translation>
-    </message>
-    <message>
         <source>Select All Traces</source>
         <translation>Выбрать все трассы</translation>
     </message>
@@ -2982,7 +2943,7 @@ Go ahead and revert?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Autoroute (new)</source>
+        <source>Autoroute connections...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3029,7 +2990,15 @@ Go ahead and revert?</source>
         </translation>
     </message>
     <message>
-        <source>Routing reached round %1. Now cleaning up...</source>
+        <source>Routing cannot complete; stopping at round %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Routing reached maximum round %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Now cleaning up...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5085,19 +5054,11 @@ Fritzing по-прежнему работает, но вы не сможете �
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot autoroute: parts or traces are overlapping</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Error reading file %1: %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Select locked parts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot autoroute: maybe all traces are marked &apos;do not autoroute&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5138,10 +5099,6 @@ Fritzing по-прежнему работает, но вы не сможете �
     </message>
     <message>
         <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>tiling failure: possibly due wire crossing layers bug. Wire at %1,%2 %3,%4 (in)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
