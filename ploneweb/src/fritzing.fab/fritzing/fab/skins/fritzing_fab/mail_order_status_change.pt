@@ -10,7 +10,7 @@
 Thank you for submitting your board to Fritzing Fab!
 Your PCBs will ship on <span tal:replace="options/delivery_date" />. 
 
-You can update your sketch files any time until <span tal:replace="options/closing_date" />, as long as the board sizes did not change.
+You can update your sketch files any time until <span tal:replace="options/closing_date" /> (CET), as long as the board sizes have not been changed.
 
 If you have any questions or concerns, please do not hesitate to contact us at this e-mail address (best in English or German).
 

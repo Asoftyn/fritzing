@@ -284,8 +284,9 @@ class SketchUpdateForm(form.EditForm):
             sketch.manage_permission('Copy or Move', roles=['Manager', 'Owner'], acquire=True)
 
             newSketchId = newSketchFile.filename.encode("ascii")
-            faborder.manage_renameObject(sketch.getId(), newSketchId)
-            sketch.title = newSketchFile.filename
+            if newSketchId <> sketch.getId():
+                faborder.manage_renameObject(sketch.getId(), newSketchId)
+                sketch.title = newSketchFile.filename
             sketch.orderItem = newSketchFile
             sketch.checked = False
             sketch.reindexObject()

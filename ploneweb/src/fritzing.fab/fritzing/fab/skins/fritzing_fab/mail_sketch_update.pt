@@ -8,7 +8,7 @@ Dear <span tal:replace="options/to_name" />,
 
 Your sketch file <span tal:replace="options/sketch/orderItem/filename"/> has been updated successfully.
 
-As long as the board size does not change, you can still update the file until the deadline on <span tal:replace="options/closing_date" />.
+As long as the board size has not been changed, you can still update the file until the deadline on <span tal:replace="options/closing_date" />.
 
 Best regards,
 
