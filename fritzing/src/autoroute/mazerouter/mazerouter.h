@@ -243,6 +243,7 @@ protected:
     uint m_traceColors[2];
     Grid * m_grid;
     int m_cleanupCount;
+    int m_netLabelIndex;
 };
 
 #endif

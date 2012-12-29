@@ -75,10 +75,12 @@ public:
 	bool hasPartNumberProperty();
 	bool isNetLabel();
 	bool hasPartLabel();
-    QString getLabel();
 	bool getAutoroutable();
 	void setAutoroutable(bool);
     void setLabel(const QString &);
+    void setDirection(const QString &);
+    QString getLabel();
+    QString getDirection();
 
 public:
 	static double DefaultVoltage;
@@ -94,7 +96,6 @@ protected:
 	QString makeNetLabelSvg();
 	QString replaceTextElement(QString svg);
     ViewLayer::ViewIdentifier useViewIdentifierForPixmap(ViewLayer::ViewIdentifier, bool swappingEnabled);
-    QString getDirection();
     QString retrieveNetLabelSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
 
 protected:

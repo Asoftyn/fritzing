@@ -260,13 +260,17 @@ void SymbolPaletteItem::setProp(const QString & prop, const QString & value) {
 		return;
 	}
 	if (prop.compare("direction", Qt::CaseInsensitive) == 0 && m_isNetLabel) {
-		m_modelPart->setLocalProp("direction", value);
-	    QString svg = makeSvg();
-	    resetRenderer(svg);
+        setDirection(value);
 		return;
 	}
 
 	PaletteItem::setProp(prop, value);
+}
+
+void SymbolPaletteItem::setDirection(const QString & value) {
+	m_modelPart->setLocalProp("direction", value);
+	QString svg = makeSvg();
+	resetRenderer(svg);
 }
 
 void SymbolPaletteItem::setLabel(const QString & label) {

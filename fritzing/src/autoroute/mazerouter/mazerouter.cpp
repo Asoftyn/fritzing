@@ -422,6 +422,7 @@ void Score::setOrdering(const NetOrdering & _ordering) {
 
 MazeRouter::MazeRouter(PCBSketchWidget * sketchWidget, QGraphicsItem * board, bool adjustIf) : Autorouter(sketchWidget)
 {
+    m_netLabelIndex = -1;
     m_grid = NULL;
     m_displayItem[0] = m_displayItem[1] = NULL;
     m_boardImage = m_spareImage = m_displayImage[0] = m_displayImage[1] = NULL;
@@ -2421,20 +2422,20 @@ void MazeRouter::setMaxCycles(int maxCycles)
 }
 
 SymbolPaletteItem * MazeRouter::makeNetLabel(GridPoint & center, SymbolPaletteItem * pairedNetLabel) {
-    int netLabelIndex = 0;
-    if (pairedNetLabel == NULL) {
+    if (m_netLabelIndex < 0) {
+        m_netLabelIndex = 0;
         foreach (QGraphicsItem * item, m_sketchWidget->scene()->items()) {
             SymbolPaletteItem * netLabel = dynamic_cast<SymbolPaletteItem *>(item);
             if (netLabel == NULL || !netLabel->isNetLabel()) continue;
 
             bool ok;
             int ix = netLabel->getLabel().toInt(&ok);
-            if (ok && ix > netLabelIndex) netLabelIndex = ix;
+            if (ok && ix > m_netLabelIndex) m_netLabelIndex = ix;
         }
-        netLabelIndex++;
     }
-    else {
-        netLabelIndex = pairedNetLabel->getLabel().toInt();
+
+    if (pairedNetLabel == NULL) {
+        m_netLabelIndex++;
     }
 
 	long newID = ItemBase::getNextID();
@@ -2444,11 +2445,11 @@ SymbolPaletteItem * MazeRouter::makeNetLabel(GridPoint & center, SymbolPaletteIt
 
 	SymbolPaletteItem * netLabel = dynamic_cast<SymbolPaletteItem *>(itemBase);
 	netLabel->setAutoroutable(true);
-    netLabel->setLabel(QString::number(netLabelIndex));
+    netLabel->setLabel(QString::number(m_netLabelIndex));
 	m_sketchWidget->scene()->addItem(netLabel);
     QPointF c1 = getPixelCenter(center, m_maxRect.topLeft(), m_gridPixels);
-    QSizeF size = netLabel->boundingRect().size() / 2;
-    netLabel->setPos(c1.x() - size.width(), c1.y() - size.height());
+    QSizeF size = netLabel->boundingRect().size();
+    netLabel->setPos(c1.x() - size.width(), c1.y() - (size.height() / 2));
     netLabel->saveGeometry();
     return netLabel;
 }
@@ -2543,9 +2544,11 @@ GridPoint MazeRouter::lookForJumper(GridPoint initial, GridValue targetValue, QP
 }
 
 bool MazeRouter::jumperWillFit(GridPoint & gridPoint) {
+    int xl = m_pcbType ? -m_halfGridJumperSize : -(m_halfGridJumperSize * 2);
+    int xr = xl + (m_halfGridJumperSize * 2);
     for (int z = 0; z < m_grid->z; z++) {
         for (int y = -m_halfGridJumperSize; y <= m_halfGridJumperSize; y++) {
-            for (int x = -m_halfGridJumperSize; x <= m_halfGridJumperSize; x++) {
+            for (int x = xl; x <= xr; x++) {
                 GridValue val = m_grid->at(gridPoint.x + x, gridPoint.y + y, z);
                 if (val == GridPartObstacle || val == GridBoardObstacle || val == GridSource || val == GridTarget || val == GridAvoid|| val == GridTempObstacle) return false;
             }

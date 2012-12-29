@@ -498,7 +498,7 @@ QSizeF SchematicSketchWidget::jumperItemSize() {
 	    ItemBase * itemBase = addItem(referenceModel()->retrieveModelPart(ModuleIDNames::NetLabelModuleIDName), defaultViewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
 	    if (itemBase) {
 		    SymbolPaletteItem * netLabel = qobject_cast<SymbolPaletteItem *>(itemBase);
-            netLabel->setLabel("000");
+            netLabel->setLabel("00");
             SchematicSketchWidget::m_jumperItemSize = netLabel->boundingRect().size();
             deleteItem(itemBase, true, false, false);
         }
