@@ -3,7 +3,7 @@
 Part of the Fritzing project - http://fritzing.org
 Copyright (c) 2007-2012 Fachhochschule Potsdam - http://fh-potsdam.de
 
-Fritzing is free software: you can redistribute it and/or modifyfboard
+Fritzing is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -48,7 +48,7 @@ $Date$
 //
 //      keepout dialog
 //
-//      lines for all 1 x N patterns?
+//      test if source touches target
 //
 
 // LATER:
@@ -61,15 +61,17 @@ $Date$
 //
 //      raster back to vector
 //          curve-fitting? use a bezier?  http://kobus.ca/seminars/ugrad/NM5_curve_s02.pdf
-//     
-//      when converting to vector, must check that diagonals are clear?
-//          handle this at traceback time? 
-//              set some flags for neighbors being clear and keep the flagged grid points as part of the trace?
+//          lines for all 1 x N patterns?
+//          how guarantee that new line/curve doesn't overlap
+//              handle this at traceback time? 
+//                  set some flags for neighbors being clear and keep the flagged grid points as part of the trace?
 //
 //      dynamic cost function based on distance to any target point?
 //
 //      allow multiple routes to reach GridTarget--eliminate all queued GridPoints with greater cost
 //      
+//      what happens with expanded schematic frame?
+//
 
 #include "mazerouter.h"
 #include "../../sketch/pcbsketchwidget.h"
@@ -114,6 +116,7 @@ static const GridValue GridSource = GridBoardObstacle - 2;
 static const GridValue GridTarget = GridBoardObstacle - 3;
 static const GridValue GridAvoid = GridBoardObstacle - 4;
 static const GridValue GridTempObstacle = GridBoardObstacle - 5;
+static const GridValue GridSourceFlag = (GridBoardObstacle / 2) + 1;
 
 static const uint Layer1Cost = 100;
 static const uint CrossLayerCost = 100;
@@ -155,7 +158,6 @@ QPointF getStepPoint(QPointF p, uchar flags, double gridPixels) {
     return p;
 }
 
-
 uchar getStepFlag(GridPoint & gp1, GridPoint & gp2) {
     if (gp1.y == gp2.y) {
         double avg = (gp1.x + gp2.x) / 2.0;
@@ -167,7 +169,6 @@ uchar getStepFlag(GridPoint & gp1, GridPoint & gp2) {
 
 }
 
-
 QPointF getPixelCenter(GridPoint & gp, QPointF & topLeft, double gridPixels) {
     return QPointF((gp.x * gridPixels) + topLeft.x() + (gridPixels / 2), (gp.y * gridPixels) + topLeft.y() + (gridPixels / 2));
 }
@@ -177,10 +178,11 @@ uint getColor(GridValue val) {
     else if (val == GridPartObstacle) return 0xff404040;
     else if (val == 0) return 0;
     else if (val == GridSource) return 0xff00ff00;
-    else if (val == GridTarget) return 0xffffff00;
+    else if (val == GridTarget) return 0xffff0000;
     else if (val == GridAvoid) return 0xff808080;
     else if (val == GridTempObstacle) return 0xff00ffff;
-    else return 0xff0000ff;
+    else if (val & GridSourceFlag) return 0xff60d060;
+    else return 0xffff6060;
 }
 
 void drawBorder(QImage * image, int border) {
@@ -269,6 +271,10 @@ inline double distanceCost(const QPoint & p1, const QPoint & p2) {
 
 inline double manhattanCost(const QPoint & p1, const QPoint & p2) {
     return qMax(qAbs(p1.x() - p2.x()), qAbs(p1.y() - p2.y()));
+}
+
+inline int gridPointInt(Grid * grid, GridPoint & gp) {
+    return (gp.z * grid->x * grid->y) + (gp.y * grid->x) + gp.x;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -376,12 +382,13 @@ void Grid::clear() {
 }
 
 void Grid::free() {
-    if (data) ::free(data);
-    data = NULL;
+    if (data) {
+        ::free(data);
+        data = NULL;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////
-
 
 Score::Score() {
 	totalRoutedCount = totalViaCount = 0;
@@ -500,7 +507,6 @@ MazeRouter::~MazeRouter()
     if (m_boardImage) {
         delete m_boardImage;
     }
-
     if (m_spareImage) {
         delete m_spareImage;
     }
@@ -526,6 +532,7 @@ void MazeRouter::start()
     m_gridPixels = qMax(m_standardWireWidth, m_keepoutPixels);
     m_keepoutMils = m_keepoutPixels * GraphicsUtils::StandardFritzingDPI / GraphicsUtils::SVGDPI;
     m_keepoutGrid = m_keepoutPixels / m_gridPixels;
+    m_keepoutGridInt = qCeil(m_keepoutGrid);
 
     double ringThickness, holeSize;
 	m_sketchWidget->getViaSize(ringThickness, holeSize);
@@ -546,7 +553,7 @@ void MazeRouter::start()
 	QHash<ConnectorItem *, int> indexer;
 	m_sketchWidget->collectAllNets(indexer, m_allPartConnectorItems, false, m_bothSidesNow);
 
-    removeOffBoard(m_pcbType, true);
+    removeOffBoardAnd(m_pcbType, true, m_bothSidesNow);
 
 	if (m_allPartConnectorItems.count() == 0) {
         QString message = m_pcbType ?  QObject::tr("No connections (on the PCB) to route.") : QObject::tr("No connections to route.");
@@ -559,13 +566,15 @@ void MazeRouter::start()
 	new CleanUpWiresCommand(m_sketchWidget, CleanUpWiresCommand::UndoOnly, parentCommand);
 	initUndo(parentCommand);
 
-	QVector<int> netCounters(m_allPartConnectorItems.count());
     NetList netList;
     int totalToRoute = 0;
 	for (int i = 0; i < m_allPartConnectorItems.count(); i++) {
-		netCounters[i] = (m_allPartConnectorItems[i]->count() - 1) * 2;			// since we use two connectors at a time on a net
         Net * net = new Net;
         net->net = m_allPartConnectorItems[i];
+
+        foreach (ConnectorItem * connectorItem, *(net->net)) {
+            connectorItem->debugInfo("all parts");
+        }
 
         QList<ConnectorItem *> todo;
         todo.append(*(net->net));
@@ -576,6 +585,7 @@ void MazeRouter::start()
 	        ConnectorItem::collectEqualPotential(equi, m_bothSidesNow, (ViewGeometry::RatsnestFlag | ViewGeometry::NormalFlag | ViewGeometry::PCBTraceFlag | ViewGeometry::SchematicTraceFlag) ^ m_sketchWidget->getTraceFlag());
             foreach (ConnectorItem * equ, equi) {
                 todo.removeOne(equ);
+                equ->debugInfo("equi");
             }
             net->subnets.append(equi);
         }
@@ -711,6 +721,7 @@ void MazeRouter::start()
         msg += " ";
         msg += tr("Now cleaning up...");
         emit setProgressMessage(msg);
+        printOrder("best ", bestScore.ordering.order);
         routeNets(netList, true, bestScore, gridSize, allOrderings);
         emit setProgressValue(m_maxCycles);
     }    
@@ -849,8 +860,6 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
     routeThing.r4 = QRectF(QPointF(0, 0), gridSize * 4);
     routeThing.layerSpecs << ViewLayer::Bottom;
     if (m_bothSidesNow) routeThing.layerSpecs << ViewLayer::Top;
-    routeThing.ikeepout = qCeil(m_keepoutGrid);
-    routeThing.searchForJumper = false;
 
     bool result = true;
 
@@ -861,11 +870,16 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
             return false;
         }
 
-        DebugDialog::debug(QString("routing net %1").arg(netIndex));
-
         Net * net = netList.nets.at(netIndex);
-        if (currentScore.traces.values(netIndex).count() == net->net->count() - 1) {
-            // traces were generated in a previous run
+        DebugDialog::debug(QString("routing net %1, subnets %2, traces %3, routed %4")
+            .arg(netIndex)
+            .arg(net->subnets.count())
+            .arg(currentScore.traces.values(netIndex).count())
+            .arg(currentScore.routedCount.value(netIndex))        
+            );
+
+        if (currentScore.routedCount.value(netIndex) == net->subnets.count() - 1) {
+            // this net was fully routed in a previous run
             foreach (Trace trace, currentScore.traces.values(netIndex)) {
                 displayTrace(trace);
             }
@@ -879,7 +893,9 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
         }
 
         if (currentScore.routedCount.value(netIndex) > 0) {
-            // should only happen when makeJumpers = true
+            // should only be here when makeJumpers = true
+            // remove the set of routed traces for this net--the net was not completely routed
+            // we didn't get all the way through before
             currentScore.totalRoutedCount -= currentScore.routedCount.value(netIndex);
             currentScore.routedCount.insert(netIndex, 0);
             currentScore.totalViaCount -= currentScore.viaCount.value(netIndex);
@@ -903,12 +919,11 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
         //DebugDialog::debug("find nearest pair");
 
         findNearestPair(subnets, routeThing.nearest);
-        if (subnets.at(routeThing.nearest.i).count() < subnets.at(routeThing.nearest.j).count()) {
-            routeThing.nearest.swap();
-        }
-
+        QPointF ip = routeThing.nearest.ic->sceneAdjustedTerminalPoint(NULL) - m_maxRect.topLeft();
+        routeThing.gridSourcePoint = QPoint(ip.x() / m_gridPixels, ip.y() / m_gridPixels);
         QPointF jp = routeThing.nearest.jc->sceneAdjustedTerminalPoint(NULL) - m_maxRect.topLeft();
-        routeThing.gridTarget = QPoint(jp.x() / m_gridPixels, jp.y() / m_gridPixels);
+        routeThing.gridTargetPoint = QPoint(jp.x() / m_gridPixels, jp.y() / m_gridPixels);
+
         m_grid->clear();
         m_grid->init4(0, 0, 0, m_grid->x, m_grid->y, m_boardImage, GridBoardObstacle, false);
         if (m_bothSidesNow) {
@@ -917,7 +932,7 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
 
         QList<Trace> traces = currentScore.traces.values();
         if (m_pcbType) {
-            traceObstacles(traces, netIndex, m_grid, routeThing.ikeepout);
+            traceObstacles(traces, netIndex, m_grid, m_keepoutGridInt);
         }
         else {
             traceAvoids(traces, netIndex, routeThing);
@@ -988,7 +1003,8 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
         routeThing.netElements[1].net.clear();
         routeThing.netElements[1].notNet.clear();
         routeThing.netElements[1].alsoNet.clear();
-        routeThing.pq = std::priority_queue<GridPoint>();
+        routeThing.sourceQ = std::priority_queue<GridPoint>();
+        routeThing.targetQ = std::priority_queue<GridPoint>();
 
         if (result == false) break;
     }
@@ -999,6 +1015,7 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
 bool MazeRouter::routeOne(bool makeJumper, Score & currentScore, int netIndex, RouteThing & routeThing, QList<NetOrdering> & allOrderings) {
     Trace newTrace;
     int viaCount;
+    routeThing.bestDistanceToSource = routeThing.bestDistanceToTarget = std::numeric_limits<double>::max();
     newTrace.gridPoints = route(routeThing, viaCount);
     if (m_cancelled || m_stopTracing) {
         return false;
@@ -1030,85 +1047,13 @@ bool MazeRouter::routeOne(bool makeJumper, Score & currentScore, int netIndex, R
         }
     }
     else {
-        insertTrace(newTrace, netIndex, currentScore, viaCount);
+        insertTrace(newTrace, netIndex, currentScore, viaCount, true);
         updateDisplay(0);
         if (m_bothSidesNow) updateDisplay(1);
     }
 
     return true;
 }
-
-void MazeRouter::routeJumper(int netIndex, RouteThing & routeThing, Score & currentScore) {
-    routeThing.searchForJumper = true;
-    updateDisplay(m_grid, 0);
-
-    bool routeBothEnds = true;
-    Trace sourceTrace;
-    if (!m_pcbType) {
-        //  is there already a net label on this net?
-        foreach (Trace trace, currentScore.traces.values(netIndex)) {
-            if (trace.flags & JumperStart) {
-                sourceTrace = trace;
-                routeBothEnds = false;
-                break;
-            }
-        }
-    }
-
-    bool ok = true;
-    int sourceViaCount;
-    if (routeBothEnds) {
-        ok = false;
-        int viaCount;
-        routeThing.jumperDistance = std::numeric_limits<double>::max();
-        clearExpansionForJumper(m_grid, GridSource, routeThing.pq);
-        if (!m_pcbType) {
-            QList<Trace> traces = currentScore.traces.values();
-            traceAvoids(traces, netIndex, routeThing);
-        }
-        updateDisplay(m_grid, 0);
-        DebugDialog::debug(QString("grid target 1 %1,%2").arg(routeThing.gridTarget.x()).arg(routeThing.gridTarget.y()));
-        QList<GridPoint> points = route(routeThing, viaCount);   // points should be empty
-        if (routeThing.jumperDistance < std::numeric_limits<double>::max()) {
-            sourceTrace.flags = JumperStart;
-            sourceTrace.gridPoints = traceBack(routeThing.jumperLocation, m_grid, sourceViaCount);
-            ok = true;
-        }
-    }
-    
-    if (ok) {
-        routeThing.jumperDistance = std::numeric_limits<double>::max();
-        GridPoint gp = sourceTrace.gridPoints.at(0);
-        routeThing.gridTarget.setX(gp.x);
-        routeThing.gridTarget.setY(gp.y);
-        clearExpansionForJumper(m_grid, GridTarget, routeThing.pq);
-        if (!m_pcbType) {
-            QList<Trace> traces = currentScore.traces.values();
-            traceAvoids(traces, netIndex, routeThing);
-        }
-        updateDisplay(m_grid, 0);
-        int viaCount;
-        DebugDialog::debug(QString("grid target 2 %1,%2").arg(routeThing.gridTarget.x()).arg(routeThing.gridTarget.y()));
-        QList<GridPoint> points = route(routeThing, viaCount);  // points should be empty
-        if (routeThing.jumperDistance < std::numeric_limits<double>::max()) {
-            Trace destTrace;
-            destTrace.flags = JumperEnd;
-            int targetViaCount;
-            destTrace.gridPoints = traceBack(routeThing.jumperLocation, m_grid, targetViaCount);
-
-            if (routeBothEnds) {
-                insertTrace(sourceTrace, netIndex, currentScore, sourceViaCount);
-            }
-            insertTrace(destTrace, netIndex, currentScore, targetViaCount);
-            updateDisplay(0);
-            if (m_bothSidesNow) updateDisplay(1);
-        }
-    }
-
-    clearExpansion(m_grid);  
-    routeThing.searchForJumper = false;
-}
-
 
 bool MazeRouter::routeNext(bool makeJumper, RouteThing & routeThing, QList< QList<ConnectorItem *> > & subnets, Score & currentScore, int netIndex, QList<NetOrdering> & allOrderings) 
 {
@@ -1142,16 +1087,13 @@ bool MazeRouter::routeNext(bool makeJumper, RouteThing & routeThing, QList< QLis
     routeThing.nearest.j = -1;
     routeThing.nearest.distance = std::numeric_limits<double>::max();
     findNearestPair(subnets, 0, combined, routeThing.nearest);
-    GridValue value = GridSource;
-    if (subnets.at(routeThing.nearest.i).count() < subnets.at(routeThing.nearest.j).count()) {
-        routeThing.nearest.swap();
-        value = GridTarget;
-    }
-
+    QPointF ip = routeThing.nearest.ic->sceneAdjustedTerminalPoint(NULL) - m_maxRect.topLeft();
+    routeThing.gridSourcePoint = QPoint(ip.x() / m_gridPixels, ip.y() / m_gridPixels);
     QPointF jp = routeThing.nearest.jc->sceneAdjustedTerminalPoint(NULL) - m_maxRect.topLeft();
-    routeThing.gridTarget = QPoint(jp.x() / m_gridPixels, jp.y() / m_gridPixels);
+    routeThing.gridTargetPoint = QPoint(jp.x() / m_gridPixels, jp.y() / m_gridPixels);
 
-    routeThing.pq = std::priority_queue<GridPoint>();
+    routeThing.sourceQ = std::priority_queue<GridPoint>();
+    routeThing.targetQ = std::priority_queue<GridPoint>();
 
     if (!m_pcbType) {
         QList<Trace> traces = currentScore.traces.values();
@@ -1166,29 +1108,12 @@ bool MazeRouter::routeNext(bool makeJumper, RouteThing & routeThing, QList< QLis
 
     // redraw traces from this net
     foreach (Trace trace, currentScore.traces.values(netIndex)) {
-        if (value == GridTarget) {
-            foreach (GridPoint gridPoint, trace.gridPoints) {
-                m_grid->setAt(gridPoint.x, gridPoint.y, gridPoint.z, GridTarget);
-            }
-        }
-        else {
-            foreach (GridPoint gridPoint, trace.gridPoints) {
-                m_grid->setAt(gridPoint.x, gridPoint.y, gridPoint.z, GridSource);
-                int crossLayerCost = 0;
-                if (m_bothSidesNow) {
-                    if (routeThing.nearest.jc->attachedToViewLayerID() == ViewLayer::Copper0 && gridPoint.z == 1) {
-                        crossLayerCost = Layer1Cost;
-                    }
-                    else if (routeThing.nearest.ic->attachedToViewLayerID() == ViewLayer::Copper1 && gridPoint.z == 0) {
-                        crossLayerCost = Layer1Cost;
-                    }
-                }
-
-                gridPoint.qCost = gridPoint.baseCost = /* initialCost(QPoint(gridPoint.x, gridPoint.y), routeThing.gridTarget) + */ crossLayerCost;
-                gridPoint.flags = 0;
-                //DebugDialog::debug(QString("pushing trace %1 %2 %3, %4, %5").arg(gridPoint.x).arg(gridPoint.y).arg(gridPoint.z).arg(gridPoint.qCost).arg(routeThing.pq.size()));
-                routeThing.pq.push(gridPoint);                  
-            }
+        foreach (GridPoint gridPoint, trace.gridPoints) {
+            m_grid->setAt(gridPoint.x, gridPoint.y, gridPoint.z, GridSource);
+            gridPoint.qCost = gridPoint.baseCost = /* initialCost(QPoint(gridPoint.x, gridPoint.y), routeThing.gridTarget) + */ 0;
+            gridPoint.flags = 0;
+            //DebugDialog::debug(QString("pushing trace %1 %2 %3, %4, %5").arg(gridPoint.x).arg(gridPoint.y).arg(gridPoint.z).arg(gridPoint.qCost).arg(routeThing.pq.size()));
+            routeThing.sourceQ.push(gridPoint);                  
         }
     }
 
@@ -1270,27 +1195,23 @@ void MazeRouter::prepSourceAndTarget(QDomDocument * masterDoc, RouteThing & rout
     }
 
     QList<ConnectorItem *> li = subnets.at(routeThing.nearest.i);
-    QList<QPoint> sourcePoints = renderSource(masterDoc, z, m_grid, routeThing.netElements[z].net, li, GridSource, true, routeThing.r4, true);
-
-    int crossLayerCost = 0;
-    if (m_bothSidesNow) {
-        if (routeThing.nearest.jc->attachedToViewLayerID() == ViewLayer::Copper0 && z == 1) {
-            crossLayerCost = Layer1Cost;
-        }
-        else if (routeThing.nearest.jc->attachedToViewLayerID() == ViewLayer::Copper1 && z == 0) {
-            crossLayerCost = Layer1Cost;
-        }
-    }
+    QList<QPoint> sourcePoints = renderSource(masterDoc, z, m_grid, routeThing.netElements[z].net, li, GridSource, true, routeThing.r4);
 
     foreach (QPoint p, sourcePoints) {
         GridPoint gridPoint(p, z);
-        gridPoint.qCost = gridPoint.baseCost = /* initialCost(p, routeThing.gridTarget) + */ crossLayerCost;
+        gridPoint.qCost = gridPoint.baseCost = /* initialCost(p, routeThing.gridTarget) + */ 0;
         //DebugDialog::debug(QString("pushing source %1 %2 %3, %4, %5").arg(gridPoint.x).arg(gridPoint.y).arg(gridPoint.z).arg(gridPoint.qCost).arg(routeThing.pq.size()));
-        routeThing.pq.push(gridPoint);
+        routeThing.sourceQ.push(gridPoint);
     }
 
     QList<ConnectorItem *> lj = subnets.at(routeThing.nearest.j);
-    renderSource(masterDoc, z, m_grid, routeThing.netElements[z].net, lj, GridTarget, true, routeThing.r4, false);
+    QList<QPoint> targetPoints = renderSource(masterDoc, z, m_grid, routeThing.netElements[z].net, lj, GridTarget, true, routeThing.r4);
+    foreach (QPoint p, targetPoints) {
+        GridPoint gridPoint(p, z);
+        gridPoint.qCost = gridPoint.baseCost = /* initialCost(p, routeThing.gridTarget) + */ 0;
+        //DebugDialog::debug(QString("pushing source %1 %2 %3, %4, %5").arg(gridPoint.x).arg(gridPoint.y).arg(gridPoint.z).arg(gridPoint.qCost).arg(routeThing.pq.size()));
+        routeThing.targetQ.push(gridPoint);
+    }
 
     foreach (QDomElement element, routeThing.netElements[z].net) {
         SvgFileSplitter::forceStrokeWidth(element, 2 * m_keepoutMils, "#000000", false, false);
@@ -1361,7 +1282,7 @@ void MazeRouter::findNearestPair(QList< QList<ConnectorItem *> > & subnets, int 
     }
 }
 
-QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, GridValue value, bool clearElements, const QRectF & renderRect, bool collectPoints) {
+QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, GridValue value, bool clearElements, const QRectF & renderRect) {
     if (clearElements) {
         foreach (QDomElement element, netElements) {
             element.setTagName("g");
@@ -1402,7 +1323,7 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * g
     static int rsi = 0;
 	m_spareImage->save(FolderUtils::getUserDataStorePath("") + QString("/rendersource%1.png").arg(rsi++));
 #endif
-    QList<QPoint> points = grid->init4(x1, y1, z, x2 - x1, y2 - y1, m_spareImage, value, collectPoints);
+    QList<QPoint> points = grid->init4(x1, y1, z, x2 - x1, y2 - y1, m_spareImage, value, true);
 
     // terminal point hack (mostly for schematic view)
     foreach (ConnectorItem * connectorItem, terminalPoints) {
@@ -1493,30 +1414,31 @@ QList<GridPoint> MazeRouter::route(RouteThing & routeThing, int & viaCount)
 {
 
     //DebugDialog::debug(QString("start routing %1").arg(routeNumber++));
-
-
+    viaCount = 0;
     GridPoint done;
     bool result = false;
-    while (!routeThing.pq.empty()) {
-        GridPoint gp = routeThing.pq.top();
-        routeThing.pq.pop();
-
-        //if (result && gp.baseCost >= done.baseCost) {
-        //    // leads to a more expensive route so ignore it
-        //    continue;
-        //}
+    while (!routeThing.sourceQ.empty() && !routeThing.targetQ.empty()) {
+        GridPoint gp = routeThing.sourceQ.top();
+        GridPoint gpt = routeThing.targetQ.top();
+        if (gpt.qCost < gp.qCost) {
+            gp = gpt;
+            routeThing.targetQ.pop();
+            routeThing.targetValue = GridSource;
+            routeThing.sourceValue = GridTarget;
+        }
+        else {
+            routeThing.sourceQ.pop();
+            routeThing.targetValue = GridTarget;
+            routeThing.sourceValue = GridSource;
+        }
 
         if (gp.flags & GridPointDone) {
-            if (result == false || gp.baseCost < done.baseCost) {
-                done = gp;
-            }
+            done = gp;
             result = true;
             break;
         }
-        else {
-            expand(gp, routeThing);
-        }
-
+        
+        expand(gp, routeThing);
         if (m_cancelled || m_stopTracing) {
             break;
         }
@@ -1524,13 +1446,25 @@ QList<GridPoint> MazeRouter::route(RouteThing & routeThing, int & viaCount)
 
     //DebugDialog::debug(QString("routing result %1").arg(result));
 
+    QList<GridPoint> points;
     if (!result) {
+        //updateDisplay(m_grid, 0);
         //DebugDialog::debug(QString("done routing no points"));
-        QList<GridPoint> points;
         return points;
     }
+    done.baseCost = std::numeric_limits<GridValue>::max();  // make sure this is the largest value for either traceback
+    QList<GridPoint> sourcePoints = traceBack(done, m_grid, viaCount, GridTarget, GridSource);      // trace back to source
+    QList<GridPoint> targetPoints = traceBack(done, m_grid, viaCount, GridSource, GridTarget);      // trace back to target
+    if (sourcePoints.count() == 0 || targetPoints.count() == 0) {
+        DebugDialog::debug("traceback zero points");
+        return points;
+    }
+    else {
+        targetPoints.takeFirst();           // redundant point
+        foreach (GridPoint gp, targetPoints) points.prepend(gp);
+        points.append(sourcePoints);
+    }
 
-    QList<GridPoint> points = traceBack(done, m_grid, viaCount);
     clearExpansion(m_grid);  
 
     //DebugDialog::debug(QString("done routing %1").arg(points.count()));
@@ -1538,28 +1472,28 @@ QList<GridPoint> MazeRouter::route(RouteThing & routeThing, int & viaCount)
     return points;
 }
 
-QList<GridPoint> MazeRouter::traceBack(GridPoint gridPoint, Grid * grid, int & viaCount) {
+QList<GridPoint> MazeRouter::traceBack(GridPoint gridPoint, Grid * grid, int & viaCount, GridValue sourceValue, GridValue targetValue) {
     //DebugDialog::debug(QString("traceback %1 %2 %3").arg(gridPoint.x).arg(gridPoint.y).arg(gridPoint.z));
-    viaCount = 0;
     QList<GridPoint> points;
     points << gridPoint;
     while (true) {
-        if (gridPoint.baseCost == GridSource) {
+        if (gridPoint.baseCost == targetValue) {
+            // done
             break;
         }
 
         // can only be one neighbor with lower value
-        GridPoint next = traceBackOne(gridPoint, grid, -1, 0, 0);
+        GridPoint next = traceBackOne(gridPoint, grid, -1, 0, 0, sourceValue, targetValue);
         if (next.baseCost == GridBoardObstacle) {
-            next = traceBackOne(gridPoint, grid, 1, 0, 0);
+            next = traceBackOne(gridPoint, grid, 1, 0, 0, sourceValue, targetValue);
             if (next.baseCost == GridBoardObstacle) {
-                next = traceBackOne(gridPoint, grid, 0, -1, 0);
+                next = traceBackOne(gridPoint, grid, 0, -1, 0, sourceValue, targetValue);
                 if (next.baseCost == GridBoardObstacle) {
-                    next = traceBackOne(gridPoint, grid, 0, 1, 0);
+                    next = traceBackOne(gridPoint, grid, 0, 1, 0, sourceValue, targetValue);
                     if (next.baseCost == GridBoardObstacle) {
-                        next = traceBackOne(gridPoint, grid, 0, 0, -1);
+                        next = traceBackOne(gridPoint, grid, 0, 0, -1, sourceValue, targetValue);
                         if (next.baseCost == GridBoardObstacle) {
-                            next = traceBackOne(gridPoint, grid, 0, 0, 1);
+                            next = traceBackOne(gridPoint, grid, 0, 0, 1, sourceValue, targetValue);
                             if (next.baseCost == GridBoardObstacle) {
                                 // traceback failed--is this possible?
                                 points.clear();
@@ -1589,7 +1523,7 @@ QList<GridPoint> MazeRouter::traceBack(GridPoint gridPoint, Grid * grid, int & v
     return points;
 }
 
-GridPoint MazeRouter::traceBackOne(GridPoint & gridPoint, Grid * grid, int dx, int dy, int dz) {
+GridPoint MazeRouter::traceBackOne(GridPoint & gridPoint, Grid * grid, int dx, int dy, int dz, GridValue sourceValue, GridValue targetValue) {
     GridPoint next;
     next.baseCost = GridBoardObstacle;
 
@@ -1609,10 +1543,19 @@ GridPoint MazeRouter::traceBackOne(GridPoint & gridPoint, Grid * grid, int dx, i
     }
 
     GridValue nextval = grid->at(next.x, next.y, next.z);
-    if (nextval == GridBoardObstacle || nextval == GridPartObstacle || nextval == GridTarget || nextval == 0 || nextval == GridTempObstacle) return next;
-    if (nextval == GridSource) {
-        next.baseCost = nextval;
+    if (nextval == GridBoardObstacle || nextval == GridPartObstacle || nextval == sourceValue || nextval == 0 || nextval == GridTempObstacle) return next;
+    if (nextval == targetValue) {
+        // done!
+        next.baseCost = targetValue;
         return next;
+    }
+
+    if (targetValue == GridSource) {
+        if ((nextval & GridSourceFlag) == 0) return next;
+        nextval ^= GridSourceFlag;
+    }
+    else {
+        if (nextval & GridSourceFlag) return next;
     }
 
     if (nextval < gridPoint.baseCost) {
@@ -1651,8 +1594,8 @@ void MazeRouter::expandOne(GridPoint & gridPoint, RouteThing & routeThing, int d
     bool writeable = false;
     bool avoid = false;
     GridValue nextval = m_grid->at(next.x, next.y, next.z);
-    if (nextval == GridPartObstacle || nextval == GridBoardObstacle || nextval == GridSource || nextval == GridTempObstacle) return;
-    if (nextval == GridTarget) {
+    if (nextval == GridPartObstacle || nextval == GridBoardObstacle || nextval == routeThing.sourceValue || nextval == GridTempObstacle) return;
+    if (nextval == routeThing.targetValue) {
         DebugDialog::debug("found grid target");
         next.flags |= GridPointDone;
     }
@@ -1691,12 +1634,17 @@ void MazeRouter::expandOne(GridPoint & gridPoint, RouteThing & routeThing, int d
         }
     }
     else {
-        // already been here
-        return;
-    }
+        // already been here: see if source and target expansions have intersected
+        if (routeThing.sourceValue == GridSource) {
+            if (nextval & GridSourceFlag) return;
 
-    if (routeThing.searchForJumper) {
-        jumperWillFit(next, routeThing);
+            next.flags |= GridPointDone;
+        }
+        else {
+            if ((nextval & GridSourceFlag) == 0) return;
+
+            next.flags |= GridPointDone;
+        }
     }
 
     // any way to skip viaWillFit or put it off until actually needed?
@@ -1709,10 +1657,7 @@ void MazeRouter::expandOne(GridPoint & gridPoint, RouteThing & routeThing, int d
     }
 
     next.baseCost = gridPoint.baseCost;
-    if (next.baseCost == GridSource) {
-        next.baseCost = 0;
-    }
-    else if (crossLayer) {
+    if (crossLayer) {
         next.baseCost += ViaCost;
     }
     else if (avoid) {
@@ -1760,23 +1705,39 @@ void MazeRouter::expandOne(GridPoint & gridPoint, RouteThing & routeThing, int d
     */
 
 
-    if (nextval == GridTarget) {
+    if (nextval == routeThing.targetValue) {
         next.qCost = next.baseCost;
     }
     else {
-        next.qCost = next.baseCost + (m_costFunction)(QPoint(next.x, next.y), routeThing.gridTarget);
+        double d = (m_costFunction)(QPoint(next.x, next.y), (routeThing.sourceValue == GridSource) ? routeThing.gridTargetPoint : routeThing.gridSourcePoint);
+        next.qCost = next.baseCost + d;
+        if (routeThing.sourceValue == GridSource) {
+            if (d < routeThing.bestDistanceToTarget) {
+                routeThing.bestDistanceToTarget = d;
+                routeThing.bestLocationToTarget = next;
+            }
+        }
+        else {
+            if (d < routeThing.bestDistanceToSource) {
+                routeThing.bestDistanceToSource = d;
+                routeThing.bestLocationToSource = next;
+            }
+        }
     }
 
     // can think about pushing multiple points here
     //DebugDialog::debug(QString("pushing next %1 %2 %3, %4, %5").arg(gridPoint.x).arg(gridPoint.y).arg(gridPoint.z).arg(gridPoint.qCost).arg(routeThing.pq.size()));
-    routeThing.pq.push(next);
+    if (routeThing.sourceValue == GridSource) routeThing.sourceQ.push(next);
+    else routeThing.targetQ.push(next);
+
     if (writeable) {
-        m_grid->setAt(next.x, next.y, next.z, next.baseCost);
+        GridValue flag = (routeThing.sourceValue == GridSource) ? GridSourceFlag : 0;
+        m_grid->setAt(next.x, next.y, next.z, next.baseCost | flag);
     }
 
-    if (routeThing.searchForJumper) {
-        updateDisplay(next);
-    }
+    //if (routeThing.searchForJumper) {
+    //    updateDisplay(next);
+    //}
 }
 
 bool MazeRouter::viaWillFit(GridPoint & gridPoint, Grid * grid) {
@@ -1789,34 +1750,6 @@ bool MazeRouter::viaWillFit(GridPoint & gridPoint, Grid * grid) {
         }
     }
     return true;
-}
-
-void MazeRouter::jumperWillFit(GridPoint & gridPoint, RouteThing & routeThing) {
-    double d = GraphicsUtils::distanceSqd(QPoint(gridPoint.x, gridPoint.y), routeThing.gridTarget);
-    if (d >= routeThing.jumperDistance) return;
-
-    for (int y = -m_halfGridJumperSize; y <= m_halfGridJumperSize; y++) {
-        for (int x = -m_halfGridJumperSize; x <= m_halfGridJumperSize; x++) {
-            GridValue val = m_grid->at(gridPoint.x + x, gridPoint.y + y, 0);
-            if (val == GridPartObstacle || val == GridBoardObstacle || val == GridSource || val == GridTarget || val == GridAvoid|| val == GridTempObstacle) return;
-
-            break;
-        }
-    }
-
-    if (m_bothSidesNow) {
-        for (int y = -m_halfGridJumperSize; y <= m_halfGridJumperSize; y++) {
-            for (int x = -m_halfGridJumperSize; x <= m_halfGridJumperSize; x++) {
-                GridValue val = m_grid->at(gridPoint.x + x, gridPoint.y + y, 1);
-                if (val == GridPartObstacle || val == GridBoardObstacle || val == GridSource || val == GridTarget || val == GridAvoid|| val == GridTempObstacle) return;
-
-                break;
-            }
-        }
-    }
-
-    routeThing.jumperDistance = d;
-    routeThing.jumperLocation = gridPoint;
 }
 
 void MazeRouter::updateDisplay(int iz) {
@@ -1871,45 +1804,6 @@ void MazeRouter::clearExpansion(Grid * grid) {
                 GridValue val = grid->at(x, y, z);
                 if (val == 0 || val == GridPartObstacle || val == GridBoardObstacle) ;
                 else grid->setAt(x, y, z, 0);
-            }
-        }
-    }
-}
-
-void MazeRouter::clearExpansionForJumper(Grid * grid, GridValue sourceOrTarget, std::priority_queue<GridPoint> & pq) {
-    pq = std::priority_queue<GridPoint>();
-
-    for (int z = 0; z < grid->z; z++) {
-        for (int y = 0; y < grid->y; y++) {
-            for (int x = 0; x < grid->x; x++) {
-                GridValue val = grid->at(x, y, z);
-                if (val == 0 || val == GridBoardObstacle || val == GridPartObstacle || val == GridAvoid || val == GridTempObstacle) ;
-                else if (val == GridTarget) {
-                    if (sourceOrTarget == GridTarget) {
-                        grid->setAt(x, y, z, GridSource);
-                        GridPoint gp;
-                        gp.x = x;
-                        gp.y = y;
-                        gp.z = z;
-                        gp.qCost = gp.baseCost = 0;
-                        DebugDialog::debug(QString("pushing jumper 1 %1 %2 %3, %4, %5").arg(gp.x).arg(gp.y).arg(gp.z).arg(gp.qCost).arg(pq.size()));
-                        pq.push(gp);
-                    }
-                }
-                else if (val == GridSource) {
-                    if (sourceOrTarget == GridSource) {
-                        GridPoint gp;
-                        gp.x = x;
-                        gp.y = y;
-                        gp.z = z;
-                        DebugDialog::debug(QString("pushing jumper 2 %1 %2 %3, %4, %5").arg(gp.x).arg(gp.y).arg(gp.z).arg(gp.qCost).arg(pq.size()));
-                        gp.qCost = gp.baseCost = 0;
-                        pq.push(gp);
-                    }
-                }
-                else {
-                    grid->setAt(x, y, z, 0);
-                }
             }
         }
     }
@@ -1998,8 +1892,8 @@ void MazeRouter::traceAvoids(QList<Trace> & traces, int netIndex, RouteThing & r
         if (trace.netIndex == netIndex) continue;
 
         foreach (GridPoint gridPoint, trace.gridPoints) {
-            for (int y = -routeThing.ikeepout; y <= routeThing.ikeepout; y++) {
-                for (int x = -routeThing.ikeepout; x <= routeThing.ikeepout; x++) {
+            for (int y = -m_keepoutGridInt; y <= m_keepoutGridInt; y++) {
+                for (int x = -m_keepoutGridInt; x <= m_keepoutGridInt; x++) {
                     GridValue val = m_grid->at(gridPoint.x + x, gridPoint.y + y, 0);
                     if (val == GridPartObstacle || val == GridBoardObstacle || val == GridSource || val == GridTarget) continue;
                         
@@ -2090,6 +1984,9 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
             if (jumperItem) {
                 onTraceS = onTraceD = false;
                 sourceConnectorItem = trace.flags == JumperStart ? jumperItem->connector0() : jumperItem->connector1();
+            }
+            else if (netLabel) {
+                sourceConnectorItem = netLabel->connector0();
             }
             else {
                 sourceConnectorItem = findAnchor(gridPoints.first(), topLeft, net, newTraces, newVias, traceAnchorS, onTraceS, NULL);
@@ -2487,10 +2384,10 @@ void MazeRouter::addJumperToUndo(JumperItem * jumperItem, QUndoCommand * parentC
 
 void MazeRouter::addNetLabelToUndo(SymbolPaletteItem * netLabel, QUndoCommand * parentCommand) {
 	new AddItemCommand(m_sketchWidget, BaseCommand::CrossView, ModuleIDNames::NetLabelModuleIDName, netLabel->viewLayerSpec(), netLabel->getViewGeometry(), netLabel->id(), false, -1, parentCommand);
-	new SetPropCommand(m_sketchWidget, netLabel->id(), "label", netLabel->label(), netLabel->label(), true, parentCommand);
+	new SetPropCommand(m_sketchWidget, netLabel->id(), "label", netLabel->getLabel(), netLabel->getLabel(), true, parentCommand);
 }
 
-void MazeRouter::insertTrace(Trace & newTrace, int netIndex, Score & currentScore, int viaCount) {
+void MazeRouter::insertTrace(Trace & newTrace, int netIndex, Score & currentScore, int viaCount, bool incRouted) {
     if (newTrace.gridPoints.count() == 0) {
         DebugDialog::debug("trace with no points");
         return;
@@ -2501,8 +2398,10 @@ void MazeRouter::insertTrace(Trace & newTrace, int netIndex, Score & currentScor
     newTrace.netIndex = netIndex;
     newTrace.order = currentScore.traces.values(netIndex).count();
     currentScore.traces.insert(netIndex, newTrace);
-    currentScore.routedCount.insert(netIndex, currentScore.routedCount.value(netIndex) + 1);
-    currentScore.totalRoutedCount++;
+    if (incRouted) {
+        currentScore.routedCount.insert(netIndex, currentScore.routedCount.value(netIndex) + 1);
+        currentScore.totalRoutedCount++;
+    }
     currentScore.viaCount.insert(netIndex, currentScore.viaCount.value(netIndex, 0) + viaCount);
     currentScore.totalViaCount += viaCount;
     displayTrace(newTrace);
@@ -2550,5 +2449,189 @@ SymbolPaletteItem * MazeRouter::makeNetLabel(GridPoint & center, SymbolPaletteIt
     QPointF c1 = getPixelCenter(center, m_maxRect.topLeft(), m_gridPixels);
     QSizeF size = netLabel->boundingRect().size() / 2;
     netLabel->setPos(c1.x() - size.width(), c1.y() - size.height());
+    netLabel->saveGeometry();
     return netLabel;
+}
+
+void MazeRouter::routeJumper(int netIndex, RouteThing & routeThing, Score & currentScore) 
+{
+    if (routeThing.bestDistanceToTarget == std::numeric_limits<GridValue>::max() || routeThing.bestDistanceToSource == std::numeric_limits<GridValue>::max()) {
+        // never got started on this route
+        return;
+    }
+
+    updateDisplay(0);
+    if (m_bothSidesNow) updateDisplay(1);
+
+    bool routeBothEnds = true;
+    Trace sourceTrace;
+    if (!m_pcbType) {
+        //  is there already a net label on this net?
+
+        // TODO: which subnet has the jumper?
+        foreach (Trace trace, currentScore.traces.values(netIndex)) {
+            if (trace.flags & JumperStart) {
+                sourceTrace = trace;
+                routeBothEnds = false;
+                break;
+            }
+        }
+    }
+
+    updateDisplay(m_grid, 0);
+    if (m_bothSidesNow) updateDisplay(m_grid, 1);
+
+    GridPoint gp1 = lookForJumper(routeThing.bestLocationToTarget, GridSource, routeThing.gridTargetPoint);
+    if (gp1.baseCost == GridBoardObstacle) return;
+
+    GridPoint gp2 = lookForJumper(routeThing.bestLocationToSource, GridTarget, routeThing.gridSourcePoint);
+    if (gp2.baseCost == GridBoardObstacle) return;
+
+    int sourceViaCount;
+    if (routeBothEnds) {
+        sourceTrace.flags = JumperStart;
+        sourceTrace.gridPoints = traceBack(gp1, m_grid, sourceViaCount, GridTarget, GridSource);   // trace back to source
+    }
+    
+    Trace destTrace;
+    destTrace.flags = JumperEnd;
+    int targetViaCount;
+    destTrace.gridPoints = traceBack(gp2, m_grid, targetViaCount, GridSource, GridTarget);          // trace back to target
+
+    if (routeBothEnds) {
+        insertTrace(sourceTrace, netIndex, currentScore, sourceViaCount, false);
+    }
+    insertTrace(destTrace, netIndex, currentScore, targetViaCount, true);
+    updateDisplay(0);
+    if (m_bothSidesNow) updateDisplay(1);
+
+    clearExpansion(m_grid);  
+}
+
+GridPoint MazeRouter::lookForJumper(GridPoint initial, GridValue targetValue, QPoint targetLocation) {
+    QSet<int> already;
+    std::priority_queue<GridPoint> pq;
+    initial.qCost = 0;
+    pq.push(initial);
+    already.insert(gridPointInt(m_grid, initial));
+    while (!pq.empty()) {
+        GridPoint gp = pq.top();
+        pq.pop();
+
+        m_displayImage[gp.z]->setPixel(gp.x, gp.y, 0xff0000ff);
+        updateDisplay(gp.z);
+
+        if (jumperWillFit(gp)) {
+            gp.baseCost = m_grid->at(gp.x, gp.y, gp.z);
+            if (targetValue == GridSource) gp.baseCost ^= GridSourceFlag;
+            return gp;
+        }
+
+        if (gp.x > 0) expandOneJ(gp, pq, -1, 0, 0, targetValue, targetLocation, already);          
+        if (gp.x < m_grid->x - 1) expandOneJ(gp, pq, 1, 0, 0, targetValue, targetLocation, already);
+        if (gp.y > 0) expandOneJ(gp, pq, 0, -1, 0, targetValue, targetLocation, already);
+        if (gp.y < m_grid->y - 1) expandOneJ(gp, pq, 0, 1, 0, targetValue, targetLocation, already);
+        if (m_bothSidesNow) {
+            if (gp.z > 0) expandOneJ(gp, pq, 0, 0, -1, targetValue, targetLocation, already);
+            if (gp.z < m_grid->z - 1) expandOneJ(gp, pq, 0, 0, 1, targetValue, targetLocation, already);
+        }
+    }
+
+    GridPoint failed;
+    failed.baseCost = GridBoardObstacle;
+    return failed;
+}
+
+bool MazeRouter::jumperWillFit(GridPoint & gridPoint) {
+    for (int z = 0; z < m_grid->z; z++) {
+        for (int y = -m_halfGridJumperSize; y <= m_halfGridJumperSize; y++) {
+            for (int x = -m_halfGridJumperSize; x <= m_halfGridJumperSize; x++) {
+                GridValue val = m_grid->at(gridPoint.x + x, gridPoint.y + y, z);
+                if (val == GridPartObstacle || val == GridBoardObstacle || val == GridSource || val == GridTarget || val == GridAvoid|| val == GridTempObstacle) return false;
+            }
+        }
+    }
+
+    return true;
+
+}
+
+void MazeRouter::expandOneJ(GridPoint & gridPoint, std::priority_queue<GridPoint> & pq, int dx, int dy, int dz, GridValue targetValue, QPoint targetLocation, QSet<int> & already)
+{
+    GridPoint next;
+    next.x = gridPoint.x + dx;
+    next.y = gridPoint.y + dy;
+    next.z = gridPoint.z + dz;
+    int gpi = gridPointInt(m_grid, next);
+    if (already.contains(gpi)) return;
+
+    already.insert(gpi);
+    GridValue nextval = m_grid->at(next.x, next.y, next.z);
+    if (nextval == GridPartObstacle || nextval == GridBoardObstacle || nextval == GridSource || nextval == GridTempObstacle || nextval == GridTarget || nextval == GridAvoid) return;
+    else if (nextval == 0) return;
+    else {
+        // already been here: see if it's the right expansion
+        if (targetValue == GridSource) {
+            if ((nextval & GridSourceFlag) == 0) return;
+        }
+        else {
+            if (nextval & GridSourceFlag) return;
+        }
+    }
+
+    double d = (m_costFunction)(QPoint(next.x, next.y), targetLocation);
+    next.qCost = d;
+    next.baseCost = 0;
+
+    //DebugDialog::debug(QString("pushing next %1 %2 %3, %4, %5").arg(gridPoint.x).arg(gridPoint.y).arg(gridPoint.z).arg(gridPoint.qCost).arg(routeThing.pq.size()));
+    pq.push(next);
+}
+
+void MazeRouter::removeOffBoardAnd(bool isPCBType, bool removeSingletons, bool bothSides) {
+    QRectF boardRect;
+    if (m_board) boardRect = m_board->sceneBoundingRect();
+	// remove any vias or jumperItems that will be deleted, also remove off-board items
+	for (int i = m_allPartConnectorItems.count() - 1; i >= 0; i--) {
+		QList<ConnectorItem *> * connectorItems = m_allPartConnectorItems.at(i);
+        if (removeSingletons) {
+            if (connectorItems->count() < 2) {
+                connectorItems->clear();
+            }
+            else if (connectorItems->count() == 2) {
+                if (connectorItems->at(0) == connectorItems->at(1)->getCrossLayerConnectorItem()) {
+                    connectorItems->clear();
+                }
+            }
+        }
+		for (int j = connectorItems->count() - 1; j >= 0; j--) {
+			ConnectorItem * connectorItem = connectorItems->at(j);
+			//connectorItem->debugInfo("pci");
+			bool doRemove = false;
+			if (connectorItem->attachedToItemType() == ModelPart::Via) {
+				Via * via = qobject_cast<Via *>(connectorItem->attachedTo()->layerKinChief());
+				doRemove = via->getAutoroutable();
+			}
+			else if (connectorItem->attachedToItemType() == ModelPart::Jumper) {
+				JumperItem * jumperItem = qobject_cast<JumperItem *>(connectorItem->attachedTo()->layerKinChief());
+				doRemove = jumperItem->getAutoroutable();
+			}
+			else if (connectorItem->attachedToItemType() == ModelPart::Symbol) {
+				SymbolPaletteItem * netLabel = qobject_cast<SymbolPaletteItem *>(connectorItem->attachedTo()->layerKinChief());
+				doRemove = netLabel->getAutoroutable() && netLabel->isNetLabel();
+			}
+            if (!bothSides && connectorItem->attachedToViewLayerID() == ViewLayer::Copper1) doRemove = true;
+            if (!doRemove && isPCBType) {
+                if (!connectorItem->sceneBoundingRect().intersects(boardRect)) {
+                    doRemove = true;
+                }
+            }
+			if (doRemove) {
+				connectorItems->removeAt(j);
+			}
+		}
+		if (connectorItems->count() == 0) {
+			m_allPartConnectorItems.removeAt(i);
+			delete connectorItems;
+		}
+	}
 }

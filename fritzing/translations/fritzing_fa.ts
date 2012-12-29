@@ -6,22 +6,22 @@
     <message>
         <location filename="../src/help/aboutbox.cpp" line="77"/>
         <source>Version %1.%2.%3 &lt;small&gt;(%4%5 %6)%7 [Qt %8]&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>نسخه %1.%2.%3 &lt;small&gt;(%4%5 %6)%7 [Qt %8]&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="92"/>
         <source>&lt;a href=&quot;http://www.fritzing.org&quot;&gt;www.fritzing.org&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;a href=&quot;http://www.fritzing.org&quot;&gt;www.fritzing.org&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="103"/>
         <source>&lt;b&gt;GNU GPL v3 on the code and CreativeCommons:BY-SA on the rest</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;GNU GPL v3 on the code and CreativeCommons:BY-SA on the rest</translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="121"/>
         <source>&lt;b&gt;2007-%1 Fachhochschule Potsdam&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;2007-%1 Fachhochschule Potsdam&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="133"/>
@@ -31,42 +31,42 @@
     <message>
         <location filename="../src/help/aboutbox.cpp" line="134"/>
         <source>Prof. Reto Wettach, Andr&amp;eacute; Kn&amp;ouml;rig, Myriel Milicevic, </source>
-        <translation type="unfinished"></translation>
+        <translation>Prof. Reto Wettach, Andr&amp;eacute; Kn&amp;ouml;rig, Myriel Milicevic, </translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="135"/>
         <source>Zach Eveland, Dirk van Oosterbosch, </source>
-        <translation type="unfinished"></translation>
+        <translation>Zach Eveland, Dirk van Oosterbosch, </translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="136"/>
         <source>Jonathan Cohen, Marcus Paeschke, Omer Yosha, </source>
-        <translation type="unfinished"></translation>
+        <translation>Jonathan Cohen, Marcus Paeschke, Omer Yosha, </translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="137"/>
         <source>Travis Robertson, Stefan Hermann, Brendan Howell, </source>
-        <translation type="unfinished"></translation>
+        <translation>Travis Robertson, Stefan Hermann, Brendan Howell, </translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="138"/>
         <source>Mariano Crowe, Johannes Landstorfer, </source>
-        <translation type="unfinished"></translation>
+        <translation>Mariano Crowe, Johannes Landstorfer, </translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="139"/>
         <source>Jenny Chowdhury, Lionel Michel, Jannis Leidel, </source>
-        <translation type="unfinished"></translation>
+        <translation>Jenny Chowdhury, Lionel Michel, Jannis Leidel, </translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="140"/>
         <source>Bryant Mairs, Uleshka Asher, and Daniel Tzschentke. </source>
-        <translation type="unfinished"></translation>
+        <translation>Bryant Mairs, Uleshka Asher, and Daniel Tzschentke. </translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="144"/>
         <source>Special thanks goes out to: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">با تشکر فراوان از:</translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="145"/>
@@ -981,7 +981,7 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
     <message>
         <location filename="../src/help/helper.cpp" line="42"/>
         <source>The &lt;b&gt;Breadboard View&lt;/b&gt; is meant to look like a &lt;i&gt;real-life&lt;/i&gt; breadboard prototype.&lt;br/&gt;&lt;br/&gt;Begin by dragging a part from the Parts Bin, which is over at the top right. Then pull in more parts, connecting them by clicking on the connectors and dragging wires. The process is similar to how you would arrange things in the physical world. &lt;br/&gt;&lt;br/&gt;After you&apos;re finished creating your sketch in the breadboard view, try the other views. You can switch by clicking the other views in either the View Switcher or the Navigator on the lower right. Because different views have different purposes, parts will look different in the other views.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;b&gt;بردبورد&lt;/b&gt; به نحوی طراحی شده است تا کاملا شبیه به &lt;i&gt;نمومه واقعی&lt;/i&gt; ان به نظر برسد.&lt;br/&gt;&lt;br/&gt;با کشیدن قطعه ای از سبد قطعه ها در بالا سمت راست قرار دارد، شروع کنید. </translation>
     </message>
     <message>
         <location filename="../src/help/helper.cpp" line="52"/>

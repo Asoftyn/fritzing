@@ -67,7 +67,6 @@ protected:
 	void clearTracesAndJumpers();
 	void addToUndo(QUndoCommand * parentCommand);
 	void addWireToUndo(Wire * wire, QUndoCommand * parentCommand);
-    void removeOffBoard(bool isPCBType, bool removeSingletons);
 
 public slots:
 	virtual void cancel();

@@ -116,15 +116,6 @@ struct Nearest {
     double distance;
     ConnectorItem * ic;
     ConnectorItem * jc;
-
-    void swap() {
-        int temp = i;
-        i = j;
-        j = temp;
-        ConnectorItem * tempc = ic;
-        ic = jc;
-        jc = tempc;
-    }
 };
 
 struct Grid {
@@ -155,13 +146,17 @@ struct RouteThing {
     QRectF r;
     QRectF r4;
     QList<ViewLayer::ViewLayerSpec> layerSpecs;
-    int ikeepout;
     Nearest nearest;
-    std::priority_queue<GridPoint> pq;
-    bool searchForJumper;
-    double jumperDistance;
-    GridPoint jumperLocation;
-    QPoint gridTarget;
+    std::priority_queue<GridPoint> sourceQ;
+    std::priority_queue<GridPoint> targetQ;
+    QPoint gridSourcePoint;
+    QPoint gridTargetPoint;
+    GridValue sourceValue;
+    GridValue targetValue;
+    double bestDistanceToTarget;
+    double bestDistanceToSource;
+    GridPoint bestLocationToTarget;
+    GridPoint bestLocationToSource;
     bool unrouted;
     NetElements netElements[2];
     QSet<int> avoids;
@@ -188,13 +183,13 @@ protected:
     bool routeOne(bool makeJumper, Score & currentScore, int netIndex, RouteThing &, QList<NetOrdering> & allOrderings);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, Nearest &);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, Nearest &);
-    QList<QPoint> renderSource(QDomDocument * masterDoc, int z, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, GridValue value, bool clearElements, const QRectF & r, bool collectPoints);
+    QList<QPoint> renderSource(QDomDocument * masterDoc, int z, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, GridValue value, bool clearElements, const QRectF & r);
     QList<GridPoint> route(RouteThing &, int & viaCount);
     void expand(GridPoint &, RouteThing &);
     void expandOne(GridPoint &, RouteThing &, int dx, int dy, int dz, bool crossLayer);
     bool viaWillFit(GridPoint &, Grid * grid);
-    QList<GridPoint> traceBack(GridPoint, Grid *, int & viaCount);
-    GridPoint traceBackOne(GridPoint &, Grid *, int dx, int dy, int dz);
+    QList<GridPoint> traceBack(GridPoint, Grid *, int & viaCount, GridValue sourceValue, GridValue targetValue);
+    GridPoint traceBackOne(GridPoint &, Grid *, int dx, int dy, int dz, GridValue sourceValue, GridValue targetValue);
     void updateDisplay(int iz);
     void updateDisplay(Grid *, int iz);
     void updateDisplay(GridPoint &);
@@ -216,12 +211,14 @@ protected:
     void addConnectionToUndo(ConnectorItem * from, ConnectorItem * to, QUndoCommand * parentCommand);
     void addViaToUndo(Via *, QUndoCommand * parentCommand);
     void addJumperToUndo(JumperItem *, QUndoCommand * parentCommand);
-    void clearExpansionForJumper(Grid * grid, GridValue sourceOrTarget, std::priority_queue<GridPoint> & pq);
     void routeJumper(int netIndex, RouteThing &, Score & currentScore);
-    void jumperWillFit(GridPoint & gridPoint, RouteThing &);
-    void insertTrace(Trace & newTrace, int netIndex, Score & currentScore, int viaCount);
+    bool jumperWillFit(GridPoint & gridPoint);
+    void insertTrace(Trace & newTrace, int netIndex, Score & currentScore, int viaCount, bool incRouted);
     SymbolPaletteItem * makeNetLabel(GridPoint & center, SymbolPaletteItem * pairedNetLabel);
     void addNetLabelToUndo(SymbolPaletteItem * netLabel, QUndoCommand * parentCommand);
+    GridPoint lookForJumper(GridPoint initial, GridValue targetValue, QPoint targetLocation);
+    void expandOneJ(GridPoint & gridPoint, std::priority_queue<GridPoint> & pq, int dx, int dy, int dz, GridValue targetValue, QPoint targetLocation, QSet<int> & already);
+    void removeOffBoardAnd(bool isPCBType, bool removeSingletons, bool bothSides);
 
 public slots:
      void incProgress();
@@ -232,6 +229,7 @@ protected:
     QHash<ViewLayer::ViewLayerSpec, QDomDocument *> m_masterDocs;
     double m_keepoutMils;
     double m_keepoutGrid;
+    int m_keepoutGridInt;
     int m_halfGridViaSize;
     int m_halfGridJumperSize;
     double m_gridPixels;
