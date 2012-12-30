@@ -937,8 +937,8 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
         }
 
         if (previousTraces) {
-            updateDisplay(m_grid, 0);
-            if (m_bothSidesNow) updateDisplay(m_grid, 1);
+            updateDisplay(0);
+            if (m_bothSidesNow) updateDisplay(1);
         }
 
         if (currentScore.routedCount.value(netIndex) > 0) {
