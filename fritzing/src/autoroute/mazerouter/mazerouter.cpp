@@ -32,9 +32,6 @@ $Date$
 
 // TODO:
 //
-//      schematic netlabels are the equivalent of jumpers. Use successive numbers for the labels.
-//          select all netlabels on trace menu
-//
 //      via/jumper placement must ensure minimum distance from source
 //          jumper placement must be away from vias
 //          and previous traces (GridAvoid)
@@ -44,7 +41,7 @@ $Date$
 //
 //      cleanup feedback stops dead with phoenix_no_traces after 8% is reached 
 //
-//      bad jumper placement in atmega256?
+//      smd not autorouting in atmega256
 //
 //      keepout dialog
 //
@@ -295,15 +292,16 @@ bool jumperWillFit(GridPoint & gridPoint, const Grid * grid, int halfSize) {
 }
 
 bool schematicJumperWillFitAux(GridPoint & gridPoint, const Grid * grid, int halfSize, int xl, int xr) {
+    int underCount = 0;
     for (int y = -halfSize; y <= halfSize; y++) {
-        for (int x =xl; x <= xr; x++) {
+        for (int x = xl; x <= xr; x++) {
             GridValue val = grid->at(gridPoint.x + x, gridPoint.y + y, 0);
             if (val == GridPartObstacle || val == GridBoardObstacle || val == GridSource || val == GridTarget || val == GridAvoid|| val == GridTempObstacle) {
                 return false;
             }
 
             if (val < gridPoint.baseCost) {
-                return false;
+                if (++underCount > xr - xl) return false;
             }
         }
     }
@@ -2541,8 +2539,8 @@ void MazeRouter::routeJumper(int netIndex, RouteThing & routeThing, Score & curr
         return;
     }
 
-    updateDisplay(0);
-    if (m_bothSidesNow) updateDisplay(1);
+    //updateDisplay(0);
+    //if (m_bothSidesNow) updateDisplay(1);
 
     bool routeBothEnds = true;
     Trace sourceTrace;
@@ -2559,8 +2557,8 @@ void MazeRouter::routeJumper(int netIndex, RouteThing & routeThing, Score & curr
         }
     }
 
-    updateDisplay(m_grid, 0);
-    if (m_bothSidesNow) updateDisplay(m_grid, 1);
+    //updateDisplay(m_grid, 0);
+    //if (m_bothSidesNow) updateDisplay(m_grid, 1);
 
     GridPoint gp1 = lookForJumper(routeThing.bestLocationToTarget, GridSource, routeThing.gridTargetPoint);
     if (gp1.baseCost == GridBoardObstacle) return;
@@ -2603,23 +2601,26 @@ GridPoint MazeRouter::lookForJumper(GridPoint initial, GridValue targetValue, QP
         GridPoint gp = pq.top();
         pq.pop();
 
-        GridValue bc = gp.baseCost = m_grid->at(gp.x, gp.y, gp.z);
+        gp.baseCost = m_grid->at(gp.x, gp.y, gp.z);
+
+        /*
+        GridValue bc = gp.baseCost;
         if (targetValue == GridSource) bc ^= GridSourceFlag;
+        bc *= 3;
         if (bc > 255) bc = 255;
-
-
         m_displayImage[gp.z]->setPixel(gp.x, gp.y, 0xff000000 | (bc << 16) | (bc << 8) | bc);
         updateDisplay(gp.z);
+        */
 
         if ((*m_jumperWillFitFunction)(gp, m_grid, m_halfGridJumperSize)) {
             if (targetValue == GridSource) gp.baseCost ^= GridSourceFlag;
 
-            m_displayImage[gp.z]->setPixel(gp.x, gp.y, 0xff0000ff);
-            updateDisplay(gp.z);
-            updateDisplay(gp.z);
+            //m_displayImage[gp.z]->setPixel(gp.x, gp.y, 0xff0000ff);
+            //updateDisplay(gp.z);
+            //updateDisplay(gp.z);
 
-            QPointF p = getPixelCenter(gp, m_maxRect.topLeft(), m_gridPixels);
-            DebugDialog::debug(QString("jumper location %1").arg(gp.flags), p);
+            //QPointF p = getPixelCenter(gp, m_maxRect.topLeft(), m_gridPixels);
+            //DebugDialog::debug(QString("jumper location %1").arg(gp.flags), p);
 
             return gp;
         }
