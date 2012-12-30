@@ -47,7 +47,6 @@ $Date$
 #include "../../commands.h"
 #include "../autorouter.h"
 
-typedef double (*CostFunction)(const QPoint & p1, const QPoint & p2);
 typedef quint64 GridValue;
 
 struct GridPoint {
@@ -126,7 +125,7 @@ struct Grid {
 
     Grid(int x, int y, int layers);
 
-    GridValue at(int x, int y, int z);
+    GridValue at(int x, int y, int z) const;
     void setAt(int x, int y, int z, GridValue value);
     QList<QPoint> init(int x, int y, int z, int width, int height, const QImage &, GridValue value, bool collectPoints);
     QList<QPoint> init4(int x, int y, int z, int width, int height, const QImage *, GridValue value, bool collectPoints);
@@ -161,6 +160,9 @@ struct RouteThing {
     NetElements netElements[2];
     QSet<int> avoids;
 };
+
+typedef bool (*JumperWillFitFunction)(GridPoint &, const Grid *, int halfSize);
+typedef double (*CostFunction)(const QPoint & p1, const QPoint & p2);
 
 ////////////////////////////////////
 
@@ -212,9 +214,8 @@ protected:
     void addViaToUndo(Via *, QUndoCommand * parentCommand);
     void addJumperToUndo(JumperItem *, QUndoCommand * parentCommand);
     void routeJumper(int netIndex, RouteThing &, Score & currentScore);
-    bool jumperWillFit(GridPoint & gridPoint);
     void insertTrace(Trace & newTrace, int netIndex, Score & currentScore, int viaCount, bool incRouted);
-    SymbolPaletteItem * makeNetLabel(GridPoint & center, SymbolPaletteItem * pairedNetLabel);
+    SymbolPaletteItem * makeNetLabel(GridPoint & center, SymbolPaletteItem * pairedNetLabel, uchar traceFlags);
     void addNetLabelToUndo(SymbolPaletteItem * netLabel, QUndoCommand * parentCommand);
     GridPoint lookForJumper(GridPoint initial, GridValue targetValue, QPoint targetLocation);
     void expandOneJ(GridPoint & gridPoint, std::priority_queue<GridPoint> & pq, int dx, int dy, int dz, GridValue targetValue, QPoint targetLocation, QSet<int> & already);
@@ -240,6 +241,7 @@ protected:
     QGraphicsPixmapItem * m_displayItem[2];
     bool m_temporaryBoard;
     CostFunction m_costFunction;
+    JumperWillFitFunction m_jumperWillFitFunction;
     uint m_traceColors[2];
     Grid * m_grid;
     int m_cleanupCount;

@@ -755,7 +755,7 @@ void PaletteItem::resetConnectors() {
 }
 
 
-void PaletteItem::resetConnectors(ItemBase * otherLayer,FSvgRenderer * otherLayerRenderer)
+void PaletteItem::resetConnectors(ItemBase * otherLayer, FSvgRenderer * otherLayerRenderer)
 {
 	// there's only one connector
 	foreach (Connector * connector, m_modelPart->connectors().values()) {

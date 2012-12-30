@@ -389,7 +389,7 @@ void Autorouter::addToUndo(QUndoCommand * parentCommand)
 					continue;
 				}
 
-				new AddItemCommand(m_sketchWidget, BaseCommand::CrossView, ModuleIDNames::NetLabelModuleIDName, netLabel->viewLayerSpec(), netLabel->getViewGeometry(), netLabel->id(), false, -1, parentCommand);
+				new AddItemCommand(m_sketchWidget, BaseCommand::CrossView, netLabel->moduleID(), netLabel->viewLayerSpec(), netLabel->getViewGeometry(), netLabel->id(), false, -1, parentCommand);
 				new SetPropCommand(m_sketchWidget, netLabel->id(), "label", netLabel->label(), netLabel->label(), true, parentCommand);
 
 				continue;

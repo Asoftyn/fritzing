@@ -107,7 +107,7 @@ SymbolPaletteItem::SymbolPaletteItem( ModelPart * modelPart, ViewLayer::ViewIden
 		if (direction.isEmpty()) {
 			direction = modelPart->properties().value("direction");
 			if (direction.isEmpty()) {
-				direction = "right";
+				direction = modelPart->moduleID().contains("left", Qt::CaseInsensitive) ? "left" : "right";
 			}
 			modelPart->setLocalProp("direction", direction);
 		}
@@ -271,6 +271,7 @@ void SymbolPaletteItem::setDirection(const QString & value) {
 	m_modelPart->setLocalProp("direction", value);
 	QString svg = makeSvg();
 	resetRenderer(svg);
+    resetConnectors(NULL, NULL);
 }
 
 void SymbolPaletteItem::setLabel(const QString & label) {
