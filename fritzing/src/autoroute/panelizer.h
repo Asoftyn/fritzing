@@ -127,6 +127,7 @@ protected:
     static void makeSVGs(MainWindow *, ItemBase *, const QString & boardName, QList<LayerThing> & layerThingList, QDir & saveDir);
     static void shrinkLastPanel( QList<PlanePair *> & planePairs, QList<PanelItem *> & insertPanelItems, PanelParams &, bool customPartsOnly);
     static int checkDonuts(MainWindow *, bool displayMessage);
+    static int checkText(MainWindow *, bool displayMessage);
 };
 
 #endif

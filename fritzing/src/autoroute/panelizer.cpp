@@ -750,7 +750,9 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
             !mainWindow->hasAnyAlien() && 
             !mainWindow->hasCustomBoardShape() && 
             (mainWindow->pcbView()->checkLoadedTraces() == 0) &&
-            (checkDonuts(mainWindow, false) == 0)) 
+            (checkDonuts(mainWindow, false) == 0) &&
+            (checkText(mainWindow, false) == 0)
+           ) 
         {
             mainWindow->close();
             delete mainWindow,
@@ -1258,6 +1260,7 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
 	}
 
     checkDonuts(mainWindow, true);
+    checkText(mainWindow, true);
 
     if (drc) {
 	    foreach (ItemBase * boardItem, boards) {
@@ -1438,6 +1441,48 @@ void Panelizer::shrinkLastPanel( QList<PlanePair *> & planePairs, QList<PanelIte
         delete smallPlanePair;
     }
 
+}
+
+
+int Panelizer::checkText(MainWindow * mainWindow, bool displayMessage) {
+	QHash<QString, QString> svgHash;
+    QList<ItemBase *> missing;
+
+    foreach (QGraphicsItem * item, mainWindow->pcbView()->scene()->items()) {
+        ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
+        if (itemBase == NULL) continue;
+        if (!itemBase->isEverVisible()) continue;
+
+        QString itemSvg = itemBase->retrieveSvg(itemBase->viewLayerID(), svgHash, false, GraphicsUtils::StandardFritzingDPI);
+		if (itemSvg.isEmpty()) continue;
+
+        QDomDocument doc;
+        QString errorStr;
+	    int errorLine;
+	    int errorColumn;
+	    if (!doc.setContent(itemSvg, &errorStr, &errorLine, &errorColumn)) {
+            DebugDialog::debug(QString("itembase svg failure %1").arg(itemBase->id()));
+            continue;
+        }
+
+        QDomElement root = doc.documentElement();
+        QDomNodeList domNodeList = root.elementsByTagName("path");
+	    for (int i = 0; i < domNodeList.count(); i++) {
+            QDomElement textElement = domNodeList.at(i).toElement();
+            if (textElement.attribute("fill").isEmpty() && textElement.attribute("stroke").isEmpty() && textElement.attribute("stroke-width").isEmpty()) {
+                missing.append(itemBase);
+                break;
+            }
+        }
+    }
+
+    if (displayMessage && missing.count() > 0) {
+        mainWindow->pcbView()->selectAllItems(false, false);
+        mainWindow->pcbView()->selectItems(missing);
+        QMessageBox::warning(NULL, "Text", QString("There are %1 possible instances of parts with <path> elements missing stroke/fill/stroke-width attributes").arg(missing.count()));
+    }
+
+    return  missing.count();
 }
 
 int Panelizer::checkDonuts(MainWindow * mainWindow, bool displayMessage) {

@@ -33,11 +33,10 @@ $Date$
 // TODO:
 //
 //      jumper placement must be away from vias and vv
+//          how to create test case
 //
 //      when multiple traces connect to one via, traces tend to connect to each other instead of the via
-//          see shift register example
-//
-//      cleanup feedback stops dead with phoenix_no_traces after 8% is reached 
+//          hard to find an example
 //
 //      smd not autorouting in atmega256--keepout?
 //
