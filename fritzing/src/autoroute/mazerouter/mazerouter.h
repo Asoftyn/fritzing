@@ -222,7 +222,7 @@ protected:
     void removeOffBoardAnd(bool isPCBType, bool removeSingletons, bool bothSides);
 
 public slots:
-     void incProgress();
+     void incCommandProgress();
 	 void setMaxCycles(int);
 
 protected:
@@ -246,6 +246,7 @@ protected:
     Grid * m_grid;
     int m_cleanupCount;
     int m_netLabelIndex;
+    int m_commandCount;
 };
 
 #endif

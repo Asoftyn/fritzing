@@ -1303,7 +1303,6 @@ void MainWindow::createTraceMenus()
 	m_pcbTraceMenu->addAction(m_newAutorouteAct);
 	m_pcbTraceMenu->addAction(m_newDesignRulesCheckAct);
 	m_pcbTraceMenu->addAction(m_newDesignRulesKeepoutAct);
-	m_pcbTraceMenu->addAction(m_checkLoadedTracesAct);
 	m_pcbTraceMenu->addAction(m_autorouterSettingsAct);
 
 	QMenu * groundFillMenu = m_pcbTraceMenu->addMenu(tr("Ground Fill"));
@@ -1333,7 +1332,10 @@ void MainWindow::createTraceMenus()
 	m_pcbTraceMenu->addAction(m_selectAllViasAct);
 	m_pcbTraceMenu->addAction(m_selectAllCopperFillAct);
 
-	m_schematicTraceMenu = menuBar()->addMenu(tr("&Routing"));
+    //m_pcbTraceMenu->addSeparator();
+	//m_pcbTraceMenu->addAction(m_checkLoadedTracesAct);
+
+    m_schematicTraceMenu = menuBar()->addMenu(tr("&Routing"));
 	m_schematicTraceMenu->addAction(m_newAutorouteAct);
 	m_schematicTraceMenu->addAction(m_excludeFromAutorouteAct);
 	m_schematicTraceMenu->addAction(m_showUnroutedAct);
@@ -2461,7 +2463,7 @@ void MainWindow::createTraceMenuActions() {
 	connect(m_newDesignRulesKeepoutAct, SIGNAL(triggered()), this, SLOT(designRulesKeepout()));
 
 	m_checkLoadedTracesAct = new QAction(tr("Check Loaded Traces"), this);
-	m_checkLoadedTracesAct->setStatusTip(tr("Select any traces where the screen location doesn't match their actual location."));
+	m_checkLoadedTracesAct->setStatusTip(tr("Select any traces where the screen location doesn't match the actual location. Only needed for sketches autorouted with version 0.7.10 or earlier"));
 	connect(m_checkLoadedTracesAct, SIGNAL(triggered()), this, SLOT(checkLoadedTraces()));
 
 	m_autorouterSettingsAct = new QAction(tr("Autorouter settings..."), this);

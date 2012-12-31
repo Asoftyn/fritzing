@@ -32,16 +32,14 @@ $Date$
 
 // TODO:
 //
-//      via/jumper placement must ensure minimum distance from source
-//          jumper placement must be away from vias
-//          and previous traces (GridAvoid)
+//      jumper placement must be away from vias and vv
 //
 //      when multiple traces connect to one via, traces tend to connect to each other instead of the via
 //          see shift register example
 //
 //      cleanup feedback stops dead with phoenix_no_traces after 8% is reached 
 //
-//      smd not autorouting in atmega256
+//      smd not autorouting in atmega256--keepout?
 //
 //      keepout dialog
 //
@@ -753,22 +751,25 @@ void MazeRouter::start()
 	}
 
     if (m_stopTracing) {
-        emit setProgressMessage(tr("Routing stopped! Now cleaning up..."));
+        QString msg = tr("Routing stopped!");
+        msg += " ";
+        if (m_useBest) msg += tr("Now doing final routing...");
+        emit setProgressMessage(msg);
         if (m_useBest) {
             routeNets(netList, true, bestScore, gridSize, allOrderings);
         }
     }
     else if (!bestScore.anyUnrouted) {
-        emit setProgressMessage(tr("Routing complete! Now cleaning up..."));
+        emit setProgressMessage(tr("Routing complete!"));
         emit setProgressValue(m_maxCycles);
     }
     else {
 		emit setCycleMessage(tr("round %1 of:").arg(run));
         QString msg;
-        if (run < m_maxCycles) msg = tr("Routing cannot complete; stopping at round %1.").arg(run);
+        if (run < m_maxCycles) msg = tr("Routing unsuccessful; stopping at round %1.").arg(run);
         else msg = tr("Routing reached maximum round %1.").arg(m_maxCycles);
         msg += " ";
-        msg += tr("Now cleaning up...");
+        msg += tr("Now doing final routing...");
         emit setProgressMessage(msg);
         printOrder("best ", bestScore.ordering.order);
         routeNets(netList, true, bestScore, gridSize, allOrderings);
@@ -783,21 +784,22 @@ void MazeRouter::start()
 	new CleanUpWiresCommand(m_sketchWidget, CleanUpWiresCommand::RedoOnly, parentCommand);
 
     m_sketchWidget->blockUI(true);
-    int cc = BaseCommand::totalChildCount(parentCommand);
-    emit setMaximumProgress(cc);
+    m_commandCount = BaseCommand::totalChildCount(parentCommand);
+    emit setMaximumProgress(m_commandCount);
+    emit setProgressMessage(tr("Now creating traces and setting up undo..."));
+    if (m_displayItem[0]) {
+        m_displayItem[0]->setVisible(false);
+    }
+    if (m_displayItem[1]) {
+        m_displayItem[1]->setVisible(false);
+    }
+    ProcessEventBlocker::processEvents();
     m_cleanupCount = 0;
 	m_sketchWidget->pushCommand(parentCommand, this);
     m_sketchWidget->blockUI(false);
 	m_sketchWidget->repaint();
 	DebugDialog::debug("\n\n\nautorouting complete\n\n\n");
 
-	if (m_offBoardConnectors.count() > 0) {
-		QSet<ItemBase *> parts;
-		foreach (ConnectorItem * connectorItem, m_offBoardConnectors) {
-			parts.insert(connectorItem->attachedTo()->layerKinChief());
-		}
-        QMessageBox::information(NULL, QObject::tr("Fritzing"), tr("Note: the autorouter did not route %n parts, because they are not located entirely on the board.", "", parts.count()));
-	}
 }
 
 int MazeRouter::findPinsWithin(QList<ConnectorItem *> * net) {
@@ -2483,8 +2485,14 @@ void MazeRouter::insertTrace(Trace & newTrace, int netIndex, Score & currentScor
 
 }
 
-void MazeRouter::incProgress() {
+void MazeRouter::incCommandProgress() {
     emit setProgressValue(m_cleanupCount++);
+
+    int modulo = m_commandCount / 100;
+    if (m_cleanupCount % modulo == 0) {
+        ProcessEventBlocker::processEvents();
+    }
+    //DebugDialog::debug(QString("cleanup:%1, cc:%2").arg(m_cleanupCount).arg(m_commandCount));
 }
 
 void MazeRouter::setMaxCycles(int maxCycles) 

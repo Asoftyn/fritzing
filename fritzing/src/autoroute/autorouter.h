@@ -100,7 +100,6 @@ protected:
 	int m_maxCycles;
     double m_keepoutPixels;
 	QRectF m_maxRect;
-	QSet<ConnectorItem *> m_offBoardConnectors;
     bool m_pcbType;
 };
 

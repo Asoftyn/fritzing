@@ -32,7 +32,7 @@ $Date$
 #include "../debugdialog.h"		                	                
 
 	
-QString Version::m_majorVersion("0");				
+QString Version::m_majorVersion("0");
 QString Version::m_minorVersion("7");
 QString Version::m_minorSubVersion("11");
 QString Version::m_modifier("b");

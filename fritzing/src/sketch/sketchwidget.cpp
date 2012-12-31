@@ -7202,7 +7202,7 @@ QPoint SketchWidget::calcFixedToCenterItemOffset(const QRect & viewPortRect, con
 void SketchWidget::pushCommand(QUndoCommand * command, QObject * thing) {
 	if (m_undoStack) {
         CommandProgress * commandProgress = BaseCommand::initProgress();
-        connect(commandProgress, SIGNAL(incRedo()), thing, SLOT(incProgress()));
+        connect(commandProgress, SIGNAL(incRedo()), thing, SLOT(incCommandProgress()));
 		m_undoStack->push(command);
         BaseCommand::clearProgress();
 	}
