@@ -102,8 +102,6 @@ static QString CancelledMessage;
 
 static const int DefaultMaxCycles = 100;
 
-const QString MazeRouter::MaxCyclesName("cmrouter/maxcycles");
-
 static const GridValue GridBoardObstacle = std::numeric_limits<GridValue>::max();
 static const GridValue GridPartObstacle = GridBoardObstacle - 1;
 static const GridValue GridSource = GridBoardObstacle - 2;
@@ -630,9 +628,9 @@ void MazeRouter::start()
         Net * net = new Net;
         net->net = m_allPartConnectorItems[i];
 
-        foreach (ConnectorItem * connectorItem, *(net->net)) {
-            connectorItem->debugInfo("all parts");
-        }
+        //foreach (ConnectorItem * connectorItem, *(net->net)) {
+        //    connectorItem->debugInfo("all parts");
+        //}
 
         QList<ConnectorItem *> todo;
         todo.append(*(net->net));
@@ -643,7 +641,7 @@ void MazeRouter::start()
 	        ConnectorItem::collectEqualPotential(equi, m_bothSidesNow, (ViewGeometry::RatsnestFlag | ViewGeometry::NormalFlag | ViewGeometry::PCBTraceFlag | ViewGeometry::SchematicTraceFlag) ^ m_sketchWidget->getTraceFlag());
             foreach (ConnectorItem * equ, equi) {
                 todo.removeOne(equ);
-                equ->debugInfo("equi");
+                //equ->debugInfo("equi");
             }
             net->subnets.append(equi);
         }
@@ -2523,7 +2521,7 @@ void MazeRouter::incCommandProgress() {
     emit setProgressValue(m_cleanupCount++);
 
     int modulo = m_commandCount / 100;
-    if (m_cleanupCount % modulo == 0) {
+    if (modulo > 0 && m_cleanupCount % modulo == 0) {
         ProcessEventBlocker::processEvents();
     }
     //DebugDialog::debug(QString("cleanup:%1, cc:%2").arg(m_cleanupCount).arg(m_commandCount));

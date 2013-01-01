@@ -435,7 +435,7 @@ void PaletteItem::figureHover() {
 
 	int ix = 0;
 	foreach (ItemBase * base, allKin) {
-		if (!(base->hidden() || base->inactive()) && base->hasConnectors()) {
+		if (!(base->hidden() || base->inactive() || base->layerHidden()) && base->hasConnectors()) {
 			base->setAcceptHoverEvents(true);
 			base->setAcceptedMouseButtons(ALLMOUSEBUTTONS);
 			break;
@@ -445,7 +445,7 @@ void PaletteItem::figureHover() {
 
 	for (int i = 0; i < ix; i++) {
 		ItemBase * base = allKin[i];
-		if (!(base->hidden() || base->inactive())) {
+		if (!(base->hidden() || base->inactive() || base->layerHidden())) {
 			base->setAcceptHoverEvents(true);
 			base->setAcceptedMouseButtons(ALLMOUSEBUTTONS);
 			return;
@@ -465,7 +465,7 @@ ItemBase * PaletteItem::lowerConnectorLayerVisible(ItemBase * itemBase) {
 
 	if ((itemBase != this) 
 		&& this->isVisible() 
-		&& (!this->hidden()) && (!this->inactive()) && (this->zValue() < itemBase->zValue())
+		&& (!this->hidden()) && (!this->inactive()) && (!this->layerHidden()) && (this->zValue() < itemBase->zValue())
 		&& this->hasConnectors()) 
 	{
 		return this;
@@ -475,7 +475,7 @@ ItemBase * PaletteItem::lowerConnectorLayerVisible(ItemBase * itemBase) {
 		if (lkpi == itemBase) continue;
 
 		if (lkpi->isVisible() 
-			&& (!lkpi->hidden()) && (!lkpi->inactive()) 
+			&& (!lkpi->hidden()) && (!lkpi->layerHidden()) && (!lkpi->inactive()) 
 			&& (lkpi->zValue() < itemBase->zValue()) 
 			&& lkpi->hasConnectors() ) 
 		{

@@ -166,7 +166,7 @@ ItemBase::ItemBase( ModelPart* modelPart, ViewLayer::ViewIdentifier viewIdentifi
 		m_modelPart->addViewItem(this);
 	}
 	m_id = id;
-	m_canFlipHorizontal = m_canFlipVertical = m_sticky = m_inRotation = m_inactive = m_hidden = false;
+	m_canFlipHorizontal = m_canFlipVertical = m_sticky = m_inRotation = m_inactive = m_layerHidden = m_hidden = false;
 
 	setCursor(*CursorMaster::MoveCursor);
 
@@ -521,9 +521,7 @@ bool ItemBase::topLevel() {
 void ItemBase::setHidden(bool hide) {
 
 	m_hidden = hide;
-	setAcceptedMouseButtons(m_hidden || m_inactive ? Qt::NoButton : ALLMOUSEBUTTONS);
-	setAcceptHoverEvents(!(m_hidden || m_inactive));
-	update();
+    updateHidden();
 	foreach (QGraphicsItem * item, childItems()) {
 		NonConnectorItem * nonconnectorItem = dynamic_cast<NonConnectorItem *>(item);
 		if (nonconnectorItem == NULL) continue;
@@ -535,9 +533,7 @@ void ItemBase::setHidden(bool hide) {
 void ItemBase::setInactive(bool inactivate) {
 
 	m_inactive = inactivate;
-	setAcceptedMouseButtons(m_hidden || m_inactive ? Qt::NoButton : ALLMOUSEBUTTONS);
-	setAcceptHoverEvents(!(m_hidden || m_inactive));
-	update();
+	updateHidden();
 	foreach (QGraphicsItem * item, childItems()) {
 		NonConnectorItem * nonconnectorItem = dynamic_cast<NonConnectorItem *>(item);
 		if (nonconnectorItem == NULL) continue;
@@ -546,8 +542,30 @@ void ItemBase::setInactive(bool inactivate) {
 	}
 }
 
+void ItemBase::setLayerHidden(bool layerHidden) {
+
+	m_layerHidden = layerHidden;
+	updateHidden();
+	foreach (QGraphicsItem * item, childItems()) {
+		NonConnectorItem * nonconnectorItem = dynamic_cast<NonConnectorItem *>(item);
+		if (nonconnectorItem == NULL) continue;
+
+		nonconnectorItem->setLayerHidden(layerHidden);
+	}
+}
+
+void ItemBase::updateHidden() {
+	setAcceptedMouseButtons(m_hidden || m_inactive || m_layerHidden ? Qt::NoButton : ALLMOUSEBUTTONS);
+	setAcceptHoverEvents(!(m_hidden || m_inactive || m_layerHidden));
+	update();
+}
+
 bool ItemBase::hidden() {
 	return m_hidden;
+}
+
+bool ItemBase::layerHidden() {
+	return m_layerHidden;
 }
 
 bool ItemBase::inactive() {
@@ -985,7 +1003,7 @@ void ItemBase::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 		return;
 	}
 
-	if (m_hidden || m_inactive) {
+	if (m_hidden || m_inactive || m_layerHidden) {
 		event->ignore();
 		return;
 	}

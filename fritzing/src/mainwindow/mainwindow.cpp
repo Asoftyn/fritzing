@@ -2282,7 +2282,7 @@ void MainWindow::routingStatusLabelMouse(QMouseEvent*, bool show) {
 				.arg(connectorItem->connectorSharedName()));
 		}
 
-		if (connectorItem->isActive() && connectorItem->isVisible() && !connectorItem->hidden()) {
+		if (connectorItem->isActive() && connectorItem->isVisible() && !connectorItem->hidden() && !connectorItem->layerHidden()) {
 			connectorItem->showEqualPotential(show);
 		}
 		else {

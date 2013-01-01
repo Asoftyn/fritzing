@@ -772,7 +772,7 @@ void SketchWidget::checkSticky(long id, bool doEmit, bool checkCurrent, CheckSti
 	ItemBase * itemBase = findItem(id);
 	if (itemBase == NULL) return;
 
-    if (itemBase->hidden()) {
+    if (itemBase->hidden() || itemBase->layerHidden()) {
     }
 	else if (itemBase->isBaseSticky()) {
 		stickyScoop(itemBase, checkCurrent, checkStickyCommand);
@@ -6936,7 +6936,7 @@ QString SketchWidget::renderToSVG(double printerScale, const LayerList & layers,
 	foreach (QGraphicsItem * item, items) {
 		ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
 		if (itemBase == NULL) continue;
-		if (itemBase->hidden()) continue;
+		if (itemBase->hidden() || itemBase->layerHidden()) continue;
         if (!renderBlocker) {
             Pad * pad = qobject_cast<Pad *>(itemBase);
             if (pad != NULL && pad->copperBlocker()) {
@@ -8994,7 +8994,7 @@ void SketchWidget::showUnrouted() {
     }
 
 	foreach (ConnectorItem * connectorItem, toShow) {
-		if (connectorItem->isActive() && connectorItem->isVisible() && !connectorItem->hidden()) {
+		if (connectorItem->isActive() && connectorItem->isVisible() && !connectorItem->hidden() && !connectorItem->layerHidden()) {
 			connectorItem->showEqualPotential(true);
 		}
 		else {
@@ -9011,7 +9011,7 @@ void SketchWidget::showUnrouted() {
 
 
     foreach (ConnectorItem * connectorItem, toShow) {
-		if (connectorItem->isActive() && connectorItem->isVisible() && !connectorItem->hidden()) {
+		if (connectorItem->isActive() && connectorItem->isVisible() && !connectorItem->hidden() && !connectorItem->layerHidden()) {
 			connectorItem->showEqualPotential(false);
 		}
 		else {

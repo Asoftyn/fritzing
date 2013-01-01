@@ -42,6 +42,8 @@ $Date$
 #include <QApplication>
 #include <QSettings>
 
+const QString Autorouter::MaxCyclesName("cmrouter/maxcycles");
+
 Autorouter::Autorouter(PCBSketchWidget * sketchWidget)
 {
 	m_sketchWidget = sketchWidget;
@@ -426,6 +428,6 @@ void Autorouter::setMaxCycles(int maxCycles)
 {
 	m_maxCycles = maxCycles;
 	QSettings settings;
-	settings.setValue("cmrouter/maxcycles", maxCycles);
+	settings.setValue(MaxCyclesName, maxCycles);
 }
 

@@ -50,6 +50,7 @@ void FGraphicsScene::helpEvent(QGraphicsSceneHelpEvent *helpEvent)
 			ConnectorItem * connectorItem = dynamic_cast<ConnectorItem *>(tmp);
 			if (connectorItem) {
 				if (connectorItem->attachedTo()->hidden()) continue;
+				if (connectorItem->attachedTo()->layerHidden()) continue;
 				if (connectorItem->attachedTo()->inactive()) continue;
 
 				connectorItem->updateTooltip();
@@ -58,6 +59,7 @@ void FGraphicsScene::helpEvent(QGraphicsSceneHelpEvent *helpEvent)
 		}
 		else {
 			if (itemBase->hidden()) continue;
+			if (itemBase->layerHidden()) continue;
 			if (itemBase->inactive()) continue;
 
 			if (!itemBase->acceptHoverEvents()) continue;

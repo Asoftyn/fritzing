@@ -44,7 +44,7 @@ NonConnectorItem::NonConnectorItem(ItemBase * attachedTo) : QGraphicsRectItem(at
 {
 	m_effectively = EffectivelyUnknown;
 	m_radius = m_strokeWidth = 0;
-	m_isPath = m_inactive = m_hidden = false;
+	m_layerHidden = m_isPath = m_inactive = m_hidden = false;
 	m_attachedTo = attachedTo;
     setAcceptHoverEvents(false);
 	setAcceptedMouseButtons(Qt::NoButton);
@@ -61,7 +61,7 @@ ItemBase * NonConnectorItem::attachedTo() {
 }
 
 bool NonConnectorItem::doNotPaint() {
-	return (m_hidden || m_inactive || !m_paint);
+	return (m_hidden || m_inactive || !m_paint || m_layerHidden);
 }
 
 
@@ -139,6 +139,15 @@ void NonConnectorItem::setHidden(bool hide) {
 
 bool NonConnectorItem::hidden() {
 	return m_hidden;
+}
+
+void NonConnectorItem::setLayerHidden(bool hide) {
+	m_layerHidden = hide;
+	this->update();
+}
+
+bool NonConnectorItem::layerHidden() {
+	return m_layerHidden;
 }
 
 void NonConnectorItem::setInactive(bool inactivate) {

@@ -1064,7 +1064,7 @@ bool ResizableBoard::hasPartNumberProperty()
 
 void ResizableBoard::paintSelected(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	if (m_hidden) return;
+	if (m_hidden || m_layerHidden) return;
 
 	Board::paintSelected(painter, option, widget);
 

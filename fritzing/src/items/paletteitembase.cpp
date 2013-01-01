@@ -175,14 +175,14 @@ bool PaletteItemBase::syncSelected() {
 
 void PaletteItemBase::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	if (m_hidden) return;
+	if (m_hidden || m_layerHidden) return;
 
 	ItemBase::paint(painter, option, widget);
 }
 
 void PaletteItemBase::paintHover(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	if (m_hidden) return;
+	if (m_hidden || m_layerHidden) return;
 
 	if (!hasRubberBandLeg()) {
 		ItemBase::paintHover(painter, option, widget);
@@ -196,7 +196,7 @@ void PaletteItemBase::paintHover(QPainter *painter, const QStyleOptionGraphicsIt
 
 void PaletteItemBase::paintSelected(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	if (m_hidden) return;
+	if (m_hidden || m_layerHidden) return;
 
 	if (!hasRubberBandLeg()) {
 		ItemBase::paintSelected(painter, option, widget);

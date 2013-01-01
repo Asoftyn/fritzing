@@ -1006,7 +1006,7 @@ void ConnectorItem::setInactive(bool inactivate) {
 }
 
 void ConnectorItem::setHiddenOrInactive() {
-	if (m_hidden || m_inactive || m_hybrid) {
+	if (m_hidden || m_inactive || m_hybrid || m_layerHidden) {
 		this->setAcceptedMouseButtons(Qt::NoButton);
 		this->unsetCursor();
 		setAcceptHoverEvents(false);

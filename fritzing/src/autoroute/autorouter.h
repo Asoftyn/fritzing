@@ -51,6 +51,10 @@ public:
 	virtual ~Autorouter(void);
 
 	virtual void start()=0;
+
+public:
+    static const QString MaxCyclesName;
+
 	
 protected:
 	virtual void cleanUpNets();

@@ -97,7 +97,9 @@ public:
 
 	virtual void busConnectorItems(class Bus * bus, QList<ConnectorItem *> & items);
 	virtual void setHidden(bool hidden);
+	virtual void setLayerHidden(bool hidden);
 	bool hidden();
+	bool layerHidden();
 	virtual void setInactive(bool inactivate);
 	bool inactive();
 	ConnectorItem * findConnectorItemWithSharedID(const QString & connectorID, ViewLayer::ViewLayerSpec);
@@ -312,6 +314,7 @@ protected:
     QPixmap * getPixmap(ViewLayer::ViewIdentifier, bool swappingEnabled, QSize size);
     virtual ViewLayer::ViewIdentifier useViewIdentifierForPixmap(ViewLayer::ViewIdentifier, bool swappingEnabled);
     virtual void makeLocalModifications(QByteArray & svg, const QString & filename);
+    void updateHidden();
 
 protected:
 	static bool getFlipDoc(ModelPart * modelPart, const QString & filename, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec, QDomDocument &);
@@ -328,6 +331,7 @@ protected:
 	int m_connectorHoverCount2;
 	int m_hoverCount;
 	bool m_hidden;
+	bool m_layerHidden;
 	bool m_inactive;
 	bool m_sticky;
 	QHash< long, QPointer<ItemBase> > m_stickyList;
