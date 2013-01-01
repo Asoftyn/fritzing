@@ -2560,7 +2560,8 @@ SymbolPaletteItem * MazeRouter::makeNetLabel(GridPoint & center, SymbolPaletteIt
 	SymbolPaletteItem * netLabel = dynamic_cast<SymbolPaletteItem *>(itemBase);
 	netLabel->setAutoroutable(true);
     netLabel->setLabel(QString::number(m_netLabelIndex));
-    QPointF c1 = getPixelCenter(center, m_maxRect.topLeft(), m_gridPixels);
+    QPointF tl = m_maxRect.topLeft();
+    QPointF c1 = getPixelCenter(center, tl, m_gridPixels);
     QSizeF size = netLabel->boundingRect().size();
     int x = c1.x();
     if (traceFlags & JumperLeft) {
