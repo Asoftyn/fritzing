@@ -137,20 +137,17 @@ void AutorouterSettingsDialog::production(bool checked) {
 		enableCustom(false);
 		changeHoleSize(sender()->property("holesize").toString() + "," + sender()->property("ringthickness").toString());
 		setTraceWidth(16);
+        setDefaultKeepout();
 	}
 	else if (sender() == m_professionalButton) {
 		enableCustom(false);
 		changeHoleSize(sender()->property("holesize").toString() + "," + sender()->property("ringthickness").toString());
 		setTraceWidth(24);
+        setDefaultKeepout();
 	}
 	else if (sender() == m_customButton) {
 		enableCustom(true);
 	}	
-}
-
-void AutorouterSettingsDialog::restoreDefault() {
-	//m_inButton->setChecked(true);
-	//m_mmButton->setChecked(false);
 }
 
 void AutorouterSettingsDialog::enableCustom(bool enable) 
@@ -268,11 +265,11 @@ QWidget * AutorouterSettingsDialog::createKeepoutWidget(const QString & keepoutS
     QFrame * frame = new QFrame;
     QHBoxLayout * frameLayout = new QHBoxLayout;
 
-    m_spinBox = new QDoubleSpinBox;
-    m_spinBox->setDecimals(4);
-    connect(m_spinBox, SIGNAL(valueChanged(double)), this, SLOT(keepoutEntry()));
-    connect(m_spinBox, SIGNAL(valueChanged(const QString &)), this, SLOT(keepoutEntry()));
-    frameLayout->addWidget(m_spinBox);
+    m_keepoutSpinBox = new QDoubleSpinBox;
+    m_keepoutSpinBox->setDecimals(4);
+    connect(m_keepoutSpinBox, SIGNAL(valueChanged(double)), this, SLOT(keepoutEntry()));
+    connect(m_keepoutSpinBox, SIGNAL(valueChanged(const QString &)), this, SLOT(keepoutEntry()));
+    frameLayout->addWidget(m_keepoutSpinBox);
 
     m_inRadio = new QRadioButton("in");
     frameLayout->addWidget(m_inRadio);
@@ -332,28 +329,39 @@ QWidget * AutorouterSettingsDialog::createViaWidget() {
 }
 
 void AutorouterSettingsDialog::toInches() {
-    m_spinBox->blockSignals(true);
-    m_spinBox->setRange(.001, 1);
-    m_spinBox->setSingleStep(.001);
-    m_spinBox->setValue(m_keepoutMils / 1000);
-    m_spinBox->blockSignals(false);
+    m_keepoutSpinBox->blockSignals(true);
+    m_keepoutSpinBox->setRange(.001, 1);
+    m_keepoutSpinBox->setSingleStep(.001);
+    m_keepoutSpinBox->setValue(m_keepoutMils / 1000);
+    m_keepoutSpinBox->blockSignals(false);
 }
 
 void AutorouterSettingsDialog::toMM() {
-    m_spinBox->blockSignals(true);
-    m_spinBox->setRange(.001 * 25.4, 1);
-    m_spinBox->setSingleStep(.01);
-    m_spinBox->setValue(m_keepoutMils * 25.4 / 1000);
-    m_spinBox->blockSignals(false);
+    m_keepoutSpinBox->blockSignals(true);
+    m_keepoutSpinBox->setRange(.001 * 25.4, 1);
+    m_keepoutSpinBox->setSingleStep(.01);
+    m_keepoutSpinBox->setValue(m_keepoutMils * 25.4 / 1000);
+    m_keepoutSpinBox->blockSignals(false);
 }
 
 void AutorouterSettingsDialog::keepoutEntry() {
-    double k = m_spinBox->value();
+    double k = m_keepoutSpinBox->value();
     if (m_inRadio->isChecked()) {
         m_keepoutMils = k * 1000;
     }
     else {
         m_keepoutMils = k * 1000 / 25.4;
+    }
+}
+
+void AutorouterSettingsDialog::setDefaultKeepout() {
+    m_keepoutMils = DRC::KeepoutDefaultMils;
+    double inches = DRC::KeepoutDefaultMils / 1000;
+    if (m_inRadio->isChecked()) {
+        m_keepoutSpinBox->setValue(inches);
+    }
+    else {
+        m_keepoutSpinBox->setValue(inches * 25.4);
     }
 }
 
@@ -369,7 +377,7 @@ QHash<QString, QString> AutorouterSettingsDialog::getSettings() {
 
 QString AutorouterSettingsDialog::getKeepoutString() 
 {
-    double k = m_spinBox->value();
+    double k = m_keepoutSpinBox->value();
     if (m_inRadio->isChecked()) {
         return QString("%1in").arg(k);
     }

@@ -1157,7 +1157,6 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
     namefilters.clear();
     namefilters << "*" + FritzingPartExtension;
     entryInfoList = dir.entryInfoList(namefilters);
-    QRegExp moduleIDFinder("moduleId=\"([^\"]+)");
 
     namefilters.clear();
 	namefilters << "*.svg";
@@ -1176,13 +1175,13 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
         // TODO: could be more efficient by using a streamreader
         QString fzp = file.readAll();
         file.close();
-        int ix = fzp.indexOf(moduleIDFinder);
-        if (ix < 0) {
+
+        QString moduleID = TextUtils::parseForModuleID(fzp);
+        if (moduleID.isEmpty()) {
             DebugDialog::debug(QString("unable to find module id in %1: %2").arg(file.fileName()).arg(fzp));
             continue;
         }
 
-        QString moduleID = moduleIDFinder.cap(1);
         ModelPart * mp = m_referenceModel->retrieveModelPart(moduleID);
         if (mp == NULL) {
             QDomDocument doc;

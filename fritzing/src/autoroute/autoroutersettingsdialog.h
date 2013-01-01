@@ -47,15 +47,12 @@ public:
     QHash<QString, QString> getSettings();
 
 protected slots:
-	void restoreDefault();
 	void production(bool);
 	void widthEntry(const QString &);
-
 	void changeUnits(bool);
 	void changeHoleSize(const QString &);
 	void changeDiameter();
 	void changeThickness();
-
     void toInches();
     void toMM();
     void keepoutEntry();
@@ -68,6 +65,7 @@ protected:
     QWidget * createTraceWidget();
     QWidget * createKeepoutWidget(const QString & keepoutString);
     QString getKeepoutString();
+    void setDefaultKeepout();
 
 protected:
 	QRadioButton * m_homebrewButton;
@@ -79,7 +77,7 @@ protected:
 	int m_traceWidth;
     double m_keepoutMils;
     bool m_inches;
-    QDoubleSpinBox * m_spinBox;
+    QDoubleSpinBox * m_keepoutSpinBox;
     QRadioButton * m_inRadio;
     QRadioButton * m_mmRadio;
 

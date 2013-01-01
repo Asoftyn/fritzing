@@ -225,6 +225,9 @@ public slots:
      void incCommandProgress();
 	 void setMaxCycles(int);
 
+public:
+    static const QString MaxCyclesName;
+
 protected:
 	LayerList m_viewLayerIDs;
     QHash<ViewLayer::ViewLayerSpec, QDomDocument *> m_masterDocs;

@@ -1167,6 +1167,7 @@ ResizableBoard::Corner ResizableBoard::findCorner(QPointF scenePos, Qt::Keyboard
 	Q_UNUSED(modifiers);
 		
 	if (!this->isSelected()) return ResizableBoard::NO_CORNER;
+    if (this->moveLock()) return ResizableBoard::NO_CORNER;
 
 	double d = CornerHandleSize / m_currentScale;
 	double d2 = d * d;

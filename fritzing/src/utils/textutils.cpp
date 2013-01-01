@@ -1576,6 +1576,26 @@ QSizeF TextUtils::parseForWidthAndHeight(const QString & svg)
     return parseForWidthAndHeight(svg, viewBox, false);
 }
 
+QString TextUtils::parseForModuleID(const QString & fzp)
+{
+	QXmlStreamReader streamReader(fzp);
+    streamReader.setNamespaceProcessing(false);
+
+	while (!streamReader.atEnd()) {
+        switch (streamReader.readNext()) {
+            case QXmlStreamReader::StartElement:
+			    if (streamReader.name().toString().compare("module") == 0) {
+				    return streamReader.attributes().value("moduleId").toString();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    return "";
+}
+
 QSizeF TextUtils::parseForWidthAndHeight(const QString & svg, QRectF & viewBox, bool getViewBox)
 {
 	QXmlStreamReader streamReader(svg);

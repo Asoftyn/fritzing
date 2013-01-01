@@ -38,11 +38,9 @@ $Date$
 //      when multiple traces connect to one via, traces tend to connect to each other instead of the via
 //          hard to find an example
 //
-//      keepout dialog
-//          save all values to the fzz and QSettings
-//          read values from fzz. and then QSettings
-//
 //      test if source touches target
+//
+//      add max cycles to settings dialog
 //
 
 // LATER:
@@ -102,7 +100,9 @@ static int routeNumber = 0;
 
 static QString CancelledMessage;
 
-static const int DefaultMaxCycles = 10;
+static const int DefaultMaxCycles = 100;
+
+const QString MazeRouter::MaxCyclesName("cmrouter/maxcycles");
 
 static const GridValue GridBoardObstacle = std::numeric_limits<GridValue>::max();
 static const GridValue GridPartObstacle = GridBoardObstacle - 1;
@@ -485,7 +485,7 @@ MazeRouter::MazeRouter(PCBSketchWidget * sketchWidget, QGraphicsItem * board, bo
     CancelledMessage = tr("Autorouter was cancelled.");
 
 	QSettings settings;
-	m_maxCycles = settings.value("cmrouter/maxcycles", DefaultMaxCycles).toInt();
+	m_maxCycles = settings.value(MaxCyclesName, DefaultMaxCycles).toInt();
 		
 	m_bothSidesNow = sketchWidget->routeBothSides();
     m_pcbType = sketchWidget->autorouteTypePCB();

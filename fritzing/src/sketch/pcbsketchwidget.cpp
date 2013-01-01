@@ -359,7 +359,8 @@ void PCBSketchWidget::dealWithDefaultParts() {
 	if (rb) rb->resizePixels(partSize.width(), partSize.height(), m_viewLayers);
 	QTimer::singleShot(10, this, SLOT(vScrollToZero()));
 
-	setLayerActive(ViewLayer::Copper1, false);
+    // set both layers active by default
+	setLayerActive(ViewLayer::Copper1, true);
 	setLayerActive(ViewLayer::Copper0, true);
 }
 

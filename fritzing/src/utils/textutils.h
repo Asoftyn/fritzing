@@ -115,6 +115,7 @@ public:
 	static bool fixInternalUnits(QString & svg);
 	static bool fixFonts(QString & svg, const QString & destFont);
 	static void fixStyleAttribute(QDomElement & element);
+    static QString parseForModuleID(const QString & fzp);
 
 public:
 	static const QRegExp FindWhitespace;
