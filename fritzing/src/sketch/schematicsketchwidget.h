@@ -80,6 +80,8 @@ public:
     bool attachedToTopLayer(ConnectorItem *);
     bool attachedToBottomLayer(ConnectorItem *);
     QSizeF jumperItemSize();
+    QHash<QString, QString> getAutorouterSettings();
+    void setAutorouterSettings(QHash<QString, QString> &);
 
 public slots:
 	void setVoltage(double voltage, bool doEmit);

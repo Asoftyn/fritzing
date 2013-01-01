@@ -221,123 +221,8 @@ void DRCResultsDialog::releasedSlot(QListWidgetItem * item) {
 
 ///////////////////////////////////////////
 
-static const QString KeepoutSetting("DRC_Keepout");
-static const double KeepoutDefault = 10;  // mils
-
-double getKeepoutSetting(bool & inches) 
-{
-    double keepout = KeepoutDefault;  // mils
-    QSettings settings;
-    QString keepoutSetting = settings.value(KeepoutSetting, QString("%1in").arg(KeepoutDefault / 1000)).toString();
-    inches = !keepoutSetting.endsWith("mm");
-    bool ok;
-    double candidate = TextUtils::convertToInches(keepoutSetting, &ok, false);
-    if (ok) {
-        keepout = candidate * 1000; // mils
-    }
-    return keepout;
-}
-
-DRCKeepoutDialog::DRCKeepoutDialog(QWidget *parent) : QDialog(parent) 
-{
-	this->setWindowTitle(tr("DRC Keepout Setting"));
-
-	QVBoxLayout * vLayout = new QVBoxLayout(this);
-
-	QLabel * label = new QLabel(tr("The 'keepout' is the minimum amount of space you want to keep between a connector or trace on one net and a connector or trace in another net"));
-    label->setWordWrap(true);
-	vLayout->addWidget(label);
-
-    label = new QLabel(tr("A keepout of 0.01 inch (0.254 mm) is a good default."));
-    label->setWordWrap(true);
-	vLayout->addWidget(label);
-
-	label = new QLabel(tr("Note: the smaller the keepout, the slower the DRC will run."));
-	vLayout->addWidget(label);
-
-    QFrame * frame = new QFrame;
-    QHBoxLayout * frameLayout = new QHBoxLayout;
-
-    m_spinBox = new QDoubleSpinBox;
-    m_spinBox->setDecimals(4);
-    connect(m_spinBox, SIGNAL(valueChanged(double)), this, SLOT(keepoutEntry()));
-    connect(m_spinBox, SIGNAL(valueChanged(const QString &)), this, SLOT(keepoutEntry()));
-    frameLayout->addWidget(m_spinBox);
-
-    m_inRadio = new QRadioButton("in");
-    frameLayout->addWidget(m_inRadio);
-    connect(m_inRadio, SIGNAL(clicked()), this, SLOT(toInches()));
-
-    m_mmRadio = new QRadioButton("mm");
-    frameLayout->addWidget(m_mmRadio);
-    connect(m_mmRadio, SIGNAL(clicked()), this, SLOT(toMM()));
-
-    frameLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
-
-    bool inches;
-    m_keepoutMils = getKeepoutSetting(inches);
-    if (inches) {
-        toInches();
-        m_inRadio->setChecked(true);
-    }
-    else {
-        toMM();
-        m_mmRadio->setChecked(true);
-    }
-
-    frame->setLayout(frameLayout);
-    vLayout->addWidget(frame);
-
-	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-	connect(buttonBox, SIGNAL(accepted()), this, SLOT(saveAndAccept()));
-	connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-
-	vLayout->addWidget(buttonBox);
-	this->setLayout(vLayout);
-}
-
-DRCKeepoutDialog::~DRCKeepoutDialog() {
-}
-
-
-void DRCKeepoutDialog::toInches() {
-    m_spinBox->blockSignals(true);
-    m_spinBox->setRange(.001, 1);
-    m_spinBox->setSingleStep(.001);
-    m_spinBox->setValue(m_keepoutMils / 1000);
-    m_spinBox->blockSignals(false);
-}
-
-void DRCKeepoutDialog::toMM() {
-    m_spinBox->blockSignals(true);
-    m_spinBox->setRange(.001 * 25.4, 1);
-    m_spinBox->setSingleStep(.01);
-    m_spinBox->setValue(m_keepoutMils * 25.4 / 1000);
-    m_spinBox->blockSignals(false);
-}
-
-void DRCKeepoutDialog::keepoutEntry() {
-    double k = m_spinBox->value();
-    if (m_inRadio->isChecked()) {
-        m_keepoutMils = k * 1000;
-    }
-    else {
-        m_keepoutMils = k * 1000 / 25.4;
-    }
-}
-
-void DRCKeepoutDialog::saveAndAccept() {
-    QSettings settings;
-    QString keepoutSetting;
-    if (m_inRadio->isChecked()) {
-        keepoutSetting = QString("%1in").arg(m_keepoutMils / 1000);
-    }
-    else {
-        keepoutSetting = QString("%1mm").arg(m_keepoutMils * 25.4 / 1000);
-    }
-    settings.setValue(KeepoutSetting, keepoutSetting);
-    accept();
-}
+const QString DRC::KeepoutSettingName("DRC_Keepout");
+const double DRC::KeepoutDefaultMils = 10;  
 
 ///////////////////////////////////////////////
 
@@ -377,12 +262,12 @@ DRC::~DRC(void)
     }
 }
 
-bool DRC::start(bool showOkMessage) {
+bool DRC::start(bool showOkMessage, double keepoutMils) {
 	QString message;
     QStringList messages;
     QList<CollidingThing *> collidingThings;
 
-    bool result = startAux(message, messages, collidingThings);
+    bool result = startAux(message, messages, collidingThings, keepoutMils);
     if (result) {
         if (messages.count() == 0) {
             message = tr("Your sketch is ready for production: there are no connectors or traces that overlap or are too close together.");
@@ -421,7 +306,7 @@ bool DRC::start(bool showOkMessage) {
     return result;
 }
 
-bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThing *> & collidingThings) {
+bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThing *> & collidingThings, double keepoutMils) {
     bool bothSidesNow = m_sketchWidget->boardLayers() == 2;
 
     QList<ConnectorItem *> visited;
@@ -467,9 +352,6 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
     emit setProgressValue(progress);
 
 	ProcessEventBlocker::processEvents();
-
-    bool inches;
-    double keepoutMils = getKeepoutSetting(inches);  // keepout result is in mils
     
     double dpi = (1000 / keepoutMils);
     QRectF boardRect = m_board->sceneBoundingRect();

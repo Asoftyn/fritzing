@@ -319,6 +319,8 @@ public:
 	void showEvent(QShowEvent * event);
     void blockUI(bool);
     void viewItemInfo(ItemBase * item);
+    virtual QHash<QString, QString> getAutorouterSettings();
+    virtual void setAutorouterSettings(QHash<QString, QString> &);
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);

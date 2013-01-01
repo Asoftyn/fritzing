@@ -1302,7 +1302,6 @@ void MainWindow::createTraceMenus()
 	m_pcbTraceMenu = menuBar()->addMenu(tr("&Routing"));
 	m_pcbTraceMenu->addAction(m_newAutorouteAct);
 	m_pcbTraceMenu->addAction(m_newDesignRulesCheckAct);
-	m_pcbTraceMenu->addAction(m_newDesignRulesKeepoutAct);
 	m_pcbTraceMenu->addAction(m_autorouterSettingsAct);
 
 	QMenu * groundFillMenu = m_pcbTraceMenu->addMenu(tr("Ground Fill"));
@@ -1931,7 +1930,6 @@ void MainWindow::updateTraceMenu() {
 	m_clearGroundFillSeedsAct->setEnabled(gfsEnabled && boardCount >= 1);
 
 	m_newDesignRulesCheckAct->setEnabled(boardCount >= 1);
-	m_newDesignRulesKeepoutAct->setEnabled(true);
 	m_checkLoadedTracesAct->setEnabled(true);
 	m_autorouterSettingsAct->setEnabled(m_currentGraphicsView == m_pcbGraphicsView);
 	m_updateRoutingStatusAct->setEnabled(true);
@@ -2458,16 +2456,12 @@ void MainWindow::createTraceMenuActions() {
 	m_newDesignRulesCheckAct->setShortcut(tr("Shift+Ctrl+D"));
 	connect(m_newDesignRulesCheckAct, SIGNAL(triggered()), this, SLOT(newDesignRulesCheck()));
 
-	m_newDesignRulesKeepoutAct = new QAction(tr("Set Design Rules Keepout"), this);
-	m_newDesignRulesKeepoutAct->setStatusTip(tr("Set the minimum distance between parts for the DRC (Design Rules Check)"));
-	connect(m_newDesignRulesKeepoutAct, SIGNAL(triggered()), this, SLOT(designRulesKeepout()));
-
 	m_checkLoadedTracesAct = new QAction(tr("Check Loaded Traces"), this);
 	m_checkLoadedTracesAct->setStatusTip(tr("Select any traces where the screen location doesn't match the actual location. Only needed for sketches autorouted with version 0.7.10 or earlier"));
 	connect(m_checkLoadedTracesAct, SIGNAL(triggered()), this, SLOT(checkLoadedTraces()));
 
-	m_autorouterSettingsAct = new QAction(tr("Autorouter settings..."), this);
-	m_autorouterSettingsAct->setStatusTip(tr("Set autorouting parameters..."));
+	m_autorouterSettingsAct = new QAction(tr("Autorouter/DRC settings..."), this);
+	m_autorouterSettingsAct->setStatusTip(tr("Set autorouting parameters including keepout..."));
 	connect(m_autorouterSettingsAct, SIGNAL(triggered()), this, SLOT(autorouterSettings()));
 }
 
@@ -3151,6 +3145,10 @@ void MainWindow::startSaveInstancesSlot(const QString & fileName, ModelPart *, Q
 		streamWriter.writeAttribute("gridSize", sketchWidget->gridSizeText());
 		streamWriter.writeAttribute("showGrid", sketchWidget->showingGrid() ? "1" : "0");
 		streamWriter.writeAttribute("alignToGrid", sketchWidget->alignedToGrid() ? "1" : "0");
+        QHash<QString, QString> autorouterSettings = sketchWidget->getAutorouterSettings();
+        foreach (QString key, autorouterSettings.keys()) {
+		    streamWriter.writeAttribute(key, autorouterSettings.value(key));
+        }
 		streamWriter.writeEndElement();
 	}
 	streamWriter.writeEndElement();
@@ -3240,6 +3238,15 @@ void MainWindow::loadedViewsSlot(ModelBase *, QDomElement & views) {
             QString gridSizeText = view.attribute("gridSize", "");
             QString alignToGridText = view.attribute("alignToGrid", "");
             QString showGridText = view.attribute("showGrid", "");
+            
+            QHash<QString, QString> autorouterSettings;
+            QDomNamedNodeMap map = view.attributes();
+            for (int m = 0; m < map.count(); m++) {
+			    QDomNode node = map.item(m);
+			    autorouterSettings.insert(node.nodeName(), node.nodeValue());
+            }
+            sketchWidget->setAutorouterSettings(autorouterSettings);
+
 		    QColor color;
 		    color.setNamedColor(colorName);
 
@@ -3682,12 +3689,6 @@ void MainWindow::linkToProgramFile(const QString & filename, const QString & lan
 	}
 }
 
-void MainWindow::designRulesKeepout() 
-{
-	DRCKeepoutDialog dialog(this);
-    dialog.exec();
-}
-
 void MainWindow::newDesignRulesCheck() 
 {
     newDesignRulesCheck(true);
@@ -3742,7 +3743,7 @@ void MainWindow::newDesignRulesCheck(bool showOkMessage)
 
 	ProcessEventBlocker::processEvents();
 	ProcessEventBlocker::block();
-	drc.start(showOkMessage);
+	drc.start(showOkMessage, pcbSketchWidget->getKeepout() * 1000 / GraphicsUtils::SVGDPI);     // pixels to mils
 	ProcessEventBlocker::unblock();
 
 	pcbSketchWidget->setLayerActive(ViewLayer::Copper1, copper1Active);

@@ -86,11 +86,11 @@ void GraphUtils::minCut(QList<ConnectorItem *> & connectorItems, QList<SketchWid
 	using namespace boost;
 
 	typedef adjacency_list_traits < vecS, vecS, directedS > Traits;
-	typedef property < vertex_index_t, long,
-			property < vertex_color_t, boost::default_color_type > > VERTEX;
-	typedef property < edge_capacity_t, long,										
-			property < edge_residual_capacity_t, long,								
-			property < edge_reverse_t, Traits::edge_descriptor > > > EDGE;
+    typedef property < vertex_color_t, boost::default_color_type > COLOR;
+	typedef property < vertex_index_t, long, COLOR > VERTEX;
+    typedef property < edge_reverse_t, Traits::edge_descriptor > REVERSE;
+    typedef property < edge_residual_capacity_t, long, REVERSE > RESIDUAL;
+	typedef property < edge_capacity_t, long, RESIDUAL > EDGE;
 	typedef adjacency_list < listS, vecS, directedS, VERTEX, EDGE > Graph;
 
 	Graph g;

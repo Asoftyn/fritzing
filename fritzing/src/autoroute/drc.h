@@ -62,7 +62,7 @@ public:
 	DRC(class PCBSketchWidget *, class ItemBase * board);
 	virtual ~DRC(void);
 
-	bool start(bool showOkMessage);
+	bool start(bool showOkMessage, double keepoutMils);
 
 public:
     static void splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, const Markers &, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool checkIntersection);
@@ -86,12 +86,14 @@ public:
     static const QString AlsoNet;
     static const QString Net;
     static const uchar BitTable[];
+    static const QString KeepoutSettingName;
+    static const double KeepoutDefaultMils;
 
 protected:
     bool makeBoard(QImage *, QRectF & sourceRes);
     void splitNet(QDomDocument *, QList<ConnectorItem *> & , QImage * minusImage, QImage * plusImage, QRectF & sourceRes, ViewLayer::ViewLayerSpec viewLayerSpec, int index, double keepoutMils);
     void updateDisplay();
-	bool startAux(QString & message, QStringList & messages, QList<CollidingThing *> &);
+	bool startAux(QString & message, QStringList & messages, QList<CollidingThing *> &, double keepoutMils);
     CollidingThing * findItemsAt(QList<QPointF> &, ItemBase * board, const LayerList & viewLayerIDs, double keepout, double dpi, bool skipHoles, ConnectorItem * already);
 
 protected:
@@ -129,29 +131,6 @@ protected:
     QPointer <class PCBSketchWidget> m_sketchWidget;
     QGraphicsPixmapItem * m_displayItem;
     QImage * m_displayImage;
-};
-
-class DRCKeepoutDialog : public QDialog
-{
-Q_OBJECT
-
-public:
-	DRCKeepoutDialog(QWidget *parent = 0);
-	~DRCKeepoutDialog();
-
-protected slots:
-    void toInches();
-    void toMM();
-    void keepoutEntry();
-    void saveAndAccept();
-
-protected:
-    double m_keepoutMils;
-    bool m_inches;
-    QDoubleSpinBox * m_spinBox;
-    QRadioButton * m_inRadio;
-    QRadioButton * m_mmRadio;
-
 };
 
 #endif

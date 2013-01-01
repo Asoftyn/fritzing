@@ -38,9 +38,9 @@ $Date$
 //      when multiple traces connect to one via, traces tend to connect to each other instead of the via
 //          hard to find an example
 //
-//      smd not autorouting in atmega256--keepout?
-//
 //      keepout dialog
+//          save all values to the fzz and QSettings
+//          read values from fzz. and then QSettings
 //
 //      test if source touches target
 //
@@ -278,7 +278,13 @@ inline int gridPointInt(Grid * grid, GridPoint & gp) {
 bool jumperWillFit(GridPoint & gridPoint, const Grid * grid, int halfSize) {
     for (int z = 0; z < grid->z; z++) {
         for (int y = -halfSize; y <= halfSize; y++) {
+            if (y < 0) return false;
+            if (y >= grid->y) return false;
+
             for (int x = -halfSize; x <= halfSize; x++) {
+                if (x < 0) return false;
+                if (x >= grid->x) return false;
+
                 GridValue val = grid->at(gridPoint.x + x, gridPoint.y + y, z);
                 if (val == GridPartObstacle || val == GridBoardObstacle || val == GridSource || val == GridTarget || val == GridAvoid|| val == GridTempObstacle) return false;
             }
@@ -291,7 +297,13 @@ bool jumperWillFit(GridPoint & gridPoint, const Grid * grid, int halfSize) {
 bool schematicJumperWillFitAux(GridPoint & gridPoint, const Grid * grid, int halfSize, int xl, int xr) {
     int underCount = 0;
     for (int y = -halfSize; y <= halfSize; y++) {
+        if (y < 0) return false;
+        if (y >= grid->y) return false;
+
         for (int x = xl; x <= xr; x++) {
+            if (x < 0) return false;
+            if (x >= grid->x) return false;
+
             GridValue val = grid->at(gridPoint.x + x, gridPoint.y + y, 0);
             if (val == GridPartObstacle || val == GridBoardObstacle || val == GridSource || val == GridTarget || val == GridAvoid|| val == GridTempObstacle) {
                 return false;
@@ -1031,10 +1043,12 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
         }
 
         while (result && subnets.count() > 2) {
+
             /*
-            DebugDialog::debug(QString("\nnearest %1 %2").arg(nearest.i).arg(nearest.j));
-            nearest.ic->debugInfo("\ti");
-            nearest.jc->debugInfo("\tj");
+            DebugDialog::debug(QString("\nnearest %1 %2").arg(routeThing.nearest.i).arg(routeThing.nearest.j));
+            routeThing.nearest.ic->debugInfo("\ti");
+            routeThing.nearest.jc->debugInfo("\tj");
+
             int ix = 0;
             foreach (QList<ConnectorItem *> subnet, subnets) {
                 foreach(ConnectorItem * connectorItem, subnet) {
@@ -1063,6 +1077,8 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
 }
 
 bool MazeRouter::routeOne(bool makeJumper, Score & currentScore, int netIndex, RouteThing & routeThing, QList<NetOrdering> & allOrderings) {
+
+    //DebugDialog::debug("start routeOne()");
     Trace newTrace;
     int viaCount;
     routeThing.bestDistanceToSource = routeThing.bestDistanceToTarget = std::numeric_limits<double>::max();
@@ -1101,6 +1117,9 @@ bool MazeRouter::routeOne(bool makeJumper, Score & currentScore, int netIndex, R
         updateDisplay(0);
         if (m_bothSidesNow) updateDisplay(1);
     }
+
+    //DebugDialog::debug("end routeOne()");
+
 
     return true;
 }
@@ -1462,8 +1481,7 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * g
 
 QList<GridPoint> MazeRouter::route(RouteThing & routeThing, int & viaCount)
 {
-
-    //DebugDialog::debug(QString("start routing %1").arg(routeNumber++));
+    //DebugDialog::debug(QString("start route() %1").arg(routeNumber++));
     viaCount = 0;
     GridPoint done;
     bool result = false;
@@ -1517,7 +1535,7 @@ QList<GridPoint> MazeRouter::route(RouteThing & routeThing, int & viaCount)
 
     clearExpansion(m_grid);  
 
-    //DebugDialog::debug(QString("done routing %1").arg(points.count()));
+    //DebugDialog::debug(QString("done with route() %1").arg(points.count()));
 
     return points;
 }
@@ -1564,11 +1582,13 @@ QList<GridPoint> MazeRouter::traceBack(GridPoint gridPoint, Grid * grid, int & v
         gridPoint = next;
     }
 
+    /*
     QString costs("costs ");
     foreach (GridPoint gridPoint, points) {
         costs += QString::number(gridPoint.baseCost) + " ";
     }
     DebugDialog::debug(costs);
+    */
 
     return points;
 }
@@ -1641,12 +1661,18 @@ void MazeRouter::expandOne(GridPoint & gridPoint, RouteThing & routeThing, int d
     next.y = gridPoint.y + dy;
     next.z = gridPoint.z + dz;
 
+    //DebugDialog::debug(QString("expand one %1,%2,%3 cl:%4").arg(next.x).arg(next.y).arg(next.z).arg(crossLayer));
+
     bool writeable = false;
     bool avoid = false;
     GridValue nextval = m_grid->at(next.x, next.y, next.z);
-    if (nextval == GridPartObstacle || nextval == GridBoardObstacle || nextval == routeThing.sourceValue || nextval == GridTempObstacle) return;
+    if (nextval == GridPartObstacle || nextval == GridBoardObstacle || nextval == routeThing.sourceValue || nextval == GridTempObstacle) {
+        //DebugDialog::debug("exit expand one");
+        return;
+    }
+
     if (nextval == routeThing.targetValue) {
-        DebugDialog::debug("found grid target");
+        //DebugDialog::debug("found grid target");
         next.flags |= GridPointDone;
     }
     else if (nextval == 0) {
@@ -1785,6 +1811,9 @@ void MazeRouter::expandOne(GridPoint & gridPoint, RouteThing & routeThing, int d
         m_grid->setAt(next.x, next.y, next.z, next.baseCost | flag);
     }
 
+    //DebugDialog::debug("done expand one");
+
+
     //if (routeThing.searchForJumper) {
     //    updateDisplay(next);
     //}
@@ -1792,7 +1821,13 @@ void MazeRouter::expandOne(GridPoint & gridPoint, RouteThing & routeThing, int d
 
 bool MazeRouter::viaWillFit(GridPoint & gridPoint, Grid * grid) {
     for (int y = -m_halfGridViaSize; y <= m_halfGridViaSize; y++) {
+        if (y < 0) continue;
+        if (y >= grid->y) continue;
+
         for (int x = -m_halfGridViaSize; x <= m_halfGridViaSize; x++) {
+            if (x < 0) continue;
+            if (x >= grid->x) continue;
+
             for (int z = 0; z < grid->z; z++) {
                 GridValue val = grid->at(gridPoint.x + x, gridPoint.y + y, z);
                 if (val == GridPartObstacle || val == GridBoardObstacle || val == GridSource || val == GridTarget || val == GridTempObstacle || val == GridAvoid) return false;
@@ -2534,7 +2569,7 @@ SymbolPaletteItem * MazeRouter::makeNetLabel(GridPoint & center, SymbolPaletteIt
         x -= size.width();
     }
     netLabel->setPos(x, c1.y() - (size.height() / 2));
-    DebugDialog::debug(QString("ix:%1 tl:%2 %3,%4").arg(m_netLabelIndex).arg(traceFlags).arg(x).arg(c1.y() - (size.height() / 2)));
+    //DebugDialog::debug(QString("ix:%1 tl:%2 %3,%4").arg(m_netLabelIndex).arg(traceFlags).arg(x).arg(c1.y() - (size.height() / 2)));
     netLabel->saveGeometry();
     return netLabel;
 }

@@ -8335,7 +8335,6 @@ void SketchWidget::ratsnestConnect(ConnectorItem * connectorItem, bool connect) 
 	//connectorItem->debugInfo(QString("rat connect %1").arg(connect));
 }
 
-
 void SketchWidget::deleteRatsnest(Wire * ratsnest, QUndoCommand * parentCommand)
 {
 	// deleting a ratsnest really means deleting underlying connections
@@ -9140,3 +9139,11 @@ void SketchWidget::viewItemInfo(ItemBase * item) {
 
     InfoGraphicsView::viewItemInfo(item);
 }
+
+QHash<QString, QString> SketchWidget::getAutorouterSettings() {
+    return QHash<QString, QString>();
+}
+
+void SketchWidget::setAutorouterSettings(QHash<QString, QString> &) {
+}
+

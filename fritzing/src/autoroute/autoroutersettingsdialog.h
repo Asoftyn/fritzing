@@ -32,6 +32,7 @@ $Date$
 #include <QDoubleValidator>
 #include <QRadioButton>
 #include <QGroupBox>
+#include <QDoubleSpinBox>
 
 #include "../items/via.h"
 
@@ -40,11 +41,12 @@ class AutorouterSettingsDialog : public QDialog
 Q_OBJECT
 
 public:
-	AutorouterSettingsDialog(QWidget *parent = 0);
+	AutorouterSettingsDialog(QHash<QString, QString> & settings, QWidget *parent = 0);
 	~AutorouterSettingsDialog();
 
+    QHash<QString, QString> getSettings();
+
 protected slots:
-	void acceptAnd();
 	void restoreDefault();
 	void production(bool);
 	void widthEntry(const QString &);
@@ -54,10 +56,18 @@ protected slots:
 	void changeDiameter();
 	void changeThickness();
 
+    void toInches();
+    void toMM();
+    void keepoutEntry();
+
 protected:
 	void enableCustom(bool enable);
-	bool initRadios();
+	bool initProductionType();
 	void setTraceWidth(int newWidth);
+    QWidget * createViaWidget();
+    QWidget * createTraceWidget();
+    QWidget * createKeepoutWidget(const QString & keepoutString);
+    QString getKeepoutString();
 
 protected:
 	QRadioButton * m_homebrewButton;
@@ -67,6 +77,11 @@ protected:
 	QFrame * m_customFrame;
 	QComboBox * m_traceWidthComboBox;
 	int m_traceWidth;
+    double m_keepoutMils;
+    bool m_inches;
+    QDoubleSpinBox * m_spinBox;
+    QRadioButton * m_inRadio;
+    QRadioButton * m_mmRadio;
 
 public:
 	static const QString AutorouteTraceWidth;

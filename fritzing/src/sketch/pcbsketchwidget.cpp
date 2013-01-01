@@ -39,6 +39,7 @@ $Date$
 #include "../help/sketchmainhelp.h"
 #include "../fsvgrenderer.h"
 #include "../autoroute/autorouteprogressdialog.h"
+#include "../autoroute/drc.h"
 #include "../items/groundplane.h"
 #include "../items/jumperitem.h"
 #include "../utils/autoclosemessagebox.h"
@@ -1266,7 +1267,21 @@ QSizeF PCBSketchWidget::jumperItemSize() {
 }
 
 double PCBSketchWidget::getKeepout() {
-	return 0.015 * GraphicsUtils::SVGDPI;  // mils converted to pixels
+    QString keepoutString = m_autorouterSettings.value(DRC::KeepoutSettingName);
+    if (keepoutString.isEmpty()) {
+        QSettings settings;
+        keepoutString = settings.value(DRC::KeepoutSettingName, "").toString();
+    }
+    bool ok;
+    double inches = TextUtils::convertToInches(keepoutString, &ok, false);
+    if (!ok) {
+        keepoutString = QString("%1in").arg(DRC::KeepoutDefaultMils / 1000);
+        inches = DRC::KeepoutDefaultMils / 1000;
+    }
+
+    m_autorouterSettings.insert(DRC::KeepoutSettingName, keepoutString);
+
+	return inches * GraphicsUtils::SVGDPI;  // inches converted to pixels
 }
 
 bool PCBSketchWidget::acceptsTrace(const ViewGeometry & viewGeometry) {
@@ -1349,10 +1364,21 @@ ItemBase * PCBSketchWidget::placePartDroppedInOtherView(ModelPart * modelPart, V
 	return newItem;
 }
 
+void PCBSketchWidget::autorouterSettings() {
+    // initialize settings values if they haven't already been initialized
+    getKeepout();                               
+    QString ringThickness, holeSize;
+    getDefaultViaSize(ringThickness, holeSize);
+    getAutorouterTraceWidth();
 
-void PCBSketchWidget::autorouterSettings() {	
-	AutorouterSettingsDialog dialog;
-	dialog.exec();
+	AutorouterSettingsDialog dialog(m_autorouterSettings);
+	if (QDialog::Accepted == dialog.exec()) {
+        m_autorouterSettings = dialog.getSettings();
+        QSettings settings;
+        foreach (QString key, m_autorouterSettings.keys()) {
+            settings.setValue(key, m_autorouterSettings.value(key));
+        }
+    }
 }
 
 void PCBSketchWidget::getViaSize(double & ringThickness, double & holeSize) {
@@ -1366,9 +1392,19 @@ void PCBSketchWidget::getViaSize(double & ringThickness, double & holeSize) {
 
 void PCBSketchWidget::getDefaultViaSize(QString & ringThickness, QString & holeSize) {
 	// these settings are initialized in via.cpp
+    ringThickness = m_autorouterSettings.value(Via::AutorouteViaRingThickness, "");
+    holeSize = m_autorouterSettings.value(Via::AutorouteViaHoleSize, "");
+
 	QSettings settings;
-	ringThickness = settings.value(Via::AutorouteViaRingThickness, Via::DefaultAutorouteViaRingThickness).toString();
-	holeSize = settings.value(Via::AutorouteViaHoleSize, Via::DefaultAutorouteViaHoleSize).toString();
+    if (ringThickness.isEmpty()) {
+	    ringThickness = settings.value(Via::AutorouteViaRingThickness, Via::DefaultAutorouteViaRingThickness).toString();
+    }
+    if (holeSize.isEmpty()) {
+	    holeSize = settings.value(Via::AutorouteViaHoleSize, Via::DefaultAutorouteViaHoleSize).toString();
+    }
+
+    m_autorouterSettings.insert(Via::AutorouteViaRingThickness, ringThickness);
+    m_autorouterSettings.insert(Via::AutorouteViaHoleSize, holeSize);
 }
 
 void PCBSketchWidget::deleteItem(ItemBase * itemBase, bool deleteModelPart, bool doEmit, bool later)
@@ -1391,10 +1427,16 @@ double PCBSketchWidget::getTraceWidth() {
 }
 
 double PCBSketchWidget::getAutorouterTraceWidth() {
-	QSettings settings;
-	QString def = QString::number(GraphicsUtils::pixels2mils(getTraceWidth(), GraphicsUtils::SVGDPI));
-	int traceWidthMils = settings.value(AutorouterSettingsDialog::AutorouteTraceWidth, def).toInt();
-	return GraphicsUtils::SVGDPI * traceWidthMils / 1000.0;
+    QString traceWidthString = m_autorouterSettings.value(AutorouterSettingsDialog::AutorouteTraceWidth, "");
+    if (traceWidthString.isEmpty()) {
+	    QSettings settings;
+	    QString def = QString::number(GraphicsUtils::pixels2mils(getTraceWidth(), GraphicsUtils::SVGDPI));
+	    traceWidthString = settings.value(AutorouterSettingsDialog::AutorouteTraceWidth, def).toString();
+    }
+
+    m_autorouterSettings.insert(AutorouterSettingsDialog::AutorouteTraceWidth, traceWidthString);
+
+	return GraphicsUtils::SVGDPI * traceWidthString.toInt() / 1000.0;  // traceWidthString is in mils
 }
 
 void PCBSketchWidget::getBendpointWidths(Wire * wire, double width, double & bendpointWidth, double & bendpoint2Width, bool & negativeOffsetRect) 
@@ -2552,4 +2594,16 @@ bool PCBSketchWidget::attachedToBottomLayer(ConnectorItem * connectorItem) {
 bool PCBSketchWidget::attachedToTopLayer(ConnectorItem * connectorItem) {
     return (connectorItem->attachedToViewLayerID() == ViewLayer::Copper1) ||
            (connectorItem->attachedToViewLayerID() == ViewLayer::Copper1Trace);
+}
+
+QHash<QString, QString> PCBSketchWidget::getAutorouterSettings() {
+    return m_autorouterSettings;
+}
+
+void PCBSketchWidget::setAutorouterSettings(QHash<QString, QString> & autorouterSettings) {
+    QList<QString> keys;
+    keys << DRC::KeepoutSettingName << AutorouterSettingsDialog::AutorouteTraceWidth << Via::AutorouteViaHoleSize << Via::AutorouteViaRingThickness;
+    foreach (QString key, keys) {
+        m_autorouterSettings.insert(key, autorouterSettings.value(key, ""));
+    }
 }

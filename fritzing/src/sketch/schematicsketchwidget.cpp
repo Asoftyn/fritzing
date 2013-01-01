@@ -373,7 +373,7 @@ bool SchematicSketchWidget::sameElectricalLayer2(ViewLayer::ViewLayerID, ViewLay
 }
 
 double SchematicSketchWidget::getKeepout() {
-	return 0.1 * GraphicsUtils::SVGDPI;
+	return 0.1 * GraphicsUtils::SVGDPI;  // in pixels
 }
 
 bool SchematicSketchWidget::acceptsTrace(const ViewGeometry & viewGeometry) {
@@ -505,4 +505,12 @@ QSizeF SchematicSketchWidget::jumperItemSize() {
     }
 
 	return SchematicSketchWidget::m_jumperItemSize;
+}
+
+QHash<QString, QString> SchematicSketchWidget::getAutorouterSettings() {
+    return SketchWidget::getAutorouterSettings();
+}
+
+void SchematicSketchWidget::setAutorouterSettings(QHash<QString, QString> & autorouterSettings) {
+    SketchWidget::setAutorouterSettings(autorouterSettings);
 }

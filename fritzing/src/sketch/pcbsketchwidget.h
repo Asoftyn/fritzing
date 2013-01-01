@@ -111,9 +111,9 @@ public:
     virtual LayerList routingLayers(ViewLayer::ViewLayerSpec);
     virtual bool attachedToTopLayer(ConnectorItem *);
     virtual bool attachedToBottomLayer(ConnectorItem *);
-
-public:
-	static void getDefaultViaSize(QString & ringThickness, QString & holeSize);
+    QHash<QString, QString> getAutorouterSettings();
+    void setAutorouterSettings(QHash<QString, QString> &);
+	void getDefaultViaSize(QString & ringThickness, QString & holeSize);
 
 public slots:
 	void resizeBoard(double w, double h, bool doEmit);
@@ -192,6 +192,7 @@ protected:
 	QPointF m_jumperDragOffset;
 	QPointer<class JumperItem> m_resizingJumperItem;
 	QList<ConnectorItem *> * m_groundFillSeeds;
+    QHash<QString, QString> m_autorouterSettings;
 
 protected:
 	static QSizeF m_jumperItemSize;

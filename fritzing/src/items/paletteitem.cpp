@@ -939,6 +939,8 @@ QWidget * PaletteItem::createHoleSettings(QWidget * parent, HoleSettings & holeS
 	vBoxLayout->addWidget(holeSettings.sizesComboBox);
 
     if (advanced) {
+        vBoxLayout->addSpacing(4);
+
         QFrame * hFrame = new QFrame(frame);
         QHBoxLayout * hLayout = new QHBoxLayout(hFrame);
 	    hLayout->setMargin(0);
