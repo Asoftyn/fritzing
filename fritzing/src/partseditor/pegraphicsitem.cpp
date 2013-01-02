@@ -83,11 +83,15 @@ void PEGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *) {
 }
 
 void PEGraphicsItem::wheelEvent(QGraphicsSceneWheelEvent * event) {
-    if (event->orientation() != Qt::Vertical) return;
+    //DebugDialog::debug(QString("wheel %1 %2").arg(event->delta()).arg(event->orientation()));
+
+#ifndef Q_WS_MAC
+    // qt 4.8.3: mac: event orientation is messed up at this point
+    if (event->orientation() == Qt::Horizontal) return;
+#endif
     if (event->delta() == 0) return;
     if ((event->modifiers() & Qt::ShiftModifier) == 0) return;
 
-    //DebugDialog::debug(QString("wheel %1 %2").arg(event->delta()).arg(QTime::currentTime().msec()));
 
     // delta one click forward = 120; delta one click backward = -120
     
