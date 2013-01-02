@@ -1382,7 +1382,7 @@ void SketchWidget::rotateLeg(long fromID, const QString & fromConnectorID, const
 
 	ConnectorItem * fromConnectorItem = findConnectorItem(fromItem, fromConnectorID, ViewLayer::specFromID(fromItem->viewLayerID()));
 	if (fromConnectorItem == NULL) {
-		DebugDialog::debug("charotatenge leg exit 2");
+		DebugDialog::debug("rotate leg exit 2");
 		return;
 	}
 
@@ -4441,6 +4441,23 @@ void SketchWidget::rotateX(double degrees, bool rubberBandLegEnabled)
 
 					ViewGeometry vg1 = itemBase->getViewGeometry();
 					new ChangeWireCommand(this, wire->id(), vg1.line(), QLineF(QPointF(0,0), d1t - d0t), vg1.loc(), d0t + center, true, true, parentCommand);
+
+                    const Bezier * bezier = wire->curve();
+                    if (bezier) {
+                        Bezier * newBezier = new Bezier();
+                        newBezier->set_endpoints(QPointF(0,0), d1t - d0t);
+                        QPointF c0 = p0 + bezier->cp0();
+                        QPointF dc0 = c0 - center;
+                        QPointF dc0t = rotation.map(dc0);
+                        newBezier->set_cp0(dc0t - d0t);
+
+                        QPointF c1 = p0 + bezier->cp1();
+                        QPointF dc1 = c1 - center;
+                        QPointF dc1t = rotation.map(dc1);
+                        newBezier->set_cp1(dc1t - d0t);
+
+                        new ChangeWireCurveCommand(this, wire->id(), bezier, newBezier, wire->getAutoroutable(), parentCommand);
+                    }
 				}
 				break;
 
