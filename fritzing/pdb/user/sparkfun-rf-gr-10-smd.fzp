@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-RF-GR-10-SMD'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-RF' GR-10 SMD -->
 <version>4</version>
-<date>2012-12-19</date>
+<date>2013-01-02</date>
 <label>U</label>
 <author>www.fritzing.org</author>
 <description>&lt;b&gt;GR-10 GPS Receiver Module&lt;/b&gt;
@@ -36,7 +36,7 @@ Proto layout and schematic for GR-10 GPS receiver. Spark Fun Electronics SKU : G
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-rf_gr-10_breadboard.svg'>
+<layers image='icon/GR-10.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

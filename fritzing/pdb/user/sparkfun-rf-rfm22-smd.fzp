@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-RF-RFM22-SMD'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-RF' RFM22 SMD -->
 <version>4</version>
-<date>2012-12-19</date>
+<date>2013-01-02</date>
 <label>U</label>
 <author>www.fritzing.org</author>
 <description>The RFM22 is a low-power, low cost radio that is capable of operating in the 434MHz and 900MHz open bands. It&apos;s frequency is software defined and there are some very good libraries written for it.</description>
@@ -36,7 +36,7 @@
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-rf_rfm22-xxx-s2_breadboard.svg'>
+<layers image='icon/RFM22-XXX-S2.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>
