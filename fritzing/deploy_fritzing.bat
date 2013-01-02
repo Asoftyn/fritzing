@@ -20,3 +20,12 @@ cd translations
 for /f "usebackq delims=;" %%A in (`dir /b *.qm`) do If %%~zA LSS 1024 del "%%A"
 cd ..
 cd ..
+
+del .\release\bins\more\sparkfun-*.fzb
+del .\release\pdb\user\*.fzp
+del .\release\parts\svg\user\breadboard\*.svg
+del .\release\parts\svg\user\icon\*.svg
+del .\release\parts\svg\user\pcb\*.svg
+del .\release\parts\svg\user\schematic\*.svg
+del ".\release\parts\svg\user\new schematic\*.svg"
+rmdir ".\release\parts\svg\user\new schematic"

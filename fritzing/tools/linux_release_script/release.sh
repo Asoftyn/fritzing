@@ -19,9 +19,16 @@ cd ../svg/user/breadboard
 rm -rf *
 cd ../schematic
 rm -rf *
+cd "../new schematic"
+rm -rf *
 cd ../pcb
 rm -rf *
 cd ../icon
+rm -rf *
+cd ..
+rmdir "new schematic"
+cd $current_dir
+cd $compile_folder/pdb/user
 rm -rf *
 cd $current_dir
 cd $compile_folder/bins/more
