@@ -467,12 +467,14 @@ void PEMainWindow::initDock()
 {
 	m_layerPalette = new LayerPalette(this);
 
+    /*
     m_infoView = new HtmlInfoView();
     m_infoView->init(true);
 
     m_binManager = new BinManager(m_referenceModel, m_infoView, m_undoStack, this);
     m_binManager->openBin(":/resources/bins/pe.fzb");
     m_binManager->hideTabBar();
+    */
 }
 
 void PEMainWindow::moreInitDock()
@@ -498,10 +500,14 @@ void PEMainWindow::moreInitDock()
     makeDock(tr("SVG"), m_peSvgView, DockMinWidth, SvgDefaultHeight);
     m_peSvgView->setMinimumSize(DockMinWidth, SvgDefaultHeight);
 
-	QDockWidget * dockWidget = makeDock(BinManager::Title, m_binManager, DockMinWidth, BinMinHeight);
-    dockWidget->resize(0, 0);
+    if (m_binManager) {
+	    QDockWidget * dockWidget = makeDock(BinManager::Title, m_binManager, DockMinWidth, BinMinHeight);
+        dockWidget->resize(0, 0);
+    }
 
-    makeDock(tr("Inspector"), m_infoView, InfoViewMinHeight, InfoViewHeightDefault);
+    if (m_infoView) {
+        makeDock(tr("Inspector"), m_infoView, InfoViewMinHeight, InfoViewHeightDefault);
+    }
 
     makeDock(tr("Layers"), m_layerPalette, DockMinWidth, DockMinHeight)->hide();
     m_layerPalette->setMinimumSize(DockMinWidth, DockMinHeight);

@@ -2885,6 +2885,7 @@ void MainWindow::groundFillAux(bool fillGroundTraces, ViewLayer::ViewLayerID vie
 
     FileProgressDialog fileProgress(tr("Generating %1 fill...").arg(fillGroundTraces ? tr("ground") : tr("copper")), 0, this);
 	QUndoCommand * parentCommand = new QUndoCommand(fillGroundTraces ? tr("Ground Fill") : tr("Copper Fill"));
+    m_pcbGraphicsView->blockUI(true);
     removeGroundFill(viewLayerID, parentCommand);
 	if (m_pcbGraphicsView->groundFill(fillGroundTraces, viewLayerID, parentCommand)) {
 		m_undoStack->push(parentCommand);
@@ -2892,6 +2893,7 @@ void MainWindow::groundFillAux(bool fillGroundTraces, ViewLayer::ViewLayerID vie
 	else {
 		delete parentCommand;
 	}
+    m_pcbGraphicsView->blockUI(false);
 }
 
 void MainWindow::removeGroundFill() {
