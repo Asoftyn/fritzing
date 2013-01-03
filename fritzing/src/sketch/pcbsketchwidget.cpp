@@ -2608,3 +2608,31 @@ void PCBSketchWidget::setAutorouterSettings(QHash<QString, QString> & autorouter
         m_autorouterSettings.insert(key, autorouterSettings.value(key, ""));
     }
 }
+
+void PCBSketchWidget::hidePartSilkscreen() {
+
+    ItemBase * itemBase = NULL;
+    foreach (QGraphicsItem * item,  scene()->selectedItems()) {
+        ItemBase * candidate = dynamic_cast<ItemBase *>(item);
+        if (candidate == NULL) continue;
+
+        itemBase = candidate->layerKinChief();
+        break;
+    }
+
+    if (itemBase == NULL) return;
+
+    QList<ItemBase *> itemBases;
+    itemBases.append(itemBase);
+    itemBases.append(itemBase->layerKin());
+    foreach (ItemBase * lkpi, itemBases) {
+        if (lkpi->viewLayerID() == ViewLayer::Silkscreen1 || lkpi->viewLayerID() == ViewLayer::Silkscreen0) {
+            bool layerHidden = lkpi->layerHidden();
+            QUndoCommand * parentCommand = new QUndoCommand(layerHidden ? tr("Show part silkscreen") : tr("Hide part silkscreen"));
+            new HidePartLayerCommand(this, itemBase->id(), ViewLayer::Silkscreen0, layerHidden, !layerHidden, parentCommand);
+            new HidePartLayerCommand(this, itemBase->id(), ViewLayer::Silkscreen1, layerHidden, !layerHidden, parentCommand);
+            m_undoStack->push(parentCommand);
+            break;
+        }
+    }
+}

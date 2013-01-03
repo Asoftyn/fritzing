@@ -114,6 +114,7 @@ public:
     QHash<QString, QString> getAutorouterSettings();
     void setAutorouterSettings(QHash<QString, QString> &);
 	void getDefaultViaSize(QString & ringThickness, QString & holeSize);
+    void hidePartSilkscreen();
 
 public slots:
 	void resizeBoard(double w, double h, bool doEmit);

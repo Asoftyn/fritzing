@@ -1088,6 +1088,28 @@ protected:
 
 /////////////////////////////////////////////
 
+class HidePartLayerCommand : public BaseCommand
+{
+public:
+    HidePartLayerCommand(class SketchWidget *sketchWidget, long fromID,
+					  ViewLayer::ViewLayerID layerID, bool wasHidden, bool isHidden,
+    				  QUndoCommand *parent);
+    void undo();
+    void redo();
+
+protected:
+	QString getParamString() const;
+
+protected:
+    long m_fromID;
+    double m_wasHidden;
+    double m_isHidden;
+	ViewLayer::ViewLayerID m_layerID;
+    ViewLayer::ViewLayerID m_oldLayer;
+};
+
+/////////////////////////////////////////////
+
 class TemporaryCommand : public QUndoCommand
 {
 

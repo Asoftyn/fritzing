@@ -286,6 +286,8 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
         }
 
 		QDomElement labelGeometry = view.firstChildElement("titleGeometry");
+
+        QDomElement layerHidden = view.firstChildElement("layerHidden");
 		
 		ViewLayer::ViewLayerSpec viewLayerSpec = getViewLayerSpec(mp, instance, view, viewGeometry);
 
@@ -297,6 +299,11 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
 				if (locked) {
 					itemBase->setMoveLock(true);
 				}
+
+                while (!layerHidden.isNull()) {
+                    hidePartLayer(itemBase, ViewLayer::viewLayerIDFromXmlString(layerHidden.attribute("layer")), true);
+                    layerHidden = layerHidden.nextSiblingElement("layerHidden");
+                }
 
                 if (itemBase->isBaseSticky()) {
                     // make sure the icon is displayed
@@ -377,6 +384,11 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
 			if (locked) {
 				new MoveLockCommand(this, newID, true, true, parentCommand);
 			}
+
+            while (!layerHidden.isNull()) {
+                new HidePartLayerCommand(this, newID, ViewLayer::viewLayerIDFromXmlString(layerHidden.attribute("layer")), true, true, parentCommand);
+                layerHidden = layerHidden.nextSiblingElement("layerHidden");
+            }
 
 			if (!labelGeometry.isNull()) {
 				QDomElement clone = labelGeometry.cloneNode(true).toElement();
@@ -9164,3 +9176,25 @@ QHash<QString, QString> SketchWidget::getAutorouterSettings() {
 void SketchWidget::setAutorouterSettings(QHash<QString, QString> &) {
 }
 
+void SketchWidget::hidePartLayer(long id, ViewLayer::ViewLayerID viewLayerID, bool hide) {
+    ItemBase * itemBase = findItem(id);
+    if (itemBase == NULL) return;
+
+    hidePartLayer(itemBase, viewLayerID, hide);
+}
+
+
+void SketchWidget::hidePartLayer(ItemBase * itemBase, ViewLayer::ViewLayerID viewLayerID, bool hide) 
+{
+    if (itemBase->viewLayerID() == viewLayerID) {
+        itemBase->setLayerHidden(hide);
+    }
+    else {
+        foreach (ItemBase * lkpi, itemBase->layerKinChief()->layerKin()) {
+            if (lkpi->viewLayerID() == viewLayerID) {
+                lkpi->setLayerHidden(hide);
+                break;
+            }
+        }
+    }
+}

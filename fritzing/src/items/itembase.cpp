@@ -336,11 +336,24 @@ void ItemBase::saveInstance(QXmlStreamWriter & streamWriter) {
 	if (m_moveLock) {
 		streamWriter.writeAttribute("locked", "true");
 	}
+
 	this->saveGeometry();
 	writeGeometry(streamWriter);
 	if (m_partLabel) {
 		m_partLabel->saveInstance(streamWriter);
 	}
+
+    QList<ItemBase *> itemBases;
+    itemBases.append(this);
+    itemBases.append(layerKinChief()->layerKin());
+    foreach (ItemBase * itemBase, itemBases) {
+        if (itemBase->layerHidden()) {
+            streamWriter.writeStartElement("layerHidden");
+            streamWriter.writeAttribute("layer", ViewLayer::viewLayerXmlNameFromID(itemBase->viewLayerID()));
+            streamWriter.writeEndElement();
+        }
+    }
+
 
 	bool saveConnectorItems = false;
 	foreach (ConnectorItem * connectorItem, cachedConnectorItems()) {

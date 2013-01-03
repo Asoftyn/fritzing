@@ -2091,6 +2091,42 @@ QString WireExtrasCommand::getParamString() const {
 		;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+HidePartLayerCommand::HidePartLayerCommand(SketchWidget *sketchWidget, long fromID,
+									ViewLayer::ViewLayerID layerID, bool wasHidden, bool isHidden,
+    								QUndoCommand *parent)
+    : BaseCommand(BaseCommand::SingleView, sketchWidget, parent)
+{
+    m_fromID = fromID;
+	m_wasHidden = wasHidden;
+    m_isHidden = isHidden;
+    m_layerID = layerID;
+}
+
+void HidePartLayerCommand::undo()
+{
+    m_sketchWidget->hidePartLayer(m_fromID, m_layerID, m_wasHidden);
+    BaseCommand::undo();
+}
+
+void HidePartLayerCommand::redo()
+{
+    m_sketchWidget->hidePartLayer(m_fromID, m_layerID, m_isHidden);
+    BaseCommand::redo();
+}
+
+QString HidePartLayerCommand::getParamString() const {
+	return QString("HidePartLayerCommand ") 
+		+ BaseCommand::getParamString() + 
+		QString(" fromid:%1 l:%2 was:%3 is:%4")
+		.arg(m_fromID)
+		.arg(m_layerID)
+		.arg(m_wasHidden)
+		.arg(m_isHidden)				
+		;
+}
+
 ////////////////////////////////////
 
 

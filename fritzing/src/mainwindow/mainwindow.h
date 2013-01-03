@@ -385,6 +385,7 @@ protected slots:
     void keepMargins();
 	void dockChangeActivation(bool activate, QWidget * originator);
     void addToMyParts(ModelPart *);
+    void hidePartSilkscreen();
 
 protected:
 	void initSketchWidget(SketchWidget *);
@@ -689,6 +690,8 @@ protected:
 	QAction *m_flattenCurveAct;
     QAction *m_showAllLayersAct;
 	QAction *m_hideAllLayersAct;
+
+    QAction *m_hidePartSilkscreenAct;
 
     // View Menu
     QMenu *m_viewMenu;

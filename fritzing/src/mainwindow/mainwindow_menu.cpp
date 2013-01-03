@@ -909,8 +909,7 @@ void MainWindow::createPartMenuActions() {
     connect(m_selectMoveLockAct, SIGNAL(triggered()), this, SLOT(selectMoveLock()));
 
 	m_showPartLabelAct = new QAction(tr("&Show part label"), this);
-	m_showPartLabelAct->setStatusTip(tr("Show or hide the label for the selected parts"));
-	m_showPartLabelAct->setCheckable(true);
+	m_showPartLabelAct->setStatusTip(tr("Show/hide the label for the selected parts"));
 	connect(m_showPartLabelAct, SIGNAL(triggered()), this, SLOT(showPartLabels()));
 
 	m_saveBundledPart = new QAction(tr("&Export..."), this);
@@ -944,6 +943,12 @@ void MainWindow::createPartMenuActions() {
     m_openProgramWindowAct = new QAction(tr("Open programming window"), this);
     m_openProgramWindowAct->setStatusTip(tr("Open microcontroller programming window"));
 	connect(m_openProgramWindowAct, SIGNAL(triggered()), this, SLOT(openProgramWindow()));
+
+	m_hidePartSilkscreenAct = new QAction(tr("Hide part silkscreen"), this);
+	m_hidePartSilkscreenAct->setStatusTip(tr("Hide/show the silkscreen layer for only this part"));
+	connect(m_hidePartSilkscreenAct, SIGNAL(triggered()), this, SLOT(hidePartSilkscreen()));
+
+
 }
 
 void MainWindow::createViewMenuActions() {
@@ -1605,7 +1610,8 @@ void MainWindow::updatePartMenu() {
 	m_selectMoveLockAct->setEnabled(true);
 
 	m_showPartLabelAct->setEnabled((itemCount.hasLabelCount > 0) && enable);
-	m_showPartLabelAct->setChecked(itemCount.visLabelCount == itemCount.hasLabelCount);
+	m_showPartLabelAct->setText(itemCount.visLabelCount == itemCount.hasLabelCount ? tr("Hide part label") : tr("Show part label"));
+    m_showPartLabelAct->setData(itemCount.visLabelCount != itemCount.hasLabelCount);
 
 	bool renable = (itemCount.selRotatable > 0);
 	bool renable45 = (itemCount.sel45Rotatable > 0);
@@ -1664,8 +1670,23 @@ void MainWindow::updatePartMenu() {
         m_stickyAct->setVisible(itemBase->isBaseSticky());
 	    m_stickyAct->setEnabled(true);
 	    m_stickyAct->setChecked(itemBase->isBaseSticky() && itemBase->isLocalSticky());
+
+        QList<ItemBase *> itemBases;
+        itemBases.append(itemBase);
+        itemBases.append(itemBase->layerKinChief()->layerKin());
+        bool hpsa = false;
+        foreach (ItemBase * lkpi, itemBases) {
+            if (lkpi->viewLayerID() == ViewLayer::Silkscreen1 || lkpi->viewLayerID() == ViewLayer::Silkscreen0) {
+                hpsa = true;
+                m_hidePartSilkscreenAct->setText(lkpi->layerHidden() ? tr("Show part silkscreen") : tr("Hide part silkscreen"));
+                break;
+            }
+        }
+
+        m_hidePartSilkscreenAct->setEnabled(hpsa);
 	}
     else {
+        m_hidePartSilkscreenAct->setEnabled(false);
         m_stickyAct->setVisible(false);
 		m_openInPartsEditorNewAct->setEnabled(false);
     }
@@ -2675,7 +2696,7 @@ void MainWindow::ensureClosable() {
 void MainWindow::showPartLabels() {
 	if (m_currentGraphicsView == NULL) return;
 
-	m_currentGraphicsView->showPartLabels(m_showPartLabelAct->isChecked());
+	m_currentGraphicsView->showPartLabels(m_showPartLabelAct->data().toBool());
 }
 
 void MainWindow::addNote() {
@@ -2981,6 +3002,7 @@ QMenu *MainWindow::pcbItemMenu() {
 	QMenu *menu = new QMenu(QObject::tr("Part"), this);
 	menu->addMenu(m_rotateMenu);
 	menu = viewItemMenuAux(menu);
+    menu->addAction(m_hidePartSilkscreenAct);
 	menu->addSeparator();
     menu->addAction(m_convertToBendpointAct);
 	m_convertToBendpointSeparator = menu->addSeparator();
@@ -3948,4 +3970,8 @@ void MainWindow::showUnrouted()
     m_currentGraphicsView->showUnrouted();
 }
 
+void MainWindow::hidePartSilkscreen()
+{
+    m_pcbGraphicsView->hidePartSilkscreen();
+}
 
