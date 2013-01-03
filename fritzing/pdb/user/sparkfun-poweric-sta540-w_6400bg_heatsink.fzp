@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-PowerIC-STA540-W_6400BG_HEATSINK'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-PowerIC' STA540 W_6400BG_HEATSINK -->
 <version>4</version>
-<date>2013-01-02</date>
+<date>2013-01-03</date>
 <label>U</label>
 <author>www.fritzing.org</author>
 <description>The STA540 is a 4-channel, class AB audio 
@@ -38,7 +38,7 @@ applications.</description>
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-poweric_multiwatt15_6400bgheatsink_breadboard.svg'>
+<layers image='icon/MULTIWATT15_6400BGHEATSINK.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

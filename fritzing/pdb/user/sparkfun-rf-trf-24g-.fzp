@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-RF-TRF-24G-'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-RF' TRF-24G  -->
 <version>4</version>
-<date>2013-01-02</date>
+<date>2013-01-03</date>
 <label>U</label>
 <author>www.fritzing.org</author>
 <description>2.4GHz wireless module</description>
@@ -34,7 +34,7 @@
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-rf_trf-24g-socket_breadboard.svg'>
+<layers image='icon/TRF-24G-SOCKET.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

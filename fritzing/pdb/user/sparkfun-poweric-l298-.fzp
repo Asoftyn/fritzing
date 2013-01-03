@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-PowerIC-L298-'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-PowerIC' L298  -->
 <version>4</version>
-<date>2013-01-02</date>
+<date>2013-01-03</date>
 <label>U</label>
 <author>www.fritzing.org</author>
 <description>L298 Dual Full Bridge Driver</description>
@@ -35,7 +35,7 @@
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-poweric_multiwatt15_breadboard.svg'>
+<layers image='icon/MULTIWATT15.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

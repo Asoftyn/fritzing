@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-RF-EM408_OUTLINE-'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-RF' EM408_OUTLINE  -->
 <version>4</version>
-<date>2013-01-02</date>
+<date>2013-01-03</date>
 <label>U</label>
 <author>www.fritzing.org</author>
 <description>This device is only the outline of the EM408 GPS receiver.  The device is intended to give the
@@ -34,7 +34,7 @@ designer an idea of what how the receiver will fit on the board.  THIS DEVICE DO
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-rf_em408_outline_breadboard.svg'>
+<layers image='icon/EM408_OUTLINE.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

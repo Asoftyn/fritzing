@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-RF-GE863_GPS-'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-RF' GE863_GPS  -->
 <version>4</version>
-<date>2013-01-02</date>
+<date>2013-01-03</date>
 <label>U</label>
 <author>www.fritzing.org</author>
 <description>&lt;b&gt;GE863 Cellular Module with GPS&lt;/b&gt;
@@ -35,7 +35,7 @@ Proto layout and schematic for GE863 cellular module with SiRF III GPS. Spark Fu
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-rf_ge863_breadboard.svg'>
+<layers image='icon/GE863.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>

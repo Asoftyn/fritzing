@@ -153,6 +153,8 @@
         <file>resources/parts/core/rectangle_pcb_two_layers.fzp</file>
         <file>resources/parts/core/ellipse_pcb.fzp</file>
         <file>resources/parts/core/ellipse_pcb_two_layers.fzp</file>
+        <file>resources/parts/core/roundrect_pcb.fzp</file>
+        <file>resources/parts/core/roundrect_pcb_two_layers.fzp</file>
         <file>resources/parts/core/logotext.fzp</file>
         <file>resources/parts/core/logoimage.fzp</file>
         <file>resources/parts/core/copper1logotext.fzp</file>
@@ -216,6 +218,7 @@
 	
         <file>resources/parts/svg/core/pcb/rectangle_pcb.svg</file>
         <file>resources/parts/svg/core/pcb/ellipse_pcb.svg</file>
+        <file>resources/parts/svg/core/pcb/roundrect_pcb.svg</file>
         <file>resources/parts/svg/core/pcb/logo.svg</file>
         <file>resources/parts/svg/core/pcb/copper1logo.svg</file>
         <file>resources/parts/svg/core/pcb/jumper.svg</file>
