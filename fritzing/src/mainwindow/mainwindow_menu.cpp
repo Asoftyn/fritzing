@@ -706,8 +706,6 @@ void MainWindow::updateFileMenu() {
 	m_orderFabAct->setEnabled(true);
 
     m_revertAct->setEnabled(m_undoStack->canUndo());
-
-    updateExportActions();
 }
 
 void MainWindow::updateRecentFileActions() {
@@ -1700,19 +1698,6 @@ void MainWindow::updatePartMenu() {
 	m_openProgramWindowAct->setEnabled(true);
 }
 
-bool MainWindow::updateExportActions() {
-    int boardCount = 0;
-    if (m_pcbGraphicsView != NULL) {
-        m_pcbGraphicsView->findSelectedBoard(boardCount);
-    }
-
-	m_exportEtchablePdfAct->setEnabled(boardCount > 0);
-	m_exportEtchableSvgAct->setEnabled(boardCount > 0);
-    m_exportGerberAct->setEnabled(boardCount > 0);
-
-    return (boardCount > 0);
-}
-
 void MainWindow::updateTransformationActions() {
     // update buttons in sketch toolbar at bottom
 
@@ -1739,10 +1724,6 @@ void MainWindow::updateTransformationActions() {
 	foreach(SketchToolButton* flipButton, m_flipButtons) {
 		flipButton->setEnabled(enable);
 	}
-
-    bool result = updateExportActions();
-
-    m_newAutorouteAct->setEnabled(result && m_currentGraphicsView->hasAnyNets());
 }
 
 void MainWindow::updateItemMenu() {
@@ -1931,7 +1912,6 @@ void MainWindow::updateTraceMenu() {
 	m_excludeFromAutorouteAct->setEnabled(exEnabled);
 	m_excludeFromAutorouteAct->setChecked(exChecked);
 	m_changeTraceLayerAct->setEnabled(ctlEnabled);
-	m_newAutorouteAct->setEnabled(arEnabled && anyOrNo);
 	m_orderFabAct->setEnabled(boardCount > 0);
 	m_showUnroutedAct->setEnabled(true);
 	m_selectAllTracesAct->setEnabled(tEnabled && anyOrNo);
