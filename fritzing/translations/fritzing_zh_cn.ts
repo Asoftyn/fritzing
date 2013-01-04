@@ -224,6 +224,22 @@
         <source>OK</source>
         <translation>确定</translation>
     </message>
+    <message>
+        <source>Keepout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Keepout&lt;/b&gt; is the minimum distance between copper elements on different nets.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A keepout of 0.01 inch (0.254 mm) is a good default.</source>
+        <translation type="unfinished">0.01inch（0.254mm）的最小距离是一个好的默认值。</translation>
+    </message>
+    <message>
+        <source>Note: the smaller the keepout, the slower the DRC and Autorouter will run.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BinManager</name>
@@ -605,25 +621,6 @@ If you intended your custom shape to have cutouts and you did not get the expect
     <message>
         <source>Too close to a border (%1 layer)</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DRCKeepoutDialog</name>
-    <message>
-        <source>DRC Keepout Setting</source>
-        <translation>设计规则检查最小距离设置</translation>
-    </message>
-    <message>
-        <source>The &apos;keepout&apos; is the minimum amount of space you want to keep between a connector or trace on one net and a connector or trace in another net</source>
-        <translation>最小距离是指你想要在一个网络上的接插件与线之间和一个其他网上的接插件与线之间保持的最小空间数量</translation>
-    </message>
-    <message>
-        <source>A keepout of 0.01 inch (0.254 mm) is a good default.</source>
-        <translation>0.01inch（0.254mm）的最小距离是一个好的默认值。</translation>
-    </message>
-    <message>
-        <source>Note: the smaller the keepout, the slower the DRC will run.</source>
-        <translation>注意：最小距离越小，DRC运行的越慢。</translation>
     </message>
 </context>
 <context>
@@ -1712,10 +1709,6 @@ We&apos;re working to avoid this message, and only let you choose between proper
         <translation>显示元件标签(&amp;S)</translation>
     </message>
     <message>
-        <source>Show or hide the label for the selected parts</source>
-        <translation>显示或隐藏选择的元件标签</translation>
-    </message>
-    <message>
         <source>&amp;Export...</source>
         <translation>导出(&amp;E)...</translation>
     </message>
@@ -2296,14 +2289,6 @@ Please check all views for potential side-effects.</source>
         <translation>导出当前项目至SVG进行DIY的PCB生产(photoresist)</translation>
     </message>
     <message>
-        <source>Autorouter settings...</source>
-        <translation>自动布线设置...</translation>
-    </message>
-    <message>
-        <source>Set autorouting parameters...</source>
-        <translation>设置自动布线参数...</translation>
-    </message>
-    <message>
         <source>JPG...</source>
         <translation>JPG...</translation>
     </message>
@@ -2850,10 +2835,6 @@ Go ahead and revert?</source>
         <translation>检查载入的线</translation>
     </message>
     <message>
-        <source>Select any traces where the screen location doesn&apos;t match their actual location.</source>
-        <translation>选择所有屏幕位置和实际位置不匹配的线。</translation>
-    </message>
-    <message>
         <source>Unrouted connections</source>
         <translation>未布线的连接</translation>
     </message>
@@ -2954,15 +2935,43 @@ Go ahead and revert?</source>
         <translation>为安全板产品高亮任何过于接近的元件</translation>
     </message>
     <message>
-        <source>Set Design Rules Keepout</source>
-        <translation>设置设计规则安全距离</translation>
-    </message>
-    <message>
-        <source>Set the minimum distance between parts for the DRC (Design Rules Check)</source>
-        <translation>设置元件间DRC（设计规则检查）的最小距离</translation>
-    </message>
-    <message>
         <source>Autoroute connections...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show/hide the label for the selected parts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide part silkscreen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide/show the silkscreen layer for only this part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide part label</source>
+        <translation type="unfinished">隐藏元件标志</translation>
+    </message>
+    <message>
+        <source>Show part label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show part silkscreen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select any traces where the screen location doesn&apos;t match the actual location. Only needed for sketches autorouted with version 0.7.10 or earlier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Autorouter/DRC settings...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set autorouting parameters including keepout...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2976,23 +2985,9 @@ Go ahead and revert?</source>
         <source>round %1 of:</source>
         <translation type="unfinished">round %1 of:</translation>
     </message>
-    <message numerus="yes">
-        <source>Note: the autorouter did not route %n parts, because they are not located entirely on the board.</source>
-        <translation type="unfinished">
-            <numerusform>注意：自动布线不能布%n个元件，因为它们没有完整的位于板上。</numerusform>
-        </translation>
-    </message>
     <message>
         <source>Unexpected SVG rendering failure--contact fritzing.org</source>
         <translation type="unfinished">不可预料的SVG渲染错误--联系fritzing.org</translation>
-    </message>
-    <message>
-        <source>Routing stopped! Now cleaning up...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Routing complete! Now cleaning up...</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>best so far: %1 of %2 routed</source>
@@ -3005,15 +3000,27 @@ Go ahead and revert?</source>
         </translation>
     </message>
     <message>
-        <source>Routing cannot complete; stopping at round %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Routing reached maximum round %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Now cleaning up...</source>
+        <source>Routing stopped!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Now doing final routing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Routing complete!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Routing unsuccessful; stopping at round %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Now creating traces and setting up undo...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3147,6 +3154,14 @@ Reason: %2 (errcode %3)</source>
     <message>
         <source>Unable to convert this via to a bendpoint because it is connected to a part that is only on the bottom layer and another part that is only on the top layer.</source>
         <translation>不能将此飞线转换为曲点，因为它连接至只在底层的一个元件，另外一个元件只在顶层。</translation>
+    </message>
+    <message>
+        <source>Show part silkscreen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide part silkscreen</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6220,6 +6235,10 @@ Note: you can also trigger this display by mousing down on the routing status te
     <message>
         <source>Bengali - %1</source>
         <translation>孟加拉语 - %1</translation>
+    </message>
+    <message>
+        <source>Persian - %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

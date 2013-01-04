@@ -224,6 +224,22 @@
         <source>OK</source>
         <translation type="unfinished">OK</translation>
     </message>
+    <message>
+        <source>Keepout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Keepout&lt;/b&gt; is the minimum distance between copper elements on different nets.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A keepout of 0.01 inch (0.254 mm) is a good default.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Note: the smaller the keepout, the slower the DRC and Autorouter will run.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BinManager</name>
@@ -600,25 +616,6 @@ If you intended your custom shape to have cutouts and you did not get the expect
     </message>
     <message>
         <source>Too close to a border (%1 layer)</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DRCKeepoutDialog</name>
-    <message>
-        <source>DRC Keepout Setting</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The &apos;keepout&apos; is the minimum amount of space you want to keep between a connector or trace on one net and a connector or trace in another net</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>A keepout of 0.01 inch (0.254 mm) is a good default.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Note: the smaller the keepout, the slower the DRC will run.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1579,10 +1576,6 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation>パーツラベルを表示する(&amp;S)</translation>
     </message>
     <message>
-        <source>Show or hide the label for the selected parts</source>
-        <translation>選択されたパーツのラベルを表示または隠す</translation>
-    </message>
-    <message>
         <source>&amp;Export...</source>
         <translation>エクスポート (&amp;E)...</translation>
     </message>
@@ -2287,14 +2280,6 @@ Please check all views for potential side-effects.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Autorouter settings...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set autorouting parameters...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>JPG...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2828,10 +2813,6 @@ Go ahead and revert?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select any traces where the screen location doesn&apos;t match their actual location.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unrouted connections</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2932,15 +2913,43 @@ Go ahead and revert?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Set Design Rules Keepout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set the minimum distance between parts for the DRC (Design Rules Check)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Autoroute connections...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show/hide the label for the selected parts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide part silkscreen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide/show the silkscreen layer for only this part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide part label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show part label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show part silkscreen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select any traces where the screen location doesn&apos;t match the actual location. Only needed for sketches autorouted with version 0.7.10 or earlier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Autorouter/DRC settings...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set autorouting parameters including keepout...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2954,22 +2963,8 @@ Go ahead and revert?</source>
         <source>round %1 of:</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <source>Note: the autorouter did not route %n parts, because they are not located entirely on the board.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
     <message>
         <source>Unexpected SVG rendering failure--contact fritzing.org</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Routing stopped! Now cleaning up...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Routing complete! Now cleaning up...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2983,15 +2978,27 @@ Go ahead and revert?</source>
         </translation>
     </message>
     <message>
-        <source>Routing cannot complete; stopping at round %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Routing reached maximum round %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Now cleaning up...</source>
+        <source>Routing stopped!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Now doing final routing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Routing complete!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Routing unsuccessful; stopping at round %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Now creating traces and setting up undo...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3122,6 +3129,14 @@ Reason: %2 (errcode %3)</source>
     </message>
     <message>
         <source>Unable to convert this via to a bendpoint because it is connected to a part that is only on the bottom layer and another part that is only on the top layer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show part silkscreen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide part silkscreen</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6169,6 +6184,10 @@ Note: you can also trigger this display by mousing down on the routing status te
     </message>
     <message>
         <source>Bengali - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Persian - %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
