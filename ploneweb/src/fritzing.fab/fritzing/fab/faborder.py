@@ -163,15 +163,14 @@ def workflowTransitionHandler(faborder, event):
 
 @grok.subscribe(IFabOrder, IObjectModifiedEvent)
 def orderModifiedHandler(faborder, event):
-    # see http://www.postsitter.de/briefversand/europa.htm
+    # see http://en.wikipedia.org/wiki/European_Union_value-added_tax_area
+    # TODO: might need separate lists for EU tax zone and EU shipping cost zone
     if faborder.shippingCountry in ['DE']:
         faborder.shipTo = 'germany'
     elif faborder.shippingCountry in [
-            'AL', 'AD', 'AM', 'AZ', 'BY', 'BE', 'BA', 'BG', 'HR', 'DK', 'EE', 
-            'FO', 'FI', 'FR', 'GF', 'GE', 'GR', 'GL', 'UK', 'GP', 'IE', 'IS', 
-            'IT', 'KZ', 'LT', 'LI', 'LU', 'MK', 'MT', 'MQ', 'YT', 'MD', 'MC', 
-            'NL', 'NO', 'AT', 'PL', 'PT', 'RE', 'RO', 'RU', 'SM', 'SE', 'SI', 
-            'SK', 'CH', 'ES', 'PM', 'CZ', 'TR', 'UA', 'HU', 'VA', 'YU', 'CY']:
+            'AT', 'AD', 'BE', 'BA', 'BG', 'CY', 'CZ', 'HR', 'DK', 'EE', 
+            'FI', 'FR', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MC', 
+            'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'UK', ]:
         faborder.shipTo = 'eu'
     else:
         faborder.shipTo = 'world'
