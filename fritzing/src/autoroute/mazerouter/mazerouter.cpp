@@ -35,9 +35,6 @@ $Date$
 //      jumper placement must be away from vias and vv
 //          how to create test case
 //
-//      when multiple traces connect to one via, traces tend to connect to each other instead of the via
-//          hard to find an example
-//
 //      test if source touches target
 //
 //      add max cycles to settings dialog?
@@ -468,7 +465,7 @@ void Score::setOrdering(const NetOrdering & _ordering) {
 
 ////////////////////////////////////////////////////////////////////
 
-static const long IDs[] = { 8789760, 9643770, 9644550, 9644610, 9644630, 9644670, 9644730, 9644750, 9644790, 9644810  };
+static const long IDs[] = { 1452191, 9781580, 9781600, 9781620, 9781640, 9781660, 9781680, 9781700 };
 static inline bool hasID(ConnectorItem * s) {
     for (int i = 0; i < sizeof(IDs) / sizeof(long); i++) {
         if (s->attachedToID() == IDs[i]) return true;
@@ -480,48 +477,48 @@ static inline bool hasID(ConnectorItem * s) {
 
 
 void ConnectionThing::add(ConnectorItem * s, ConnectorItem * d) {
-    if (hasID(s) || hasID(d)) {
-        s->debugInfo("addc");
-        d->debugInfo("\t");
-    }
+    //if (hasID(s) || hasID(d)) {
+    //    s->debugInfo("addc");
+    //    d->debugInfo("\t");
+    //}
 
     sd.insert(s, d);
     sd.insert(d, s);
 }
 
 void ConnectionThing::remove(ConnectorItem * s) {
-    if (hasID(s)) {
-        s->debugInfo("remc");
-    }
+    //if (hasID(s)) {
+    //    s->debugInfo("remc");
+    //}
     sd.remove(s);
 }
 
 void ConnectionThing::remove(ConnectorItem * s, ConnectorItem * d) {
-    if (hasID(s) || hasID(d)) {
-        s->debugInfo("remc");
-        d->debugInfo("\t");
-    }
+    //if (hasID(s) || hasID(d)) {
+    //    s->debugInfo("remc");
+    //    d->debugInfo("\t");
+    //}
     sd.remove(s, d);
     sd.remove(d, s);
 }
 
 bool ConnectionThing::multi(ConnectorItem * s) {
-    if (hasID(s)) {
-        s->debugInfo("mulc");
-    }
+    //if (hasID(s)) {
+    //    s->debugInfo("mulc");
+    //}
     return sd.values(s).count() > 1;
 }
    
 QList<ConnectorItem *> ConnectionThing::values(ConnectorItem * s) {
-    if (hasID(s)) {
-        s->debugInfo("valc");
-    }
+    //if (hasID(s)) {
+    //    s->debugInfo("valc");
+    //}
     QList<ConnectorItem *> result;
     foreach (ConnectorItem * d, sd.values(s)) {
         if (d == NULL) continue;
         if (sd.values(d).count() == 0) continue;
         result << d;
-        if (hasID(s)) d->debugInfo("\t");
+        //if (hasID(s)) d->debugInfo("\t");
     }
     return result;
 }
@@ -2218,6 +2215,7 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
 
 void MazeRouter::createTrace(Trace & trace, QList<GridPoint> & gridPoints, TraceThing & traceThing, ConnectionThing & connectionThing, Net * net) 
 {
+    DebugDialog::debug(QString("create trace net:%1").arg(net->id));
     if (trace.flags & JumperStart) {
         if (m_pcbType) {
 	        long newID = ItemBase::getNextID();
@@ -2417,7 +2415,18 @@ ConnectorItem * MazeRouter::findAnchor(GridPoint gp, TraceThing & traceThing, Ne
 {
     QRectF gridRect(gp.x * m_gridPixels + traceThing.topLeft.x(), gp.y * m_gridPixels + traceThing.topLeft.y(), m_gridPixels, m_gridPixels);
     ConnectorItem * connectorItem = findAnchor(gp, gridRect, traceThing, net, p, onTrace, already);
-    if (connectorItem) return connectorItem;
+
+    if (connectorItem != NULL) {
+        //if (connectorItem->attachedToID() == 9781620) {
+        //    connectorItem->debugInfo("9781620");
+        //}
+
+        if (connectorItem->attachedToItemType() != ModelPart::Wire) {
+            return connectorItem;
+        }
+
+        // otherwise keep looking
+    }
 
     gridRect.adjust(-m_gridPixels, -m_gridPixels, m_gridPixels, m_gridPixels);
     return findAnchor(gp, gridRect, traceThing, net, p, onTrace, already);
@@ -2455,7 +2464,7 @@ ConnectorItem * MazeRouter::findAnchor(GridPoint gp, const QRectF & gridRect, Tr
             else {
                 TraceWire * traceWire = qobject_cast<TraceWire *>(connectorItem->attachedTo());
                 if (traceWire == NULL) {
-                    Via * via = qobject_cast<Via *>(connectorItem->attachedTo());
+                    Via * via = qobject_cast<Via *>(connectorItem->attachedTo()->layerKinChief());
                     if (via == NULL) isCandidate = false;
                     else isCandidate = traceThing.newVias.contains(via);
                 }
@@ -2488,11 +2497,11 @@ ConnectorItem * MazeRouter::findAnchor(GridPoint gp, const QRectF & gridRect, Tr
     }
 
     if (traceConnectorItems.count() > 0) {
-        if (traceConnectorItems.count() > 1) {
-            foreach (ConnectorItem * connectorItem, traceConnectorItems) {
-                connectorItem->debugInfo("on trace");
-            }
-        }
+        //if (traceConnectorItems.count() > 1) {
+        //    foreach (ConnectorItem * connectorItem, traceConnectorItems) {
+        //        connectorItem->debugInfo("on trace");
+        //    }
+        //}
         onTrace = false;
         ConnectorItem * connectorItem = traceConnectorItems.takeLast();
         p = connectorItem->sceneAdjustedTerminalPoint(NULL);
