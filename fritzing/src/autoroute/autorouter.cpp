@@ -417,6 +417,8 @@ void Autorouter::addToUndo(QUndoCommand * parentCommand)
 
 void Autorouter::addWireToUndo(Wire * wire, QUndoCommand * parentCommand) 
 {  
+    if (wire == NULL) return;
+
 	new AddItemCommand(m_sketchWidget, BaseCommand::CrossView, ModuleIDNames::WireModuleIDName, wire->viewLayerSpec(), wire->getViewGeometry(), wire->id(), false, -1, parentCommand);
 	new CheckStickyCommand(m_sketchWidget, BaseCommand::SingleView, wire->id(), false, CheckStickyCommand::RemoveOnly, parentCommand);
 	

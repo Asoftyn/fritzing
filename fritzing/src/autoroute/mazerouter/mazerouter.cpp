@@ -40,23 +40,16 @@ $Date$
 //
 //      test if source touches target
 //
-//      add max cycles to settings dialog
-//
-
-// LATER:
+//      add max cycles to settings dialog?
 //
 //      figure out what is taking so long once the router is creating traces
-//          addItem is expensive, so is changeConnection
+//          change connection is calling ratsnestconnect for every pair and calls collectEqualPotential
 //
 //      net reordering/rip-up-and-reroute
 //          is there a better way than move back by one?
 //
 //      raster back to vector
 //          curve-fitting? use a bezier?  http://kobus.ca/seminars/ugrad/NM5_curve_s02.pdf
-//          lines for all 1 x N patterns?
-//          how guarantee that new line/curve doesn't overlap
-//              handle this at traceback time? 
-//                  set some flags for neighbors being clear and keep the flagged grid points as part of the trace?
 //
 //      dynamic cost function based on distance to any target point?
 //
@@ -95,6 +88,8 @@ $Date$
 #include <limits>
 
 //////////////////////////////////////
+
+static const int OptimizeFactor = 2;
 
 static int routeNumber = 0;
 
@@ -473,12 +468,72 @@ void Score::setOrdering(const NetOrdering & _ordering) {
 
 ////////////////////////////////////////////////////////////////////
 
+static const long IDs[] = { 8789760, 9643770, 9644550, 9644610, 9644630, 9644670, 9644730, 9644750, 9644790, 9644810  };
+static inline bool hasID(ConnectorItem * s) {
+    for (int i = 0; i < sizeof(IDs) / sizeof(long); i++) {
+        if (s->attachedToID() == IDs[i]) return true;
+    }
+
+    return false;
+}
+
+
+
+void ConnectionThing::add(ConnectorItem * s, ConnectorItem * d) {
+    if (hasID(s) || hasID(d)) {
+        s->debugInfo("addc");
+        d->debugInfo("\t");
+    }
+
+    sd.insert(s, d);
+    sd.insert(d, s);
+}
+
+void ConnectionThing::remove(ConnectorItem * s) {
+    if (hasID(s)) {
+        s->debugInfo("remc");
+    }
+    sd.remove(s);
+}
+
+void ConnectionThing::remove(ConnectorItem * s, ConnectorItem * d) {
+    if (hasID(s) || hasID(d)) {
+        s->debugInfo("remc");
+        d->debugInfo("\t");
+    }
+    sd.remove(s, d);
+    sd.remove(d, s);
+}
+
+bool ConnectionThing::multi(ConnectorItem * s) {
+    if (hasID(s)) {
+        s->debugInfo("mulc");
+    }
+    return sd.values(s).count() > 1;
+}
+   
+QList<ConnectorItem *> ConnectionThing::values(ConnectorItem * s) {
+    if (hasID(s)) {
+        s->debugInfo("valc");
+    }
+    QList<ConnectorItem *> result;
+    foreach (ConnectorItem * d, sd.values(s)) {
+        if (d == NULL) continue;
+        if (sd.values(d).count() == 0) continue;
+        result << d;
+        if (hasID(s)) d->debugInfo("\t");
+    }
+    return result;
+}
+
+////////////////////////////////////////////////////////////////////
+
 MazeRouter::MazeRouter(PCBSketchWidget * sketchWidget, QGraphicsItem * board, bool adjustIf) : Autorouter(sketchWidget)
 {
     m_netLabelIndex = -1;
     m_grid = NULL;
     m_displayItem[0] = m_displayItem[1] = NULL;
-    m_boardImage = m_spareImage = m_displayImage[0] = m_displayImage[1] = NULL;
+    m_boardImage = m_spareImage = m_spareImage2 = m_displayImage[0] = m_displayImage[1] = NULL;
 
     CancelledMessage = tr("Autorouter was cancelled.");
 
@@ -563,6 +618,9 @@ MazeRouter::~MazeRouter()
     }
     if (m_spareImage) {
         delete m_spareImage;
+    }
+    if (m_spareImage2) {
+        delete m_spareImage2;
     }
 }
 
@@ -694,7 +752,7 @@ void MazeRouter::start()
     else {
         m_boardImage->fill(0);
         QRectF r4(QPointF(0, 0), gridSize * 4);
-        makeBoard(m_boardImage, m_keepoutGrid, r4);   
+        makeBoard(m_boardImage, m_keepoutGrid * 4, r4);   
     }
     drawBorder(m_boardImage, 4);
 
@@ -786,6 +844,28 @@ void MazeRouter::start()
     }    
 	ProcessEventBlocker::processEvents();
 
+    if (m_grid) {
+        m_grid->free();
+        delete m_grid;
+        m_grid = NULL;
+    }
+    if (m_boardImage) {
+        delete m_boardImage;
+        m_boardImage = NULL;
+    }
+    if (m_spareImage) {
+        delete m_spareImage;
+        m_spareImage = NULL;
+    }
+
+    m_boardImage = new QImage(m_maxRect.width() * OptimizeFactor, m_maxRect.height() * OptimizeFactor, QImage::Format_Mono);
+    m_spareImage = new QImage(m_maxRect.width() * OptimizeFactor, m_maxRect.height() * OptimizeFactor, QImage::Format_Mono);
+    m_spareImage2 = new QImage(m_maxRect.width() * OptimizeFactor, m_maxRect.height() * OptimizeFactor, QImage::Format_Mono);
+
+    QRectF r2(0, 0, m_boardImage->width(), m_boardImage->height());
+    makeBoard(m_boardImage, m_keepoutPixels * 2, r2);
+    drawBorder(m_boardImage, 2);
+
     createTraces(netList, bestScore, parentCommand);
 
 	cleanUpNets(netList);
@@ -858,14 +938,14 @@ bool MazeRouter::makeBoard(QImage * boardImage, double keepoutGrid, const QRectF
     // board should be white, borders should be black
 
 #ifndef QT_NO_DEBUG
-	boardImage->save(FolderUtils::getUserDataStorePath("") + "/mazeMakeBoard.png");
+	//boardImage->save(FolderUtils::getUserDataStorePath("") + "/mazeMakeBoard.png");
 #endif
 
     // extend it given that the board image is * 4
-    DRC::extendBorder(keepoutGrid * 4, boardImage);
+    DRC::extendBorder(keepoutGrid, boardImage);
 
 #ifndef QT_NO_DEBUG
-	boardImage->save(FolderUtils::getUserDataStorePath("") + "/mazeMakeBoard2.png");
+	//boardImage->save(FolderUtils::getUserDataStorePath("") + "/mazeMakeBoard2.png");
 #endif
 
     return true;
@@ -1003,7 +1083,7 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
 
             QDomDocument * masterDoc = m_masterDocs.value(viewLayerSpec);
 
-            //QString temp = masterDoc->toString();
+            //QString before = masterDoc->toString();
 
             Markers markers;
             markers.outID = DRC::NotNet;
@@ -1019,12 +1099,13 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
                 element.setTagName("g");
             }
 
-            static int oinc = 0;
+            //QString after = masterDoc->toString();
+
             //DebugDialog::debug("obstacles from board");
             m_spareImage->fill(0xffffffff);
             DRC::renderOne(masterDoc, m_spareImage, routeThing.r4);
             #ifndef QT_NO_DEBUG
-                m_spareImage->save(FolderUtils::getUserDataStorePath("") + QString("/obstacles%1.png").arg(oinc++));
+               //m_spareImage->save(FolderUtils::getUserDataStorePath("") + QString("/obstacles%1_%2.png").arg(netIndex, 2, 10, QChar('0')).arg(viewLayerSpec));
             #endif
             m_grid->init4(0, 0, z, m_grid->x, m_grid->y, m_spareImage, GridPartObstacle, false);
             //DebugDialog::debug("obstacles from board done");
@@ -1387,8 +1468,8 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * g
 
     DRC::renderOne(masterDoc, m_spareImage, renderRect);
 #ifndef QT_NO_DEBUG
-    static int rsi = 0;
-	m_spareImage->save(FolderUtils::getUserDataStorePath("") + QString("/rendersource%1.png").arg(rsi++));
+    //static int rsi = 0;
+	//m_spareImage->save(FolderUtils::getUserDataStorePath("") + QString("/rendersource%1_%2.png").arg(rsi++,3,10,QChar('0')).arg(z));
 #endif
     QList<QPoint> points = grid->init4(x1, y1, z, x2 - x1, y2 - y1, m_spareImage, value, true);
 
@@ -2031,17 +2112,27 @@ void MazeRouter::cleanUpNets(NetList & netList) {
 
 void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand * parentCommand) {
     QPointF topLeft = m_maxRect.topLeft();
+
+    QMultiHash<int, Via *> allVias;
+    QMultiHash<int, JumperItem *> allJumperItems;
+    QMultiHash<int, SymbolPaletteItem *> allNetLabels;
+    QMultiHash<int, QList< QPointer<TraceWire> > > allBundles;
+
+    ConnectionThing connectionThing;
+
     foreach (int netIndex, bestScore.ordering.order) {
         //DebugDialog::debug(QString("tracing net %1").arg(netIndex));
         QList<Trace> traces = bestScore.traces.values(netIndex);
         qSort(traces.begin(), traces.end(), byOrder);
-        QList<TraceWire *> newTraces;
-        QList<Via *> newVias;
-        QList<JumperItem *> newJumperItems;
-        QList<SymbolPaletteItem *> newNetLabels;
-    
-        JumperItem * jumperItem = NULL;
-        SymbolPaletteItem * netLabel = NULL;
+
+        TraceThing traceThing;   
+        traceThing.jumperItem = NULL;
+        traceThing.netLabel = NULL;
+        traceThing.topLeft = m_maxRect.topLeft();
+        int newTraceIndex = 0;
+
+        Net * net = netList.nets.at(netIndex);
+
         for (int tix = 0; tix < traces.count(); tix++) {
             Trace trace = traces.at(tix);
             QList<GridPoint> gridPoints = trace.gridPoints;
@@ -2051,242 +2142,293 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
 
             if (trace.flags & JumperStart) {
                 Trace trace2 = traces.at(tix + 1);
-                if (m_pcbType) {
-	                long newID = ItemBase::getNextID();
-	                ViewGeometry viewGeometry;
-	                ItemBase * itemBase = m_sketchWidget->addItem(m_sketchWidget->referenceModel()->retrieveModelPart(ModuleIDNames::JumperModuleIDName), 
-												                  ViewLayer::ThroughHoleThroughTop_TwoLayers, BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
+                traceThing.nextTraceStart = trace2.gridPoints.first();
+            }
 
-	                jumperItem = dynamic_cast<JumperItem *>(itemBase);
-	                jumperItem->setAutoroutable(true);
-	                m_sketchWidget->scene()->addItem(jumperItem);
-                    QPointF c1 = getPixelCenter(trace.gridPoints.first(), topLeft, m_gridPixels);
-                    QPointF c2 = getPixelCenter(trace2.gridPoints.first(), topLeft, m_gridPixels);
-	                jumperItem->resize(c1, c2);
-                    addJumperToUndo(jumperItem, parentCommand);
-                    newJumperItems << jumperItem;
+            createTrace(trace, gridPoints, traceThing, connectionThing, net);
+            QList< QPointer<TraceWire> > bundle;
+            ViewLayer::ViewLayerID viewLayerID = traceThing.newTraces.at(newTraceIndex)->viewLayerID();
+            for (; newTraceIndex < traceThing.newTraces.count(); newTraceIndex++) {
+                TraceWire * traceWire = traceThing.newTraces.at(newTraceIndex);
+                if (traceWire->viewLayerID() != viewLayerID) {
+                    allBundles.insert(netIndex, bundle);
+                    bundle.clear();
+                    viewLayerID = traceWire->viewLayerID();
                 }
-                else {
-                    netLabel = makeNetLabel(trace.gridPoints.first(), NULL, trace.flags);
-                    addNetLabelToUndo(netLabel, parentCommand);
-                    newNetLabels << netLabel;
-                }
+                bundle << traceWire;
             }
-            else if (trace.flags & JumperEnd) {
-                if (m_pcbType) {
-                    // keep the jumperItem we have from JumperStart
-                }
-                else {
-                    netLabel = makeNetLabel(trace.gridPoints.first(), netLabel, trace.flags);
-                    addNetLabelToUndo(netLabel, parentCommand);
-                    newNetLabels << netLabel;
-                }
-            }
-            else jumperItem = NULL;
+            allBundles.insert(netIndex, bundle);
+        }
+        foreach (SymbolPaletteItem * netLabel, traceThing.newNetLabels) {
+            allNetLabels.insert(netIndex, netLabel);
+        }
+        foreach (Via * via, traceThing.newVias) {
+            allVias.insert(netIndex, via);
+        }
+        foreach (JumperItem * jumperItem, traceThing.newJumperItems) {
+            allJumperItems.insert(netIndex, jumperItem);
+        }
+    }
 
-            Net * net = netList.nets.at(netIndex);
-            bool onTraceS, onTraceD;
-            QPointF traceAnchorS, traceAnchorD;
-            ConnectorItem * sourceConnectorItem = NULL;
-            if (jumperItem) {
-                onTraceS = onTraceD = false;
-                sourceConnectorItem = (trace.flags & JumperStart) ? jumperItem->connector0() : jumperItem->connector1();
-            }
-            else if (netLabel) {
-                sourceConnectorItem = netLabel->connector0();
-            }
-            else {
-                sourceConnectorItem = findAnchor(gridPoints.first(), topLeft, net, newTraces, newVias, traceAnchorS, onTraceS, NULL);
-            }
-            if (sourceConnectorItem == NULL) {
-                DebugDialog::debug("missing source connector");
-                continue;
-            }
+    //DebugDialog::debug("before optimize");
+    optimizeTraces(bestScore.ordering.order, allBundles, allVias, allJumperItems, allNetLabels, netList, connectionThing);     
+    //DebugDialog::debug("after optimize");
+
+    foreach (SymbolPaletteItem * netLabel, allNetLabels) {
+        addNetLabelToUndo(netLabel, parentCommand);
+    }
+    foreach (Via * via, allVias) {
+        addViaToUndo(via, parentCommand);
+    }
+    foreach (JumperItem * jumperItem, allJumperItems) {
+        addJumperToUndo(jumperItem, parentCommand);
+    }
+
+    foreach (QList< QPointer<TraceWire> > bundle, allBundles) {
+        foreach (TraceWire * traceWire, bundle) {
+            addWireToUndo(traceWire, parentCommand);
+        }
+    }
+
+    foreach (ConnectorItem * source, connectionThing.sd.uniqueKeys()) {
+        foreach (ConnectorItem * dest, connectionThing.values(source)) {
+            addConnectionToUndo(source, dest, parentCommand);
+        }
+    }
+
+    foreach (QList< QPointer<TraceWire> > bundle, allBundles) {
+        foreach (TraceWire * traceWire, bundle) {
+            if (traceWire) delete traceWire;
+        }
+    }
+
+    foreach (Via * via, allVias.values()) {
+        via->removeLayerKin();
+        delete via;
+    }
+    foreach (JumperItem * jumperItem, allJumperItems.values()) {
+        jumperItem->removeLayerKin();
+        delete jumperItem;
+    }
+    foreach (SymbolPaletteItem * netLabel, allNetLabels.values()) {
+        delete netLabel;
+    }
+    DebugDialog::debug("create traces complete");
+}
+
+void MazeRouter::createTrace(Trace & trace, QList<GridPoint> & gridPoints, TraceThing & traceThing, ConnectionThing & connectionThing, Net * net) 
+{
+    if (trace.flags & JumperStart) {
+        if (m_pcbType) {
+	        long newID = ItemBase::getNextID();
+	        ViewGeometry viewGeometry;
+	        ItemBase * itemBase = m_sketchWidget->addItem(m_sketchWidget->referenceModel()->retrieveModelPart(ModuleIDNames::JumperModuleIDName), 
+												            ViewLayer::ThroughHoleThroughTop_TwoLayers, BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
+
+	        traceThing.jumperItem = dynamic_cast<JumperItem *>(itemBase);
+	        traceThing.jumperItem->setAutoroutable(true);
+	        m_sketchWidget->scene()->addItem(traceThing.jumperItem);
+            QPointF c1 = getPixelCenter(trace.gridPoints.first(), traceThing.topLeft, m_gridPixels);
+            QPointF c2 = getPixelCenter(traceThing.nextTraceStart, traceThing.topLeft, m_gridPixels);
+	        traceThing.jumperItem->resize(c1, c2);
+            traceThing.newJumperItems << traceThing.jumperItem;
+        }
+        else {
+            traceThing.netLabel = makeNetLabel(trace.gridPoints.first(), NULL, trace.flags);
+            traceThing.newNetLabels << traceThing.netLabel;
+        }
+    }
+    else if (trace.flags & JumperEnd) {
+        if (m_pcbType) {
+            // keep the jumperItem we have from JumperStart
+        }
+        else {
+            traceThing.netLabel = makeNetLabel(trace.gridPoints.first(), traceThing.netLabel, trace.flags);
+            traceThing.newNetLabels << traceThing.netLabel;
+        }
+    }
+    else traceThing.jumperItem = NULL;
+
+    bool onTraceS, onTraceD;
+    QPointF traceAnchorS, traceAnchorD;
+    ConnectorItem * sourceConnectorItem = NULL;
+    if (traceThing.jumperItem) {
+        onTraceS = onTraceD = false;
+        sourceConnectorItem = (trace.flags & JumperStart) ? traceThing.jumperItem->connector0() : traceThing.jumperItem->connector1();
+    }
+    else if (traceThing.netLabel) {
+        sourceConnectorItem = traceThing.netLabel->connector0();
+    }
+    else {
+        sourceConnectorItem = findAnchor(gridPoints.first(), traceThing, net, traceAnchorS, onTraceS, NULL);
+    }
+    if (sourceConnectorItem == NULL) {
+        DebugDialog::debug("missing source connector");
+        return;
+    }
             
-            ConnectorItem * destConnectorItem = findAnchor(gridPoints.last(), topLeft, net, newTraces, newVias, traceAnchorD, onTraceD, sourceConnectorItem);
-            if (destConnectorItem == NULL) {
-                DebugDialog::debug("missing dest connector");
-                continue;
-            }
+    ConnectorItem * destConnectorItem = findAnchor(gridPoints.last(), traceThing, net, traceAnchorD, onTraceD, sourceConnectorItem);
+    if (destConnectorItem == NULL) {
+        DebugDialog::debug("missing dest connector");
+        return;
+    }
 
-            if (sourceConnectorItem->attachedTo() == destConnectorItem->attachedTo()) {
-                sourceConnectorItem->debugInfo("source");
-                destConnectorItem->debugInfo("dest");
-            }
+    //if (sourceConnectorItem->attachedTo() == destConnectorItem->attachedTo()) {
+    //    sourceConnectorItem->debugInfo("source");
+    //    destConnectorItem->debugInfo("dest");
+    //}
             
-            QPointF sourcePoint = sourceConnectorItem->sceneAdjustedTerminalPoint(NULL);
-            QPointF destPoint = destConnectorItem->sceneAdjustedTerminalPoint(NULL);
+    QPointF sourcePoint = sourceConnectorItem->sceneAdjustedTerminalPoint(NULL);
+    QPointF destPoint = destConnectorItem->sceneAdjustedTerminalPoint(NULL);
 
-            bool skipFirst = false;
-            bool skipLast = false;
+    bool skipFirst = false;
+    bool skipLast = false;
 
-            GridPoint gp = gridPoints.last();
-            QPointF center = getPixelCenter(gp, topLeft, m_gridPixels);
-            if (!atLeast(center, destPoint)) {
-                // don't need this last point
-                skipLast = true;
-            }
+    GridPoint gp = gridPoints.last();
+    QPointF center = getPixelCenter(gp, traceThing.topLeft, m_gridPixels);
+    if (!atLeast(center, destPoint)) {
+        // don't need this last point
+        skipLast = true;
+    }
 
-            gp = gridPoints.first();
-            center = getPixelCenter(gp, topLeft, m_gridPixels);
-            if (!atLeast(center, sourcePoint)) {
-                skipFirst = true;               
-            }
+    gp = gridPoints.first();
+    center = getPixelCenter(gp, traceThing.topLeft, m_gridPixels);
+    if (!atLeast(center, sourcePoint)) {
+        skipFirst = true;               
+    }
 
-            QList<PointZ> newPoints;
-            for (int i = 0; i < gridPoints.count(); i++) {
-                GridPoint gp1 = gridPoints.at(i);
-                QPointF c1 = getPixelCenter(gp1, topLeft, m_gridPixels);
-                PointZ v1(c1, gp1.z);
-                newPoints << v1;
-                if ((gp1.flags & GridPointStepStart) == 0) continue;
+    // convert grid-based points to normal svg-space points and add the inbetween points necessitated by removeSteps() 
+    QList<PointZ> newPoints;
+    for (int i = 0; i < gridPoints.count(); i++) {
+        GridPoint gp1 = gridPoints.at(i);
+        QPointF c1 = getPixelCenter(gp1, traceThing.topLeft, m_gridPixels);
+        PointZ v1(c1, gp1.z);
+        newPoints << v1;
+        if ((gp1.flags & GridPointStepStart) == 0) continue;
 
-                GridPoint gp2 = gridPoints.at(i + 1);
-                QPointF c2 = getPixelCenter(gp2, topLeft, m_gridPixels);
+        GridPoint gp2 = gridPoints.at(i + 1);
+        QPointF c2 = getPixelCenter(gp2, traceThing.topLeft, m_gridPixels);
 
-                QPointF p = getStepPoint(c1, gp1.flags, m_gridPixels);
-                PointZ v2(p, gp1.z);
-                newPoints << v2;
+        QPointF p = getStepPoint(c1, gp1.flags, m_gridPixels);
+        PointZ v2(p, gp1.z);
+        newPoints << v2;
 
-                QPointF q = getStepPoint(c2, gp2.flags, m_gridPixels);
-                PointZ v3(q, gp2.z);
-                newPoints << v3;
+        QPointF q = getStepPoint(c2, gp2.flags, m_gridPixels);
+        PointZ v3(q, gp2.z);
+        newPoints << v3;
 
-                //DebugDialog::debug(QString("remove2 %1,%2 %3,%4").arg(c1.x()).arg(c1.y()).arg(p.x()).arg(p.y()));
-                //DebugDialog::debug(QString("\t%1,%2 %3,%4").arg(q.x()).arg(q.y()).arg(c2.x()).arg(c2.y()));
+        //DebugDialog::debug(QString("remove2 %1,%2 %3,%4").arg(c1.x()).arg(c1.y()).arg(p.x()).arg(p.y()));
+        //DebugDialog::debug(QString("\t%1,%2 %3,%4").arg(q.x()).arg(q.y()).arg(c2.x()).arg(c2.y()));
 
-            }
+    }
 
-            if (skipLast) {
-                newPoints.takeLast();
-            }
-            PointZ point = newPoints.takeFirst();
-            if (skipFirst) {
-                point = newPoints.takeFirst();
-            }
+    if (skipLast) {
+        newPoints.takeLast();
+    }
+    PointZ point = newPoints.takeFirst();
+    if (skipFirst) {
+        point = newPoints.takeFirst();
+    }
 
-            int lastz = point.z;
-            ConnectorItem * nextSource = NULL;
-            if (onTraceS) {
-                if (!atLeast(sourcePoint, traceAnchorS)) {
-                    onTraceS = false;
-                }
-                else if (atLeast(point.p, traceAnchorS)) {
-                    onTraceS = false;
-                }
-            }
-            if (onTraceS) {
-                TraceWire * traceWire1 = drawOneTrace(sourcePoint, traceAnchorS, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
-                addWireToUndo(traceWire1, parentCommand);
-                addConnectionToUndo(sourceConnectorItem, traceWire1->connector0(), parentCommand);
-                newTraces << traceWire1;
+    int lastz = point.z;
+    ConnectorItem * nextSource = NULL;
+    if (onTraceS) {
+        if (!atLeast(sourcePoint, traceAnchorS)) {
+            onTraceS = false;
+        }
+        else if (atLeast(point.p, traceAnchorS)) {
+            onTraceS = false;
+        }
+    }
+    if (onTraceS) {
+        TraceWire * traceWire1 = drawOneTrace(sourcePoint, traceAnchorS, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+        connectionThing.add(sourceConnectorItem, traceWire1->connector0());
+        traceThing.newTraces << traceWire1;
                
-                TraceWire* traceWire2 = drawOneTrace(traceAnchorS, point.p, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
-                addWireToUndo(traceWire2, parentCommand);
-                addConnectionToUndo(traceWire1->connector1(), traceWire2->connector0(), parentCommand);
-                nextSource = traceWire2->connector1();
-                newTraces << traceWire2;
-            }
-            else {
-                TraceWire * traceWire = drawOneTrace(sourcePoint, point.p, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
-                addWireToUndo(traceWire, parentCommand);
-                addConnectionToUndo(sourceConnectorItem, traceWire->connector0(), parentCommand);
-                nextSource = traceWire->connector1();
-                newTraces << traceWire;
-            }
+        TraceWire* traceWire2 = drawOneTrace(traceAnchorS, point.p, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+        connectionThing.add(traceWire1->connector1(), traceWire2->connector0());
+        nextSource = traceWire2->connector1();
+        traceThing.newTraces << traceWire2;
+    }
+    else {
+        TraceWire * traceWire = drawOneTrace(sourcePoint, point.p, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+        connectionThing.add(sourceConnectorItem, traceWire->connector0());
+        nextSource = traceWire->connector1();
+        traceThing.newTraces << traceWire;
+    }
 
-            foreach (PointZ newPoint, newPoints) {
-                if (newPoint.z == lastz) {
-                    TraceWire * traceWire = drawOneTrace(point.p, newPoint.p, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
-                    addWireToUndo(traceWire, parentCommand);
-                    addConnectionToUndo(nextSource, traceWire->connector0(), parentCommand);
-                    nextSource = traceWire->connector1();
-                    newTraces << traceWire;
-                }
-                else {
-	                long newID = ItemBase::getNextID();
-	                ViewGeometry viewGeometry;
-	                double ringThickness, holeSize;
-	                m_sketchWidget->getViaSize(ringThickness, holeSize);
-                    double halfVia = (ringThickness + ringThickness + holeSize) / 2;
+    foreach (PointZ newPoint, newPoints) {
+        if (newPoint.z == lastz) {
+            TraceWire * traceWire = drawOneTrace(point.p, newPoint.p, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+            connectionThing.add(nextSource, traceWire->connector0());
+            nextSource = traceWire->connector1();
+            traceThing.newTraces << traceWire;
+        }
+        else {
+	        long newID = ItemBase::getNextID();
+	        ViewGeometry viewGeometry;
+	        double ringThickness, holeSize;
+	        m_sketchWidget->getViaSize(ringThickness, holeSize);
+            double halfVia = (ringThickness + ringThickness + holeSize) / 2;
 
-	                viewGeometry.setLoc(QPointF(newPoint.p.x() - halfVia - Hole::OffsetPixels, newPoint.p.y() - halfVia - Hole::OffsetPixels));
-	                ItemBase * itemBase = m_sketchWidget->addItem(m_sketchWidget->referenceModel()->retrieveModelPart(ModuleIDNames::ViaModuleIDName), 
-										                ViewLayer::ThroughHoleThroughTop_TwoLayers, BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
+	        viewGeometry.setLoc(QPointF(newPoint.p.x() - halfVia - Hole::OffsetPixels, newPoint.p.y() - halfVia - Hole::OffsetPixels));
+	        ItemBase * itemBase = m_sketchWidget->addItem(m_sketchWidget->referenceModel()->retrieveModelPart(ModuleIDNames::ViaModuleIDName), 
+										        ViewLayer::ThroughHoleThroughTop_TwoLayers, BaseCommand::SingleView, viewGeometry, newID, -1, NULL);
 
-	                //DebugDialog::debug(QString("back from adding via %1").arg((long) itemBase, 0, 16));
-	                Via * via = qobject_cast<Via *>(itemBase);
-	                via->setAutoroutable(true);
-	                via->setHoleSize(QString("%1in,%2in") .arg(holeSize / GraphicsUtils::SVGDPI) .arg(ringThickness / GraphicsUtils::SVGDPI), false);
-                    addViaToUndo(via, parentCommand);
-                    addConnectionToUndo(nextSource, via->connectorItem(), parentCommand);
-                    nextSource = via->connectorItem();
-                    newVias << via;
-                    lastz = newPoint.z;
-                }
-                point = newPoint;
-            }
-            if (onTraceD) {
-                if (!atLeast(destPoint, traceAnchorD)) {
-                    onTraceD = false;
-                }
-                else if (!atLeast(point.p, traceAnchorD)) {
-                    onTraceD = false;
-                }
-            }
-            if (onTraceD) {
-                TraceWire * traceWire1 = drawOneTrace(point.p, traceAnchorD, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
-                addWireToUndo(traceWire1, parentCommand);
-                addConnectionToUndo(nextSource, traceWire1->connector0(), parentCommand);
-                newTraces << traceWire1;
+	        //DebugDialog::debug(QString("back from adding via %1").arg((long) itemBase, 0, 16));
+	        Via * via = qobject_cast<Via *>(itemBase);
+	        via->setAutoroutable(true);
+	        via->setHoleSize(QString("%1in,%2in") .arg(holeSize / GraphicsUtils::SVGDPI) .arg(ringThickness / GraphicsUtils::SVGDPI), false);
 
-                TraceWire * traceWire2 = drawOneTrace(traceAnchorD, destPoint, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
-                addWireToUndo(traceWire2, parentCommand);
-                addConnectionToUndo(traceWire1->connector1(), traceWire2->connector0(), parentCommand);
-                addConnectionToUndo(traceWire2->connector1(), destConnectorItem, parentCommand);
-                newTraces << traceWire2;
-            }
-            else {
-                TraceWire * traceWire = drawOneTrace(point.p, destPoint, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
-                addWireToUndo(traceWire, parentCommand);
-                addConnectionToUndo(nextSource, traceWire->connector0(), parentCommand);
-                addConnectionToUndo(traceWire->connector1(), destConnectorItem, parentCommand);
-                newTraces << traceWire;
-            }
+            connectionThing.add(nextSource, via->connectorItem());
+            nextSource = via->connectorItem();
+            traceThing.newVias << via;
+            lastz = newPoint.z;
         }
+        point = newPoint;
+    }
+    if (onTraceD) {
+        if (!atLeast(destPoint, traceAnchorD)) {
+            onTraceD = false;
+        }
+        else if (!atLeast(point.p, traceAnchorD)) {
+            onTraceD = false;
+        }
+    }
+    if (onTraceD) {
+        TraceWire * traceWire1 = drawOneTrace(point.p, traceAnchorD, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+        connectionThing.add(nextSource, traceWire1->connector0());
+        traceThing.newTraces << traceWire1;
 
-        foreach (TraceWire * traceWire, newTraces) {
-            delete traceWire;
-        }
-        foreach (SymbolPaletteItem * netLabel, newNetLabels) {
-            delete netLabel;
-        }
-        foreach (Via * via, newVias) {
-            via->removeLayerKin();
-            delete via;
-        }
-        foreach (JumperItem * jumperItem, newJumperItems) {
-            jumperItem->removeLayerKin();
-            delete jumperItem;
-        }
+        TraceWire * traceWire2 = drawOneTrace(traceAnchorD, destPoint, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+        connectionThing.add(traceWire1->connector1(), traceWire2->connector0());
+        connectionThing.add(traceWire2->connector1(), destConnectorItem);
+        traceThing.newTraces << traceWire2;
+    }
+    else {
+        TraceWire * traceWire = drawOneTrace(point.p, destPoint, m_standardWireWidth, lastz == 0 ? ViewLayer::Bottom : ViewLayer::Top);
+        connectionThing.add(nextSource, traceWire->connector0());
+        connectionThing.add(traceWire->connector1(), destConnectorItem);
+        traceThing.newTraces << traceWire;
     }
 }
 
-ConnectorItem * MazeRouter::findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace, ConnectorItem * already) 
+ConnectorItem * MazeRouter::findAnchor(GridPoint gp, TraceThing & traceThing, Net * net, QPointF & p, bool & onTrace, ConnectorItem * already) 
 {
-    QRectF gridRect(gp.x * m_gridPixels + topLeft.x(), gp.y * m_gridPixels + topLeft.y(), m_gridPixels, m_gridPixels);
-    ConnectorItem * connectorItem = findAnchor(gp, gridRect, net, newTraces, newVias, p, onTrace, already);
+    QRectF gridRect(gp.x * m_gridPixels + traceThing.topLeft.x(), gp.y * m_gridPixels + traceThing.topLeft.y(), m_gridPixels, m_gridPixels);
+    ConnectorItem * connectorItem = findAnchor(gp, gridRect, traceThing, net, p, onTrace, already);
     if (connectorItem) return connectorItem;
 
     gridRect.adjust(-m_gridPixels, -m_gridPixels, m_gridPixels, m_gridPixels);
-    return findAnchor(gp, gridRect, net, newTraces, newVias, p, onTrace, already);
+    return findAnchor(gp, gridRect, traceThing, net, p, onTrace, already);
 }
 
-ConnectorItem * MazeRouter::findAnchor(GridPoint gp, const QRectF & gridRect, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace, ConnectorItem * already) 
+ConnectorItem * MazeRouter::findAnchor(GridPoint gp, const QRectF & gridRect, TraceThing & traceThing, Net * net, QPointF & p, bool & onTrace, ConnectorItem * already) 
 {
     ConnectorItem * alreadyCross = NULL;
     if (already != NULL) alreadyCross = already->getCrossLayerConnectorItem();
     QList<TraceWire *> traceWires;
+    QList<ConnectorItem *> traceConnectorItems;
     foreach (QGraphicsItem * item, m_sketchWidget->scene()->items(gridRect)) {
         ConnectorItem * connectorItem = dynamic_cast<ConnectorItem *>(item);
         if (connectorItem) {
@@ -2308,21 +2450,33 @@ ConnectorItem * MazeRouter::findAnchor(GridPoint gp, const QRectF & gridRect, Ne
              ;
             if (!isCandidate) continue;
 
+            bool traceConnector = false;
             if (net->net->contains(connectorItem)) ;
             else {
                 TraceWire * traceWire = qobject_cast<TraceWire *>(connectorItem->attachedTo());
                 if (traceWire == NULL) {
                     Via * via = qobject_cast<Via *>(connectorItem->attachedTo());
                     if (via == NULL) isCandidate = false;
-                    else isCandidate = newVias.contains(via);
+                    else isCandidate = traceThing.newVias.contains(via);
                 }
-                else isCandidate = newTraces.contains(traceWire);
+                else {
+                    traceConnector = isCandidate = traceThing.newTraces.contains(traceWire);
+                }
             }
             if (!isCandidate) continue;
 
-            onTrace = false;
-            p = connectorItem->sceneAdjustedTerminalPoint(NULL);
-            return connectorItem;
+            if (traceConnector) {
+                traceConnectorItems << connectorItem;
+                continue;
+            }
+            else {
+                //if (traceConnectorItems.count() > 0) {
+                //    connectorItem->debugInfo("chose not trace");
+                //}
+                onTrace = false;
+                p = connectorItem->sceneAdjustedTerminalPoint(NULL);
+                return connectorItem;
+            }
         }
 
         TraceWire * traceWire = dynamic_cast<TraceWire *>(item);
@@ -2333,12 +2487,24 @@ ConnectorItem * MazeRouter::findAnchor(GridPoint gp, const QRectF & gridRect, Ne
         traceWires.append(traceWire);
     }
 
+    if (traceConnectorItems.count() > 0) {
+        if (traceConnectorItems.count() > 1) {
+            foreach (ConnectorItem * connectorItem, traceConnectorItems) {
+                connectorItem->debugInfo("on trace");
+            }
+        }
+        onTrace = false;
+        ConnectorItem * connectorItem = traceConnectorItems.takeLast();
+        p = connectorItem->sceneAdjustedTerminalPoint(NULL);
+        return connectorItem;
+    }
+
     foreach (TraceWire * traceWire, traceWires) {
         bool isCandidate = (gp.z == 0 && m_sketchWidget->attachedToBottomLayer(traceWire->connector0()))
                         || (gp.z == 1 && m_sketchWidget->attachedToTopLayer(traceWire->connector0()));
         if (!isCandidate) continue;
 
-        if (newTraces.contains(traceWire)) ;
+        if (traceThing.newTraces.contains(traceWire)) ;
         else if (net->net->contains(traceWire->connector0())) ;
         else continue;
 
@@ -2465,6 +2631,8 @@ void MazeRouter::removeStep(int ix, QList<GridPoint> & gridPoints) {
 
 void MazeRouter::addConnectionToUndo(ConnectorItem * from, ConnectorItem * to, QUndoCommand * parentCommand) 
 {
+    if (from == NULL || to == NULL) return;
+
 	ChangeConnectionCommand * ccc = new ChangeConnectionCommand(m_sketchWidget, BaseCommand::CrossView, 
 											from->attachedToID(), from->connectorSharedID(),
 											to->attachedToID(), to->connectorSharedID(),
@@ -2759,4 +2927,214 @@ void MazeRouter::removeOffBoardAnd(bool isPCBType, bool removeSingletons, bool b
 			delete connectorItems;
 		}
 	}
+}
+
+void MazeRouter::optimizeTraces(QList<int> & order, QMultiHash<int, QList< QPointer<TraceWire> > > & bundles, 
+                                QMultiHash<int, Via *> & vias, QMultiHash<int, JumperItem *> & jumperItems, QMultiHash<int, SymbolPaletteItem *> & netLabels, 
+                                NetList & netList, ConnectionThing & connectionThing)
+{
+    QList<ViewLayer::ViewLayerSpec> layerSpecs;
+    layerSpecs << ViewLayer::Bottom;
+    if (m_bothSidesNow) layerSpecs << ViewLayer::Top;
+    QRectF r2(0, 0, m_boardImage->width(), m_boardImage->height());
+    QPointF topLeft = m_maxRect.topLeft();
+    
+    //QList<int> order2(order);
+    //order2.append(order);
+    foreach (int netIndex, order) {
+        Net * net = netList.nets.at(netIndex);
+        foreach (ViewLayer::ViewLayerSpec layerSpec, layerSpecs) {
+            fastCopy(m_boardImage, m_spareImage);
+            QDomDocument * masterDoc = m_masterDocs.value(layerSpec);
+            //QString before = masterDoc->toString();
+            Markers markers;
+            markers.outID = DRC::NotNet;
+            markers.inTerminalID = DRC::Net;
+            markers.inSvgID = DRC::Net;
+            markers.inSvgAndID = DRC::AlsoNet;
+            markers.inNoID = DRC::Net;
+            NetElements netElements;
+            DRC::splitNetPrep(masterDoc, *(net->net), markers, netElements.net, netElements.alsoNet, netElements.notNet, true);
+            foreach (QDomElement element, netElements.net) {
+                element.setTagName("g");
+            }
+            foreach (QDomElement element, netElements.alsoNet) {
+                element.setTagName("g");
+            }
+
+            DRC::renderOne(masterDoc, m_spareImage, r2);
+
+            //QString after = masterDoc->toString();
+
+            foreach (QDomElement element, netElements.net) {
+                element.setTagName(element.attribute("former"));
+                element.removeAttribute("net");
+            }
+            foreach (QDomElement element, netElements.alsoNet) {
+                element.setTagName(element.attribute("former"));
+                element.removeAttribute("net");
+            }
+            foreach (QDomElement element, netElements.notNet) {
+                element.removeAttribute("net");
+            }
+
+            QPainter painter;
+            painter.begin(m_spareImage);
+            QPen pen = painter.pen();
+            pen.setColor(0xff000000);
+
+            QBrush brush(QColor(0xff000000));		
+            painter.setBrush(brush);
+            foreach (int otherIndex, order) {
+                if (otherIndex == netIndex) continue;
+
+                foreach(QList< QPointer<TraceWire> > bundle, bundles.values(otherIndex)) {
+                    if (ViewLayer::specFromID(bundle.at(0)->viewLayerID()) != layerSpec) continue;
+
+                    pen.setWidthF((bundle.at(0)->width() + m_keepoutPixels + m_keepoutPixels) * OptimizeFactor);
+                    painter.setPen(pen);
+                    foreach (TraceWire * traceWire, bundle) {
+                        if (traceWire == NULL) continue;
+
+                        QPointF p1 = (traceWire->connector0()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
+                        QPointF p2 = (traceWire->connector1()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
+                        painter.drawLine(p1, p2);
+                    }
+
+                    painter.setPen(Qt::NoPen);		
+                    foreach (Via * via, vias) {
+                        QPointF p = (via->connectorItem()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
+                        double rad = ((via->connectorItem()->sceneBoundingRect().width() / 2) + m_keepoutPixels) * OptimizeFactor;
+                        painter.drawEllipse(p, rad, rad);
+                    }
+                    foreach (JumperItem * jumperItem, jumperItems) {
+                        QPointF p = (jumperItem->connector0()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
+                        double rad = ((jumperItem->connector0()->sceneBoundingRect().width() / 2) + m_keepoutPixels) * OptimizeFactor;
+                        painter.drawEllipse(p, rad, rad);
+                        p = (jumperItem->connector1()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
+                        painter.drawEllipse(p, rad, rad);
+                    }
+                    foreach (SymbolPaletteItem * netLabel, netLabels) {
+                        QRectF r = netLabel->sceneBoundingRect();
+                        painter.drawRect((r.left() - topLeft.x() - m_keepoutPixels) * OptimizeFactor, 
+                                        (r.top() - topLeft.y() - m_keepoutPixels) * OptimizeFactor, 
+                                        (r.width() + m_keepoutPixels) * OptimizeFactor,
+                                        (r.height() + m_keepoutPixels) * OptimizeFactor);
+                    }
+                }
+            }
+
+            painter.end();
+
+            #ifndef QT_NO_DEBUG
+	            m_spareImage->save(FolderUtils::getUserDataStorePath("") + QString("/optimizeObstacles%1_%2.png").arg(netIndex, 2, 10, QChar('0')).arg(layerSpec));
+            #endif            
+
+            // finally test all combinations of each bundle
+            //      identify traces in bundles with source and dest that cannot be deleted
+            //      remove source/dest (delete and keep QPointers?)
+            //          schematic view must replace with two 90-degree lines
+
+            foreach(QList< QPointer<TraceWire> > bundle, bundles.values(netIndex)) {
+                for (int i = bundle.count() - 1; i >= 0; i--) {
+                    TraceWire * traceWire = bundle.at(i);
+                    if (traceWire == NULL) bundle.removeAt(i);
+                }
+
+                if (ViewLayer::specFromID(bundle.at(0)->viewLayerID()) != layerSpec) {
+                    // all wires in a single bundle are in the same layer
+                    continue;
+                }
+
+                QVector<QPointF> points(bundle.count() + 1, QPointF(0, 0));
+                QVector<bool> splits(bundle.count() + 1, false);
+                int index = 0;
+                foreach (TraceWire * traceWire, bundle) {
+                    if (connectionThing.multi(traceWire->connector0())) splits.replace(index, true);
+                    points.replace(index, traceWire->connector0()->sceneAdjustedTerminalPoint(NULL));
+                    index++;
+                    if (connectionThing.multi(traceWire->connector1())) splits.replace(index, true);
+                    points.replace(index, traceWire->connector1()->sceneAdjustedTerminalPoint(NULL));  
+                }
+
+                splits.replace(0, false);
+                splits.replace(splits.count() - 1, true);
+
+                QList<QPointF> pointsSoFar;
+                QList<TraceWire *> bundleSoFar;
+                int startIndex = 0;
+                for (int pix = 0; pix < points.count(); pix++) {
+                    pointsSoFar << points.at(pix);
+                    if (pix < points.count() - 1) {
+                        bundleSoFar << bundle.at(pix);
+                    }
+                    if (splits.at(pix)) {
+                        reducePoints(pointsSoFar, topLeft, bundleSoFar, startIndex, pix, connectionThing, netIndex, layerSpec);
+                        pointsSoFar.clear();
+                        bundleSoFar.clear();
+                        pointsSoFar << points.at(pix);
+                        if (pix < points.count() - 1) bundleSoFar << bundle.at(pix);
+                        startIndex = pix;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void MazeRouter::reducePoints(QList<QPointF> & points, QPointF topLeft, QList<TraceWire *> & bundle, int startIndex, int endIndex, ConnectionThing & connectionThing, int netIndex, ViewLayer::ViewLayerSpec layerSpec) {
+    double width = bundle.at(0)->width() * OptimizeFactor;
+    int inc = 0;
+    for (int separation = endIndex - startIndex; separation > 1; separation--) {
+        for (int ix = 0; ix < points.count() - separation; ix++) {
+            m_spareImage2->fill(0xffffffff);
+            QPainter painter;
+            painter.begin(m_spareImage2);
+            QPen pen = painter.pen();
+            pen.setColor(0xff000000);
+            pen.setWidthF(width);
+            painter.setPen(pen);
+            QPointF p1 = (points.at(ix) - topLeft) * OptimizeFactor;
+            QPointF p2 = (points.at(ix + separation) - topLeft) * OptimizeFactor;
+            painter.drawLine(p1, p2);
+            painter.end();
+            #ifndef QT_NO_DEBUG
+	            m_spareImage2->save(FolderUtils::getUserDataStorePath("") + QString("/optimizeTrace%1_%2_%3.png").arg(netIndex,2,10,QChar('0')).arg(layerSpec).arg(inc++,3,10,QChar('0')));
+            #endif            
+
+            double minX = qMax(0.0, qMin(p1.x(), p2.x()) - width);
+            double minY = qMax(0.0, qMin(p1.y(), p2.y()) - width);
+            double maxX = qMin(m_spareImage2->width() - 1.0, qMax(p1.x(), p2.x()) + width);
+            double maxY = qMin(m_spareImage2->height() - 1.0, qMax(p1.y(), p2.y()) + width);
+            bool overlaps = false;
+            for (int y = minY; y <= maxY && !overlaps; y++) {
+                for (int x = minX; x <= maxX && !overlaps; x++) {
+                    if (m_spareImage->pixel(x, y) == 0xffffffff) continue;
+                    if (m_spareImage2->pixel(x, y) == 0xffffffff) continue;
+                    overlaps = true;
+                }
+            }
+            if (!overlaps) {
+                TraceWire * traceWire = bundle.at(ix);
+                TraceWire * next = bundle.at(ix + 1);
+                TraceWire * last = bundle.at(ix + separation - 1);
+                QList<ConnectorItem *> newDests = connectionThing.values(last->connector1());
+                QPointF p2 = newDests.at(0)->sceneAdjustedTerminalPoint(NULL);
+                traceWire->setLineAnd(QLineF(QPointF(0, 0), p2 - traceWire->pos()), traceWire->pos(), true);
+                traceWire->saveGeometry();
+                traceWire->update();
+                foreach (ConnectorItem * newDest, newDests) {
+                    connectionThing.add(traceWire->connector1(), newDest);
+                }
+                connectionThing.remove(traceWire->connector1(), next->connector0());
+                for (int i = 0; i < separation - 1; i++) {
+                    TraceWire * tw = bundle.takeAt(ix + 1);
+                    connectionThing.remove(tw->connector0());
+                    connectionThing.remove(tw->connector1());
+                    delete tw;
+                    points.removeAt(ix + 1);
+                }
+            }
+        }
+    }
 }

@@ -161,6 +161,27 @@ struct RouteThing {
     QSet<int> avoids;
 };
 
+struct TraceThing {
+    QList<TraceWire *> newTraces;
+    QList<Via *> newVias;
+    QList<JumperItem *> newJumperItems;
+    QList<SymbolPaletteItem *> newNetLabels;
+    JumperItem * jumperItem;
+    SymbolPaletteItem * netLabel;
+    QPointF topLeft;
+    GridPoint nextTraceStart;
+};
+
+struct ConnectionThing {
+    QMultiHash<ConnectorItem *, QPointer<ConnectorItem> > sd;
+
+    void add(ConnectorItem * s, ConnectorItem * d);
+    void remove(ConnectorItem * s);
+    void remove(ConnectorItem * s, ConnectorItem * d);
+    bool multi(ConnectorItem * s);  
+    QList<ConnectorItem *> values(ConnectorItem * s);
+};
+
 typedef bool (*JumperWillFitFunction)(GridPoint &, const Grid *, int halfSize);
 typedef double (*CostFunction)(const QPoint & p1, const QPoint & p2);
 
@@ -205,11 +226,12 @@ protected:
     bool routeNext(bool makeJumper, RouteThing &, QList< QList<ConnectorItem *> > & subnets, Score & currentScore, int netIndex, QList<NetOrdering> & allOrderings);
     void cleanUpNets(NetList &);
     void createTraces(NetList & netList, Score & bestScore, QUndoCommand * parentCommand);
+    void createTrace(Trace &, QList<GridPoint> &, TraceThing &, ConnectionThing &, Net *);
     void removeColinear(QList<GridPoint> & gridPoints);
     void removeSteps(QList<GridPoint> & gridPoints);
     void removeStep(int ix, QList<GridPoint> & gridPoints);
-    ConnectorItem * findAnchor(GridPoint gp, QPointF topLeft, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace, ConnectorItem * already);
-    ConnectorItem * findAnchor(GridPoint gp, const QRectF &, Net * net, QList<TraceWire *> & newTraces, QList<Via *> & newVias, QPointF & p, bool & onTrace, ConnectorItem * already);
+    ConnectorItem * findAnchor(GridPoint gp, TraceThing &, Net * net, QPointF & p, bool & onTrace, ConnectorItem * already);
+    ConnectorItem * findAnchor(GridPoint gp, const QRectF &, TraceThing &, Net * net, QPointF & p, bool & onTrace, ConnectorItem * already);
     void addConnectionToUndo(ConnectorItem * from, ConnectorItem * to, QUndoCommand * parentCommand);
     void addViaToUndo(Via *, QUndoCommand * parentCommand);
     void addJumperToUndo(JumperItem *, QUndoCommand * parentCommand);
@@ -220,6 +242,8 @@ protected:
     GridPoint lookForJumper(GridPoint initial, GridValue targetValue, QPoint targetLocation);
     void expandOneJ(GridPoint & gridPoint, std::priority_queue<GridPoint> & pq, int dx, int dy, int dz, GridValue targetValue, QPoint targetLocation, QSet<int> & already);
     void removeOffBoardAnd(bool isPCBType, bool removeSingletons, bool bothSides);
+    void optimizeTraces(QList<int> & order, QMultiHash<int, QList< QPointer<TraceWire> > > &, QMultiHash<int, Via *> &, QMultiHash<int, JumperItem *> &, QMultiHash<int, SymbolPaletteItem *> &, NetList &, ConnectionThing &);
+    void reducePoints(QList<QPointF> & points, QPointF topLeft, QList<TraceWire *> & bundle, int startIndex, int endIndex, ConnectionThing &, int netIndex, ViewLayer::ViewLayerSpec);
 
 public slots:
      void incCommandProgress();
@@ -238,6 +262,7 @@ protected:
     QImage * m_displayImage[2];
     QImage * m_boardImage;
     QImage * m_spareImage;
+    QImage * m_spareImage2;
     QGraphicsPixmapItem * m_displayItem[2];
     bool m_temporaryBoard;
     CostFunction m_costFunction;
