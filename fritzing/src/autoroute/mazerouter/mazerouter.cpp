@@ -3010,20 +3010,21 @@ void MazeRouter::optimizeTraces(QList<int> & order, QMultiHash<int, QList< QPoin
                         painter.drawLine(p1, p2);
                     }
 
-                    painter.setPen(Qt::NoPen);		
-                    foreach (Via * via, vias) {
+                    painter.setPen(Qt::NoPen);	
+
+                    foreach (Via * via, vias.values(otherIndex)) {
                         QPointF p = (via->connectorItem()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
                         double rad = ((via->connectorItem()->sceneBoundingRect().width() / 2) + m_keepoutPixels) * OptimizeFactor;
                         painter.drawEllipse(p, rad, rad);
                     }
-                    foreach (JumperItem * jumperItem, jumperItems) {
+                    foreach (JumperItem * jumperItem, jumperItems.values(otherIndex)) {
                         QPointF p = (jumperItem->connector0()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
                         double rad = ((jumperItem->connector0()->sceneBoundingRect().width() / 2) + m_keepoutPixels) * OptimizeFactor;
                         painter.drawEllipse(p, rad, rad);
                         p = (jumperItem->connector1()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
                         painter.drawEllipse(p, rad, rad);
                     }
-                    foreach (SymbolPaletteItem * netLabel, netLabels) {
+                    foreach (SymbolPaletteItem * netLabel, netLabels.values(otherIndex)) {
                         QRectF r = netLabel->sceneBoundingRect();
                         painter.drawRect((r.left() - topLeft.x() - m_keepoutPixels) * OptimizeFactor, 
                                         (r.top() - topLeft.y() - m_keepoutPixels) * OptimizeFactor, 
@@ -3053,6 +3054,19 @@ void MazeRouter::optimizeTraces(QList<int> & order, QMultiHash<int, QList< QPoin
                 if (ViewLayer::specFromID(bundle.at(0)->viewLayerID()) != layerSpec) {
                     // all wires in a single bundle are in the same layer
                     continue;
+                }
+
+                QList<ConnectorItem *> tos = connectionThing.values(bundle.first()->connector0());
+                foreach (ConnectorItem * to, tos) {
+                    if (to->attachedToItemType() == ModelPart::Via) {
+                        to->debugInfo("start hooked to via");
+                    }
+                }
+                tos = connectionThing.values(bundle.last()->connector1());
+                foreach (ConnectorItem * to, tos) {
+                    if (to->attachedToItemType() == ModelPart::Via) {
+                        to->debugInfo("end hooked to via");
+                    }
                 }
 
                 QVector<QPointF> points(bundle.count() + 1, QPointF(0, 0));
