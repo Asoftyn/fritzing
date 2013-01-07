@@ -214,6 +214,15 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 {
 	QFile file(panelFilename);
 
+    QFileInfo info(panelFilename);
+    QDir copyDir = info.absoluteDir();
+    copyDir.cd("copies");
+    if (!copyDir.exists()) {
+		DebugDialog::debug(QString("unable to create 'copies' folder in '%1'").arg(info.absoluteDir().absolutePath()));
+		return;
+	}
+
+
 	QString errorStr;
 	int errorLine;
 	int errorColumn;
@@ -323,7 +332,7 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 
 	QList<PanelItem *> refPanelItems;
 	board = boards.firstChildElement("board");
-	if (!openWindows(board, fzzFilePaths, app, panelParams, fzDir, svgDir, refPanelItems, layerThingList, customPartsOnly)) return;
+	if (!openWindows(board, fzzFilePaths, app, panelParams, fzDir, svgDir, refPanelItems, layerThingList, customPartsOnly, copyDir)) return;
 
 	QList<PanelItem *> insertPanelItems;
 	int optionalCount = 0;
@@ -713,7 +722,7 @@ bool Panelizer::checkBoards(QDomElement & board, QHash<QString, QString> & fzzFi
 bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> & fzzFilePaths, 
                     FApplication * app, PanelParams & panelParams, 
                     QDir & fzDir, QDir & svgDir, QList<PanelItem *> & refPanelItems, 
-                    QList<LayerThing> & layerThingList, bool customPartsOnly)
+                    QList<LayerThing> & layerThingList, bool customPartsOnly, QDir & copyDir)
 {
     QDir rotateDir(svgDir);
     QDir norotateDir(svgDir);
@@ -735,14 +744,16 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
 		}
 
 		QString boardName = boardElement.attribute("name");
-		QString path = fzzFilePaths.value(boardName, "");
+		QString oldPath = fzzFilePaths.value(boardName, "");
 		MainWindow * mainWindow = app->openWindowForService(false);
         mainWindow->setCloseSilently(true);
 
 		FolderUtils::setOpenSaveFolderAux(fzDir.absolutePath());
 
-		if (!mainWindow->loadWhich(path, false, false, "")) {
-			DebugDialog::debug(QString("failed to load '%1'").arg(path));
+        QString copyPath = copyDir.absoluteFilePath(boardName);
+
+		if (!mainWindow->loadWhich(copyPath, false, false, "")) {
+			DebugDialog::debug(QString("failed to load '%1'").arg(copyPath));
 			return false;
 		}
 
@@ -773,7 +784,7 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
         foreach (ItemBase * boardItem, boards) {
 		    PanelItem * panelItem = new PanelItem;
 		    panelItem->boardName = boardName;
-		    panelItem->path = path;
+		    panelItem->path = oldPath;
 		    panelItem->required = required;
 		    panelItem->maxOptional = optional;
             panelItem->boardID = boardItem->id();
@@ -783,7 +794,7 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
 		    DebugDialog::debug(QString("board size inches c %1, %2, %3")
 				    .arg(panelItem->boardSizeInches.width())
 				    .arg(panelItem->boardSizeInches.height())
-				    .arg(path));
+				    .arg(copyPath));
 
 		    /*
 		    QSizeF boardSize = boardItem->size();
@@ -822,7 +833,7 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
 		    }
 
 		    if (tooBig) {
-			    DebugDialog::debug(QString("board is too big for panel '%1'").arg(path));
+			    DebugDialog::debug(QString("board is too big for panel '%1'").arg(oldPath));
 			    return false;
 		    }
 
@@ -1106,6 +1117,15 @@ void Panelizer::inscribe(FApplication * app, const QString & panelFilename, bool
 {
 	QFile file(panelFilename);
 
+    QFileInfo info(panelFilename);
+    QDir copyDir = info.absoluteDir();
+    copyDir.mkdir("copies");
+    copyDir.cd("copies");
+    if (!copyDir.exists()) {
+		DebugDialog::debug(QString("unable to create 'copies' folder in '%1'").arg(info.absoluteDir().absolutePath()));
+		return;
+	}
+
 	QString errorStr;
 	int errorLine;
 	int errorColumn;
@@ -1168,7 +1188,7 @@ void Panelizer::inscribe(FApplication * app, const QString & panelFilename, bool
 
 	board = boards.firstChildElement("board");
 	while (!board.isNull()) {
-		MainWindow * mainWindow = inscribeBoard(board, fzzFilePaths, app, fzDir, drc);
+		MainWindow * mainWindow = inscribeBoard(board, fzzFilePaths, app, fzDir, drc, copyDir);
 		if (mainWindow) {
 			mainWindow->setCloseSilently(true);
 			mainWindow->close();
@@ -1181,21 +1201,42 @@ void Panelizer::inscribe(FApplication * app, const QString & panelFilename, bool
 
 }
 
-MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QString> & fzzFilePaths, FApplication * app, QDir & fzDir, bool drc)
+MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QString> & fzzFilePaths, FApplication * app, QDir & fzDir, bool drc, QDir & copyDir)
 {
 	QString boardName = board.attribute("name");
 	int optional = board.attribute("maxOptionalCount", "").toInt();
 	int required = board.attribute("requiredCount", "").toInt();
     if (optional <= 0 && required <= 0) return NULL;
 
-	QString path = fzzFilePaths.value(boardName, "");
+	QString oldPath = fzzFilePaths.value(boardName, "");
+    QFileInfo original(oldPath);
+    QString copyPath = copyDir.absoluteFilePath(original.fileName());
+    QFileInfo copy(copyPath);
+
+
+    if (!copy.exists()) {
+    }
+    else {
+        if (original.lastModified() <= copy.lastModified()) {
+            DebugDialog::debug(QString("copy %1 is up to date").arg(copyPath));
+            return NULL;
+        }
+    }
+
+    QFile file(oldPath);
+    QFile::remove(copyPath);
+    bool ok = file.copy(copyPath);
+    if (!ok) {
+        QMessageBox::warning(NULL, QObject::tr("Fritzing"), QObject::tr("unable to copy file '%1' to '%2'.").arg(oldPath).arg(copyPath));
+        return NULL;
+    }
 
 	MainWindow * mainWindow = app->openWindowForService(false);
 
 	FolderUtils::setOpenSaveFolderAux(fzDir.absolutePath());
 
-	if (!mainWindow->loadWhich(path, false, false, "")) {
-		DebugDialog::debug(QString("failed to load '%1'").arg(path));
+	if (!mainWindow->loadWhich(copyPath, false, false, "")) {
+		DebugDialog::debug(QString("failed to load '%1'").arg(copyPath));
 		return mainWindow;
 	}
 
@@ -1203,8 +1244,8 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
 
     int moved = mainWindow->pcbView()->checkLoadedTraces();
     if (moved > 0) {
-        QMessageBox::warning(NULL, QObject::tr("Fritzing"), QObject::tr("%1 wires moved from their saved position in %2.").arg(moved).arg(path));
-        DebugDialog::debug(QString("\ncheckloadedtraces %1\n").arg(path)); 
+        QMessageBox::warning(NULL, QObject::tr("Fritzing"), QObject::tr("%1 wires moved from their saved position in %2.").arg(moved).arg(oldPath));
+        DebugDialog::debug(QString("\ncheckloadedtraces %1\n").arg(oldPath)); 
     }
 
 	foreach (QGraphicsItem * item, mainWindow->pcbView()->scene()->items()) {
@@ -1255,8 +1296,8 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
     }
 
 	if (filled) { 
-		mainWindow->saveAsShareable(path, true);
-		DebugDialog::debug(QString("%1 filled:%2").arg(path).arg(filled));
+		mainWindow->saveAsShareable(copyPath, true);
+		DebugDialog::debug(QString("%1 filled:%2").arg(copyPath).arg(filled));
 	}
 
     checkDonuts(mainWindow, true);
