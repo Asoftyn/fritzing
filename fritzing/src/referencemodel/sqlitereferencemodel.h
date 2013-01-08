@@ -41,7 +41,7 @@ class SqliteReferenceModel : public ReferenceModel {
 		SqliteReferenceModel();
 		~SqliteReferenceModel();
 
-		bool loadAll(const QString & databaseName, bool fullLoad);
+		bool loadAll(const QString & databaseName, bool fullLoad, bool dbExists);
 		bool loadFromDB(const QString & databaseName);
 		ModelPart *loadPart(const QString & path, bool update);
 		ModelPart *reloadPart(const QString & path, const QString & moduleID);
@@ -64,7 +64,7 @@ class SqliteReferenceModel : public ReferenceModel {
 		bool lastWasExactMatch();
 
 	protected:
-		void initParts();
+		void initParts(bool dbExists);
         void killParts();
 
 	protected:

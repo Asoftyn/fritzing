@@ -697,7 +697,21 @@ protected:
 protected:
 	QSet<SketchWidget *> m_sketchWidgets;
 	QList<RatsnestConnectThing> m_ratsnestConnectThings;
-	Direction m_direction;
+	CleanUpWiresCommand::Direction m_direction;
+};
+
+/////////////////////////////////////////////
+
+class CleanUpRatsnestsCommand : public BaseCommand
+{
+public:
+	CleanUpRatsnestsCommand(class SketchWidget * sketchWidget, CleanUpWiresCommand::Direction, QUndoCommand * parent);
+    void undo();
+    void redo();
+
+protected:
+	QString getParamString() const;
+
 };
 
 /////////////////////////////////////////////

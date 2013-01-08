@@ -72,8 +72,8 @@ signals:
     void addSearchMaximum(int);
 
 protected:
-	virtual void initParts();
-	void loadParts();
+	virtual void initParts(bool dbExists);
+	void loadParts(bool dbExists);
 	void loadPartsAux(QDir & dir, QStringList & nameFilters, int & loadedPart, int totalParts);
 	void countParts(QDir & dir, QStringList & nameFilters, int & partCount);
     void search(ModelPart * modelPart, const QStringList & searchStrings, QList<ModelPart *> & modelParts, bool allowObsolete);

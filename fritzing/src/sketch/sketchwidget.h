@@ -276,7 +276,7 @@ public:
 	virtual void changeLayer(long id, double z, ViewLayer::ViewLayerID viewLayerID);
 	void ratsnestConnect(ConnectorItem * connectorItem, bool connect);
 	void ratsnestConnect(ItemBase *, bool connect);
-	void ratsnestConnect(ConnectorItem * c1, ConnectorItem * c2, bool connect);
+	void ratsnestConnect(ConnectorItem * c1, ConnectorItem * c2, bool connect, bool wait);
 	virtual void addDefaultParts();
 	float getTopZ();
 	QGraphicsItem * addWatermark(const QString & filename);
@@ -489,6 +489,7 @@ protected:
     virtual bool canConnect(Wire * from, ItemBase * to);
     void removeDragWire();
     QGraphicsItem * getClickedItem(QList<QGraphicsItem *> & items);
+    void cleanupRatsnests(QList< QPointer<ConnectorItem> > & connectorItems, bool connect);
 
 protected:
 	static bool lessThan(int a, int b);
@@ -541,6 +542,7 @@ signals:
 	void showing(SketchWidget *);
     void clickedItemCandidateSignal(QGraphicsItem *, bool & ok);
     void resizedSignal(ItemBase *);
+    void cleanupRatsnestsSignal(bool doEmit);
 
 protected slots:
 	void itemAddedSlot(ModelPart *, ItemBase *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, SketchWidget * dropOrigin);
@@ -606,6 +608,7 @@ public slots:
 	virtual void changeBoardLayers(int layers, bool doEmit);
 	void updateConnectors();
 	void ratsnestConnect(long id, const QString & connectorID, bool connect, bool doEmit);
+    void cleanupRatsnests(bool doEmit);
 
 protected:
 	enum StatusConnectStatus {
@@ -703,6 +706,8 @@ protected:
 	QPointer<QGraphicsSvgItem> m_movingItem;
 	QList< QPointer<ConnectorItem> > m_ratsnestUpdateDisconnect;
 	QList< QPointer<ConnectorItem> > m_ratsnestUpdateConnect;
+	QList< QPointer<ConnectorItem> > m_ratsnestCacheDisconnect;
+	QList< QPointer<ConnectorItem> > m_ratsnestCacheConnect;
 	QList <ItemBase *> m_checkUnder;
 	bool m_addDefaultParts;
 	QPointer<ItemBase> m_addedDefaultPart;

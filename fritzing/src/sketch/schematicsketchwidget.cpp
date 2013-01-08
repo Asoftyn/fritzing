@@ -270,6 +270,7 @@ void SchematicSketchWidget::setProp(ItemBase * itemBase, const QString & prop, c
 	        parentCommand->setText(tr("Change label from %1 to %2").arg(oldValue).arg(newValue));
 
 	        new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+	        new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
 	        QList<Wire *> done;
 	        foreach (ConnectorItem * toConnectorItem, sitem->connector0()->connectedToItems()) {
@@ -284,6 +285,7 @@ void SchematicSketchWidget::setProp(ItemBase * itemBase, const QString & prop, c
 	        new SetPropCommand(this, itemBase->id(), "label", oldValue, newValue, true, parentCommand);
             new ChangeLabelTextCommand(this, itemBase->id(), oldValue, newValue, parentCommand);
 
+	        new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	        new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 
 	        m_undoStack->waitPush(parentCommand, PropChangeDelay);
@@ -313,6 +315,7 @@ void SchematicSketchWidget::setVoltage(double v, bool doEmit)
 	parentCommand->setText(tr("Change voltage from %1 to %2").arg(sitem->voltage()).arg(v));
 
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
 	QList<Wire *> done;
 	foreach (ConnectorItem * toConnectorItem, sitem->connector0()->connectedToItems()) {
@@ -326,6 +329,7 @@ void SchematicSketchWidget::setVoltage(double v, bool doEmit)
 
 	new SetPropCommand(this, item->id(), "voltage", QString::number(sitem->voltage()), QString::number(v), true, parentCommand);
 
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 
 	m_undoStack->waitPush(parentCommand, PropChangeDelay);

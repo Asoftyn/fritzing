@@ -880,9 +880,12 @@ void PCBSketchWidget::swapLayers(ItemBase *, int newLayers, QUndoCommand * paren
     }
 
     if (newLayers == 2) {
+        new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 		new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 		return;
 	}
+
+
 
 	// disconnect and flip smds
 	foreach (QGraphicsItem * item, scene()->items()) {
@@ -2257,6 +2260,7 @@ void PCBSketchWidget::convertToVia(ConnectorItem * lastHoverEnterConnectorItem) 
 	QUndoCommand * parentCommand = new QUndoCommand(QObject::tr("Convert to Via"));
 
     new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
     double ringThickness, holeSize;
     getViaSize(ringThickness, holeSize);
@@ -2306,6 +2310,7 @@ void PCBSketchWidget::convertToVia(ConnectorItem * lastHoverEnterConnectorItem) 
 	SelectItemCommand * selectItemCommand = new SelectItemCommand(this, SelectItemCommand::NormalSelect, parentCommand);
 	selectItemCommand->addRedo(newID);
 
+    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 
 	m_undoStack->push(parentCommand);
@@ -2386,6 +2391,7 @@ void PCBSketchWidget::convertToBendpoint() {
 	QUndoCommand * parentCommand = new QUndoCommand(QObject::tr("Convert Via to Bendpoint"));
 
     new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
     foreach (ConnectorItem * target, targets) {
 		new ChangeConnectionCommand(this, BaseCommand::CrossView, target->attachedToID(), target->connectorSharedID(),
@@ -2431,6 +2437,7 @@ void PCBSketchWidget::convertToBendpoint() {
 
     makeDeleteItemCommand(via, BaseCommand::CrossView, parentCommand);
 
+    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 
 	m_undoStack->push(parentCommand);

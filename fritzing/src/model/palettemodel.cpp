@@ -87,7 +87,7 @@ PaletteModel::PaletteModel(bool makeRoot, bool doInit) : ModelBase( makeRoot ) {
     m_fullLoad = false;
 
 	if (doInit) {
-		initParts();
+		initParts(false);
 	}
 }
 
@@ -98,7 +98,7 @@ PaletteModel::~PaletteModel()
     }
 }
 
-void PaletteModel::initParts() {
+void PaletteModel::initParts(bool dbExists) {
 	QDir * dir = FolderUtils::getApplicationSubFolder("parts");
 	if (dir == NULL) {
 	    QMessageBox::information(NULL, QObject::tr("Fritzing"),
@@ -109,7 +109,7 @@ void PaletteModel::initParts() {
 	FritzingContribPath = dir->absoluteFilePath("contrib");
 	delete dir;
 
-	loadParts();
+	loadParts(dbExists);
 	if (m_root == NULL) {
 	    QMessageBox::information(NULL, QObject::tr("Fritzing"),
 	                             QObject::tr("No parts found.") );
@@ -137,7 +137,7 @@ bool PaletteModel::containsModelPart(const QString & moduleID) {
 	return m_partHash.contains(moduleID);
 }
 
-void PaletteModel::loadParts() {
+void PaletteModel::loadParts(bool dbExists) {
 	QStringList nameFilters;
 	nameFilters << "*" + FritzingPartExtension;
 
@@ -170,7 +170,7 @@ void PaletteModel::loadParts() {
 	countParts(dir2, nameFilters, totalPartCount);
 
 	QDir dir3(":/resources/parts");
-    if (m_fullLoad) {
+    if (m_fullLoad || !dbExists) {
 	    countParts(dir3, nameFilters, totalPartCount);
     }
 
@@ -182,7 +182,7 @@ void PaletteModel::loadParts() {
 
 	loadPartsAux(dir2, nameFilters, loadingPart, totalPartCount);
 
-    if (m_fullLoad) {
+    if (m_fullLoad || !dbExists) {
         // otherwise these will already be in the database
 	    loadPartsAux(dir3, nameFilters, loadingPart, totalPartCount);  
     }

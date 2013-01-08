@@ -240,6 +240,7 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
 		selectItemCommand->setSelectItemType(SelectItemCommand::DeselectAll);
 		selectItemCommand->setCrossViewType(crossViewType);
 		new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+        new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 	}
 
 	QHash<long, ItemBase *> newItems;
@@ -563,7 +564,7 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
 			// m_pasteCount used for offsetting paste items, not a count of how many items are pasted
 			m_pasteCount++;
 		}
-
+        new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 		new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	}
 
@@ -1023,7 +1024,9 @@ void SketchWidget::deleteSelected(Wire * wire, bool plus) {
 	}
 
 	QUndoCommand * parentCommand = new QUndoCommand(tr("Delete ratsnest"));
+    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 	deleteRatsnest(wire, parentCommand);
+    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	m_undoStack->waitPush(parentCommand, PropChangeDelay);
 }
 
@@ -1084,9 +1087,11 @@ void SketchWidget::deleteAux(QSet<ItemBase *> & deletedItems, QUndoCommand * par
     stackSelectionState(false, parentCommand);
 
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
 	deleteMiddle(deletedItems, parentCommand);
 
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 
 	// actual delete commands must come last for undo to work properly
@@ -1925,6 +1930,7 @@ void SketchWidget::dropItemEvent(QDropEvent *event) {
 	QUndoCommand* parentCommand = new TemporaryCommand(tr("Add %1").arg(m_droppingItem->title()));
 	stackSelectionState(false, parentCommand);
 	CleanUpWiresCommand * cuw = new CleanUpWiresCommand(this, CleanUpWiresCommand::Noop, parentCommand);
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
 	m_droppingItem->saveGeometry();
 	ViewGeometry viewGeometry = m_droppingItem->getViewGeometry();
@@ -1990,6 +1996,7 @@ void SketchWidget::dropItemEvent(QDropEvent *event) {
 	killDroppingItem();
 
 	if (gotConnector) {
+	    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 		new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 		cuw->setDirection(CleanUpWiresCommand::UndoOnly);
 	}
@@ -3152,6 +3159,8 @@ bool SketchWidget::checkMoved()
 	}
 
 	CleanUpWiresCommand * cuw = new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+
 	moveLegBendpoints(true, parentCommand);
 
 	bool gotConnection = true;
@@ -3239,6 +3248,7 @@ bool SketchWidget::checkMoved()
 	clearTemporaries();
 
 	if (gotConnection) {
+	    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 		new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 		cuw->setDirection(CleanUpWiresCommand::UndoOnly);
 	}
@@ -3393,6 +3403,7 @@ void SketchWidget::prepLegBendpointMove(ConnectorItem * from, int index, QPointF
 
 	if (changeConnections) {
 		new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+	    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 	}
 
 	MoveLegBendpointCommand * mlbc = new MoveLegBendpointCommand(this, fromID, fromConnectorID, index, oldPos, newPos, parentCommand);
@@ -3458,6 +3469,7 @@ void SketchWidget::prepLegBendpointMove(ConnectorItem * from, int index, QPointF
 
 
 	if (changeConnections) {
+	    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 		new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	}
 
@@ -3550,6 +3562,7 @@ void SketchWidget::wireChangedSlot(Wire* wire, const QLineF & oldLine, const QLi
 	}
 
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
 	rememberSticky(wire, parentCommand);
 
@@ -3621,6 +3634,7 @@ void SketchWidget::wireChangedSlot(Wire* wire, const QLineF & oldLine, const QLi
 
 	clearTemporaries();
 
+    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	m_undoStack->waitPush(parentCommand, PropChangeDelay);
 }
@@ -3659,6 +3673,7 @@ void SketchWidget::dragWireChanged(Wire* wire, ConnectorItem * fromOnWire, Conne
 	}
 
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
 	m_connectorDragWire->saveGeometry();
 	bool doEmit = false;
@@ -3747,6 +3762,7 @@ void SketchWidget::dragWireChanged(Wire* wire, ConnectorItem * fromOnWire, Conne
 	// remove the temporary wire
     removeDragWire();
 
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	m_undoStack->push(parentCommand);
 
@@ -3780,6 +3796,7 @@ void SketchWidget::dragRatsnestChanged()
 	parentCommand->setText(tr("Create and connect %1").arg(m_viewIdentifier == ViewLayer::BreadboardView ? tr("wire") : tr("trace")));
 
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
 	//SelectItemCommand * selectItemCommand = new SelectItemCommand(this, SelectItemCommand::NormalSelect, parentCommand);
 
@@ -3838,7 +3855,7 @@ void SketchWidget::dragRatsnestChanged()
 
 	// remove the temporary wire
     removeDragWire();
-
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	m_undoStack->push(parentCommand);
 }
@@ -4419,6 +4436,7 @@ void SketchWidget::rotateX(double degrees, bool rubberBandLegEnabled)
 	//}
 
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
 	// change legs after connections have been updated (undo direction)
 	moveLegBendpoints(true, parentCommand);
@@ -4517,7 +4535,7 @@ void SketchWidget::rotateX(double degrees, bool rubberBandLegEnabled)
 			new ChangeWireCommand(this, wire->id(), vg1.line(), QLineF(QPointF(0,0), d0t + center - p1), vg1.loc(), vg1.loc(), true, true, parentCommand);
 		}
 	}
-
+    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 
 	m_undoStack->push(parentCommand);
@@ -4580,6 +4598,7 @@ void SketchWidget::flipX(Qt::Orientations orientation, bool rubberBandLegEnabled
 	QUndoCommand * parentCommand = new QUndoCommand(string);
 
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
 	// change legs after connections have been updated (undo direction)
 	moveLegBendpoints(true, parentCommand);
@@ -4609,6 +4628,7 @@ void SketchWidget::flipX(Qt::Orientations orientation, bool rubberBandLegEnabled
 
 	clearTemporaries();
 
+    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	m_undoStack->push(parentCommand);
 
@@ -4794,7 +4814,7 @@ void SketchWidget::changeConnectionAux(long fromID, const QString & fromConnecto
 									ViewLayer::ViewLayerSpec viewLayerSpec,
 									bool connect, bool updateConnections)
 {
-
+    // only called from the above changeConnection() which is invoked only from a command object
 	DebugDialog::debug(QString("changeConnection: from %1 %2; to %3 %4 con:%5 v:%6")
 				.arg(fromID).arg(fromConnectorID)
 				.arg(toID).arg(toConnectorID)
@@ -4829,7 +4849,8 @@ void SketchWidget::changeConnectionAux(long fromID, const QString & fromConnecto
 	//fromConnectorItem->debugInfo("   from");
 	//toConnectorItem->debugInfo("   to");
 
-	ratsnestConnect(fromConnectorItem, toConnectorItem, connect);
+
+	ratsnestConnect(fromConnectorItem, toConnectorItem, connect, true);
 
 	if (connect) {
         // canConnect checks for when a THT part has been swapped for an SMD part, and the connections are now on different layers
@@ -5366,6 +5387,7 @@ void SketchWidget::wireSplitSlot(Wire* wire, QPointF newPos, QPointF oldPos, con
 	parentCommand->setText(QObject::tr("Split Wire") );
 
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
 	long fromID = wire->id();
 
@@ -5407,7 +5429,7 @@ void SketchWidget::wireSplitSlot(Wire* wire, QPointF newPos, QPointF oldPos, con
 
 	SelectItemCommand * selectItemCommand = new SelectItemCommand(this, SelectItemCommand::NormalSelect, parentCommand);
 	selectItemCommand->addRedo(newID);
-
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 
 	m_undoStack->push(parentCommand);
@@ -5423,6 +5445,7 @@ void SketchWidget::wireJoinSlot(Wire* wire, ConnectorItem * clickedConnectorItem
 	parentCommand->setText(QObject::tr("Join Wire") );
 
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
 	// assumes there is one and only one item connected
 	ConnectorItem * toConnectorItem = clickedConnectorItem->connectedToItems()[0];
@@ -5502,7 +5525,7 @@ void SketchWidget::wireJoinSlot(Wire* wire, ConnectorItem * clickedConnectorItem
 		ChangeWireCurveCommand * cwcc = new ChangeWireCurveCommand(this, wire->id(), wire->curve(), &joinBezier, wire->getAutoroutable(), parentCommand);
 		cwcc->setRedoOnly();
 	}
-
+    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 
 	m_undoStack->push(parentCommand);
@@ -5753,6 +5776,7 @@ long SketchWidget::setUpSwap(SwapThing & swapThing, bool master)
 		selectItemCommand->addRedo(swapThing.newID);  // to make sure new item is selected so it appears in the info view
 
 		prepDeleteProps(itemBase, swapThing.newID, swapThing.newModuleID, swapThing.parentCommand);
+	    new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, swapThing.parentCommand);
 		new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, swapThing.parentCommand);
 	}
 
@@ -7510,6 +7534,7 @@ void SketchWidget::createTrace(Wire * fromWire, const QString & commandString, V
 	QUndoCommand * parentCommand = new QUndoCommand(commandString);
 
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
 	bool gotOne = false;
 	if (fromWire == NULL) {
@@ -7530,6 +7555,7 @@ void SketchWidget::createTrace(Wire * fromWire, const QString & commandString, V
 		return;
 	}
 
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	m_undoStack->push(parentCommand);
 }
@@ -7713,12 +7739,14 @@ void SketchWidget::disconnectAll() {
 
 	stackSelectionState(false, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 
 
 	QHash<ItemBase *, SketchWidget *> itemsToDelete;
 	disconnectAllSlot(connectorItems, itemsToDelete, parentCommand);
 	emit disconnectAllSignal(connectorItems, itemsToDelete, parentCommand);
 
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	foreach (ItemBase * item, itemsToDelete.keys()) {
 		itemsToDelete.value(item)->makeDeleteItemCommand(item, BaseCommand::CrossView, parentCommand);
@@ -7729,6 +7757,8 @@ void SketchWidget::disconnectAll() {
 void SketchWidget::disconnectAllSlot(QList<ConnectorItem *> connectorItems, QHash<ItemBase *, SketchWidget *> & itemsToDelete, QUndoCommand * parentCommand)
 {
 	// (jc 2011 Aug 16): this code is not hooked up and my last recollection is that it wasn't working
+
+    return;
 
 	QList<ConnectorItem *> myConnectorItems;
 	foreach (ConnectorItem * ci, connectorItems) {
@@ -8343,7 +8373,17 @@ void SketchWidget::ratsnestConnect(long id, const QString & connectorID, bool co
 	ratsnestConnect(connectorItem, connect);
 }
 
-void SketchWidget::ratsnestConnect(ConnectorItem * c1, ConnectorItem * c2, bool connect) {
+void SketchWidget::ratsnestConnect(ConnectorItem * c1, ConnectorItem * c2, bool connect, bool wait) {
+    if (wait) {
+        if (connect) {
+            m_ratsnestCacheConnect << c1 << c2;
+	    }
+	    else {
+            m_ratsnestCacheDisconnect << c1 << c2;
+        }
+        return;
+    }
+
 	QList<ConnectorItem *> connectorItems;
 	connectorItems.append(c1);
 	connectorItems.append(c2);
@@ -8519,8 +8559,10 @@ void SketchWidget::changeBus(ItemBase * itemBase, bool connect, const QString & 
 	foreach(ConnectorItem * connectorItem, connectorItems) {
 		cuwc->addRatsnestConnect(connectorItem->attachedToID(), connectorItem->connectorSharedID(), connect);
 	}
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::UndoOnly, parentCommand);
 	
 	new SetPropCommand(this, itemBase->id(), "buses", oldBus, newBus, true, parentCommand);
+	new CleanUpRatsnestsCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	cuwc = new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 	foreach(ConnectorItem * connectorItem, connectorItems) {
 		cuwc->addRatsnestConnect(connectorItem->attachedToID(), connectorItem->connectorSharedID(), connect);
@@ -9198,3 +9240,28 @@ void SketchWidget::hidePartLayer(ItemBase * itemBase, ViewLayer::ViewLayerID vie
         }
     }
 }
+
+void SketchWidget::cleanupRatsnests(bool doEmit) {
+    cleanupRatsnests(m_ratsnestCacheConnect, true);
+    cleanupRatsnests(m_ratsnestCacheDisconnect, false);
+
+    if (doEmit) emit cleanupRatsnestsSignal(false);
+}
+
+void SketchWidget::cleanupRatsnests(QList< QPointer<ConnectorItem> > & connectorItems, bool connect) {
+    QList<ConnectorItem *> cis;
+    foreach (ConnectorItem * connectorItem, connectorItems) {
+        if (connectorItem) cis << connectorItem;
+    }
+    connectorItems.clear();
+
+    QSet<ConnectorItem *> set = cis.toSet();
+    cis.clear();
+    QList<ConnectorItem *> cis2 = set.toList();
+
+	ConnectorItem::collectEqualPotential(cis2, true, ViewGeometry::RatsnestFlag);
+	foreach (ConnectorItem * connectorItem, cis2) {
+		ratsnestConnect(connectorItem, connect);
+	}
+}
+

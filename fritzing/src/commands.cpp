@@ -1280,6 +1280,37 @@ QString CleanUpWiresCommand::getParamString() const {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+CleanUpRatsnestsCommand::CleanUpRatsnestsCommand(SketchWidget* sketchWidget, CleanUpWiresCommand::Direction direction, QUndoCommand *parent)
+: BaseCommand(BaseCommand::CrossView, sketchWidget, parent)
+{
+	if (direction == CleanUpWiresCommand::UndoOnly) m_undoOnly = true;
+	if (direction == CleanUpWiresCommand::RedoOnly) m_redoOnly = true;
+}
+
+void CleanUpRatsnestsCommand::undo()
+{
+	if (m_undoOnly) {
+		m_sketchWidget->cleanupRatsnests(true);  
+	}
+    BaseCommand::undo();
+}
+
+void CleanUpRatsnestsCommand::redo()
+{
+	if (m_redoOnly) {
+		m_sketchWidget->cleanupRatsnests(true);  
+	}
+    BaseCommand::redo();
+}
+
+QString CleanUpRatsnestsCommand::getParamString() const {
+	return QString("CleanUpRatsnestsCommand ") 
+		+ BaseCommand::getParamString()
+    ;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 WireColorChangeCommand::WireColorChangeCommand(SketchWidget* sketchWidget, long wireId, const QString &oldColor, const QString &newColor, double oldOpacity, double newOpacity, QUndoCommand *parent)
 : BaseCommand(BaseCommand::SingleView, sketchWidget, parent)
 {

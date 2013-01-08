@@ -675,6 +675,8 @@ void MazeRouter::start()
 
 	QUndoCommand * parentCommand = new QUndoCommand("Autoroute");
 	new CleanUpWiresCommand(m_sketchWidget, CleanUpWiresCommand::UndoOnly, parentCommand);
+    new CleanUpRatsnestsCommand(m_sketchWidget, CleanUpWiresCommand::UndoOnly, parentCommand);
+
 	initUndo(parentCommand);
 
     NetList netList;
@@ -866,7 +868,7 @@ void MazeRouter::start()
     createTraces(netList, bestScore, parentCommand);
 
 	cleanUpNets(netList);
-
+    new CleanUpRatsnestsCommand(m_sketchWidget, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(m_sketchWidget, CleanUpWiresCommand::RedoOnly, parentCommand);
 
     m_sketchWidget->blockUI(true);

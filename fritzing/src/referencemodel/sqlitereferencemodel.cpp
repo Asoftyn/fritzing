@@ -102,12 +102,12 @@ SqliteReferenceModel::SqliteReferenceModel() {
 	m_lastWasExactMatch = true;
 }
 
-bool SqliteReferenceModel::loadAll(const QString & databaseName, bool fullLoad)
+bool SqliteReferenceModel::loadAll(const QString & databaseName, bool fullLoad, bool dbExists)
 {
     FailurePartMessages.clear();
     FailurePropertyMessages.clear();
     m_fullLoad = fullLoad;
-	initParts();
+	initParts(dbExists);
 
 	int tries = 0;
     m_keepGoing = true;
@@ -474,9 +474,9 @@ SqliteReferenceModel::~SqliteReferenceModel() {
 	deleteConnection();
 }
 
-void SqliteReferenceModel::initParts() {
+void SqliteReferenceModel::initParts(bool dbExists) {
 	m_init = true;
-	PaletteModel::initParts();
+	PaletteModel::initParts(dbExists);
 	m_init = false;
 }
 

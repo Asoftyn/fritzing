@@ -599,6 +599,9 @@ void MainWindow::connectPair(SketchWidget * signaller, SketchWidget * slotter)
 	succeeded = succeeded && connect(signaller, SIGNAL(cleanUpWiresSignal(CleanUpWiresCommand *)),
 									 slotter, SLOT(cleanUpWiresSlot(CleanUpWiresCommand *)) );
 
+	succeeded = succeeded && connect(signaller, SIGNAL(cleanUpRatsnestsSignal(bool)),
+									 slotter, SLOT(cleanupRatsnests(bool)) );
+
 	succeeded = succeeded && connect(signaller, SIGNAL(checkStickySignal(long, bool, bool, CheckStickyCommand *)),
 									 slotter, SLOT(checkSticky(long, bool, bool, CheckStickyCommand *)) );
 
@@ -1874,6 +1877,7 @@ bool MainWindow::swapSpecial(const QString & theProp, QMap<QString, QString> & c
 void MainWindow::swapLayers(ItemBase * itemBase, int layers, const QString & msg, int delay) {
     QUndoCommand* parentCommand = new QUndoCommand(msg);
 	new CleanUpWiresCommand(m_breadboardGraphicsView, CleanUpWiresCommand::UndoOnly, parentCommand);
+	new CleanUpRatsnestsCommand(m_breadboardGraphicsView, CleanUpWiresCommand::UndoOnly, parentCommand);
     m_pcbGraphicsView->swapLayers(itemBase, layers, parentCommand);
 	// need to defer execution so the content of the info view doesn't change during an event that started in the info view
 	m_undoStack->waitPush(parentCommand, delay);
@@ -1883,6 +1887,7 @@ void MainWindow::swapSelectedAux(ItemBase * itemBase, const QString & moduleID, 
 
 	QUndoCommand* parentCommand = new QUndoCommand(tr("Swapped %1 with module %2").arg(itemBase->instanceTitle()).arg(moduleID));
 	new CleanUpWiresCommand(m_breadboardGraphicsView, CleanUpWiresCommand::UndoOnly, parentCommand);
+	new CleanUpRatsnestsCommand(m_breadboardGraphicsView, CleanUpWiresCommand::UndoOnly, parentCommand);
 
     ViewLayer::ViewLayerSpec viewLayerSpec = itemBase->viewLayerSpec();
     if (m_pcbGraphicsView->boardLayers() == 2) {

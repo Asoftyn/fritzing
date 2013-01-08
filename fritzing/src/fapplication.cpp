@@ -675,19 +675,27 @@ ReferenceModel * FApplication::loadReferenceModel(const QString & databaseName, 
 	ItemBase::setReferenceModel(m_referenceModel);
 	connect(m_referenceModel, SIGNAL(loadedPart(int, int)), this, SLOT(loadedPart(int, int)));
 
-	bool ok = m_referenceModel->loadAll(databaseName, fullLoad);		// loads local parts, resource parts, and any other parts in files not in the db--these part override db parts with the same moduleID
+    bool dbExists = false;
+    QDir * dir = FolderUtils::getApplicationSubFolder("parts");
+    QString dbPath;
+    if (dir) {
+        dbPath = dir->absoluteFilePath("parts.db");
+        QFileInfo info(dbPath);
+        dbExists = info.exists();
+    }
+
+	bool ok = m_referenceModel->loadAll(databaseName, fullLoad, dbExists);		// loads local parts, resource parts, and any other parts in files not in the db--these part override db parts with the same moduleID
     if (ok && databaseName.isEmpty()) {
-        QDir * dir = FolderUtils::getApplicationSubFolder("parts");
         if (dir == NULL) {
         }
         else {
             QFile file(dir->absoluteFilePath("parts.db"));
             if (file.exists()) {
-                m_referenceModel->loadFromDB(dir->absoluteFilePath("parts.db"));
+                m_referenceModel->loadFromDB(dbPath);
             }
-            delete dir;
         }
     }
+    delete dir;
 
 	return m_referenceModel;
 }

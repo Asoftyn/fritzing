@@ -2939,6 +2939,7 @@ void MainWindow::removeGroundFill(ViewLayer::ViewLayerID viewLayerID, QUndoComma
     }
 
 	new CleanUpWiresCommand(m_pcbGraphicsView, CleanUpWiresCommand::UndoOnly, parentCommand);
+	new CleanUpRatsnestsCommand(m_pcbGraphicsView, CleanUpWiresCommand::UndoOnly, parentCommand);
 
     m_pcbGraphicsView->deleteMiddle(toDelete, parentCommand);
 	foreach (ItemBase * itemBase, toDelete) {
@@ -2946,6 +2947,7 @@ void MainWindow::removeGroundFill(ViewLayer::ViewLayerID viewLayerID, QUndoComma
 		m_pcbGraphicsView->makeDeleteItemCommand(itemBase, BaseCommand::CrossView, parentCommand);
 	}
 
+	new CleanUpRatsnestsCommand(m_pcbGraphicsView, CleanUpWiresCommand::RedoOnly, parentCommand);
 	new CleanUpWiresCommand(m_pcbGraphicsView, CleanUpWiresCommand::RedoOnly, parentCommand);
 
     if (push) {
