@@ -492,20 +492,22 @@ bool FolderUtils::unzipTo(const QString &filepath, const QString &dirToDecompres
 	return true;
 }
 
-void FolderUtils::collectFiles(const QDir & parent, QStringList & filters, QStringList & files)
+void FolderUtils::collectFiles(const QDir & parent, QStringList & filters, QStringList & files, bool recursive)
 {
 	QFileInfoList fileInfoList = parent.entryInfoList(filters, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
 	foreach (QFileInfo fileInfo, fileInfoList) {
 		files.append(fileInfo.absoluteFilePath());
 	}
 
-	QFileInfoList dirList = parent.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::NoSymLinks);
-	foreach (QFileInfo dirInfo, dirList) {
-		QDir dir(dirInfo.filePath());
-		//DebugDialog::debug(QString("looking in backup dir %1").arg(dir.absolutePath()));
+    if (recursive) {
+        QFileInfoList dirList = parent.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::NoSymLinks);
+        foreach (QFileInfo dirInfo, dirList) {
+            QDir dir(dirInfo.filePath());
+            //DebugDialog::debug(QString("looking in backup dir %1").arg(dir.absolutePath()));
 
-		collectFiles(dir, filters, files);
-	}
+            collectFiles(dir, filters, files, recursive);
+        }
+    }
 }
 
 

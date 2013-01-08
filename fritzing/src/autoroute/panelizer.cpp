@@ -675,7 +675,7 @@ void Panelizer::collectFiles(const QDir & outputFolder, QDomElement & path, QHas
         DebugDialog::debug("directory " + dir.absolutePath());
 	    QStringList filepaths;
         QStringList filters("*" + FritzingBundleExtension);
-        FolderUtils::collectFiles(dir, filters, filepaths);
+        FolderUtils::collectFiles(dir, filters, filepaths, false);
 	    foreach (QString filepath, filepaths) {
 		    QFileInfo fileInfo(filepath);
 
@@ -1217,7 +1217,10 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
     if (!copy.exists()) {
     }
     else {
-        DebugDialog::debug(QString(" %1 original=%2, copy=%3").arg(original.fileName()).arg(original.lastModified().toString()).arg(copy.lastModified().toString()));
+        DebugDialog::debug("");
+        //DebugDialog::debug(oldPath);
+        //DebugDialog::debug(copyPath);
+        DebugDialog::debug(QString("%1 original=%2, copy=%3").arg(original.fileName()).arg(original.lastModified().toString()).arg(copy.lastModified().toString()));
         if (original.lastModified() <= copy.lastModified()) {
             DebugDialog::debug(QString("copy %1 is up to date").arg(copyPath));
             return NULL;
@@ -1549,6 +1552,7 @@ int Panelizer::checkDonuts(MainWindow * mainWindow, bool displayMessage) {
         }
         mainWindow->pcbView()->selectItems(itemBases.toList());
         QMessageBox::warning(NULL, "Donuts", QString("There are %1 possible donut connectors").arg(donuts.count() / 2));
+        DebugDialog::debug(QString("possible donuts in %1").arg(mainWindow->fileName()));
     }
 
     return donuts.count() / 2;

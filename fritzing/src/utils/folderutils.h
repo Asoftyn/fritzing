@@ -59,7 +59,7 @@ public:
 	static void replicateDir(QDir srcDir, QDir targDir);
 	static QString getRandText();
 	static void cleanup();
-	static void collectFiles(const QDir & parent, QStringList & filters, QStringList & files);
+    static void collectFiles(const QDir & parent, QStringList & filters, QStringList & files, bool recursive);
 	static void makePartFolderHierarchy(const QString & prefixFolder, const QString & destFolder);
     static void copyBin(const QString & source, const QString & dest);
 
