@@ -1394,6 +1394,7 @@ void MainWindow::exportToGerber() {
         prefix += QString("_%1_%2").arg(board->instanceTitle()).arg(board->id());
     }
 	GerberGenerator::exportToGerber(prefix, exportDir, board, m_pcbGraphicsView, true);
+
 	m_pcbGraphicsView->restoreLayerVisibility();
 	m_statusBar->showMessage(tr("Sketch exported to Gerber"), 2000);
 
@@ -1434,4 +1435,3 @@ void MainWindow::massageOutput(QString & svg, bool doMask, bool doSilk, bool doP
 		svg = TextUtils::expandAndFill(svg, "black", GerberGenerator::MaskClearanceMils * 2 * dpi / 1000);
 	}
 }
-

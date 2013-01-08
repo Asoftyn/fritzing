@@ -599,7 +599,7 @@ void MainWindow::connectPair(SketchWidget * signaller, SketchWidget * slotter)
 	succeeded = succeeded && connect(signaller, SIGNAL(cleanUpWiresSignal(CleanUpWiresCommand *)),
 									 slotter, SLOT(cleanUpWiresSlot(CleanUpWiresCommand *)) );
 
-	succeeded = succeeded && connect(signaller, SIGNAL(cleanUpRatsnestsSignal(bool)),
+	succeeded = succeeded && connect(signaller, SIGNAL(cleanupRatsnestsSignal(bool)),
 									 slotter, SLOT(cleanupRatsnests(bool)) );
 
 	succeeded = succeeded && connect(signaller, SIGNAL(checkStickySignal(long, bool, bool, CheckStickyCommand *)),

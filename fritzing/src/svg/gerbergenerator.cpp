@@ -38,6 +38,7 @@ $Date$
 #include "../utils/graphicsutils.h"
 #include "../utils/textutils.h"
 #include "../utils/folderutils.h"
+#include "../version/version.h"
 
 static const QRegExp AaCc("[aAcCqQtTsS]");
 static const QRegExp MFinder("([mM])\\s*([0-9.]*)[\\s,]*([0-9.]*)");
@@ -93,6 +94,8 @@ void GerberGenerator::exportToGerber(const QString & prefix, const QString & exp
 			return;
 		}
 	}
+
+    exportPickAndPlace(prefix, exportDir, board, sketchWidget, displayMessageBoxes);
 
 	LayerList viewLayerIDs = ViewLayer::copperLayers(ViewLayer::Bottom);
 	int copperInvalidCount = doCopper(board, sketchWidget, viewLayerIDs, "Copper0", CopperBottomSuffix, prefix, exportDir, displayMessageBoxes);
@@ -821,4 +824,84 @@ bool GerberGenerator::dealWithMultipleContours(QDomElement & root, bool displayM
     }
 
     return true;
+}
+
+void GerberGenerator::exportPickAndPlace(const QString & prefix, const QString & exportDir, ItemBase * board, PCBSketchWidget * sketchWidget, bool displayMessageBoxes) 
+{
+    QPointF bottomLeft = board->sceneBoundingRect().bottomLeft();
+    QSet<ItemBase *> itemBases;
+    foreach (QGraphicsItem * item, sketchWidget->scene()->collidingItems(board)) {
+        ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
+        if (itemBase == NULL) continue;
+        if (itemBase == board) continue;
+        if (itemBase->itemType() == ModelPart::Wire) continue;
+
+        itemBase = itemBase->layerKinChief();
+        if (!itemBase->isEverVisible()) continue;
+        if (itemBase == board) continue;
+
+        itemBases.insert(itemBase->layerKinChief());
+    }
+    
+    QString outname = exportDir + "/" + prefix + "_pnp.txt";
+    QFile out(outname);
+	if (!out.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		displayMessage(QObject::tr("%1 file export failure (2): %2").arg("pick and place").arg(outname), displayMessageBoxes);
+		return;
+	}
+
+    QTextStream stream(&out);
+    stream << "*Pick And Place List\n"
+        << "*Company=IxDS\n"
+        << "*Author=IxDS\n"
+        //*Tel=
+        //*Fax=
+        << "*eMail=info@fritzing.org\n"
+        << "*\n"
+        << QString("*Project=%1\n").arg(prefix)
+        // *Variant=<alle Bauteile>
+        << QString("*Date=%1\n").arg(QTime::currentTime().toString())
+        << QString("*CreatedBy=Fritzing %1\n").arg(Version::versionString())
+        << "*\n"
+        << "*\n*Coordinates in mm, always center of component\n"
+        << "*Origin 0/0=Lower left corner of PCB\n"
+        << "*Rotation in degree (0-360, math. pos.)\n"
+        << "*\n"
+        << "*No;Value;Package;X;Y;Rotation;Side;Name\n"
+        ;
+
+    QStringList valueKeys;
+    valueKeys << "resistance" << "capacitance" << "inductance" << "voltage"  << "current" << "power";
+
+    int ix = 1;
+    foreach (ItemBase * itemBase, itemBases) {
+        QString value;
+        foreach (QString valueKey, valueKeys) {
+            value = itemBase->modelPart()->localProp(valueKey).toString();
+            if (!value.isEmpty()) break;
+
+            value = itemBase->modelPart()->properties().value(valueKey);
+            if (!value.isEmpty()) break;
+        }
+
+        QPointF loc = itemBase->sceneBoundingRect().center();
+        QTransform transform = itemBase->transform();
+        // doesn't account for scaling
+        double angle = atan2(transform.m12(), transform.m11()) * 180 / M_PI;
+        // No;Value;Package;X;Y;Rotation;Side;Name
+        QString string = QString("%1;%2;%3;%4;%5;%6;%7;%8\n")
+            .arg(ix++)
+            .arg(value)
+            .arg(itemBase->modelPart()->properties().value("package"))
+            .arg(GraphicsUtils::pixels2mm(loc.x() - bottomLeft.x(), GraphicsUtils::SVGDPI))
+            .arg(GraphicsUtils::pixels2mm(loc.y() - bottomLeft.y(), GraphicsUtils::SVGDPI))
+            .arg(angle)
+            .arg(itemBase->viewLayerID() == ViewLayer::Copper1 ? "Top" : "Bottom")
+            .arg(itemBase->instanceTitle())
+        ;
+        stream << string;
+        stream.flush();
+    }
+
+    out.close();
 }

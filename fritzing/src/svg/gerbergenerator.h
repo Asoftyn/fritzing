@@ -71,6 +71,8 @@ protected:
     static void mergeOutlineElement(QImage & image, QRectF & target, double res, QDomDocument & document, QString & svgString, int ix, const QString & layerName);
     static QString makePath(QImage & image, double unit, const QString & colorString);
     static bool dealWithMultipleContours(QDomElement & root, bool displayMessageBoxes);
+    static void exportPickAndPlace(const QString & prefix, const QString & exportDir, ItemBase * board, PCBSketchWidget * sketchWidget, bool displayMessageBoxes);
+
 };
 
 #endif // GERBERGENERATOR_H
