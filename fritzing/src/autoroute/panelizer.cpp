@@ -1217,6 +1217,7 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
     if (!copy.exists()) {
     }
     else {
+        DebugDialog::debug(QString(" %1 original=%2, copy=%3").arg(original.fileName()).arg(original.lastModified().toString()).arg(copy.lastModified().toString()));
         if (original.lastModified() <= copy.lastModified()) {
             DebugDialog::debug(QString("copy %1 is up to date").arg(copyPath));
             return NULL;
