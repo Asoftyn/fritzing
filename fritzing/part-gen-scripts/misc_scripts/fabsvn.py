@@ -65,7 +65,7 @@ def main():
     filenames = []
     filenames.append(fromName)
     for board in boardNodes:
-        originalName = board.getAttribute("originalName")
+        originalName = board.getAttribute("name")
         if originalName == None:
             continue
         
