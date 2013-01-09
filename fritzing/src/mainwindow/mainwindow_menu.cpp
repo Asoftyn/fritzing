@@ -3053,6 +3053,16 @@ QMenu *MainWindow::schematicWireMenu() {
 	QMenu *menu = new QMenu(QObject::tr("Wire"), this);
 	menu->addMenu(m_zOrderWireMenu);
 	menu->addSeparator();
+	m_wireColorMenu = menu->addMenu(tr("&Wire Color"));
+	foreach(QString colorName, Wire::colorNames) {
+		QString colorValue = Wire::colorTrans.value(colorName);
+        if (colorValue == "white") continue;
+		QAction * action = new QAction(colorName, this);
+		m_wireColorMenu->addAction(action);
+		action->setData(colorValue);
+		action->setCheckable(true);
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(changeWireColor(bool)));
+	}
 	menu->addAction(m_createTraceWireAct);
 	menu->addAction(m_excludeFromAutorouteWireAct);
 	menu->addSeparator();
