@@ -30,8 +30,8 @@ $Date$
 #include <QString>
 #include <QSizeF>
 
-#include "../../mainwindow/mainwindow.h"
-#include "../../items/itembase.h"
+#include "../mainwindow/mainwindow.h"
+#include "../items/itembase.h"
 #include "cmrouter/tile.h"
 
 
