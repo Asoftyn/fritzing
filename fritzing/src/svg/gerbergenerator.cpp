@@ -33,6 +33,8 @@ $Date$
 #include "../debugdialog.h"
 #include "../fsvgrenderer.h"
 #include "../sketch/pcbsketchwidget.h"
+#include "../connectors/connectoritem.h"
+#include "../connectors/svgidlayer.h"
 #include "svgfilesplitter.h"
 #include "groundplanegenerator.h"
 #include "../utils/graphicsutils.h"
@@ -139,7 +141,8 @@ void GerberGenerator::exportToGerber(const QString & prefix, const QString & exp
 
 	svgOutline = cleanOutline(svgOutline);
     // at this point svgOutline must be a single element; a path element may contain cutouts
-	svgOutline = clipToBoard(svgOutline, board, "board", SVG2gerber::ForOutline, "", displayMessageBoxes);
+    QMultiHash<long, ConnectorItem *> treatAsCircle;
+	svgOutline = clipToBoard(svgOutline, board, "board", SVG2gerber::ForOutline, "", displayMessageBoxes, treatAsCircle);
 	QSizeF svgSize = TextUtils::parseForWidthAndHeight(svgOutline);
 
     // create outline gerber from svg
@@ -173,10 +176,20 @@ int GerberGenerator::doCopper(ItemBase * board, PCBSketchWidget * sketchWidget, 
 		displayMessage(QObject::tr("%1 file export failure (1)").arg(copperName), displayMessageBoxes);
 		return 0;
 	}
+    
+    QMultiHash<long, ConnectorItem *> treatAsCircle;
+    foreach (QGraphicsItem * item, sketchWidget->scene()->collidingItems(board)) {
+        ConnectorItem * connectorItem = dynamic_cast<ConnectorItem *>(item);
+        if (connectorItem == NULL) continue;
+        if (!connectorItem->isPath()) continue;
+        if (connectorItem->radius() == 0) continue;
+
+        treatAsCircle.insert(connectorItem->attachedToID(), connectorItem);
+    }
 
 	QSizeF svgSize = TextUtils::parseForWidthAndHeight(svg);
 
-	svg = clipToBoard(svg, board, copperName, SVG2gerber::ForCopper, "", displayMessageBoxes);
+	svg = clipToBoard(svg, board, copperName, SVG2gerber::ForCopper, "", displayMessageBoxes, treatAsCircle);
 	if (svg.isEmpty()) {
 		displayMessage(QObject::tr("%1 file export failure (3)").arg(copperName), displayMessageBoxes);
 		return 0;
@@ -209,7 +222,8 @@ int GerberGenerator::doSilk(LayerList silkLayerIDs, const QString & silkName, co
 
 	QSizeF svgSize = TextUtils::parseForWidthAndHeight(svgSilk);
 
-	svgSilk = clipToBoard(svgSilk, board, silkName, SVG2gerber::ForSilk, clipString, displayMessageBoxes);
+    QMultiHash<long, ConnectorItem *> treatAsCircle;
+	svgSilk = clipToBoard(svgSilk, board, silkName, SVG2gerber::ForSilk, clipString, displayMessageBoxes, treatAsCircle);
 	if (svgSilk.isEmpty()) {
 		displayMessage(QObject::tr("silk export failure"), displayMessageBoxes);
 		return 0;
@@ -244,8 +258,17 @@ int GerberGenerator::doDrill(ItemBase * board, PCBSketchWidget * sketchWidget, c
 	}
 
 	QSizeF svgSize = TextUtils::parseForWidthAndHeight(svgDrill);
+    QMultiHash<long, ConnectorItem *> treatAsCircle;
+    foreach (QGraphicsItem * item, sketchWidget->scene()->collidingItems(board)) {
+        ConnectorItem * connectorItem = dynamic_cast<ConnectorItem *>(item);
+        if (connectorItem == NULL) continue;
+        if (!connectorItem->isPath()) continue;
+        if (connectorItem->radius() == 0) continue;
 
-	svgDrill = clipToBoard(svgDrill, board, "Copper0", SVG2gerber::ForDrill, "", displayMessageBoxes);
+        treatAsCircle.insert(connectorItem->attachedToID(), connectorItem);
+    }
+
+	svgDrill = clipToBoard(svgDrill, board, "Copper0", SVG2gerber::ForDrill, "", displayMessageBoxes, treatAsCircle);
 	if (svgDrill.isEmpty()) {
 		displayMessage(QObject::tr("drill export failure"), displayMessageBoxes);
 		return 0;
@@ -282,8 +305,8 @@ int GerberGenerator::doMask(LayerList maskLayerIDs, const QString &maskName, con
 	}
 
 	QSizeF svgSize = TextUtils::parseForWidthAndHeight(svgMask);
-
-	svgMask = clipToBoard(svgMask, board, maskName, SVG2gerber::ForCopper, "", displayMessageBoxes);
+    QMultiHash<long, ConnectorItem *> treatAsCircle;
+	svgMask = clipToBoard(svgMask, board, maskName, SVG2gerber::ForCopper, "", displayMessageBoxes, treatAsCircle);
 	if (svgMask.isEmpty()) {
 		displayMessage(QObject::tr("mask export failure"), displayMessageBoxes);
 		return 0;
@@ -322,8 +345,8 @@ int GerberGenerator::doPasteMask(LayerList maskLayerIDs, const QString &maskName
     if (svgMask.isEmpty()) return 0;
 
 	QSizeF svgSize = TextUtils::parseForWidthAndHeight(svgMask);
-
-	svgMask = clipToBoard(svgMask, board, maskName, SVG2gerber::ForCopper, "", displayMessageBoxes);
+    QMultiHash<long, ConnectorItem *> treatAsCircle;
+	svgMask = clipToBoard(svgMask, board, maskName, SVG2gerber::ForCopper, "", displayMessageBoxes, treatAsCircle);
 	if (svgMask.isEmpty()) {
 		displayMessage(QObject::tr("mask export failure"), displayMessageBoxes);
 		return 0;
@@ -372,13 +395,13 @@ void GerberGenerator::displayMessage(const QString & message, bool displayMessag
 	DebugDialog::debug(message);
 }
 
-QString GerberGenerator::clipToBoard(QString svgString, ItemBase * board, const QString & layerName, SVG2gerber::ForWhy forWhy, const QString & clipString, bool displayMessageBoxes) {
+QString GerberGenerator::clipToBoard(QString svgString, ItemBase * board, const QString & layerName, SVG2gerber::ForWhy forWhy, const QString & clipString, bool displayMessageBoxes, QMultiHash<long, ConnectorItem *> & treatAsCircle) {
 	QRectF source = board->sceneBoundingRect();
 	source.moveTo(0, 0);
-	return clipToBoard(svgString, source, layerName, forWhy, clipString, displayMessageBoxes);
+	return clipToBoard(svgString, source, layerName, forWhy, clipString, displayMessageBoxes, treatAsCircle);
 }
 
-QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, const QString & layerName, SVG2gerber::ForWhy forWhy, const QString & clipString, bool displayMessageBoxes) {
+QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, const QString & layerName, SVG2gerber::ForWhy forWhy, const QString & clipString, bool displayMessageBoxes, QMultiHash<long, ConnectorItem *> & treatAsCircle) {
 	// document 1 will contain svg that is easy to convert to gerber
 	QDomDocument domDocument1;
 	QString errorStr;
@@ -393,6 +416,62 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
 	if (root1.firstChildElement().isNull()) {
 		return "";
 	}
+
+    QDomNodeList nodeList = root1.elementsByTagName("path"); 
+    if (treatAsCircle.count() > 0) {
+        QStringList ids;
+        foreach (ConnectorItem * connectorItem, treatAsCircle.values()) {
+            ItemBase * itemBase = connectorItem->attachedTo();
+            SvgIdLayer * svgIdLayer = connectorItem->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
+            DebugDialog::debug(QString("treat as circle %1").arg(svgIdLayer->m_svgId));
+            ids << svgIdLayer->m_svgId;
+        }
+
+        // this would not be necessary if we cached cleaned SVGs
+        QList<QDomElement> newCircles;
+        for (int n = 0; n < nodeList.count(); n++) {
+            QDomElement path = nodeList.at(n).toElement();
+            QString id = path.attribute("id");
+            if (id.isEmpty()) continue;
+
+            DebugDialog::debug(QString("checking for %1").arg(id));
+            if (!ids.contains(id)) continue;
+
+            ConnectorItem * connectorItem = NULL;
+            for (QDomElement parent = path.parentNode().toElement(); !parent.isNull(); parent = parent.parentNode().toElement()) {
+                QString pid = parent.attribute("partID");
+                if (pid.isEmpty()) continue;
+
+                QList<ConnectorItem *> connectorItems = treatAsCircle.values(pid.toLong());
+                if (connectorItems.count() == 0) break;
+
+                foreach (ConnectorItem * candidate, connectorItems) {
+                    ItemBase * itemBase = candidate->attachedTo();
+                    SvgIdLayer * svgIdLayer = candidate->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
+                    if (svgIdLayer->m_svgId == id) {
+                        connectorItem = candidate;
+                        break;
+                    }
+                }
+
+                if (connectorItem) break;
+            }
+            if (connectorItem == NULL) continue;
+
+            connectorItem->debugInfo("make path");
+            QPointF p = connectorItem->adjustedTerminalPoint();
+            path.setAttribute("cx", p.x() * GraphicsUtils::StandardFritzingDPI / GraphicsUtils::SVGDPI);
+            path.setAttribute("cy", p.y() * GraphicsUtils::StandardFritzingDPI / GraphicsUtils::SVGDPI);
+            path.setAttribute("r", connectorItem->radius() * GraphicsUtils::StandardFritzingDPI / GraphicsUtils::SVGDPI);
+            path.setAttribute("stroke-width", connectorItem->strokeWidth() * GraphicsUtils::StandardFritzingDPI / GraphicsUtils::SVGDPI);
+            newCircles.append(path);
+        }
+        // seems to be dangerous to change element tagName during a traversal of the QDomNodeList so do it now
+        foreach (QDomElement path, newCircles) {
+            path.setTagName("circle");
+        }
+
+    }
 
     bool multipleContours = false;
     if (forWhy == SVG2gerber::ForOutline) { 
@@ -432,7 +511,6 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
 
     // can't handle scaled paths very well. There is probably a deeper bug that needs to be chased down.
     // is this only necessary for contour view?
-    QDomNodeList nodeList = root1.elementsByTagName("path");
     for (int i = 0; i < nodeList.count(); i++) {
         QDomNode parent = nodeList.at(i);
         while (!parent.isNull()) {

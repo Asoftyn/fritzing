@@ -29,6 +29,7 @@ $Date$
 #include "svg/svgfilesplitter.h"
 #include "utils/textutils.h"
 #include "utils/graphicsutils.h"
+#include "utils/folderutils.h"
 #include "connectors/svgidlayer.h"
 
 #include <QRegExp>
@@ -37,6 +38,41 @@ $Date$
 #include <QCoreApplication>
 #include <QGraphicsSvgItem>
 #include <qnumeric.h>
+
+
+/////////////////////////////////////////////
+
+double getStrokeWidth(QDomElement & element)
+{
+    bool ok;
+	double sw = element.attribute("stroke-width").toDouble(&ok);
+    if (ok) return sw;
+
+    QDomElement parent = element.parentNode().toElement();
+    while (!parent.isNull()) {
+        sw = element.attribute("stroke-width").toDouble(&ok);
+        if (ok) return sw;
+
+        parent = parent.parentNode().toElement();
+    }
+
+    //QString text;
+    //QTextStream stream(&text);
+    //element.save(stream, 0);
+    //DebugDialog::debug(QString("no circle stroke width set in %1: %2").arg(filename).arg(text));
+    element.setAttribute("stroke-width", 1);
+    return 1;
+
+	//QString strokewidth("stroke-width");
+	//QString s = element.attribute("style");
+	//SvgFileSplitter::fixStyleAttribute(connectorElement, s, strokewidth);
+	//sw = connectorElement.attribute("stroke-width").toDouble(&ok);
+	//if (!ok) {
+		//return false;
+	//}
+}
+
+/////////////////////////////////////////////
 
 QString FSvgRenderer::NonConnectorName("nonconn");
 
@@ -180,6 +216,11 @@ QByteArray FSvgRenderer::loadAux(const QByteArray & theContents, const QString &
 	*/
 
 	//DebugDialog::debug(cleanContents.data());
+
+    return finalLoad(cleanContents, filename);
+}
+
+QByteArray FSvgRenderer::finalLoad(QByteArray & cleanContents, const QString & filename) {
 
 	QXmlStreamReader xml(cleanContents);
 	bool result = determineDefaultSize(xml);
@@ -412,21 +453,168 @@ ConnectorInfo * FSvgRenderer::initConnectorInfoStruct(QDomElement & connectorEle
 
 bool FSvgRenderer::initConnectorInfoStructAux(QDomElement & element, ConnectorInfo * connectorInfo, const QString & filename) 
 {
-	// right now we only handle circles
-	if (element.nodeName().compare("circle") != 0) {
-		QDomElement child = element.firstChildElement();
-		while (!child.isNull()) {
-			if (initConnectorInfoStructAux(child, connectorInfo, filename)) return true;
+    if (element.nodeName().compare("circle") == 0) {
+        return initConnectorInfoCircle(element, connectorInfo, filename);
+    }
 
-			child = child.nextSiblingElement();
-		}
+    if (element.nodeName().compare("path") == 0) {
+        return initConnectorInfoPath(element, connectorInfo, filename);
+    }
 
-        if (element.nodeName().compare("path") == 0) {
-            connectorInfo->gotPath = true;
-        }
+	QDomElement child = element.firstChildElement();
+	while (!child.isNull()) {
+		if (initConnectorInfoStructAux(child, connectorInfo, filename)) return true;
 
-		return false;
+		child = child.nextSiblingElement();
 	}
+
+    return false;
+}
+
+bool FSvgRenderer::initConnectorInfoPath(QDomElement & element, ConnectorInfo * connectorInfo, const QString & filename) 
+{
+    QString id = element.attribute("id");
+    if (id.isEmpty()) return false;         // shouldn't be here
+
+    QString stroke = element.attribute("stroke");
+    if (stroke == "none") return false;     // cannot be a circle with a hole in the center
+
+    connectorInfo->gotPath = true;
+    double sw = getStrokeWidth(element);
+
+    if (!stroke.isEmpty()) element.setAttribute("stroke", "black");
+
+    QString fill = element.attribute("fill");
+    if (!fill.isEmpty() && (fill != "none")) element.setAttribute("fill", "black");
+
+    QDomDocument doc = element.ownerDocument();
+    FSvgRenderer renderer;
+    renderer.finalLoad(doc.toByteArray(), filename);
+    QRectF bounds = renderer.boundsOnElement(id);	
+
+    static const int dim = 101;
+    int width = dim;
+    int height = dim;
+    if (bounds.width() - bounds.height() / (bounds.width() + bounds.height()) > .01) {
+        height = (int) (float(dim) * bounds.height() / bounds.width());
+    }
+    else if (bounds.height() - bounds.width() / (bounds.width() + bounds.height()) > .01) {
+        width = (int) (float(dim) * bounds.width() / bounds.height());
+    }
+
+    QImage image(width, height, QImage::Format_Mono);
+    image.fill(0xffffffff);
+    QPainter painter;
+    painter.begin(&image);
+    renderer.render(&painter, id);
+    painter.end();
+
+#ifndef QT_NO_DEBUG
+    //image.save(FolderUtils::getUserDataStorePath("") + "/donutcheck.png");
+#endif
+
+    if (!fill.isEmpty()) element.setAttribute("fill", fill);
+    if (!stroke.isEmpty()) element.setAttribute("stroke", stroke);
+
+    DebugDialog::debug(QString("checking connector path %1").arg(id));
+
+    int lxStart = -1, lxEnd = -1, rxStart = -1, rxEnd = -1;
+    for (int x = 0; x < width; x++) {
+        if (image.pixel(x, height / 2) == 0xff000000) {
+            lxStart = x;
+            break;
+        }
+    }
+    if (lxStart < 0) return false;
+    if (lxStart >= width / 2) return false;        // not an ellipse
+    for (int x = lxStart + 1; x < width; x++) {
+        if (image.pixel(x, height / 2) == 0xff000000) {
+            lxEnd = x;
+        }
+        else break;
+    }
+    if (lxEnd < 0) return false;         
+    if (lxEnd > width / 2) return false;       // not an ellipse
+
+    for (int x = lxEnd + 1; x < width; x++) {
+        if (image.pixel(x, height / 2) == 0xff000000) {
+            rxStart = x;
+            break;
+        }
+    }
+    if (rxStart < 0) return false;
+    if (rxStart < height / 2) return false;        // not an ellipse;
+    for (int x = rxStart + 1; x < width; x++) {
+        if (image.pixel(x, height / 2) == 0xff000000) {
+            rxEnd = x;
+        }
+        else break;
+    }
+    if (rxEnd < 0) return false; 
+    if (qAbs(rxEnd - rxStart - (lxEnd - lxStart)) > 1) return false;   // sides are not symmetric
+
+
+    int lyStart = -1, lyEnd = -1, ryStart = -1, ryEnd = -1;
+    for (int y = 0; y < height; y++) {
+        if (image.pixel(width / 2, y) == 0xff000000) {
+            lyStart = y;
+            break;
+        }
+    }
+    if (lyStart < 0) return false;
+    if (lyStart >= height / 2) return false;        // not an ellipse
+    for (int y = lyStart + 1; y < height; y++) {
+        if (image.pixel(width / 2, y) == 0xff000000) {
+            lyEnd = y;
+        }
+        else break;
+    }
+    if (lyEnd < 0) return false;         
+    if (lyEnd > height / 2) return false;       // not an ellipse
+
+    for (int y = lyEnd + 1; y < height; y++) {
+        if (image.pixel(width / 2, y) == 0xff000000) {
+            ryStart = y;
+            break;
+        }
+    }
+    if (ryStart < 0) return false;
+    if (ryStart < height / 2) return false;        // not an ellipse
+    for (int y = ryStart + 1; y < height; y++) {
+        if (image.pixel(width / 2, y) == 0xff000000) {
+            ryEnd = y;
+        }
+        else break;
+    }
+    if (ryEnd < 0) return false;         
+    if (qAbs((ryEnd - ryStart) - (lyEnd - lyStart)) > 1) return false;  // tops not symmetric
+
+    if (qAbs((rxStart - lxEnd) - (ryStart - lyEnd)) > 1) return false;  // inner drill hole is not circular
+
+    double r = (qMin(bounds.width(), bounds.height()) -  sw) / 2;
+
+	QMatrix matrix = TextUtils::elementToMatrix(element);
+	if (!matrix.isIdentity()) {
+		QRectF r1(0,0,r,r);
+		QRectF r2 = matrix.mapRect(r1);
+		if (r2.width() != r1.width()) {
+			r = r2.width();
+			sw = sw * r2.width() / r1.width();
+		}
+	}
+
+	connectorInfo->radius = r;
+	connectorInfo->strokeWidth = sw;
+    connectorInfo->gotCircle = true;
+
+    DebugDialog::debug(QString("got connector path %1").arg(id));
+
+    return true;
+}
+
+bool FSvgRenderer::initConnectorInfoCircle(QDomElement & element, ConnectorInfo * connectorInfo, const QString & filename) 
+{
+    Q_UNUSED(filename);
 
 	bool ok;
 	element.attribute("cx").toDouble(&ok);
@@ -438,35 +626,7 @@ bool FSvgRenderer::initConnectorInfoStructAux(QDomElement & element, ConnectorIn
 	double r = element.attribute("r").toDouble(&ok);
 	if (!ok) return false;
 
-	double sw = element.attribute("stroke-width").toDouble(&ok);	
-	if (!ok) {
-        QDomElement parent = element.parentNode().toElement();
-        while (!parent.isNull()) {
-            sw = element.attribute("stroke-width").toDouble(&ok);
-            if (ok) {
-                break;
-            }
-
-            parent = parent.parentNode().toElement();
-        }
-
-        if (!ok) {
-            QString text;
-            QTextStream stream(&text);
-            element.save(stream, 0);
-            //DebugDialog::debug(QString("no circle stroke width set in %1: %2").arg(filename).arg(text));
-            element.setAttribute("stroke-width", 1);
-            sw = 1;
-
-		    //QString strokewidth("stroke-width");
-		    //QString s = element.attribute("style");
-		    //SvgFileSplitter::fixStyleAttribute(connectorElement, s, strokewidth);
-		    //sw = connectorElement.attribute("stroke-width").toDouble(&ok);
-		    //if (!ok) {
-			    //return false;
-		    //}
-        }
-	}
+    double sw = getStrokeWidth(element);
 
 	QMatrix matrix = TextUtils::elementToMatrix(element);
 	if (!matrix.isIdentity()) {
@@ -558,7 +718,7 @@ bool FSvgRenderer::setUpConnector(SvgIdLayer * svgIdLayer, bool ignoreTerminalPo
 		    svgIdLayer->m_strokeWidth = km.length() * defaultSizeF.width() / viewBox.width();
 		    //bounds = connectorInfo->cbounds;
         }
-        else if (connectorInfo->gotPath) {
+        if (connectorInfo->gotPath) {
             svgIdLayer->m_path = true;
         }
 	}

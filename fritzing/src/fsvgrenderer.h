@@ -65,7 +65,8 @@ public:
 	QByteArray loadSvg( const QByteArray & contents, const QString & filename, bool findNonConnectors);						// for SvgSplitter loads
 	bool loadSvgString(const QString & svg);
 	bool loadSvgString(const QString & svg, QString & newSvg);
-	bool fastLoad(const QByteArray & contents);								
+	bool fastLoad(const QByteArray & contents);	
+    QByteArray finalLoad(QByteArray & cleanContents, const QString & filename);
 	const QString & filename();
 	QSizeF defaultSizeF();
 	bool setUpConnector(struct SvgIdLayer * svgIdLayer, bool ignoreTerminalPoint);
@@ -83,6 +84,8 @@ protected:
 	bool initConnectorInfo(QDomDocument &, const QStringList & connectorIDs, const QStringList & terminalIDs, const QStringList & legIDs, const QString & filename);
 	ConnectorInfo * initConnectorInfoStruct(QDomElement & connectorElement, const QString & filename);
 	bool initConnectorInfoStructAux(QDomElement &, ConnectorInfo * connectorInfo, const QString & filename);
+    bool initConnectorInfoCircle(QDomElement & element, ConnectorInfo * connectorInfo, const QString & filename);
+    bool initConnectorInfoPath(QDomElement & element, ConnectorInfo * connectorInfo, const QString & filename);
 	void initNonConnectorInfo(QDomDocument & domDocument, const QString & filename);
 	void initNonConnectorInfoAux(QDomElement & element, const QString & filename);
 	void initTerminalInfoAux(QDomElement & element, const QStringList & connectorIDs, const QStringList & terminalIDs);

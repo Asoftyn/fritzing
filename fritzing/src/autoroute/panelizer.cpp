@@ -1327,6 +1327,7 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
 		QString maskTop;
 		QString maskBottom;
         QStringList texts;
+        QMultiHash<long, ConnectorItem *> treatAsCircle;
 
 		foreach (LayerThing layerThing, layerThingList) {					
 			SVG2gerber::ForWhy forWhy = layerThing.forWhy;
@@ -1376,6 +1377,18 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
 						clipString = maskTop;
 					}
 					break;
+                case SVG2gerber::ForCopper:
+                    treatAsCircle.clear();
+                    foreach (QGraphicsItem * item, mainWindow->pcbView()->scene()->collidingItems(board)) {
+                        ConnectorItem * connectorItem = dynamic_cast<ConnectorItem *>(item);
+                        if (connectorItem == NULL) continue;
+                        if (!connectorItem->isPath()) continue;
+                        if (connectorItem->radius() == 0) continue;
+
+                        treatAsCircle.insert(connectorItem->attachedToID(), connectorItem);
+                    }
+                    wantText = true;
+                    break;
 				default:
                     wantText = true;
 					break;
@@ -1386,7 +1399,8 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
                 //DebugDialog::debug("one " + one);
             }
 					
-            QString two = GerberGenerator::clipToBoard(one, board, name, forWhy, clipString, true);
+            QString two = GerberGenerator::clipToBoard(one, board, name, forWhy, clipString, true, treatAsCircle);
+            treatAsCircle.clear();
             if (two.isEmpty()) continue;
 
             QString filename = saveDir.absoluteFilePath(QString("%1_%2_%3.svg").arg(boardName).arg(board->id()).arg(name));
@@ -1537,8 +1551,8 @@ int Panelizer::checkDonuts(MainWindow * mainWindow, bool displayMessage) {
         if (connectorItem == NULL) continue;
         if (!connectorItem->attachedTo()->isEverVisible()) continue;
 
-        if (connectorItem->isPath() && connectorItem->getCrossLayerConnectorItem() != NULL) {
-            connectorItem->debugInfo("is donut");
+        if (connectorItem->isPath() && connectorItem->getCrossLayerConnectorItem() != NULL) {  // && connectorItem->radius() == 0
+            connectorItem->debugInfo("possible donut");
             connectorItem->attachedTo()->debugInfo("\t");
             donuts << connectorItem;
         }

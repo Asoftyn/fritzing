@@ -314,7 +314,7 @@ void PaletteModel::countParts(QDir & dir, QStringList & nameFilters, int & partC
 }
 
 void PaletteModel::loadPartsAux(QDir & dir, QStringList & nameFilters, int & loadingPart, int totalPartCount) {
-    QString temp = dir.absolutePath();
+    //QString temp = dir.absolutePath();
     QFileInfoList list = dir.entryInfoList(nameFilters, QDir::Files | QDir::NoSymLinks);
     for (int i = 0; i < list.size(); ++i) {
         QFileInfo fileInfo = list.at(i);
