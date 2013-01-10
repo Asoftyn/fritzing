@@ -104,10 +104,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>to Steven Noppe for the Dutch translation, </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Fritzing is made possible with funding from the </source>
         <translation type="unfinished"></translation>
     </message>
@@ -165,6 +161,10 @@
     </message>
     <message>
         <source>to &amp;#313;ubom&amp;iacute;r Ducho&amp;#328; for the Slovak translation, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to Steven Noppe and Davy Uittenbogerd for the Dutch translation, </source>
         <translation type="unfinished"></translation>
     </message>
 </context>

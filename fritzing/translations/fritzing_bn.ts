@@ -135,8 +135,8 @@
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="161"/>
-        <source>to Steven Noppe for the Dutch translation, </source>
-        <translation>ধন্যবাদ Steven Noppe কে ডাচ ভাষায় আনুবাদের জন্য,</translation>
+        <source>to Steven Noppe and Davy Uittenbogerd for the Dutch translation, </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="162"/>
