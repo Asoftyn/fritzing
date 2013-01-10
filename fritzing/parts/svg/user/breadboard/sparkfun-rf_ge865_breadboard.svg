@@ -22,11 +22,9 @@
      <g>
       <path fill="#F2F2F2" d="M803.444,769.264c0,7.63889,-6.25,13.8889,-13.8889,13.8889L93.1667,783.153c-7.63889,0,-13.8889,-6.25,-13.8889,-13.8889l0,-127c0,-7.63889,6.25,-13.8889,13.8889,-13.8889l696.403,0c7.63889,0,13.8889,6.25,13.8889,13.8889L803.458,769.264z"/>
      </g>
-     <g transform="matrix(1, 0, 0, 1, 176.517, 514.136)">
-
-      <text x="0" y="0" fill="#666666" font-family="'DroidSans'" font-size="4.2688">Telit quad cell module</text>
-      <text x="30.175" y="5.123" fill="#666666" font-family="'DroidSans'" font-size="4.2688">GE865</text>
-
+     <g enable-background="new    " transform="matrix(1, 0, 0, 1, 176.517, 514.136)">
+      <text x="0" y="0" fill="#666666" font-family="'DroidSans'" font-size="59.2889">Telit quad cell module</text>
+      <text x="419.097" y="71.1528" fill="#666666" font-family="'DroidSans'" font-size="59.2889">GE865</text>
      </g>
     </g>
    </g>

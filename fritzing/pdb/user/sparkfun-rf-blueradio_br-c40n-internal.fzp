@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-RF-BLUERADIO_BR-C40N-INTERNAL'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-RF' BLUERADIO_BR-C40N INTERNAL -->
 <version>4</version>
-<date>2013-01-03</date>
+<date>2013-01-10</date>
 <label>U</label>
 <author>www.fritzing.org</author>
 <description>&lt;b&gt;Bluetooth SMD Module&lt;/b&gt;
@@ -37,7 +37,7 @@ BR-C40A with antenna cut off. 50 Ohm antenna trace and connector required. Footp
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-rf_bluetooth-internal-fp_breadboard.svg'>
+<layers image='icon/BLUETOOTH-INTERNAL-FP.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>
