@@ -158,7 +158,7 @@ QString("<br /><br /><br /><br /><br /><br /><br /><br /><br />") +
 	tr("to Hiroshi Suzuki for the Japanese translation, ") +
 	tr("to Robert Lee for the Chinese (Traditional) translation, ") +
 	tr("to Vladimir Savinov for the Russian translation, " ) +
-	tr("to Steven Noppe for the Dutch translation, " ) +
+	tr("to Steven Noppe and Davy Uittenbogerd for the Dutch translation, " ) +
 	tr("to Josef Dustira for the Czech translation, " ) +
 	tr("to Jinbuhm Kim for the Korean translation, " ) +
 	tr("to &#313;ubom&iacute;r Ducho&#328; for the Slovak translation, " ) + 
