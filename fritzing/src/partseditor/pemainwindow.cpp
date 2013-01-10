@@ -322,6 +322,7 @@ void PEMainWindow::closeEvent(QCloseEvent *event)
 			if (lineEdit) {
 				if (lineEdit->isModified()) {
 					lineEdit->clearFocus();
+                    lineEdit->setModified(false);
 					gotOne = true;
 				}
 			}
@@ -330,6 +331,7 @@ void PEMainWindow::closeEvent(QCloseEvent *event)
 				if (textEdit) {
 					if (textEdit->document()->isModified()) {
 						textEdit->clearFocus();
+                        textEdit->document()->setModified(false);
 						gotOne = true;
 					}
 				}

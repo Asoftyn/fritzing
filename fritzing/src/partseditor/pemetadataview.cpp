@@ -52,6 +52,7 @@ void FocusOutTextEdit::focusOutEvent(QFocusEvent * e) {
 	QTextEdit::focusOutEvent(e);
     if (document()->isModified()) {
         emit focusOut();
+        document()->setModified(false);
     }
 }
 
@@ -71,42 +72,49 @@ PEMetadataView::~PEMetadataView() {
 void PEMetadataView::titleEntry() {
 	if (m_titleEdit->isModified()) {
 		emit metadataChanged("title", m_titleEdit->text());
+        m_titleEdit->setModified(false);
 	}
 }
 
 void PEMetadataView::authorEntry() {
 	if (m_authorEdit->isModified()) {
 		emit metadataChanged("author", m_authorEdit->text());
+        m_authorEdit->setModified(false);
 	}	
 }
 
 void PEMetadataView::descriptionEntry() {
 	if (m_descriptionEdit->document()->isModified()) {
 		emit metadataChanged("description", m_descriptionEdit->toHtml());
+        m_descriptionEdit->document()->setModified(false);
 	}
 }
 
 void PEMetadataView::urlEntry() {
 	if (m_urlEdit->isModified()) {
 		emit metadataChanged("url", m_urlEdit->text());
+        m_urlEdit->setModified(false);
 	}
 }
 
 void PEMetadataView::labelEntry() {
 	if (m_labelEdit->isModified()) {
 		emit metadataChanged("label", m_labelEdit->text());
+        m_labelEdit->setModified(false);
 	}
 }
 
 void PEMetadataView::familyEntry() {
 	if (m_familyEdit->isModified()) {
 		emit metadataChanged("family", m_familyEdit->text());
+        m_familyEdit->setModified(false);
 	}
 }
 
 void PEMetadataView::variantEntry() {
 	if (m_variantEdit->isModified()) {
 		emit metadataChanged("variant", m_variantEdit->text());
+        m_variantEdit->setModified(false);
 	}
 }
 

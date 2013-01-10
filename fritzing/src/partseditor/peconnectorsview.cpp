@@ -178,6 +178,7 @@ void PEConnectorsView::nameEntry() {
 	QLineEdit * lineEdit = qobject_cast<QLineEdit *>(sender());
 	if (lineEdit != NULL && lineEdit->isModified()) {
 		changeConnector();
+        lineEdit->setModified(false);
 	}
 }
 
@@ -189,6 +190,7 @@ void PEConnectorsView::descriptionEntry() {
 	QLineEdit * lineEdit = qobject_cast<QLineEdit *>(sender());
 	if (lineEdit != NULL && lineEdit->isModified()) {
 		changeConnector();
+        lineEdit->setModified(false);
 	}
 }
 
@@ -201,6 +203,7 @@ void PEConnectorsView::connectorCountEntry() {
         if (newCount != m_connectorCount) {
             m_connectorCount = newCount;
             emit connectorCountChanged(newCount);
+            lineEdit->setModified(false);
         }
     }
 
