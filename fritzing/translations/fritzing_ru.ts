@@ -5373,6 +5373,10 @@ Fritzing по-прежнему работает, но вы не сможете �
         <source>Fritzing requires that you make cutouts using a shape &apos;subtraction&apos; or &apos;difference&apos; operation in your vector graphics editor.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>unable to copy file &apos;%1&apos; to &apos;%2&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
