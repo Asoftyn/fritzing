@@ -1378,6 +1378,7 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
 					}
 					break;
                 case SVG2gerber::ForCopper:
+                case SVG2gerber::ForDrill:
                     treatAsCircle.clear();
                     foreach (QGraphicsItem * item, mainWindow->pcbView()->scene()->collidingItems(board)) {
                         ConnectorItem * connectorItem = dynamic_cast<ConnectorItem *>(item);

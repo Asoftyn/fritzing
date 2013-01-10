@@ -437,9 +437,10 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
             DebugDialog::debug(QString("checking for %1").arg(id));
             if (!ids.contains(id)) continue;
 
+            QString pid;
             ConnectorItem * connectorItem = NULL;
             for (QDomElement parent = path.parentNode().toElement(); !parent.isNull(); parent = parent.parentNode().toElement()) {
-                QString pid = parent.attribute("partID");
+                pid = parent.attribute("partID");
                 if (pid.isEmpty()) continue;
 
                 QList<ConnectorItem *> connectorItems = treatAsCircle.values(pid.toLong());
@@ -458,13 +459,25 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
             }
             if (connectorItem == NULL) continue;
 
+            QString string;
+            QTextStream stream(&string);
+            path.save(stream, 0);
+            DebugDialog::debug("path " + string);
+
             connectorItem->debugInfo("make path");
-            QPointF p = connectorItem->adjustedTerminalPoint();
-            path.setAttribute("cx", p.x() * GraphicsUtils::StandardFritzingDPI / GraphicsUtils::SVGDPI);
-            path.setAttribute("cy", p.y() * GraphicsUtils::StandardFritzingDPI / GraphicsUtils::SVGDPI);
+            static const QString unique("%%%%%%%%%%%%%%%%%%%%%%%%_________________________________%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+            path.setAttribute("id", unique);
+            QSvgRenderer renderer;
+            renderer.load(domDocument1.toByteArray());
+            QRectF bounds = renderer.boundsOnElement(unique);
+            path.setAttribute("id", id);
+            QPointF p = bounds.center();
+            path.setAttribute("cx", p.x());
+            path.setAttribute("cy", p.y());
             path.setAttribute("r", connectorItem->radius() * GraphicsUtils::StandardFritzingDPI / GraphicsUtils::SVGDPI);
             path.setAttribute("stroke-width", connectorItem->strokeWidth() * GraphicsUtils::StandardFritzingDPI / GraphicsUtils::SVGDPI);
             newCircles.append(path);
+
         }
         // seems to be dangerous to change element tagName during a traversal of the QDomNodeList so do it now
         foreach (QDomElement path, newCircles) {
