@@ -5371,13 +5371,6 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
     </message>
 </context>
 <context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>RecoveryDialog</name>
     <message>
         <source>&amp;Recover</source>

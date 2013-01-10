@@ -5389,13 +5389,6 @@ is already there, we won&apos;t add it again, right?</source>
     </message>
 </context>
 <context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>ZIP/UNZIP API エラー %1</translation>
-    </message>
-</context>
-<context>
     <name>RecoveryDialog</name>
     <message>
         <source>&amp;Recover</source>

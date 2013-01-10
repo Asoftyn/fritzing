@@ -6878,14 +6878,6 @@ Fritzing stále funguje, ale nebudete môcť zmeniť vlastnosti súčiastok.</tr
     </message>
 </context>
 <context>
-    <name>QuaZipFile</name>
-    <message>
-        <location filename="../src/lib/quazip/quazipfile.cpp" line="141"/>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>ZIP/UNZIP API chyba %1</translation>
-    </message>
-</context>
-<context>
     <name>RecoveryDialog</name>
     <message>
         <location filename="../src/dialogs/recoverydialog.cpp" line="65"/>

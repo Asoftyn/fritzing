@@ -5400,13 +5400,6 @@ já se encontrava lá, não vais adicionar outravez, Ok?!?</translation>
     </message>
 </context>
 <context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>Erro no API ZIP/UNZIP %1</translation>
-    </message>
-</context>
-<context>
     <name>RecoveryDialog</name>
     <message>
         <source>&amp;Recover</source>

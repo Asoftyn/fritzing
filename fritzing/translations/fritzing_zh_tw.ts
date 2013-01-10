@@ -6854,14 +6854,6 @@ Fritzing 還可以運作，但此時，您無法變更元件的屬性。</transl
     </message>
 </context>
 <context>
-    <name>QuaZipFile</name>
-    <message>
-        <location filename="../src/lib/quazip/quazipfile.cpp" line="141"/>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>壓縮/解壓縮 API 錯誤 %1</translation>
-    </message>
-</context>
-<context>
     <name>RecoveryDialog</name>
     <message>
         <location filename="../src/dialogs/recoverydialog.cpp" line="65"/>

@@ -5438,13 +5438,6 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
     </message>
 </context>
 <context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>ZIP/UNZIP API fout %1</translation>
-    </message>
-</context>
-<context>
     <name>RecoveryDialog</name>
     <message>
         <source>&amp;Recover</source>

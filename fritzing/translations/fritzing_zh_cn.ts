@@ -5434,13 +5434,6 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
     </message>
 </context>
 <context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>ZIP/UNZIP 应用程序接口错误%1</translation>
-    </message>
-</context>
-<context>
     <name>RecoveryDialog</name>
     <message>
         <source>&amp;Recover</source>

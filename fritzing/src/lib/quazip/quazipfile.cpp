@@ -138,7 +138,7 @@ void QuaZipFile::setZipError(int zipError)const
   if(zipError==UNZ_OK)
     fakeThis->setErrorString(QString());
   else
-    fakeThis->setErrorString(tr("ZIP/UNZIP API error %1").arg(zipError));
+    fakeThis->setErrorString(QString("ZIP/UNZIP API error %1").arg(zipError));
 }
 
 bool QuaZipFile::open(OpenMode mode)

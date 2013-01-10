@@ -6862,14 +6862,6 @@ ya se encuentra ahí, no la vamos a agregar de nuevo ¿o si?</translation>
     </message>
 </context>
 <context>
-    <name>QuaZipFile</name>
-    <message>
-        <location filename="../src/lib/quazip/quazipfile.cpp" line="141"/>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>Error en la API ZIP/UNZIP  %1</translation>
-    </message>
-</context>
-<context>
     <name>RecoveryDialog</name>
     <message>
         <location filename="../src/dialogs/recoverydialog.cpp" line="65"/>

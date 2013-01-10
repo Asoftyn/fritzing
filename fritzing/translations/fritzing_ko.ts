@@ -6866,14 +6866,6 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
     </message>
 </context>
 <context>
-    <name>QuaZipFile</name>
-    <message>
-        <location filename="../src/lib/quazip/quazipfile.cpp" line="141"/>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>ZIP/UNZIP API 에러 %1</translation>
-    </message>
-</context>
-<context>
     <name>RecoveryDialog</name>
     <message>
         <location filename="../src/dialogs/recoverydialog.cpp" line="65"/>
