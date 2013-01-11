@@ -6644,11 +6644,6 @@ im Sortiment. Nicht erneut hinzufügen?</translation>
         <translation>Symbol %1 endet unerwartet (3) in %2</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
-        <source>Auorouter Settings</source>
-        <translation>Autorouter-Einstellungen</translation>
-    </message>
-    <message>
         <location filename="../src/svg/gerbergenerator.cpp" line="138"/>
         <source>outline is empty</source>
         <translation>Umriss/Kontur ist leer</translation>
@@ -6852,6 +6847,11 @@ im Sortiment. Nicht erneut hinzufügen?</translation>
         <source>Part %1 &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
+        <source>Autorouter Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
@@ -7031,7 +7031,7 @@ im Sortiment. Nicht erneut hinzufügen?</translation>
     </message>
     <message>
         <location filename="../src/items/resizableboard.cpp" line="1446"/>
-        <source>Tabloid (11x17</source>
+        <source>Tabloid (11x17)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7344,21 +7344,10 @@ im Sortiment. Nicht erneut hinzufügen?</translation>
         <source>Change color of %1 wires to %2</source>
         <translation>Farbe von %1 Kabel(n) nach %2 ändern</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6929"/>
-        <source>show part label(s)</source>
-        <translation>
-            <numerusform>Bezeichnung anzeigen</numerusform>
-            <numerusform>Bezeichnungen anzeigen</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6932"/>
-        <source>hide part label(s)</source>
-        <translation>
-            <numerusform>Bezeichnung ausblenden</numerusform>
-            <numerusform>Bezeichnungen ausblenden</numerusform>
-        </translation>
+    <message>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
+        <source>Resize ruler to %1 %2</source>
+        <translation type="unfinished">Größes des Lineals nach %1 %2 ändern</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="7318"/>
@@ -7370,11 +7359,6 @@ im Sortiment. Nicht erneut hinzufügen?</translation>
         <location filename="../src/sketch/sketchwidget.cpp" line="7351"/>
         <source>Change %1 from %2 to %3</source>
         <translation>%1 von %2 nach %2 ändern</translation>
-    </message>
-    <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
-        <source>Resize ruler to %1%2</source>
-        <translation>Größes des Lineals nach %1%2 ändern</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="7470"/>
@@ -7468,6 +7452,22 @@ Note: you can also trigger this display by mousing down on the routing status te
         <location filename="../src/sketch/sketchwidget.cpp" line="2034"/>
         <source>Selection</source>
         <translation>Auswahl</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/sketch/sketchwidget.cpp" line="6929"/>
+        <source>show %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/sketch/sketchwidget.cpp" line="6932"/>
+        <source>hide %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="6946"/>

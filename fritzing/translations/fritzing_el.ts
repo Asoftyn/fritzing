@@ -5887,11 +5887,6 @@ shift key swaps scroll axis</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
-        <source>Auorouter Settings</source>
-        <translation>Ρυθμίσεις Αυτοδρομολογητή</translation>
-    </message>
-    <message>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="628"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="671"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="740"/>
@@ -6872,6 +6867,11 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
         <source>Part %1 &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
+        <source>Autorouter Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
@@ -7051,7 +7051,7 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
     </message>
     <message>
         <location filename="../src/items/resizableboard.cpp" line="1446"/>
-        <source>Tabloid (11x17</source>
+        <source>Tabloid (11x17)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7401,19 +7401,24 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
     </message>
     <message numerus="yes">
         <location filename="../src/sketch/sketchwidget.cpp" line="6929"/>
-        <source>show part label(s)</source>
-        <translation>
-            <numerusform>εμφάνιση ετικέτας εξαρτήματος</numerusform>
-            <numerusform>εμφάνιση ετικετων εξαρτήματος</numerusform>
+        <source>show %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/sketch/sketchwidget.cpp" line="6932"/>
-        <source>hide part label(s)</source>
-        <translation>
-            <numerusform>απόκρυψη ετικέτας εξαρτήματος</numerusform>
-            <numerusform>απόκρυψη ετικετών εξαρτήματος</numerusform>
+        <source>hide %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
+        <source>Resize ruler to %1 %2</source>
+        <translation type="unfinished">Αλλαγή μεγέθους κανόνα σε %1 %2</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="6946"/>
@@ -7430,11 +7435,6 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
         <location filename="../src/sketch/sketchwidget.cpp" line="7351"/>
         <source>Change %1 from %2 to %3</source>
         <translation>Αλλαγή %1 από %2 σε %3</translation>
-    </message>
-    <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
-        <source>Resize ruler to %1%2</source>
-        <translation>Αλλαγή μεγέθους κανόνα σε %1%2</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="7470"/>

@@ -5107,11 +5107,6 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
         <translation>Selecteer vastgezette onderdelen</translation>
     </message>
     <message>
-        <source>Auorouter Settings</source>
-        <translatorcomment>The source text  misses a &apos;t&apos; in Autorouter</translatorcomment>
-        <translation>Autorouter instellingen</translation>
-    </message>
-    <message>
         <source>&lt;font face=&apos;Lucida Grande, Tahoma, Sans Serif&apos; size=&apos;2&apos; color=&apos;#eaf4ed&apos;&gt;Version %1.%2.%3 (%4%5)%6&lt;/font&gt;</source>
         <translation>&lt;font face=&apos;Lucida Grande, Tahoma, Sans Serif&apos; size=&apos;2&apos; color=&apos;#eaf4ed&apos;&gt;Version %1.%2.%3 (%4%5)%6&lt;/font&gt;</translation>
     </message>
@@ -5413,6 +5408,10 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
         <source>unable to copy file &apos;%1&apos; to &apos;%2&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Autorouter Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
@@ -5558,9 +5557,8 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
         <translation>Ledger (17x11)</translation>
     </message>
     <message>
-        <source>Tabloid (11x17</source>
-        <translatorcomment>Source text misses a bracket &apos;)&apos;</translatorcomment>
-        <translation>Tabloid (11x17)</translation>
+        <source>Tabloid (11x17)</source>
+        <translation type="unfinished">Tabloid (11x17)) {11x?}</translation>
     </message>
 </context>
 <context>
@@ -5789,22 +5787,6 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
         <source>%1 label &apos;%2&apos;</source>
         <translation>%1 label &apos;%2&apos;</translation>
     </message>
-    <message numerus="yes">
-        <source>show part label(s)</source>
-        <translatorcomment>%n place marker missing?</translatorcomment>
-        <translation>
-            <numerusform>Toon onderdeel label</numerusform>
-            <numerusform>Toon onderdelen labels</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>hide part label(s)</source>
-        <translatorcomment>%n place marker missing?</translatorcomment>
-        <translation>
-            <numerusform>Verberg onderdeel label</numerusform>
-            <numerusform>Verberg onderdelen labels</numerusform>
-        </translation>
-    </message>
     <message>
         <source>Resize Note</source>
         <translation>Wijzig grootte van notitie</translation>
@@ -5812,11 +5794,6 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
     <message>
         <source>Change Resistance from %1 to %2</source>
         <translation>Wijzig weerstand van %1 naar %2</translation>
-    </message>
-    <message>
-        <source>Resize ruler to %1%2</source>
-        <translatorcomment>Added a space between place markers</translatorcomment>
-        <translation>Wijzig grootte van meetlat naar %1 %2</translation>
     </message>
     <message>
         <source>Disconnect all wires from %1</source>
@@ -5925,6 +5902,24 @@ Noot:Je kunt dit venster ook oproepen door op de tekst van de routing status te 
     <message>
         <source>Resize board to %1 %2</source>
         <translation>Wijzig de grootte van het bord naar %1 %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>show %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>hide %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Resize ruler to %1 %2</source>
+        <translation type="unfinished">Wijzig grootte van meetlat naar %1 %2 {1 %2?}</translation>
     </message>
 </context>
 <context>

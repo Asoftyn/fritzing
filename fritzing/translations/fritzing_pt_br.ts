@@ -5073,10 +5073,6 @@ is already there, we won&apos;t add it again, right?</source>
         <translation>Selecionar componentes bloqueados</translation>
     </message>
     <message>
-        <source>Auorouter Settings</source>
-        <translation>Definições do Autoencaminhamento</translation>
-    </message>
-    <message>
         <source>&lt;font face=&apos;Lucida Grande, Tahoma, Sans Serif&apos; size=&apos;2&apos; color=&apos;#eaf4ed&apos;&gt;Version %1.%2.%3 (%4%5)%6&lt;/font&gt;</source>
         <translation>&lt;font face=&apos;Lucida Grande, Tahoma, Sans Serif&apos; size=&apos;2&apos; color=&apos;#eaf4ed&apos;&gt;Versão %1.%2.%3 (%4%5)%6&lt;/font&gt;</translation>
     </message>
@@ -5375,6 +5371,10 @@ is already there, we won&apos;t add it again, right?</source>
         <source>unable to copy file &apos;%1&apos; to &apos;%2&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Autorouter Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
@@ -5524,7 +5524,7 @@ is already there, we won&apos;t add it again, right?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Tabloid (11x17</source>
+        <source>Tabloid (11x17)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5770,24 +5770,6 @@ is already there, we won&apos;t add it again, right?</source>
         <source>Change Resistance from %1 to %2</source>
         <translation>Mudar a resistência de %1 para %2</translation>
     </message>
-    <message numerus="yes">
-        <source>show part label(s)</source>
-        <translation>
-            <numerusform>mostrar a etiqueta do componente</numerusform>
-            <numerusform>mostrar as etiquetas dos componentes</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>hide part label(s)</source>
-        <translation>
-            <numerusform>esconder a etiqueta do componente</numerusform>
-            <numerusform>esconder as etiquetas dos componentes</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Resize ruler to %1%2</source>
-        <translation>Redimensionar a régua para %1%2</translation>
-    </message>
     <message>
         <source>Change image from %1 to %2</source>
         <translation>Mudar a imagem de %1 para %2</translation>
@@ -5885,6 +5867,24 @@ Note: you can also trigger this display by mousing down on the routing status te
     <message>
         <source>Resize board to %1 %2</source>
         <translation type="unfinished">Redimensionar placa para %1 %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>show %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>hide %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Resize ruler to %1 %2</source>
+        <translation type="unfinished">Redimensionar a régua para %1 %2</translation>
     </message>
 </context>
 <context>

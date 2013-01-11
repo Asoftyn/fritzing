@@ -6657,11 +6657,6 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
         <translation>schéma %1 v %2 nečekaně končí (3)</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
-        <source>Auorouter Settings</source>
-        <translation>Nastavení Autorouteru</translation>
-    </message>
-    <message>
         <location filename="../src/svg/gerbergenerator.cpp" line="138"/>
         <source>outline is empty</source>
         <translation>obrys je prázdný</translation>
@@ -6865,6 +6860,11 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
         <source>Part %1 &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
+        <source>Autorouter Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
@@ -7044,7 +7044,7 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
     </message>
     <message>
         <location filename="../src/items/resizableboard.cpp" line="1446"/>
-        <source>Tabloid (11x17</source>
+        <source>Tabloid (11x17)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7394,21 +7394,26 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
     </message>
     <message numerus="yes">
         <location filename="../src/sketch/sketchwidget.cpp" line="6929"/>
-        <source>show part label(s)</source>
-        <translation>
-            <numerusform>zobrazit popisek součástky(ek)</numerusform>
-            <numerusform>zobrazit popisek součástky(ek)</numerusform>
-            <numerusform>zobrazit popisek součástky(ek)</numerusform>
+        <source>show %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/sketch/sketchwidget.cpp" line="6932"/>
-        <source>hide part label(s)</source>
-        <translation>
-            <numerusform>skrýt  popisek součástky</numerusform>
-            <numerusform>skrýt  popisek součástek</numerusform>
-            <numerusform>skrýt  popisek součástek</numerusform>
+        <source>hide %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
+        <source>Resize ruler to %1 %2</source>
+        <translation type="unfinished">Změnit velikost pravítka %1 %2</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="6946"/>
@@ -7425,11 +7430,6 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
         <location filename="../src/sketch/sketchwidget.cpp" line="7351"/>
         <source>Change %1 from %2 to %3</source>
         <translation>Změna %1 z %2 na %3</translation>
-    </message>
-    <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
-        <source>Resize ruler to %1%2</source>
-        <translation>Změnit velikost pravítka %1%2</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="7470"/>

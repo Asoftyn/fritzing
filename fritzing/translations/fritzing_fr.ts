@@ -6621,11 +6621,6 @@ is already there, we won&apos;t add it again, right?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
-        <source>Auorouter Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/svg/gerbergenerator.cpp" line="138"/>
         <source>outline is empty</source>
         <translation type="unfinished"></translation>
@@ -6829,6 +6824,11 @@ is already there, we won&apos;t add it again, right?</source>
         <source>Part %1 &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
+        <source>Autorouter Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
@@ -7008,7 +7008,7 @@ is already there, we won&apos;t add it again, right?</source>
     </message>
     <message>
         <location filename="../src/items/resizableboard.cpp" line="1446"/>
-        <source>Tabloid (11x17</source>
+        <source>Tabloid (11x17)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7321,21 +7321,10 @@ is already there, we won&apos;t add it again, right?</source>
         <source>Change color of %1 wires to %2</source>
         <translation>Changer la couleur de %1 câbles en %2</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6929"/>
-        <source>show part label(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6932"/>
-        <source>hide part label(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+    <message>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
+        <source>Resize ruler to %1 %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="7318"/>
@@ -7346,11 +7335,6 @@ is already there, we won&apos;t add it again, right?</source>
         <location filename="../src/sketch/sketchwidget.cpp" line="7342"/>
         <location filename="../src/sketch/sketchwidget.cpp" line="7351"/>
         <source>Change %1 from %2 to %3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
-        <source>Resize ruler to %1%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7455,6 +7439,22 @@ Note: you can also trigger this display by mousing down on the routing status te
         <location filename="../src/sketch/sketchwidget.cpp" line="6894"/>
         <source>%1 label &apos;%2&apos;</source>
         <translation>%1 étiquette &apos;%2&apos;</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/sketch/sketchwidget.cpp" line="6929"/>
+        <source>show %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/sketch/sketchwidget.cpp" line="6932"/>
+        <source>hide %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="6946"/>

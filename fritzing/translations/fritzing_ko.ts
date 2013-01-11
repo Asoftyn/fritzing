@@ -5855,11 +5855,6 @@ shift 키 스크롤축을 변경</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
-        <source>Auorouter Settings</source>
-        <translation>오토라우터 설정</translation>
-    </message>
-    <message>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="628"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="671"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="740"/>
@@ -6837,6 +6832,11 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
         <source>Part %1 &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
+        <source>Autorouter Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
@@ -7016,7 +7016,7 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
     </message>
     <message>
         <location filename="../src/items/resizableboard.cpp" line="1446"/>
-        <source>Tabloid (11x17</source>
+        <source>Tabloid (11x17)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7366,17 +7366,22 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
     </message>
     <message numerus="yes">
         <location filename="../src/sketch/sketchwidget.cpp" line="6929"/>
-        <source>show part label(s)</source>
+        <source>show %n part label(s)</source>
         <translation type="unfinished">
-            <numerusform>부품 라벨 보이기</numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/sketch/sketchwidget.cpp" line="6932"/>
-        <source>hide part label(s)</source>
-        <translation>
-            <numerusform>부품 라벨 숨기기</numerusform>
+        <source>hide %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
+        <source>Resize ruler to %1 %2</source>
+        <translation type="unfinished">눈금자를 %1 %2로 수정</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="6946"/>
@@ -7393,11 +7398,6 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
         <location filename="../src/sketch/sketchwidget.cpp" line="7351"/>
         <source>Change %1 from %2 to %3</source>
         <translation>%1을 %2 에서 %3으로 변경</translation>
-    </message>
-    <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
-        <source>Resize ruler to %1%2</source>
-        <translation>눈금자를 %1%2로 수정</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="7470"/>

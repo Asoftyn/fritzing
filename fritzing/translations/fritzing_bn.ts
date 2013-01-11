@@ -6034,11 +6034,6 @@ shift key swaps scroll axis</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
-        <source>Auorouter Settings</source>
-        <translation type="unfinished">পরিষ্কার পরিষ্কার</translation>
-    </message>
-    <message>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="628"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="671"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="740"/>
@@ -7020,6 +7015,11 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
         <source>Pad</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
+        <source>Autorouter Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
@@ -7205,7 +7205,7 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
     </message>
     <message>
         <location filename="../src/items/resizableboard.cpp" line="1446"/>
-        <source>Tabloid (11x17</source>
+        <source>Tabloid (11x17)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7572,19 +7572,24 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
     </message>
     <message numerus="yes">
         <location filename="../src/sketch/sketchwidget.cpp" line="6929"/>
-        <source>show part label(s)</source>
-        <translation>
-            <numerusform>সকল অংস প্রদর্শন(s)</numerusform>
-            <numerusform>সকল অংস দেখতে(s)</numerusform>
+        <source>show %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/sketch/sketchwidget.cpp" line="6932"/>
-        <source>hide part label(s)</source>
-        <translation>
-            <numerusform>লেভেলের লুকানো অংস(s)</numerusform>
+        <source>hide %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
+        <source>Resize ruler to %1 %2</source>
+        <translation type="unfinished">এবং মাপকাঠি পুনরায় আকার দিন %1 %2</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="6946"/>
@@ -7601,11 +7606,6 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
         <location filename="../src/sketch/sketchwidget.cpp" line="7351"/>
         <source>Change %1 from %2 to %3</source>
         <translation>%1পরিবর্তনের জন্য %2 থেকে %3</translation>
-    </message>
-    <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
-        <source>Resize ruler to %1%2</source>
-        <translation>এবং মাপকাঠি পুনরায় আকার দিন %1%2</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="7470"/>

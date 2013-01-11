@@ -5044,10 +5044,6 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Auorouter Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;font face=&apos;Lucida Grande, Tahoma, Sans Serif&apos; size=&apos;2&apos; color=&apos;#eaf4ed&apos;&gt;Version %1.%2.%3 (%4%5)%6&lt;/font&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5346,6 +5342,10 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
         <source>unable to copy file &apos;%1&apos; to &apos;%2&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Autorouter Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
@@ -5491,7 +5491,7 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Tabloid (11x17</source>
+        <source>Tabloid (11x17)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5721,18 +5721,6 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
         <source>%1 label &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <source>show part label(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>hide part label(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
     <message>
         <source>Resize Note</source>
         <translation type="unfinished"></translation>
@@ -5747,10 +5735,6 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
     </message>
     <message>
         <source>Disconnect all wires from %1 items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Resize ruler to %1%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5849,6 +5833,22 @@ Note: you can also trigger this display by mousing down on the routing status te
     </message>
     <message>
         <source>Resize board to %1 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>show %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>hide %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Resize ruler to %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -617,8 +617,8 @@ A custom board svg typically has one silkscreen layer and one board layer.
         <location filename="../src/items/resizableboard.cpp" line="420"/>
         <source>Fritzing thinks the custom shape has %n cutouts.</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>Fritzing thinks the custom shape has one cutouts.</numerusform>
+            <numerusform>Fritzing thinks the custom shape has %n cutouts.</numerusform>
         </translation>
     </message>
     <message>
@@ -1620,7 +1620,7 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <location filename="../src/mainwindow/mainwindow.cpp" line="1573"/>
         <source>Routing completed using %n jumper part(s)</source>
         <translation type="unfinished">
-            <numerusform>Routing completed using %n jumper part</numerusform>
+            <numerusform>Routing completed using one jumper part</numerusform>
             <numerusform>Routing completed using %n jumper parts</numerusform>
         </translation>
     </message>
@@ -3086,7 +3086,7 @@ All your parts are up-to-date.</source>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3389"/>
         <source>Found %n outdated parts. Do you want to update them now?</source>
         <translation type="unfinished">
-            <numerusform>Found %n outdated part. Do you want to update it now?</numerusform>
+            <numerusform>Found one outdated part. Do you want to update it now?</numerusform>
             <numerusform>Found %n outdated parts. Do you want to update them now?</numerusform>
         </translation>
     </message>
@@ -3746,8 +3746,8 @@ We&apos;re working to avoid this message, and only let you choose between proper
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="786"/>
         <source> with %n vias</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform> with one via</numerusform>
+            <numerusform> with %n vias</numerusform>
         </translation>
     </message>
     <message>
@@ -6612,11 +6612,6 @@ is already there, we won&apos;t add it again, right?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
-        <source>Auorouter Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/svg/gerbergenerator.cpp" line="138"/>
         <source>outline is empty</source>
         <translation type="unfinished"></translation>
@@ -6820,6 +6815,11 @@ is already there, we won&apos;t add it again, right?</source>
         <source>Part %1 &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/autoroute/autoroutersettingsdialog.cpp" line="70"/>
+        <source>Autorouter Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
@@ -6999,7 +6999,7 @@ is already there, we won&apos;t add it again, right?</source>
     </message>
     <message>
         <location filename="../src/items/resizableboard.cpp" line="1446"/>
-        <source>Tabloid (11x17</source>
+        <source>Tabloid (11x17)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7312,21 +7312,10 @@ is already there, we won&apos;t add it again, right?</source>
         <source>Change color of %1 wires to %2</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6929"/>
-        <source>show part label(s)</source>
-        <translation>
-            <numerusform>Show part Label</numerusform>
-            <numerusform>Show part labels</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6932"/>
-        <source>hide part label(s)</source>
-        <translation>
-            <numerusform>Hide part label</numerusform>
-            <numerusform>Hide part labels</numerusform>
-        </translation>
+    <message>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
+        <source>Resize ruler to %1 %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="7318"/>
@@ -7337,11 +7326,6 @@ is already there, we won&apos;t add it again, right?</source>
         <location filename="../src/sketch/sketchwidget.cpp" line="7342"/>
         <location filename="../src/sketch/sketchwidget.cpp" line="7351"/>
         <source>Change %1 from %2 to %3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
-        <source>Resize ruler to %1%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7436,6 +7420,22 @@ Note: you can also trigger this display by mousing down on the routing status te
         <location filename="../src/sketch/sketchwidget.cpp" line="2034"/>
         <source>Selection</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/sketch/sketchwidget.cpp" line="6929"/>
+        <source>show %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform>show part label</numerusform>
+            <numerusform>show parts labels</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/sketch/sketchwidget.cpp" line="6932"/>
+        <source>hide %n part label(s)</source>
+        <translation type="unfinished">
+            <numerusform>hide part label</numerusform>
+            <numerusform>hide parts labels</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="6946"/>
