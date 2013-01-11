@@ -6604,6 +6604,12 @@ const QString &SketchWidget::selectedModuleID() {
 	if(m_lastPaletteItemSelected) {
 		return m_lastPaletteItemSelected->moduleID();
 	}
+
+    foreach (QGraphicsItem * item, scene()->selectedItems()) {
+        ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
+        if (itemBase) return itemBase->moduleID();
+    }
+
 	return ___emptyString___;
 }
 

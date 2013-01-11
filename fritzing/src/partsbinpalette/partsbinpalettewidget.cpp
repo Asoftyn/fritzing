@@ -730,6 +730,8 @@ QAction *PartsBinPaletteWidget::addPartToMeAction() {
 void PartsBinPaletteWidget::addSketchPartToMe() {
     m_manager->openBinIn(this->m_fileName, false);
 	QString moduleID = m_manager->getSelectedModuleIDFromSketch();
+    if (moduleID.isEmpty()) return;
+
 	bool wasAlreadyIn = contains(moduleID);
 	addPart(moduleID, -1);
 	if(!wasAlreadyIn) {
