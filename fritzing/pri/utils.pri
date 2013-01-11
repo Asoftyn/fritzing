@@ -17,7 +17,13 @@
 # $Date$
 # ********************************************************************/
 
-INCLUDEPATH += src/lib/boost_1_43_0
+# assume boost libraries are installed under linux
+win32 {
+	INCLUDEPATH += src/lib/boost_1_43_0
+}
+macx {
+	INCLUDEPATH += src/lib/boost_1_43_0
+}
 
 HEADERS += \
 src/utils/abstractstatesbutton.h \
