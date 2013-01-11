@@ -33,6 +33,9 @@ rm -rf *
 cd $current_dir
 cd $compile_folder/bins/more
 rm -rf sparkfun-*.fzb
+cd $current_dir
+cd $compile_folder/src/lib
+rm -rf boost*				# depend on linux boost installation 
 
 cd $current_dir
 
