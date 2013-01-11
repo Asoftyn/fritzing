@@ -489,7 +489,8 @@ bool FSvgRenderer::initConnectorInfoPath(QDomElement & element, ConnectorInfo * 
 
     QDomDocument doc = element.ownerDocument();
     FSvgRenderer renderer;
-    renderer.finalLoad(doc.toByteArray(), filename);
+    QByteArray byteArray = doc.toByteArray();
+    renderer.finalLoad(byteArray, filename);
     QRectF bounds = renderer.boundsOnElement(id);	
 
     static const int dim = 101;
