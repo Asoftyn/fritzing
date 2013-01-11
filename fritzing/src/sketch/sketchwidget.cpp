@@ -6926,10 +6926,10 @@ void SketchWidget::showPartLabelsAux(bool show, QList<ItemBase *> & itemBases)
 	ShowLabelCommand * showLabelCommand = new ShowLabelCommand(this, NULL);
 	QString text;
 	if (show) {
-		text = tr("show part label(s)", "", itemBases.count());
+		text = tr("show %n part label(s)", "", itemBases.count());
 	}
 	else {
-		text = tr("hide part label(s)", "", itemBases.count());
+		text = tr("hide %n part label(s)", "", itemBases.count());
 	}
 	showLabelCommand->setText(text);
 
@@ -7444,7 +7444,7 @@ void SketchWidget::resizeBoard(double mmW, double mmH, bool doEmit)
 	temp.chop(2);
 	double origw = temp.toDouble();
 	double origh = orig.endsWith("cm") ? 0 : 1;
-	QUndoCommand * parentCommand = new QUndoCommand(tr("Resize ruler to %1%2").arg(mmW).arg((mmH == 0) ? "cm" : "in"));
+	QUndoCommand * parentCommand = new QUndoCommand(tr("Resize ruler to %1 %2").arg(mmW).arg((mmH == 0) ? "cm" : "in"));
 	new ResizeBoardCommand(this, item->id(), origw, origh, mmW, mmH, parentCommand);
 	m_undoStack->waitPush(parentCommand, PropChangeDelay);
 }

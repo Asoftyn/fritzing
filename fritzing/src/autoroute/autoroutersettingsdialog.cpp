@@ -67,7 +67,7 @@ AutorouterSettingsDialog::AutorouterSettingsDialog(QHash<QString, QString> & set
     m_holeSettings.ringThickness = settings.value(Via::AutorouteViaRingThickness);
     m_holeSettings.holeDiameter = settings.value(Via::AutorouteViaHoleSize);
 
-	this->setWindowTitle(QObject::tr("Auorouter Settings"));
+	this->setWindowTitle(QObject::tr("Autorouter Settings"));
 
 	QVBoxLayout * windowLayout = new QVBoxLayout();
 	this->setLayout(windowLayout);

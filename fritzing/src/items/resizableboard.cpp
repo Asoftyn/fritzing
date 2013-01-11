@@ -1443,7 +1443,7 @@ void ResizableBoard::updatePaperSizes(double w, double h) {
 void ResizableBoard::initPaperSizes() {
     if (PaperSizeNames.count() == 0) {
         PaperSizeNames << tr("A0 (1030x1456)") << tr("A1 (728x1030)") << tr("A2 (515x728)") << tr("A3 (364x515)") << tr("A4 (257x364)") << tr("A5 (182x257)") << tr("A6 (128x182)") 
-            << tr("Letter (8.5x11)") << tr("Legal (8.5x14)") << tr("Ledger (17x11)") << tr("Tabloid (11x17");
+            << tr("Letter (8.5x11)") << tr("Legal (8.5x14)") << tr("Ledger (17x11)") << tr("Tabloid (11x17)");
         PaperSizeDimensions << QSizeF(1030,1456) << QSizeF(728,1030) << QSizeF(515,728) << QSizeF(364,515) << QSizeF(257,364) << QSizeF(182,257) << QSizeF(128,182) 
             << QSizeF(215.9,279.4) << QSizeF(215.9,355.6) << QSizeF(432,279) << QSizeF(279,432);
     }
