@@ -5306,17 +5306,17 @@ Go ahead and save?</source>
         <translation>선택된 부품을 저장소에 추가하기를 원하십니까?</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="840"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="842"/>
         <source>Change icon color...</source>
         <translation>아이콘 색상 변경...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="841"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="843"/>
         <source>Change the color of the icon for this bin.</source>
         <translation>이 저장소의 아이콘 색상을 변경.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="852"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="854"/>
         <source>Select a color for this icon</source>
         <translation>아이콘 색상 선택</translation>
     </message>
@@ -6257,28 +6257,28 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
         <translation>와이어 연결</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7630"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7636"/>
         <source>Trace wires</source>
         <translation>트에이스 와이어</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7633"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7639"/>
         <source>Ratsnest wires</source>
         <translation>렛츠 네스트 와이어</translation>
     </message>
     <message>
         <location filename="../src/sketch/pcbsketchwidget.cpp" line="2198"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7635"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7641"/>
         <source>Select all %1</source>
         <translation>%1 전체 선택</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7918"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7924"/>
         <source>Select outdated parts</source>
         <translation>오래된 부품 선택</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7932"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7938"/>
         <source>Select locked parts</source>
         <translation>고정된 부품 선택</translation>
     </message>
@@ -6583,12 +6583,12 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
         <translation>파일 처리중...</translation>
     </message>
     <message>
-        <location filename="../src/utils/folderutils.cpp" line="289"/>
+        <location filename="../src/utils/folderutils.cpp" line="294"/>
         <source>Copying file %1</source>
         <translation>파일 복사 %1</translation>
     </message>
     <message>
-        <location filename="../src/utils/folderutils.cpp" line="299"/>
+        <location filename="../src/utils/folderutils.cpp" line="304"/>
         <source>File %1 already exists: it won&apos;t be overwritten</source>
         <translation>파일 %1 이 이미 존재합니다. 덮어쓸 수 없습니다</translation>
     </message>
@@ -7201,13 +7201,13 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="3328"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9171"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9177"/>
         <source>Select %1</source>
         <translation>%1 선택</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="3331"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9174"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9180"/>
         <source>Select %1 items</source>
         <translation>%1 아이템 선택</translation>
     </message>
@@ -7345,125 +7345,125 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
         <translation>%1 와이어의 폭을 %2로 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6887"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6893"/>
         <source>Move label &apos;%1&apos;</source>
         <translation>&apos;%1&apos;라벨 이동</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6900"/>
         <source>%1 label &apos;%2&apos;</source>
         <translation>%1 라벨 &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6900"/>
         <source>Rotate</source>
         <translation>회전</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6900"/>
         <source>Flip</source>
         <translation>뒤집기</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6929"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6935"/>
         <source>show %n part label(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6932"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6938"/>
         <source>hide %n part label(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7453"/>
         <source>Resize ruler to %1 %2</source>
         <translation type="unfinished">눈금자를 %1 %2로 수정</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6946"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6952"/>
         <source>Resize Note</source>
         <translation>노트 크기 조정</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7318"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7324"/>
         <source>Change Resistance from %1 to %2</source>
         <translation>저항값을 %1 에서 %2로 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7342"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7351"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7348"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7357"/>
         <source>Change %1 from %2 to %3</source>
         <translation>%1을 %2 에서 %3으로 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7470"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8335"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7476"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8341"/>
         <source>Resize board to %1 %2</source>
         <translation type="unfinished">보드 사이즈를 %1 %2로  변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7527"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7533"/>
         <source>Create wire from Ratsnest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7732"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7738"/>
         <source>Disconnect all wires from %1</source>
         <translation>%1의 모든 와이어를 끊기</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7735"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7741"/>
         <source>Disconnect all wires from %1 items</source>
         <translation>%1 아이템들의 모든 와이어를 끊기</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7994"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8000"/>
         <source>Change image from %1 to %2</source>
         <translation>이미지를 %1 에서 %2로 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8720"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8726"/>
         <source>Rotate %1</source>
         <translation>회전 %1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8786"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8792"/>
         <source>change pin labels</source>
         <translation>핀 라벨 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9077"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9083"/>
         <source>Unrouted connections are highlighted in yellow.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9078"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9084"/>
         <source>There are no unrouted connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9079"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9085"/>
         <source>Unrouted connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9080"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9086"/>
         <source>%1
 
 Note: you can also trigger this display by mousing down on the routing status text in the status bar.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9126"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9132"/>
         <source>Part &apos;%1&apos; not found in sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9168"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9174"/>
         <source>Deselect all</source>
         <translation type="unfinished"></translation>
     </message>

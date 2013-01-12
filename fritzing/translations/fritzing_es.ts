@@ -5297,17 +5297,17 @@ Go ahead and save?</source>
         <translation>¿Realmente quieres agregar la parte seleccionada al catálogo?</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="840"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="842"/>
         <source>Change icon color...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="841"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="843"/>
         <source>Change the color of the icon for this bin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="852"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="854"/>
         <source>Select a color for this icon</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6166,7 +6166,7 @@ Fritzing segirá funcionando, pero no podrás cambiar las propiedades de las par
         <translation>Unir Cable</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7932"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7938"/>
         <source>Select locked parts</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6295,18 +6295,18 @@ Fritzing segirá funcionando, pero no podrás cambiar las propiedades de las par
         <translation>Notas</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7630"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7636"/>
         <source>Trace wires</source>
         <translation>Trazas</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7633"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7639"/>
         <source>Ratsnest wires</source>
         <translation>Cables del Nido de Ratas</translation>
     </message>
     <message>
         <location filename="../src/sketch/pcbsketchwidget.cpp" line="2198"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7635"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7641"/>
         <source>Select all %1</source>
         <translation>Seleccionar todos los %1</translation>
     </message>
@@ -6408,7 +6408,7 @@ ya se encuentra ahí, no la vamos a agregar de nuevo ¿o si?</translation>
         <translation type="unfinished">Archivo en Progreso...</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7918"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7924"/>
         <source>Select outdated parts</source>
         <translation type="unfinished">Seleccionar partes obsoletas</translation>
     </message>
@@ -6583,12 +6583,12 @@ ya se encuentra ahí, no la vamos a agregar de nuevo ¿o si?</translation>
         <translation type="unfinished">fallo en la conversión svg 2: %1 %2 %3</translation>
     </message>
     <message>
-        <location filename="../src/utils/folderutils.cpp" line="289"/>
+        <location filename="../src/utils/folderutils.cpp" line="294"/>
         <source>Copying file %1</source>
         <translation type="unfinished">Copiando archivo %1</translation>
     </message>
     <message>
-        <location filename="../src/utils/folderutils.cpp" line="299"/>
+        <location filename="../src/utils/folderutils.cpp" line="304"/>
         <source>File %1 already exists: it won&apos;t be overwritten</source>
         <translation type="unfinished">El Archivo %1 ya existe: no será sobre escrito</translation>
     </message>
@@ -7187,13 +7187,13 @@ ya se encuentra ahí, no la vamos a agregar de nuevo ¿o si?</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="3328"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9171"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9177"/>
         <source>Select %1</source>
         <translation>Selecionar %1</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="3331"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9174"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9180"/>
         <source>Select %1 items</source>
         <translation>Selecionar %1 items</translation>
     </message>
@@ -7231,12 +7231,12 @@ ya se encuentra ahí, no la vamos a agregar de nuevo ¿o si?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6900"/>
         <source>Rotate</source>
         <translation>Girar</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6900"/>
         <source>Flip</source>
         <translation>Invertir</translation>
     </message>
@@ -7326,86 +7326,86 @@ ya se encuentra ahí, no la vamos a agregar de nuevo ¿o si?</translation>
         <translation>Cambiar color de %1 cables a %2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7453"/>
         <source>Resize ruler to %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7318"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7324"/>
         <source>Change Resistance from %1 to %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7342"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7351"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7348"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7357"/>
         <source>Change %1 from %2 to %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7470"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8335"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7476"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8341"/>
         <source>Resize board to %1 %2</source>
         <translation type="unfinished">Cambiar el tamaño de la placa a %1 %2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7527"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7533"/>
         <source>Create wire from Ratsnest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7732"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7738"/>
         <source>Disconnect all wires from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7735"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7741"/>
         <source>Disconnect all wires from %1 items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7994"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8000"/>
         <source>Change image from %1 to %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8720"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8726"/>
         <source>Rotate %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8786"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8792"/>
         <source>change pin labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9077"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9083"/>
         <source>Unrouted connections are highlighted in yellow.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9078"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9084"/>
         <source>There are no unrouted connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9079"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9085"/>
         <source>Unrouted connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9080"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9086"/>
         <source>%1
 
 Note: you can also trigger this display by mousing down on the routing status text in the status bar.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9126"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9132"/>
         <source>Part &apos;%1&apos; not found in sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9168"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9174"/>
         <source>Deselect all</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7420,12 +7420,12 @@ Note: you can also trigger this display by mousing down on the routing status te
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6887"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6893"/>
         <source>Move label &apos;%1&apos;</source>
         <translation>Mover etiqueta &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6900"/>
         <source>%1 label &apos;%2&apos;</source>
         <translation>%1 etiqueta &apos;%2&apos;</translation>
     </message>
@@ -7435,7 +7435,7 @@ Note: you can also trigger this display by mousing down on the routing status te
         <translation>Selección</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6929"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6935"/>
         <source>show %n part label(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -7443,7 +7443,7 @@ Note: you can also trigger this display by mousing down on the routing status te
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6932"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6938"/>
         <source>hide %n part label(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -7451,7 +7451,7 @@ Note: you can also trigger this display by mousing down on the routing status te
         </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6946"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6952"/>
         <source>Resize Note</source>
         <translation>Cambiar tamaño de la Nota</translation>
     </message>

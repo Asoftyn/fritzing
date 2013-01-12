@@ -5329,17 +5329,17 @@ Go ahead and save?</source>
         <translation>Opravdu chcete přidat vybranou součástku do zásobníku?</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="840"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="842"/>
         <source>Change icon color...</source>
         <translation>Změnit barvu ikony...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="841"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="843"/>
         <source>Change the color of the icon for this bin.</source>
         <translation>Změnit barvu ikony tohoto zásobníku.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="852"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="854"/>
         <source>Select a color for this icon</source>
         <translation>Vybere barvu této ikony</translation>
     </message>
@@ -6275,28 +6275,28 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
         <translation>Spojit propojku</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7630"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7636"/>
         <source>Trace wires</source>
         <translation>Vytvoř spoj z propoje</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7633"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7639"/>
         <source>Ratsnest wires</source>
         <translation>Vytvoř síť spojů</translation>
     </message>
     <message>
         <location filename="../src/sketch/pcbsketchwidget.cpp" line="2198"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7635"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7641"/>
         <source>Select all %1</source>
         <translation>Vybrat všechny %1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7918"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7924"/>
         <source>Select outdated parts</source>
         <translation>Vybrat všechny neaktuální součástky</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7932"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7938"/>
         <source>Select locked parts</source>
         <translation>Vybrat všechny uzamčené součástky</translation>
     </message>
@@ -6471,12 +6471,12 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
         <translation>Zpracovávání souboru...</translation>
     </message>
     <message>
-        <location filename="../src/utils/folderutils.cpp" line="289"/>
+        <location filename="../src/utils/folderutils.cpp" line="294"/>
         <source>Copying file %1</source>
         <translation>Kopírování souboru %1</translation>
     </message>
     <message>
-        <location filename="../src/utils/folderutils.cpp" line="299"/>
+        <location filename="../src/utils/folderutils.cpp" line="304"/>
         <source>File %1 already exists: it won&apos;t be overwritten</source>
         <translation>Soubor %1 již existuje: nebude přepsán</translation>
     </message>
@@ -7224,13 +7224,13 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="3328"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9171"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9177"/>
         <source>Select %1</source>
         <translation>Vybrat %1</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="3331"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9174"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9180"/>
         <source>Select %1 items</source>
         <translation>Vybrat %1 položek</translation>
     </message>
@@ -7273,12 +7273,12 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6900"/>
         <source>Rotate</source>
         <translation>Otočit</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6900"/>
         <source>Flip</source>
         <translation>Překlopit</translation>
     </message>
@@ -7383,17 +7383,17 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
         <translation>Změnit šířku propojky %1 na %2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6887"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6893"/>
         <source>Move label &apos;%1&apos;</source>
         <translation>Posunout popisku &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6900"/>
         <source>%1 label &apos;%2&apos;</source>
         <translation>popiska %1 &apos;%2&apos;</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6929"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6935"/>
         <source>show %n part label(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -7402,7 +7402,7 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6932"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6938"/>
         <source>hide %n part label(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -7411,91 +7411,91 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
         </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7447"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7453"/>
         <source>Resize ruler to %1 %2</source>
         <translation type="unfinished">Změnit velikost pravítka %1 %2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6946"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6952"/>
         <source>Resize Note</source>
         <translation>Změnit velikost popisku</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7318"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7324"/>
         <source>Change Resistance from %1 to %2</source>
         <translation>Změna odporu z %1 na %2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7342"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7351"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7348"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7357"/>
         <source>Change %1 from %2 to %3</source>
         <translation>Změna %1 z %2 na %3</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7470"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8335"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7476"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8341"/>
         <source>Resize board to %1 %2</source>
         <translation type="unfinished">Změnit velikost desky na %1 %2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7527"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7533"/>
         <source>Create wire from Ratsnest</source>
         <translation>Vytvořit propojku ze sítě propojů</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7732"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7738"/>
         <source>Disconnect all wires from %1</source>
         <translation>Odpojit všechny propojky od %1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7735"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7741"/>
         <source>Disconnect all wires from %1 items</source>
         <translation>Odpojit všechny propojky od %1 položek</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7994"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8000"/>
         <source>Change image from %1 to %2</source>
         <translation>Změnit obrázek z %1 na %2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8720"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8726"/>
         <source>Rotate %1</source>
         <translation>Otočit %1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8786"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8792"/>
         <source>change pin labels</source>
         <translation>změnit popisky pinů</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9077"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9083"/>
         <source>Unrouted connections are highlighted in yellow.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9078"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9084"/>
         <source>There are no unrouted connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9079"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9085"/>
         <source>Unrouted connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9080"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9086"/>
         <source>%1
 
 Note: you can also trigger this display by mousing down on the routing status text in the status bar.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9126"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9132"/>
         <source>Part &apos;%1&apos; not found in sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9168"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9174"/>
         <source>Deselect all</source>
         <translation type="unfinished"></translation>
     </message>
