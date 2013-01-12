@@ -22,7 +22,9 @@
           <div class="cell width-11 position-0">
             <h1 tal:condition="python:view.isStateId(context, 'open')" class="documentFirstHeading">Order your Fritzing Fab PCB</h1>
             <h1 tal:condition="python: not view.isStateId(context, 'open')" class="documentFirstHeading">Review your Fritzing Fab order <span tal:replace="context/id | nothing"/></h1>
+
             <p>Thank you for ordering through Fritzing Fab, the easy and professional PCB production service.</p>
+            
             <p tal:condition="python: view.isStateId(context, 'open')">
               If you submit your sketch by <strong class="important" tal:content="python:context.nextProductionClosingDate.strftime('%B %d at %H:%M')"/> (CET),
               we will ship your boards to you on <strong class="important" tal:content="python:context.nextProductionDelivery.strftime('%B %d')"/>.
@@ -30,6 +32,9 @@
             <p tal:condition="python: view.isStateId(context, 'in_process')">
               Your boards will be shipped to you on <strong class="important" tal:content="python:context.nextProductionDelivery.strftime('%B %d')"/>.
               You can update your sketch files any time until <span tal:replace="python:context.nextProductionClosingDate.strftime('%B %d at %H:%M')"/> (CET), as long as the board sizes have not been changed.
+            </p>
+            <p tal:condition="python: view.isStateId(context, 'completed')">
+              Your order has been shipped!
             </p>
           </div>
         </div>

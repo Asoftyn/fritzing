@@ -88,7 +88,7 @@ def recalculatePrices(faborder):
 
 def getCurrentOrders(self, faborders, productionRound=None):
     """Get all current orders to be produced
-       options: specify an old production round
+       options: productionRound - specify an old production round
     """
     if not productionRound:
         productionRound = faborders.currentProductionRound
@@ -105,7 +105,10 @@ def getCurrentOrders(self, faborders, productionRound=None):
         'productionRound':int(productionRound),
         'sort_on':'Date',
         'sort_order':'reverse',
-        'review_state':'in_process'})
+        'review_state':{
+            "query":['in_process', 'completed'],
+            "operator" : "or"}
+        })
     
     return results
 

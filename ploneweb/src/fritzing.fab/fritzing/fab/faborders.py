@@ -22,6 +22,7 @@ from zope.event import notify
 from plone.directives import dexterity
 from plone.memoize.instance import memoize
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.WorkflowCore import WorkflowException
 
 from fritzing.fab.interfaces import IFabOrders, IFabOrder
 from fritzing.fab.tools import sendStatusMail
@@ -94,9 +95,22 @@ class CurrentOrders(grok.View):
     def update(self):
         context = aq_inner(self.context)
 
+        # which production round to show and process
         self.productionRound = self.request.get('productionRound', None)
         if not self.productionRound:
             self.productionRound = context.currentProductionRound
+
+        # actions
+        workflowAction = self.request.get('workflowAction', None)
+        if workflowAction == "complete":
+            for brain in self.getCurrentOrders(context, self.productionRound):
+                order = brain.getObject()
+                portal_workflow = getToolByName(self, 'portal_workflow')
+                try:
+                    portal_workflow.doActionFor(order, 'complete')
+                except WorkflowException:
+                    logger.info("Could not complete:" + str(order.getId()) + " already completed?")
+                    pass
 
 
     def getShippingCountry(self, value):

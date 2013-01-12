@@ -206,6 +206,7 @@ def sketchModifiedHandler(sketch, event):
     recalculatePrices(faborder)
 
 
+
 class AddForm(dexterity.AddForm):
     """adds a sketch
     """

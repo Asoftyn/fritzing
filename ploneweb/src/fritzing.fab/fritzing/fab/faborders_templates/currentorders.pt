@@ -20,10 +20,13 @@
                       <input type="submit" value="Update">
               </form>
               </h2>
-              <p>All orders with status "in process" from production round 
-                <span tal:replace="view/productionRound"/> (current production round is: <span tal:replace="context/currentProductionRound"/>)</p>
-              <p><a tal:attributes="href string:@@currentorders-csv?productionRound=${view/productionRound}">Download as CSV</a> -- 
-                <a tal:attributes="href string:@@currentorders-zip?productionRound=${view/productionRound}">Download as ZIP</a>
+              <p>All processed orders from production round 
+                <span tal:replace="view/productionRound"/> (current production round is: <span tal:replace="context/currentProductionRound"/>)
+              </p>
+              <p>
+                <a tal:attributes="href string:@@currentorders-csv?productionRound=${view/productionRound}">Download as CSV</a> -- 
+                <a tal:attributes="href string:@@currentorders-zip?productionRound=${view/productionRound}">Download as ZIP</a> --
+                <a tal:attributes="href string:${request/URL}?workflowAction=complete&productionRound=${view/productionRound}">Mark all orders as completed</a>
               </p>
               <table class="orderTable" style="width: 100%; text-align: center; font-size: 80%;">
                 <thead>
@@ -44,10 +47,12 @@
                     <th>address</th>
                     <th>e-mail</th>
                     <th>zone</th>
+                    <th>state</th>
                     <th>actions</th>
                   </tr>
                 </thead>
-                <tbody tal:define="DateTime python:modules['DateTime'].DateTime">
+                <tbody tal:define="DateTime python:modules['DateTime'].DateTime;
+                    wtool here/portal_workflow">
                   <div tal:repeat="brain python:view.getCurrentOrders(context, view.productionRound)" tal:omit-tag="">
                     <div tal:define="order brain/getObject" tal:omit-tag="">
                         <tr tal:repeat="sketch order/listFolderContents">
@@ -79,7 +84,8 @@
                             <span tal:replace="python: view.getShippingCountry(order.shippingCountry)"/>
                           </td>
                           <td tal:content="order/email | string:error">email</td>
-                          <td tal:content="order/shipTo| string:error">zone</td>
+                          <td tal:content="order/shipTo | string:error">zone</td>
+                          <td tal:content="python:wtool.getInfoFor(order, 'review_state')">state</td>
                           <td>
                             <a class="viewOrderLink" tal:attributes="href string:${order/absolute_url}">view</a>
                             <a class="viewOrderLink" tal:attributes="href string:${order/absolute_url}/edit">edit</a> 

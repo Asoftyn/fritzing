@@ -1,5 +1,5 @@
 from five import grok
-from zope.schema import Text, TextLine, ASCIILine, Int, Float, Choice, Bool, Date, Datetime
+from zope.schema import Text, TextLine, ASCIILine, Int, Float, Choice, Bool, Date, Datetime, Password
 from z3c.form import validator
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
@@ -358,7 +358,7 @@ class IFabOrder(form.Schema):
     
     telephone = ASCIILine(
         title = _(u"Telephone number"),
-        description = u'',
+        description = _(u"Providing a phone number would make it easier to contact you in case of a production emergency."),
         required = False)
 
     dexterity.write_permission(shipTo='cmf.ReviewPortalContent')
@@ -578,18 +578,48 @@ class IFabOrders(form.Schema):
     form.fieldset(
         'general', 
         label=_(u"General Settings"),
-        fields=['salesEmail', 'paypalEmail'])
+        fields=['salesEmail', 'paypalEmail', 
+            'svnUrl', 'svnLogin', 'svnPassword',
+            'erpUrl', 'erpLogin', 'erpPassword'])
 
     salesEmail = TextLine(
-        title = _(u"Sales e-mail"),
+        title = _(u"Sales E-Mail"),
         description = _(u"Order status changes are e-mailed to this address"),
         default = _(u"fab@fritzing.org"),
         constraint = checkEMail)
 
     paypalEmail = TextLine(
-        title = _(u"Paypal e-mail"),
+        title = _(u"Paypal E-Mail"),
         description = _(u"The mail address use by the PayPal seller account"),
         constraint = checkEMail)
+
+    svnUrl = TextLine(
+        title = _(u"SVN location"),
+        description = _(u"URL of the SVN repository for storing all orders"),
+        default = u"https://svn.ixds.de/fritzing-fab/orders/")
+
+    svnLogin = TextLine(
+        title = _(u"SVN Login"),
+        description = _(u"Login for storing order files in the SVN repository"),
+        default = _(u"fritzing-fab"))
+
+    svnPassword = Password(
+        title = _(u"SVN Password"),
+        description = _(u"Corresponding password"))
+
+    erpUrl = TextLine(
+        title = _(u"ERP Location"),
+        description = _(u"URL of ERPnext's order processing API"),
+        default = u"https://factory.ixds.de/server.py")
+
+    erpLogin = TextLine(
+        title = _(u"ERP Login"),
+        description = _(u"Login for processing the order in ERPnext"),
+        default = _(u"fab@fritzing.org"))
+
+    erpPassword = Password(
+        title = _(u"ERP Password"),
+        description = _(u"Corresponding password"))
     
     editableContent = RichText(
         title = _(u"Order-folder text"),
