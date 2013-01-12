@@ -1,11 +1,31 @@
 #!/bin/bash
 arch_aux=`uname -m`
 
-
+ 
 if [ "$1" = "" ]
 then
   echo "Usage: $0 <need a version string such as '0.6.4b' (without the quotes)>"
   exit
+fi
+
+
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' libboost-dev)
+if [ "`expr index "$PKG_OK" installed`" -gt 0 ]
+then
+  echo "using installed boost library"
+else
+  echo "please install libboost-dev"
+  exit
+fi
+
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' quazip)
+quazip='QUAZIP_LIB'
+if [ "`expr index "$PKG_OK" installed`" -gt 0 ]
+then
+  quazip='QUAZIP_INSTALLED'
+  echo "using installed quazip"
+else
+  echo "using src/lib/quazip"
 fi
 
 compile_folder="build-$arch_aux"
@@ -36,6 +56,10 @@ rm -rf sparkfun-*.fzb
 cd $current_dir
 cd $compile_folder/src/lib
 rm -rf boost*				# depend on linux boost installation 
+if [ "$quazip" == 'QUAZIP_INSTALLED' ]
+then
+  rm -rf quazip*
+fi
 
 cd $current_dir
 
@@ -80,7 +104,7 @@ cd $compile_folder
 QT_HOME="/usr/local/Trolltech/Qt-4.8.3"
 
 
-$QT_HOME/bin/qmake CONFIG+=release -unix
+$QT_HOME/bin/qmake CONFIG+=release DEFINES+=$quazip
 make
 
 release_folder="fritzing-$relname.linux.$arch"
