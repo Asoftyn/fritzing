@@ -18,7 +18,7 @@ else
   exit
 fi
 
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' quazip)
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' libquazip-dev)
 quazip='QUAZIP_LIB'
 if [ "`expr index "$PKG_OK" installed`" -gt 0 ]
 then
