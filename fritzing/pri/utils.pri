@@ -18,10 +18,7 @@
 # ********************************************************************/
 
 # assume boost libraries are installed under linux
-win32 {
-	INCLUDEPATH += src/lib/boost_1_43_0
-}
-macx {
+win32|macx {
 	INCLUDEPATH += src/lib/boost_1_43_0
 }
 

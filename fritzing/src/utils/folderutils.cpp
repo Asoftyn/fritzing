@@ -34,8 +34,13 @@ $Date$
 #include <QCryptographicHash>
 
 #include "../debugdialog.h"
-#include "../lib/quazip/quazip.h"
-#include "../lib/quazip/quazipfile.h"
+#ifdef QUAZIP_INSTALLED
+    #include <quazip/quazip.h>
+    #include <quazip/quazipfile.h>
+#else
+    #include "../lib/quazip/quazip.h"
+    #include "../lib/quazip/quazipfile.h"
+#endif
 #include "../lib/qtsysteminfo/QtSystemInfo.h"
 
 

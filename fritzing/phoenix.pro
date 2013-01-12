@@ -37,11 +37,10 @@ win32 {
 # release build using msvc 2010 needs to add msvcrt.lib;%(IgnoreSpecificDefaultLibraries) to the linker/no default libraries option
 	CONFIG -= embed_manifest_exe
         INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
-        #INCLUDEPATH += C:/QtSDK/QtSources/4.7.2/src/3rdparty/zlib
 	DEFINES += _CRT_SECURE_NO_DEPRECATE
         DEFINES += _WINDOWS
         LIBS += setupapi.lib
-        # LIBS += advapi32.lib   only seems necessary for QtCreator 2.5.2
+        # LIBS += advapi32.lib   # only seems necessary for QtCreator 2.5.2
 }
 macx {
         MOC_DIR = build/moc
@@ -113,28 +112,37 @@ QT += core gui svg xml network sql # opengl
 
 RC_FILE = fritzing.rc
 RESOURCES += phoenixresources.qrc
-	include(pri/kitchensink.pri)
-	include(pri/mainwindow.pri)
+
+include(pri/kitchensink.pri)
+include(pri/mainwindow.pri)
+include(pri/partsbinpalette.pri)
+include(pri/partseditor.pri)
+include(pri/referencemodel.pri)
+include(pri/svg.pri)
+include(pri/help.pri)
+include(pri/version.pri)
+include(pri/eagle.pri)
+include(pri/utils.pri)
+include(pri/dock.pri)
+include(pri/items.pri)
+include(pri/autoroute.pri)
+include(pri/dialogs.pri)
+include(pri/connectors.pri)
+include(pri/infoview.pri)
+include(pri/model.pri)
+include(pri/sketch.pri)
+include(pri/translations.pri)
+include(pri/program.pri)
+include(pri/qtsysteminfo.pri)
+	
+!contains(DEFINES, QUAZIP_INSTALLED) {
 	include(pri/quazip.pri)
-	include(pri/partsbinpalette.pri)
-	include(pri/partseditor.pri)
-	include(pri/referencemodel.pri)
-	include(pri/svg.pri)
-	include(pri/help.pri)
-	include(pri/version.pri)
-	include(pri/eagle.pri)
-	include(pri/utils.pri)
-	include(pri/dock.pri)
-	include(pri/items.pri)
-	include(pri/autoroute.pri)
-	include(pri/dialogs.pri)
-	include(pri/connectors.pri)
-	include(pri/infoview.pri)
-	include(pri/model.pri)
-	include(pri/sketch.pri)
-	include(pri/translations.pri)
-	include(pri/program.pri)
-	include(pri/qtsysteminfo.pri)
+}
+contains(DEFINES, QUAZIP_INSTALLED) {
+	+INCLUDEPATH += /usr/include/quazip /usr/include/minizip
+	+LIBS += -lquazip -lminizip
+}
+
 TARGET = Fritzing
 TEMPLATE = app
 
