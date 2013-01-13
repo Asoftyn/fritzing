@@ -6243,6 +6243,10 @@ Noot:Je kunt dit venster ook oproepen door op de tekst van de routing status te 
         <source>Persian - %1</source>
         <translation>Persisch - %1</translation>
     </message>
+    <message>
+        <source>Slovenian - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UpdateDialog</name>

@@ -7870,6 +7870,11 @@ Note: you can also trigger this display by mousing down on the routing status te
         <source>Persian - %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/dialogs/translatorlistmodel.cpp" line="104"/>
+        <source>Slovenian - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UpdateDialog</name>

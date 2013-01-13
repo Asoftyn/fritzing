@@ -6206,6 +6206,10 @@ Note: you can also trigger this display by mousing down on the routing status te
         <source>Persian - %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Slovenian - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UpdateDialog</name>

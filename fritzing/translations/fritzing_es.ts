@@ -7750,6 +7750,11 @@ Note: you can also trigger this display by mousing down on the routing status te
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/dialogs/translatorlistmodel.cpp" line="104"/>
+        <source>Slovenian - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/dialogs/translatorlistmodel.cpp" line="48"/>
         <source>Italian - %1</source>
         <translation>Italiano- %1</translation>
