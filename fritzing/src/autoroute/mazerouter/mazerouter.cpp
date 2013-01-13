@@ -861,8 +861,14 @@ void MazeRouter::start()
     m_spareImage = new QImage(m_maxRect.width() * OptimizeFactor, m_maxRect.height() * OptimizeFactor, QImage::Format_Mono);
     m_spareImage2 = new QImage(m_maxRect.width() * OptimizeFactor, m_maxRect.height() * OptimizeFactor, QImage::Format_Mono);
 
-    QRectF r2(0, 0, m_boardImage->width(), m_boardImage->height());
-    makeBoard(m_boardImage, m_keepoutPixels * 2, r2);
+    if (m_temporaryBoard) {
+        m_boardImage->fill(0xffffffff);
+    }
+    else {
+        m_boardImage->fill(0);
+        QRectF r2(0, 0, m_boardImage->width(), m_boardImage->height());
+        makeBoard(m_boardImage, m_keepoutPixels * 2, r2);
+    }
     drawBorder(m_boardImage, 2);
 
     createTraces(netList, bestScore, parentCommand);
@@ -2956,6 +2962,7 @@ void MazeRouter::optimizeTraces(QList<int> & order, QMultiHash<int, QList< QPoin
         Net * net = netList.nets.at(netIndex);
         foreach (ViewLayer::ViewLayerSpec layerSpec, layerSpecs) {
             fastCopy(m_boardImage, m_spareImage);
+
             QDomDocument * masterDoc = m_masterDocs.value(layerSpec);
             //QString before = masterDoc->toString();
             Markers markers;
@@ -3011,29 +3018,37 @@ void MazeRouter::optimizeTraces(QList<int> & order, QMultiHash<int, QList< QPoin
                         QPointF p2 = (traceWire->connector1()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
                         painter.drawLine(p1, p2);
                     }
-
-                    painter.setPen(Qt::NoPen);	
-
-                    foreach (Via * via, vias.values(otherIndex)) {
-                        QPointF p = (via->connectorItem()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
-                        double rad = ((via->connectorItem()->sceneBoundingRect().width() / 2) + m_keepoutPixels) * OptimizeFactor;
-                        painter.drawEllipse(p, rad, rad);
-                    }
-                    foreach (JumperItem * jumperItem, jumperItems.values(otherIndex)) {
-                        QPointF p = (jumperItem->connector0()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
-                        double rad = ((jumperItem->connector0()->sceneBoundingRect().width() / 2) + m_keepoutPixels) * OptimizeFactor;
-                        painter.drawEllipse(p, rad, rad);
-                        p = (jumperItem->connector1()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
-                        painter.drawEllipse(p, rad, rad);
-                    }
-                    foreach (SymbolPaletteItem * netLabel, netLabels.values(otherIndex)) {
-                        QRectF r = netLabel->sceneBoundingRect();
-                        painter.drawRect((r.left() - topLeft.x() - m_keepoutPixels) * OptimizeFactor, 
-                                        (r.top() - topLeft.y() - m_keepoutPixels) * OptimizeFactor, 
-                                        (r.width() + m_keepoutPixels) * OptimizeFactor,
-                                        (r.height() + m_keepoutPixels) * OptimizeFactor);
-                    }
                 }
+
+                painter.setPen(Qt::NoPen);	
+
+                foreach (Via * via, vias.values(otherIndex)) {
+                    QPointF p = (via->connectorItem()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
+                    double rad = ((via->connectorItem()->sceneBoundingRect().width() / 2) + m_keepoutPixels) * OptimizeFactor;
+                    painter.drawEllipse(p, rad, rad);
+                }
+                foreach (JumperItem * jumperItem, jumperItems.values(otherIndex)) {
+                    QPointF p = (jumperItem->connector0()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
+                    double rad = ((jumperItem->connector0()->sceneBoundingRect().width() / 2) + m_keepoutPixels) * OptimizeFactor;
+                    painter.drawEllipse(p, rad, rad);
+                    p = (jumperItem->connector1()->sceneAdjustedTerminalPoint(NULL) - topLeft) * OptimizeFactor;
+                    painter.drawEllipse(p, rad, rad);
+                }
+                foreach (SymbolPaletteItem * netLabel, netLabels.values(otherIndex)) {
+                    QRectF r = netLabel->sceneBoundingRect();
+                    painter.drawRect((r.left() - topLeft.x() - m_keepoutPixels) * OptimizeFactor, 
+                                    (r.top() - topLeft.y() - m_keepoutPixels) * OptimizeFactor, 
+                                    (r.width() + m_keepoutPixels) * OptimizeFactor,
+                                    (r.height() + m_keepoutPixels) * OptimizeFactor);
+                }
+            }
+
+            foreach (SymbolPaletteItem * netLabel, netLabels.values(netIndex)) {
+                QRectF r = netLabel->sceneBoundingRect();
+                painter.drawRect((r.left() - topLeft.x() - m_keepoutPixels) * OptimizeFactor, 
+                                (r.top() - topLeft.y() - m_keepoutPixels) * OptimizeFactor, 
+                                (r.width() + m_keepoutPixels) * OptimizeFactor,
+                                (r.height() + m_keepoutPixels) * OptimizeFactor);
             }
 
             painter.end();
@@ -3058,6 +3073,7 @@ void MazeRouter::optimizeTraces(QList<int> & order, QMultiHash<int, QList< QPoin
                     continue;
                 }
 
+                /*
                 QList<ConnectorItem *> tos = connectionThing.values(bundle.first()->connector0());
                 foreach (ConnectorItem * to, tos) {
                     if (to->attachedToItemType() == ModelPart::Via) {
@@ -3070,6 +3086,7 @@ void MazeRouter::optimizeTraces(QList<int> & order, QMultiHash<int, QList< QPoin
                         to->debugInfo("end hooked to via");
                     }
                 }
+                */
 
                 QVector<QPointF> points(bundle.count() + 1, QPointF(0, 0));
                 QVector<bool> splits(bundle.count() + 1, false);
@@ -3112,53 +3129,111 @@ void MazeRouter::reducePoints(QList<QPointF> & points, QPointF topLeft, QList<Tr
     int inc = 0;
     for (int separation = endIndex - startIndex; separation > 1; separation--) {
         for (int ix = 0; ix < points.count() - separation; ix++) {
-            m_spareImage2->fill(0xffffffff);
-            QPainter painter;
-            painter.begin(m_spareImage2);
-            QPen pen = painter.pen();
-            pen.setColor(0xff000000);
-            pen.setWidthF(width);
-            painter.setPen(pen);
             QPointF p1 = (points.at(ix) - topLeft) * OptimizeFactor;
             QPointF p2 = (points.at(ix + separation) - topLeft) * OptimizeFactor;
-            painter.drawLine(p1, p2);
-            painter.end();
-            #ifndef QT_NO_DEBUG
-	            m_spareImage2->save(FolderUtils::getUserDataStorePath("") + QString("/optimizeTrace%1_%2_%3.png").arg(netIndex,2,10,QChar('0')).arg(layerSpec).arg(inc++,3,10,QChar('0')));
-            #endif            
-
             double minX = qMax(0.0, qMin(p1.x(), p2.x()) - width);
             double minY = qMax(0.0, qMin(p1.y(), p2.y()) - width);
             double maxX = qMin(m_spareImage2->width() - 1.0, qMax(p1.x(), p2.x()) + width);
             double maxY = qMin(m_spareImage2->height() - 1.0, qMax(p1.y(), p2.y()) + width);
-            bool overlaps = false;
-            for (int y = minY; y <= maxY && !overlaps; y++) {
-                for (int x = minX; x <= maxX && !overlaps; x++) {
-                    if (m_spareImage->pixel(x, y) == 0xffffffff) continue;
-                    if (m_spareImage2->pixel(x, y) == 0xffffffff) continue;
-                    overlaps = true;
+            int corners = 1;
+            if (!m_pcbType) {
+                if (qAbs(p1.x() - p2.x()) >= 1 && qAbs(p1.y() - p2.y()) >= 1) {
+                    corners = 2;
+                    if (separation == 2) continue;   // since we already have two lines, do nothing
                 }
             }
-            if (!overlaps) {
+            for (int corner = 0; corner < corners; corner++) {
+                m_spareImage2->fill(0xffffffff);
+                QPainter painter;
+                painter.begin(m_spareImage2);
+                QPen pen = painter.pen();
+                pen.setColor(0xff000000);
+                pen.setWidthF(width);
+                painter.setPen(pen);
+                if (corners == 1) {
+                    painter.drawLine(p1, p2);
+                }
+                else {
+                    if (corner == 0) {
+                        // vertical then horizontal
+                        painter.drawLine(p1.x(), p1.y(), p1.x(), p2.y());
+                        painter.drawLine(p1.x(), p2.y(), p2.x(), p2.y());
+                    }
+                    else {
+                        // horizontal then vertical
+                        painter.drawLine(p1.x(), p1.y(), p2.x(), p1.y());
+                        painter.drawLine(p2.x(), p1.y(), p2.x(), p2.y());
+                    }
+                }
+                painter.end();
+                #ifndef QT_NO_DEBUG
+	                m_spareImage2->save(FolderUtils::getUserDataStorePath("") + QString("/optimizeTrace%1_%2_%3.png").arg(netIndex,2,10,QChar('0')).arg(layerSpec).arg(inc++,3,10,QChar('0')));
+                #endif            
+
+                bool overlaps = false;
+                for (int y = minY; y <= maxY && !overlaps; y++) {
+                    for (int x = minX; x <= maxX && !overlaps; x++) {
+                        if (m_spareImage->pixel(x, y) == 0xffffffff) continue;
+                        if (m_spareImage2->pixel(x, y) == 0xffffffff) continue;
+                        overlaps = true;
+                    }
+                }
+
+                if (overlaps) continue;
+
                 TraceWire * traceWire = bundle.at(ix);
-                TraceWire * next = bundle.at(ix + 1);
                 TraceWire * last = bundle.at(ix + separation - 1);
+                TraceWire * next = bundle.at(ix + 1);
                 QList<ConnectorItem *> newDests = connectionThing.values(last->connector1());
-                QPointF p2 = newDests.at(0)->sceneAdjustedTerminalPoint(NULL);
-                traceWire->setLineAnd(QLineF(QPointF(0, 0), p2 - traceWire->pos()), traceWire->pos(), true);
-                traceWire->saveGeometry();
-                traceWire->update();
-                foreach (ConnectorItem * newDest, newDests) {
-                    connectionThing.add(traceWire->connector1(), newDest);
+                QPointF unop_p2 = (p2 / OptimizeFactor) + topLeft;
+                if (corners == 2) {
+                    TraceWire * afterNext = bundle.at(ix + 2);
+                    QPointF middle;
+                    if (corner == 0) {
+                        middle.setX(p1.x());
+                        middle.setY(p2.y());
+                    }
+                    else {
+                        middle.setX(p2.x());
+                        middle.setY(p1.y());
+                    }
+                    middle = (middle / OptimizeFactor) + topLeft;
+                    traceWire->setLineAnd(QLineF(QPointF(0, 0), middle - traceWire->pos()), traceWire->pos(), true);
+                    traceWire->saveGeometry();
+                    traceWire->update();
+                    next->setLineAnd(QLineF(QPointF(0, 0), unop_p2 - middle), middle, true);
+                    next->saveGeometry();
+                    next->update();
+                    foreach (ConnectorItem * newDest, newDests) {
+                        connectionThing.add(next->connector1(), newDest);
+                    }
+                    connectionThing.remove(next->connector1(), afterNext->connector0());
+                    for (int i = 1; i < separation - 1; i++) {
+                        TraceWire * tw = bundle.takeAt(ix + 2);
+                        connectionThing.remove(tw->connector0());
+                        connectionThing.remove(tw->connector1());
+                        delete tw;
+                        points.removeAt(ix + 2);
+                    }
+                    points.replace(ix + 1, middle);
                 }
-                connectionThing.remove(traceWire->connector1(), next->connector0());
-                for (int i = 0; i < separation - 1; i++) {
-                    TraceWire * tw = bundle.takeAt(ix + 1);
-                    connectionThing.remove(tw->connector0());
-                    connectionThing.remove(tw->connector1());
-                    delete tw;
-                    points.removeAt(ix + 1);
+                else {
+                    traceWire->setLineAnd(QLineF(QPointF(0, 0), unop_p2 - traceWire->pos()), traceWire->pos(), true);
+                    traceWire->saveGeometry();
+                    traceWire->update();
+                    foreach (ConnectorItem * newDest, newDests) {
+                        connectionThing.add(traceWire->connector1(), newDest);
+                    }
+                    connectionThing.remove(traceWire->connector1(), next->connector0());
+                    for (int i = 0; i < separation - 1; i++) {
+                        TraceWire * tw = bundle.takeAt(ix + 1);
+                        connectionThing.remove(tw->connector0());
+                        connectionThing.remove(tw->connector1());
+                        delete tw;
+                        points.removeAt(ix + 1);
+                    }
                 }
+                break;
             }
         }
     }
