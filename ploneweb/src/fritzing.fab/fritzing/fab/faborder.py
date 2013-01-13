@@ -16,7 +16,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import IActionSucceededEvent
 
 from fritzing.fab.interfaces import IFabOrder, ISketch
-from fritzing.fab import getboardsize, svn
+from fritzing.fab import getboardsize
+#from fritzing.fab import svn
 from fritzing.fab.tools import getStateId, sendStatusMail, sendSketchUpdateMail, recalculatePrices, encodeFilename
 from fritzing.fab import _
 
