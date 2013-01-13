@@ -39,7 +39,21 @@ Shipping to <span tal:replace="options/ship_to" />:
 
 Total:
     <span tal:replace="python: '%.2f&nbsp;EUR' % (options['faborder_price_brutto'])" />
-</span></span><span tal:omit-tag="" tal:condition="python: options['state_id'] == 'completed'"
+</span></span><span tal:omit-tag="" tal:condition="python: options['state_id'] == 'in_production'"
+>Dear <span tal:replace="options/to_name" />,
+
+Just a quick update: Your order is now in production in the Fab factory! 
+It will be shipped to you on <span tal:replace="options/faborder_shipping_date" />.
+
+Best regards,
+
+Your Fritzing Team
+
+- - - - - - - - - - - - - - - 
+
+Here's your order again: 
+<span tal:replace="options/faborder_url"/>
+</span><span tal:omit-tag="" tal:condition="python: options['state_id'] == 'completed'"
 >Dear <span tal:replace="options/to_name" />,
 
 Your order has just been shipped! It will be with you very soon.

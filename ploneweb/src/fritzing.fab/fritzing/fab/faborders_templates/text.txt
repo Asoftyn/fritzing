@@ -1,10 +1,6 @@
-- need an easy way to update the dates (submission/production)
-___________________________________________
+workflow currently:
+open -process-> in_process -complete-> completed
 
-vertical layout, in the right column on the front page
-Photo: Breadboard>Firtzing Breadboard>Fritzing PCB>PCB
-___________________________________________
-
-FAQ:
-- How do you measure the size of the board?
-- What does the sanity check do?
+workflow future:
+open -process-> in_process -produce-> in_production -complete-> completed
+     <-cancel-

@@ -17,7 +17,7 @@
  <permission>View</permission>
  <permission>View management screens</permission>
  <state state_id="completed" title="Complete">
-  <description>Order processing has been completed.</description>
+  <description>Order has been produced and shipped.</description>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
@@ -66,8 +66,9 @@
   </permission-map>
  </state>
  <state state_id="in_process" title="In process">
-  <description>The order has been send and is processed.</description>
-  <exit-transition transition_id="complete"/>
+  <description>The order has been submitted and is processed.</description>
+  <exit-transition transition_id="cancel"/>
+  <exit-transition transition_id="produce"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
@@ -115,8 +116,11 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
  </state>
+ <state state_id="in_production" title="In production">
+  <exit-transition transition_id="complete"/>
+ </state>
  <state state_id="open" title="Open">
-  <description>The order has not been send.</description>
+  <description>The order has not been submitted yet.</description>
   <exit-transition transition_id="submit"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>Manager</permission-role>
@@ -169,9 +173,25 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
  </state>
+ <transition transition_id="cancel" title="Cancel" new_state="open" trigger="USER" before_script="" after_script="">
+  <description>Cancel the order</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=cancel" category="workflow" icon="">Cancel order</action>
+  <guard>
+   <guard-permission>Modify portal content</guard-permission>
+   <guard-role>Manager</guard-role>
+  </guard>
+ </transition>
  <transition transition_id="complete" title="Complete" new_state="completed" trigger="USER" before_script="" after_script="">
   <description>complete the order.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=complete" category="workflow" icon="">Complete order</action>
+  <guard>
+   <guard-permission>Modify portal content</guard-permission>
+   <guard-role>Manager</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="produce" title="Produce" new_state="in_production" trigger="USER" before_script="" after_script="">
+  <description>Produce the order</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=produce" category="workflow" icon="">Produce order</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
    <guard-role>Manager</guard-role>

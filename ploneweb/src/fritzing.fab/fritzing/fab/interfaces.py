@@ -347,7 +347,7 @@ class IFabOrder(form.Schema):
 
     shippingExpress = Bool(
         title=_(u"Express Shipping"),
-        description=_(u"Ships with super-fast DHL express (more info under ''Pricing')"),
+        description=_(u"Ships with DHL express (see 'Pricing'). Not available for Germany."),
         default = False,
         required = False)
 
@@ -370,6 +370,12 @@ class IFabOrder(form.Schema):
             SimpleTerm(value = u'eu', title = _(u'European Union (EU)')),
             SimpleTerm(value = u'world', title = _(u'Worldwide'))
         ]))
+
+    dexterity.write_permission(shippingDate='cmf.ReviewPortalContent')
+    shippingDate = Date(
+        title = _(u"Shipping Date"),
+        description = _(u"Estimated shipping date for this order"),
+        required = False)
     
     form.omitted(
         'area', 

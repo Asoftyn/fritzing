@@ -74,7 +74,8 @@ def recalculatePrices(faborder):
     if faborder.shipTo == u'germany':
         faborder.priceShipping = faborders.shippingGermany
         if faborder.shippingExpress:
-            faborder.priceShipping = faborders.shippingGermanyExpress
+            faborder.shippingExpress = False
+            #faborder.priceShipping = faborders.shippingGermanyExpress
         faborder.taxesPercent = faborders.taxesGermany
     elif faborder.shipTo == u'eu':
         faborder.priceShipping = faborders.shippingEU
@@ -106,7 +107,7 @@ def getCurrentOrders(self, faborders, productionRound=None):
         'sort_on':'Date',
         'sort_order':'reverse',
         'review_state':{
-            "query":['in_process', 'completed'],
+            "query":['in_process', 'in_production', 'completed'],
             "operator" : "or"}
         })
     
@@ -150,6 +151,7 @@ def sendStatusMail(context, justReturn=False):
         faborder = faborder,
         faborder_id = faborder.id,
         faborder_url = faborder.absolute_url(),
+        faborder_shipping_date = faborder.shippingDate,
         faborder_items = faborder.listFolderContents(),
         faborder_price_netto = faborder.priceTotalNetto,
         faborder_price_brutto = faborder.priceTotalBrutto,

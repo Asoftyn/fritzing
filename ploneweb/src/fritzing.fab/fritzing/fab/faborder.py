@@ -151,14 +151,21 @@ class StatusMail(grok.View):
 def workflowTransitionHandler(faborder, event):
     """event-handler for workflow transitions on IFabOrder instances
     """
+    faborders = faborder.__parent__
+
     if event.action in ('submit'):
-        faborders = faborder.__parent__
         faborder.setEffectiveDate(DateTime.DateTime())
         faborder.productionRound = faborders.currentProductionRound
         faborder.reindexObject(idxs=['productionRound'])
-
-    if event.action in ('submit', 'complete'):
         sendStatusMail(faborder)
+
+    if event.action in ('produce'):
+        faborder.shippingDate = faborders.nextProductionDelivery
+        sendStatusMail(faborder)
+
+    if event.action in ('complete'):
+        sendStatusMail(faborder)
+
 
 
 @grok.subscribe(IFabOrder, IObjectModifiedEvent)
@@ -324,6 +331,7 @@ class ShippingEditForm(form.EditForm):
         'shippingZIP',
         'shippingCountry',
         'shippingExpress',
+        'telephone',
         'email'
     )
 

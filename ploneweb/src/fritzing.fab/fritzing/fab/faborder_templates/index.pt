@@ -33,8 +33,11 @@
               Your boards will be shipped to you on <strong class="important" tal:content="python:context.nextProductionDelivery.strftime('%B %d')"/>.
               You can update your sketch files any time until <span tal:replace="python:context.nextProductionClosingDate.strftime('%B %d at %H:%M')"/> (CET), as long as the board sizes have not been changed.
             </p>
+            <p tal:condition="python: view.isStateId(context, 'in_production')">
+              Your boards are currently in production and will be shipped to you on <strong class="important" tal:content="python:context.shippingDate.strftime('%B %d')"/>.
+            </p>
             <p tal:condition="python: view.isStateId(context, 'completed')">
-              Your order has been shipped!
+              Your order has been shipped on <span tal:content="python:context.shippingDate.strftime('%B %d')"/>!
             </p>
           </div>
         </div>
@@ -210,7 +213,7 @@
                   <div class="clear"></div>
                   <p>
                     If you have trouble paying with PayPal, or don‘t want to use it, please 
-		<a target="_blank" tal:attributes="href string:${navroot}/contact-info">contact us</a>.
+		                <a target="_blank" tal:attributes="href string:${navroot}/contact-info">contact us</a>.
                   </p>
                 </div>
                 
@@ -237,6 +240,21 @@
                 </div>
               </div>
 
+              <div tal:condition="python:(view.isStateId(context, 'in_production'))" tal:omit-tag="">
+                <div class="checkout">
+                  <p>
+                    Your order is in production!
+                  </p>
+                  <p tal:content="context/paymentStatusMsg | nothing"/>
+                  <div class="clear"></div>
+                </div>
+                
+                <div class="supportBox">
+                  With this order, you are supporting the development of Fritzing for 
+                  <strong><span tal:content="python: '%d' % (view.devMinutes)"></span> minutes</strong>! <br />
+                  Thank you!
+                </div>
+              </div>
 
               <div tal:condition="python:(view.isStateId(context, 'completed'))" tal:omit-tag="">
                 <div class="checkout">

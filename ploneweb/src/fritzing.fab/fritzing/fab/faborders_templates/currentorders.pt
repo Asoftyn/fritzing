@@ -20,13 +20,21 @@
                       <input type="submit" value="Update">
               </form>
               </h2>
-              <p>All processed orders from production round 
+              <p>All paid orders from production round 
                 <span tal:replace="view/productionRound"/> (current production round is: <span tal:replace="context/currentProductionRound"/>)
               </p>
-              <p>
+              <p style="float:left">
                 <a tal:attributes="href string:@@currentorders-csv?productionRound=${view/productionRound}">Download as CSV</a> -- 
-                <a tal:attributes="href string:@@currentorders-zip?productionRound=${view/productionRound}">Download as ZIP</a> --
-                <a tal:attributes="href string:${request/URL}?workflowAction=complete&productionRound=${view/productionRound}">Mark all orders as completed</a>
+                <a tal:attributes="href string:@@currentorders-zip?productionRound=${view/productionRound}">Download as ZIP</a> --&nbsp;
+                <form tal:attributes="action string:${request/URL}?productionRound=${view/productionRound}" method="post">
+                  <label for="workflowAction" style="font-weight: normal">Mark all orders as</label>
+                  <select type="select" name="workflowAction" id="workflowAction">
+                    <option value=""></option>
+                    <option value="produce">in production</option>
+                    <option value="complete">shipped</option>
+                  </select>
+                  <input type="submit" value="Process"/>
+                </form>
               </p>
               <table class="orderTable" style="width: 100%; text-align: center; font-size: 80%;">
                 <thead>

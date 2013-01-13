@@ -23,6 +23,7 @@ from plone.directives import dexterity
 from plone.memoize.instance import memoize
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.statusmessages.interfaces import IStatusMessage
 
 from fritzing.fab.interfaces import IFabOrders, IFabOrder
 from fritzing.fab.tools import sendStatusMail
@@ -102,15 +103,19 @@ class CurrentOrders(grok.View):
 
         # actions
         workflowAction = self.request.get('workflowAction', None)
-        if workflowAction == "complete":
+        
+        if workflowAction:
+            print "ACTION", workflowAction + self.productionRound
             for brain in self.getCurrentOrders(context, self.productionRound):
                 order = brain.getObject()
                 portal_workflow = getToolByName(self, 'portal_workflow')
                 try:
-                    portal_workflow.doActionFor(order, 'complete')
+                    portal_workflow.doActionFor(order, workflowAction)
                 except WorkflowException:
-                    logger.info("Could not complete:" + str(order.getId()) + " already completed?")
+                    logger.info("Could not " + workflowAction + " " + str(order.getId()))
                     pass
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"Workflow status changed"), "info")
 
 
     def getShippingCountry(self, value):
