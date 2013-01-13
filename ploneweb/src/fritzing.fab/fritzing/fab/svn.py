@@ -1,4 +1,4 @@
-import sys, os, getopt, tempfile, subprocess, urllib, errno
+import sys, os, getopt, tempfile, subprocess, urllib, errno, pysvn, pprint
 
     
 def usage():
@@ -11,6 +11,7 @@ usage:
 """
 
 def main():
+    global username, password
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hr:o:f:u:p:s:", ["help", 
@@ -78,54 +79,35 @@ def main():
     commitOrder(pround, order, file_url, username, password, svn_url)
 
 
+def getSvnLogin( realm, username, may_save ):
+    return True, username, password, True
+
+
 def commitOrder(pround, order, file_url, username, password, svn_url):
 
     tmp_dir = tempfile.mkdtemp()
 
-    fs_pround_dir = tmp_dir + "/" + "%05d" % pround
+    pround_dir = tmp_dir + "/" + "%05d" % pround
     filename = order + "_" + file_url.split("/")[-1]
-    file_fullpath = fs_pround_dir + "/" + filename
+    file_fullpath = pround_dir + "/" + filename
 
-    subprocess.call(["svn", 
-        "checkout", 
-        "--username", username,
-        "--password", password,
-        "--non-recursive", 
-        svn_url, tmp_dir])
-
-    subprocess.call(["svn", 
-        "update",
-        fs_pround_dir,
-        "--non-recursive"])
+    client = pysvn.Client()
+    client.callback_get_login = getSvnLogin
+    client.checkout(svn_url, tmp_dir, recurse=False)
+    client.update(pround_dir, recurse=False)
 
     try:
-        os.makedirs(fs_pround_dir)
+        os.makedirs(pround_dir)
     except OSError as exc: # Python >2.5
-        if exc.errno == errno.EEXIST and os.path.isdir(fs_pround_dir):
+        if exc.errno == errno.EEXIST and os.path.isdir(pround_dir):
             pass
         else: raise
 
-    subprocess.call(["svn", 
-        "add",
-        fs_pround_dir,
-        "--non-recursive"])
-
-    subprocess.call(["svn", 
-        "commit",
-        "-m", "fab order folder update",
-        tmp_dir])
-
+    client.checkin([tmp_dir], "new/update fab round")
     urllib.urlretrieve(file_url, file_fullpath)
+    client.add(file_fullpath)
+    client.checkin([tmp_dir], "new/updated fab order")
 
-    subprocess.call(["svn", 
-        "add",
-        file_fullpath])
-
-    subprocess.call(["svn", 
-        "commit",
-        "-m", "fab order file update",
-        tmp_dir])
-    
 
 if __name__ == "__main__":
     main()
