@@ -1,4 +1,4 @@
-import sys, os, getopt, tempfile, subprocess, urllib, errno, pysvn, pprint
+import sys, os, getopt, tempfile, subprocess, urllib, errno, pysvn
 
     
 def usage():
