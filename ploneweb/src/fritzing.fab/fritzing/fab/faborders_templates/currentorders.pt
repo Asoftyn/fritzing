@@ -70,7 +70,7 @@
                           <td>
                                 <a tal:define="filename sketch/orderItem/filename;                                              
                                                filename_encoded python:view.encodeFilename(filename);"
-                                   tal:content="python: order.id + '_' + filename_encoded"
+                                   tal:content="filename_encoded"
                                    tal:attributes="href string:${sketch/absolute_url}/@@download/orderItem/${filename_encoded};                                                  
                                                    title string:Download ${filename}"/>
                           </td>

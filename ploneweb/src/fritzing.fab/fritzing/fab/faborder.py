@@ -16,8 +16,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import IActionSucceededEvent
 
 from fritzing.fab.interfaces import IFabOrder, ISketch
-from fritzing.fab import getboardsize
-from fritzing.fab.tools import getStateId, sendStatusMail, sendSketchUpdateMail, recalculatePrices
+from fritzing.fab import getboardsize, svn
+from fritzing.fab.tools import getStateId, sendStatusMail, sendSketchUpdateMail, recalculatePrices, encodeFilename
 from fritzing.fab import _
 
 
@@ -157,7 +157,17 @@ def workflowTransitionHandler(faborder, event):
         faborder.setEffectiveDate(DateTime.DateTime())
         faborder.productionRound = faborders.currentProductionRound
         faborder.reindexObject(idxs=['productionRound'])
+        # TODO: fix authorization problems
+        #for sketch in faborder.listFolderContents():
+        #    svn.commitOrder(faborder.productionRound, faborder.id,
+        #        sketch.absolute_url()+"/@@download/orderItem/"+encodeFilename(None,sketch.orderItem.filename),
+        #        faborders.svnLogin, faborders.svnPassword, faborders.svnUrl)
         sendStatusMail(faborder)
+
+    if event.action in ('cancel'):
+        faborder.productionRound = None
+        faborder.reindexObject(idxs=['productionRound'])
+        # TODO: sendStatusMail(faborder, "cancel")
 
     if event.action in ('produce'):
         faborder.shippingDate = faborders.nextProductionDelivery

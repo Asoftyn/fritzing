@@ -602,32 +602,43 @@ class IFabOrders(form.Schema):
     svnUrl = TextLine(
         title = _(u"SVN location"),
         description = _(u"URL of the SVN repository for storing all orders"),
-        default = u"https://svn.ixds.de/fritzing-fab/orders/")
+        default = u"https://svn.ixds.de/fritzing-fab/orders/",
+        required = False)
 
     svnLogin = TextLine(
         title = _(u"SVN Login"),
         description = _(u"Login for storing order files in the SVN repository"),
-        default = _(u"fritzing-fab"))
+        default = _(u"fritzing-fab"),
+        required = False)
 
-    svnPassword = Password(
+    svnPassword = TextLine(
+        # TODO: should be 'Password', but that keeps deleting itself
+        # https://groups.google.com/forum/?fromgroups=#!topic/dexterity-development/14vy1xAJt_g
         title = _(u"SVN Password"),
-        description = _(u"Corresponding password"))
+        description = _(u"Corresponding password"),
+        required = False)
 
     erpUrl = TextLine(
         title = _(u"ERP Location"),
         description = _(u"URL of ERPnext's order processing API"),
-        default = u"https://factory.ixds.de/server.py")
+        default = u"https://factory.ixds.de/server.py",
+        required = False)
 
     erpLogin = TextLine(
         title = _(u"ERP Login"),
         description = _(u"Login for processing the order in ERPnext"),
-        default = _(u"fab@fritzing.org"))
+        default = _(u"fab@fritzing.org"),
+        required = False)
 
-    erpPassword = Password(
+    erpPassword = TextLine( 
+        # TODO: should be 'Password', but that keeps deleting itself
+        # https://groups.google.com/forum/?fromgroups=#!topic/dexterity-development/14vy1xAJt_g
         title = _(u"ERP Password"),
-        description = _(u"Corresponding password"))
+        description = _(u"Corresponding password"),
+        required = False)
     
     editableContent = RichText(
         title = _(u"Order-folder text"),
-        description = _(u"The text of this fab-instance"))
+        description = _(u"The text of this fab-instance"),
+        required = False)
 
