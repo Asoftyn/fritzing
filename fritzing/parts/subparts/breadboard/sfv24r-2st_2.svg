@@ -4,58 +4,7 @@
 <svg version="1.1" id="Ebene_1" xmlns:svg="http://www.w3.org/2000/svg"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="47.07px"
 	 height="62.627px" viewBox="0 0 47.07 62.627" enable-background="new 0 0 47.07 62.627" xml:space="preserve">
-<g>
-	<rect id="connector0pad" x="39.409" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector1pad" x="37.992" y="60.239" fill="#CCCCCC" width="0.85" height="2.389"/>
-	<rect id="connector2pad" x="36.574" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector3pad" x="35.157" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector4pad" x="33.74" y="60.239" fill="#CCCCCC" width="0.85" height="2.389"/>
-	<rect id="connector5pad" x="32.322" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector6pad" x="30.905" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector7pad" x="29.488" y="60.239" fill="#CCCCCC" width="0.85" height="2.389"/>
-	<rect id="connector8pad" x="28.07" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector9pad" x="26.653" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector10pad" x="25.236" y="60.239" fill="#CCCCCC" width="0.85" height="2.389"/>
-	<rect id="connector11pad" x="23.818" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector12pad" x="22.401" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector13pad" x="20.984" y="60.239" fill="#CCCCCC" width="0.85" height="2.389"/>
-	<rect id="connector14pad" x="19.566" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector15pad" x="18.149" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector16pad" x="16.732" y="60.239" fill="#CCCCCC" width="0.85" height="2.389"/>
-	<rect id="connector17pad" x="15.315" y="60.239" fill="#CCCCCC" width="0.85" height="2.389"/>
-	<rect id="connector18pad" x="13.897" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector19pad" x="12.48" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector20pad" x="11.063" y="60.239" fill="#CCCCCC" width="0.85" height="2.389"/>
-	<rect id="connector21pad" x="9.645" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector22pad" x="8.228" y="60.239" fill="#CCCCCC" width="0.851" height="2.389"/>
-	<rect id="connector23pad" x="6.811" y="60.239" fill="#CCCCCC" width="0.85" height="2.389"/>
-</g>
-<g opacity="0.2">
-	<rect id="connector0pad_1_" x="39.409" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector1pad_1_" x="37.992" y="60.239" width="0.85" height="0.493"/>
-	<rect id="connector2pad_1_" x="36.574" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector3pad_1_" x="35.157" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector4pad_1_" x="33.74" y="60.239" width="0.85" height="0.493"/>
-	<rect id="connector5pad_1_" x="32.322" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector6pad_1_" x="30.905" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector7pad_1_" x="29.488" y="60.239" width="0.85" height="0.493"/>
-	<rect id="connector8pad_1_" x="28.07" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector9pad_1_" x="26.653" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector10pad_1_" x="25.236" y="60.239" width="0.85" height="0.493"/>
-	<rect id="connector11pad_1_" x="23.818" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector12pad_1_" x="22.401" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector13pad_1_" x="20.984" y="60.239" width="0.85" height="0.493"/>
-	<rect id="connector14pad_1_" x="19.566" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector15pad_1_" x="18.149" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector16pad_1_" x="16.732" y="60.239" width="0.85" height="0.493"/>
-	<rect id="connector17pad_1_" x="15.315" y="60.239" width="0.85" height="0.493"/>
-	<rect id="connector18pad_1_" x="13.897" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector19pad_1_" x="12.48" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector20pad_1_" x="11.063" y="60.239" width="0.85" height="0.493"/>
-	<rect id="connector21pad_1_" x="9.645" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector22pad_1_" x="8.228" y="60.239" width="0.851" height="0.493"/>
-	<rect id="connector23pad_1_" x="6.811" y="60.239" width="0.85" height="0.493"/>
-</g>
+
 <g>
 	<rect y="13.168" fill="#1A1A1A" width="47.07" height="47.07"/>
 	<rect y="59.752" opacity="0.4" width="47.07" height="0.486"/>
