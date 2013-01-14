@@ -53,6 +53,7 @@ public slots:
 	void sendStop();
 	void setSpinLabel(const QString &);
 	void setMessage(const QString &);
+	void setMessage2(const QString &);
 	void setSpinValue(int);
     void disableButtons();
     void sendBest();
@@ -71,6 +72,7 @@ protected:
 	QProgressBar * m_progressBar;	
 	QLabel * m_spinLabel;
 	QLabel * m_message;
+	QLabel * m_message2;
 	QSpinBox * m_spinBox;
     QDialogButtonBox * m_buttonBox;
 };

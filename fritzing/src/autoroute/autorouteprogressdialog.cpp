@@ -91,6 +91,8 @@ AutorouteProgressDialog::AutorouteProgressDialog(const QString & title, bool zoo
 
 	m_message = new QLabel(this);
 	vLayout->addWidget(m_message);
+	m_message2 = new QLabel(this);
+	vLayout->addWidget(m_message2);
 	
 	if (zoomAndPan) {
 		QGroupBox * groupBox = new QGroupBox(tr("zoom and pan controls"));
@@ -191,6 +193,11 @@ void AutorouteProgressDialog::closeEvent(QCloseEvent *event)
 void AutorouteProgressDialog::setMessage(const QString & text)
 {
 	m_message->setText(text);
+}
+
+void AutorouteProgressDialog::setMessage2(const QString & text)
+{
+	m_message2->setText(text);
 }
 
 void AutorouteProgressDialog::setSpinLabel(const QString & text)

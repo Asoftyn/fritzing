@@ -86,6 +86,7 @@ signals:
 	void wantBottomVisible();	
 	void wantBothVisible();
 	void setProgressMessage(const QString &);
+	void setProgressMessage2(const QString &);
 	void setCycleMessage(const QString &);
 	void setCycleCount(int);
     void disableButtons();

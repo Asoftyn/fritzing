@@ -819,7 +819,7 @@ void MazeRouter::start()
     if (m_stopTracing) {
         QString msg = tr("Routing stopped!");
         msg += " ";
-        if (m_useBest) msg += tr("Now doing final routing...");
+        if (m_useBest) msg += tr("Use best so far...");
         emit setProgressMessage(msg);
         if (m_useBest) {
             routeNets(netList, true, bestScore, gridSize, allOrderings);
@@ -835,7 +835,7 @@ void MazeRouter::start()
         if (run < m_maxCycles) msg = tr("Routing unsuccessful; stopping at round %1.").arg(run);
         else msg = tr("Routing reached maximum round %1.").arg(m_maxCycles);
         msg += " ";
-        msg += tr("Now doing final routing...");
+        msg += tr("Use best so far...");
         emit setProgressMessage(msg);
         printOrder("best ", bestScore.ordering.order);
         routeNets(netList, true, bestScore, gridSize, allOrderings);
@@ -880,7 +880,7 @@ void MazeRouter::start()
     m_sketchWidget->blockUI(true);
     m_commandCount = BaseCommand::totalChildCount(parentCommand);
     emit setMaximumProgress(m_commandCount);
-    emit setProgressMessage(tr("Now creating traces and setting up undo..."));
+    emit setProgressMessage2(tr("Preparing undo..."));
     if (m_displayItem[0]) {
         m_displayItem[0]->setVisible(false);
     }
@@ -2125,7 +2125,12 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
 
     ConnectionThing connectionThing;
 
+    emit setMaximumProgress(bestScore.ordering.order.count() * 2);
+    emit setProgressMessage2(tr("Optimizing traces..."));
+
+    int progress = 0;
     foreach (int netIndex, bestScore.ordering.order) {
+        emit setProgressValue(progress++);
         //DebugDialog::debug(QString("tracing net %1").arg(netIndex));
         QList<Trace> traces = bestScore.traces.values(netIndex);
         qSort(traces.begin(), traces.end(), byOrder);
@@ -2958,7 +2963,11 @@ void MazeRouter::optimizeTraces(QList<int> & order, QMultiHash<int, QList< QPoin
     
     //QList<int> order2(order);
     //order2.append(order);
+
+    int progress = order.count();
+
     foreach (int netIndex, order) {
+        emit setProgressValue(progress++);
         Net * net = netList.nets.at(netIndex);
         foreach (ViewLayer::ViewLayerSpec layerSpec, layerSpecs) {
             fastCopy(m_boardImage, m_spareImage);
