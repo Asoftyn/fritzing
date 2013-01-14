@@ -76,6 +76,11 @@ void collectTexts(const QString & svg, QStringList & strings) {
     }
 }
 
+
+bool byOptionalPriority(PanelItem * p1, PanelItem * p2) {
+    return p1->optionalPriority > p2->optionalPriority;
+}
+
 bool areaGreaterThan(PanelItem * p1, PanelItem * p2)
 {
 	return p1->boardSizeInches.width() * p1->boardSizeInches.height() > p2->boardSizeInches.width() * p2->boardSizeInches.height();
@@ -204,6 +209,7 @@ PanelItem::PanelItem(PanelItem * from) {
 	this->path = from->path;
 	this->required = from->required;
 	this->maxOptional = from->maxOptional;
+	this->optionalPriority = from->optionalPriority;
 	this->boardSizeInches = from->boardSizeInches;
 	this->boardID = from->boardID;
 }
@@ -696,6 +702,13 @@ bool Panelizer::checkBoards(QDomElement & board, QHash<QString, QString> & fzzFi
 			return false;
 		}
 
+		int optionalPriority = board.attribute("optionalPriority", "").toInt(&ok);
+        Q_UNUSED(optionalPriority);
+		if (!ok) {
+			DebugDialog::debug(QString("optionalPriority for board '%1' not an integer: '%2'").arg(boardname).arg(board.attribute("optionalPriority")));
+			return false;
+		}
+
 		int required = board.attribute("requiredCount", "").toInt(&ok);
 		if (!ok) {
 			DebugDialog::debug(QString("required for board '%1' not an integer: '%2'").arg(boardname).arg(board.attribute("maxOptionalCount")));
@@ -734,6 +747,7 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
 	while (!boardElement.isNull()) {
 		int required = boardElement.attribute("requiredCount", "").toInt();
 		int optional = boardElement.attribute("maxOptionalCount", "").toInt();
+		int priority = boardElement.attribute("optionalPriority", "").toInt();
         if (customPartsOnly) {
             optional = 0;
             if (required > 1) required = 1;
@@ -787,6 +801,7 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
 		    panelItem->path = oldPath;
 		    panelItem->required = required;
 		    panelItem->maxOptional = optional;
+            panelItem->optionalPriority = priority;
             panelItem->boardID = boardItem->id();
 
 		    QRectF sbr = boardItem->layerKinChief()->sceneBoundingRect();
@@ -1084,11 +1099,29 @@ int Panelizer::placeBestFit(Tile * tile, UserData userData) {
 
 void Panelizer::addOptional(int optionalCount, QList<PanelItem *> & refPanelItems, QList<PanelItem *> & insertPanelItems, PanelParams & panelParams, QList<PlanePair *> & planePairs)
 {
+    if (optionalCount == 0) return;
+
+    QList<PanelItem *> copies(refPanelItems);
+    qSort(copies.begin(), copies.end(), byOptionalPriority);
 	while (optionalCount > 0) {
-		int ix = qFloor(qrand() * optionalCount / (double) RAND_MAX);
+        int pool = 0;
+        int priority = -1;
+        foreach(PanelItem * panelItem, copies) {
+            if (panelItem->maxOptional > 0) {
+                if (priority == -1) priority = panelItem->optionalPriority;
+                if (panelItem->optionalPriority == priority) {
+                    pool += panelItem->maxOptional;
+                }
+                else break;
+            }
+        }
+        if (pool == 0) break;
+
+		int ix = qFloor(qrand() * pool / (double) RAND_MAX);
 		int soFar = 0;
-		foreach (PanelItem * panelItem, refPanelItems) {
+		foreach (PanelItem * panelItem, copies) {
 			if (panelItem->maxOptional == 0) continue;
+			if (panelItem->optionalPriority != priority) continue;
 
 			if (ix >= soFar && ix < soFar + panelItem->maxOptional) {
 				PanelItem * copy = new PanelItem(panelItem);

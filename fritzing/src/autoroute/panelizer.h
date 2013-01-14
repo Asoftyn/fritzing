@@ -54,6 +54,7 @@ struct PanelItem {
 	QString path;
 	int required;
 	int maxOptional;
+    int optionalPriority;
 	QSizeF boardSizeInches;
     long boardID;
 
