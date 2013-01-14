@@ -72,7 +72,7 @@ protected:
     static QString makePath(QImage & image, double unit, const QString & colorString);
     static bool dealWithMultipleContours(QDomElement & root, bool displayMessageBoxes);
     static void exportPickAndPlace(const QString & prefix, const QString & exportDir, ItemBase * board, PCBSketchWidget * sketchWidget, bool displayMessageBoxes);
-
+    static void handleDonuts(QDomElement & root1, QMultiHash<long, ConnectorItem *> & treatAsCircle);
 };
 
 #endif // GERBERGENERATOR_H

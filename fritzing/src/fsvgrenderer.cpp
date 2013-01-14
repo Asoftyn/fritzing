@@ -715,7 +715,7 @@ bool FSvgRenderer::setUpConnector(SvgIdLayer * svgIdLayer, bool ignoreTerminalPo
 		    svgIdLayer->m_radius = lm.length() * defaultSizeF.width() / viewBox.width();
 
             QLineF k(0,0,connectorInfo->strokeWidth, 0);
-            QLineF km = elementMatrix.map(l);
+            QLineF km = elementMatrix.map(k);
 		    svgIdLayer->m_strokeWidth = km.length() * defaultSizeF.width() / viewBox.width();
 		    //bounds = connectorInfo->cbounds;
         }

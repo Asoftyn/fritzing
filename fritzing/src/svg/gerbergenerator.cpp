@@ -417,74 +417,7 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
 		return "";
 	}
 
-    QDomNodeList nodeList = root1.elementsByTagName("path"); 
-    if (treatAsCircle.count() > 0) {
-        QStringList ids;
-        foreach (ConnectorItem * connectorItem, treatAsCircle.values()) {
-            ItemBase * itemBase = connectorItem->attachedTo();
-            SvgIdLayer * svgIdLayer = connectorItem->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
-            DebugDialog::debug(QString("treat as circle %1").arg(svgIdLayer->m_svgId));
-            ids << svgIdLayer->m_svgId;
-        }
-
-        // this would not be necessary if we cached cleaned SVGs
-        QList<QDomElement> newCircles;
-        for (int n = 0; n < nodeList.count(); n++) {
-            QDomElement path = nodeList.at(n).toElement();
-            QString id = path.attribute("id");
-            if (id.isEmpty()) continue;
-
-            DebugDialog::debug(QString("checking for %1").arg(id));
-            if (!ids.contains(id)) continue;
-
-            QString pid;
-            ConnectorItem * connectorItem = NULL;
-            for (QDomElement parent = path.parentNode().toElement(); !parent.isNull(); parent = parent.parentNode().toElement()) {
-                pid = parent.attribute("partID");
-                if (pid.isEmpty()) continue;
-
-                QList<ConnectorItem *> connectorItems = treatAsCircle.values(pid.toLong());
-                if (connectorItems.count() == 0) break;
-
-                foreach (ConnectorItem * candidate, connectorItems) {
-                    ItemBase * itemBase = candidate->attachedTo();
-                    SvgIdLayer * svgIdLayer = candidate->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
-                    if (svgIdLayer->m_svgId == id) {
-                        connectorItem = candidate;
-                        break;
-                    }
-                }
-
-                if (connectorItem) break;
-            }
-            if (connectorItem == NULL) continue;
-
-            QString string;
-            QTextStream stream(&string);
-            path.save(stream, 0);
-            DebugDialog::debug("path " + string);
-
-            connectorItem->debugInfo("make path");
-            static const QString unique("%%%%%%%%%%%%%%%%%%%%%%%%_________________________________%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-            path.setAttribute("id", unique);
-            QSvgRenderer renderer;
-            renderer.load(domDocument1.toByteArray());
-            QRectF bounds = renderer.boundsOnElement(unique);
-            path.setAttribute("id", id);
-            QPointF p = bounds.center();
-            path.setAttribute("cx", p.x());
-            path.setAttribute("cy", p.y());
-            path.setAttribute("r", connectorItem->radius() * GraphicsUtils::StandardFritzingDPI / GraphicsUtils::SVGDPI);
-            path.setAttribute("stroke-width", connectorItem->strokeWidth() * GraphicsUtils::StandardFritzingDPI / GraphicsUtils::SVGDPI);
-            newCircles.append(path);
-
-        }
-        // seems to be dangerous to change element tagName during a traversal of the QDomNodeList so do it now
-        foreach (QDomElement path, newCircles) {
-            path.setTagName("circle");
-        }
-
-    }
+    handleDonuts(root1, treatAsCircle);
 
     bool multipleContours = false;
     if (forWhy == SVG2gerber::ForOutline) { 
@@ -524,6 +457,7 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
 
     // can't handle scaled paths very well. There is probably a deeper bug that needs to be chased down.
     // is this only necessary for contour view?
+    QDomNodeList nodeList = root1.elementsByTagName("path"); 
     for (int i = 0; i < nodeList.count(); i++) {
         QDomNode parent = nodeList.at(i);
         while (!parent.isNull()) {
@@ -995,4 +929,74 @@ void GerberGenerator::exportPickAndPlace(const QString & prefix, const QString &
     }
 
     out.close();
+}
+
+void GerberGenerator::handleDonuts(QDomElement & root1, QMultiHash<long, ConnectorItem *> & treatAsCircle) {
+    // most of this would not be necessary if we cached cleaned SVGs
+
+    static const QString unique("%%%%%%%%%%%%%%%%%%%%%%%%_________________________________%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+
+    QDomNodeList nodeList = root1.elementsByTagName("path"); 
+    if (treatAsCircle.count() > 0) {
+        QStringList ids;
+        foreach (ConnectorItem * connectorItem, treatAsCircle.values()) {
+            ItemBase * itemBase = connectorItem->attachedTo();
+            SvgIdLayer * svgIdLayer = connectorItem->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
+            DebugDialog::debug(QString("treat as circle %1").arg(svgIdLayer->m_svgId));
+            ids << svgIdLayer->m_svgId;
+        }
+
+        for (int n = 0; n < nodeList.count(); n++) {
+            QDomElement path = nodeList.at(n).toElement();
+            QString id = path.attribute("id");
+            if (id.isEmpty()) continue;
+
+            DebugDialog::debug(QString("checking for %1").arg(id));
+            if (!ids.contains(id)) continue;
+
+            QString pid;
+            ConnectorItem * connectorItem = NULL;
+            for (QDomElement parent = path.parentNode().toElement(); !parent.isNull(); parent = parent.parentNode().toElement()) {
+                pid = parent.attribute("partID");
+                if (pid.isEmpty()) continue;
+
+                QList<ConnectorItem *> connectorItems = treatAsCircle.values(pid.toLong());
+                if (connectorItems.count() == 0) break;
+
+                foreach (ConnectorItem * candidate, connectorItems) {
+                    ItemBase * itemBase = candidate->attachedTo();
+                    SvgIdLayer * svgIdLayer = candidate->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
+                    if (svgIdLayer->m_svgId == id) {
+                        connectorItem = candidate;
+                        break;
+                    }
+                }
+
+                if (connectorItem) break;
+            }
+            if (connectorItem == NULL) continue;
+
+            //QString string;
+            //QTextStream stream(&string);
+            //path.save(stream, 0);
+            //DebugDialog::debug("path " + string);
+
+            connectorItem->debugInfo("make path");
+            path.setAttribute("id", unique);
+            QSvgRenderer renderer;
+            renderer.load(root1.ownerDocument().toByteArray());
+            QRectF bounds = renderer.boundsOnElement(unique);
+            path.removeAttribute("id");
+
+            QDomElement circle = root1.ownerDocument().createElement("circle");
+            path.parentNode().insertBefore(circle, path);
+            circle.setAttribute("id", id);
+            QPointF p = bounds.center();
+            circle.setAttribute("cx", p.x());
+            circle.setAttribute("cy", p.y());
+            circle.setAttribute("r", connectorItem->radius() * GraphicsUtils::StandardFritzingDPI / GraphicsUtils::SVGDPI);
+            circle.setAttribute("stroke-width", connectorItem->strokeWidth() * GraphicsUtils::StandardFritzingDPI / GraphicsUtils::SVGDPI);
+
+        }
+    }
 }
