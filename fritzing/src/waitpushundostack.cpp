@@ -53,6 +53,7 @@ void CommandTimer::timedout() {
 WaitPushUndoStack::WaitPushUndoStack(QObject * parent) :
 	QUndoStack(parent)
 {
+    m_temporary = NULL;
 #ifndef QT_NO_DEBUG
     QString path = FolderUtils::getUserDataStorePath("");
     path += "/undostack.txt";
@@ -124,9 +125,11 @@ bool WaitPushUndoStack::hasTimers() {
 void WaitPushUndoStack::resolveTemporary() {
     TemporaryCommand * tc = dynamic_cast<TemporaryCommand *>(m_temporary);
     m_temporary = NULL;
-    tc->setEnabled(false);
-    push(tc);
-    tc->setEnabled(true);
+    if (tc) {
+        tc->setEnabled(false);
+        push(tc);
+        tc->setEnabled(true);
+    }
 }
 
 void WaitPushUndoStack::deleteTemporary() {

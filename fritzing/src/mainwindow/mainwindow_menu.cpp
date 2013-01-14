@@ -2886,6 +2886,7 @@ void MainWindow::groundFillAux(bool fillGroundTraces, ViewLayer::ViewLayerID vie
 
 
     FileProgressDialog fileProgress(tr("Generating %1 fill...").arg(fillGroundTraces ? tr("ground") : tr("copper")), 0, this);
+    fileProgress.setIndeterminate();
 	QUndoCommand * parentCommand = new QUndoCommand(fillGroundTraces ? tr("Ground Fill") : tr("Copper Fill"));
     m_pcbGraphicsView->blockUI(true);
     removeGroundFill(viewLayerID, parentCommand);

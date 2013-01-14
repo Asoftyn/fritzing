@@ -1927,6 +1927,8 @@ void SketchWidget::dropItemEvent(QDropEvent *event) {
 	if (modelPart == NULL) return;
 	if (modelPart->modelPartShared() == NULL) return;
 
+    ModelPart::ItemType itemType = modelPart->itemType();
+
 	QUndoCommand* parentCommand = new TemporaryCommand(tr("Add %1").arg(m_droppingItem->title()));
 	stackSelectionState(false, parentCommand);
 	CleanUpWiresCommand * cuw = new CleanUpWiresCommand(this, CleanUpWiresCommand::Noop, parentCommand);
@@ -2001,7 +2003,7 @@ void SketchWidget::dropItemEvent(QDropEvent *event) {
 		cuw->setDirection(CleanUpWiresCommand::UndoOnly);
 	}
 
-    if (modelPart->itemType() == ModelPart::CopperFill) {
+    if (itemType == ModelPart::CopperFill) {
         m_undoStack->waitPushTemporary(parentCommand, 10);
     }
     else {

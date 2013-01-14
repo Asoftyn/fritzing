@@ -38,10 +38,12 @@ protected:
 	~ProcessEventBlocker();
 	bool _isProcessing();
 	void _processEvents();
+	void _processEvents(int maxTime);
 	void _inc(int i);
 
 public:
 	static void processEvents();
+	static void processEvents(int maxTime);
 	static bool isProcessing();
 	static void block();
 	static void unblock();

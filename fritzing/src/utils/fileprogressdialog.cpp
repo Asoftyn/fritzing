@@ -75,6 +75,11 @@ FileProgressDialog::FileProgressDialog(QWidget *parent) : QDialog(parent)
 	init(QObject::tr("File Progress..."), 0);
 }
 
+
+FileProgressDialog::~FileProgressDialog() {
+    m_timer.stop();
+}
+
 void FileProgressDialog::init(const QString & title, int initialMaximum)
 {
 	Qt::WindowFlags flags = windowFlags();
@@ -105,9 +110,6 @@ void FileProgressDialog::init(const QString & title, int initialMaximum)
 	//vLayout->addWidget(buttonBox);
 
 	this->setLayout(vLayout);
-}
-
-FileProgressDialog::~FileProgressDialog() {
 }
 
 void FileProgressDialog::setMinimum(int minimum) {
@@ -207,4 +209,18 @@ void FileProgressDialog::resizeEvent(QResizeEvent * event)
 
 void FileProgressDialog::setIncValueMod(int mod) {
     m_incValueMod = mod;
+}
+
+void FileProgressDialog::setIndeterminate() {
+    m_progressBar->setRange(0, 0);
+    m_timer.setSingleShot(false);
+    m_timer.setInterval(1000);
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(updateIndeterminate()));
+    m_timer.start();
+}
+
+void FileProgressDialog::updateIndeterminate() {
+    if (m_progressBar) {
+        m_progressBar->setValue(0);
+    }
 }

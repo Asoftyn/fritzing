@@ -26,6 +26,7 @@ $Date$
 
 #include "processeventblocker.h"
 #include <QApplication>
+#include <QEventLoop>
 
 ProcessEventBlocker * ProcessEventBlocker::m_singleton = new ProcessEventBlocker();
 
@@ -36,6 +37,10 @@ ProcessEventBlocker::ProcessEventBlocker()
 
 void ProcessEventBlocker::processEvents() {
 	m_singleton->_processEvents();
+}
+
+void ProcessEventBlocker::processEvents(int maxTime) {
+	m_singleton->_processEvents(maxTime);
 }
 
 bool ProcessEventBlocker::isProcessing() {
@@ -55,6 +60,16 @@ void ProcessEventBlocker::_processEvents() {
 	m_count++;
 	m_mutex.unlock();
 	QApplication::processEvents();
+	m_mutex.lock();
+	m_count--;
+	m_mutex.unlock();
+}
+
+void ProcessEventBlocker::_processEvents(int maxTime) {
+	m_mutex.lock();
+	m_count++;
+	m_mutex.unlock();
+	QApplication::processEvents(QEventLoop::AllEvents, maxTime);
 	m_mutex.lock();
 	m_count--;
 	m_mutex.unlock();

@@ -35,6 +35,18 @@ $Date$
 #include <QStringList>
 #include <QGraphicsItem>
 
+
+struct GPGParams {
+    QString boardSvg;
+    QSizeF boardImageSize;
+    QString svg;
+    QSizeF copperImageSize; 
+	QStringList exceptions;
+    QGraphicsItem * board;
+    double res;
+    QString color;
+};
+
 class GroundPlaneGenerator : public QObject
 {
 	Q_OBJECT
@@ -79,12 +91,12 @@ protected:
 
 	QString makeOnePoly(const QPolygon & poly, const QString & colorString, const QString & id, int minX, int minY);
 	double calcArea(QPolygon & poly);
-	QImage * generateGroundPlaneAux(const QString & boardSvg, QSizeF boardImageSize, const QString & svg, QSizeF copperImageSize, QStringList & exceptions, 
-									QGraphicsItem * board, double res, double & bWidth, double & bHeight, QList<QRectF> &); 
+	QImage * generateGroundPlaneAux(GPGParams &, double & bWidth, double & bHeight, QList<QRectF> &); 
 	void makeConnector(QList<QPolygon> & polygons, double res, double pixelFactor, const QString & colorString, int minX, int minY, QString & svg);
 	bool tryNextPoint(int x, int y, QImage & image, QList<QPoint> & points);
 	bool collectBorderPoints(QImage & image, QList<QPoint> & points);
     bool try8(int x, int y, QImage & image, QList<QPoint> & points);
+    bool generateGroundPlaneFn(GPGParams &); 
 
 
 protected:

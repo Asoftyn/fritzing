@@ -32,6 +32,7 @@ $Date$
 #include <QProgressBar>
 #include <QLabel>
 #include <QDomElement>
+#include <QTimer>
 
 class FileProgressDialog : public QDialog
 {
@@ -46,6 +47,7 @@ public:
 	void setBinLoadingCount(int);
 	void setBinLoadingChunk(int);
     void setIncValueMod(int);
+    void setIndeterminate();
 
 protected:
 	void closeEvent(QCloseEvent *);
@@ -63,6 +65,9 @@ public slots:
 	void loadingInstancesSlot(class ModelBase *, QDomElement & instances);
 	void loadingInstanceSlot(class ModelBase *, QDomElement & instance);
 	void settingItemSlot();
+
+protected slots:
+    void updateIndeterminate();
 
 
 signals:
@@ -82,6 +87,7 @@ protected:
     int m_incValueMod;
 	double m_binLoadingInc;
 	double m_binLoadingValue;
+    QTimer m_timer;
 };
 
 
