@@ -168,12 +168,12 @@ class CurrentOrdersCSV(grok.View):
                     '%.2f' % (sketch.area * sketch.copies),
                     '%.2f' % (sketch.copies * sketch.area * order.pricePerSquareCm + 4.0),
                     order.paymentId,
-                    order.shippingCompany,
-                    order.shippingFirstName + " " + order.shippingLastName,
-                    order.shippingStreet,
-                    order.shippingAdditional,
-                    order.shippingCity,
-                    order.shippingZIP,
+                    utf_8_encoder(order.shippingCompany),
+                    utf_8_encoder(order.shippingFirstName) + " " + utf_8_encoder(order.shippingLastName),
+                    utf_8_encoder(order.shippingStreet),
+                    utf_8_encoder(order.shippingAdditional),
+                    utf_8_encoder(order.shippingCity),
+                    utf_8_encoder(order.shippingZIP),
                     IFabOrder['shippingCountry'].vocabulary.getTerm(order.shippingCountry).title,
                     order.shippingExpress,
                     order.telephone,
@@ -187,6 +187,13 @@ class CurrentOrdersCSV(grok.View):
         self.request.response.setHeader('Content-Disposition', 'attachment; filename="%s"' % filename)
         
         return out.getvalue()
+
+
+def utf_8_encoder(string):
+    if isinstance(string, unicode):
+        return string.encode('utf-8')
+    else:
+        return string
 
 
 class CurrentOrdersZIP(grok.View):

@@ -130,7 +130,7 @@ def sendStatusMail(context, justReturn=False):
     from_name = "Fritzing Fab"
     to_address = context.email
     user  = context.getOwner()
-    to_name = user.getProperty('fullname', '')
+    to_name = utf_8_encode(user.getProperty('fullname', ''))
     # we expect a name to contain non-whitespace characters:
     if not re.search('\S', to_name):
         to_name = u"%s" % user
@@ -206,7 +206,7 @@ def sendSketchUpdateMail(sketch, justReturn=False):
     to_address = faborder.email
     closing_date = faborders.nextProductionClosingDate
     user  = faborder.getOwner()
-    to_name = user.getProperty('fullname', '')
+    to_name = utf_8_encode(user.getProperty('fullname', ''))
     # we expect a name to contain non-whitespace characters:
     if not re.search('\S', to_name):
         to_name = u"%s" % user
@@ -247,3 +247,10 @@ def sendSketchUpdateMail(sketch, justReturn=False):
     except SMTPRecipientsRefused:
         # Don't disclose email address on failure
         raise SMTPRecipientsRefused('Recipient address rejected by server')
+
+
+def utf_8_encode(string):
+    if isinstance(string, unicode):
+        return string.encode('utf-8')
+    else:
+        return string
