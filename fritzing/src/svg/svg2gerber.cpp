@@ -114,7 +114,7 @@ int SVG2gerber::renderGerber(bool doubleSided, const QString & mainLayerName, Fo
 		// setup drill file header
 		m_gerber_header = "M48\n";
 		// set to english (inches) units, with trailing zeros
-		m_gerber_header += "M72,TZ\n";
+		m_gerber_header += "INCH\n";
 
 	}
 
@@ -333,11 +333,11 @@ int SVG2gerber::allPaths2gerber(ForWhy forWhy) {
 		if (r == 0) continue;
 
         double stroke_width = circle.attribute("stroke-width").toDouble();
-		double hole = ((2*r) - stroke_width) / 1000;
+		double hole = ((2*r) - stroke_width) / 1000;  // convert mils (standard fritzing resolution) to inches
 
 		if (forWhy == ForDrill) {
-			QString drill_cx = QString::number(flipxNoRound(centerx) / 1000, 'f');				// drill file seems to be in inches
-			QString drill_cy = QString::number(flipyNoRound(centery) / 1000, 'f');				// drill file seems to be in inches
+			QString drill_cx = QString("%1").arg((int) (flipxNoRound(centerx) * 10), 6, 10, QChar('0'));				// drill file is in inches 00.0000, converting mils to 10000ths
+			QString drill_cy = QString("%1").arg((int) (flipyNoRound(centery) * 10), 6, 10, QChar('0'));				// drill file is in inches 00.0000, converting mils to 10000ths
             QString aperture = QString("C%1").arg(hole, 0, 'f');
 			if(!apertureMap.contains(aperture)) {
 				apertureMap[aperture] = QString::number(dcode_index);
@@ -737,7 +737,7 @@ void SVG2gerber::handleOblongPath(QDomElement & path, int & dcode_index) {
 	double cx2 = nextLine.attribute("x2").toDouble();
 	double cy2 = nextLine.attribute("y2").toDouble();
 
-	QString drill_aperture = QString("C%1").arg(diameter / 1000, 0, 'f') + "\n";
+	QString drill_aperture = QString("C%1").arg(diameter / 1000, 0, 'f') + "\n";   // convert mils to inches
 	if (!m_gerber_header.contains(drill_aperture)) {
 		m_gerber_header += "T" + QString::number(dcode_index++) + drill_aperture;
 	}
@@ -745,10 +745,10 @@ void SVG2gerber::handleOblongPath(QDomElement & path, int & dcode_index) {
 	int it = m_gerber_header.lastIndexOf("T", ix);
 	m_drill_slots += QString("%1\nX%2Y%3G85X%4Y%5\nG05\n")
 		.arg(m_gerber_header.mid(it, ix - it), 0, 'f')
-		.arg(flipxNoRound(cx1) / 1000, 0, 'f')
-		.arg(flipyNoRound(cy1) / 1000, 0, 'f')
-		.arg(flipxNoRound(cx2) / 1000, 0, 'f')
-		.arg(flipyNoRound(cy2) / 1000, 0, 'f');
+        .arg((int) (flipxNoRound(cx1) * 10), 6, 10, QChar('0'))
+		.arg((int) (flipyNoRound(cy1) * 10), 6, 10, QChar('0'))
+		.arg((int) (flipxNoRound(cx2) * 10), 6, 10, QChar('0'))
+		.arg((int) (flipyNoRound(cy2) * 10), 6, 10, QChar('0'));
 }
 
 QDomElement SVG2gerber::ellipse2path(QDomElement ellipseElement){
