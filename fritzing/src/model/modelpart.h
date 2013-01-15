@@ -94,6 +94,7 @@ public:
 	void saveAsPart(QXmlStreamWriter & streamWriter, bool startDocument);
 	void addViewItem(class ItemBase *);
 	void removeViewItem(class ItemBase *);
+    void killViewItems();
 	class ItemBase * viewItem(QGraphicsScene * scene);
 	class ItemBase * viewItem(ViewLayer::ViewIdentifier);
 	bool hasViewItems();

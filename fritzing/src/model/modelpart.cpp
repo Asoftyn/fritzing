@@ -980,3 +980,10 @@ bool ModelPart::hasZeroConnector() {
     return false;
 }
 
+void ModelPart::killViewItems() {
+	foreach (ItemBase * itemBase, m_viewItems) {
+		if (itemBase) delete itemBase;
+	}
+
+    m_viewItems.clear();
+}

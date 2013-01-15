@@ -276,12 +276,14 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
 
 		ViewGeometry viewGeometry(geometry);
         if (mp->itemType() == ModelPart::Wire) {
-            QLineF l = viewGeometry.line();
-            if (l.p1().x() == 0 && l.p1().y() == 0 && l.p2().x() == 0 && l.p2().y() == 0) {  
-                if (view.firstChildElement("connectors").isNull() && view.nextSiblingElement().isNull()) {
-                    DebugDialog::debug(QString("wire has zero length %1 in %2").arg(mp->moduleID()).arg(m_viewIdentifier));
-                    zeroLength.append(mp);
-                    continue;
+            if (viewGeometry.hasFlag(getTraceFlag())) {
+                QLineF l = viewGeometry.line();
+                if (l.p1().x() == 0 && l.p1().y() == 0 && l.p2().x() == 0 && l.p2().y() == 0) {  
+                    if (view.firstChildElement("connectors").isNull() && view.nextSiblingElement().isNull()) {
+                        DebugDialog::debug(QString("wire has zero length %1 in %2").arg(mp->moduleID()).arg(m_viewIdentifier));
+                        zeroLength.append(mp);
+                        continue;
+                    }
                 }
             }
         }
@@ -428,6 +430,7 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
 
     foreach (ModelPart * mp, zeroLength) {
         modelParts.removeOne(mp);
+        mp->killViewItems();
         m_sketchModel->removeModelPart(mp);
         delete mp;
     }
