@@ -61,7 +61,28 @@ def encodeFilename(self, filename):
         return urllib.quote_plus(filename)
 
 
+def calculateDiscount(totalArea):
+    # choose discount
+    if (totalArea < 50):
+        return 0.70
+    elif (totalArea < 100):
+        return 0.60
+    elif (totalArea < 200):
+        return 0.50
+    elif (totalArea < 500):
+        return 0.40
+    else:
+        return 0.35
+
+
+def calculateSinglePrice(area, count):
+    totalArea = area * count
+    return totalArea * calculateDiscount(totalArea)
+
+
 def recalculatePrices(faborder):
+    faborders = faborder.aq_parent
+
     # sum up the areas of all sketches and the number of quality checks
     faborder.area = 0
     faborder.numberOfQualityChecks = 0
@@ -70,25 +91,14 @@ def recalculatePrices(faborder):
         if sketch.check:
             faborder.numberOfQualityChecks += 1
     
-    # choose discount
-    if (faborder.area < 50):
-        faborder.pricePerSquareCm = 0.70
-    elif (faborder.area < 100):
-        faborder.pricePerSquareCm = 0.60
-    elif (faborder.area < 200):
-        faborder.pricePerSquareCm = 0.50
-    elif (faborder.area < 500):
-        faborder.pricePerSquareCm = 0.40
-    else:
-        faborder.pricePerSquareCm = 0.35
+    faborder.pricePerSquareCm = calculateDiscount(faborder.area)
 
     # calculate totals
     faborder.priceNetto = faborder.area * faborder.pricePerSquareCm
-    faborder.priceQualityChecksNetto = faborder.numberOfQualityChecks * 4.0
+    faborder.priceQualityChecksNetto = faborder.numberOfQualityChecks * faborders.checkingFee
     faborder.priceTotalNetto = faborder.priceNetto + faborder.priceQualityChecksNetto
     
     # shipping and taxes
-    faborders = faborder.aq_parent
     faborder.priceShipping = faborders.shippingWorld
     if faborder.shippingExpress:
         faborder.priceShipping = faborders.shippingWorldExpress
@@ -160,6 +170,7 @@ def sendStatusMail(context, justReturn=False):
     state_title = getStateTitle(False, context)
     closing_date = faborders.nextProductionClosingDate
     delivery_date = faborders.nextProductionDelivery
+    checking_fee = faborders.checkingFee
     
     mail_subject = _(u"Your Fritzing Fab order #%s is now %s") % (context.id, state_title.lower())
     
@@ -170,6 +181,7 @@ def sendStatusMail(context, justReturn=False):
         state_title = state_title,
         closing_date = closing_date,
         delivery_date = delivery_date,
+        checking_fee = checking_fee,
         faborder = faborder,
         faborder_id = faborder.id,
         faborder_url = faborder.absolute_url(),

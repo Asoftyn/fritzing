@@ -78,7 +78,7 @@
                           <td></td>
                           <td tal:content="python:len(sketch.boards)">boards</td>
                           <td tal:content="python: '%.2f' % (sketch.copies * sketch.area)">size</td>
-                          <td tal:content="python: '%.2f' % (sketch.copies * sketch.area * order.pricePerSquareCm + 4.0)">price</td>
+                          <td tal:content="python: '%.2f' % (sketch.copies * sketch.area * order.pricePerSquareCm + context.checkingFee)">price</td>
                           <td><span tal:replace="order/paymentType | string:error"/> <span tal:replace="order/paymentId | string:error"/></td>
                           <td><span tal:condition="sketch/checked" tal:replace="sketch/checked | string:error"/></td>
                           <td><span tal:condition="sketch/publishable" tal:replace="sketch/publishable | string:error"/></td>

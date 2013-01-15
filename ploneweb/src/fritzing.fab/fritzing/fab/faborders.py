@@ -26,7 +26,7 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.statusmessages.interfaces import IStatusMessage
 
 from fritzing.fab.interfaces import IFabOrders, IFabOrder
-from fritzing.fab.tools import sendStatusMail
+from fritzing.fab.tools import sendStatusMail, calculateSinglePrice
 from fritzing.fab import _
 
 
@@ -166,7 +166,7 @@ class CurrentOrdersCSV(grok.View):
                     "",
                     len(sketch.boards),
                     '%.2f' % (sketch.area * sketch.copies),
-                    '%.2f' % (sketch.copies * sketch.area * order.pricePerSquareCm + 4.0),
+                    '%.2f' % (sketch.copies * sketch.area * order.pricePerSquareCm + context.checkingFee),
                     order.paymentId,
                     utf_8_encoder(order.shippingCompany),
                     utf_8_encoder(order.shippingFirstName) + " " + utf_8_encoder(order.shippingLastName),
@@ -413,3 +413,31 @@ class AddForm(dexterity.AddForm):
         faborderURL = self.context.absolute_url()+"/"+instance.id
         self.request.response.redirect(faborderURL)
 
+
+class QuoteCalculator(grok.View):
+    """Calculates the fab price for an order
+    """
+    grok.name('quote')
+    grok.require('zope2.View')
+    grok.context(IFabOrders)
+    
+    price = None
+
+    def update(self):
+        context = aq_inner(self.context)
+
+        area = float(self.request.get('area', None))
+        count = self.request.get('count', None)
+        if not count:
+            count = 1
+        else:
+            count = int(count)
+
+        self.price = calculateSinglePrice(area, count)
+
+    
+    def render(self):
+        """Returns the total net price, without extra fees
+        """
+        return self.price
+        

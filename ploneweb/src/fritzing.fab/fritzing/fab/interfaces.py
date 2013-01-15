@@ -523,9 +523,15 @@ class IFabOrders(form.Schema):
     form.fieldset(
         'fees', 
         label=_(u"Fees"),
-        fields=['shippingGermany', 'shippingGermanyExpress',
+        fields=['checkingFee', 'shippingGermany', 'shippingGermanyExpress',
             'shippingEU', 'shippingEuExpress', 'shippingWorld', 'shippingWorldExpress',
             'taxesGermany', 'taxesEU', 'taxesWorld'])
+
+    checkingFee = Float(
+        title = _(u"Checking Fee"),
+        description = _(u"Fee for having a sketch checked by us"),
+        min = 0.0,
+        default = 4.0)
 
     shippingGermany = Float(
         title = _(u"Shipping Costs Germany"),

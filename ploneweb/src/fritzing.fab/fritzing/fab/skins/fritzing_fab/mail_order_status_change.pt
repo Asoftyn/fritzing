@@ -28,7 +28,7 @@ Please review your order #<span tal:replace="options/faborder_id" /> at
     <tal:block tal:repeat="board item/boards"><span tal:replace="python: '%.2f cm × %.2f cm' % (board['width'], board['height'])" /></tal:block>
     = <span tal:replace="python: '%.2f' % (item.area)" /><span tal:replace="structure nbsp"/>cm<span tal:replace="structure sup2"/>
     <span tal:replace="python: '%.2f' % (item.copies * item.area * item.pricePerSquareCm)" /><span tal:replace="structure nbsp"/>EUR
-    4.00 EUR Checking
+    <span tal:replace="python: '%.2f' % options['checking_fee']"/> EUR Checking
 
 Subtotal:
     <span tal:replace="python: '%.2f&nbsp;EUR' % (options['faborder_price_netto'])" />

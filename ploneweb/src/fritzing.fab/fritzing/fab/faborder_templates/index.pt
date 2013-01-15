@@ -99,7 +99,7 @@
 		  -->
                   <td class="priceCell">
                     <div tal:content="python: '%.2f EUR' % (sketch.copies * sketch.area * context.pricePerSquareCm)"></div>
-                    <div>+ Checking 4.00 EUR</div>
+                    <div>+ Checking <span tal:replace="python: '%.2f' % context.checkingFee"/> EUR</div>
                   </td>
                 </tr>
                 <tr tal:condition="python:view.isStateId(context, 'open')">
