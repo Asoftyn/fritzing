@@ -203,29 +203,7 @@ def orderModifiedHandler(faborder, event):
 @grok.subscribe(ISketch, IObjectMovedEvent)
 def sketchModifiedHandler(sketch, event):
     faborder = sketch.aq_parent
-    
-    # sum up the areas of all sketches and the number of quality checks
-    faborder.area = 0
-    faborder.numberOfQualityChecks = 0
-    for sketch in faborder.listFolderContents():
-        faborder.area += sketch.copies * sketch.area
-        if sketch.check:
-            faborder.numberOfQualityChecks += 1
-    
-    # choose discount
-    if (faborder.area < 50):
-        faborder.pricePerSquareCm = 0.70
-    elif (faborder.area < 100):
-        faborder.pricePerSquareCm = 0.60
-    elif (faborder.area < 200):
-        faborder.pricePerSquareCm = 0.50
-    elif (faborder.area < 500):
-        faborder.pricePerSquareCm = 0.40
-    else:
-        faborder.pricePerSquareCm = 0.35
-    
     recalculatePrices(faborder)
-
 
 
 class AddForm(dexterity.AddForm):
