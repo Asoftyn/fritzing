@@ -167,6 +167,9 @@ def workflowTransitionHandler(faborder, event):
 
     if event.action in ('cancel'):
         faborder.productionRound = None
+        faborder.paymentType = None
+        faborder.paymentId = None
+        faborder.paymentMsg = None
         faborder.reindexObject(idxs=['productionRound'])
         # TODO: sendStatusMail(faborder, "cancel")
 

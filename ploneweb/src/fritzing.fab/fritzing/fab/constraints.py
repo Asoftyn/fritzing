@@ -23,7 +23,7 @@ class SketchFileValidator(validator.SimpleFieldValidator):
                 _(u"We can only produce from shareable Fritzing sketch files (.fzz)"))
         
         filenameMatch = re.compile(
-            r"^[a-zA-Z0-9_\.\(\)\-\+]+$").match
+            r"^[a-zA-Z0-9 _\.\(\)\-\+]+$").match
         if not filenameMatch(fzzName):
             raise Invalid(
                 _(u"Please change the sketch name to not contain any special characters such as */?$§&"))

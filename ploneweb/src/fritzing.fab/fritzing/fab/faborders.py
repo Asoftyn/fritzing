@@ -105,10 +105,9 @@ class CurrentOrders(grok.View):
         workflowAction = self.request.get('workflowAction', None)
         
         if workflowAction:
-            print "ACTION", workflowAction + self.productionRound
+            portal_workflow = getToolByName(self, 'portal_workflow')
             for brain in self.getCurrentOrders(context, self.productionRound):
                 order = brain.getObject()
-                portal_workflow = getToolByName(self, 'portal_workflow')
                 try:
                     portal_workflow.doActionFor(order, workflowAction)
                 except WorkflowException:
@@ -150,13 +149,17 @@ class CurrentOrdersCSV(grok.View):
         writer = csv.writer(out)
         
         # Header
-        writer.writerow(('date', 'order-id', 'filename', 'count', 'optional', 'boards', 'size', 'price', 'paid', 'checked', 'sent', 'invoiced', 'bloggable', 'name', 'e-mail', 'zone'))
+        writer.writerow(('date', 'name', 'order-id', 'filename', 
+            'count', 'optional', 'boards', 'size', 'price', 'paid',
+            'company', 'fullname', 'address1', 'address2', 'city', 'zip', 'country', 'express',
+            'telephone', 'e-mail', 'zone'))
         # Content
         for brain in self.getCurrentOrders(context, self.productionRound):
             order = brain.getObject()
             for sketch in order.listFolderContents():
                 writer.writerow((
-                    DateTime(order.Date()).strftime('%y-%m-%d %H:%M:%S'), 
+                    DateTime(order.Date()).strftime('%y-%m-%d %H:%M:%S'),
+                    order.getOwner(),
                     order.id,
                     order.id + "_" + self.encodeFilename(sketch.orderItem.filename),
                     sketch.copies,
@@ -164,12 +167,16 @@ class CurrentOrdersCSV(grok.View):
                     len(sketch.boards),
                     '%.2f' % (sketch.area * sketch.copies),
                     '%.2f' % (sketch.copies * sketch.area * order.pricePerSquareCm + 4.0),
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    order.getOwner(),
+                    order.paymentId,
+                    order.shippingCompany,
+                    order.shippingFirstName + " " + order.shippingLastName,
+                    order.shippingStreet,
+                    order.shippingAdditional,
+                    order.shippingCity,
+                    order.shippingZIP,
+                    IFabOrder['shippingCountry'].vocabulary.getTerm(order.shippingCountry).title,
+                    order.shippingExpress,
+                    order.telephone,
                     order.email,
                     order.shipTo
                 ))
