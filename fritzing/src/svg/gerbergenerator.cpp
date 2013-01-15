@@ -574,9 +574,9 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
             else {
                 // enlarge it a little due to aliasing when the clipped portion is converted to raster and back
                 double radius = newElement.attribute("r").toDouble();
-                radius += 2;
+                radius += 4;
                 newElement.setAttribute("r", radius);
-                newElement.setAttribute("stroke-width", 1);
+                newElement.setAttribute("stroke-width", 2);
             }
         }
     }
