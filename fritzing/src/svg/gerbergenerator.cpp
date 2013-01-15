@@ -518,6 +518,7 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
 
 	svgString = TextUtils::removeXMLEntities(domDocument1.toString());
 
+    QList<QDomElement> possibleHoles;
 	QXmlStreamReader reader(svgString);
 	QSvgRenderer renderer(&reader);
 	bool anyClipped = false;
@@ -529,7 +530,10 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
 		    QDomElement element = leaves1.at(i);
 		    QRectF mBounds = m.mapRect(bounds);
 		    if (mBounds.left() < sourceRes.left() - 0.1|| mBounds.top() < sourceRes.top() - 0.1 || mBounds.right() > sourceRes.right() + 0.1 || mBounds.bottom() > sourceRes.bottom() + 0.1) {
-			    // element is outside of bounds--squash it so it will be clipped
+			    if (element.tagName() == "circle") {
+                    possibleHoles.append(element);
+                }               
+                // element is outside of bounds--squash it so it will be clipped
 			    // we don't care if the board shape is irregular
 			    // since anything printed between the shape and the bounding rectangle 
 			    // will be physically clipped when the board is cut out
@@ -537,6 +541,37 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
 			    anyClipped = anyConverted = true;
 		    }	
 	    }
+    }
+
+
+    if (possibleHoles.count() > 0) {
+        QList<QDomElement> newHoles;
+        int ix = 0;
+        foreach (QDomElement element, possibleHoles) {
+            QDomElement newElement = element.cloneNode(false).toElement();
+            double radius = element.attribute("r").toDouble();
+            double sw = element.attribute("stroke-width").toDouble();
+            element.parentNode().insertAfter(newElement, element);
+            newElement.setAttribute("id", QString("__%1__").arg(ix++));
+            newElement.setAttribute("stroke-width", 0);
+            newElement.setAttribute("r", radius - (sw / 2));
+            newElement.setTagName("circle");
+            newHoles.append(newElement);
+        }
+
+	    QSvgRenderer renderer(domDocument1.toByteArray());
+        for (int i = newHoles.count() - 1; i >= 0; i--) {
+            QString id = QString("__%1__").arg(i);
+		    QRectF bounds = renderer.boundsOnElement(id);
+		    QMatrix m = renderer.matrixForElement(id);
+		    QDomElement newElement = newHoles.at(i);
+		    QRectF mBounds = m.mapRect(bounds);
+		    if (mBounds.left() < sourceRes.left() - 0.1 || mBounds.top() < sourceRes.top() - 0.1 || mBounds.right() > sourceRes.right() + 0.1 || mBounds.bottom() > sourceRes.bottom() + 0.1) {
+                // hole is still clipped
+                newHoles.removeAt(i);
+                newElement.parentNode().removeChild(newElement);
+            }
+        }
     }
 
 	if (clipImage) {
