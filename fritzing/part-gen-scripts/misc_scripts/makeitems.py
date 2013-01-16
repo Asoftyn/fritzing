@@ -46,8 +46,8 @@ def request(server, params):
     url = shoveParams(server, params)
     response = requests.post(url, cookies = {"sid": sid})
     
-    print response.url
-    print
+    #print response.url
+    #print
 
     #if response.json() and ("exc" in response.json()) and response.json()["exc"]:
         #print response.json()["exc"]
