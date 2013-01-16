@@ -114,7 +114,7 @@ def main():
     group = options.group
     description = options.description
     
-    print "description", description
+    #print "description", description
     
     cdirname, cfilename = os.path.split(os.path.abspath(__file__))
     cfile = os.path.join(cdirname, "makepanelizer2.config")
