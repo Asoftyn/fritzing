@@ -1312,33 +1312,33 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewIdenti
         return NULL;
 	}
 
-	QStringList connectorIDs, terminalIDs, legIDs;
-	QString setColor;
-	QString colorElementID;
+    LoadInfo loadInfo;
 	switch (viewIdentifier) {
 		case ViewLayer::PCBView:
-			colorElementID = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
+			loadInfo.colorElementID = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
 			switch (viewLayerID) {
 				case ViewLayer::Copper0:
-					modelPartShared->connectorIDs(viewIdentifier, viewLayerID, connectorIDs, terminalIDs, legIDs);
-					setColor = ViewLayer::Copper0Color;
+					modelPartShared->connectorIDs(viewIdentifier, viewLayerID, loadInfo.connectorIDs, loadInfo.terminalIDs, loadInfo.legIDs);
+					loadInfo.setColor = ViewLayer::Copper0Color;
+                    loadInfo.findNonConnectors = loadInfo.parsePaths = true;
 					break;
 				case ViewLayer::Copper1:
-					modelPartShared->connectorIDs(viewIdentifier, viewLayerID, connectorIDs, terminalIDs, legIDs);
-					setColor = ViewLayer::Copper1Color;
+					modelPartShared->connectorIDs(viewIdentifier, viewLayerID, loadInfo.connectorIDs, loadInfo.terminalIDs, loadInfo.legIDs);
+					loadInfo.setColor = ViewLayer::Copper1Color;
+                    loadInfo.findNonConnectors = loadInfo.parsePaths = true;
 					break;
 				case ViewLayer::Silkscreen1:
-					setColor = ViewLayer::Silkscreen1Color;
+					loadInfo.setColor = ViewLayer::Silkscreen1Color;
 					break;
 				case ViewLayer::Silkscreen0:
-					setColor = ViewLayer::Silkscreen0Color;
+					loadInfo.setColor = ViewLayer::Silkscreen0Color;
 					break;
 				default:
 					break;
 			}
 			break;
 		case ViewLayer::BreadboardView:
-			modelPartShared->connectorIDs(viewIdentifier, viewLayerID, connectorIDs, terminalIDs, legIDs);
+			modelPartShared->connectorIDs(viewIdentifier, viewLayerID, loadInfo.connectorIDs, loadInfo.terminalIDs, loadInfo.legIDs);
 			break;
         default:
             break;
@@ -1381,7 +1381,8 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewIdenti
     QByteArray resultBytes; 
     if (!bytesToLoad.isEmpty()) {
         makeLocalModifications(bytesToLoad, filename);
-        resultBytes = newRenderer->loadSvg(bytesToLoad, filename, connectorIDs, terminalIDs, legIDs, setColor, colorElementID, viewIdentifier == ViewLayer::PCBView);
+        loadInfo.filename = filename;
+        resultBytes = newRenderer->loadSvg(bytesToLoad, loadInfo);
     }
 
     layerAttributes.setLoaded(resultBytes);

@@ -105,17 +105,17 @@ void FSvgRenderer::cleanup() {
 }
 
 QByteArray FSvgRenderer::loadSvg(const QString & filename) {
-	QStringList strings;
-	QString string;
-	return loadSvg(filename, strings, strings, strings, string, string, false);
+    LoadInfo loadInfo;
+    loadInfo.filename = filename;
+	return loadSvg(loadInfo);
 }
 
-QByteArray FSvgRenderer::loadSvg(const QString & filename, const QStringList & connectorIDs, const QStringList & terminalIDs, const QStringList & legIDs, const QString & setColor, const QString & colorElementID, bool findNonConnectors) {
-	if (!QFileInfo(filename).exists() || !QFileInfo(filename).isFile()) {
+QByteArray FSvgRenderer::loadSvg(const LoadInfo & loadInfo) {
+	if (!QFileInfo(loadInfo.filename).exists() || !QFileInfo(loadInfo.filename).isFile()) {
 		return QByteArray();
 	}
 
-    QFile file(filename);
+    QFile file(loadInfo.filename);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
 		return QByteArray();
 	}
@@ -125,7 +125,7 @@ QByteArray FSvgRenderer::loadSvg(const QString & filename, const QStringList & c
 
 	if (contents.length() <= 0) return QByteArray();
 
-	return loadAux(contents, filename, connectorIDs, terminalIDs, legIDs, setColor, colorElementID, findNonConnectors);
+	return loadAux(contents, loadInfo);
 
 }
 
@@ -143,16 +143,17 @@ bool FSvgRenderer::loadSvgString(const QString & svg, QString & newSvg) {
 }
 
 QByteArray FSvgRenderer::loadSvg(const QByteArray & contents, const QString & filename, bool findNonConnectors) {
-	QStringList strings;
-	QString string;
-	return loadSvg(contents, filename, strings, strings, strings, string, string, findNonConnectors);
+    LoadInfo loadInfo;
+    loadInfo.filename = filename;
+    loadInfo.findNonConnectors = findNonConnectors;
+	return loadAux(contents, loadInfo);
 }
 
-QByteArray FSvgRenderer::loadSvg(const QByteArray & contents, const QString & filename, const QStringList & connectorIDs, const QStringList & terminalIDs, const QStringList & legIDs, const QString & setColor, const QString & colorElementID, bool findNonConnectors) {
-	return loadAux(contents, filename, connectorIDs, terminalIDs, legIDs, setColor, colorElementID, findNonConnectors);
+QByteArray FSvgRenderer::loadSvg(const QByteArray & contents, const LoadInfo & loadInfo) {
+	return loadAux(contents, loadInfo);
 }
 
-QByteArray FSvgRenderer::loadAux(const QByteArray & theContents, const QString & filename, const QStringList & connectorIDs, const QStringList & terminalIDs, const QStringList & legIDs, const QString & setColor, const QString & colorElementID, bool findNonConnectors) 
+QByteArray FSvgRenderer::loadAux(const QByteArray & theContents, const LoadInfo & loadInfo) 
 {
 	QByteArray cleanContents(theContents);
 	bool cleaned = false;
@@ -168,33 +169,33 @@ QByteArray FSvgRenderer::loadAux(const QByteArray & theContents, const QString &
         cleanContents = string.toUtf8();
     }
 
-	if (connectorIDs.count() > 0 || !setColor.isEmpty() || findNonConnectors) {
+	if (loadInfo.connectorIDs.count() > 0 || !loadInfo.setColor.isEmpty() || loadInfo.findNonConnectors) {
 		QString errorStr;
 		int errorLine;
 		int errorColumn;
 		QDomDocument doc;
 		if (!doc.setContent(cleanContents, &errorStr, &errorLine, &errorColumn)) {
-			DebugDialog::debug(QString("renderer loadAux failed %1 %2 %3 %4").arg(filename).arg(errorStr).arg(errorLine).arg(errorColumn));
+			DebugDialog::debug(QString("renderer loadAux failed %1 %2 %3 %4").arg(loadInfo.filename).arg(errorStr).arg(errorLine).arg(errorColumn));
 		}
 
 		bool resetContents = false;
 
 		QDomElement root = doc.documentElement();
-		if (!setColor.isEmpty()) {
-			QDomElement element = TextUtils::findElementWithAttribute(root, "id", colorElementID);
+		if (!loadInfo.setColor.isEmpty()) {
+			QDomElement element = TextUtils::findElementWithAttribute(root, "id", loadInfo.colorElementID);
 			if (!element.isNull()) {
 				QStringList exceptions;
 				exceptions << "black" << "#000000";
-				SvgFileSplitter::fixColorRecurse(element, setColor, exceptions);
+				SvgFileSplitter::fixColorRecurse(element, loadInfo.setColor, exceptions);
 				resetContents = true;
 			}
 		}
-		if (connectorIDs.count() > 0) {
-			bool init =  initConnectorInfo(doc, connectorIDs, terminalIDs, legIDs, filename);
+		if (loadInfo.connectorIDs.count() > 0) {
+			bool init =  initConnectorInfo(doc, loadInfo);
 			resetContents = resetContents || init;
 		}
-		if (findNonConnectors) {
-			initNonConnectorInfo(doc, filename);
+		if (loadInfo.findNonConnectors) {
+			initNonConnectorInfo(doc, loadInfo.filename);
 		}
 
 		if (resetContents) {
@@ -217,7 +218,7 @@ QByteArray FSvgRenderer::loadAux(const QByteArray & theContents, const QString &
 
 	//DebugDialog::debug(cleanContents.data());
 
-    return finalLoad(cleanContents, filename);
+    return finalLoad(cleanContents, loadInfo.filename);
 }
 
 QByteArray FSvgRenderer::finalLoad(QByteArray & cleanContents, const QString & filename) {
@@ -315,7 +316,7 @@ void FSvgRenderer::initNonConnectorInfoAux(QDomElement & element, const QString 
 {
 	QString id = element.attribute("id");
 	if (id.startsWith(NonConnectorName, Qt::CaseInsensitive)) {
-		ConnectorInfo * connectorInfo = initConnectorInfoStruct(element, filename);
+		ConnectorInfo * connectorInfo = initConnectorInfoStruct(element, filename, false);
 		m_nonConnectorInfoHash.insert(id, connectorInfo);
 	}
 	QDomElement child = element.firstChildElement();
@@ -325,27 +326,27 @@ void FSvgRenderer::initNonConnectorInfoAux(QDomElement & element, const QString 
 	}
 }
 
-bool FSvgRenderer::initConnectorInfo(QDomDocument & domDocument, const QStringList & connectorIDs, const QStringList & terminalIDs, const QStringList & legIDs, const QString & filename)
+bool FSvgRenderer::initConnectorInfo(QDomDocument & domDocument, const LoadInfo & loadInfo)
 {
 	bool result = false;
 	clearConnectorInfoHash(m_connectorInfoHash);
 	QDomElement root = domDocument.documentElement();
-	initConnectorInfoAux(root, connectorIDs, filename);
-	if (terminalIDs.count() > 0) {
-		initTerminalInfoAux(root, connectorIDs, terminalIDs);
+	initConnectorInfoAux(root, loadInfo);
+	if (loadInfo.terminalIDs.count() > 0) {
+		initTerminalInfoAux(root, loadInfo);
 	}
-	if (legIDs.count() > 0) {
-		initLegInfoAux(root, connectorIDs, legIDs, result);
+	if (loadInfo.legIDs.count() > 0) {
+		initLegInfoAux(root, loadInfo, result);
 	}
 
 	return result;
 }
 
-void FSvgRenderer::initLegInfoAux(QDomElement & element, const QStringList & connectorIDs, const QStringList & legIDs, bool & gotOne)
+void FSvgRenderer::initLegInfoAux(QDomElement & element, const LoadInfo & loadInfo, bool & gotOne)
 {
 	QString id = element.attribute("id");
 	if (!id.isEmpty()) {
-		int ix = legIDs.indexOf(id);
+		int ix = loadInfo.legIDs.indexOf(id);
 		if (ix >= 0) {
 			//DebugDialog::debug("init leg info " + id);
 			//foreach (QString lid, legIDs) {
@@ -354,7 +355,7 @@ void FSvgRenderer::initLegInfoAux(QDomElement & element, const QStringList & con
 
 			element.setTagName("g");			// don't want this element to actually be drawn
 			gotOne = true;
-			ConnectorInfo * connectorInfo = m_connectorInfoHash.value(connectorIDs.at(ix), NULL);
+			ConnectorInfo * connectorInfo = m_connectorInfoHash.value(loadInfo.connectorIDs.at(ix), NULL);
 			if (connectorInfo) {
 				//QString temp;
 				//QTextStream stream(&temp);
@@ -372,7 +373,7 @@ void FSvgRenderer::initLegInfoAux(QDomElement & element, const QStringList & con
 
 	QDomElement child = element.firstChildElement();
 	while (!child.isNull()) {
-		initLegInfoAux(child, connectorIDs, legIDs, gotOne);
+		initLegInfoAux(child, loadInfo, gotOne);
 		child = child.nextSiblingElement();
 	}
 }
@@ -400,13 +401,13 @@ bool FSvgRenderer::initLegInfoAux(QDomElement & element, ConnectorInfo * connect
 	return true;
 }
 
-void FSvgRenderer::initTerminalInfoAux(QDomElement & element, const QStringList & connectorIDs, const QStringList & terminalIDs)
+void FSvgRenderer::initTerminalInfoAux(QDomElement & element, const LoadInfo & loadInfo)
 {
 	QString id = element.attribute("id");
 	if (!id.isEmpty()) {
-		int ix = terminalIDs.indexOf(id);
+		int ix = loadInfo.terminalIDs.indexOf(id);
 		if (ix >= 0) {
-			ConnectorInfo * connectorInfo = m_connectorInfoHash.value(connectorIDs.at(ix), NULL);
+			ConnectorInfo * connectorInfo = m_connectorInfoHash.value(loadInfo.connectorIDs.at(ix), NULL);
 			if (connectorInfo) {
 				connectorInfo->terminalMatrix = TextUtils::elementToMatrix(element);
 			}
@@ -416,17 +417,17 @@ void FSvgRenderer::initTerminalInfoAux(QDomElement & element, const QStringList 
 
 	QDomElement child = element.firstChildElement();
 	while (!child.isNull()) {
-		initTerminalInfoAux(child, connectorIDs, terminalIDs);
+		initTerminalInfoAux(child, loadInfo);
 		child = child.nextSiblingElement();
 	}
 }
 
-void FSvgRenderer::initConnectorInfoAux(QDomElement & element, const QStringList & connectorIDs, const QString & filename)
+void FSvgRenderer::initConnectorInfoAux(QDomElement & element, const LoadInfo & loadInfo)
 {
 	QString id = element.attribute("id");
 	if (!id.isEmpty()) {
-		if (connectorIDs.contains(id)) {
-			ConnectorInfo * connectorInfo = initConnectorInfoStruct(element, filename);
+		if (loadInfo.connectorIDs.contains(id)) {
+			ConnectorInfo * connectorInfo = initConnectorInfoStruct(element, loadInfo.filename, loadInfo.parsePaths);
 			m_connectorInfoHash.insert(id, connectorInfo);
 		}
 		// don't return here, might miss other connectors
@@ -434,12 +435,12 @@ void FSvgRenderer::initConnectorInfoAux(QDomElement & element, const QStringList
 
 	QDomElement child = element.firstChildElement();
 	while (!child.isNull()) {
-		initConnectorInfoAux(child, connectorIDs, filename);
+		initConnectorInfoAux(child, loadInfo);
 		child = child.nextSiblingElement();
 	}
 }
 
-ConnectorInfo * FSvgRenderer::initConnectorInfoStruct(QDomElement & connectorElement, const QString & filename) {
+ConnectorInfo * FSvgRenderer::initConnectorInfoStruct(QDomElement & connectorElement, const QString & filename, bool parsePaths) {
 	ConnectorInfo * connectorInfo = new ConnectorInfo();
 	connectorInfo->radius = connectorInfo->strokeWidth = 0;
 	connectorInfo->gotPath = connectorInfo->gotCircle = false;
@@ -447,23 +448,24 @@ ConnectorInfo * FSvgRenderer::initConnectorInfoStruct(QDomElement & connectorEle
 	if (connectorElement.isNull()) return connectorInfo;
 
 	connectorInfo->matrix = TextUtils::elementToMatrix(connectorElement);
-	initConnectorInfoStructAux(connectorElement, connectorInfo, filename);
+	initConnectorInfoStructAux(connectorElement, connectorInfo, filename, parsePaths);
 	return connectorInfo;
 }
 
-bool FSvgRenderer::initConnectorInfoStructAux(QDomElement & element, ConnectorInfo * connectorInfo, const QString & filename) 
+bool FSvgRenderer::initConnectorInfoStructAux(QDomElement & element, ConnectorInfo * connectorInfo, const QString & filename, bool parsePaths) 
 {
     if (element.nodeName().compare("circle") == 0) {
         return initConnectorInfoCircle(element, connectorInfo, filename);
     }
 
     if (element.nodeName().compare("path") == 0) {
+        if (!parsePaths) return false;
         return initConnectorInfoPath(element, connectorInfo, filename);
     }
 
 	QDomElement child = element.firstChildElement();
 	while (!child.isNull()) {
-		if (initConnectorInfoStructAux(child, connectorInfo, filename)) return true;
+		if (initConnectorInfoStructAux(child, connectorInfo, filename, parsePaths)) return true;
 
 		child = child.nextSiblingElement();
 	}

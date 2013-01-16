@@ -52,6 +52,21 @@ struct ConnectorInfo {
 
 typedef QHash<ViewLayer::ViewLayerID, class FSvgRenderer *> RendererHash;
 
+struct LoadInfo {
+     QString filename;
+     QStringList connectorIDs;
+     QStringList terminalIDs;
+     QStringList legIDs;
+     QString setColor;
+     QString colorElementID;
+     bool findNonConnectors;
+     bool parsePaths;
+
+     LoadInfo() {
+         findNonConnectors = parsePaths = false;
+     }
+};
+
 class FSvgRenderer : public QSvgRenderer
 {
 Q_OBJECT
@@ -59,9 +74,9 @@ public:
 	FSvgRenderer(QObject * parent = 0);
 	~FSvgRenderer();
 
-	QByteArray loadSvg(const QString & filename, const QStringList & connectorIDs, const QStringList & terminalIDs, const QStringList & legIDs, const QString & setColor, const QString & colorElementID, bool findNonConnectors);
+	QByteArray loadSvg(const LoadInfo &);
 	QByteArray loadSvg(const QString & filename);
-	QByteArray loadSvg( const QByteArray & contents, const QString & filename, const QStringList & connectorIDs, const QStringList & terminalIDs, const QStringList & legIDs, const QString & setColor, const QString & colorElementID, bool findNonConnectors);     // for SvgSplitter loads
+	QByteArray loadSvg( const QByteArray & contents, const LoadInfo &);     // for SvgSplitter loads
 	QByteArray loadSvg( const QByteArray & contents, const QString & filename, bool findNonConnectors);						// for SvgSplitter loads
 	bool loadSvgString(const QString & svg);
 	bool loadSvgString(const QString & svg, QString & newSvg);
@@ -80,17 +95,17 @@ public:
 
 protected:
 	bool determineDefaultSize(QXmlStreamReader &);
-	QByteArray loadAux (const QByteArray & contents, const QString & filename, const QStringList & connectorIDs, const QStringList & terminalIDs, const QStringList & legIDs, const QString & setColor, const QString & colorElementID, bool findNonConnectors);
-	bool initConnectorInfo(QDomDocument &, const QStringList & connectorIDs, const QStringList & terminalIDs, const QStringList & legIDs, const QString & filename);
-	ConnectorInfo * initConnectorInfoStruct(QDomElement & connectorElement, const QString & filename);
-	bool initConnectorInfoStructAux(QDomElement &, ConnectorInfo * connectorInfo, const QString & filename);
+	QByteArray loadAux (const QByteArray & contents, const LoadInfo &);
+	bool initConnectorInfo(QDomDocument &, const LoadInfo &);
+	ConnectorInfo * initConnectorInfoStruct(QDomElement & connectorElement, const QString & filename, bool parsePaths);
+	bool initConnectorInfoStructAux(QDomElement &, ConnectorInfo * connectorInfo, const QString & filename, bool parsePaths);
     bool initConnectorInfoCircle(QDomElement & element, ConnectorInfo * connectorInfo, const QString & filename);
     bool initConnectorInfoPath(QDomElement & element, ConnectorInfo * connectorInfo, const QString & filename);
 	void initNonConnectorInfo(QDomDocument & domDocument, const QString & filename);
 	void initNonConnectorInfoAux(QDomElement & element, const QString & filename);
-	void initTerminalInfoAux(QDomElement & element, const QStringList & connectorIDs, const QStringList & terminalIDs);
-	void initLegInfoAux(QDomElement & element, const QStringList & connectorIDs, const QStringList & legIDs, bool & gotOne);
-	void initConnectorInfoAux(QDomElement & element, const QStringList & connectorIDs, const QString & filename);
+	void initTerminalInfoAux(QDomElement & element, const LoadInfo &);
+	void initLegInfoAux(QDomElement & element, const LoadInfo &, bool & gotOne);
+	void initConnectorInfoAux(QDomElement & element, const LoadInfo &);
 	QPointF calcTerminalPoint(const QString & terminalId, const QRectF & connectorRect, bool ignoreTerminalPoint, const QRectF & viewBox, QMatrix & terminalMatrix);
 	bool initLegInfoAux(QDomElement & element, ConnectorInfo * connectorInfo);
 	void calcLeg(SvgIdLayer *, const QRectF & viewBox, ConnectorInfo * connectorInfo);
