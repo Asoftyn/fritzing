@@ -91,6 +91,7 @@ public:
 	void loadProgramFileNew();
 	bool alreadyHasProgram(const QString &);
 	void updateLink(const QString & filename, const QString & language, const QString & programmer, bool addlink, bool strong);
+    void showMenus(bool);
 
 signals:
 	void closed();
@@ -187,6 +188,9 @@ protected:
 	QMenu * m_programmerMenu;
 	QMenu * m_serialPortMenu;
 	QStringList m_ports;				// temporary storage for linux
+    QMenu * m_fileMenu;
+    QMenu* m_editMenu;
+    QMenu * m_programMenu;
 };
 
 #endif /* ProgramWindow_H_ */

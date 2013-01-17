@@ -3800,3 +3800,7 @@ void PEMainWindow::clickedItemCandidateSlot(QGraphicsItem * item, bool & ok) {
 
     ok = pegi->showingMarquee();
 }
+
+void PEMainWindow::initProgrammingWidget() {
+}
+

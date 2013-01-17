@@ -1014,6 +1014,13 @@ void MainWindow::createViewMenuActions() {
 	m_showPCBAct->setStatusTip(tr("Show the PCB view"));
 	connect(m_showPCBAct, SIGNAL(triggered()), this, SLOT(showPCBView()));
 
+    if (m_programView) {
+	    m_showProgramAct = new QAction(tr("Show Programming Window"), this);
+	    m_showProgramAct->setShortcut(tr("Ctrl+4"));
+	    m_showProgramAct->setStatusTip(tr("Show the programming view"));
+	    connect(m_showProgramAct, SIGNAL(triggered()), this, SLOT(showProgramView()));
+    }
+
 	m_showPartsBinIconViewAct = new QAction(tr("Show Parts Bin Icon View"), this);
 	m_showPartsBinIconViewAct->setStatusTip(tr("Display the parts bin in an icon view"));
 	connect(m_showPartsBinIconViewAct, SIGNAL(triggered()), this, SLOT(showPartsBinIconView()));
@@ -1281,6 +1288,7 @@ void MainWindow::createViewMenu()
     m_viewMenu->addAction(m_showBreadboardAct);
     m_viewMenu->addAction(m_showSchematicAct);
     m_viewMenu->addAction(m_showPCBAct);
+    if (m_programView) m_viewMenu->addAction(m_showProgramAct);
     m_viewMenu->addSeparator();
     if (m_binManager) {
         m_viewMenu->addAction(m_showPartsBinIconViewAct);
@@ -1980,11 +1988,14 @@ void MainWindow::showBreadboardView() {
 
 void MainWindow::showSchematicView() {
 	setCurrentTabIndex(1);
-
 }
 
 void MainWindow::showPCBView() {
 	setCurrentTabIndex(2);
+}
+
+void MainWindow::showProgramView() {
+	setCurrentTabIndex(3);
 }
 
 void MainWindow::setCurrentView(ViewLayer::ViewIdentifier viewIdentifier)
@@ -2173,10 +2184,6 @@ void MainWindow::updateWindowMenu() {
 		    m_windowMenu->addAction(action);
         }
 	}
-
-	//m_windowMenu->addSeparator();
-	//m_windowMenu->addAction(m_openProgramWindowAct);
-
 }
 
 void MainWindow::pageSetup() {
@@ -2350,6 +2357,15 @@ void MainWindow::removeActionsStartingAt(QMenu * menu, int start) {
 			menu->removeAction(actions.at(i));
 		}
 	}
+}
+
+void MainWindow::hideShowProgramMenu() {
+    bool show = (m_currentGraphicsView != NULL);
+    if (m_viewMenu) m_viewMenu->menuAction()->setVisible(show);
+    if (m_partMenu) m_partMenu->menuAction()->setVisible(show);
+    if (m_fileMenu) m_fileMenu->menuAction()->setVisible(show);
+    if (m_editMenu) m_editMenu->menuAction()->setVisible(show);
+    if (m_programView) m_programView->showMenus(!show);
 }
 
 void MainWindow::hideShowTraceMenu() {

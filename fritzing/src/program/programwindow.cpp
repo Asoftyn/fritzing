@@ -203,114 +203,119 @@ void ProgramWindow::setup(const QList<LinkedFile *> & linkedFiles, const QString
 	installEventFilter(this);
 
     // Setup new menu bar for the programming window
-    QMenuBar *menubar = menuBar();
+    QMenuBar * menubar = NULL;
+    if (parentWidget()) {
+        QMainWindow * mainWindow = qobject_cast<QMainWindow *>(parentWidget());
+        if (mainWindow) menubar = mainWindow->menuBar();
+    }
+    if (menubar == NULL) menubar = menuBar();
 
-    QMenu *currentMenu = menubar->addMenu(tr("&File"));
+    m_fileMenu = menubar->addMenu(tr("&File"));
 
-    QAction *currentAction = new QAction(tr("New"), this);
+    QAction *currentAction = new QAction(tr("New Program File"), this);
     currentAction->setShortcut(tr("Ctrl+N"));
     currentAction->setStatusTip(tr("Create a new program"));
     connect(currentAction, SIGNAL(triggered()), this, SLOT(addTab()));
-    currentMenu->addAction(currentAction);
+    m_fileMenu->addAction(currentAction);
 
-    currentAction = new QAction(tr("&Open..."), this);
+    currentAction = new QAction(tr("&Open Program File..."), this);
     currentAction->setShortcut(tr("Ctrl+O"));
     currentAction->setStatusTip(tr("Open a program"));
     connect(currentAction, SIGNAL(triggered()), this, SLOT(loadProgramFile()));
-    currentMenu->addAction(currentAction);
+    m_fileMenu->addAction(currentAction);
 
-    currentMenu->addSeparator();
+    m_fileMenu->addSeparator();
 
-    m_saveAction = new QAction(tr("&Save"), this);
+    m_saveAction = new QAction(tr("&Save Program File"), this);
     m_saveAction->setShortcut(tr("Ctrl+S"));
     m_saveAction->setStatusTip(tr("Save the current program"));
     connect(m_saveAction, SIGNAL(triggered()), this, SLOT(save()));
-    currentMenu->addAction(m_saveAction);
+    m_fileMenu->addAction(m_saveAction);
 
-    currentAction = new QAction(tr("Rename"), this);
+    currentAction = new QAction(tr("Rename Program File"), this);
     currentAction->setStatusTip(tr("Rename the current program"));
     connect(currentAction, SIGNAL(triggered()), this, SLOT(rename()));
-    currentMenu->addAction(currentAction);
+    m_fileMenu->addAction(currentAction);
 
     currentAction = new QAction(tr("Duplicate tab"), this);
     currentAction->setStatusTip(tr("Copies the current program into a new tab"));
     connect(currentAction, SIGNAL(triggered()), this, SLOT(duplicateTab()));
-    currentMenu->addAction(currentAction);
+    m_fileMenu->addAction(currentAction);
 
-    currentMenu->addSeparator();
+    m_fileMenu->addSeparator();
 
     currentAction = new QAction(tr("Remove tab"), this);
     currentAction->setShortcut(tr("Ctrl+W"));
     currentAction->setStatusTip(tr("Remove the current program from the sketch"));
     connect(currentAction, SIGNAL(triggered()), this, SLOT(closeCurrentTab()));
-    currentMenu->addAction(currentAction);
+    m_fileMenu->addAction(currentAction);
 
-    currentMenu->addSeparator();
+    m_fileMenu->addSeparator();
 
     m_printAction = new QAction(tr("&Print..."), this);
     m_printAction->setShortcut(tr("Ctrl+P"));
     m_printAction->setStatusTip(tr("Print the current program"));
     connect(m_printAction, SIGNAL(triggered()), this, SLOT(print()));
-    currentMenu->addAction(m_printAction);
+    m_fileMenu->addAction(m_printAction);
 
-    currentMenu->addSeparator();
+    m_fileMenu->addSeparator();
 
     currentAction = new QAction(tr("&Quit"), this);
     currentAction->setShortcut(tr("Ctrl+Q"));
     currentAction->setStatusTip(tr("Quit the application"));
     currentAction->setMenuRole(QAction::QuitRole);
     connect(currentAction, SIGNAL(triggered()), qApp, SLOT(closeAllWindows2()));
-    currentMenu->addAction(currentAction);
+    m_fileMenu->addAction(currentAction);
 
-    currentMenu = menubar->addMenu(tr("&Edit"));
+    m_editMenu = menubar->addMenu(tr("&Edit"));
 
     m_undoAction = new QAction(tr("Undo"), this);
     m_undoAction->setShortcuts(QKeySequence::Undo);
     m_undoAction->setEnabled(false);
     connect(m_undoAction, SIGNAL(triggered()), this, SLOT(undo()));
-    currentMenu->addAction(m_undoAction);
+    m_editMenu->addAction(m_undoAction);
 
     m_redoAction = new QAction(tr("Redo"), this);
     m_redoAction->setShortcuts(QKeySequence::Redo);
     m_redoAction->setEnabled(false);
     connect(m_redoAction, SIGNAL(triggered()), this, SLOT(redo()));
-    currentMenu->addAction(m_redoAction);
+    m_editMenu->addAction(m_redoAction);
 
-    currentMenu->addSeparator();
+    m_editMenu->addSeparator();
 
     m_cutAction = new QAction(tr("&Cut"), this);
     m_cutAction->setShortcut(tr("Ctrl+X"));
     m_cutAction->setStatusTip(tr("Cut selection"));
     m_cutAction->setEnabled(false);
     connect(m_cutAction, SIGNAL(triggered()), this, SLOT(cut()));
-    currentMenu->addAction(m_cutAction);
+    m_editMenu->addAction(m_cutAction);
 
     m_copyAction = new QAction(tr("&Copy"), this);
     m_copyAction->setShortcut(tr("Ctrl+C"));
     m_copyAction->setStatusTip(tr("Copy selection"));
     m_copyAction->setEnabled(false);
     connect(m_copyAction, SIGNAL(triggered()), this, SLOT(copy()));
-    currentMenu->addAction(m_copyAction);
+    m_editMenu->addAction(m_copyAction);
 
     currentAction = new QAction(tr("&Paste"), this);
     currentAction->setShortcut(tr("Ctrl+V"));
     currentAction->setStatusTip(tr("Paste clipboard contents"));
     // TODO: Check clipboard status and disable appropriately here
     connect(currentAction, SIGNAL(triggered()), this, SLOT(paste()));
-    currentMenu->addAction(currentAction);
+    m_editMenu->addAction(currentAction);
 
-    currentMenu->addSeparator();
+    m_editMenu->addSeparator();
 
     currentAction = new QAction(tr("&Select All"), this);
     currentAction->setShortcut(tr("Ctrl+A"));
     currentAction->setStatusTip(tr("Select all text"));
     connect(currentAction, SIGNAL(triggered()), this, SLOT(selectAll()));
-    currentMenu->addAction(currentAction);
+    m_editMenu->addAction(currentAction);
 
-    currentMenu = menuBar()->addMenu(tr("&Program"));
+    m_programMenu = menubar->addMenu(tr("&Program"));
 
     QMenu *languageMenu = new QMenu(tr("Select language"), this);
-    currentMenu->addMenu(languageMenu);
+    m_programMenu->addMenu(languageMenu);
 
 	QString currentLanguage = settings.value("programwindow/language", "").toString();
 	QStringList languages = getAvailableLanguages();
@@ -331,7 +336,7 @@ void ProgramWindow::setup(const QList<LinkedFile *> & linkedFiles, const QString
     connect(languageMenu, SIGNAL(triggered(QAction*)), this, SLOT(setLanguage(QAction*)));
 
     m_serialPortMenu = new QMenu(tr("Select port"), this);
-    currentMenu->addMenu(m_serialPortMenu);
+    m_programMenu->addMenu(m_serialPortMenu);
 
     m_serialPortActionGroup = new QActionGroup(this);
 	updateSerialPorts();
@@ -340,7 +345,7 @@ void ProgramWindow::setup(const QList<LinkedFile *> & linkedFiles, const QString
 	connect(m_serialPortMenu, SIGNAL(aboutToShow()), this, SLOT(updateSerialPorts()), Qt::DirectConnection);
 
 	m_programmerMenu = new QMenu(tr("Select programmer"), this);
-    currentMenu->addMenu(m_programmerMenu);
+    m_programMenu->addMenu(m_programmerMenu);
 
 	m_programmerActionGroup = new QActionGroup(this);
 	QHash<QString, QString> programmerNames = getProgrammerNames();
@@ -350,13 +355,13 @@ void ProgramWindow::setup(const QList<LinkedFile *> & linkedFiles, const QString
 	
     connect(m_programmerMenu, SIGNAL(triggered(QAction*)), this, SLOT(setProgrammer(QAction*)));
 
-    currentMenu->addSeparator();
+    m_programMenu->addSeparator();
 
     m_programAction = new QAction(tr("Program"), this);
     m_programAction->setStatusTip(tr("Load the current program onto a microcontroller"));
     m_programAction->setEnabled(false);
     connect(m_programAction, SIGNAL(triggered()), this, SLOT(sendProgram()));
-    currentMenu->addAction(m_programAction);
+    m_programMenu->addAction(m_programAction);
 
     if (!linkedFiles.isEmpty()) {
         bool firstTime = true;
@@ -1117,3 +1122,8 @@ void ProgramWindow::portProcessReadyRead() {
     }
 }
 
+void ProgramWindow::showMenus(bool show) {
+    if (m_fileMenu) m_fileMenu->menuAction()->setVisible(show);
+    if (m_editMenu) m_editMenu->menuAction()->setVisible(show);
+    if (m_programMenu) m_programMenu->menuAction()->setVisible(show);
+}

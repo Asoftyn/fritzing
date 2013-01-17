@@ -160,8 +160,8 @@ MainWindow::MainWindow(ReferenceModel *referenceModel, QWidget * parent) :
 	m_dontKeepMargins = true;
 
     m_settingsPrefix = "main/";
-    m_raiseWindowAct = m_showPartsBinIconViewAct = m_showAllLayersAct = m_hideAllLayersAct = m_showInViewHelpAct = m_rotate90cwAct = m_showBreadboardAct = m_showSchematicAct = m_showPCBAct = NULL;
-    m_partMenu = m_windowMenu = m_pcbTraceMenu = m_schematicTraceMenu = m_breadboardTraceMenu = m_viewMenu = NULL;
+    m_showProgramAct = m_raiseWindowAct = m_showPartsBinIconViewAct = m_showAllLayersAct = m_hideAllLayersAct = m_showInViewHelpAct = m_rotate90cwAct = m_showBreadboardAct = m_showSchematicAct = m_showPCBAct = NULL;
+    m_fileMenu = m_editMenu = m_partMenu = m_windowMenu = m_pcbTraceMenu = m_schematicTraceMenu = m_breadboardTraceMenu = m_viewMenu = NULL;
     m_miniViewContainerBreadboard = NULL;
     m_infoView = NULL;
     m_addedToTemp = false;
@@ -176,7 +176,7 @@ MainWindow::MainWindow(ReferenceModel *referenceModel, QWidget * parent) :
 	m_closeSilently = false;
 	m_orderFabAct = NULL;
 	m_activeLayerButtonWidget = NULL;
-	m_programWindow = NULL;
+	m_programView = m_programWindow = NULL;
 	m_windowMenuSeparator = NULL;
 	m_wireColorMenu = NULL;
 	m_viewSwitcherDock = NULL;
@@ -298,6 +298,7 @@ void MainWindow::init(ReferenceModel *referenceModel, bool lockFiles) {
     initLockedFiles(lockFiles);
 
     initSketchWidgets();
+    initProgrammingWidget();
 
     m_undoView = new QUndoView();
     m_undoGroup = new QUndoGroup(this);
@@ -913,6 +914,13 @@ void MainWindow::tabWidget_currentChanged(int index) {
 		);
 	}
 	m_currentGraphicsView = widget;
+
+    if (m_programView) {
+        hideShowProgramMenu();
+    }
+
+	hideShowTraceMenu();
+
 	if (widget == NULL) return;
 
 	m_zoomSlider->setValue(m_currentGraphicsView->retrieveZoom());
@@ -940,10 +948,10 @@ void MainWindow::tabWidget_currentChanged(int index) {
     if (m_showBreadboardAct) {
 	    QList<QAction *> actions;
 	    actions << m_showBreadboardAct << m_showSchematicAct << m_showPCBAct;
+        if (m_programView) actions << m_showProgramAct;
 	    setActionsIcons(index, actions);
     }
 
-	hideShowTraceMenu();
 	updateTraceMenu();
 	updateTransformationActions();
 
@@ -2567,4 +2575,13 @@ void MainWindow::selectPartsWithModuleID(ModelPart * modelPart) {
     if (m_currentGraphicsView == NULL) return;
 
     m_currentGraphicsView->selectItemsWithModuleID(modelPart);
+}
+
+void MainWindow::initProgrammingWidget() {
+    m_programView = new ProgramWindow(this);
+    QFileInfo fileInfo(m_fwFilename);
+	m_programView->setup(m_linkedProgramFiles, fileInfo.absoluteDir().absolutePath());
+
+	SketchAreaWidget * sketchAreaWidget = new SketchAreaWidget(m_programView, this);
+	addTab(sketchAreaWidget, tr("Programming"));
 }

@@ -115,8 +115,10 @@ void MainWindow::createDockWindows()
 	m_layerPalette->setShowAllLayersAction(m_showAllLayersAct);
 	m_layerPalette->setHideAllLayersAction(m_hideAllLayersAct);
 
-    m_windowMenu->addSeparator();
-    m_windowMenu->addAction(m_openProgramWindowAct);
+    if (m_programView == NULL) {
+        m_windowMenu->addSeparator();
+        m_windowMenu->addAction(m_openProgramWindowAct);
+    }
 
 #ifndef QT_NO_DEBUG
     m_windowMenu->addSeparator();

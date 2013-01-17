@@ -116,6 +116,7 @@ protected:
 	bool event(QEvent *);
     void initLockedFiles(bool lockFiles);
     void initSketchWidgets();
+    void initProgrammingWidget();
     void initDock();
     void initHelper();
     void moreInitDock();

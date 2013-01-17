@@ -236,6 +236,7 @@ protected slots:
     void setBackgroundColor();
     void showBreadboardView();
     void showSchematicView();
+    void showProgramView();
 	void showPartsBinIconView();
 	void showPartsBinListView();
     void updateEditMenu();
@@ -389,6 +390,7 @@ protected slots:
 
 protected:
 	void initSketchWidget(SketchWidget *);
+    virtual void initProgrammingWidget();
 
     virtual void createActions();
     virtual void createFileMenuActions();
@@ -437,6 +439,7 @@ protected:
 
 	void createTraceMenuActions();
 	void hideShowTraceMenu();
+    void hideShowProgramMenu();
 
 	QList<ModelPart*> moveToPartsFolder(QDir &unzipDir, MainWindow* mw, bool addToBin, bool addToAlien, const QString & prefixFolder, const QString &destFolder);
 	QString copyToSvgFolder(const QFileInfo& file, bool addToAlien, const QString & prefixFolder, const QString &destFolder);
@@ -705,6 +708,7 @@ protected:
     QAction *m_setBackgroundColorAct;
     QAction *m_showBreadboardAct;
     QAction *m_showSchematicAct;
+    QAction *m_showProgramAct;
     QAction *m_showPCBAct;
 	QAction *m_showPartsBinIconViewAct;
 	QAction *m_showPartsBinListViewAct;
@@ -811,6 +815,7 @@ protected:
 
 	QPointer<class LayerPalette> m_layerPalette;
 	QPointer<class ProgramWindow> m_programWindow;
+	QPointer<class ProgramWindow> m_programView;
 	QList<LinkedFile *>  m_linkedProgramFiles;
 	QString m_backupFileNameAndPath;
 	QTimer m_autosaveTimer;
