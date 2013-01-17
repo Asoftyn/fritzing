@@ -121,6 +121,7 @@ public:
 	static const QRegExp FindWhitespace;
 	static const QString SMDFlipSuffix;
 	static const QString MicroSymbol;
+    static const ushort MicroSymbolCode;
 	static const QString PowerPrefixesString;
 	static const QString CreatedWithFritzingString;
 	static const QString CreatedWithFritzingXmlComment;
