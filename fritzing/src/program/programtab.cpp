@@ -143,7 +143,10 @@ ProgramTab::ProgramTab(QString & filename, QWidget *parent) : QFrame(parent)
 	editLayout->setMargin(0);
 	editLayout->setSpacing(0);
 
-    m_programWindow = qobject_cast<ProgramWindow *>(window());
+    while (m_programWindow == NULL) {
+        m_programWindow = qobject_cast<ProgramWindow *>(parent);
+        parent = parent->parentWidget();
+    }
 
     // m_textEdit needs to be initialized before createFooter so
     // some signals get connected properly.
@@ -339,9 +342,12 @@ bool ProgramTab::loadProgramFile() {
 }
 
 bool ProgramTab::loadProgramFile(const QString & fileName, const QString & altFileName, bool updateLink) {
+    DebugDialog::debug("program tab load program file");
 	if (m_programWindow->alreadyHasProgram(fileName)) {
 		return false;
 	}
+
+    DebugDialog::debug("checking file");
 
 	QFile file(fileName);
 	if (!file.open(QFile::ReadOnly)) {
@@ -366,6 +372,8 @@ bool ProgramTab::loadProgramFile(const QString & fileName, const QString & altFi
 		}
 	}
 
+    DebugDialog::debug("about to read");
+
 	m_filename = file.fileName();
 	QString text = file.readAll();
 	// clean out 0x91, mostly due to picaxe files
@@ -374,11 +382,17 @@ bool ProgramTab::loadProgramFile(const QString & fileName, const QString & altFi
 			text[i] = '\'';
 		}
 	}
+
+    DebugDialog::debug("about to set text");
+
 	m_textEdit->setText(text);
 	setClean();
 	QFileInfo fileInfo(m_filename);
 	m_tabWidget->setTabText(m_tabWidget->currentIndex(), fileInfo.fileName());
 	m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), m_filename);
+
+    DebugDialog::debug("about to update link");
+
 	if (updateLink) {
 		m_programWindow->updateLink(m_filename, m_language, m_programmerPath, true, true);
 	}

@@ -971,6 +971,7 @@ QAction * ProgramWindow::addProgrammer(const QString & name, const QString & pat
 }
 
 void ProgramWindow::loadProgramFile() {
+    DebugDialog::debug("loading program file");
 	currentWidget()->loadProgramFile();
 	
 }
@@ -1025,6 +1026,7 @@ ProgramTab * ProgramWindow::indexWidget(int index) {
 }
 
 bool ProgramWindow::alreadyHasProgram(const QString & filename) {
+    DebugDialog::debug("already has program");
 	for (int i = 0; i < m_tabWidget->count(); i++) {
 		ProgramTab * tab = indexWidget(i);
 		if (tab->filename() == filename) {
@@ -1089,6 +1091,7 @@ void ProgramWindow::updateSerialPorts() {
 
 void ProgramWindow::updateLink(const QString & filename, const QString & language, const QString & programmer, bool addlink, bool strong)
 {
+    DebugDialog::debug("updating link");
 	emit linkToProgramFile(filename, language, programmer, addlink, strong);
 }
 
