@@ -204,7 +204,12 @@ BestPlace::BestPlace() {
     bestArea = Worst;
 }
 
+PanelItem::PanelItem() {
+    produced = 0;
+}
+
 PanelItem::PanelItem(PanelItem * from) {
+	this->produced = from->produced;
 	this->boardName = from->boardName;
 	this->path = from->path;
 	this->required = from->required;
@@ -218,7 +223,7 @@ PanelItem::PanelItem(PanelItem * from) {
 
 void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool customPartsOnly) 
 {
-	QFile file(panelFilename);
+	QFile panelizerFile(panelFilename);
 
     QFileInfo info(panelFilename);
     QDir copyDir = info.absoluteDir();
@@ -235,20 +240,20 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 
 	DebugDialog::setEnabled(true);
 
-	QDomDocument domDocument;
-	if (!domDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
+	QDomDocument panelizerDocument;
+	if (!panelizerDocument.setContent(&panelizerFile, true, &errorStr, &errorLine, &errorColumn)) {
 		DebugDialog::debug(QString("Unable to parse '%1': '%2' line:%3 column:%4").arg(panelFilename).arg(errorStr).arg(errorLine).arg(errorColumn));
 		return;
 	}
 
-	QDomElement root = domDocument.documentElement();
-	if (root.isNull() || root.tagName() != "panelizer") {
+	QDomElement panelizerRoot = panelizerDocument.documentElement();
+	if (panelizerRoot.isNull() || panelizerRoot.tagName() != "panelizer") {
 		DebugDialog::debug(QString("root element is not 'panelizer'"));
 		return;
 	}
 
 	PanelParams panelParams;
-	if (!initPanelParams(root, panelParams)) return;
+	if (!initPanelParams(panelizerRoot, panelParams)) return;
 
     QFileInfo pinfo(panelFilename);
 	QDir outputDir = pinfo.absoluteDir();
@@ -290,7 +295,7 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 	DebugDialog::debug(QString("fz folder '%1'\n").arg(fzDir.absolutePath()));
 
 
-	QDomElement boards = root.firstChildElement("boards");
+	QDomElement boards = panelizerRoot.firstChildElement("boards");
 	QDomElement board = boards.firstChildElement("board");
 	if (board.isNull()) {
 		DebugDialog::debug(QString("no <board> elements found"));
@@ -298,7 +303,7 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 	}
 
 	QHash<QString, QString> fzzFilePaths;
-	QDomElement paths = root.firstChildElement("paths");
+	QDomElement paths = panelizerRoot.firstChildElement("paths");
 	QDomElement path = paths.firstChildElement("path");
 	if (path.isNull()) {
 		DebugDialog::debug(QString("no <path> elements found"));
@@ -354,7 +359,7 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 	planePairs << makePlanePair(panelParams, true);  
 
 	qSort(insertPanelItems.begin(), insertPanelItems.end(), areaGreaterThan);
-	bestFit(insertPanelItems, panelParams, planePairs, customPartsOnly);
+	bestFit(refPanelItems, insertPanelItems, panelParams, planePairs, customPartsOnly);
 
     shrinkLastPanel(planePairs, insertPanelItems, panelParams, customPartsOnly);
 
@@ -444,13 +449,29 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 
 		painter.end();
 	}
+
+    boards = panelizerRoot.firstChildElement("boards");
+    board = boards.firstChildElement("board");
+    while (!board.isNull()) {
+        foreach (PanelItem * panelItem, refPanelItems) {
+            if (panelItem->path.endsWith("/" + board.attribute("name"))) {
+                board.setAttribute("produced", panelItem->produced);
+                break;
+            }
+        }
+        board = board.nextSiblingElement("board");
+    }
+
+    TextUtils::writeUtf8(panelFilename, panelizerDocument.toString(4));
+
 }
 
 
-void Panelizer::bestFit(QList<PanelItem *> & insertPanelItems, PanelParams & panelParams, QList<PlanePair *> & planePairs, bool customPartsOnly)
+void Panelizer::bestFit(QList<PanelItem *> & refPanelItems, QList<PanelItem *> & insertPanelItems, PanelParams & panelParams, QList<PlanePair *> & planePairs, bool customPartsOnly)
 {
 	foreach (PanelItem * panelItem, insertPanelItems) {
 		bestFitOne(panelItem, panelParams, planePairs, true, customPartsOnly);
+        incProduced(panelItem->path, refPanelItems);
 	}
 }
 
@@ -1130,6 +1151,7 @@ void Panelizer::addOptional(int optionalCount, QList<PanelItem *> & refPanelItem
 					panelItem->maxOptional--;
 					optionalCount--;
 					insertPanelItems.append(copy);
+                    incProduced(copy->path, refPanelItems);
 				}
 				else {
 					// don't bother trying this one again
@@ -1604,4 +1626,13 @@ int Panelizer::checkDonuts(MainWindow * mainWindow, bool displayMessage) {
     }
 
     return donuts.count() / 2;
+}
+
+void Panelizer::incProduced(const QString & path, QList<PanelItem *> & refPanelItems) {
+    foreach (PanelItem * panelItem, refPanelItems) {
+        if (path == panelItem->path) {
+            panelItem->produced++;
+            break;
+        }
+    }
 }

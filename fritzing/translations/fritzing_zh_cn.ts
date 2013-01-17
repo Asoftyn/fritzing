@@ -2974,6 +2974,22 @@ Go ahead and revert?</source>
         <source>Set autorouting parameters including keepout...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Programming</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Programming Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+4</source>
+        <translation type="unfinished">Ctrl+4</translation>
+    </message>
+    <message>
+        <source>Show the programming view</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MazeRouter</name>
@@ -3008,10 +3024,6 @@ Go ahead and revert?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Now doing final routing...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Routing complete!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3020,7 +3032,15 @@ Go ahead and revert?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Now creating traces and setting up undo...</source>
+        <source>Use best so far...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preparing undo...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Optimizing traces...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4470,20 +4490,12 @@ shift键转换滚动轴
         <translation>文件(&amp;F)</translation>
     </message>
     <message>
-        <source>New</source>
-        <translation>新建</translation>
-    </message>
-    <message>
         <source>Ctrl+N</source>
         <translation>Ctrl+N</translation>
     </message>
     <message>
         <source>Create a new program</source>
         <translation>创建一个新程序</translation>
-    </message>
-    <message>
-        <source>&amp;Open...</source>
-        <translation>打开(&amp;O)...</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
@@ -4494,20 +4506,12 @@ shift键转换滚动轴
         <translation>打开一个程序</translation>
     </message>
     <message>
-        <source>&amp;Save</source>
-        <translation>保存(&amp;S)</translation>
-    </message>
-    <message>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
         <source>Save the current program</source>
         <translation>保存当前程序</translation>
-    </message>
-    <message>
-        <source>Rename</source>
-        <translation>重命名</translation>
     </message>
     <message>
         <source>Rename the current program</source>
@@ -4656,6 +4660,22 @@ shift键转换滚动轴
     <message>
         <source>File &apos;%1&apos; was restored from the .fzz file; save a local copy to work with an external editor.</source>
         <translation>文件&apos;%1&apos;从.fzz文件中恢复了；保存了一个本地副本使用外部编辑器编辑。</translation>
+    </message>
+    <message>
+        <source>New Program File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Open Program File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Save Program File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename Program File</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6239,6 +6259,10 @@ Note: you can also trigger this display by mousing down on the routing status te
     </message>
     <message>
         <source>Slovenian - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Marathi - %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

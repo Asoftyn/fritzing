@@ -2977,6 +2977,22 @@ Doorgaan en terug naar vorige versie?</translation>
         <source>Set autorouting parameters including keepout...</source>
         <translation>Stel autorouting parameter in, inclusief veiligheidsafstand...</translation>
     </message>
+    <message>
+        <source>Programming</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Programming Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+4</source>
+        <translation type="unfinished">Ctrl+4</translation>
+    </message>
+    <message>
+        <source>Show the programming view</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MazeRouter</name>
@@ -3012,10 +3028,6 @@ Doorgaan en terug naar vorige versie?</translation>
         <translation>Routing gestopt!</translation>
     </message>
     <message>
-        <source>Now doing final routing...</source>
-        <translation>Doet nu uiteindelijke routing...</translation>
-    </message>
-    <message>
         <source>Routing complete!</source>
         <translation>Routing compleet!</translation>
     </message>
@@ -3024,8 +3036,16 @@ Doorgaan en terug naar vorige versie?</translation>
         <translation>Routing niet gelukt; stopt bij ronde %1.</translation>
     </message>
     <message>
-        <source>Now creating traces and setting up undo...</source>
-        <translation>Creëert nu banen en maakt herstelpunt aan...</translation>
+        <source>Use best so far...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preparing undo...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Optimizing traces...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4474,20 +4494,12 @@ De shift toets wisselt de as</translation>
         <translation>&amp;Bestand</translation>
     </message>
     <message>
-        <source>New</source>
-        <translation>Nieuw</translation>
-    </message>
-    <message>
         <source>Ctrl+N</source>
         <translation>Ctrl+N</translation>
     </message>
     <message>
         <source>Create a new program</source>
         <translation>Maak een nieuw programma</translation>
-    </message>
-    <message>
-        <source>&amp;Open...</source>
-        <translation>&amp;Openen...</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
@@ -4498,20 +4510,12 @@ De shift toets wisselt de as</translation>
         <translation>Open een programma</translation>
     </message>
     <message>
-        <source>&amp;Save</source>
-        <translation>&amp;Opslaan</translation>
-    </message>
-    <message>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
         <source>Save the current program</source>
         <translation>Sla het huidige programma op</translation>
-    </message>
-    <message>
-        <source>Rename</source>
-        <translation>Hernoem</translation>
     </message>
     <message>
         <source>Rename the current program</source>
@@ -4660,6 +4664,22 @@ De shift toets wisselt de as</translation>
     <message>
         <source>File &apos;%1&apos; was restored from the .fzz file; save a local copy to work with an external editor.</source>
         <translation>Bestand &apos;%1&apos; is hersteld vanuit het .fzz bestand; sla een lokale kopie op om met een externe bewerker te werken.</translation>
+    </message>
+    <message>
+        <source>New Program File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Open Program File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Save Program File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename Program File</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6245,6 +6265,10 @@ Noot:Je kunt dit venster ook oproepen door op de tekst van de routing status te 
     </message>
     <message>
         <source>Slovenian - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Marathi - %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

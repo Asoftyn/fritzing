@@ -55,6 +55,7 @@ struct PanelItem {
 	int required;
 	int maxOptional;
     int optionalPriority;
+    int produced;
 	QSizeF boardSizeInches;
     long boardID;
 
@@ -63,7 +64,7 @@ struct PanelItem {
 	bool rotate90;
 	PlanePair * planePair;
 
-	PanelItem() {}
+	PanelItem();
 
 	PanelItem(PanelItem * from); 
 };
@@ -120,7 +121,7 @@ protected:
 	static void collectFiles(const QDir & outputDir, QDomElement & path, QHash<QString, QString> & fzzFilePaths);
 	static bool checkBoards(QDomElement & board, QHash<QString, QString> & fzzFilePaths);
 	static bool openWindows(QDomElement & board, QHash<QString, QString> & fzzFilePaths, class FApplication *, PanelParams &, QDir & fzDir, QDir & svgDir, QList<PanelItem *> & refPanelItems, QList<LayerThing> & layerThingList, bool customPartsOnly, QDir & copyDir);
-	static void bestFit(QList<PanelItem *> & insertPanelItems, PanelParams &, QList<PlanePair *> &, bool customPartsOnly);
+	static void bestFit(QList<PanelItem *> & refPanelItems, QList<PanelItem *> & insertPanelItems, PanelParams &, QList<PlanePair *> &, bool customPartsOnly);
 	static bool bestFitOne(PanelItem * panelItem, PanelParams & panelParams, QList<PlanePair *> & planePairs, bool createNew, bool customPartsOnly);
 	static void addOptional(int optionalCount, QList<PanelItem *> & refPanelItems, QList<PanelItem *> & insertPanelItems, PanelParams &, QList<PlanePair *> &);
 	static class MainWindow * inscribeBoard(QDomElement & board, QHash<QString, QString> & fzzFilePaths, FApplication * app, QDir & fzDir, bool drc, QDir & copyDir);
@@ -129,6 +130,7 @@ protected:
     static void shrinkLastPanel( QList<PlanePair *> & planePairs, QList<PanelItem *> & insertPanelItems, PanelParams &, bool customPartsOnly);
     static int checkDonuts(MainWindow *, bool displayMessage);
     static int checkText(MainWindow *, bool displayMessage);
+    static void incProduced(const QString & path, QList<PanelItem *> & refPanelItems);
 };
 
 #endif
