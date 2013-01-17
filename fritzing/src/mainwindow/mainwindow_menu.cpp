@@ -1015,9 +1015,9 @@ void MainWindow::createViewMenuActions() {
 	connect(m_showPCBAct, SIGNAL(triggered()), this, SLOT(showPCBView()));
 
     if (m_programView) {
-	    m_showProgramAct = new QAction(tr("Show Programming Window"), this);
+	    m_showProgramAct = new QAction(tr("Show Code"), this);
 	    m_showProgramAct->setShortcut(tr("Ctrl+4"));
-	    m_showProgramAct->setStatusTip(tr("Show the programming view"));
+	    m_showProgramAct->setStatusTip(tr("Show the code (programming) view"));
 	    connect(m_showProgramAct, SIGNAL(triggered()), this, SLOT(showProgramView()));
     }
 

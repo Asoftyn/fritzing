@@ -2583,5 +2583,5 @@ void MainWindow::initProgrammingWidget() {
 	m_programView->setup(m_linkedProgramFiles, fileInfo.absoluteDir().absolutePath());
 
 	SketchAreaWidget * sketchAreaWidget = new SketchAreaWidget(m_programView, this);
-	addTab(sketchAreaWidget, tr("Programming"));
+	addTab(sketchAreaWidget, tr("Code"));
 }

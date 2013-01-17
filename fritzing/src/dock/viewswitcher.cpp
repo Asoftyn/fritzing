@@ -264,17 +264,21 @@ ViewSwitcher::ViewSwitcher() : QFrame()
 	QString bv = tr("Breadboard");
 	QString sv = tr("Schematic");
 	QString pv = tr("PCB");
+	QString cv = tr("Code");
 	int w = fm.width(bv);
 	if (w > maxWidth) maxWidth = w;
 	w = fm.width(sv);
 	if (w > maxWidth) maxWidth = w;
 	w = fm.width(pv);
 	if (w > maxWidth) maxWidth = w;
+	w = fm.width(cv);
+	if (w > maxWidth) maxWidth = w;
 	maxWidth += extraWidth;
 
 	m_buttons << createButton("Breadboard", tr("Breadboard"), maxWidth, Qt::AlignLeft);
 	m_buttons << createButton("Schematic", tr("Schematic"), maxWidth, Qt::AlignCenter);
-	m_buttons << createButton("PCB", tr("PCB"), maxWidth, Qt::AlignRight);
+	m_buttons << createButton("PCB", tr("PCB"), maxWidth, Qt::AlignCenter);
+	m_buttons << createButton("Code", tr("Code"), maxWidth, Qt::AlignRight);
 
 	m_buttonHolder = new QWidget();
 	int bw = 0;
