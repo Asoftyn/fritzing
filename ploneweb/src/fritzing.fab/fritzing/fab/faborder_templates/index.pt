@@ -34,10 +34,10 @@
               You can update your sketch files any time until <span tal:replace="python:context.nextProductionClosingDate.strftime('%B %d at %H:%M')"/> (CET), as long as the board sizes have not been changed.
             </p>
             <p tal:condition="python: view.isStateId(context, 'in_production')">
-              Your boards are currently in production and will be shipped to you on <strong class="important" tal:content="python:context.shippingDate.strftime('%B %d')"/>.
+              Your boards are currently in production<span tal:on-error="string:"> and will be shipped to you on <strong class="important" tal:content="python:context.shippingDate.strftime('%B %d')"/></span>.
             </p>
             <p tal:condition="python: view.isStateId(context, 'completed')">
-              Your order has been shipped on <span tal:content="python:context.shippingDate.strftime('%B %d')"/>!
+              Your order has been shipped <strong tal:content="python:context.shippingDate.strftime('on %B %d')" tal:on-error="string:"/>!
             </p>
           </div>
         </div>

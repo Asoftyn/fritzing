@@ -427,11 +427,7 @@ class QuoteCalculator(grok.View):
         context = aq_inner(self.context)
 
         area = float(self.request.get('area', None))
-        count = self.request.get('count', None)
-        if not count:
-            count = 1
-        else:
-            count = int(count)
+        count = int(self.request.get('count', '1'))
 
         self.price = calculateSinglePrice(area, count)
 
