@@ -2956,19 +2956,19 @@ Go ahead and revert?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Programming</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Programming Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ctrl+4</source>
         <translation type="unfinished">Ctrl+4</translation>
     </message>
     <message>
-        <source>Show the programming view</source>
+        <source>Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show the code (programming) view</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4402,10 +4402,6 @@ shift key swaps scroll axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Program (*.%1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Language:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4441,13 +4437,13 @@ shift key swaps scroll axis</source>
         <source>Select a programmer (executable) for %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Code (*.%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProgramWindow</name>
-    <message>
-        <source>Programming Window</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>%1 %2</source>
         <translation type="unfinished">%1 %2</translation>
@@ -4593,10 +4589,6 @@ shift key swaps scroll axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Program</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select language</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4617,14 +4609,6 @@ shift key swaps scroll axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Programming Window - %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Locate...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File &apos;%1&apos; was restored from the .fzz file; the local copy was not found.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4633,19 +4617,39 @@ shift key swaps scroll axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New Program File</source>
+        <source>New Code File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Open Program File...</source>
+        <source>&amp;Open Code File...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Save Program File</source>
+        <source>&amp;Save Code File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rename Program File</source>
+        <source>Rename Code File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;View</source>
+        <translation type="unfinished">Вид (&amp;V)</translation>
+    </message>
+    <message>
+        <source>Code Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code Window - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find file...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6275,6 +6279,10 @@ Note: you can also trigger this display by mousing down on the routing status te
     <message>
         <source>PCB</source>
         <translation>Печатная плата</translation>
+    </message>
+    <message>
+        <source>Code</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

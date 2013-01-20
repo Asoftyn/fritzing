@@ -2975,19 +2975,19 @@ Go ahead and revert?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Programming</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Programming Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ctrl+4</source>
         <translation type="unfinished">Ctrl+4</translation>
     </message>
     <message>
-        <source>Show the programming view</source>
+        <source>Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show the code (programming) view</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4431,10 +4431,6 @@ shift键转换滚动轴
         <translation>Fritzing找不到&apos;%1&apos;,请定位它</translation>
     </message>
     <message>
-        <source>Program (*.%1)</source>
-        <translation>程序(*.%1)</translation>
-    </message>
-    <message>
         <source>Language:</source>
         <translation>语言:</translation>
     </message>
@@ -4470,13 +4466,13 @@ shift键转换滚动轴
         <source>Select a programmer (executable) for %1</source>
         <translation>为%1选择一个程序(可执行)</translation>
     </message>
+    <message>
+        <source>Code (*.%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProgramWindow</name>
-    <message>
-        <source>Programming Window</source>
-        <translation>编程窗口</translation>
-    </message>
     <message>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
@@ -4622,10 +4618,6 @@ shift键转换滚动轴
         <translation>选择所有文本</translation>
     </message>
     <message>
-        <source>&amp;Program</source>
-        <translation>程序(&amp;P)</translation>
-    </message>
-    <message>
         <source>Select language</source>
         <translation>选择语言</translation>
     </message>
@@ -4646,14 +4638,6 @@ shift键转换滚动轴
         <translation>载入当前程序到微控制器</translation>
     </message>
     <message>
-        <source>Programming Window - %1</source>
-        <translation>编程窗口-%1</translation>
-    </message>
-    <message>
-        <source>Locate...</source>
-        <translation>定位...</translation>
-    </message>
-    <message>
         <source>File &apos;%1&apos; was restored from the .fzz file; the local copy was not found.</source>
         <translation>文件&apos;%1&apos;从.fzz文件中恢复了；本地副本没有找到。</translation>
     </message>
@@ -4662,19 +4646,39 @@ shift键转换滚动轴
         <translation>文件&apos;%1&apos;从.fzz文件中恢复了；保存了一个本地副本使用外部编辑器编辑。</translation>
     </message>
     <message>
-        <source>New Program File</source>
+        <source>New Code File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Open Program File...</source>
+        <source>&amp;Open Code File...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Save Program File</source>
+        <source>&amp;Save Code File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rename Program File</source>
+        <source>Rename Code File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;View</source>
+        <translation type="unfinished">视图(&amp;V)</translation>
+    </message>
+    <message>
+        <source>Code Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code Window - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find file...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6306,6 +6310,10 @@ Note: you can also trigger this display by mousing down on the routing status te
     <message>
         <source>PCB</source>
         <translation>PCB</translation>
+    </message>
+    <message>
+        <source>Code</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
