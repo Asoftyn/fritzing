@@ -24,6 +24,19 @@ $Date$
 
 ********************************************************************/
 
+/////////////////////////////////////////////
+//
+// TODO
+//
+//  integrate menus
+//  integrate dirty
+//  remove old program window
+//  enable all buttons, and give error messages (i.e. where is IDE)
+//  why is locate a menu button (puts programmers on a list)
+//  locate needs to say what it is locating
+//  move all tabs up?
+
+
 #include "programwindow.h"
 #include "highlighter.h"
 #include "syntaxer.h"
@@ -168,13 +181,14 @@ void ProgramWindow::initLanguages() {
 	}
 }
 
-void ProgramWindow::setup(const QList<LinkedFile *> & linkedFiles, const QString & alternativePath)
+void ProgramWindow::setup()
 {
+    if (parentWidget() == NULL) {
+        resize(500,700);
+        setAttribute(Qt::WA_DeleteOnClose, true);
+    }
 
-    resize(500,700);
-
-    setAttribute(Qt::WA_DeleteOnClose, true);
-    QFrame * mainFrame = new QFrame(this);
+    QFrame * mainFrame =  new QFrame(this);
 
 	QFrame * headerFrame = createHeader();
 	QFrame * centerFrame = createCenter();
@@ -212,13 +226,13 @@ void ProgramWindow::setup(const QList<LinkedFile *> & linkedFiles, const QString
 
     m_fileMenu = menubar->addMenu(tr("&File"));
 
-    QAction *currentAction = new QAction(tr("New Program File"), this);
+    QAction *currentAction = new QAction(tr("New Code File"), this);
     currentAction->setShortcut(tr("Ctrl+N"));
     currentAction->setStatusTip(tr("Create a new program"));
     connect(currentAction, SIGNAL(triggered()), this, SLOT(addTab()));
     m_fileMenu->addAction(currentAction);
 
-    currentAction = new QAction(tr("&Open Program File..."), this);
+    currentAction = new QAction(tr("&Open Code File..."), this);
     currentAction->setShortcut(tr("Ctrl+O"));
     currentAction->setStatusTip(tr("Open a program"));
     connect(currentAction, SIGNAL(triggered()), this, SLOT(loadProgramFile()));
@@ -226,13 +240,13 @@ void ProgramWindow::setup(const QList<LinkedFile *> & linkedFiles, const QString
 
     m_fileMenu->addSeparator();
 
-    m_saveAction = new QAction(tr("&Save Program File"), this);
+    m_saveAction = new QAction(tr("&Save Code File"), this);
     m_saveAction->setShortcut(tr("Ctrl+S"));
     m_saveAction->setStatusTip(tr("Save the current program"));
     connect(m_saveAction, SIGNAL(triggered()), this, SLOT(save()));
     m_fileMenu->addAction(m_saveAction);
 
-    currentAction = new QAction(tr("Rename Program File"), this);
+    currentAction = new QAction(tr("Rename Code File"), this);
     currentAction->setStatusTip(tr("Rename the current program"));
     connect(currentAction, SIGNAL(triggered()), this, SLOT(rename()));
     m_fileMenu->addAction(currentAction);
@@ -312,7 +326,7 @@ void ProgramWindow::setup(const QList<LinkedFile *> & linkedFiles, const QString
     connect(currentAction, SIGNAL(triggered()), this, SLOT(selectAll()));
     m_editMenu->addAction(currentAction);
 
-    m_programMenu = menubar->addMenu(tr("&Program"));
+    m_programMenu = menubar->addMenu(tr("&Code"));
 
     QMenu *languageMenu = new QMenu(tr("Select language"), this);
     m_programMenu->addMenu(languageMenu);
@@ -363,38 +377,42 @@ void ProgramWindow::setup(const QList<LinkedFile *> & linkedFiles, const QString
     connect(m_programAction, SIGNAL(triggered()), this, SLOT(sendProgram()));
     m_programMenu->addAction(m_programAction);
 
-    if (!linkedFiles.isEmpty()) {
-        bool firstTime = true;
-        foreach (LinkedFile * linkedFile, linkedFiles) {
-            ProgramTab * programTab = NULL;
-            if (firstTime) {
-                firstTime = false;
-                programTab = indexWidget(0);
-            }
-            else {
-                programTab = addTab();
-            }
-            QDir dir(alternativePath);
-            QFileInfo fileInfo(linkedFile->linkedFilename);
-            programTab->loadProgramFile(linkedFile->linkedFilename, dir.absoluteFilePath(fileInfo.fileName()), false);
-			if ((linkedFile->fileFlags & LinkedFile::InBundleFlag) && ((linkedFile->fileFlags & LinkedFile::ReadOnlyFlag) == 0)) { 
-				if (linkedFile->fileFlags & LinkedFile::SameMachineFlag) {
-					programTab->appendToConsole(tr("File '%1' was restored from the .fzz file; the local copy was not found.").arg(fileInfo.fileName()));
-				}
-				else {
-					programTab->appendToConsole(tr("File '%1' was restored from the .fzz file; save a local copy to work with an external editor.").arg(fileInfo.fileName()));
-				}
-			}
-			if (!m_languages.value(linkedFile->language, "").isEmpty()) {
-				programTab->setLanguage(linkedFile->language, false);
+    m_viewMenu = menubar->addMenu(tr("&View"));
+}
+
+void ProgramWindow::linkFiles(const QList<LinkedFile *> & linkedFiles, const QString & alternativePath) {
+    if (linkedFiles.isEmpty()) return;
+
+    bool firstTime = true;
+    foreach (LinkedFile * linkedFile, linkedFiles) {
+        ProgramTab * programTab = NULL;
+        if (firstTime) {
+            firstTime = false;
+            programTab = indexWidget(0);
+        }
+        else {
+            programTab = addTab();
+        }
+        QDir dir(alternativePath);
+        QFileInfo fileInfo(linkedFile->linkedFilename);
+        programTab->loadProgramFile(linkedFile->linkedFilename, dir.absoluteFilePath(fileInfo.fileName()), false);
+		if ((linkedFile->fileFlags & LinkedFile::InBundleFlag) && ((linkedFile->fileFlags & LinkedFile::ReadOnlyFlag) == 0)) { 
+			if (linkedFile->fileFlags & LinkedFile::SameMachineFlag) {
+				programTab->appendToConsole(tr("File '%1' was restored from the .fzz file; the local copy was not found.").arg(fileInfo.fileName()));
 			}
 			else {
-				linkedFile->language.clear();
+				programTab->appendToConsole(tr("File '%1' was restored from the .fzz file; save a local copy to work with an external editor.").arg(fileInfo.fileName()));
 			}
-			if (programTab->setProgrammer(linkedFile->programmer)) {
-				linkedFile->programmer.clear();
-			}
-        }
+		}
+		if (!m_languages.value(linkedFile->language, "").isEmpty()) {
+			programTab->setLanguage(linkedFile->language, false);
+		}
+		else {
+			linkedFile->language.clear();
+		}
+		if (programTab->setProgrammer(linkedFile->programmer)) {
+			linkedFile->programmer.clear();
+		}
     }
 }
 
@@ -515,11 +533,11 @@ int & ProgramWindow::untitledFileCount() {
 }
 
 void ProgramWindow::setTitle() {
-    setWindowTitle(tr("Programming Window"));
+    setWindowTitle(tr("Code Window"));
 }
 
 void ProgramWindow::setTitle(const QString & filename) {
-        setWindowTitle(tr("Programming Window - %1").arg(filename));
+        setWindowTitle(tr("Code Window - %1").arg(filename));
 }
 
 /**
@@ -945,7 +963,7 @@ const QHash<QString, QString> ProgramWindow::getProgrammerNames()
 
 void ProgramWindow::initProgrammerNames()
 {
-	ProgrammerNames.insert(tr("Locate..."), LocateName);
+	ProgrammerNames.insert(tr("Find file..."), LocateName);
 
 	// TODO: eventually save a list of programmer names (a la recent files)
 
@@ -1129,4 +1147,11 @@ void ProgramWindow::showMenus(bool show) {
     if (m_fileMenu) m_fileMenu->menuAction()->setVisible(show);
     if (m_editMenu) m_editMenu->menuAction()->setVisible(show);
     if (m_programMenu) m_programMenu->menuAction()->setVisible(show);
+    if (m_viewMenu) m_viewMenu->menuAction()->setVisible(show);
+}
+
+void ProgramWindow::initViewMenu(QList<QAction *> & actions) {
+    foreach (QAction * action, actions) {
+        m_viewMenu->addAction(action);
+    }
 }

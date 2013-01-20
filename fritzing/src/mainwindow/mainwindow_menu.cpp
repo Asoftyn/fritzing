@@ -385,6 +385,10 @@ void MainWindow::mainLoad(const QString & fileName, const QString & displayName)
 		m_fileProgressDialog->setValue(198);
 	}
 
+    if (m_programView) {
+        QFileInfo fileInfo(m_fwFilename);
+        m_programView->linkFiles(m_linkedProgramFiles, fileInfo.absoluteDir().absolutePath());
+    }
 }
 
 void MainWindow::copy() {
@@ -1019,6 +1023,9 @@ void MainWindow::createViewMenuActions() {
 	    m_showProgramAct->setShortcut(tr("Ctrl+4"));
 	    m_showProgramAct->setStatusTip(tr("Show the code (programming) view"));
 	    connect(m_showProgramAct, SIGNAL(triggered()), this, SLOT(showProgramView()));
+        QList<QAction *> viewMenuActions;
+        viewMenuActions << m_showBreadboardAct << m_showSchematicAct << m_showPCBAct << m_showProgramAct;
+        m_programView->initViewMenu(viewMenuActions);
     }
 
 	m_showPartsBinIconViewAct = new QAction(tr("Show Parts Bin Icon View"), this);
@@ -3662,7 +3669,8 @@ void MainWindow::openProgramWindow() {
 	connect(m_programWindow, SIGNAL(destroyed(QObject *)), qApp, SLOT(topLevelWidgetDestroyed(QObject *)));
 
 	QFileInfo fileInfo(m_fwFilename);
-	m_programWindow->setup(m_linkedProgramFiles, fileInfo.absoluteDir().absolutePath());
+	m_programWindow->setup();
+	m_programWindow->linkFiles(m_linkedProgramFiles, fileInfo.absoluteDir().absolutePath());
 	m_programWindow->setVisible(true);
 }
 

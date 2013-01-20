@@ -81,7 +81,8 @@ public:
 	ProgramWindow(QWidget *parent=0);
 	~ProgramWindow();
 
-	void setup(const QList<LinkedFile *> &, const QString & alternativePath);
+	void setup();
+	void linkFiles(const QList<LinkedFile *> &, const QString & alternativePath);
 	const QString defaultSaveFolder();
 
     QStringList getSerialPorts();
@@ -92,6 +93,7 @@ public:
 	bool alreadyHasProgram(const QString &);
 	void updateLink(const QString & filename, const QString & language, const QString & programmer, bool addlink, bool strong);
     void showMenus(bool);
+    void initViewMenu(QList<QAction *> &);
 
 signals:
 	void closed();
@@ -190,6 +192,7 @@ protected:
 	QStringList m_ports;				// temporary storage for linux
     QMenu * m_fileMenu;
     QMenu* m_editMenu;
+    QMenu* m_viewMenu;
     QMenu * m_programMenu;
 };
 

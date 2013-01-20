@@ -360,7 +360,7 @@ bool ProgramTab::loadProgramFile(const QString & fileName, const QString & altFi
 										NULL,
 										tr("Fritzing is unable to find '%1', please locate it").arg(fileInfo.fileName()),
 										FolderUtils::openSaveFolder(),
-										tr("Program (*.%1)").arg(fileInfo.suffix())
+										tr("Code (*.%1)").arg(fileInfo.suffix())
 								);
 				if (fn.isEmpty()) return false;
 

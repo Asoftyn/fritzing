@@ -921,6 +921,13 @@ void MainWindow::tabWidget_currentChanged(int index) {
 
 	hideShowTraceMenu();
 
+    if (m_showBreadboardAct) {
+	    QList<QAction *> actions;
+	    actions << m_showBreadboardAct << m_showSchematicAct << m_showPCBAct;
+        if (m_programView) actions << m_showProgramAct;
+	    setActionsIcons(index, actions);
+    }
+
 	if (widget == NULL) return;
 
 	m_zoomSlider->setValue(m_currentGraphicsView->retrieveZoom());
@@ -945,13 +952,6 @@ void MainWindow::tabWidget_currentChanged(int index) {
 	}
 
 	updateLayerMenu(true);
-    if (m_showBreadboardAct) {
-	    QList<QAction *> actions;
-	    actions << m_showBreadboardAct << m_showSchematicAct << m_showPCBAct;
-        if (m_programView) actions << m_showProgramAct;
-	    setActionsIcons(index, actions);
-    }
-
 	updateTraceMenu();
 	updateTransformationActions();
 
@@ -2579,8 +2579,11 @@ void MainWindow::selectPartsWithModuleID(ModelPart * modelPart) {
 
 void MainWindow::initProgrammingWidget() {
     m_programView = new ProgramWindow(this);
-    QFileInfo fileInfo(m_fwFilename);
-	m_programView->setup(m_linkedProgramFiles, fileInfo.absoluteDir().absolutePath());
+
+	connect(m_programView, SIGNAL(linkToProgramFile(const QString &, const QString &, const QString &, bool, bool)), 
+			this, SLOT(linkToProgramFile(const QString &, const QString &, const QString &, bool, bool)));
+
+	m_programView->setup();
 
 	SketchAreaWidget * sketchAreaWidget = new SketchAreaWidget(m_programView, this);
 	addTab(sketchAreaWidget, tr("Code"));
