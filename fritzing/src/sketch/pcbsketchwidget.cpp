@@ -67,6 +67,9 @@ $Date$
 #include <QSettings>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QNetworkAccessManager>
+
+/////////////////////////////////////////////////////
 
 static const int MAX_INT = std::numeric_limits<int>::max();
 static const double BlurBy = 3.5;
@@ -111,6 +114,62 @@ bool distanceLessThan(ConnectorItem * end0, ConnectorItem * end1) {
 	}
 
 	return true;
+}
+
+//////////////////////////////////////////////////////
+
+QuoteDialog::QuoteDialog(double area, int boardCount, QWidget *parent) : QDialog(parent) 
+{
+	setWindowTitle(tr("Fab Quote"));
+
+	QVBoxLayout * vLayout = new QVBoxLayout(this);
+
+    QString msg = tr("The total area of the %n boards in this sketch is %1 cm2 (%2 in2).", "", boardCount)
+        .arg(area)
+        .arg(area / (2.54 * 2.54));
+
+	QLabel * label = new QLabel(msg);
+	vLayout->addWidget(label);
+
+    vLayout->addSpacing(10);
+
+    for (int i = 0; i < MessageCount; i++) {
+        m_labels[i] = new QLabel("");
+	    vLayout->addWidget(m_labels[i]);
+    }
+
+    vLayout->addSpacing(10);
+
+    label = new QLabel(tr("Please note, price does not include shipping, possible additional taxes, or the checking fee."));
+	vLayout->addWidget(label);
+
+    label = new QLabel(tr("For more information on pricing see <a href='http://fab.fritzing.org/pricing'>http://fab.fritzing.org/pricing</a>."));
+	vLayout->addWidget(label);
+    label->setOpenExternalLinks(true);
+
+    label = new QLabel(tr("To order go to <a href='http://fab.fritzing.org/fritzing-fab'>http://fab.fritzing.org/fritzing-fab</a> and click 'Order Now'."));
+	vLayout->addWidget(label);
+    label->setOpenExternalLinks(true);
+
+    vLayout->addSpacing(10);
+
+    QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+	buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+
+	vLayout->addWidget(buttonBox);
+
+	this->setLayout(vLayout);
+}
+
+QuoteDialog::~QuoteDialog() {
+}
+
+void QuoteDialog::setMessage(int index, const QString & message) {
+    if (index < 0) return;
+    if (index >= MessageCount) return;
+
+    m_labels[index]->setText(message);
 }
 
 //////////////////////////////////////////////////////
@@ -2643,3 +2702,65 @@ void PCBSketchWidget::hidePartSilkscreen() {
         }
     }
 }
+
+void PCBSketchWidget::fabQuote() {
+    QList<ItemBase *> boards = findBoard();
+    if (boards.count() == 0) {
+        QMessageBox::information(this, tr("Fritzing"),
+                   tr("Your sketch does not have a board yet. You cannot fabricate this sketch without a PCB part."));
+        return;
+    }
+
+    double area = 0;
+    foreach (ItemBase * board, boards) {
+        area += GraphicsUtils::pixels2mm(board->boundingRect().width(), GraphicsUtils::SVGDPI) * 
+            GraphicsUtils::pixels2mm(board->boundingRect().height(), GraphicsUtils::SVGDPI) / 
+            100;
+    }
+
+    m_quoteDialog = new QuoteDialog(area, boards.count(), this);
+
+    QString paramString = TextUtils::makeRequestParamsString();
+    QList<int> counts;
+    counts << 1 << 2 << 5 << 10;
+    int ix = 0;
+    foreach (int count, counts) {
+        QNetworkAccessManager * manager = new QNetworkAccessManager(this);
+        manager->setProperty("count", count);
+        manager->setProperty("index", ix++);
+	    connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(gotFabQuote(QNetworkReply *)));
+        QString string = QString("http://fab.fritzing.org/fritzing-fab/quote%1&area=%2")
+                    .arg(paramString)
+                    .arg(area * count)
+                    ;
+	    manager->get(QNetworkRequest(QUrl(string)));
+    }
+
+
+    m_quoteDialog->exec();
+    delete m_quoteDialog;
+}
+
+void PCBSketchWidget::gotFabQuote(QNetworkReply * networkReply) {
+    QNetworkAccessManager * manager = networkReply->manager();
+    int index = manager->property("index").toInt();
+    int count = manager->property("count").toInt();
+	int responseCode = networkReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	if (responseCode == 200) {
+        QByteArray data = networkReply->readAll();
+        bool ok;
+        double cost = data.toDouble(&ok);
+        if (ok) {
+            QString msg = tr("%n copies of this sketch will cost %1 Euros.", "", count).arg(cost);
+            if (m_quoteDialog) {
+                m_quoteDialog->setMessage(index, msg);
+            }
+        }
+	}
+    else {
+    }
+
+    manager->deleteLater();
+    networkReply->deleteLater();
+}
+

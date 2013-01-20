@@ -26,6 +26,7 @@ $Date$
 
 #include "lockmanager.h"
 #include "folderutils.h"
+#include "textutils.h"
 
 #include <QTimer>
 #include <QPointer>
@@ -94,7 +95,7 @@ void LockManager::touchFiles() {
 void LockManager::initLockedFiles(const QString & prefix, QString & folder, QHash<QString, LockedFile *> & lockedFiles, long touchFrequency) {
 	// first create our own unique folder and lock it
 	QDir backupDir(FolderUtils::getUserDataStorePath(prefix));
-	QString lockedSubfolder = FolderUtils::getRandText();
+	QString lockedSubfolder = TextUtils::getRandText();
 	backupDir.mkdir(lockedSubfolder);
 	folder = backupDir.absoluteFilePath(lockedSubfolder);
 	if (touchFrequency > 0) {

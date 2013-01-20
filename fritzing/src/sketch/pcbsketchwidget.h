@@ -29,6 +29,9 @@ $Date$
 
 #include "sketchwidget.h"
 #include <QVector>
+#include <QNetworkReply>
+#include <QDialog>
+#include <QLabel>
 
 class PCBSketchWidget : public SketchWidget
 {
@@ -115,6 +118,7 @@ public:
     void setAutorouterSettings(QHash<QString, QString> &);
 	void getDefaultViaSize(QString & ringThickness, QString & holeSize);
     void hidePartSilkscreen();
+    void fabQuote();
 
 public slots:
 	void resizeBoard(double w, double h, bool doEmit);
@@ -187,6 +191,8 @@ protected slots:
 	void alignJumperItem(class JumperItem *, QPointF &);
 	void wireSplitSlot(class Wire*, QPointF newPos, QPointF oldPos, QLineF oldLine);
 	void postImageSlot(class GroundPlaneGenerator *, QImage * image, QGraphicsItem * board, QList<QRectF> &);
+    void gotFabQuote(QNetworkReply *);
+
 
 protected:
 	CleanType m_cleanType;
@@ -194,10 +200,28 @@ protected:
 	QPointer<class JumperItem> m_resizingJumperItem;
 	QList<ConnectorItem *> * m_groundFillSeeds;
     QHash<QString, QString> m_autorouterSettings;
+    QPointer<class QuoteDialog> m_quoteDialog;
 
 protected:
 	static QSizeF m_jumperItemSize;
 	static const char * FakeTraceProperty;
+};
+
+
+class QuoteDialog : public QDialog {
+Q_OBJECT
+
+public:
+	QuoteDialog(double area, int boardCount, QWidget *parent = 0);
+	~QuoteDialog();
+
+    void setMessage(int index, const QString & message);
+
+public:
+    static const int MessageCount = 4;
+
+protected:
+    QLabel * m_labels[MessageCount];
 };
 
 #endif

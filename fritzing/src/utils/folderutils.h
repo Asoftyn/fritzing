@@ -57,7 +57,6 @@ public:
 	static bool createZipAndSaveTo(const QDir &dirToCompress, const QString &filename, const QStringList & skipSuffixes);
 	static bool unzipTo(const QString &filepath, const QString &dirToDecompress);
 	static void replicateDir(QDir srcDir, QDir targDir);
-	static QString getRandText();
 	static void cleanup();
     static void collectFiles(const QDir & parent, QStringList & filters, QStringList & files, bool recursive);
 	static void makePartFolderHierarchy(const QString & prefixFolder, const QString & destFolder);

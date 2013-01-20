@@ -286,7 +286,7 @@ PEMainWindow::PEMainWindow(ReferenceModel * referenceModel, QWidget * parent)
     disconnect(&m_autosaveTimer, SIGNAL(timeout()), this, SLOT(backupSketch()));
     m_gaveSaveWarning = m_canSave = false;
     m_settingsPrefix = "pe/";
-    m_guid = FolderUtils::getRandText();
+    m_guid = TextUtils::getRandText();
     m_fileIndex = 0;
 	m_userPartsFolderPath = FolderUtils::getUserDataStorePath("parts")+"/user/";
 	m_userPartsFolderSvgPath = FolderUtils::getUserDataStorePath("parts")+"/svg/user/";

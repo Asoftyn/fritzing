@@ -2990,6 +2990,14 @@ Go ahead and revert?</source>
         <source>Show the code (programming) view</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Fritzing Fab Quote...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How much would it could to produce a PCB from this sketch with Fritzing Fab</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MazeRouter</name>
@@ -3182,6 +3190,16 @@ Reason: %2 (errcode %3)</source>
     <message>
         <source>Hide part silkscreen</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your sketch does not have a board yet. You cannot fabricate this sketch without a PCB part.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n copies of this sketch will cost %1 Euros.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -5455,6 +5473,35 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
         <source>Meta</source>
         <comment>for naming shortcut keys on menu items</comment>
         <translation>Meta</translation>
+    </message>
+</context>
+<context>
+    <name>QuoteDialog</name>
+    <message>
+        <source>Fab Quote</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please note, price does not include shipping, possible additional taxes, or the checking fee.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For more information on pricing see &lt;a href=&apos;http://fab.fritzing.org/pricing&apos;&gt;http://fab.fritzing.org/pricing&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To order go to &lt;a href=&apos;http://fab.fritzing.org/fritzing-fab&apos;&gt;http://fab.fritzing.org/fritzing-fab&lt;/a&gt; and click &apos;Order Now&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">确定</translation>
+    </message>
+    <message numerus="yes">
+        <source>The total area of the %n boards in this sketch is %1 cm2 (%2 in2).</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>

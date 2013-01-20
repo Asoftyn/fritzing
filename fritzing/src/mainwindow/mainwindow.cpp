@@ -193,7 +193,7 @@ MainWindow::MainWindow(ReferenceModel *referenceModel, QWidget * parent) :
 
 	resize(MainWindowDefaultWidth, MainWindowDefaultHeight);
 
-	m_backupFileNameAndPath = MainWindow::BackupFolder + "/" + FolderUtils::getRandText() + FritzingSketchExtension;
+	m_backupFileNameAndPath = MainWindow::BackupFolder + "/" + TextUtils::getRandText() + FritzingSketchExtension;
     // Connect the undoStack to our autosave stuff
     connect(m_undoStack, SIGNAL(indexChanged(int)), this, SLOT(autosaveNeeded(int)));
     connect(m_undoStack, SIGNAL(cleanChanged(bool)), this, SLOT(undoStackCleanChanged(bool)));
@@ -1287,7 +1287,7 @@ void MainWindow::copySvg(const QString & path, QFileInfoList & svgEntryInfoList)
 void MainWindow::loadBundledNonAtomicEntity(const QString &fileName, Bundler* bundler, bool addToBin, bool dontAsk) {
 	QDir destFolder = QDir::temp();
 
-	FolderUtils::createFolderAnCdIntoIt(destFolder, FolderUtils::getRandText());
+	FolderUtils::createFolderAnCdIntoIt(destFolder, TextUtils::getRandText());
 	QString unzipDirPath = destFolder.path();
 
 	if(!FolderUtils::unzipTo(fileName, unzipDirPath)) {
@@ -1327,7 +1327,7 @@ void MainWindow::loadBundledPartFromWeb() {
 ModelPart* MainWindow::loadBundledPart(const QString &fileName, bool addToBin) {
 	QDir destFolder = QDir::temp();
 
-	FolderUtils::createFolderAnCdIntoIt(destFolder, FolderUtils::getRandText());
+	FolderUtils::createFolderAnCdIntoIt(destFolder, TextUtils::getRandText());
 	QString unzipDirPath = destFolder.path();
 
 	if(!FolderUtils::unzipTo(fileName, unzipDirPath)) {
@@ -1390,7 +1390,7 @@ void MainWindow::saveBundledPart(const QString &moduleId) {
 
 	QDir destFolder = QDir::temp();
 
-	FolderUtils::createFolderAnCdIntoIt(destFolder, FolderUtils::getRandText());
+	FolderUtils::createFolderAnCdIntoIt(destFolder, TextUtils::getRandText());
 	QString dirToRemove = destFolder.path();
 
 	QString aux = QFileInfo(bundledFileName).fileName();
@@ -1533,7 +1533,7 @@ void MainWindow::backupExistingFileIfExists(const QString &destFilePath) {
 	if(QFileInfo(destFilePath).exists()) {
 		if(m_tempDir.path() == ".") {
 			m_tempDir = QDir::temp();
-			FolderUtils::createFolderAnCdIntoIt(m_tempDir, FolderUtils::getRandText());
+			FolderUtils::createFolderAnCdIntoIt(m_tempDir, TextUtils::getRandText());
 			DebugDialog::debug("debug folder for overwritten files: "+m_tempDir.path());
 		}
 

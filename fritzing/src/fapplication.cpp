@@ -62,7 +62,6 @@ $Date$
 #include "items/partfactory.h"
 #include "items/propertydef.h"
 #include "dialogs/recoverydialog.h"
-#include "lib/qtsysteminfo/QtSystemInfo.h"
 #include "processeventblocker.h"
 #include "autoroute/panelizer.h"
 #include "sketch/sketchwidget.h"
@@ -85,8 +84,6 @@ $Date$
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QMultiHash>
-
-static QNetworkAccessManager * NetworkAccessManager = NULL;
 
 #ifdef LINUX_32
 #define PLATFORM_NAME "linux-32bit"
@@ -1023,10 +1020,9 @@ int FApplication::startup()
 
 	//bool fabEnabled = settings.value(ORDERFABENABLED, QVariant(false)).toBool();
 	//if (!fabEnabled) {
-		NetworkAccessManager = new QNetworkAccessManager(this);
-		connect(NetworkAccessManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(gotOrderFab(QNetworkReply *)));
-
-		NetworkAccessManager->get(QNetworkRequest(QUrl(QString("http://fab.fritzing.org/launched%1").arg(makeRequestParamsString()))));
+		QNetworkAccessManager * manager = new QNetworkAccessManager(this);
+		connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(gotOrderFab(QNetworkReply *)));
+		manager->get(QNetworkRequest(QUrl(QString("http://fab.fritzing.org/launched%1").arg(TextUtils::makeRequestParamsString()))));
 	//}
 
 	if (m_progressIndex >= 0) splash.showProgress(m_progressIndex, LoadProgressEnd);
@@ -1256,7 +1252,7 @@ void FApplication::checkForUpdates(bool atUserRequest)
 
     QString atom = QString("http://fritzing.org/download/feed/atom/%1/%2")
 		.arg(PLATFORM_NAME)
-		.arg(makeRequestParamsString());
+		.arg(TextUtils::makeRequestParamsString());
     DebugDialog::debug(atom);
     versionChecker->setUrl(atom);
 	m_updateDialog->setAtUserRequest(atUserRequest);
@@ -1647,30 +1643,8 @@ void FApplication::gotOrderFab(QNetworkReply * networkReply) {
 		QSettings settings;
 		settings.setValue(ORDERFABENABLED, QVariant(true));
 	}
-}
-
-QString FApplication::makeRequestParamsString() {
-	QSettings settings;
-	if (settings.value("pid").isNull()) {
-		settings.setValue("pid", FolderUtils::getRandText());
-	}
-
-	QtSystemInfo systemInfo(this);
-	QString siVersion(QUrl::toPercentEncoding(Version::versionString()));
-	QString siSystemName(QUrl::toPercentEncoding(systemInfo.systemName()));
-	QString siSystemVersion(QUrl::toPercentEncoding(systemInfo.systemVersion()));
-	QString siKernelName(QUrl::toPercentEncoding(systemInfo.kernelName()));
-	QString siKernelVersion(QUrl::toPercentEncoding(systemInfo.kernelVersion()));
-	QString siArchitecture(QUrl::toPercentEncoding(systemInfo.architectureName()));
-    QString string = QString("?pid=%1&version=%2&sysname=%3&kernname=%4&kernversion=%5arch=%6&sysversion=%7")
-		.arg(settings.value("pid").toString())
-		.arg(siVersion)
-		.arg(siSystemName)
-		.arg(siKernelName)
-		.arg(siKernelVersion)
-		.arg(siArchitecture)
-		.arg(siSystemVersion);
-	return string;
+    networkReply->manager()->deleteLater();
+    networkReply->deleteLater();
 }
 
 void FApplication::runPanelizerService()
@@ -1774,7 +1748,7 @@ void FApplication::doCommand(const QString & command, const QString & params, QS
 
 	QString subfolder = params;
 	if (command.endsWith("tcp")) {
-		subfolder = FolderUtils::getRandText();
+		subfolder = TextUtils::getRandText();
 		dir.mkdir(subfolder);
 	}
 

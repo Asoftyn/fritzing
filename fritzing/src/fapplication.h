@@ -34,13 +34,12 @@ $Date$
 #include <QPointer>
 #include <QWidget>
 #include <QTimer>
-#include <QNetworkReply>
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QMutex>
 #include <QThread>
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkAccessManager>
 
 class FServer : public QTcpServer
 {
@@ -153,7 +152,6 @@ protected:
 	void initFilesToLoad();
 	void initBackups();
 	void cleanupBackups();
-	QString makeRequestParamsString();
 	void updatePrefs(class PrefsDialog & prefsDialog);
     QList<MainWindow *> orderedTopLevelMainWindows();
 	void cleanFzzs();

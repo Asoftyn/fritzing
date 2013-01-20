@@ -1321,6 +1321,7 @@ void MainWindow::createTraceMenus()
 	m_pcbTraceMenu->addAction(m_newAutorouteAct);
 	m_pcbTraceMenu->addAction(m_newDesignRulesCheckAct);
 	m_pcbTraceMenu->addAction(m_autorouterSettingsAct);
+	m_pcbTraceMenu->addAction(m_fabQuoteAct);
 
 	QMenu * groundFillMenu = m_pcbTraceMenu->addMenu(tr("Ground Fill"));
 
@@ -1949,6 +1950,9 @@ void MainWindow::updateTraceMenu() {
 	m_checkLoadedTracesAct->setEnabled(true);
 	m_autorouterSettingsAct->setEnabled(m_currentGraphicsView == m_pcbGraphicsView);
 	m_updateRoutingStatusAct->setEnabled(true);
+
+
+	m_fabQuoteAct->setEnabled(m_currentGraphicsView == m_pcbGraphicsView);
 }
 
 void MainWindow::zoomIn() {
@@ -2487,6 +2491,11 @@ void MainWindow::createTraceMenuActions() {
 	m_autorouterSettingsAct = new QAction(tr("Autorouter/DRC settings..."), this);
 	m_autorouterSettingsAct->setStatusTip(tr("Set autorouting parameters including keepout..."));
 	connect(m_autorouterSettingsAct, SIGNAL(triggered()), this, SLOT(autorouterSettings()));
+
+	m_fabQuoteAct = new QAction(tr("Fritzing Fab Quote..."), this);
+	m_fabQuoteAct->setStatusTip(tr("How much would it could to produce a PCB from this sketch with Fritzing Fab"));
+	connect(m_fabQuoteAct, SIGNAL(triggered()), this, SLOT(fabQuote()));
+
 }
 
 void MainWindow::createActiveLayerActions() {
@@ -3993,4 +4002,9 @@ void MainWindow::hidePartSilkscreen()
 {
     m_pcbGraphicsView->hidePartSilkscreen();
 }
+
+void MainWindow::fabQuote() {
+    if (m_pcbGraphicsView) m_pcbGraphicsView->fabQuote();
+}
+
 

@@ -26,6 +26,7 @@ $Date$
 
 #include "folderutils.h"
 #include "lockmanager.h"
+#include "textutils.h"
 #include <QDesktopServices>
 #include <QCoreApplication>
 #include <QSettings>
@@ -307,18 +308,6 @@ void FolderUtils::replicateDir(QDir srcDir, QDir targDir) {
 	}
 }
 
-QString FolderUtils::getRandText() {
-	QString rand = QUuid::createUuid().toString();
-	QString randext = QCryptographicHash::hash(rand.toAscii(),QCryptographicHash::Md4).toHex();
-	return randext;
-}
-
-/*QString FolderUtils::getBase64RandText() {
-	QString rand = QUuid::createUuid().toString();
-	QString randext = QCryptographicHash::hash(rand.toAscii(),QCryptographicHash::Md4).toHex();
-	return randext;
-}*/
-
 // NOTE: This function cannot remove directories that have non-empty name filters set on it.
 void FolderUtils::rmdir(const QString &dirPath) {
 	QDir dir = QDir(dirPath);
@@ -345,7 +334,7 @@ void FolderUtils::rmdir(QDir & dir) {
 bool FolderUtils::createZipAndSaveTo(const QDir &dirToCompress, const QString &filepath, const QStringList & skipSuffixes) {
 	DebugDialog::debug("zipping "+dirToCompress.path()+" into "+filepath);
 
-	QString tempZipFile = QDir::temp().path()+"/"+getRandText()+".zip";
+	QString tempZipFile = QDir::temp().path()+"/"+TextUtils::getRandText()+".zip";
 	DebugDialog::debug("temp file: "+tempZipFile);
 	QuaZip zip(tempZipFile);
 	if(!zip.open(QuaZip::mdCreate)) {

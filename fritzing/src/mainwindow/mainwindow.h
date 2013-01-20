@@ -387,6 +387,7 @@ protected slots:
 	void dockChangeActivation(bool activate, QWidget * originator);
     void addToMyParts(ModelPart *);
     void hidePartSilkscreen();
+    void fabQuote();
 
 protected:
 	void initSketchWidget(SketchWidget *);
@@ -757,6 +758,7 @@ protected:
 	QAction *m_clearGroundFillSeedsAct;
 	QAction *m_newDesignRulesCheckAct;
 	QAction *m_autorouterSettingsAct;
+	QAction *m_fabQuoteAct;
 	QAction *m_tidyWiresAct;
 	QAction *m_checkLoadedTracesAct;
 
