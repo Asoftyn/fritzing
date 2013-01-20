@@ -2206,23 +2206,35 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
         }
     }
 
+    QList<ModelPart *> modelParts;
     foreach (QList< QPointer<TraceWire> > bundle, allBundles) {
         foreach (TraceWire * traceWire, bundle) {
-            if (traceWire) delete traceWire;
+            if (traceWire) {
+                modelParts << traceWire->modelPart();
+                delete traceWire;
+            }
         }
     }
 
     foreach (Via * via, allVias.values()) {
         via->removeLayerKin();
+        modelParts << via->modelPart();
         delete via;
     }
     foreach (JumperItem * jumperItem, allJumperItems.values()) {
         jumperItem->removeLayerKin();
+        modelParts << jumperItem->modelPart();
         delete jumperItem;
     }
     foreach (SymbolPaletteItem * netLabel, allNetLabels.values()) {
+        modelParts << netLabel->modelPart();
         delete netLabel;
     }
+    foreach (ModelPart * modelPart, modelParts) {
+        modelPart->setParent(NULL);
+		delete modelPart;
+    }
+
     DebugDialog::debug("create traces complete");
 }
 
@@ -3221,7 +3233,10 @@ void MazeRouter::reducePoints(QList<QPointF> & points, QPointF topLeft, QList<Tr
                         TraceWire * tw = bundle.takeAt(ix + 2);
                         connectionThing.remove(tw->connector0());
                         connectionThing.remove(tw->connector1());
+                        ModelPart * modelPart = tw->modelPart();
                         delete tw;
+                        modelPart->setParent(NULL);
+                        delete modelPart;
                         points.removeAt(ix + 2);
                     }
                     points.replace(ix + 1, middle);
@@ -3238,7 +3253,10 @@ void MazeRouter::reducePoints(QList<QPointF> & points, QPointF topLeft, QList<Tr
                         TraceWire * tw = bundle.takeAt(ix + 1);
                         connectionThing.remove(tw->connector0());
                         connectionThing.remove(tw->connector1());
+                        ModelPart * modelPart = tw->modelPart();
                         delete tw;
+                        modelPart->setParent(NULL);
+                        delete modelPart;
                         points.removeAt(ix + 1);
                     }
                 }
