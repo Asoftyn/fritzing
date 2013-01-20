@@ -1212,7 +1212,7 @@ ItemBase * ItemBase::layerKinChief() {
 }
 
 void ItemBase::rotateItem(double degrees) {
-	//DebugDialog::debug(QString("\trotating item %1 %2").arg(degrees).arg((long) this, 0, 16));
+	//this->debugInfo(QString("\trotating item %1").arg(degrees));
 	transformItem(QTransform().rotate(degrees));
 }
 

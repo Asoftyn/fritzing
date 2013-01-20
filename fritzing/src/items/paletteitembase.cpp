@@ -320,7 +320,7 @@ void PaletteItemBase::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		// see: http://www.gamedev.net/topic/441695-transform-matrix-decomposition/
 		double originalAngle = atan2(OriginalTransform.m12(), OriginalTransform.m11()) * 180 / M_PI;
 		double currentAngle = atan2(transform().m12(), transform().m11()) * 180 / M_PI;
-		rotateItem(originalAngle - currentAngle);		// put it back; undo command will redo it
+		this->layerKinChief()->rotateItem(originalAngle - currentAngle);		// put it back; undo command will redo it
 		saveGeometry();
 		infoGraphicsView->triggerRotate(this->layerKinChief(), currentAngle - originalAngle);
 	}
