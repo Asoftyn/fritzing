@@ -388,6 +388,7 @@ protected slots:
     void addToMyParts(ModelPart *);
     void hidePartSilkscreen();
     void fabQuote();
+    void findPartInSketch();
 
 protected:
 	void initSketchWidget(SketchWidget *);
@@ -684,6 +685,7 @@ protected:
 	QAction *m_disconnectAllAct;
 	QAction *m_selectAllObsoleteAct;
 	QAction *m_swapObsoleteAct;
+    QAction *m_findPartInSketchAct;
 	QAction * m_openProgramWindowAct;
 
 	QAction *m_addBendpointAct;

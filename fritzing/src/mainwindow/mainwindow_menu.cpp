@@ -942,6 +942,10 @@ void MainWindow::createPartMenuActions() {
     m_swapObsoleteAct->setStatusTip(tr("Update selected parts"));
 	connect(m_swapObsoleteAct, SIGNAL(triggered()), this, SLOT(swapObsolete()));
 
+    m_findPartInSketchAct = new QAction(tr("Find part in sketch..."), this);
+    m_findPartInSketchAct->setStatusTip(tr("Search for parts in a sketch by matching text"));
+	connect(m_findPartInSketchAct, SIGNAL(triggered()), this, SLOT(findPartInSketch()));
+
     m_openProgramWindowAct = new QAction(tr("Open programming window"), this);
     m_openProgramWindowAct->setStatusTip(tr("Open microcontroller programming window"));
 	connect(m_openProgramWindowAct, SIGNAL(triggered()), this, SLOT(openProgramWindow()));
@@ -1258,6 +1262,9 @@ void MainWindow::createPartMenu() {
 	m_partMenu->addSeparator();
 	m_partMenu->addAction(m_selectAllObsoleteAct);
 	m_partMenu->addAction(m_swapObsoleteAct);
+
+	m_partMenu->addSeparator();
+	m_partMenu->addAction(m_findPartInSketchAct);
 
 	m_rotateMenu->addAction(m_rotate45cwAct);
 	m_rotateMenu->addAction(m_rotate90cwAct);
@@ -1711,6 +1718,7 @@ void MainWindow::updatePartMenu() {
 	// TODO: only enable if there is an obsolete part in the sketch
 	m_selectAllObsoleteAct->setEnabled(true);
 	m_swapObsoleteAct->setEnabled(itemCount.obsoleteCount > 0);
+    m_findPartInSketchAct->setEnabled(m_currentGraphicsView != NULL);
 	m_openProgramWindowAct->setEnabled(true);
 }
 
@@ -4005,6 +4013,50 @@ void MainWindow::hidePartSilkscreen()
 
 void MainWindow::fabQuote() {
     if (m_pcbGraphicsView) m_pcbGraphicsView->fabQuote();
+}
+
+void MainWindow::findPartInSketch() {
+    static QString lastSearchText;
+
+	if (m_currentGraphicsView == NULL) return;
+
+    bool ok;
+    QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+                                          tr("Text will match part label, description, title, etc. Enter text to search for:"), 
+                                          QLineEdit::Normal, lastSearchText, &ok);
+    if (!ok || text.isEmpty()) return;
+
+    lastSearchText = text;
+    QSet<ItemBase *> itemBases;
+    foreach (QGraphicsItem * item, m_currentGraphicsView->scene()->items()) {
+        ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
+        if (itemBase == NULL) continue;
+
+        itemBases.insert(itemBase->layerKinChief());
+    }
+
+	QStringList strings;
+    strings << text;
+    QList<ItemBase *> matched;
+    foreach (ItemBase * itemBase, itemBases) {
+        if (itemBase->instanceTitle().contains(text, Qt::CaseInsensitive)) {
+            matched << itemBase;
+            continue;
+        }
+
+	    QList<ModelPart *> modelParts;
+        m_referenceModel->search(itemBase->modelPart(), strings, modelParts, true);
+        if (modelParts.count() > 0) {
+            matched << itemBase;
+        }
+    }
+
+    if (matched.count() == 0) {
+	    QMessageBox::information(this, tr("Search"), tr("No parts matched search term '%1'.").arg(text));
+        return;
+    }
+
+    m_currentGraphicsView->selectItems(matched);
 }
 
 
