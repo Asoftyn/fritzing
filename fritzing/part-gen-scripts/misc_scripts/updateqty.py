@@ -59,33 +59,20 @@ def request(server, params=None, data=None):
     
     if not sid: login()
     
-    if data == None:
-        response = requests.post(server, cookies = {"sid": sid}, params=params)
-        #print "params", params
-        #print "data", data
-        print response.url
-        print "request"
-        pprint(vars(response.request))
-        print
+    response = requests.post(server, cookies = {"sid": sid}, params=params, data=data)
+    #print "params", params
+    #print "data", data
+    #print response.url
+    #print "request"
+    #pprint(vars(response.request))
+    #print
 
-        #if debug and response.json() and ("exc" in response.json()) and response.json()["exc"]:
-        #    print response.json()["exc"]
+    #if debug and response.json() and ("exc" in response.json()) and response.json()["exc"]:
+    #    print response.json()["exc"]
 
-        return response
+    return response
         
-    else:
-        print "trying urllib2"
-        print "data",data
-        form = {"form": data}
-        req = urllib2.Request(server + "?" + urllib.urlencode(params), urllib.urlencode(form))
-        req.add_header('Cookie', 'sid=' + sid)
-        
-        pprint(vars(req))
-        f = urllib2.urlopen(req)
-        result = f.read()
-        f.close()
-        
-        print "result", result
+
     
 
 def main():
@@ -194,7 +181,8 @@ def main():
                 row["qty"] = produced
                 print "updating name", name, "to", produced
     
-    update(server, rows)
+    result = update(server, rows)
+    pprint(vars(result))
 
             
             
