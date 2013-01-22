@@ -615,6 +615,23 @@ void ProgramTab::sendProgram() {
 		m_console->setPlainText("");
 		
         process->start(m_programmerPath, args);
+        return;
+	}
+	if (language.compare("arduino", Qt::CaseInsensitive) == 0) {
+		QProcess * process = new QProcess(this);
+		process->setProcessChannelMode(QProcess::MergedChannels);
+		process->setReadChannel(QProcess::StandardOutput);
+
+		connect(process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(programProcessFinished(int, QProcess::ExitStatus)));
+		connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(programProcessReadyRead()));
+
+		QStringList args;
+		args.append(QString("--verify --verbose --board arduino:arduino:uno"));
+		args.append(m_filename);
+		m_console->setPlainText("");
+		
+        process->start(m_programmerPath, args);
+        return;
 	}
 
 }
