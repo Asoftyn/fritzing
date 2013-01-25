@@ -160,6 +160,7 @@ def main():
     if type(rows) == list and len(rows) > 0 and rows[0].get("name") == bom:
         print bom, "is found"  
     
+    toRemove = [] 
     boardNodes = boards.getElementsByTagName("board")
     for board in boardNodes:
         name = board.getAttribute("name")
@@ -176,12 +177,24 @@ def main():
             print "'produced' not found for", name
             continue
             
-        for row in rows:
+        for index, row in enumerate(rows):
             if row.get("item_code") == name and row.get("qty") != None:
                 row["qty"] = produced
                 print "updating name", name, "to", produced
-    
+		if produced == 0:
+		    toRemove.append(index)
+		    print "toRemove", index, toRemove
+
+    if len(toRemove) > 0:
+	toRemove.sort()
+        toRemove.reverse()
+    	for index in toRemove:
+	    print "removing row", index
+	    del rows[index]
+ 
     result = update(server, rows)
+    print
+    print "update response"
     pprint(vars(result))
 
             
