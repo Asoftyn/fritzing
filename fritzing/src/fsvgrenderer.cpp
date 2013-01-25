@@ -798,6 +798,11 @@ QPointF FSvgRenderer::calcTerminalPoint(const QString & terminalId, const QRectF
 		return terminalPoint;
 	}
 
+    if (!this->elementExists(terminalId)) {
+        DebugDialog::debug(QString("missing expected terminal point element %1").arg(terminalId));
+        return terminalPoint;
+    }
+
 	QRectF tBounds = this->boundsOnElement(terminalId);
 	if (tBounds.isNull()) {
 		return terminalPoint;
