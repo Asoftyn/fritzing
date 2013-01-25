@@ -617,7 +617,10 @@ void ProgramTab::sendProgram() {
         process->start(m_programmerPath, args);
         return;
 	}
+
 	if (language.compare("arduino", Qt::CaseInsensitive) == 0) {
+        return;         // not yet implemented
+
 		QProcess * process = new QProcess(this);
 		process->setProcessChannelMode(QProcess::MergedChannels);
 		process->setReadChannel(QProcess::StandardOutput);
@@ -626,8 +629,9 @@ void ProgramTab::sendProgram() {
 		connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(programProcessReadyRead()));
 
 		QStringList args;
-		args.append(QString("--verify --verbose --board arduino:arduino:uno"));
-		args.append(m_filename);
+		args.append(QString("--upload --verbose --board arduino:arduino:uno"));
+        QString temp = m_filename;
+		args.append(QDir::toNativeSeparators(m_filename));
 		m_console->setPlainText("");
 		
         process->start(m_programmerPath, args);

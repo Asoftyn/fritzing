@@ -241,7 +241,7 @@ void ViewSwitcherButton::cleanup()
 
 /////////////////////////////////////////////////////////////////////
 
-ViewSwitcher::ViewSwitcher() : QFrame()
+ViewSwitcher::ViewSwitcher(bool includeCodeView) : QFrame()
 {
 	// TODO Mariano: couldn't get this applied with the qss file
 	setStyleSheet("ViewSwitcher {border: 0px; background-color: transparent; margin-top: 0px; margin-left: 0px; } ViewSwitcherButton {	margin: 0px;}");
@@ -271,14 +271,18 @@ ViewSwitcher::ViewSwitcher() : QFrame()
 	if (w > maxWidth) maxWidth = w;
 	w = fm.width(pv);
 	if (w > maxWidth) maxWidth = w;
-	w = fm.width(cv);
-	if (w > maxWidth) maxWidth = w;
+    if (includeCodeView) {
+	    w = fm.width(cv);
+	    if (w > maxWidth) maxWidth = w;
+    }
 	maxWidth += extraWidth;
 
 	m_buttons << createButton("Breadboard", tr("Breadboard"), maxWidth, Qt::AlignLeft);
 	m_buttons << createButton("Schematic", tr("Schematic"), maxWidth, Qt::AlignCenter);
 	m_buttons << createButton("PCB", tr("PCB"), maxWidth, Qt::AlignCenter);
-	m_buttons << createButton("Code", tr("Code"), maxWidth, Qt::AlignRight);
+    if (includeCodeView) {
+	    m_buttons << createButton("Code", tr("Code"), maxWidth, Qt::AlignRight);
+    }
 
 	m_buttonHolder = new QWidget();
 	int bw = 0;

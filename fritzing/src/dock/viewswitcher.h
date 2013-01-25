@@ -72,7 +72,7 @@ class ViewSwitcherButton : public QLabel {
 class ViewSwitcher : public QFrame {
 	Q_OBJECT
 	public:
-		ViewSwitcher();
+		ViewSwitcher(bool includeCodeView);
 		~ViewSwitcher();
 
 		const QBitmap * getMask();

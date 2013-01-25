@@ -2578,6 +2578,8 @@ void MainWindow::selectPartsWithModuleID(ModelPart * modelPart) {
 }
 
 void MainWindow::initProgrammingWidget() {
+    return; // not yet implemented
+
     m_programView = new ProgramWindow(this);
 
 	connect(m_programView, SIGNAL(linkToProgramFile(const QString &, const QString &, const QString &, bool, bool)), 
