@@ -106,8 +106,8 @@ bool pixelsCollide(QImage * image1, QImage * image2, QImage * image3, int x1, in
 QStringList getNames(CollidingThing * collidingThing) {
     QStringList names;
     QList<ItemBase *> itemBases;
-    if (collidingThing->connectorItem) {
-        itemBases << collidingThing->connectorItem->attachedTo();
+    if (collidingThing->nonConnectorItem) {
+        itemBases << collidingThing->nonConnectorItem->attachedTo();
     }
     foreach (ItemBase * itemBase, itemBases) {
         if (itemBase) {
@@ -202,8 +202,8 @@ void DRCResultsDialog::pressedSlot(QListWidgetItem * item) {
     }
     QPixmap pixmap = QPixmap::fromImage(*m_displayImage);
     m_displayItem->setPixmap(pixmap);
-    if (collidingThing->connectorItem) {
-        m_sketchWidget->selectItem(collidingThing->connectorItem->attachedTo());
+    if (collidingThing->nonConnectorItem) {
+        m_sketchWidget->selectItem(collidingThing->nonConnectorItem->attachedTo());
     }
 }
 
@@ -384,7 +384,6 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
     layerSpecs << ViewLayer::Bottom;
     if (bothSidesNow) layerSpecs << ViewLayer::Top;
 
-    bool collisions = false;
     int emptyMasterCount = 0;
     foreach (ViewLayer::ViewLayerSpec viewLayerSpec, layerSpecs) {  
         if (viewLayerSpec == ViewLayer::Top) emit wantTopVisible();
@@ -452,7 +451,6 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
             emit setProgressMessage(msg);
             messages << msg;
             collidingThings << collidingThing;
-            collisions = true;
             updateDisplay();
         }
 
@@ -557,7 +555,6 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
                     messages << msg;
                     collidingThings << collidingThing;
                     emit setProgressMessage(msg);
-                    collisions = true;
                     updateDisplay();
                 }
             }
@@ -570,6 +567,43 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
                 return false;
             }
         }
+    }
+    // check holes
+    foreach (QGraphicsItem * item, m_sketchWidget->scene()->collidingItems(m_board)) {
+        NonConnectorItem * nci = dynamic_cast<NonConnectorItem *>(item);
+        if (nci == NULL) continue;
+
+        QRectF ncibr = nci->sceneBoundingRect();
+        if (boardRect.contains(ncibr)) continue;
+
+        QRectF ir = boardRect.intersected(ncibr);
+        int x = qFloor((ir.left() - boardRect.left()) * dpi / GraphicsUtils::SVGDPI);
+        if (x < 0) x = 0;
+        int y = qFloor((ir.top() - boardRect.top()) * dpi / GraphicsUtils::SVGDPI);
+        if (y < 0) y = 0;
+        int w = qCeil(ir.width() * dpi / GraphicsUtils::SVGDPI);
+        if (x + w > m_displayImage->width()) w = m_displayImage->width() - x;
+        int h = qCeil(ir.height() * dpi / GraphicsUtils::SVGDPI);
+        if (y + h > m_displayImage->height()) h = m_displayImage->height() - y;
+
+        CollidingThing * collidingThing = new CollidingThing;
+        collidingThing->nonConnectorItem = nci;
+        for (int iy = 0; iy < h; iy++) {
+            for (int ix = 0; ix < w; ix++) {
+                QPoint p(ix + x, iy + y);
+                m_displayImage->setPixel(p, 1);
+                collidingThing->atPixels << p;
+            }
+        }
+        QStringList names = getNames(collidingThing);
+        QString name0 = names.at(0);
+        QString msg = tr("A hole in %1 may lie outside the border of the board and would be clipped.")
+            .arg(name0)
+            ;
+        messages << msg;
+        collidingThings << collidingThing;
+        emit setProgressMessage(msg);
+        updateDisplay();
     }
 
     return true;
@@ -944,7 +978,7 @@ CollidingThing * DRC::findItemsAt(QList<QPointF> & atPixels, ItemBase * board, c
     Q_UNUSED(skipHoles);
     
     CollidingThing * collidingThing = new CollidingThing;
-    collidingThing->connectorItem = already;
+    collidingThing->nonConnectorItem = already;
     collidingThing->atPixels = atPixels;
 
     return collidingThing;

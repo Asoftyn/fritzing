@@ -809,10 +809,6 @@ QPointF FSvgRenderer::calcTerminalPoint(const QString & terminalId, const QRectF
 	}
 
 	QSizeF defaultSizeF = this->defaultSizeF();
-	if (tBounds.width() >= defaultSizeF.width() && tBounds.height() >= defaultSizeF.height()) {
-		return terminalPoint;
-	}
-
 	//DebugDialog::debug(	QString("terminal %5 rect %1,%2,%3,%4").arg(tBounds.x()).
 										//arg(tBounds.y()).
 										//arg(tBounds.width()).
