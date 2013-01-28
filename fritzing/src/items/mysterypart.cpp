@@ -47,9 +47,9 @@ static QRegExp Digits("(\\d)+");
 static QRegExp DigitsMil("(\\d)+mil");
 
 static const int MinSipPins = 1;
-static const int MaxSipPins = 64;
+static const int MaxSipPins = 128;
 static const int MinDipPins = 4;
-static const int MaxDipPins = 64;
+static const int MaxDipPins = 128;
 
 static HoleClassThing TheHoleThing;
 

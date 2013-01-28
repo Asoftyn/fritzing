@@ -37,9 +37,9 @@ $Date$
 static QStringList Spacings;
 
 static int MinSipPins = 2;
-static int MaxSipPins = 64;
+static int MaxSipPins = 128;
 static int MinDipPins = 4;
-static int MaxDipPins = 64;
+static int MaxDipPins = 128;
 
 //////////////////////////////////////////////////
 
