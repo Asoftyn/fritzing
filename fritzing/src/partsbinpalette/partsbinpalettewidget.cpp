@@ -444,7 +444,7 @@ bool PartsBinPaletteWidget::open(QString fileName, QWidget * progressTarget, boo
     	load(fileName, progressTarget, fastLoad);
     	m_isDirty = false;
     } else if(fileName.endsWith(FritzingBundledBinExtension)) {
-    	m_manager->mainWindow()->loadBundledNonAtomicEntity(fileName,this,false, false);
+    	return m_manager->mainWindow()->loadBundledNonAtomicEntity(fileName,this,false, false);
     }
 
     return true;
@@ -834,7 +834,7 @@ QMenu * PartsBinPaletteWidget::binContextMenu()
 
 	// TODO: need to enable/disable actions based on this bin
 
-	ModelPartSharedRoot * root = m_model->rootModelPartShared();
+	ModelPartSharedRoot * root = (m_model == NULL) ? NULL : m_model->rootModelPartShared();
 	if (root) {
 		QString iconFilename = root->icon();
 		if (iconFilename.compare(CustomIconName) == 0 || isCustomSvg(iconFilename)) {

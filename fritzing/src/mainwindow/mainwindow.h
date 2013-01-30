@@ -143,7 +143,7 @@ public:
 	// fritzing, then this functions may help with the bundle tasks
 	// on the complex entities: sketches, bins, modules (?)
 	void saveBundledNonAtomicEntity(QString &filename, const QString &extension, Bundler *bundler, const QList<ModelPart*> &partsToSave, bool askForFilename, const QString & destFolderPath, bool saveModel, bool deleteLeftovers);
-	void loadBundledNonAtomicEntity(const QString &filename, Bundler *bundler, bool addToBin, bool dontAsk);
+	bool loadBundledNonAtomicEntity(const QString &filename, Bundler *bundler, bool addToBin, bool dontAsk);
 	void saveAsShareable(const QString & path, bool saveModel);
 
 	

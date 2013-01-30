@@ -1284,7 +1284,7 @@ void MainWindow::copySvg(const QString & path, QFileInfoList & svgEntryInfoList)
 }
 
 
-void MainWindow::loadBundledNonAtomicEntity(const QString &fileName, Bundler* bundler, bool addToBin, bool dontAsk) {
+bool MainWindow::loadBundledNonAtomicEntity(const QString &fileName, Bundler* bundler, bool addToBin, bool dontAsk) {
 	QDir destFolder = QDir::temp();
 
 	FolderUtils::createFolderAnCdIntoIt(destFolder, TextUtils::getRandText());
@@ -1298,7 +1298,7 @@ void MainWindow::loadBundledNonAtomicEntity(const QString &fileName, Bundler* bu
 		);
 
 		// gotta return now, or loadBundledSketchAux will crash
-		return;
+		return false;
 	}
 
 	QDir unzipDir(unzipDirPath);
@@ -1310,6 +1310,8 @@ void MainWindow::loadBundledNonAtomicEntity(const QString &fileName, Bundler* bu
 	}
 
 	FolderUtils::rmdir(unzipDirPath);
+
+    return true;
 }
 
 /*
