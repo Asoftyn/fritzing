@@ -1121,10 +1121,12 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
         //updateDisplay(m_grid, 0);
         //if (m_bothSidesNow) updateDisplay(m_grid, 1);
 
+        //DebugDialog::debug(QString("before route one %1").arg(netIndex));
         routeThing.unrouted = false;
         if (!routeOne(makeJumper, currentScore, netIndex, routeThing, allOrderings)) {
             result = false;
         }
+        //DebugDialog::debug(QString("after route one %1 %2").arg(netIndex).arg(result));
 
         while (result && subnets.count() > 2) {
 
@@ -1162,14 +1164,19 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
 
 bool MazeRouter::routeOne(bool makeJumper, Score & currentScore, int netIndex, RouteThing & routeThing, QList<NetOrdering> & allOrderings) {
 
-    //DebugDialog::debug("start routeOne()");
+    //DebugDialog::debug("start route()");
     Trace newTrace;
     int viaCount;
     routeThing.bestDistanceToSource = routeThing.bestDistanceToTarget = std::numeric_limits<double>::max();
+    //DebugDialog::debug(QString("jumper d %1, %2").arg(routeThing.bestDistanceToSource).arg(routeThing.bestDistanceToTarget));
+
     newTrace.gridPoints = route(routeThing, viaCount);
     if (m_cancelled || m_stopTracing) {
         return false;
     }
+
+    //DebugDialog::debug("after route()");
+
 
     if (newTrace.gridPoints.count() == 0) {
         if (makeJumper) {
@@ -1873,12 +1880,14 @@ void MazeRouter::expandOne(GridPoint & gridPoint, RouteThing & routeThing, int d
         next.qCost = next.baseCost + d;
         if (routeThing.sourceValue == GridSource) {
             if (d < routeThing.bestDistanceToTarget) {
+                //DebugDialog::debug(QString("best d target %1, %2,%3").arg(d).arg(next.x).arg(next.y));
                 routeThing.bestDistanceToTarget = d;
                 routeThing.bestLocationToTarget = next;
             }
         }
         else {
             if (d < routeThing.bestDistanceToSource) {
+                //DebugDialog::debug(QString("best d source %1, %2,%3").arg(d).arg(next.x).arg(next.y));
                 routeThing.bestDistanceToSource = d;
                 routeThing.bestLocationToSource = next;
             }
@@ -2240,7 +2249,7 @@ void MazeRouter::createTraces(NetList & netList, Score & bestScore, QUndoCommand
 
 void MazeRouter::createTrace(Trace & trace, QList<GridPoint> & gridPoints, TraceThing & traceThing, ConnectionThing & connectionThing, Net * net) 
 {
-    DebugDialog::debug(QString("create trace net:%1").arg(net->id));
+    //DebugDialog::debug(QString("create trace net:%1").arg(net->id));
     if (trace.flags & JumperStart) {
         if (m_pcbType) {
 	        long newID = ItemBase::getNextID();
@@ -2777,10 +2786,12 @@ SymbolPaletteItem * MazeRouter::makeNetLabel(GridPoint & center, SymbolPaletteIt
 
 void MazeRouter::routeJumper(int netIndex, RouteThing & routeThing, Score & currentScore) 
 {
-    if (routeThing.bestDistanceToTarget == std::numeric_limits<GridValue>::max() || routeThing.bestDistanceToSource == std::numeric_limits<GridValue>::max()) {
+    if (routeThing.bestDistanceToTarget == std::numeric_limits<double>::max() || routeThing.bestDistanceToSource == std::numeric_limits<double>::max()) {
         // never got started on this route
         return;
     }
+
+    //DebugDialog::debug(QString("route jumper %1, %2").arg(routeThing.bestDistanceToSource).arg(routeThing.bestDistanceToTarget));
 
     //updateDisplay(0);
     //if (m_bothSidesNow) updateDisplay(1);

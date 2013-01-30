@@ -519,7 +519,7 @@ bool FSvgRenderer::initConnectorInfoPath(QDomElement & element, ConnectorInfo * 
     if (!fill.isEmpty()) element.setAttribute("fill", fill);
     if (!stroke.isEmpty()) element.setAttribute("stroke", stroke);
 
-    DebugDialog::debug(QString("checking connector path %1").arg(id));
+    //DebugDialog::debug(QString("checking connector path %1").arg(id));
 
     int lxStart = -1, lxEnd = -1, rxStart = -1, rxEnd = -1;
     for (int x = 0; x < width; x++) {
@@ -610,7 +610,7 @@ bool FSvgRenderer::initConnectorInfoPath(QDomElement & element, ConnectorInfo * 
 	connectorInfo->strokeWidth = sw;
     connectorInfo->gotCircle = true;
 
-    DebugDialog::debug(QString("got connector path %1").arg(id));
+    //DebugDialog::debug(QString("got connector path %1").arg(id));
 
     return true;
 }
