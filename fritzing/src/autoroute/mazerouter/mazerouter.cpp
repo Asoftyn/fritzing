@@ -268,14 +268,16 @@ inline int gridPointInt(Grid * grid, GridPoint & gp) {
 bool jumperWillFit(GridPoint & gridPoint, const Grid * grid, int halfSize) {
     for (int z = 0; z < grid->z; z++) {
         for (int y = -halfSize; y <= halfSize; y++) {
-            if (y < 0) return false;
-            if (y >= grid->y) return false;
+            int py = gridPoint.y + y;
+            if (py < 0) return false;
+            if (py >= grid->y) return false;
 
             for (int x = -halfSize; x <= halfSize; x++) {
-                if (x < 0) return false;
-                if (x >= grid->x) return false;
+                int px = x + gridPoint.x;
+                if (px < 0) return false;
+                if (px >= grid->x) return false;
 
-                GridValue val = grid->at(gridPoint.x + x, gridPoint.y + y, z);
+                GridValue val = grid->at(px, py, z);
                 if (val == GridPartObstacle || val == GridBoardObstacle || val == GridSource || val == GridTarget || val == GridAvoid|| val == GridTempObstacle) return false;
             }
         }
@@ -1914,15 +1916,17 @@ void MazeRouter::expandOne(GridPoint & gridPoint, RouteThing & routeThing, int d
 
 bool MazeRouter::viaWillFit(GridPoint & gridPoint, Grid * grid) {
     for (int y = -m_halfGridViaSize; y <= m_halfGridViaSize; y++) {
-        if (y < 0) continue;
-        if (y >= grid->y) continue;
+        int py = y + gridPoint.y;
+        if (py < 0) return false;
+        if (py >= grid->y) return false;
 
         for (int x = -m_halfGridViaSize; x <= m_halfGridViaSize; x++) {
-            if (x < 0) continue;
-            if (x >= grid->x) continue;
+            int px = x + gridPoint.x;
+            if (px < 0) return false;
+            if (px >= grid->x) return false;
 
             for (int z = 0; z < grid->z; z++) {
-                GridValue val = grid->at(gridPoint.x + x, gridPoint.y + y, z);
+                GridValue val = grid->at(px, py, z);
                 if (val == GridPartObstacle || val == GridBoardObstacle || val == GridSource || val == GridTarget || val == GridTempObstacle || val == GridAvoid) return false;
             }
         }
