@@ -241,6 +241,8 @@ bool ModelBase::loadInstances(QDomDocument & domDocument, QDomElement & instance
 			ModelPart * mp = new ModelPart(ModelPart::Space);
 			mp->setInstanceText(instance.attribute("path"));
 			mp->setParent(m_root);
+            mp->modelPartShared()->setModuleID(ModuleIDNames::SpacerModuleIDName);
+            mp->modelPartShared()->setPath(instance.attribute("path"));
 			modelParts.append(mp);
 			instance = instance.nextSiblingElement("instance");
 			continue;

@@ -255,7 +255,7 @@ void ModelPart::saveInstance(QXmlStreamWriter & streamWriter)
 
 	streamWriter.writeStartElement("instance");
 	if (m_modelPartShared != NULL) {
-		const QString & moduleIdRef = m_modelPartShared->moduleID();
+		QString moduleIdRef = m_modelPartShared->moduleID();
 		streamWriter.writeAttribute("moduleIdRef", moduleIdRef);
 		streamWriter.writeAttribute("modelIndex", QString::number(m_index));
 		streamWriter.writeAttribute("path", m_modelPartShared->path());
