@@ -347,7 +347,7 @@ QString TextUtils::replaceTextElements(const QString & svg, const QHash<QString,
 void TextUtils::replaceElementChildText(QDomDocument & doc, QDomElement & root, const QString & elementName, const QString & text) {
 	QDomElement element = root.firstChildElement(elementName);
 	if (element.isNull()) {
-		doc.createElement(elementName);
+		element = doc.createElement(elementName);
 		root.appendChild(element);
 	}
 	replaceChildText(doc, element, text);

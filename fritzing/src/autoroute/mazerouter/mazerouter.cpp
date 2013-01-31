@@ -3161,8 +3161,12 @@ void MazeRouter::optimizeTraces(QList<int> & order, QMultiHash<int, QList< QPoin
 }
 
 void MazeRouter::reducePoints(QList<QPointF> & points, QPointF topLeft, QList<TraceWire *> & bundle, int startIndex, int endIndex, ConnectionThing & connectionThing, int netIndex, ViewLayer::ViewLayerSpec layerSpec) {
-    double width = bundle.at(0)->width() * OptimizeFactor;
+    Q_UNUSED(netIndex);
+    Q_UNUSED(layerSpec);
+#ifndef QT_NO_DEBUG
     int inc = 0;
+#endif
+    double width = bundle.at(0)->width() * OptimizeFactor;
     for (int separation = endIndex - startIndex; separation > 1; separation--) {
         for (int ix = 0; ix < points.count() - separation; ix++) {
             QPointF p1 = (points.at(ix) - topLeft) * OptimizeFactor;

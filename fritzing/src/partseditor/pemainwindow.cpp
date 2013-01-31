@@ -1069,9 +1069,9 @@ void PEMainWindow::changeMetadata(const QString & name, const QString & value, b
 {
     // called from command object
     QDomElement root = m_fzpDocument.documentElement();
-    QDomElement element = root.firstChildElement(name);
-    QString oldValue = element.text();
-    TextUtils::replaceChildText(m_fzpDocument, element, value);
+    TextUtils::replaceElementChildText(m_fzpDocument, root, name, value);
+
+    //QString test = m_fzpDocument.toString();
 
     if (updateDisplay) {
         m_metadataView->initMetadata(m_fzpDocument);

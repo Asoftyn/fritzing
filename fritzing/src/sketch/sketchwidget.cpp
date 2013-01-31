@@ -6421,7 +6421,7 @@ void SketchWidget::spaceBarIsPressedSlot(bool isPressed) {
 		//setInteractive(false);
 		//CursorMaster::instance()->addCursor(this, Qt::OpenHandCursor);
         //setCursor(Qt::OpenHandCursor);
-        DebugDialog::debug("setting open hand cursor");
+        //DebugDialog::debug("setting open hand cursor");
 	}
 	else {
         //CursorMaster::instance()->removeCursor(this);
