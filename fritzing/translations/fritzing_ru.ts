@@ -618,6 +618,10 @@ If you intended your custom shape to have cutouts and you did not get the expect
         <source>Too close to a border (%1 layer)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>A hole in %1 may lie outside the border of the board and would be clipped.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DRCResultsDialog</name>
@@ -2977,6 +2981,30 @@ Go ahead and revert?</source>
     </message>
     <message>
         <source>How much would it could to produce a PCB from this sketch with Fritzing Fab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find part in sketch...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for parts in a sketch by matching text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QInputDialog::getText()</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text will match part label, description, title, etc. Enter text to search for:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No parts matched search term &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
