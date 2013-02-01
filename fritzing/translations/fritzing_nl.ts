@@ -17,7 +17,7 @@
     </message>
     <message>
         <source>Fritzing is made by: </source>
-        <translation>Fritzing is gemaakt door:</translation>
+        <translation>Fritzing is gemaakt door: </translation>
     </message>
     <message>
         <source>Prof. Reto Wettach, Andr&amp;eacute; Kn&amp;ouml;rig, Myriel Milicevic, </source>
@@ -165,7 +165,7 @@
     </message>
     <message>
         <source>to Steven Noppe and Davy Uittenbogerd for the Dutch translation, </source>
-        <translation type="unfinished"></translation>
+        <translation>aan Steven Noppe en Davy Uittenbogerd voor de Nederlandse vertaling, </translation>
     </message>
 </context>
 <context>
@@ -214,7 +214,7 @@
     </message>
     <message>
         <source>Trace width</source>
-        <translation>spoor breedte</translation>
+        <translation>Spoor breedte</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -230,11 +230,11 @@
     </message>
     <message>
         <source>&lt;b&gt;Keepout&lt;/b&gt; is the minimum distance between copper elements on different nets.</source>
-        <translation>&lt;b&gt;Veiligheids afstand&lt;/b&gt; is de minimale afstand tussen verschillende koper netten.</translation>
+        <translation>&lt;b&gt;Veiligheids afstand&lt;/b&gt; is de minimale afstand tussen banen verschillende koper netten.</translation>
     </message>
     <message>
         <source>A keepout of 0.01 inch (0.254 mm) is a good default.</source>
-        <translation>een veiligheids afstand van 0.01 inch (0.254 mm) is een goede standaard.</translation>
+        <translation>Een veiligheids afstand van 0.01 inch (0.254 mm) is een goede standaard.</translation>
     </message>
     <message>
         <source>Note: the smaller the keepout, the slower the DRC and Autorouter will run.</source>
@@ -257,7 +257,7 @@
     </message>
     <message>
         <source>Fritzing Bin Files (*%1 *%2);;Fritzing Bin (*%1);;Fritzing Shareable Bin (*%2)</source>
-        <translation>Fritzing koffer bestanden (*%1 *%2);;Fritzing koffer (*%1);;Fritzing uitwisselbare koffer (*%2)</translation>
+        <translation>Fritzing Koffer Bestanden (*%1 *%2);;Fritzing Koffer (*%1);;Fritzing Uitwisselbare Koffer (*%2)</translation>
     </message>
     <message>
         <source>Cannot set a NULL bin as the current one</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
         <source>Bin</source>
-        <translation>koffer</translation>
+        <translation>Koffer</translation>
     </message>
     <message>
         <source>New Bin...</source>
@@ -401,7 +401,7 @@
     </message>
     <message>
         <source>Select a Fritzing File to Open</source>
-        <translation>Selecteer een Fritzing bestand om te openen</translation>
+        <translation>Selecteer een Fritzing Bestand om te Openen</translation>
     </message>
     <message>
         <source>Fritzing Files (*%1 *%2 *%3);;Fritzing Part (*%1);;Fritzing Bin (*%2);;Fritzing Shareable Bin (*%3)</source>
@@ -433,7 +433,7 @@ A custom board svg typically has one silkscreen layer and one board layer.
 </source>
         <translation>
 
-Een aangepast bord SVG heeft meestal één silkscreen laag en één bord laag.
+Een aangepast bord SVG heeft gewoonlijk één silkscreen laag en één bord laag.
 </translation>
     </message>
     <message>
@@ -462,7 +462,7 @@ Een aangepast bord SVG heeft meestal één silkscreen laag en één bord laag.
     </message>
     <message>
         <source>due to an xml problem: %1 line:%2 column:%3</source>
-        <translation>veroorzaakt door een xml probleem: %1 line:%2 column:%3</translation>
+        <translation>veroorzaakt door een xml probleem: %1 regel:%2 kolom:%3</translation>
     </message>
     <message>
         <source>because the xml is not correctly formatted</source>
@@ -512,7 +512,7 @@ Een aangepast bord SVG heeft meestal één silkscreen laag en één bord laag.
         <source>The image from %1 can be loaded, but %2
 Use the file?</source>
         <translation>De afbeelding van %1 kan geladen worden, maar %2 
-Bestand gebruiken?</translation>
+Wil je het bestand gebruiken?</translation>
     </message>
     <message>
         <source>Fritzing thinks the custom shape has no cutouts.</source>
@@ -537,13 +537,13 @@ Maar de uitsnedes kunnen mogelijk onjuist geformatteerd zijn.</translation>
 If you intended your custom shape to have cutouts and you did not get the expected result </source>
         <translation>
 
-Als je aangepaste vorm uitsnedes moet hebben, maar je krijgt niet het verwachtte relultaat </translation>
+Als je aangepaste vorm uitsnedes zou moet hebben, maar je krijgt niet het verwachtte relultaat </translation>
     </message>
     <message>
         <source>it is because Fritzing requires that you make cutouts using a shape &apos;subtraction&apos; or &apos;difference&apos; operation in your vector graphics editor.
 
 </source>
-        <translation>is dat, omdat Fritzing verlangt dat je de uitsnedes maakt door middel van een vorm via de &apos;substractie&apos; of &apos;verschil&apos; uitvoer binnen je vector programma.
+        <translation>is dat, omdat Fritzing verlangt dat je de uitsnedes maakt door middel van een vorm via de &apos;substractie&apos; of &apos;verschil&apos; methode binnen je vector programma.
 
 </translation>
     </message>
@@ -571,7 +571,7 @@ Als je aangepaste vorm uitsnedes moet hebben, maar je krijgt niet het verwachtte
     </message>
     <message>
         <source>Remove bendpoint</source>
-        <translation>verwijder buigpunt</translation>
+        <translation>Verwijder buigpunt</translation>
     </message>
     <message>
         <source>Straighten curve</source>
@@ -586,7 +586,8 @@ Als je aangepaste vorm uitsnedes moet hebben, maar je krijgt niet het verwachtte
     </message>
     <message>
         <source>Your sketch is ready for production: there are no connectors or traces that overlap or are too close together.</source>
-        <translation>Je sketch is klaar voor productie: Er zijn geen banen of connectoren die elkaar overlappen of te dicht bij elkaar liggen.</translation>
+        <translation>Je sketch is klaar voor productie:
+Er zijn geen banen of connectoren die elkaar overlappen of te dicht bij elkaar liggen.</translation>
     </message>
     <message>
         <source>The areas on your board highlighted in red are connectors and traces which may overlap or be too close together. </source>
@@ -630,14 +631,14 @@ Als je aangepaste vorm uitsnedes moet hebben, maar je krijgt niet het verwachtte
     </message>
     <message>
         <source>A hole in %1 may lie outside the border of the board and would be clipped.</source>
-        <translation type="unfinished"></translation>
+        <translation>Een gat in %1 ligt waarschijnlijk te dicht aan de rand van het bord en zal worden afgeknipt.</translation>
     </message>
 </context>
 <context>
     <name>DRCResultsDialog</name>
     <message>
         <source>DRC Results</source>
-        <translation>DRC resultaten</translation>
+        <translation>DRC Resultaten</translation>
     </message>
     <message>
         <source>Note: the list items and the red highlighting will not update as you edit your sketch--you must rerun the DRC. The highlighting will disappear when you close this dialog.</source>
@@ -652,7 +653,7 @@ Als je aangepaste vorm uitsnedes moet hebben, maar je krijgt niet het verwachtte
     <name>DebugDialog</name>
     <message>
         <source>for debugging</source>
-        <translation>Voor debugging</translation>
+        <translation>Voor foutopsporing</translation>
     </message>
 </context>
 <context>
@@ -744,11 +745,11 @@ Noot: Je kunt ze ook later importeren via &quot;Help&quot; &gt;&quot;Importeer o
     </message>
     <message>
         <source>Specify a file name</source>
-        <translation>Specifiëer een bestandsnaam</translation>
+        <translation>Specificeer een bestandsnaam</translation>
     </message>
     <message>
         <source>Save &quot;%1&quot;</source>
-        <translation>Opslaan &quot;%1&quot;</translation>
+        <translation>&quot;%1&quot; Opslaan</translation>
     </message>
     <message>
         <source>Do you want to save the changes you made in the document &quot;%1&quot;?</source>
@@ -756,7 +757,7 @@ Noot: Je kunt ze ook later importeren via &quot;Help&quot; &gt;&quot;Importeer o
     </message>
     <message>
         <source>Save...</source>
-        <translation>Opslaan als...</translation>
+        <translation>Opslaan...</translation>
     </message>
     <message>
         <source>Save</source>
@@ -789,7 +790,7 @@ This dialog collects only connectors labeled &apos;GND&apos; or &apos;ground&apo
 Click an item to highlight its connections in the sketch.
 
 It is also possible to choose a connector as a ground fill seed by right-clicking a connector and choosing the &apos;Set Ground Fill Seed&apos; context menu option.</source>
-        <translation>Het verschil tussen ground vulling en koper vulling is dat een koper vulling de ruimte tussen de connectors en banen zal opvullen. De ground vulling doet dit ook, maar zal ook verbinding maken met alle connectoren die het label &apos;GND&apos; of &apos;Ground&apos; hebben. Maar, het kan zijn dat je, van verschillende netten, maar één net gevuld wilt hebben.
+        <translation>Het verschil tussen ground vulling en koper vulling, is dat een koper vulling de ruimte tussen de connectors en banen zal opvullen. De ground vulling doet dit ook, maar zal ook verbinding maken met alle connectoren die het label &apos;GND&apos; of &apos;Ground&apos; hebben. Maar, het kan zijn dat je, van verschillende netten, maar één net gevuld wilt hebben.
 
 Dit venster vindt alleen de connectors gemarkeerd als &apos;GND&apos; of &apos;Ground&apos; en connectors die je zelf gemarkeerd hebt als &apos;Seed&apos;.
 
@@ -826,7 +827,7 @@ Het is ook mogelijk om op een connector rechts te klikken en kies &apos;Maak gro
     </message>
     <message>
         <source>The &lt;b&gt;PCB View&lt;/b&gt; is where you design how the components will appear on a physical PCB (Printed Circuit Board).&lt;br/&gt;&lt;br/&gt;PCBs can be made at home or in a small lab using DIY etching processes. They also can be sent to professional PCB manufacturing services for more precise fabrication. &lt;br/&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;The first thing you will need is a board to place your parts on. There should already be one beneath this widget, but if not, drag in the board icon from the parts bin (image at right). &lt;/td&gt;&lt;td&gt;&lt;img src=&quot;:resources/parts/svg/core/icon/rectangle_pcb.svg&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br/&gt;&lt;br/&gt;To lay out your PCB, rearrange all the components so they fit nicely on the board. Then try to shift them around to minimize the length and confusion of connections. You can also resize rectangular boards. &lt;br/&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;Once the parts are sorted out, you connect them with copper traces. You can drag out a trace from individual connections or use the autorouter to generate them. The Autoroute button is at the bottom of the window (image at right).&lt;/td&gt;&lt;td&gt;&lt;img src=&quot;:resources/images/icons/toolbarAutorouteEnabled_icon.png&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</source>
-        <translation>De &lt;b&gt;PCB-Weergave&lt;/b&gt; is waar je je uiteindelijke PCB (Printed Circuit Board) maakt en alle onderdelen hun juiste plaats geeft.&lt;br&gt;&lt;br/&gt; PCB&apos;s kunnen thuis of in een klein laboratorium gemaakt worden door een doe-het-zelf ets proces. Het kan ook verstuurd worden naar een bebrijf, welke een hoge kwaliteit of grote hoeveelheden kan leveren. &lt;br/&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt; Het eerste wat je nodig hebt is een bord om al je onderdelen op te plaatsen. Er staat hier onder al een bord voor je klaar, mocht dat niet het geval zijn, sleep dan het &apos;bord&apos; icoonje uit de koffer naar het werkgebied.(afbeelding rechts)&lt;/td&gt;&lt;td&gt;&lt;img src=&quot;:resources/parts/svg/core/icon/rectangle_pcb.svg&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br/&gt;&lt;br/&gt; Om je PCB te maken sleep je je onderdelen op je bord, zodat ze allemaal mooi passen. Probeer ze zo te plaatsen, dat je banen zo kort mogelijk worden en een logische weg kunnen volgen. Je kunt ook de afmetingen van rechtkoekige borden veranderen.&lt;br/&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;Als alles op z&apos;n plaats staat, verbind je de aansluitingen door koperen banen. Je kunt ze handmatig voor iedere aansluiting maken of maak gebruik van de autorouter om ze automatisch te maken. De autoroute knop bevindt zich onder aan het scherm. (afbeelding rechts).&lt;/td&gt;&lt;td&gt;&lt;img src=&quot;:resources/images/icons/toolbarAutorouteEnabled_icon.png&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</translation>
+        <translation>De &lt;b&gt;PCB-Weergave&lt;/b&gt; is waar je je uiteindelijke PCB (Printed Circuit Board) maakt en alle onderdelen hun juiste plaats geeft.&lt;br&gt;&lt;br/&gt; PCB&apos;s kunnen thuis of in een klein laboratorium gemaakt worden door een doe-het-zelf ets proces. Het kan ook verstuurd worden naar een bebrijf, welke een hoge kwaliteit of grote hoeveelheden kan leveren. &lt;br/&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt; Het eerste wat je nodig hebt is een bord om al je onderdelen op te plaatsen. Er staat hier onder al een bord voor je klaar, mocht dat niet het geval zijn, sleep dan het &apos;bord&apos; icoonje uit de koffer naar het werkgebied. (afbeelding rechts)&lt;/td&gt;&lt;td&gt;&lt;img src=&quot;:resources/parts/svg/core/icon/rectangle_pcb.svg&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br/&gt;&lt;br/&gt; Om je PCB te maken sleep je je onderdelen op je bord, zodat ze allemaal mooi passen. Probeer ze zo te plaatsen, dat je banen zo kort mogelijk worden en een logische weg kunnen volgen. Je kunt ook de afmetingen van rechtkoekige borden veranderen.&lt;br/&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;Als alles op z&apos;n plaats staat, verbind je de aansluitingen door koperen banen. Je kunt ze handmatig voor iedere aansluiting maken of maak gebruik van de autorouter om ze automatisch te maken. De autoroute knop bevindt zich onder aan het scherm. (afbeelding rechts).&lt;/td&gt;&lt;td&gt;&lt;img src=&quot;:resources/images/icons/toolbarAutorouteEnabled_icon.png&quot; /&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</translation>
     </message>
 </context>
 <context>
@@ -911,7 +912,7 @@ Het is ook mogelijk om op een connector rechts te klikken en kies &apos;Maak gro
     </message>
     <message>
         <source>Change the locked state of the part in this view. A locked part can&apos;t be moved.</source>
-        <translation>Verander de status van het vastgezette onderdeel. Een onderdeel welke is vastgezet kan niet verplaatst worden.</translation>
+        <translation>Wijzig de status van het vastgezette onderdeel. Een onderdeel welke is vastgezet kan niet verplaatst worden.</translation>
     </message>
     <message>
         <source>Sticky</source>
@@ -919,7 +920,7 @@ Het is ook mogelijk om op een connector rechts te klikken en kies &apos;Maak gro
     </message>
     <message>
         <source>Change the &quot;sticky&quot; state of the part in this view. When a sticky part is moved, objects on top of it also move.</source>
-        <translation>Verander de status van het &quot;sticky&quot; onderdeel. Als een &quot;sticky&quot; onderdeel wordt verplaatst, bewegen onderdelen er boven ook mee.</translation>
+        <translation>Wijzig de status van het &quot;sticky&quot; onderdeel. Als een &quot;sticky&quot; onderdeel wordt verplaatst, bewegen onderdelen er boven ook mee.</translation>
     </message>
     <message>
         <source>v. %1 %2</source>
@@ -1209,7 +1210,7 @@ Het is ook mogelijk om op een connector rechts te klikken en kies &apos;Maak gro
     </message>
     <message>
         <source>Specify a file name</source>
-        <translation>Specifiëer een bestandsnaam</translation>
+        <translation>Specificeer een bestandsnaam</translation>
     </message>
     <message>
         <source>Fritzing (*%1)</source>
@@ -1526,7 +1527,7 @@ Wij werken er momenteel aan om dit bericht te vermijden en je te laten kiezen tu
     </message>
     <message>
         <source>Redo</source>
-        <translation>Terug gedaan maken</translation>
+        <translation>Opnieuw</translation>
     </message>
     <message>
         <source>&amp;Cut</source>
@@ -1862,7 +1863,7 @@ Wij werken er momenteel aan om dit bericht te vermijden en je te laten kiezen tu
     </message>
     <message>
         <source>&amp;Minimize</source>
-        <translation>&amp;Minimaliseer</translation>
+        <translation>&amp;Minimaliseren</translation>
     </message>
     <message>
         <source>Ctrl+M</source>
@@ -1978,7 +1979,7 @@ Wij werken er momenteel aan om dit bericht te vermijden en je te laten kiezen tu
     </message>
     <message>
         <source>Page Setup</source>
-        <translation>Pagina setup</translation>
+        <translation>Pagina-instelling</translation>
     </message>
     <message>
         <source>Sorry, &quot;%1&quot; has not been implemented yet</source>
@@ -2221,7 +2222,7 @@ Controleer a.u.b. alle weergaves voor potentiële fouten.</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Verwijder</translation>
+        <translation>Verwijderen</translation>
     </message>
     <message numerus="yes">
         <source>Routing completed using %n jumper part(s)</source>
@@ -2529,7 +2530,7 @@ Controleer a.u.b. alle weergaves voor potentiële fouten.</translation>
     </message>
     <message>
         <source>The copper top (copper 1) layer is not available on a one-sided board.  Please switch the board to double-sided or choose the copper bottom (copper 0) layer.</source>
-        <translation>De bovenste koperlaag (Koper 1) is niet aanwezig op een enkelzijdig bord.  Verander naar dubbelzijdig bord of selecteer de onderste kopelaag. (Koper 0).</translation>
+        <translation>De bovenste koperlaag (Koper 1) is niet aanwezig op een enkelzijdig bord.  Wijzig naar dubbelzijdig bord of selecteer de onderste koperlaag. (Koper 0).</translation>
     </message>
     <message>
         <source>Unable to open &apos;%1&apos;</source>
@@ -2663,19 +2664,19 @@ Wilt u &apos;%1&apos; converteren naar het .fzz bestandsfomaat of wilt u het als
     </message>
     <message>
         <source>Select all trace wires that can be changed during autorouting</source>
-        <translation>Selcteer alle banen welke kunnen veranderen tijdens autorouting</translation>
+        <translation>Selcteer alle banen welke kunnen wijzigen tijdens autorouting</translation>
     </message>
     <message>
         <source>Change to single layer pcb</source>
-        <translation>Verander naar enkellaags PCB</translation>
+        <translation>Wijzig naar enkellaags PCB</translation>
     </message>
     <message>
         <source>Change to two layer pcb</source>
-        <translation>Verander naar dubbellaags PCB</translation>
+        <translation>Wijzig naar dubbellaags PCB</translation>
     </message>
     <message>
         <source>Change image to %2</source>
-        <translation>Verander afbeelding naar %2</translation>
+        <translation>Wijzig afbeelding naar %2</translation>
     </message>
     <message>
         <source>Gerber export can only handle one board at a time--please select the board you want to export.</source>
@@ -2691,7 +2692,7 @@ Wilt u &apos;%1&apos; converteren naar het .fzz bestandsfomaat of wilt u het als
     </message>
     <message>
         <source>Set Grid Size...</source>
-        <translation>Stel Rastegrootte In...</translation>
+        <translation>Stel Rastergrootte In...</translation>
     </message>
     <message>
         <source>Set the size of the grid in this view</source>
@@ -2983,51 +2984,51 @@ Doorgaan en terug naar vorige versie?</translation>
     </message>
     <message>
         <source>Ctrl+4</source>
-        <translation type="unfinished">Ctrl+4</translation>
+        <translation>Ctrl+4</translation>
     </message>
     <message>
         <source>Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Code</translation>
     </message>
     <message>
         <source>Show Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon code</translation>
     </message>
     <message>
         <source>Show the code (programming) view</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon de code (programmeer) weergave</translation>
     </message>
     <message>
         <source>Fritzing Fab Quote...</source>
-        <translation type="unfinished"></translation>
+        <translation>Fritzing Fab Offerte...</translation>
     </message>
     <message>
         <source>How much would it could to produce a PCB from this sketch with Fritzing Fab</source>
-        <translation type="unfinished"></translation>
+        <translation>Wat zullen de kosten zijn om een PCB te laten produceren van deze sketch met Fritzing Fab</translation>
     </message>
     <message>
         <source>Find part in sketch...</source>
-        <translation type="unfinished"></translation>
+        <translation>Vind onderdeel in de sketch...</translation>
     </message>
     <message>
         <source>Search for parts in a sketch by matching text</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoek naar onderdelen met overeenkomstige tekst in een sketch</translation>
     </message>
     <message>
         <source>QInputDialog::getText()</source>
-        <translation type="unfinished"></translation>
+        <translation>QInputDialog::getText()</translation>
     </message>
     <message>
         <source>Text will match part label, description, title, etc. Enter text to search for:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst zal gelijk zijn aan het onderdeellabel, beschrijving, titel, etc. Voer tekst in om te zoeken:</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoeken</translation>
     </message>
     <message>
         <source>No parts matched search term &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen onderdelen gevonden met de zoekterm &apos;%1&apos;.</translation>
     </message>
 </context>
 <context>
@@ -3073,15 +3074,15 @@ Doorgaan en terug naar vorige versie?</translation>
     </message>
     <message>
         <source>Use best so far...</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik beste tot nu toe...</translation>
     </message>
     <message>
         <source>Preparing undo...</source>
-        <translation type="unfinished"></translation>
+        <translation>Voorbereiden op ongedaan maken...</translation>
     </message>
     <message>
         <source>Optimizing traces...</source>
-        <translation type="unfinished"></translation>
+        <translation>Banen optimaliseren...</translation>
     </message>
 </context>
 <context>
@@ -3134,7 +3135,7 @@ Reden : %2 (errcode %3)</translation>
     </message>
     <message>
         <source>Change trace layer</source>
-        <translation>Verander spoor laag</translation>
+        <translation>Wijzig spoor laag</translation>
     </message>
     <message>
         <source>Fritzing</source>
@@ -3226,13 +3227,13 @@ Reden : %2 (errcode %3)</translation>
     </message>
     <message>
         <source>Your sketch does not have a board yet. You cannot fabricate this sketch without a PCB part.</source>
-        <translation type="unfinished"></translation>
+        <translation>Je sketch heeft nog geen bord! Je kunt je sketch niet fabriceren zonder een PCB onderdeel.</translation>
     </message>
     <message numerus="yes">
         <source>%n copies of this sketch will cost %1 Euros.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n kopie van deze sketch kost %1 Euro.</numerusform>
+            <numerusform>%n kopieën van deze sketch kosten %1 Euro.</numerusform>
         </translation>
     </message>
 </context>
@@ -3567,7 +3568,7 @@ Doorgaan en opslaan?</translation>
     </message>
     <message>
         <source>Change %1 to %2</source>
-        <translation>Verander %1 naar %2</translation>
+        <translation>Wijzig %1 naar %2</translation>
     </message>
     <message>
         <source>Must be unique</source>
@@ -3713,7 +3714,7 @@ Doorgaan en opslaan?</translation>
     </message>
     <message>
         <source>Change all connectors to %1</source>
-        <translation>Verander alle aansluitingen naar %1</translation>
+        <translation>Wijzig alle aansluitingen naar %1</translation>
     </message>
     <message>
         <source>Unable to parse &apos;%1&apos;</source>
@@ -3721,7 +3722,7 @@ Doorgaan en opslaan?</translation>
     </message>
     <message>
         <source>Change to %1</source>
-        <translation>Verander naar %1</translation>
+        <translation>Wijzig naar %1</translation>
     </message>
     <message>
         <source>Make only %1 view visible</source>
@@ -4079,7 +4080,7 @@ Doorgaan en opslaan?</translation>
     </message>
     <message>
         <source>Font Size</source>
-        <translation>Lettertype grootte</translation>
+        <translation>Tekengrootte</translation>
     </message>
     <message>
         <source>Rotate 90° Clockwise</source>
@@ -4361,7 +4362,7 @@ Noot: Deze waarschuling zal de rest van deze sessie van Fritzing niet meer getoo
     </message>
     <message>
         <source>Redo</source>
-        <translation>Terug gedaan maken</translation>
+        <translation>Opnieuw</translation>
     </message>
     <message>
         <source>Save</source>
@@ -4372,7 +4373,7 @@ Noot: Deze waarschuling zal de rest van deze sessie van Fritzing niet meer getoo
     <name>PrefsDialog</name>
     <message>
         <source>Cancel</source>
-        <translation>Annuleer</translation>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <source>OK</source>
@@ -4519,7 +4520,7 @@ De shift toets wisselt de as</translation>
     </message>
     <message>
         <source>Code (*.%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Code (*.%1)</translation>
     </message>
 </context>
 <context>
@@ -4618,7 +4619,7 @@ De shift toets wisselt de as</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation>Terug gedaan maken</translation>
+        <translation>Opnieuw</translation>
     </message>
     <message>
         <source>&amp;Cut</source>
@@ -4698,39 +4699,39 @@ De shift toets wisselt de as</translation>
     </message>
     <message>
         <source>New Code File</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuw Code Bestand</translation>
     </message>
     <message>
         <source>&amp;Open Code File...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Open Code Bestand...</translation>
     </message>
     <message>
         <source>&amp;Save Code File</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Opslaan Code Bestand</translation>
     </message>
     <message>
         <source>Rename Code File</source>
-        <translation type="unfinished"></translation>
+        <translation>Hernoem Code Bestand</translation>
     </message>
     <message>
         <source>&amp;Code</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Code</translation>
     </message>
     <message>
         <source>&amp;View</source>
-        <translation type="unfinished">&amp;Weergave</translation>
+        <translation>&amp;Weergave</translation>
     </message>
     <message>
         <source>Code Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Code Venster</translation>
     </message>
     <message>
         <source>Code Window - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Code Venster - %1</translation>
     </message>
     <message>
         <source>Find file...</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoek bestand...</translation>
     </message>
 </context>
 <context>
@@ -5477,11 +5478,11 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
     </message>
     <message>
         <source>unable to copy file &apos;%1&apos; to &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet mogelijk bestand &apos;%1&apos; naar &apos;%2&apos; te kopieren.</translation>
     </message>
     <message>
         <source>Autorouter Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Autorouter Instellingen</translation>
     </message>
 </context>
 <context>
@@ -5511,29 +5512,29 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
     <name>QuoteDialog</name>
     <message>
         <source>Fab Quote</source>
-        <translation type="unfinished"></translation>
+        <translation>Fab Offerte</translation>
     </message>
     <message>
         <source>Please note, price does not include shipping, possible additional taxes, or the checking fee.</source>
-        <translation type="unfinished"></translation>
+        <translation>Let op, de prijs is exclusief verzenden, mogelijke belastingen of extra kosten van je bank.</translation>
     </message>
     <message>
         <source>For more information on pricing see &lt;a href=&apos;http://fab.fritzing.org/pricing&apos;&gt;http://fab.fritzing.org/pricing&lt;/a&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Voor meer informatie over beprijzing ga je naar &lt;a href=&apos;http://fab.fritzing.org/pricing&apos;&gt;http://fab.fritzing.org/pricing&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>To order go to &lt;a href=&apos;http://fab.fritzing.org/fritzing-fab&apos;&gt;http://fab.fritzing.org/fritzing-fab&lt;/a&gt; and click &apos;Order Now&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Om te bestellen ga je naar &lt;a href=&apos;http://fab.fritzing.org/fritzing-fab&apos;&gt;http://fab.fritzing.org/fritzing-fab&lt;/a&gt; en klik op &apos;Order Now&apos;.</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message numerus="yes">
         <source>The total area of the %n boards in this sketch is %1 cm2 (%2 in2).</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Het totale oppervlakte van %n bord in deze sketch is %1 cm2 (%2 in2).</numerusform>
+            <numerusform>Het totale oppervlakte van %n borden in deze sketch is %1 cm2 (%2 in2).</numerusform>
         </translation>
     </message>
 </context>
@@ -5659,7 +5660,7 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
     </message>
     <message>
         <source>Tabloid (11x17)</source>
-        <translation type="unfinished">Tabloid (11x17)) {11x?}</translation>
+        <translation>Tabloid (11x17)</translation>
     </message>
 </context>
 <context>
@@ -5743,7 +5744,7 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Annuleer</translation>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <source>OK</source>
@@ -5782,7 +5783,7 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
     </message>
     <message>
         <source>Select All</source>
-        <translation>Selecteer alles</translation>
+        <translation>Alles selecteren</translation>
     </message>
     <message>
         <source>Deselect</source>
@@ -5846,7 +5847,7 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
     </message>
     <message>
         <source>Double-click</source>
-        <translation>Dubbel klikken</translation>
+        <translation>Dubbelklikken</translation>
     </message>
     <message>
         <source>Drag or double-click</source>
@@ -6006,21 +6007,21 @@ Noot:Je kunt dit venster ook oproepen door op de tekst van de routing status te 
     </message>
     <message numerus="yes">
         <source>show %n part label(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>toon %n onderdeel label</numerusform>
+            <numerusform>toom %n onderdeel labels</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>hide %n part label(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>verberg %n onderdeel label</numerusform>
+            <numerusform>verberg %n onderdeel labels</numerusform>
         </translation>
     </message>
     <message>
         <source>Resize ruler to %1 %2</source>
-        <translation type="unfinished">Wijzig grootte van meetlat naar %1 %2 {1 %2?}</translation>
+        <translation>Wijzig grootte van meetlat naar %1 %2</translation>
     </message>
 </context>
 <context>
@@ -6230,7 +6231,7 @@ Noot:Je kunt dit venster ook oproepen door op de tekst van de routing status te 
     </message>
     <message>
         <source>German - %1</source>
-        <translation>duits - %1</translation>
+        <translation>Duits - %1</translation>
     </message>
     <message>
         <source>Spanish - %1</source>
@@ -6346,11 +6347,11 @@ Noot:Je kunt dit venster ook oproepen door op de tekst van de routing status te 
     </message>
     <message>
         <source>Slovenian - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sloveens - %1</translation>
     </message>
     <message>
         <source>Marathi - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Marathi - %1</translation>
     </message>
 </context>
 <context>
@@ -6396,7 +6397,7 @@ Noot:Je kunt dit venster ook oproepen door op de tekst van de routing status te 
     </message>
     <message>
         <source>Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Code</translation>
     </message>
 </context>
 <context>

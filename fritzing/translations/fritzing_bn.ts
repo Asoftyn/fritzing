@@ -1084,7 +1084,7 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
 <context>
     <name>Hole</name>
     <message>
-        <location filename="../src/items/hole.cpp" line="287"/>
+        <location filename="../src/items/hole.cpp" line="289"/>
         <source>hole size</source>
         <translation>ছিেদ্রর সাইজ</translation>
     </message>
@@ -1544,123 +1544,123 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="239"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="256"/>
         <source>Ctrl+R</source>
         <comment>Rotate Clockwise</comment>
         <translation>Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="241"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="258"/>
         <source>Alt+Ctrl+R</source>
         <comment>Rotate Clockwise</comment>
         <translation>Alt+Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="243"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="260"/>
         <source>Meta+Ctrl+R</source>
         <comment>Rotate Clockwise</comment>
         <translation>Meta+Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="246"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="263"/>
         <source>Shift+Ctrl+R</source>
         <comment>Rotate Counterclockwise</comment>
         <translation>Meta+Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="248"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="265"/>
         <source>Alt+Shift+Ctrl+R</source>
         <comment>Rotate Counterclockwise</comment>
         <translation>Alt+Shift+Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="250"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="267"/>
         <source>Meta+Shift+Ctrl+R</source>
         <comment>Rotate Counterclockwise</comment>
         <translation>Meta+Shift+Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="253"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="270"/>
         <source>Shift+Ctrl+Tab</source>
         <comment>Toggle Active Layer</comment>
         <translation>Shift+Ctrl+Tab</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="730"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="747"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1251"/>
         <source>Rotate</source>
         <translation>ঘুরােনা</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="738"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="755"/>
         <source>Share</source>
         <translatorcomment>ভাগাভাগি</translatorcomment>
         <translation>বিনিময়</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="747"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="764"/>
         <source>Flip</source>
         <translation>উল্টানো</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="755"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="772"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2397"/>
         <source>Autoroute</source>
         <translation>স্বয়ংক্রিয় রুট</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="762"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="779"/>
         <source>Order PCB</source>
         <translatorcomment>পিসিবি আনতে </translatorcomment>
         <translation>চাহিদার পি সি বি</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="778"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="795"/>
         <source>Both Layers</source>
         <translatorcomment>উভই স্তর </translatorcomment>
         <translation>সম্ভাব্য স্তর সমুহ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="783"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="800"/>
         <source>Bottom Layer</source>
         <translation>নিচের স্তর</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="788"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="805"/>
         <source>Top Layer</source>
         <translation>উপরের স্তর</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="796"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="813"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="804"/>
         <source>Add a note</source>
         <translatorcomment>চিহ্ন যুক্ত </translatorcomment>
         <translation>নোট সংযুক্তী</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="806"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="823"/>
         <source>Export for PCB</source>
         <translation>পি সি বি তে পাঠানোর জন্য</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="883"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="900"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="148"/>
         <source>Ready</source>
         <translation>প্রস্তুত</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1057"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1074"/>
         <source>Save %1</source>
         <translation>সঞ্চয় %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1139"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1157"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1296"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1338"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1351"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1416"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1977"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1156"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1174"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1395"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1437"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1450"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1515"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2076"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="168"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="173"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="589"/>
@@ -1694,71 +1694,71 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation>ফ্রিটজিং</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1140"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1157"/>
         <source>Unable to open &apos;%1&apos;</source>
         <translatorcomment>খুলতে অপারগ</translatorcomment>
         <translation>খুলতে অক্ষম &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1158"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1175"/>
         <source>No Sketch found in &apos;%1&apos;</source>
         <translatorcomment>ভিতরে নকশা  নাই %1</translatorcomment>
         <translation>কোন স্কেচ পায়নাই %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1297"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1396"/>
         <source>Unable to open shareable %1</source>
         <translation>বিনিময়ের জন্য অক্ষম %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1339"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1438"/>
         <source>Unable to open shareable part %1</source>
         <translation>পার্টস বিনিময়ের জন্য অক্ষম %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1352"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1451"/>
         <source>Unable to read shareable part %1</source>
         <translatorcomment>অংশ বিশেষ খুলতে অপারগ %1</translatorcomment>
         <translation>বিনিময়ের জন্য পড়তে অক্ষম অংশ %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1381"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1480"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="810"/>
         <source>Specify a file name</source>
         <translatorcomment>একটি নিদৃষ্ট ফাইলের নাম </translatorcomment>
         <translation>নির্দেশিত একটি ফাইলের নাম</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1383"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1482"/>
         <source>Fritzing Part (*%1)</source>
         <translation>ফ্রিটজিং অংশ t(*%1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1417"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1516"/>
         <source>Unable to export %1 to shareable sketch</source>
         <translatorcomment> নকশারঅংশ বিশেষ রপ্তানিতে করতেঅপারগ</translatorcomment>
         <translation>%1বিনিময় স্কেচপাটাতে অক্ষম</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1509"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1608"/>
         <source>Do you want to keep the imported parts?</source>
         <translatorcomment>তুমি কি চাও আমদানি  করা যন্ত্রাংশ রাখতে?</translatorcomment>
         <translation>সংগ্রিিহত অংশ ধরে রাখতে চান?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1577"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1676"/>
         <source>No connections to route</source>
         <translatorcomment>ঘুরিয়ে সংযোগ নেই/ রাস্তার সাথে কোন সংযুক্তি নাই</translatorcomment>
         <translation>সংযোগ রাস্তা নেই</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1580"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1679"/>
         <source>Routing completed</source>
         <translatorcomment>রাস্তা তৈরি  সম্পন্ন  </translatorcomment>
         <translation>রাউটিং সমপণ্য</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1583"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1682"/>
         <source>Routing completed using %n jumper part(s)</source>
         <translation>
             <numerusform>সম্পূর্ণ রাউটিং ব্যবহারে %n জাম্পার অংস(S)</numerusform>
@@ -1766,7 +1766,7 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1586"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1685"/>
         <source>%1 of %2 nets routed - %n connector(s) still to be routed</source>
         <translation>
             <numerusform>%1এবং%2নিপিষ্ট জাল সংযোগ%n(s)কে স্থাপন</numerusform>
@@ -1774,29 +1774,29 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1622"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1721"/>
         <source>%1 - [%2]</source>
         <translation>%1 - [%2]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1753"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1852"/>
         <source>No copper top layer</source>
         <translatorcomment>উপরের স্তর এ কোন তামা নাই </translatorcomment>
         <translation>উপরে লেয়ারে কোণ কপার নাই</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1754"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1853"/>
         <source>The copper top (copper 1) layer is not available on a one-sided board.  Please switch the board to double-sided or choose the copper bottom (copper 0) layer.</source>
         <translation>উপলুব্ধ একতরফা তামা (copper1)বোর্ড টি হয়নি অনুগ্রহ করে দুই পাস  তামার বোর্ড আনতে(copper0)নির্বাচন করুন।</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1815"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1914"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3486"/>
         <source>Sorry!</source>
         <translation>দুঃখিত?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1816"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1915"/>
         <source>No part with those characteristics.
 We&apos;re working to avoid this message, and only let you choose between properties that do exist</source>
         <translation>ঐসব কোনো পার্টসে  নাই।  
@@ -1804,88 +1804,88 @@ We&apos;re working to avoid this message, and only let you choose between proper
     আমরা এই বার্তা বাদ দেবার চেষ্টা করছি এবং শুধু যেসব ধর্ম যোগ করা আছে  সেইগুলাই পছন্দ করতে দিব।</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1828"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1927"/>
         <source>No exactly matching part found; Fritzing chose the closest match.</source>
         <translation>যথাযথভাবে কোন অংশ মেলানোর জন্য পাওয়া যায় নি; কাছাকাছি মিল fritzing.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1865"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1964"/>
         <source>Change to single layer pcb</source>
         <translatorcomment>একক স্তর পি সি বি পরিবর্তন </translatorcomment>
         <translation>এক স্তর পি সি বি পরিবর্তন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1865"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1964"/>
         <source>Change to two layer pcb</source>
         <translatorcomment>দুই স্তর পি সি বি বদল</translatorcomment>
         <translation>দুই স্তরপি সি বি পরিবর্তন </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1898"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1997"/>
         <source>Swapped %1 with module %2</source>
         <translatorcomment>%1 সঙ্গে %2মডিউল বদল করতে</translatorcomment>
         <translation>মডিউল আনতে%1 পাঠাতে%2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1920"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2019"/>
         <source>Change image to %2</source>
         <translatorcomment>ইমেজ বদল করতে%2</translatorcomment>
         <translation>ইমেজ বদলে%2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1978"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2077"/>
         <source>Svg %1 is missing a &apos;%2&apos; layer. For more information on how to create a custom board shape, see the tutorial at &lt;a href=&apos;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&apos;&gt;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2015"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2114"/>
         <source>loading %1</source>
         <translatorcomment>বোঝাই করতে%1</translatorcomment>
         <translation>লোডিং %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2024"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2123"/>
         <source>Loading...</source>
         <translatorcomment>বোঝাই...</translatorcomment>
         <translation>লোডিং...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2030"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2129"/>
         <source>new sketch</source>
         <translatorcomment>নতুন  চাকতি</translatorcomment>
         <translation>নতুন স্কেচ </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2160"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2259"/>
         <source>Backing up &apos;%1&apos;</source>
         <translation>ফিরে আসতে %1 </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2255"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2354"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="810"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="273"/>
         <source>Fritzing (*%1)</source>
         <translation>ফ্রিটজিং(*%1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2310"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2409"/>
         <source>Unrouted connections</source>
         <translatorcomment>অসংযুক্ত রাস্তা</translatorcomment>
         <translation>অসংযুক্ত সংযোগ </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2311"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2410"/>
         <source>There are no unrouted connections in this view.</source>
         <translatorcomment>এখানে অসংযুক্ত রাস্তার চিত্র দেখা</translatorcomment>
         <translation>অসংযুক্ত রাস্তার চিত্র দেখতে </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2352"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2449"/>
         <source>%1 %2 %3</source>
         <translation>%1%2%3</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2593"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2690"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1905,19 +1905,19 @@ We&apos;re working to avoid this message, and only let you choose between proper
         <translation>পূর্বের ইতিহাস</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="433"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="450"/>
         <location filename="../src/mainwindow/mainwindow_dock.cpp" line="106"/>
         <source>Breadboard</source>
         <translation>ব্রেডবোর্ড </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="442"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="459"/>
         <location filename="../src/mainwindow/mainwindow_dock.cpp" line="107"/>
         <source>Schematic</source>
         <translation>স্কেমেটিক</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="451"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="468"/>
         <location filename="../src/mainwindow/mainwindow_dock.cpp" line="108"/>
         <source>PCB</source>
         <translatorcomment>PCB</translatorcomment>
@@ -6751,22 +6751,22 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
     </message>
     <message>
         <location filename="../src/svg/gerbergenerator.cpp" line="376"/>
-        <location filename="../src/svg/gerbergenerator.cpp" line="916"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="933"/>
         <source>%1 file export failure (2): %2</source>
         <translation>%1 ফাইলটি রপ্তানি ব্যর্থতা (2):%2</translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="862"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="879"/>
         <source>Fritzing is unable to process the cutouts in this custom PCB shape. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="863"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="880"/>
         <source>You may need to reload the shape SVG. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="864"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="881"/>
         <source>Fritzing requires that you make cutouts using a shape &apos;subtraction&apos; or &apos;difference&apos; operation in your vector graphics editor.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7114,25 +7114,25 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
 <context>
     <name>QShortcut</name>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="462"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="479"/>
         <source>Ctrl</source>
         <comment>for naming shortcut keys on menu items</comment>
         <translation>Ctrl</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="463"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="480"/>
         <source>Alt</source>
         <comment>for naming shortcut keys on menu items</comment>
         <translation>Alt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="464"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="481"/>
         <source>Shift</source>
         <comment>for naming shortcut keys on menu items</comment>
         <translation>Shift</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="465"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="482"/>
         <source>Meta</source>
         <comment>for naming shortcut keys on menu items</comment>
         <translation>Meta</translation>
