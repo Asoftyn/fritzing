@@ -88,6 +88,23 @@ $Date$
 #include "../utils/zoomslider.h"
 #include "../partseditor/pemainwindow.h"
 
+///////////////////////////////////////////////
+
+struct MissingSvgInfo {
+    QString requestedPath;
+    QStringList connectorSvgIds;
+    ModelPart * modelPart;
+    bool equal;
+};
+
+bool byConnectorCount(MissingSvgInfo & m1, MissingSvgInfo & m2)
+{
+    if (m1.connectorSvgIds.count() == m2.connectorSvgIds.count() && m1.modelPart != m2.modelPart) {
+        m1.equal = m2.equal = true;
+    }
+
+	return (m1.connectorSvgIds.count() > m2.connectorSvgIds.count());
+}
 
 ///////////////////////////////////////////////
 
@@ -1175,13 +1192,15 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
 
     m_addedToTemp = false;
 
+    QList<MissingSvgInfo> missing;
+    QList<ModelPart *> missingModelParts;
+
     foreach (QFileInfo fzpInfo, entryInfoList) {
         QFile file(dir.absoluteFilePath(fzpInfo.fileName()));
         if (!file.open(QFile::ReadOnly)) {
             DebugDialog::debug(QString("unable to open %1: %2").arg(file.fileName()));
             continue;
         }
-
 
         // TODO: could be more efficient by using a streamreader
         QString fzp = file.readAll();
@@ -1201,7 +1220,6 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
                 continue;
             }
 
-
             mp = copyToPartsFolder(fzpInfo, false, false, PartFactory::folderPath(), "contrib");
             if (mp == NULL) {
                 DebugDialog::debug(QString("unable to create model part in %1: %2").arg(file.fileName()).arg(fzp));
@@ -1215,7 +1233,27 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
                 QDomElement layers = view.firstChildElement("layers");
                 QString path = layers.attribute("image", "");
                 if (!path.isEmpty()) {
-                    copySvg(path, svgEntryInfoList);
+                    bool copied = copySvg(path, svgEntryInfoList);
+                    if (!copied) {
+                        DebugDialog::debug(QString("missing svg %1").arg(path));
+                        MissingSvgInfo msi;
+                        msi.equal = false;
+                        msi.modelPart = mp;
+                        missingModelParts << mp;
+                        msi.requestedPath = path;
+                        ViewLayer::ViewIdentifier viewIdentifier = ViewLayer::idFromXmlName(view.tagName());
+                        QDomElement connectors = root.firstChildElement("connectors");
+                        QDomElement connector = connectors.firstChildElement("connector");
+                        while (!connector.isNull()) {
+                            QString id, terminalID;
+                            ViewLayer::getConnectorSvgIDs(connector, viewIdentifier, id, terminalID);
+                            if (!id.isEmpty()) {
+                                msi.connectorSvgIds.append(id);
+                            }
+                            connector = connector.nextSiblingElement("connector");
+                        }
+                        missing << msi;
+                    }
                 }
                 view = view.nextSiblingElement();
             }
@@ -1223,6 +1261,62 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
         	mp->setFzz(true);
         }
 
+        if (!missingModelParts.contains(mp)) {
+		    m_binManager->addToTempPartsBin(mp);
+            m_addedToTemp = true;
+        }
+    }
+
+    qSort(missing.begin(), missing.end(), byConnectorCount);
+    foreach (MissingSvgInfo msi, missing) {
+        if (msi.equal) {
+            // two or more parts have the same number of connectors--so we can't figure out how to assign them
+            continue;
+        }
+
+        int slash = msi.requestedPath.indexOf("/");
+        QString suffix = msi.requestedPath.mid(slash + 1);
+        QString prefix = msi.requestedPath.left(slash);
+        for (int jx = svgEntryInfoList.count() - 1; jx >= 0; jx--) {
+            QFileInfo svgInfo = svgEntryInfoList.at(jx);
+            if (!svgInfo.fileName().contains(prefix, Qt::CaseInsensitive)) continue;
+
+            QFile svgfile(svgInfo.absoluteFilePath());
+            QDomDocument svgDoc;
+            if (!svgDoc.setContent(&svgfile)) continue;
+
+            QList<QDomElement> elements;
+            TextUtils::findElementsWithAttribute(svgDoc.documentElement(), "id", elements);
+            if (elements.count() < msi.connectorSvgIds.count()) continue;
+
+            QStringList ids;
+            foreach (QDomElement element, elements) {
+                ids << element.attribute("id");
+            }
+
+            bool allGood = true;
+            foreach (QString id, msi.connectorSvgIds) {
+                if (!ids.contains(id)) {
+                    allGood = false;
+                    break;
+                }
+            }
+
+            if (!allGood) continue;
+
+            QString destPath = copyToSvgFolder(svgInfo, false, PartFactory::folderPath(), "contrib");   // copy file with original name
+            if (!destPath.isEmpty()) {
+                QFileInfo destInfo(destPath);
+                QFile file(destPath);
+                DebugDialog::debug(QString("found missing %1").arg(destPath));
+                file.copy(destInfo.absoluteDir().absoluteFilePath(suffix));         // make another copy that has the name used in the fzp file
+                svgEntryInfoList.removeAt(jx);
+                break;
+            }
+        }
+    }
+
+    foreach (ModelPart * mp, missingModelParts) {
 		m_binManager->addToTempPartsBin(mp);
         m_addedToTemp = true;
     }
@@ -1236,7 +1330,7 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
 	setCurrentFile(fileName, addToRecent, setAsLastOpened);
 }
 
-void MainWindow::copySvg(const QString & path, QFileInfoList & svgEntryInfoList) 
+bool MainWindow::copySvg(const QString & path, QFileInfoList & svgEntryInfoList) 
 {
     int slash = path.indexOf("/");
     QString subpath = path.mid(slash + 1);
@@ -1251,13 +1345,14 @@ void MainWindow::copySvg(const QString & path, QFileInfoList & svgEntryInfoList)
         }
     }
 
-    if (gotOne) return;
+    if (gotOne) return true;
 
     // deal with a bug in which all the svg files exist in the fzz but the fz file points to the wrong name
+    // most of the time it's just a GUID difference
 
     DebugDialog::debug(QString("svg matching fz path %1 not found").arg(path));
     int guidix = GuidMatcher.lastIndexIn(subpath);
-    if (guidix < 0) return;
+    if (guidix < 0) return false;
 
     QString originalGuid = GuidMatcher.cap(0);
     QString tryPath = subpath;
@@ -1277,10 +1372,14 @@ void MainWindow::copySvg(const QString & path, QFileInfoList & svgEntryInfoList)
             guidix = GuidMatcher.lastIndexIn(destPath);
             destPath.replace(guidix, GuidMatcher.cap(0).length(), originalGuid);
             file.copy(destPath);
+            DebugDialog::debug(QString("found matching svg %1").arg(destPath));
             svgEntryInfoList.removeAt(jx);
-            return;
+            return true;
         }
     }
+
+    return false;
+
 }
 
 
@@ -2317,8 +2416,6 @@ void MainWindow::setReportMissingModules(bool b) {
 		m_sketchModel->setReportMissingModules(b);
 	}
 }
-
-
 
 void MainWindow::boardDeletedSlot() 
 {

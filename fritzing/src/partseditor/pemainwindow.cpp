@@ -1359,7 +1359,7 @@ void PEMainWindow::initSvgTree(SketchWidget * sketchWidget, ItemBase * itemBase,
     QDomElement connector = connectors.firstChildElement("connector");
     while (!connector.isNull()) {
 		QString svgID, terminalID;
-        bool ok = PEUtils::getConnectorSvgIDs(connector, sketchWidget->viewIdentifier(), svgID, terminalID);
+        bool ok = ViewLayer::getConnectorSvgIDs(connector, sketchWidget->viewIdentifier(), svgID, terminalID);
 		if (ok) {
 			PEGraphicsItem * terminalItem = pegiHash.value(terminalID, NULL);
 			PEGraphicsItem * pegi = pegiHash.value(svgID);
@@ -1426,7 +1426,7 @@ void PEMainWindow::switchedConnector(int ix, SketchWidget * sketchWidget)
     if (element.isNull()) return;
 
 	QString svgID, terminalID;
-    if (!PEUtils::getConnectorSvgIDs(element, sketchWidget->viewIdentifier(), svgID, terminalID)) return;
+    if (!ViewLayer::getConnectorSvgIDs(element, sketchWidget->viewIdentifier(), svgID, terminalID)) return;
 
     QList<PEGraphicsItem *> pegiList = getPegiList(sketchWidget);
     bool gotOne = false;
@@ -1831,7 +1831,7 @@ void PEMainWindow::busModeChanged(bool state) {
 	    QStringList connectorIDs;
 	    QDomElement connector = connectors.firstChildElement("connector");
 	    while (!connector.isNull()) {
-		    QDomElement p = PEUtils::getConnectorPElement(connector, viewThing->sketchWidget->viewIdentifier());
+		    QDomElement p = ViewLayer::getConnectorPElement(connector, viewThing->sketchWidget->viewIdentifier());
 		    QString id = p.attribute("svgId");
 		    foreach (PEGraphicsItem * pegi, pegiList) {
 			    QDomElement pegiElement = pegi->element();
@@ -1912,7 +1912,7 @@ void PEMainWindow::pegiMousePressed(PEGraphicsItem * pegi, bool & ignore)
 	QDomElement connectors = root.firstChildElement("connectors");
 	QDomElement connector = connectors.firstChildElement("connector");
 	while (!connector.isNull()) {
-		QDomElement p = PEUtils::getConnectorPElement(connector, m_currentGraphicsView->viewIdentifier());
+		QDomElement p = ViewLayer::getConnectorPElement(connector, m_currentGraphicsView->viewIdentifier());
 		if (p.attribute("svgId") == id || p.attribute("terminalId") == id) {
 			m_peToolView->setCurrentConnector(connector);
 			return;
@@ -1938,7 +1938,7 @@ void PEMainWindow::relocateConnector(PEGraphicsItem * pegi)
 	QDomElement connectors = fzpRoot.firstChildElement("connectors");
 	QDomElement currentConnectorElement = m_connectorList.at(m_peToolView->currentConnectorIndex());
     QString svgID, terminalID;
-    if (!PEUtils::getConnectorSvgIDs(currentConnectorElement, m_currentGraphicsView->viewIdentifier(), svgID, terminalID)) {
+    if (!ViewLayer::getConnectorSvgIDs(currentConnectorElement, m_currentGraphicsView->viewIdentifier(), svgID, terminalID)) {
         return;
     }
 
@@ -1990,14 +1990,14 @@ void PEMainWindow::relocateConnectorSvg(SketchWidget * sketchWidget, const QStri
     QDomElement connector = connectors.firstChildElement("connector");
     while (!connector.isNull()) {
         QString cSvgID, cTerminalID;
-        if (PEUtils::getConnectorSvgIDs(connector, viewIdentifier, cSvgID, cTerminalID)) {
+        if (ViewLayer::getConnectorSvgIDs(connector, viewIdentifier, cSvgID, cTerminalID)) {
             if (cSvgID == svgID) break;
         }
         connector = connector.nextSiblingElement("connector");
     }
     if (connector.isNull()) return;
 
-    QDomElement p = PEUtils::getConnectorPElement(connector, viewIdentifier);
+    QDomElement p = ViewLayer::getConnectorPElement(connector, viewIdentifier);
     if (terminalID.isEmpty()) {
         p.removeAttribute("terminalId");
     }
@@ -2272,7 +2272,7 @@ PEGraphicsItem * PEMainWindow::findConnectorItem()
     if (connector.isNull()) return NULL;
 
 	QString svgID, terminalID;
-    bool ok = PEUtils::getConnectorSvgIDs(connector, m_currentGraphicsView->viewIdentifier(), svgID, terminalID);
+    bool ok = ViewLayer::getConnectorSvgIDs(connector, m_currentGraphicsView->viewIdentifier(), svgID, terminalID);
     if (!ok) return NULL;
 
     QList<PEGraphicsItem *> pegiList = getPegiList(m_currentGraphicsView);
@@ -2366,7 +2366,7 @@ void PEMainWindow::moveTerminalPoint(SketchWidget * sketchWidget, const QString 
         return;
     }
 
-    QDomElement pElement = PEUtils::getConnectorPElement(connectorElement, sketchWidget->viewIdentifier());
+    QDomElement pElement = ViewLayer::getConnectorPElement(connectorElement, sketchWidget->viewIdentifier());
     QString svgID = pElement.attribute("svgId");
     if (svgID.isEmpty()) {
         DebugDialog::debug(QString("Can't find svgId for connector %1").arg(connectorID));
@@ -3654,7 +3654,7 @@ void PEMainWindow::connectorWarning() {
 		QDomElement connector = connectors.firstChildElement("connector");
 		while (!connector.isNull()) {
 			QString svgID, terminalID;
-			if (PEUtils::getConnectorSvgIDs(connector, viewIdentifier, svgID, terminalID)) {
+			if (ViewLayer::getConnectorSvgIDs(connector, viewIdentifier, svgID, terminalID)) {
 				QDomElement element = TextUtils::findElementWithAttribute(svgRoot, "id", svgID);
 				if (element.isNull()) {
 					unassigned.insert(viewIdentifier, 1 + unassigned.value(viewIdentifier));

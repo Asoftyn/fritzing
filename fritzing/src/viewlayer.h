@@ -31,6 +31,7 @@ $Date$
 #include <QAction>
 #include <QHash>
 #include <QMultiHash>
+#include <QDomElement>
 
 struct NamePair {
     QString xmlName;
@@ -168,6 +169,10 @@ public:
 	static ViewIdentifier idFromXmlName(const QString & name);
 	static const QList<ViewLayer::ViewLayerID> & layersForView(ViewLayer::ViewIdentifier);
 	static bool viewHasLayer(ViewIdentifier, ViewLayer::ViewLayerID);
+
+    static bool getConnectorSvgIDs(QDomElement & connector, ViewLayer::ViewIdentifier, QString & id, QString & terminalID);
+    static QDomElement getConnectorPElement(const QDomElement & connector, ViewLayer::ViewIdentifier);
+
 
 
 protected:

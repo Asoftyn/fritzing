@@ -548,7 +548,7 @@ protected:
 	virtual void setCurrentTabIndex(int);
 	virtual QWidget * currentTabWidget();
 	virtual bool activeLayerWidgetAlwaysOn();
-    void copySvg(const QString & path, QFileInfoList & svgEntryInfoList);
+    bool copySvg(const QString & path, QFileInfoList & svgEntryInfoList);
 
 protected:
 	static void removeActionsStartingAt(QMenu *menu, int start=0);

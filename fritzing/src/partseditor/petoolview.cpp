@@ -260,7 +260,7 @@ void PEToolView::showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::
 		int index = item->data(0, Qt::UserRole).toInt();
 		QDomElement connector = m_connectorList->at(index);
 		QString svgID, terminalID;
-        bool ok = PEUtils::getConnectorSvgIDs(connector, viewIdentifier, svgID, terminalID);
+        bool ok = ViewLayer::getConnectorSvgIDs(connector, viewIdentifier, svgID, terminalID);
 		if (!ok) {
 			continue;
 		}

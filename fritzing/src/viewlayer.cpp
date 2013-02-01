@@ -460,3 +460,27 @@ const LayerList & ViewLayer::layersForView(ViewLayer::ViewIdentifier viewIdentif
 bool ViewLayer::viewHasLayer(ViewLayer::ViewIdentifier viewIdentifier, ViewLayer::ViewLayerID viewLayerID) {
 	return layersForView(viewIdentifier).contains(viewLayerID);
 }
+
+
+QDomElement ViewLayer::getConnectorPElement(const QDomElement & element, ViewLayer::ViewIdentifier viewIdentifier)
+{
+    QString viewName = ViewLayer::viewIdentifierXmlName(viewIdentifier);
+    QDomElement views = element.firstChildElement("views");
+    QDomElement view = views.firstChildElement(viewName);
+    return view.firstChildElement("p");
+}
+
+bool ViewLayer::getConnectorSvgIDs(QDomElement & element, ViewLayer::ViewIdentifier viewIdentifier, QString & id, QString & terminalID) {
+    QDomElement p = getConnectorPElement(element, viewIdentifier);
+    if (p.isNull()) {
+		return false;
+	}
+
+    id = p.attribute("svgId");
+    if (id.isEmpty()) {
+		return false;
+	}
+
+    terminalID = p.attribute("terminalId");
+    return true;
+}
