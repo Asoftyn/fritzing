@@ -199,12 +199,14 @@ QString Hole::makeSvg(const QString & holeDiameter, const QString & ringThicknes
 					.arg(id);
 	}
 	else {
-		svg += QString("<circle fill='none' cx='%1' cy='%1' r='%2' stroke-width='%3' stroke='%4' id='%5' />")
+		svg += QString("<circle fill='%6' cx='%1' cy='%1' r='%2' stroke-width='%3' stroke='%4' id='%5' />")
 			.arg((hd / 2) + rt + offsetDPI)
 			.arg((hd / 2) + (rt / 2))
 			.arg(rt)
 			.arg(setColor)
-			.arg(id);
+			.arg(id)
+            .arg(rt == 0 ? "black" : "none")
+            ;
         if (includeHole) {
 		    svg += QString("<circle drill='0' fill='black' cx='%1' cy='%1' r='%2' stroke-width='0'  />")   // set the drill attribute to 0 for gerber translation
 			    .arg((hd / 2) + rt + offsetDPI)

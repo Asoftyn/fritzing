@@ -417,6 +417,23 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
 		return "";
 	}
 
+    if (forWhy != SVG2gerber::ForDrill) {
+        QDomNodeList nodeList = root1.elementsByTagName("circle"); 
+        QList<QDomElement> justHoles;
+        for (int i = 0; i < nodeList.count(); i++) {
+            QDomElement circle = nodeList.at(i).toElement();
+            if (circle.attribute("id").contains(FSvgRenderer::NonConnectorName)) {
+                double sw = circle.attribute("stroke-width").toDouble();
+                if (sw == 0) {
+                    justHoles << circle;
+                }
+            }
+        }
+        foreach (QDomElement circle, justHoles) {
+            circle.setTagName("g");
+        }
+    }
+
     handleDonuts(root1, treatAsCircle);
 
     bool multipleContours = false;
