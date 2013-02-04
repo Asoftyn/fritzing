@@ -118,11 +118,12 @@ bool distanceLessThan(ConnectorItem * end0, ConnectorItem * end1) {
 
 //////////////////////////////////////////////////////
 
-QuoteDialog::QuoteDialog(double area, int boardCount, QWidget *parent) : QDialog(parent) 
+QuoteDialog::QuoteDialog(double area, int boardCount, bool full, QWidget *parent) : QDialog(parent) 
 {
 	setWindowTitle(tr("Fab Quote"));
 
 	QVBoxLayout * vLayout = new QVBoxLayout(this);
+
 
     QString msg = tr("The total area of the %n boards in this sketch is %1 cm2 (%2 in2).", "", boardCount)
         .arg(area)
@@ -131,35 +132,41 @@ QuoteDialog::QuoteDialog(double area, int boardCount, QWidget *parent) : QDialog
 	QLabel * label = new QLabel(msg);
 	vLayout->addWidget(label);
 
+    if (!full) label->setVisible(false);
+
     vLayout->addSpacing(10);
 
     for (int i = 0; i < MessageCount; i++) {
         m_labels[i] = new QLabel("");
 	    vLayout->addWidget(m_labels[i]);
+        if (i > 0 && !full) m_labels[i]->setVisible(false);
     }
 
     vLayout->addSpacing(10);
 
     label = new QLabel(tr("Please note, price does not include shipping, possible additional taxes, or the checking fee."));
 	vLayout->addWidget(label);
+    if (!full) label->setVisible(false);
 
     label = new QLabel(tr("For more information on pricing see <a href='http://fab.fritzing.org/pricing'>http://fab.fritzing.org/pricing</a>."));
 	vLayout->addWidget(label);
     label->setOpenExternalLinks(true);
+    if (!full) label->setVisible(false);
 
     label = new QLabel(tr("To order go to <a href='http://fab.fritzing.org/fritzing-fab'>http://fab.fritzing.org/fritzing-fab</a> and click 'Order Now'."));
 	vLayout->addWidget(label);
     label->setOpenExternalLinks(true);
+    if (!full) label->setVisible(false);
 
     vLayout->addSpacing(10);
 
     QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
 	buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-
 	vLayout->addWidget(buttonBox);
+    if (!full) buttonBox->setVisible(false);
 
-	this->setLayout(vLayout);
+    this->setLayout(vLayout);
 }
 
 QuoteDialog::~QuoteDialog() {
@@ -2734,7 +2741,7 @@ void PCBSketchWidget::fabQuote() {
         return;
     }
 
-    m_quoteDialog = new QuoteDialog(area, boardCount, this);
+    m_quoteDialog = new QuoteDialog(area, boardCount, true, this);
     requestQuote(area);
 
     m_quoteDialog->exec();
@@ -2751,7 +2758,7 @@ void PCBSketchWidget::gotFabQuote(QNetworkReply * networkReply) {
         bool ok;
         double cost = data.toDouble(&ok);
         if (ok) {
-            QString msg = tr("%n copies of this sketch will cost %1 Euros.", "", count).arg(cost);
+            QString msg = tr("%n copies of this sketch will cost %1 Euros.", "", count).arg(cost, 0, 'f', 2);
             if (m_quoteDialog) {
                 m_quoteDialog->setMessage(index, msg);
             }
@@ -2835,4 +2842,12 @@ ItemBase * PCBSketchWidget::resizeBoard(long itemID, double mmW, double mmH) {
     ItemBase * itemBase = SketchWidget::resizeBoard(itemID, mmW, mmH);
     if (itemBase != NULL && Board::isBoard(itemBase)) requestQuoteSoon();
     return itemBase;
+}
+
+QDialog * PCBSketchWidget::quoteDialog(QWidget * parent) {
+    int boardCount = 0;
+    double area = calcBoardArea(boardCount);
+    QuoteDialog * quoteDialog = new QuoteDialog(area, boardCount, false, parent);
+    quoteDialog->setMessage(0, m_quoteMessage[0]);
+    return quoteDialog;
 }

@@ -39,7 +39,7 @@ class QuoteDialog : public QDialog {
 Q_OBJECT
 
 public:
-	QuoteDialog(double area, int boardCount, QWidget *parent = 0);
+	QuoteDialog(double area, int boardCount, bool full, QWidget *parent = 0);
 	~QuoteDialog();
 
     void setMessage(int index, const QString & message);
@@ -139,6 +139,7 @@ public:
 	void getDefaultViaSize(QString & ringThickness, QString & holeSize);
     void hidePartSilkscreen();
     void fabQuote();
+    QDialog * quoteDialog(QWidget * parent);
 
 public slots:
 	void resizeBoard(double w, double h, bool doEmit);

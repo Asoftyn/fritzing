@@ -168,6 +168,7 @@ static QRegExp GuidMatcher("[A-Fa-f0-9]{32}");
 MainWindow::MainWindow(ReferenceModel *referenceModel, QWidget * parent) :
     FritzingWindow(untitledFileName(), untitledFileCount(), fileExtension(), parent)
 {
+    m_quoteDialog = NULL;
 	setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 	setDockOptions(QMainWindow::AnimatedDocks);
 	m_sizeGrip = new FSizeGrip(this);
@@ -866,8 +867,13 @@ QList<QWidget*> MainWindow::getButtonsForView(ViewLayer::ViewIdentifier viewId) 
 				<< createAutorouteButton(parent) 
 				<< createExportEtchableButton(parent);
 			if (m_orderFabEnabled) {
-				retval << createOrderFabButton(parent);
+                SketchToolButton * orderFabButton = createOrderFabButton(parent);
+				retval << orderFabButton;
+                connect(orderFabButton, SIGNAL(entered()), this, SLOT(orderFabHoverEnter()));
+                connect(orderFabButton, SIGNAL(left()), this, SLOT(orderFabHoverLeave()));
 			}
+
+
 			break;
 		default:
 			break;
@@ -2689,3 +2695,31 @@ void MainWindow::initProgrammingWidget() {
 	SketchAreaWidget * sketchAreaWidget = new SketchAreaWidget(m_programView, this);
 	addTab(sketchAreaWidget, tr("Code"));
 }
+
+void MainWindow::orderFabHoverEnter() {
+    //DebugDialog::debug("enter fab button");
+    QWidget * toolbar = m_pcbWidget->toolbar();
+    QRect r = toolbar->geometry();
+    QPointF p = toolbar->parentWidget()->mapToGlobal(r.topLeft());
+
+    m_quoteDialog = m_pcbGraphicsView->quoteDialog(this);
+
+	Qt::WindowFlags flags = m_quoteDialog->windowFlags();
+    flags = Qt::Window | Qt::Dialog | Qt::FramelessWindowHint;
+	m_quoteDialog->setWindowFlags(flags);
+
+    QRect q = m_quoteDialog->geometry();
+    q.moveTo(p.x() + (r.width() / 2), p.y() - 80);
+    m_quoteDialog->setGeometry(q);
+    m_quoteDialog->show();
+}
+
+void MainWindow::orderFabHoverLeave() {
+    //DebugDialog::debug("leave fab button");
+    if (m_quoteDialog) {
+        m_quoteDialog->hide();
+        delete m_quoteDialog;
+        m_quoteDialog = NULL;
+    }
+}
+

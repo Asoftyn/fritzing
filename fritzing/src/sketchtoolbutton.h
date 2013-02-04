@@ -45,15 +45,21 @@ class SketchToolButton : public QToolButton, public AbstractStatesButton {
 	protected slots:
 		void setEnabledIconAux();
 
+    signals:
+        void entered();
+        void left();
+
 	protected:
 		QString imagePrefix();
 		void setImage(const QPixmap & pixmap);
 		void setupIcons(const QString &imageName);
 
-		void actionEvent(QActionEvent *event);
-		void mousePressEvent(QMouseEvent *event);
-		void mouseReleaseEvent(QMouseEvent *event);
-		void changeEvent(QEvent *event);
+		void actionEvent(QActionEvent *);
+		void mousePressEvent(QMouseEvent *);
+		void mouseReleaseEvent(QMouseEvent *);
+		void enterEvent(QEvent *);
+		void leaveEvent(QEvent *);
+		void changeEvent(QEvent *);
 
 	protected:
 		QString m_imageName;

@@ -206,6 +206,8 @@ public slots:
 	void updateTraceMenu();
 	virtual void updateFileMenu();
     void showStatusMessage(const QString &);
+    void orderFabHoverEnter();
+    void orderFabHoverLeave();
 
 protected slots:
 	void mainLoad();
@@ -844,7 +846,7 @@ protected:
 	QString m_oldTopDockStyle;
 	QString m_oldBottomDockStyle;
 	bool m_dontKeepMargins;
-
+    QDialog * m_quoteDialog;
 
 public:
 	static int AutosaveTimeoutMinutes;
