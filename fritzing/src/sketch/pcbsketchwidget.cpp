@@ -1029,10 +1029,11 @@ void PCBSketchWidget::changeBoardLayers(int layers, bool doEmit) {
 
 void PCBSketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseCommand::CrossViewType crossViewType, QUndoCommand * parentCommand, 
 						bool offsetPaste, const QRectF * boundingRect, bool seekOutsideConnections, QList<long> & newIDs) {
-	if (parentCommand == NULL) {
+	
+    int layers = 1;
+    if (parentCommand == NULL) {
 		foreach (ModelPart * modelPart, modelParts) {
             if (Board::isBoard(modelPart)) {
-                // assume that all boards have the same number of layers
                 QString slayers = modelPart->localProp("layers").toString();
                 if (slayers.isEmpty()) {
 				    slayers = modelPart->properties().value("layers", "");
@@ -1042,20 +1043,42 @@ void PCBSketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseCo
 					continue;
 				}
 				bool ok;
-				int layers = slayers.toInt(&ok);
+				int localLayers = slayers.toInt(&ok);
 				if (!ok) {
 					// shouldn't happen
 					continue;
 				}
-				changeBoardLayers(layers, true);
-				break;	
+                if (localLayers == 2) {
+                    layers = 2;
+                    break;
+                }
 			}
+            else if (modelPart->itemType() == ModelPart::Wire) {
+		        QDomElement instance = modelPart->instanceDomElement();
+		        QDomElement views = instance.firstChildElement("views");
+		        QDomElement view = views.firstChildElement("pcbView");
+                if (view.attribute("layer").compare("copper1trace") == 0) {
+                    layers = 2;
+                    break;
+                }
+            }
+            else if (modelPart->itemType() == ModelPart::CopperFill) {
+		        QDomElement instance = modelPart->instanceDomElement();
+		        QDomElement views = instance.firstChildElement("views");
+		        QDomElement view = views.firstChildElement("pcbView");
+                if (view.attribute("layer").compare("groundplane1") == 0) {
+                    layers = 2;
+                    break;
+                }
+            }
 		}
+        changeBoardLayers(layers, true);
 	}
 
 	SketchWidget::loadFromModelParts(modelParts, crossViewType, parentCommand, offsetPaste, boundingRect, seekOutsideConnections, newIDs);
 
 	if (parentCommand == NULL) {
+        changeBoardLayers(layers, true);
 		shiftHoles();
 	}
 }
