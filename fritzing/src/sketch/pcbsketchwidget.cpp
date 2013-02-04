@@ -179,6 +179,9 @@ const char * PCBSketchWidget::FakeTraceProperty = "FakeTrace";
 PCBSketchWidget::PCBSketchWidget(ViewLayer::ViewIdentifier viewIdentifier, QWidget *parent)
     : SketchWidget(viewIdentifier, parent)
 {
+    m_requestQuoteTimer.setSingleShot(true);
+    m_requestQuoteTimer.setInterval(100);
+    connect(&m_requestQuoteTimer, SIGNAL(timeout()), this, SLOT(requestQuoteNow()));
 	m_resizingBoard = NULL;
 	m_resizingJumperItem = NULL;
 	m_viewName = QObject::tr("PCB View");
@@ -789,7 +792,6 @@ void PCBSketchWidget::resizeBoard(double mmW, double mmH, bool doEmit)
 	if (!handle) return SketchWidget::resizeBoard(mmW, mmH, doEmit);
 
     resizeWithHandle(item, mmW, mmH);
-
 }
 
 void PCBSketchWidget::showLabelFirstTime(long itemID, bool show, bool doEmit) {
@@ -1499,12 +1501,9 @@ void PCBSketchWidget::deleteItem(ItemBase * itemBase, bool deleteModelPart, bool
 	SketchWidget::deleteItem(itemBase, deleteModelPart, doEmit, later);
 	if (boardDeleted) {
 		if (findBoard().count() == 0) {
-			// no board found, so set to single-layer by default
-            DebugDialog::debug("removed the code that sets the board layer count to 1 if there are no boards");
-			// changeBoardLayers(1, true);
-
 			emit boardDeletedSignal();
 		}
+        requestQuoteSoon();
 	}
 }
 
@@ -2727,38 +2726,16 @@ void PCBSketchWidget::hidePartSilkscreen() {
 }
 
 void PCBSketchWidget::fabQuote() {
-    QList<ItemBase *> boards = findBoard();
-    if (boards.count() == 0) {
+    int boardCount = 0;
+    double area = calcBoardArea(boardCount);
+    if (boardCount == 0) {
         QMessageBox::information(this, tr("Fritzing"),
                    tr("Your sketch does not have a board yet. You cannot fabricate this sketch without a PCB part."));
         return;
     }
 
-    double area = 0;
-    foreach (ItemBase * board, boards) {
-        area += GraphicsUtils::pixels2mm(board->boundingRect().width(), GraphicsUtils::SVGDPI) * 
-            GraphicsUtils::pixels2mm(board->boundingRect().height(), GraphicsUtils::SVGDPI) / 
-            100;
-    }
-
-    m_quoteDialog = new QuoteDialog(area, boards.count(), this);
-
-    QString paramString = TextUtils::makeRequestParamsString();
-    QList<int> counts;
-    counts << 1 << 2 << 5 << 10;
-    int ix = 0;
-    foreach (int count, counts) {
-        QNetworkAccessManager * manager = new QNetworkAccessManager(this);
-        manager->setProperty("count", count);
-        manager->setProperty("index", ix++);
-	    connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(gotFabQuote(QNetworkReply *)));
-        QString string = QString("http://fab.fritzing.org/fritzing-fab/quote%1&area=%2")
-                    .arg(paramString)
-                    .arg(area * count)
-                    ;
-	    manager->get(QNetworkRequest(QUrl(string)));
-    }
-
+    m_quoteDialog = new QuoteDialog(area, boardCount, this);
+    requestQuote(area);
 
     m_quoteDialog->exec();
     delete m_quoteDialog;
@@ -2778,6 +2755,7 @@ void PCBSketchWidget::gotFabQuote(QNetworkReply * networkReply) {
             if (m_quoteDialog) {
                 m_quoteDialog->setMessage(index, msg);
             }
+            setQuoteMessage(index, msg);
         }
 	}
     else {
@@ -2787,3 +2765,74 @@ void PCBSketchWidget::gotFabQuote(QNetworkReply * networkReply) {
     networkReply->deleteLater();
 }
 
+
+void PCBSketchWidget::setQuoteMessage(int index, const QString & message) {
+    if (index < 0) return;
+    if (index >= QuoteDialog::MessageCount) return;
+
+    m_quoteMessage[index] = message;
+    DebugDialog::debug(QString("request quote %1 %2").arg(index).arg(message));
+}
+
+void PCBSketchWidget::requestQuote(double area) {
+    if (area <= 0) {
+        for (int i = 0; i < QuoteDialog::MessageCount; i++) setQuoteMessage(i, "");
+    }
+
+    QString paramString = TextUtils::makeRequestParamsString();
+    QList<int> counts;
+    counts << 1 << 2 << 5 << 10;
+    int ix = 0;
+    foreach (int count, counts) {
+        QNetworkAccessManager * manager = new QNetworkAccessManager(this);
+        manager->setProperty("count", count);
+        manager->setProperty("index", ix++);
+	    connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(gotFabQuote(QNetworkReply *)));
+        QString string = QString("http://fab.fritzing.org/fritzing-fab/quote%1&area=%2")
+                    .arg(paramString)
+                    .arg(area * count)
+                    ;
+	    manager->get(QNetworkRequest(QUrl(string)));
+    }
+}
+
+double PCBSketchWidget::calcBoardArea(int & boardCount) {
+    QList<ItemBase *> boards = findBoard();
+    boardCount = boards.count();
+    if (boardCount == 0) {
+        return 0;
+    }
+
+    double area = 0;
+    foreach (ItemBase * board, boards) {
+        area += GraphicsUtils::pixels2mm(board->boundingRect().width(), GraphicsUtils::SVGDPI) * 
+            GraphicsUtils::pixels2mm(board->boundingRect().height(), GraphicsUtils::SVGDPI) / 
+            100;
+    }
+
+    return area;
+}
+
+PaletteItem* PCBSketchWidget::addPartItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec viewLayerSpec, PaletteItem * paletteItem, bool doConnectors, bool & ok, ViewLayer::ViewIdentifier viewIdentifier, bool temporary) {
+    if (viewIdentifier == ViewLayer::PCBView && Board::isBoard(modelPart)) {
+        requestQuoteSoon();
+    }
+    return SketchWidget::addPartItem(modelPart, viewLayerSpec, paletteItem, doConnectors, ok, viewIdentifier, temporary);
+}
+
+void PCBSketchWidget::requestQuoteSoon() {
+    m_requestQuoteTimer.stop();
+    m_requestQuoteTimer.start();
+}
+
+void PCBSketchWidget::requestQuoteNow() {
+    m_requestQuoteTimer.stop();
+    int boardCount;
+    requestQuote(calcBoardArea(boardCount));
+}
+
+ItemBase * PCBSketchWidget::resizeBoard(long itemID, double mmW, double mmH) {
+    ItemBase * itemBase = SketchWidget::resizeBoard(itemID, mmW, mmH);
+    if (itemBase != NULL && Board::isBoard(itemBase)) requestQuoteSoon();
+    return itemBase;
+}

@@ -33,6 +33,26 @@ $Date$
 #include <QDialog>
 #include <QLabel>
 
+///////////////////////////////////////////////
+
+class QuoteDialog : public QDialog {
+Q_OBJECT
+
+public:
+	QuoteDialog(double area, int boardCount, QWidget *parent = 0);
+	~QuoteDialog();
+
+    void setMessage(int index, const QString & message);
+
+public:
+    static const int MessageCount = 4;
+
+protected:
+    QLabel * m_labels[MessageCount];
+};
+
+///////////////////////////////////////////////
+
 class PCBSketchWidget : public SketchWidget
 {
 	Q_OBJECT
@@ -124,6 +144,7 @@ public slots:
 	void resizeBoard(double w, double h, bool doEmit);
 	void showLabelFirstTime(long itemID, bool show, bool doEmit);
 	void changeBoardLayers(int layers, bool doEmit);
+	ItemBase * resizeBoard(long id, double w, double h);
 
 
 public:
@@ -174,6 +195,11 @@ protected:
     bool canConnect(Wire * from, ItemBase * to);
 	void collectThroughHole(QList<ConnectorItem *> & th, QList<ConnectorItem *> & pads, const LayerList &);
 	ViewLayer::ViewLayerSpec getViewLayerSpec(ModelPart * modelPart, QDomElement & instance, QDomElement & view, ViewGeometry &);
+    void setQuoteMessage(int index, const QString &);
+    void requestQuote(double area);
+    double calcBoardArea(int & boardCount);
+    PaletteItem* addPartItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec, PaletteItem * paletteItem, bool doConnectors, bool & ok, ViewLayer::ViewIdentifier, bool temporary);
+    void requestQuoteSoon();
 
 signals:
 	void subSwapSignal(SketchWidget *, ItemBase *, const QString & newModuleID, ViewLayer::ViewLayerSpec, long & newID, QUndoCommand * parentCommand);
@@ -192,6 +218,7 @@ protected slots:
 	void wireSplitSlot(class Wire*, QPointF newPos, QPointF oldPos, QLineF oldLine);
 	void postImageSlot(class GroundPlaneGenerator *, QImage * image, QGraphicsItem * board, QList<QRectF> &);
     void gotFabQuote(QNetworkReply *);
+    void requestQuoteNow();
 
 
 protected:
@@ -201,27 +228,13 @@ protected:
 	QList<ConnectorItem *> * m_groundFillSeeds;
     QHash<QString, QString> m_autorouterSettings;
     QPointer<class QuoteDialog> m_quoteDialog;
+    QString  m_quoteMessage[QuoteDialog::MessageCount];
+    QTimer m_requestQuoteTimer;
 
 protected:
 	static QSizeF m_jumperItemSize;
 	static const char * FakeTraceProperty;
 };
 
-
-class QuoteDialog : public QDialog {
-Q_OBJECT
-
-public:
-	QuoteDialog(double area, int boardCount, QWidget *parent = 0);
-	~QuoteDialog();
-
-    void setMessage(int index, const QString & message);
-
-public:
-    static const int MessageCount = 4;
-
-protected:
-    QLabel * m_labels[MessageCount];
-};
 
 #endif

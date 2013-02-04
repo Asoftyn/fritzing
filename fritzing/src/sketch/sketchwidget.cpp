@@ -7389,30 +7389,30 @@ void SketchWidget::setProp(long itemID, const QString & prop, const QString & va
 }
 
 // called from ResizeBoardCommand
-void SketchWidget::resizeBoard(long itemID, double mmW, double mmH) {
-	ItemBase * item = findItem(itemID);
-	if (item == NULL) return;
+ItemBase * SketchWidget::resizeBoard(long itemID, double mmW, double mmH) {
+	ItemBase * itemBase = findItem(itemID);
+	if (itemBase == NULL) return NULL;
 
     bool resized = false;
-	switch (item->itemType()) {
+	switch (itemBase->itemType()) {
 		case ModelPart::ResizableBoard:
-			qobject_cast<ResizableBoard *>(item)->resizeMM(mmW, mmH, m_viewLayers);
+			qobject_cast<ResizableBoard *>(itemBase)->resizeMM(mmW, mmH, m_viewLayers);
 			resized = true;
             break;
 
 		case ModelPart::Logo:
-			qobject_cast<LogoItem *>(item)->resizeMM(mmW, mmH, m_viewLayers);
+			qobject_cast<LogoItem *>(itemBase)->resizeMM(mmW, mmH, m_viewLayers);
 			resized = true;
             break;
 
 		case ModelPart::Ruler:
-			qobject_cast<Ruler *>(item)->resizeMM(mmW, mmH, m_viewLayers);
+			qobject_cast<Ruler *>(itemBase)->resizeMM(mmW, mmH, m_viewLayers);
 			resized = true;
             break;
 	}
 
     if (!resized) {
-	    Pad * pad = qobject_cast<Pad *>(item);
+	    Pad * pad = qobject_cast<Pad *>(itemBase);
 	    if (pad) {
 		    pad->resizeMM(mmW, mmH, m_viewLayers);
 			resized = true;
@@ -7420,7 +7420,7 @@ void SketchWidget::resizeBoard(long itemID, double mmW, double mmH) {
     }
 
     if (!resized) {
-	    SchematicFrame * schematicFrame = qobject_cast<SchematicFrame *>(item);
+	    SchematicFrame * schematicFrame = qobject_cast<SchematicFrame *>(itemBase);
 	    if (schematicFrame) {
 		    schematicFrame->resizeMM(mmW, mmH, m_viewLayers);
 		    resized = true;
@@ -7428,8 +7428,10 @@ void SketchWidget::resizeBoard(long itemID, double mmW, double mmH) {
     }
 
     if (resized) {
-        emit resizedSignal(item);
+        emit resizedSignal(itemBase);
     }
+
+    return itemBase;
 }
 
 void SketchWidget::resizeBoard(double mmW, double mmH, bool doEmit)

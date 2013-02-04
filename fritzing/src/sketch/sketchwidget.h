@@ -336,7 +336,7 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
     void paintEvent(QPaintEvent *);
-    PaletteItem* addPartItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec, PaletteItem * paletteItem, bool doConnectors, bool & ok, ViewLayer::ViewIdentifier, bool temporary);
+    virtual PaletteItem* addPartItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec, PaletteItem * paletteItem, bool doConnectors, bool & ok, ViewLayer::ViewIdentifier, bool temporary);
 	void clearHoldingSelectItem();
 	bool startZChange(QList<ItemBase *> & bases);
 	void continueZChange(QList<ItemBase *> & bases, int start, int end, bool (*test)(int current, int start), int inc, const QString & text);
@@ -595,7 +595,7 @@ public slots:
 	void incInstanceTitle(long id);
 	void showPartLabel(long id, bool showIt);
 	void checkSticky(long id, bool doEmit, bool checkCurrent, CheckStickyCommand *);
-	void resizeBoard(long id, double w, double h);
+	virtual ItemBase * resizeBoard(long id, double w, double h);
 	void resizeJumperItem(long id, QPointF pos, QPointF c0, QPointF c1);
 	void disconnectAllSlot(QList<ConnectorItem *>, QHash<ItemBase *, SketchWidget *> & itemsToDelete, QUndoCommand * parentCommand);
 	void setResistance(long itemID, QString resistance, QString pinSpacing, bool doEmit);
