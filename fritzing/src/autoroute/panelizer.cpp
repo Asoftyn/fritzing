@@ -401,7 +401,7 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 			QSizeF svgSize(planePair->panelWidth, planePair->panelHeight);
 			SVG2gerber::ForWhy forWhy = layerThingList.at(i).forWhy;
 			if (forWhy == SVG2gerber::ForMask || forWhy == SVG2gerber::ForPasteMask) forWhy = SVG2gerber::ForCopper;
-			GerberGenerator::doEnd(planePair->svgs.at(i), 2, layerThingList.at(i).name, forWhy, svgSize, gerberDir.absolutePath(), prefix, suffix, false);
+			GerberGenerator::doEnd(planePair->svgs.at(i), 2, layerThingList.at(i).name, forWhy, svgSize * GraphicsUtils::StandardFritzingDPI, gerberDir.absolutePath(), prefix, suffix, false);
 			DebugDialog::debug("after converting " + prefix + " " + suffix);
 		}
 
