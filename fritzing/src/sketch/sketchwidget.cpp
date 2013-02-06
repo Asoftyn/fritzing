@@ -58,6 +58,7 @@ $Date$
 #include "../items/layerkinpaletteitem.h"
 #include "sketchwidget.h"
 #include "../connectors/connectoritem.h"
+#include "../connectors/svgidlayer.h"
 #include "../items/jumperitem.h"
 #include "../items/stripboard.h"
 #include "../items/virtualwire.h"
@@ -91,6 +92,41 @@ $Date$
 #include "../utils/graphutils.h"
 #include "../utils/ratsnestcolors.h"
 #include "../utils/cursormaster.h"
+
+/////////////////////////////////////////////////////////////////////
+
+void hideTerminalID(QString & svg, const QString & terminalID) {
+    int ix = -1;
+    while (true) {
+        ix = svg.indexOf(terminalID, ix + 1);
+        if (ix < 0) return;
+
+        int ltix = svg.lastIndexOf('<', ix);
+        if (ltix < 0) continue;          // weird
+
+        int id = svg.lastIndexOf("id", ix);
+        if (id < 0) continue;           // weird
+
+        int eq = svg.lastIndexOf("=", ix);
+        if (eq < 0) continue;           // weird
+
+        if (ltix >= id) continue;
+        if (ltix >= eq) continue;
+        if (id >= eq) continue;
+
+        int sp = 0;
+        for (int i = ltix + 1; i < id; i++) {
+            if (svg.at(i) == ' ') {
+                sp = i;
+                break;
+            }
+        }
+        if (sp == 0) continue;
+
+        svg.replace(ltix + 1, sp - ltix - 1, ' ');
+        svg.replace(ltix + 1, 1, 'g');
+    }
+}
 
 /////////////////////////////////////////////////////////////////////
 
@@ -6487,10 +6523,10 @@ void SketchWidget::updateRoutingStatus(RoutingStatus & routingStatus, bool manua
 		ConnectorItem::collectEqualPotential(connectorItems, true, ViewGeometry::RatsnestFlag);
 		visited.append(connectorItems);
 
-		//if (this->viewIdentifier() == ViewLayer::SchematicView) {
-		//	DebugDialog::debug("________________________");
-		//	foreach (ConnectorItem * ci, connectorItems) ci->debugInfo("cep");
-		//}
+		if (this->viewIdentifier() == ViewLayer::PCBView) {
+			DebugDialog::debug("________________________");
+			foreach (ConnectorItem * ci, connectorItems) ci->debugInfo("cep");
+		}
 
 		bool doRatsnest = manual || checkUpdateRatsnest(connectorItems);
 		if (!doRatsnest && connectorItems.count() <= 1) continue;
@@ -6516,12 +6552,12 @@ void SketchWidget::updateRoutingStatus(RoutingStatus & routingStatus, bool manua
 
 		if (partConnectorItems.count() <= 1) continue;
 
-	    //if (this->viewIdentifier() == ViewLayer::SchematicView) {
-		//    DebugDialog::debug("________________________");
-        //    foreach (ConnectorItem * pci, partConnectorItems) {
-		//		pci->debugInfo("pc");
-		//	}
-        //}
+	    if (this->viewIdentifier() == ViewLayer::PCBView) {
+		    DebugDialog::debug("________________________");
+            foreach (ConnectorItem * pci, partConnectorItems) {
+				pci->debugInfo("pc");
+			}
+        }
 
 		GraphUtils::scoreOneNet(partConnectorItems, this->getTraceFlag(), routingStatus);
 	}
@@ -7087,6 +7123,12 @@ QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QRectF & 
             TextUtils::fixMuch(itemSvg, false);
 
 			foreach (ConnectorItem * ci, itemBase->cachedConnectorItems()) {
+                SvgIdLayer * svgIdLayer = ci->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
+                if (!svgIdLayer->m_terminalId.isEmpty()) {
+                    // these tend to be degenerate shapes and can cause trouble at gerber export time
+                    hideTerminalID(itemSvg, svgIdLayer->m_terminalId);
+                }
+
 				if (!ci->hasRubberBandLeg()) continue;
 
                 // at the moment, the legs don't get a partID, but since there are no legs in PCB view, we don't care

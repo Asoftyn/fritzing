@@ -2778,7 +2778,7 @@ void PCBSketchWidget::setQuoteMessage(int index, const QString & message) {
     if (index >= QuoteDialog::MessageCount) return;
 
     m_quoteMessage[index] = message;
-    DebugDialog::debug(QString("request quote %1 %2").arg(index).arg(message));
+    //DebugDialog::debug(QString("request quote %1 %2").arg(index).arg(message));
 }
 
 void PCBSketchWidget::requestQuote(double area) {
