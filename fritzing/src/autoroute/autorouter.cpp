@@ -127,10 +127,7 @@ void Autorouter::useBest() {
 void Autorouter::initUndo(QUndoCommand * parentCommand) 
 {
 	// autoroutable traces, jumpers and vias are saved on the undo command and deleted
-	// non-autoroutable jumpers and via are not deleted
-	// non-autoroutable traces are saved as a copy and deleted: they are restored at each run of the autorouter
-
-	// what happens when a non-autoroutable trace is split?
+	// non-autoroutable traces, jumpers and via are not deleted
 
 	QList<ItemBase *> toDelete;
     QList<QGraphicsItem *> collidingItems;
@@ -221,6 +218,25 @@ void Autorouter::initUndo(QUndoCommand * parentCommand)
 				}
 			}
 		}
+    }
+
+    QList<TraceWire *> visited;
+	foreach (QGraphicsItem * item, collidingItems) {
+		TraceWire * traceWire = dynamic_cast<TraceWire *>(item);
+		if (traceWire == NULL) continue;
+		if (!traceWire->isTraceType(m_sketchWidget->getTraceFlag())) continue;
+		if (traceWire->getAutoroutable()) continue;
+        if (visited.contains(traceWire)) continue;
+
+        QList<Wire *> wires;
+        QList<ConnectorItem *> ends;
+        traceWire->collectChained(wires, ends);
+        foreach (Wire * wire, wires) {
+            visited << qobject_cast<TraceWire *>(wire);
+            if (wire->getAutoroutable()) {
+                wire->setAutoroutable(false);
+            }
+        }
     }
 
 	foreach (QGraphicsItem * item, collidingItems) {
