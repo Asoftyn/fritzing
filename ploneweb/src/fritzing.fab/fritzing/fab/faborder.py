@@ -18,6 +18,7 @@ from Products.CMFCore.interfaces import IActionSucceededEvent
 from fritzing.fab.interfaces import IFabOrder, ISketch
 from fritzing.fab import getboardsize
 #from fritzing.fab import svn
+from fritzing.fab import erp
 from fritzing.fab.tools import getStateId, sendStatusMail, sendSketchUpdateMail, recalculatePrices, encodeFilename
 from fritzing.fab import _
 
@@ -158,11 +159,35 @@ def workflowTransitionHandler(faborder, event):
         faborder.setEffectiveDate(DateTime.DateTime())
         faborder.productionRound = faborders.currentProductionRound
         faborder.reindexObject(idxs=['productionRound'])
-        # TODO: fix authorization problems
-        #for sketch in faborder.listFolderContents():
-        #    svn.commitOrder(faborder.productionRound, faborder.id,
-        #        sketch.absolute_url()+"/@@download/orderItem/"+encodeFilename(None,sketch.orderItem.filename),
-        #        faborders.svnLogin, faborders.svnPassword, faborders.svnUrl)
+        
+        # commit to SVN
+        # TODO: fix pysvn problems
+        """
+        for sketch in faborder.listFolderContents():
+            svn.commitOrder(faborder.productionRound, faborder.id,
+                sketch.absolute_url()+"/@@download/orderItem/"+encodeFilename(None,sketch.orderItem.filename),
+                faborders.svnLogin, faborders.svnPassword, faborders.svnUrl)
+        """
+
+        # submit to ERPnext
+        """
+        items = []
+        for sketch in faborder.listFolderContents():
+            item = {}
+            item['filename'] = faborder.id + '_' + encodeFilename(None,sketch.orderItem.filename)
+            item['quantity'] = sketch.copies
+            item['price'] = '%.2f' % (sketch.copies * sketch.area * faborder.pricePerSquareCm + faborders.checkingFee)
+            item['size'] = sketch.area
+            items.append(item)
+        erp.submitFabOrder(
+            faborders.erpUrl, faborders.erpLogin, faborders.erpPassword,
+            str(faborder.productionRound).zfill(6), faborder.id, items, faborder.priceTotalBrutto,
+            faborder.getOwner(), utf_8_encode(faborder.shippingFirstName) + " " + utf_8_encode(faborder.shippingLastName),
+            utf_8_encode(faborder.shippingCompany), utf_8_encode(faborder.shippingStreet), utf_8_encode(faborder.shippingAdditional),
+            utf_8_encode(faborder.shippingZIP), utf_8_encode(faborder.shippingCity), IFabOrder['shippingCountry'].vocabulary.getTerm(faborder.shippingCountry).title,
+            faborder.email, faborder.telephone, faborder.shipTo, faborder.shippingExpress,
+            faborder.paymentType, faborder.paymentId, faborder.Date().toisoformat(), faborders.nextProductionDelivery.Date().toisoformat())
+        """
         sendStatusMail(faborder)
 
     if event.action in ('cancel'):
@@ -180,6 +205,12 @@ def workflowTransitionHandler(faborder, event):
     if event.action in ('complete'):
         sendStatusMail(faborder)
 
+
+def utf_8_encode(string):
+    if isinstance(string, unicode):
+        return string.encode('utf-8')
+    else:
+        return string
 
 
 @grok.subscribe(IFabOrder, IObjectModifiedEvent)
