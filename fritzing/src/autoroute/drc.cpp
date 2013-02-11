@@ -576,6 +576,11 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
         QRectF ncibr = nci->sceneBoundingRect();
         if (boardRect.contains(ncibr)) continue;
 
+        if (nci->attachedToItemType() == ModelPart::Wire) continue;
+        if (nci->attachedToItemType() == ModelPart::CopperFill) continue;
+
+        // TODO: skip pad part, logo item, smds
+
         QRectF ir = boardRect.intersected(ncibr);
         int x = qFloor((ir.left() - boardRect.left()) * dpi / GraphicsUtils::SVGDPI);
         if (x < 0) x = 0;

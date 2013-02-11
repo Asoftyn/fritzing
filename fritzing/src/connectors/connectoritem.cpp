@@ -1076,12 +1076,6 @@ Bus * ConnectorItem::bus() {
 	return m_connector->bus();
 }
 
-int ConnectorItem::attachedToItemType() {
-	if (m_attachedTo == NULL) return ModelPart::Unknown;
-
-	return m_attachedTo->itemType();
-}
-
 ViewLayer::ViewLayerID ConnectorItem::attachedToViewLayerID() {
 	if (m_attachedTo == NULL) return ViewLayer::UnknownLayer;
 

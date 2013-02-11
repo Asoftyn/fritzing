@@ -34,6 +34,7 @@ $Date$
 #include "../sketch/infographicsview.h"
 #include "../debugdialog.h"
 #include "../utils/graphicsutils.h"
+#include "../model/modelpart.h"
 
 //static const double EffectiveAdjustment = 1.25;
 static const double EffectiveAdjustmentFactor = 5.0 / 15.0;
@@ -217,4 +218,10 @@ QPainterPath NonConnectorItem::shape() const
 void NonConnectorItem::setShape(QPainterPath & pp) {
 	// so far only used by GroundPlane
 	m_shape = GraphicsUtils::shapeFromPath(pp, pen(), pen().widthF(), true);
+}
+
+int NonConnectorItem::attachedToItemType() {
+	if (m_attachedTo == NULL) return ModelPart::Unknown;
+
+	return m_attachedTo->itemType();
 }

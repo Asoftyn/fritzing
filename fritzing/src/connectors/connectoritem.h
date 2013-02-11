@@ -78,7 +78,6 @@ public:
 	void setInactive(bool inactivate);
 	ConnectorItem * overConnectorItem();
 	void setOverConnectorItem(ConnectorItem *);
-	int attachedToItemType();
 	ViewLayer::ViewLayerID attachedToViewLayerID();
 	ViewLayer::ViewLayerSpec attachedToViewLayerSpec();
 	ViewLayer::ViewIdentifier attachedToViewIdentifier();

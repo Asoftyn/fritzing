@@ -63,6 +63,7 @@ public:
 	QPainterPath shape() const;
     void setIsPath(bool);
     bool isPath();
+	int attachedToItemType();
 
 protected:
 	bool doNotPaint();
