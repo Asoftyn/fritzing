@@ -344,7 +344,10 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
                     layerHidden = layerHidden.nextSiblingElement("layerHidden");
                 }
 
-                if (itemBase->isBaseSticky()) {
+                if (itemBase->itemType() == ModelPart::ResizableBoard) {
+                    DebugDialog::debug("sticky");
+                }
+                if (itemBase->isBaseSticky() && itemBase->isLocalSticky()) {
                     // make sure the icon is displayed
                     itemBase->setLocalSticky(true);
                 }
@@ -471,9 +474,11 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
         delete mp;
     }
 
-	foreach (long id, newIDs) {
-		new CheckStickyCommand(this, crossViewType, id, false, CheckStickyCommand::RemoveOnly, parentCommand);
-	}
+    if (parentCommand) {
+	    foreach (long id, newIDs) {
+		    new CheckStickyCommand(this, crossViewType, id, false, CheckStickyCommand::RemoveOnly, parentCommand);
+	    }
+    }
 
 	if (zmap.count() > 0) {
 		double z = 0.5;
