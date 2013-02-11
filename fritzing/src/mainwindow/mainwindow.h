@@ -421,7 +421,7 @@ protected:
 	void closeEvent(QCloseEvent * event);
 	void saveAsAuxAux(const QString & fileName);
 	void printAux(QPrinter &printer, bool removeBackground, bool paginate);
-	void exportAux(QString fileName, QImage::Format format, bool removeBackground);
+	void exportAux(QString fileName, QImage::Format format, int quality, bool removeBackground);
 	void notYetImplemented(QString action);
 	bool eventFilter(QObject *obj, QEvent *event);
 	void setActionsIcons(int index, QList<QAction *> &);

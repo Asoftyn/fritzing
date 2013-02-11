@@ -514,7 +514,8 @@ void MainWindow::doExport() {
 				m_statusBar->showMessage(tr("Sketch exported"), 2000);
 			} else { // PNG...
 				DebugDialog::debug(QString("format: %1 %2").arg(fileExt).arg(fileExportFormats[actionType]));
-				exportAux(fileName,fileExportFormats[actionType], true);
+                int quality = (actionType == pngActionType ? 1 : 100);
+				exportAux(fileName,fileExportFormats[actionType], quality, true);
 			}
 			delete fileProgressDialog;
 
@@ -522,7 +523,7 @@ void MainWindow::doExport() {
 	#endif
 }
 
-void MainWindow::exportAux(QString fileName, QImage::Format format, bool removeBackground) 
+void MainWindow::exportAux(QString fileName, QImage::Format format, int quality, bool removeBackground) 
 {
     double resMultiplier = 3;
 
@@ -583,7 +584,7 @@ void MainWindow::exportAux(QString fileName, QImage::Format format, bool removeB
 	if (imageWriter.supportsOption(QImageIOHandler::Description)) {
 		imageWriter.setText("", TextUtils::CreatedWithFritzingString);
 	}
-    imageWriter.setQuality(100);
+    imageWriter.setQuality(quality);
 	bool result = imageWriter.write(image);
 	if (!result) {
 		QMessageBox::warning(this, tr("Fritzing"), tr("Unable to save %1").arg(fileName) );
