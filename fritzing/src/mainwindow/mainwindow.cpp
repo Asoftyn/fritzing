@@ -1292,7 +1292,8 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
             if (!svgDoc.setContent(&svgfile)) continue;
 
             QList<QDomElement> elements;
-            TextUtils::findElementsWithAttribute(svgDoc.documentElement(), "id", elements);
+            QDomElement root = svgDoc.documentElement();
+            TextUtils::findElementsWithAttribute(root, "id", elements);
             if (elements.count() < msi.connectorSvgIds.count()) continue;
 
             QStringList ids;
@@ -2616,6 +2617,19 @@ QString MainWindow::getStyleSheetSuffix() {
 void MainWindow::addToMyParts(ModelPart * modelPart)
 {
     if (modelPart != NULL) m_binManager->addToMyParts(modelPart);
+}
+
+bool MainWindow::anyUsePart(const QString & moduleID) {
+    foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+        MainWindow *mainWindow = qobject_cast<MainWindow *>(widget);
+		if (mainWindow == NULL) continue;
+			    
+        if (mainWindow->usesPart(moduleID)) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 bool MainWindow::usesPart(const QString & moduleID) {

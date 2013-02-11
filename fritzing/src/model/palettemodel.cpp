@@ -39,9 +39,6 @@ $Date$
 #include "../utils/textutils.h"
 #include "../items/moduleidnames.h"
 
-bool PaletteModel::CreateAllPartsBinFile = false;  // now generating the all parts bin in advance using a python script:  [fritzing]/part-gen-scripts/misc_scripts/genAllParts.py
-
-bool PaletteModel::CreateNonCorePartsBinFile = false;
 bool PaletteModel::CreateContribPartsBinFile = true;
 bool PaletteModel::CreateTempPartsBinFile = true;
 
@@ -49,8 +46,6 @@ static bool JustAppendAllPartsInstances = false;
 static bool FirstTime = true;
 static bool FirstTimeWrite = true;
 
-QString PaletteModel::AllPartsBinFilePath;
-QString PaletteModel::NonCorePartsBinFilePath;
 QString PaletteModel::ContribPartsBinFilePath;
 
 static QString FritzingContribPath;
@@ -117,8 +112,6 @@ void PaletteModel::initParts(bool dbExists) {
 }
 
 void PaletteModel::initNames() {
-	AllPartsBinFilePath = FolderUtils::getApplicationSubFolderPath("bins")+"/allParts.dbg" + FritzingBinExtension;
-	NonCorePartsBinFilePath = FolderUtils::getUserDataStorePath("bins")+"/nonCoreParts" + FritzingBinExtension;
 	ContribPartsBinFilePath = FolderUtils::getUserDataStorePath("bins")+"/contribParts" + FritzingBinExtension;
 }
 
@@ -203,8 +196,6 @@ void PaletteModel::loadParts(bool dbExists) {
 }
 
 void PaletteModel::writeCommonBinsHeader() {
-	writeCommonBinsHeaderAux(CreateAllPartsBinFile, AllPartsBinFilePath, "All Parts");
-	writeCommonBinsHeaderAux(CreateNonCorePartsBinFile, NonCorePartsBinFilePath, "All my parts");
 	writeCommonBinsHeaderAux(CreateContribPartsBinFile, ContribPartsBinFilePath, "Contributed Parts");
 }
 
@@ -219,8 +210,6 @@ void PaletteModel::writeCommonBinsHeaderAux(bool doIt, const QString &filename, 
 }
 
 void PaletteModel::writeCommonBinsFooter() {
-	writeCommonBinsFooterAux(CreateAllPartsBinFile, AllPartsBinFilePath);
-	writeCommonBinsFooterAux(CreateNonCorePartsBinFile, NonCorePartsBinFilePath);
 	writeCommonBinsFooterAux(CreateContribPartsBinFile, ContribPartsBinFilePath);
 }
 
@@ -490,7 +479,6 @@ ModelPart * PaletteModel::loadPart(const QString & path, bool update) {
 	    if (FirstTime) {
 		    // make sure saving to the common bin takes place after fastLoad
 		    //DebugDialog::debug(QString("all parts %1").arg(JustAppendAllPartsInstances));
-		    writeCommonBinInstance(moduleID,path,CreateAllPartsBinFile,AllPartsBinFilePath);
 
 		    if (modelPart->isContrib()) {
 			    //if (path.startsWith(FritzingContribPath, Qt::CaseInsensitive)) {
@@ -499,9 +487,6 @@ ModelPart * PaletteModel::loadPart(const QString & path, bool update) {
 		    }
 
 		    //DebugDialog::debug(QString("non core parts %1").arg(JustAppendAllPartsInstances));
-		    if (!modelPart->isCore() && !modelPart->isObsolete()) {
-			    writeCommonBinInstance(moduleID,path,CreateNonCorePartsBinFile,NonCorePartsBinFilePath);
-		    }
 	    }
     }
 

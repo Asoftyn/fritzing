@@ -86,10 +86,6 @@ protected:
 	void writeCommonBinAux(const QString &textToWrite, QIODevice::OpenMode openMode, bool doIt, const QString &filename);
 
 protected:
-	static bool CreateAllPartsBinFile;
-	static QString AllPartsBinFilePath;
-	static bool CreateNonCorePartsBinFile;
-	static QString NonCorePartsBinFilePath;
 	static bool CreateContribPartsBinFile;
 	static QString ContribPartsBinFilePath;
 	static bool CreateTempPartsBinFile;

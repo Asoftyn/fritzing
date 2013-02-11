@@ -1086,12 +1086,17 @@ bool BinManager::removeSelected() {
 	ModelPart * mp = bin->selectedModelPart();
 	if (mp == NULL) return false;
 
+    if (m_mainWindow->anyUsePart(mp->moduleID())) {
+        QMessageBox::warning(this, tr("Remove from Bin"), tr("Unable to remove part '%1'--it is in use in a sketch").arg(mp->title()));
+        return false;
+    }
+
 	QMessageBox::StandardButton answer = QMessageBox::question(
 		this,
 		tr("Remove from bin"),
-		tr("Do you really want to remove '%1' from the bin?").arg(mp->title()),
+		tr("Do you really want to remove '%1' from the bin? This operation cannot be undone.").arg(mp->title()),
 		QMessageBox::Yes | QMessageBox::No,
-		QMessageBox::Yes
+		QMessageBox::No
 	);
 	// TODO: make button texts translatable
 	if(answer != QMessageBox::Yes) return false;
