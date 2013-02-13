@@ -8,23 +8,44 @@
    <g transform="translate(1158.63,146.82)">
     <g>
      <g id="silkscreen_2_">
-      <path fill="#999999" d="M843.708,27.9028c1.05556,20.125,18.8889,37.9167,39.0278,36.8611l0,802.917c-20.125,1.04167,-37.875,18.2222,-36.8194,38.3472L39.0556,906.028C38,885.889,20.125,868.819,0,869.875L0,27.9028L843.708,27.9028z"/>
+      <path fill="#999999" d="M843.708,27.9028c1.05556,20.125,18.875,37.9167,39.0278,36.8611l0,802.917c-20.125,1.04167,-37.875,18.2361,-36.8194,38.3611L39.0556,906.042c-1.05556,-20.1389,-18.9167,-37.2222,-39.0556,-36.1667L0,27.9028L843.708,27.9028z"/>
      </g>
      <rect width="806.667" x="39.0556" y="878.375" fill="#B3B3B3" height="27.9861"/>
      <g id="silkscreen_3_">
-      <path fill="#CCCCCC" d="M843.708,0c1.05556,20.125,18.8889,37.9167,39.0278,36.8611l0,802.917c-20.125,1.04167,-37.875,18.2222,-36.8194,38.3472L39.0556,878.125C38,858,20.125,840.917,0,841.972L0,0L843.708,0z"/>
-      <path opacity="0.2" fill="#FFFFFF" d="M882.958,39.8472c-20.125,1.05556,-37.9583,-16.7361,-39.0278,-36.8611L0.222222,2.98611L0,0l843.708,0c1.05556,20.125,18.8889,37.9167,39.0278,36.8611L882.958,39.8472z"/>
-      <path opacity="0.2" d="M0.222222,844.958c20.125,-1.05556,38,16.0139,39.0694,36.1528l806.847,0c-1.04167,-20.125,16.6944,-37.3056,36.8194,-38.3472l-0.236111,-2.98611c-20.125,1.04167,-37.875,18.2222,-36.8194,38.3472L39.0556,878.125C38,858,20.125,840.917,0,841.972L0.222222,844.958z"/>
+      <path fill="#CCCCCC" d="M843.708,0c1.05556,20.125,18.875,37.9167,39.0278,36.8611l0,802.917c-20.125,1.04167,-37.875,18.2222,-36.8194,38.3472L39.0556,878.125C38,857.986,20.125,840.917,0,841.972L0,0L843.708,0z"/>
+      <image width="133" height="6" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="E9158CD.png" transform="matrix(0.48, 0, 0, 0.48, 0.00339084, 0)"/>
+      <image width="133" height="7" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="E9158CF.png" transform="matrix(0.48, 0, 0, 0.48, 0.00339084, 839.776)"/>
      </g>
      <g>
-      <path fill="#F2F2F2" d="M803.444,598.5c0,7.63889,-6.25,13.8889,-13.8889,13.8889L93.1667,612.389c-7.63889,0,-13.8889,-6.25,-13.8889,-13.8889L79.2778,109.542c0,-7.63889,6.25,-13.8889,13.8889,-13.8889l696.403,0c7.63889,0,13.8889,6.25,13.8889,13.8889L803.458,598.5z"/>
+      <path fill="#F2F2F2" d="M803.444,598.5c0,7.65278,-6.25,13.8889,-13.8889,13.8889L93.1667,612.389c-7.63889,0,-13.8889,-6.23611,-13.8889,-13.8889L79.2778,109.542c0,-7.63889,6.25,-13.8889,13.8889,-13.8889l696.403,0c7.63889,0,13.8889,6.25,13.8889,13.8889L803.444,598.5L803.444,598.5z"/>
      </g>
      <g>
-      <path fill="#F2F2F2" d="M803.444,769.264c0,7.63889,-6.25,13.8889,-13.8889,13.8889L93.1667,783.153c-7.63889,0,-13.8889,-6.25,-13.8889,-13.8889l0,-127c0,-7.63889,6.25,-13.8889,13.8889,-13.8889l696.403,0c7.63889,0,13.8889,6.25,13.8889,13.8889L803.458,769.264z"/>
+      <path fill="#F2F2F2" d="M803.444,769.264c0,7.65278,-6.25,13.8889,-13.8889,13.8889L93.1667,783.153c-7.63889,0,-13.8889,-6.23611,-13.8889,-13.8889l0,-127c0,-7.63889,6.25,-13.8889,13.8889,-13.8889l696.403,0c7.63889,0,13.8889,6.25,13.8889,13.8889L803.444,769.264L803.444,769.264z"/>
      </g>
-     <g enable-background="new    " transform="matrix(1, 0, 0, 1, 176.517, 514.136)">
-      <text x="0" y="0" fill="#666666" font-family="'DroidSans'" font-size="59.2889">Telit quad cell module</text>
-      <text x="419.097" y="71.1528" fill="#666666" font-family="'DroidSans'" font-size="59.2889">GE865</text>
+     <g transform="matrix(1, 0, 0, 1, 176.517, 514.136)">
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 0.000423855, 0.0105964)" font-size="59.2889">T</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 27.2153, 0.0105964)" font-size="59.2889">e</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 58.9403, 0.0105964)" font-size="59.2889">l</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 74.2875, 0.0105964)" font-size="59.2889">i</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 89.6278, 0.0105964)" font-size="59.2889">t</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 109.721, 0.0105964)" font-size="59.2889"/>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 125.122, 0.0105964)" font-size="59.2889">q</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 159.858, 0.0105964)" font-size="59.2889">u</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 194.771, 0.0105964)" font-size="59.2889">a</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 226.238, 0.0105964)" font-size="59.2889">d</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 260.981, 0.0105964)" font-size="59.2889"/>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 276.381, 0.0105964)" font-size="59.2889">c</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 303.833, 0.0105964)" font-size="59.2889">e</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 335.544, 0.0105964)" font-size="59.2889">l</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 350.899, 0.0105964)" font-size="59.2889">l</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 366.239, 0.0105964)" font-size="59.2889"/>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 381.633, 0.0105964)" font-size="59.2889">m</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 434.774, 0.0105964)" font-size="59.2889">o</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 468.981, 0.0105964)" font-size="59.2889">d</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 503.731, 0.0105964)" font-size="59.2889">u</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 538.643, 0.0105964)" font-size="59.2889">l</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 553.969, 0.0105964)" font-size="59.2889">e</text>
+      <text fill="#666666" font-family="'DroidSans'" transform="matrix(1, 0, 0, 1, 419.094, 71.1639)" font-size="59.2889">GE865</text>
      </g>
     </g>
    </g>

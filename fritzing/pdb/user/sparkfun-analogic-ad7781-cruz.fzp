@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-AnalogIC-AD7781-CRUZ'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-AnalogIC' AD7781 CRUZ -->
 <version>4</version>
-<date>2013-01-10</date>
+<date>2013-02-13</date>
 <label>U</label>
 <author>www.fritzing.org</author>
 <description>20-Bit, Pin-Programmable, Ultralow Power Sigma-Delta ADC</description>

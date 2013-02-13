@@ -2,7 +2,7 @@
 <module fritzingVersion='0.7.2b' moduleId='SparkFun-Sensors-CAMERA_CMOS_CON-PLUG'>
 <!-- generated from Sparkfun Eagle Library 'SparkFun-Sensors' CAMERA_CMOS_CON PLUG -->
 <version>4</version>
-<date>2013-01-10</date>
+<date>2013-02-13</date>
 <label>U</label>
 <author>www.fritzing.org</author>
 <description>&lt;b&gt;640x480 CMOS Color Camera&lt;/b&gt;
@@ -36,7 +36,7 @@ Footprint proven. Spark Fun Electronics Camera SKU : SEN-00637, Mating Connector
 </layers>
 </pcbView>
 <iconView>
-<layers image='breadboard/sparkfun-sensors_camera_cmos_plug_breadboard.svg'>
+<layers image='icon/camera_cmos_plug.svg'>
 <layer layerId='icon'/>
 </layers>
 </iconView>
