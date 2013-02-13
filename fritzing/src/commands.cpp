@@ -481,6 +481,7 @@ ChangeConnectionCommand::ChangeConnectionCommand(SketchWidget * sketchWidget, Ba
 : BaseCommand(crossView, sketchWidget, parent)
 {
 	//DebugDialog::debug(QString("ccc: from %1 %2; to %3 %4").arg(fromID).arg(fromConnectorID).arg(toID).arg(toConnectorID) );
+    m_enabled = true;
     m_fromID = fromID;
     m_fromConnectorID = fromConnectorID;
     m_toID = toID;
@@ -492,20 +493,27 @@ ChangeConnectionCommand::ChangeConnectionCommand(SketchWidget * sketchWidget, Ba
 
 void ChangeConnectionCommand::undo()
 {
-    m_sketchWidget->changeConnection(m_fromID, m_fromConnectorID, m_toID, m_toConnectorID, m_viewLayerSpec, !m_connect,  m_crossViewType == CrossView,  m_updateConnections);
-    BaseCommand::undo();
+    if (m_enabled) {
+        m_sketchWidget->changeConnection(m_fromID, m_fromConnectorID, m_toID, m_toConnectorID, m_viewLayerSpec, !m_connect,  m_crossViewType == CrossView,  m_updateConnections);
+        BaseCommand::undo();
+    }
 }
 
 void ChangeConnectionCommand::redo()
 {
-    m_sketchWidget->changeConnection(m_fromID, m_fromConnectorID, m_toID, m_toConnectorID, m_viewLayerSpec, m_connect,  m_crossViewType == CrossView, m_updateConnections);
-    BaseCommand::redo();
+    if (m_enabled) {
+        m_sketchWidget->changeConnection(m_fromID, m_fromConnectorID, m_toID, m_toConnectorID, m_viewLayerSpec, m_connect,  m_crossViewType == CrossView, m_updateConnections);
+        BaseCommand::redo();
+    }
 }
 
 void ChangeConnectionCommand::setUpdateConnections(bool updatem) {
 	m_updateConnections = updatem;
 }
 
+void ChangeConnectionCommand::disable() {
+	m_enabled = false;
+}
 
 QString ChangeConnectionCommand::getParamString() const {
 	return QString("ChangeConnectionCommand ") 

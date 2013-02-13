@@ -299,6 +299,7 @@ public:
 	void undo();
 	void redo();
 	void setUpdateConnections(bool updatem);
+    void disable();
 
 protected:
 	QString getParamString() const;
@@ -311,6 +312,7 @@ protected:
 	bool m_connect;
 	bool m_updateConnections;
 	ViewLayer::ViewLayerSpec m_viewLayerSpec;
+    bool m_enabled;
 
 };
 

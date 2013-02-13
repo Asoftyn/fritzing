@@ -344,9 +344,9 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
                     layerHidden = layerHidden.nextSiblingElement("layerHidden");
                 }
 
-                if (itemBase->itemType() == ModelPart::ResizableBoard) {
-                    DebugDialog::debug("sticky");
-                }
+                //if (itemBase->itemType() == ModelPart::ResizableBoard) {
+                    //DebugDialog::debug("sticky");
+                //}
                 if (itemBase->isBaseSticky() && itemBase->isLocalSticky()) {
                     // make sure the icon is displayed
                     itemBase->setLocalSticky(true);
@@ -5880,7 +5880,6 @@ void SketchWidget::setUpSwapReconnect(SwapThing & swapThing, ItemBase * itemBase
 			}
                     
             
-
             if (gotOne) {
                 candidates.append(connector);
             }
@@ -5911,11 +5910,11 @@ void SketchWidget::setUpSwapReconnect(SwapThing & swapThing, ItemBase * itemBase
 		}
 	}
 
-	QHash<ConnectorItem *, Connector *> byWire;
 	QHash<QString, QPolygonF> legs;
 	QHash<QString, ConnectorItem *> formerLegs;
-	if (master && m2f.count() > 0 && (m_viewIdentifier == ViewLayer::BreadboardView)) {
-		checkFit(newModelPart, itemBase, newID, found, notFound, m2f, byWire, legs, formerLegs, swapThing.parentCommand);
+	if (m2f.count() > 0 && (m_viewIdentifier == ViewLayer::BreadboardView)) {
+        swapThing.bbView = this;
+		checkFit(newModelPart, itemBase, newID, found, notFound, m2f, swapThing.byWire, legs, formerLegs, swapThing.parentCommand);
 	}
 
 	fromConnectorItems.append(other);
@@ -5936,9 +5935,7 @@ void SketchWidget::setUpSwapReconnect(SwapThing & swapThing, ItemBase * itemBase
 				//}
 			}
 
-            
-
-			// command created for each view
+			// disconnect command created for each view individually
 			extendChangeConnectionCommand(BaseCommand::SingleView,
 										fromConnectorItem, toConnectorItem,
 										ViewLayer::specFromID(toConnectorItem->attachedToViewLayerID()),
@@ -5946,7 +5943,19 @@ void SketchWidget::setUpSwapReconnect(SwapThing & swapThing, ItemBase * itemBase
 
 			bool cleanup = false;
 			if (newConnector) {
-				cleanup = (byWire.value(fromConnectorItem, NULL) == newConnector) || swappedGender(fromConnectorItem, newConnector);
+                bool byWireFlag = (swapThing.byWire.value(fromConnectorItem, NULL) == newConnector);
+                bool swapped = false;
+                if (byWireFlag) {
+                    swapThing.toConnectorItems.insert(fromConnectorItem, toConnectorItem);
+                }
+                else {
+                    swapped = swappedGender(fromConnectorItem, newConnector);
+                    if (swapped && m_viewIdentifier == ViewLayer::BreadboardView) {
+                        swapThing.swappedGender.insert(fromConnectorItem, newConnector);
+                        swapThing.toConnectorItems.insert(fromConnectorItem, toConnectorItem);
+                    }
+                }
+				cleanup = byWireFlag || swapped;
 			}
 			if ((newConnector == NULL) || cleanup) {
 					// clean up after disconnect
@@ -5954,29 +5963,44 @@ void SketchWidget::setUpSwapReconnect(SwapThing & swapThing, ItemBase * itemBase
 			else {                
 				// reconnect directly without cleaning up; command created for each view
                 // if it's an smd swap, deal with reconnecting the wire at reconnect time
-				new ChangeConnectionCommand(this, BaseCommand::SingleView,
+				ChangeConnectionCommand * ccc = new ChangeConnectionCommand(this, BaseCommand::SingleView,
 										newID, newConnector->connectorSharedID(),
 										toConnectorItem->attachedToID(), toConnectorItem->connectorSharedID(),
 										ViewLayer::specFromID(toConnectorItem->attachedToViewLayerID()),
 										true, swapThing.parentCommand);
-			}
-
-			if (cleanup && master) {
-				long wireID = ItemBase::getNextID();
-				ViewGeometry vg;
-				new AddItemCommand(this, BaseCommand::CrossView, ModuleIDNames::WireModuleIDName, itemBase->viewLayerSpec(), vg, wireID, false, -1, swapThing.parentCommand);
-				new CheckStickyCommand(this, BaseCommand::CrossView, wireID, false, CheckStickyCommand::RemoveOnly, swapThing.parentCommand);
-				new ChangeConnectionCommand(this, BaseCommand::CrossView, newID, newConnector->connectorSharedID(),
-											wireID, "connector0", 
-											ViewLayer::specFromID(toConnectorItem->attachedToViewLayerID()),
-											true, swapThing.parentCommand);
-				new ChangeConnectionCommand(this, BaseCommand::CrossView, toConnectorItem->attachedToID(), toConnectorItem->connectorSharedID(),
-											wireID, "connector1", 
-											ViewLayer::specFromID(toConnectorItem->attachedToViewLayerID()),
-											true, swapThing.parentCommand);
+                swapThing.reconnections.insert(fromConnectorItem, ccc);
 			}
 		}
 	}
+
+    foreach (ConnectorItem * fromConnectorItem, swapThing.swappedGender.keys()) {
+        makeSwapWire(swapThing.bbView, itemBase, newID, fromConnectorItem, swapThing.toConnectorItems.value(fromConnectorItem), 
+                        swapThing.swappedGender.value(fromConnectorItem), swapThing.parentCommand);
+    }
+
+    if (master && swapThing.byWire.count() > 0) {
+        foreach (ConnectorItem * fromConnectorItem, swapThing.byWire.keys()) {
+            makeSwapWire(swapThing.bbView, itemBase, newID, fromConnectorItem, swapThing.toConnectorItems.value(fromConnectorItem), 
+                            swapThing.byWire.value(fromConnectorItem), swapThing.parentCommand);
+		}
+
+        foreach (ConnectorItem * fromConnectorItem, swapThing.byWire.keys()) {
+            // if a part, for example a generic DIP, is reconnected by wires after swapping, 
+            // then remove any pcb and schematic direct reconnections
+            QList<ConnectorItem *> toRemove;
+            foreach (ConnectorItem * foreign, swapThing.reconnections.keys()) {
+                ConnectorItem * candidate = swapThing.bbView->findConnectorItem(foreign);
+                if (candidate == fromConnectorItem) {
+                    toRemove << foreign;
+                    swapThing.reconnections.value(foreign)->disable();
+                }
+            }
+            foreach (ConnectorItem * foreign, toRemove) {
+                swapThing.reconnections.remove(foreign);
+            }
+        }
+    }
+
 
 	// changeConnection calls PaletteItemBase::connectedMoved which repositions the new part
 	// so slam in the desired position
@@ -6007,6 +6031,21 @@ void SketchWidget::setUpSwapReconnect(SwapThing & swapThing, ItemBase * itemBase
 			}
 		}
 	}
+}
+
+void SketchWidget::makeSwapWire(SketchWidget * bbView, ItemBase * itemBase, long newID, ConnectorItem * fromConnectorItem, ConnectorItem * toConnectorItem, Connector * newConnector, QUndoCommand * parentCommand) {
+	long wireID = ItemBase::getNextID();
+	ViewGeometry vg;
+	new AddItemCommand(bbView, BaseCommand::CrossView, ModuleIDNames::WireModuleIDName, itemBase->viewLayerSpec(), vg, wireID, false, -1, parentCommand);
+	new CheckStickyCommand(bbView, BaseCommand::CrossView, wireID, false, CheckStickyCommand::RemoveOnly, parentCommand);
+	new ChangeConnectionCommand(bbView, BaseCommand::CrossView, newID, newConnector->connectorSharedID(),
+								wireID, "connector0", 
+								ViewLayer::specFromID(toConnectorItem->attachedToViewLayerID()),
+								true, parentCommand);
+	new ChangeConnectionCommand(bbView, BaseCommand::CrossView, toConnectorItem->attachedToID(), toConnectorItem->connectorSharedID(),
+								wireID, "connector1", 
+								ViewLayer::specFromID(toConnectorItem->attachedToViewLayerID()),
+								bbView, parentCommand);
 }
 
 void SketchWidget::checkFit(ModelPart * newModelPart, ItemBase * itemBase, long newID,
@@ -6528,10 +6567,10 @@ void SketchWidget::updateRoutingStatus(RoutingStatus & routingStatus, bool manua
 		ConnectorItem::collectEqualPotential(connectorItems, true, ViewGeometry::RatsnestFlag);
 		visited.append(connectorItems);
 
-		if (this->viewIdentifier() == ViewLayer::PCBView) {
-			DebugDialog::debug("________________________");
-			foreach (ConnectorItem * ci, connectorItems) ci->debugInfo("cep");
-		}
+		//if (this->viewIdentifier() == ViewLayer::PCBView) {
+		//	DebugDialog::debug("________________________");
+		//	foreach (ConnectorItem * ci, connectorItems) ci->debugInfo("cep");
+		//}
 
 		bool doRatsnest = manual || checkUpdateRatsnest(connectorItems);
 		if (!doRatsnest && connectorItems.count() <= 1) continue;
@@ -6557,12 +6596,12 @@ void SketchWidget::updateRoutingStatus(RoutingStatus & routingStatus, bool manua
 
 		if (partConnectorItems.count() <= 1) continue;
 
-	    if (this->viewIdentifier() == ViewLayer::PCBView) {
-		    DebugDialog::debug("________________________");
-            foreach (ConnectorItem * pci, partConnectorItems) {
-				pci->debugInfo("pc");
-			}
-        }
+	    //if (this->viewIdentifier() == ViewLayer::PCBView) {
+		//    DebugDialog::debug("________________________");
+        //    foreach (ConnectorItem * pci, partConnectorItems) {
+		//		pci->debugInfo("pc");
+		//	}
+        //}
 
 		GraphUtils::scoreOneNet(partConnectorItems, this->getTraceFlag(), routingStatus);
 	}

@@ -69,6 +69,11 @@ struct SwapThing {
     ViewLayer::ViewLayerSpec viewLayerSpec;
     QList<Wire *> wiresToDelete;
     QUndoCommand * parentCommand;
+    QHash<ConnectorItem *, ChangeConnectionCommand *> reconnections;
+    QHash<ConnectorItem *, Connector *> byWire;
+    QHash<ConnectorItem *, ConnectorItem *> toConnectorItems;
+    QHash<ConnectorItem *, Connector *> swappedGender;
+    SketchWidget * bbView;
 };
 
 class SizeItem : public QObject, public QGraphicsLineItem
@@ -416,6 +421,7 @@ protected:
 	void handleConnect(QDomElement & connect, ModelPart *, const QString & fromConnectorID, ViewLayer::ViewLayerID, QStringList & alreadyConnected, 
 						QHash<long, ItemBase *> & newItems, QUndoCommand * parentCommand, bool seekOutsideConnections);
 	void setUpSwapReconnect(SwapThing &, ItemBase * itemBase, long newID, bool master);
+    void makeSwapWire(SketchWidget *, ItemBase *, long newID, ConnectorItem * fromConnectorItem, ConnectorItem * toConnectorItem, Connector * newConnector, QUndoCommand * parentCommand);
 	bool swappedGender(ConnectorItem * originalConnectorItem, Connector * newConnector);
 	void setLastPaletteItemSelected(PaletteItem * paletteItem);
 	void setLastPaletteItemSelectedIf(ItemBase * itemBase);

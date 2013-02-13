@@ -116,7 +116,6 @@ public:
 	static bool fixFonts(QString & svg, const QString & destFont);
 	static void fixStyleAttribute(QDomElement & element);
     static QString parseForModuleID(const QString & fzp);
-	static QString makeRequestParamsString();
 	static QString getRandText();
 
 public:

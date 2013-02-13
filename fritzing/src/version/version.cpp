@@ -28,9 +28,12 @@ $Date$
 											
 #include <QString>
 #include <QStringList>
+#include <QSettings>
+#include <QUrl>
 			
 #include "../debugdialog.h"                
-
+#include "../utils/textutils.h"                
+#include "../lib/qtsysteminfo/QtSystemInfo.h"
 
 QString Version::m_majorVersion("0");
 QString Version::m_minorVersion("7");
@@ -190,4 +193,28 @@ void Version::cleanup() {
 		delete m_singleton;
 		m_singleton = NULL;
 	}
+}
+
+QString Version::makeRequestParamsString() {
+	QSettings settings;
+	if (settings.value("pid").isNull()) {
+		settings.setValue("pid", TextUtils::getRandText());
+	}
+
+	QtSystemInfo systemInfo(NULL);
+	QString siVersion(QUrl::toPercentEncoding(Version::versionString()));
+	QString siSystemName(QUrl::toPercentEncoding(systemInfo.systemName()));
+	QString siSystemVersion(QUrl::toPercentEncoding(systemInfo.systemVersion()));
+	QString siKernelName(QUrl::toPercentEncoding(systemInfo.kernelName()));
+	QString siKernelVersion(QUrl::toPercentEncoding(systemInfo.kernelVersion()));
+	QString siArchitecture(QUrl::toPercentEncoding(systemInfo.architectureName()));
+    QString string = QString("?pid=%1&version=%2&sysname=%3&kernname=%4&kernversion=%5arch=%6&sysversion=%7")
+		.arg(settings.value("pid").toString())
+		.arg(siVersion)
+		.arg(siSystemName)
+		.arg(siKernelName)
+		.arg(siKernelVersion)
+		.arg(siArchitecture)
+		.arg(siSystemVersion);
+	return string;
 }

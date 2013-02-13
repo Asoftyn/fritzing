@@ -2786,7 +2786,7 @@ void PCBSketchWidget::requestQuote(double area) {
         for (int i = 0; i < QuoteDialog::MessageCount; i++) setQuoteMessage(i, "");
     }
 
-    QString paramString = TextUtils::makeRequestParamsString();
+    QString paramString = Version::makeRequestParamsString();
     QList<int> counts;
     counts << 1 << 2 << 5 << 10;
     int ix = 0;

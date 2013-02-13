@@ -30,8 +30,6 @@ $Date$
 #include "textutils.h"
 #include "misc.h"
 #include "../installedfonts.h"
-#include "../lib/qtsysteminfo/QtSystemInfo.h"
-#include "../version/version.h"
 
 //#include "../debugdialog.h"
 
@@ -1771,31 +1769,6 @@ void TextUtils::fixStyleAttribute(QDomElement & element, QString & style, const 
 		element.setAttribute(attributeName, value);
 	}
 }
-
-QString TextUtils::makeRequestParamsString() {
-	QSettings settings;
-	if (settings.value("pid").isNull()) {
-		settings.setValue("pid", getRandText());
-	}
-
-	QtSystemInfo systemInfo(NULL);
-	QString siVersion(QUrl::toPercentEncoding(Version::versionString()));
-	QString siSystemName(QUrl::toPercentEncoding(systemInfo.systemName()));
-	QString siSystemVersion(QUrl::toPercentEncoding(systemInfo.systemVersion()));
-	QString siKernelName(QUrl::toPercentEncoding(systemInfo.kernelName()));
-	QString siKernelVersion(QUrl::toPercentEncoding(systemInfo.kernelVersion()));
-	QString siArchitecture(QUrl::toPercentEncoding(systemInfo.architectureName()));
-    QString string = QString("?pid=%1&version=%2&sysname=%3&kernname=%4&kernversion=%5arch=%6&sysversion=%7")
-		.arg(settings.value("pid").toString())
-		.arg(siVersion)
-		.arg(siSystemName)
-		.arg(siKernelName)
-		.arg(siKernelVersion)
-		.arg(siArchitecture)
-		.arg(siSystemVersion);
-	return string;
-}
-
 
 QString TextUtils::getRandText() {
 	QString rand = QUuid::createUuid().toString();
