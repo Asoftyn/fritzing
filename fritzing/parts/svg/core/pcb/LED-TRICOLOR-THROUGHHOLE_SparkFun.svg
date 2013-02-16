@@ -22,27 +22,27 @@
       <circle
          cx="356.20001"
          cy="1419.2"
-         r="198.25"
+         r="225"
          id="connector0pad"
-         style="fill:none;stroke:#ff9400;stroke-width:196.5" />
+         style="fill:none;stroke:#ff9400;stroke-width:200" />
       <circle
          cx="1144.2"
          cy="1419.2"
-         r="198.25"
+         r="225"
          id="connector1pad"
-         style="fill:none;stroke:#ff9400;stroke-width:196.5" />
+         style="fill:none;stroke:#ff9400;stroke-width:200" />
       <circle
          cx="1930.2"
          cy="1419.2"
-         r="198.25"
+         r="225"
          id="connector2pad"
-         style="fill:none;stroke:#ff9400;stroke-width:196.5" />
+         style="fill:none;stroke:#ff9400;stroke-width:200" />
       <circle
          cx="2718.2"
          cy="1419.2"
-         r="198.25"
+         r="225"
          id="connector3pad"
-         style="fill:none;stroke:#ff9400;stroke-width:196.5" />
+         style="fill:none;stroke:#ff9400;stroke-width:200" />
     </g>
   </g>
  
