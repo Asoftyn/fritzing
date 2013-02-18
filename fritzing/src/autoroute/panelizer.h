@@ -130,7 +130,7 @@ protected:
     static void shrinkLastPanel( QList<PlanePair *> & planePairs, QList<PanelItem *> & insertPanelItems, PanelParams &, bool customPartsOnly);
     static int checkDonuts(MainWindow *, bool displayMessage);
     static int checkText(MainWindow *, bool displayMessage);
-    static void incProduced(const QString & path, QList<PanelItem *> & refPanelItems);
+    static void incProduced(const QString & path, long boardID, QList<PanelItem *> & refPanelItems);
 };
 
 #endif

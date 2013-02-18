@@ -206,6 +206,7 @@ BestPlace::BestPlace() {
 
 PanelItem::PanelItem() {
     produced = 0;
+    boardID = 0;
 }
 
 PanelItem::PanelItem(PanelItem * from) {
@@ -471,7 +472,7 @@ void Panelizer::bestFit(QList<PanelItem *> & refPanelItems, QList<PanelItem *> &
 {
 	foreach (PanelItem * panelItem, insertPanelItems) {
 		bestFitOne(panelItem, panelParams, planePairs, true, customPartsOnly);
-        incProduced(panelItem->path, refPanelItems);
+        incProduced(panelItem->path, panelItem->boardID, refPanelItems);
 	}
 }
 
@@ -1151,7 +1152,7 @@ void Panelizer::addOptional(int optionalCount, QList<PanelItem *> & refPanelItem
 					panelItem->maxOptional--;
 					optionalCount--;
 					insertPanelItems.append(copy);
-                    incProduced(copy->path, refPanelItems);
+                    incProduced(copy->path, copy->boardID, refPanelItems);
 				}
 				else {
 					// don't bother trying this one again
@@ -1628,9 +1629,9 @@ int Panelizer::checkDonuts(MainWindow * mainWindow, bool displayMessage) {
     return donuts.count() / 2;
 }
 
-void Panelizer::incProduced(const QString & path, QList<PanelItem *> & refPanelItems) {
+void Panelizer::incProduced(const QString & path, long boardID, QList<PanelItem *> & refPanelItems) {
     foreach (PanelItem * panelItem, refPanelItems) {
-        if (path == panelItem->path) {
+        if (path == panelItem->path && boardID == panelItem->boardID) {
             panelItem->produced++;
             break;
         }

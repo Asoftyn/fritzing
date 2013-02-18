@@ -6034,7 +6034,8 @@ void SketchWidget::setUpSwapReconnect(SwapThing & swapThing, ItemBase * itemBase
 }
 
 void SketchWidget::makeSwapWire(SketchWidget * bbView, ItemBase * itemBase, long newID, ConnectorItem * fromConnectorItem, ConnectorItem * toConnectorItem, Connector * newConnector, QUndoCommand * parentCommand) {
-	long wireID = ItemBase::getNextID();
+	Q_UNUSED(fromConnectorItem);
+    long wireID = ItemBase::getNextID();
 	ViewGeometry vg;
 	new AddItemCommand(bbView, BaseCommand::CrossView, ModuleIDNames::WireModuleIDName, itemBase->viewLayerSpec(), vg, wireID, false, -1, parentCommand);
 	new CheckStickyCommand(bbView, BaseCommand::CrossView, wireID, false, CheckStickyCommand::RemoveOnly, parentCommand);
