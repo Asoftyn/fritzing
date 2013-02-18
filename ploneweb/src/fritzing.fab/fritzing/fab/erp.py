@@ -9,7 +9,7 @@ import datetime
 def usage():
     print """
 usage:
-    erp.py -r <production-round> -f <file-urls> 
+    erp.py -r <production-round> 
 
     Connects to ERPnext to create
     - a customer
@@ -51,8 +51,7 @@ def main():
 
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hr:f:", ["help", "production-round", 
-            "file-url"])
+        opts, args = getopt.getopt(sys.argv[1:], "hr:", ["help", "production-round"])
     except getopt.GetoptError, err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -60,15 +59,12 @@ def main():
         sys.exit(2)
 
     pround = None
-    file_urls = []
 
     for o, a in opts:
         #print o
         #print a
         if o in ("-r", "--production-round"):
             pround = int(a)
-        elif o in ("-f", "--file-url"):
-            file_urls.append(a)
         elif o in ("-h", "--help"):
             usage()
             return
@@ -80,10 +76,6 @@ def main():
         usage()
         print "No production round given"
         return
-    if len(file_urls) == 0:
-        usage()
-        print "No file URL given"
-        return
 
     try:
         pround = str(pround).zfill(6)
@@ -92,11 +84,11 @@ def main():
 
     # dummy test order (dates are in isoformat)
     submitFabOrder(erp_url, username, password, 
-        pround, "76543210", [{'filename':"76543210_UntitledSketch.fzz", 'quantity':1, 'price':35.43, 'size':30.32}, 
+        pround, "76543210", [{'filename':"76543210_ÜntitledSketch.fzz", 'quantity':1, 'price':35.43, 'size':30.32}, 
         {'filename':"76543210_Test.fzz", 'quantity':3, 'price':120.12, 'size':135.23}], 199.00,
-        utf_8_encode("dummy3"), utf_8_encode("Peter Dummy"), utf_8_encode("ACME Inc."), utf_8_encode("123 Dummmy Str"), 
-        utf_8_encode(""), utf_8_encode("12345 AZ"), utf_8_encode("Berlin"), utf_8_encode("Germany"), 
-        "me@acme.com", utf_8_encode("+49 (0)30/12345678"), "Germany", False,
+        u"dummy3", u"Peter Dümmy", u"ACME Inc.", u"123 Dümmmy Str", 
+        u"", u"12345 AZ", "Berlin", u"Germany", 
+        "me@acme.com", u"+49 (0)30/12345678", "Germany", False,
         "PayPal", "236741787828423", "2013-02-08", "2013-02-17")
 
 
@@ -177,12 +169,12 @@ def createCustomer(server, username, fullname, country):
     
     #pprint(vars(response))
     if not responseOK(response, "name", username):
-        print "insert failed"
+        print "customer insert failed"
         return False
                 
     doc = get_doc(server, "Customer", username)
     if not responseOK(doc, "name", username):
-        print "get doc failed"
+        print "customer get doc failed"
         return False
         
     rows = doc.json().get("message")
@@ -288,7 +280,7 @@ def createSalesOrder(server, username, productionRound, orderItems, grandTotal,
 
     response = get_doc(server, "Sales Order", filters={"po_no":orderNumber})
     if responseOK(response, "po_no", orderNumber):
-        print "got sales order", orderNumber
+        print "got sales order", orderNumber, response.json().get("message")[0].get("name")
     else:  
         if taxZone.lower() == "germany":
             chargeType = "VAT+Shipping DE"
@@ -339,11 +331,15 @@ def createSalesOrder(server, username, productionRound, orderItems, grandTotal,
         print "weird sales order name", salesOrderName
         return False
 
+    print "sales order name", salesOrderName
+
     for orderItem in orderItems:
         already = False
         singlePrice = orderItem.get('price') / orderItem.get('quantity')
         for row in rows:
-            if row.get('item_code') == orderItem.get('itemID') and abs(row.get('ref_rate') - singlePrice) < 0.1:
+            itemcode = ensure_unicode(row.get('item_code'))
+            itemid = ensure_unicode(orderItem.get('itemID'))
+            if itemcode == itemid and abs(row.get('ref_rate') - singlePrice) < 0.1:
                 already = True
                 break
 
@@ -411,6 +407,12 @@ def createJournalVoucher(server, username, fullname, productionRound, orderItems
         print "weird journal voucher name", jvName
         return False
     
+    status = rows[0].get("docstatus")
+    if status == 1:
+        # already submitted, we are done
+        print "journal voucher", orderNumber, "already submitted"
+        return True
+    
     already = False
     for row in rows:
         if row.get("doctype") == "Journal Voucher Detail":
@@ -450,6 +452,15 @@ def createJournalVoucher(server, username, fullname, productionRound, orderItems
             pprint(vars(response))
             print
             return False
+            
+    doc = get_doc(server, "Journal Voucher", filters={"bill_no":orderNumber})
+    if responseOK(doc, "bill_no", orderNumber):
+        rows = doc.json().get("message")
+        response = submit(server, rows)
+        if not responseOK(response, "bill_no", orderNumber):
+            print "submit failed"
+            pprint(vars(response))
+            return False
 
     return True
 
@@ -483,7 +494,7 @@ def addToBOM(server, productionRound, entryID, quantity, size):
     already = False
     rows = doc.json().get("message")
     for row in rows:
-        if row.get("item_code") == entryID and row.get("doctype") == "BOM Item" and row.get("count") == quantity:
+        if ensure_unicode(row.get("item_code")) == ensure_unicode(entryID) and row.get("doctype") == "BOM Item" and row.get("count") == quantity:
             print "already got BOM Item", entryID
             already = True
             break
@@ -574,7 +585,15 @@ def update(server, doclist):
         }
         )
 
-
+def submit(server, doclist):
+    return request(server, {
+        "cmd": "webnotes.client.submit"
+        },
+        {
+        "doclist": json.dumps(doclist) 
+        }
+        )
+        
 def delete(server, doctype, name):
     return request(server, {
         "cmd": "webnotes.model.delete_doc",
@@ -605,16 +624,20 @@ def request(server, params = None, data = None):
 def responseOK(response, name, value):
     try:
         message = response.json().get("message")
-        return isinstance(message, list) and len(message) > 0 and message[0].get(name).lower() == value.lower()
+        if not isinstance(message, list) or len(message) == 0:
+            return False
+                    
+        messagevalue = ensure_unicode(message[0].get(name))
+        value = ensure_unicode(value)
+        return messagevalue.lower() == value.lower()
     except:
         return False
 
+def ensure_unicode(value):
+    if isinstance(value, str):
+        return unicode(value, "UTF-8")
 
-def utf_8_encode(string):
-    if isinstance(string, unicode):
-        return string.encode('utf-8')
-    else:
-        return string
+    return value
 
 
 if __name__ == "__main__":
