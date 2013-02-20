@@ -1628,8 +1628,9 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 	    gpg0.setStrokeWidthIncrement(StrokeWidthIncrement);
 	    gpg0.setMinRunSize(10, 10);
 	    if (fillGroundTraces) {
-		    connect(&gpg0, SIGNAL(postImageSignal(GroundPlaneGenerator *, QImage *, QGraphicsItem *, QList<QRectF> &)), 
-				    this, SLOT(postImageSlot(GroundPlaneGenerator *, QImage *, QGraphicsItem *, QList<QRectF> &)));
+		    connect(&gpg0, SIGNAL(postImageSignal(GroundPlaneGenerator *, QImage *, QGraphicsItem *, QList<QRectF> *)), 
+				    this, SLOT(postImageSlot(GroundPlaneGenerator *, QImage *, QGraphicsItem *, QList<QRectF> *)),
+                    Qt::DirectConnection);
 	    }
 
 	    bool result = gpg0.generateGroundPlane(boardSvg, boardImageRect.size(), svg0, copperImageRect.size(), exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */,
@@ -1647,8 +1648,9 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 		gpg1.setStrokeWidthIncrement(StrokeWidthIncrement);
 		gpg1.setMinRunSize(10, 10);
 		if (fillGroundTraces) {
-			connect(&gpg1, SIGNAL(postImageSignal(GroundPlaneGenerator *, QImage *, QGraphicsItem *, QList<QRectF> &)), 
-					this, SLOT(postImageSlot(GroundPlaneGenerator *, QImage *, QGraphicsItem *, QList<QRectF> &)));
+			connect(&gpg1, SIGNAL(postImageSignal(GroundPlaneGenerator *, QImage *, QGraphicsItem *, QList<QRectF> *)), 
+					this, SLOT(postImageSlot(GroundPlaneGenerator *, QImage *, QGraphicsItem *, QList<QRectF> *)),
+                    Qt::DirectConnection);
 		}
 		bool result = gpg1.generateGroundPlane(boardSvg, boardImageRect.size(), svg1, copperImageRect.size(), exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */,
 												ViewLayer::Copper1Color);
@@ -1931,7 +1933,7 @@ ViewGeometry::WireFlag PCBSketchWidget::getTraceFlag() {
 	return ViewGeometry::PCBTraceFlag;
 }
 
-void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * image, QGraphicsItem * board, QList<QRectF> & rects) {
+void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * image, QGraphicsItem * board, QList<QRectF> * rects) {
 
 	if (m_groundFillSeeds == NULL) return;
 
@@ -1992,7 +1994,7 @@ void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * image, 
 			for (int y = y1; y > bordert; y--) {
 				if (image->pixel(cx, y) & 0xffffff) {
 					QRectF s(cx - cw, y - 1, cw + cw, cy - y - rad);
-					rects.append(s);
+					rects->append(s);
 					break;
 				}
 			}
@@ -2001,7 +2003,7 @@ void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * image, 
 			for (int y = y2; y < borderb; y++) {
 				if (image->pixel(cx, y) & 0xffffff) {
 					QRectF s(cx - cw, cy + rad, cw + cw, y - cy - rad);
-					rects.append(s);
+					rects->append(s);
 					break;
 				}
 			}
@@ -2010,7 +2012,7 @@ void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * image, 
 			for (int x = x1; x > borderl; x--) {
 				if (image->pixel(x, cy) & 0xffffff) {
 					QRectF s(x - 1, cy - ch, cx - x - rad, ch + ch);
-					rects.append(s);
+					rects->append(s);
 					break;
 				}
 			}
@@ -2019,7 +2021,7 @@ void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * image, 
 			for (int x = x2; x < borderr; x++) {
 				if (image->pixel(x, cy) & 0xffffff) {
 					QRectF s(cx + rad, cy - ch, x - cx - rad, ch + ch);
-					rects.append(s);
+					rects->append(s);
 					break;
 				}
 			}

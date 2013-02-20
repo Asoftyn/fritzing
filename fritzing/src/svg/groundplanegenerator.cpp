@@ -394,7 +394,7 @@ QImage * GroundPlaneGenerator::generateGroundPlaneAux(GPGParams & params, double
 	image->save(FolderUtils::getUserDataStorePath("") + "/testGroundFillCopper.png");
 #endif
 
-	emit postImageSignal(this, image, params.board, rects);	
+	emit postImageSignal(this, image, params.board, &rects);	
 
 	return image;
 }

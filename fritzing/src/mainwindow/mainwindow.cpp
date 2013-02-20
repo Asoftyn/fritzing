@@ -1214,7 +1214,9 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
 
         QString moduleID = TextUtils::parseForModuleID(fzp);
         if (moduleID.isEmpty()) {
+            DebugDialog::debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             DebugDialog::debug(QString("unable to find module id in %1: %2").arg(file.fileName()).arg(fzp));
+            DebugDialog::debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             continue;
         }
 
