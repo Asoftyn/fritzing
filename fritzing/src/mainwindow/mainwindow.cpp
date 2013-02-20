@@ -2715,6 +2715,10 @@ void MainWindow::initProgrammingWidget() {
 void MainWindow::orderFabHoverEnter() {
     if (m_quoteDialog) return;
 
+    QTimer::singleShot(1, this, SLOT(fireQuote()));
+}
+
+void MainWindow::fireQuote() {
     m_quoteDialog = m_pcbGraphicsView->quoteDialog(this);
     if (m_quoteDialog == NULL) return;
 
@@ -2722,7 +2726,6 @@ void MainWindow::orderFabHoverEnter() {
     QWidget * toolbar = m_pcbWidget->toolbar();
     QRect r = toolbar->geometry();
     QPointF p = toolbar->parentWidget()->mapToGlobal(r.topLeft());
-
 
 	Qt::WindowFlags flags = m_quoteDialog->windowFlags();
     flags = Qt::Window | Qt::Dialog | Qt::FramelessWindowHint;

@@ -392,6 +392,7 @@ protected slots:
     void hidePartSilkscreen();
     void fabQuote();
     void findPartInSketch();
+    void fireQuote();
 
 protected:
 	void initSketchWidget(SketchWidget *);
