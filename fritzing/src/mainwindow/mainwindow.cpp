@@ -2713,12 +2713,16 @@ void MainWindow::initProgrammingWidget() {
 }
 
 void MainWindow::orderFabHoverEnter() {
+    if (m_quoteDialog) return;
+
+    m_quoteDialog = m_pcbGraphicsView->quoteDialog(this);
+    if (m_quoteDialog == NULL) return;
+
     //DebugDialog::debug("enter fab button");
     QWidget * toolbar = m_pcbWidget->toolbar();
     QRect r = toolbar->geometry();
     QPointF p = toolbar->parentWidget()->mapToGlobal(r.topLeft());
 
-    m_quoteDialog = m_pcbGraphicsView->quoteDialog(this);
 
 	Qt::WindowFlags flags = m_quoteDialog->windowFlags();
     flags = Qt::Window | Qt::Dialog | Qt::FramelessWindowHint;
