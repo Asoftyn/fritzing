@@ -384,10 +384,6 @@
         <translation>Remover do compartimento</translation>
     </message>
     <message>
-        <source>Do you really want to remove &apos;%1&apos; from the bin?</source>
-        <translation>Queres realmente remover &apos;%1&apos; do compartimento?</translation>
-    </message>
-    <message>
         <source>Searching...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -413,6 +409,18 @@
     </message>
     <message>
         <source>Find Part in Sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from Bin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to remove part &apos;%1&apos;--it is in use in a sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you really want to remove &apos;%1&apos; from the bin? This operation cannot be undone.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

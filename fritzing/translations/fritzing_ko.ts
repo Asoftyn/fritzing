@@ -235,7 +235,7 @@
 <context>
     <name>Autorouter</name>
     <message>
-        <location filename="../src/autoroute/autorouter.cpp" line="330"/>
+        <location filename="../src/autoroute/autorouter.cpp" line="346"/>
         <source>Routing canceled! Now cleaning up...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -496,22 +496,32 @@
         <translation>저장소의 이름을 선택하세요:</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1091"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1090"/>
+        <source>Remove from Bin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1090"/>
+        <source>Unable to remove part &apos;%1&apos;--it is in use in a sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1096"/>
         <source>Remove from bin</source>
         <translation>저장소에서 삭제</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1092"/>
-        <source>Do you really want to remove &apos;%1&apos; from the bin?</source>
-        <translation>&apos;%1을 정말 저장소에서 삭제하기를 원하십니까?</translation>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1097"/>
+        <source>Do you really want to remove &apos;%1&apos; from the bin? This operation cannot be undone.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1189"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1194"/>
         <source>Select a Fritzing File to Open</source>
         <translation type="unfinished">열 Fritzing 파일 선택하기</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1191"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1196"/>
         <source>Fritzing Files (*%1 *%2 *%3);;Fritzing Part (*%1);;Fritzing Bin (*%2);;Fritzing Shareable Bin (*%3)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -683,17 +693,17 @@ Use the file?</source>
 <context>
     <name>ConnectorItem</name>
     <message>
-        <location filename="../src/connectors/connectoritem.cpp" line="2567"/>
+        <location filename="../src/connectors/connectoritem.cpp" line="2561"/>
         <source>Add bendpoint</source>
         <translation>밴드포인트 추가</translation>
     </message>
     <message>
-        <location filename="../src/connectors/connectoritem.cpp" line="2571"/>
+        <location filename="../src/connectors/connectoritem.cpp" line="2565"/>
         <source>Straighten curve</source>
         <translation>곡손을 펴기</translation>
     </message>
     <message>
-        <location filename="../src/connectors/connectoritem.cpp" line="2593"/>
+        <location filename="../src/connectors/connectoritem.cpp" line="2587"/>
         <source>Remove bendpoint</source>
         <translation>밴드포인트 제거</translation>
     </message>
@@ -746,7 +756,7 @@ Use the file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="600"/>
+        <location filename="../src/autoroute/drc.cpp" line="605"/>
         <source>A hole in %1 may lie outside the border of the board and would be clipped.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1429,149 +1439,149 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="256"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="257"/>
         <source>Ctrl+R</source>
         <comment>Rotate Clockwise</comment>
         <translatorcomment>시계방향으로 회전</translatorcomment>
         <translation>Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="258"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="259"/>
         <source>Alt+Ctrl+R</source>
         <comment>Rotate Clockwise</comment>
         <translatorcomment>시계방향으로 회전</translatorcomment>
         <translation>Alt+Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="260"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="261"/>
         <source>Meta+Ctrl+R</source>
         <comment>Rotate Clockwise</comment>
         <translatorcomment>시계방향으로 회전</translatorcomment>
         <translation>Meta+Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="263"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="264"/>
         <source>Shift+Ctrl+R</source>
         <comment>Rotate Counterclockwise</comment>
         <translatorcomment>반시계방향으로 회전</translatorcomment>
         <translation>Shift+Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="265"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="266"/>
         <source>Alt+Shift+Ctrl+R</source>
         <comment>Rotate Counterclockwise</comment>
         <translatorcomment>반시계방향으로 회전</translatorcomment>
         <translation>Alt+Shift+Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="267"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="268"/>
         <source>Meta+Shift+Ctrl+R</source>
         <comment>Rotate Counterclockwise</comment>
         <translatorcomment>반시계방향으로 회전</translatorcomment>
         <translation>Meta+Shift+Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="270"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="271"/>
         <source>Shift+Ctrl+Tab</source>
         <comment>Toggle Active Layer</comment>
         <translatorcomment>토글 활성화된 레이어</translatorcomment>
         <translation>Shift+Ctrl+Tab</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="747"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="748"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1251"/>
         <source>Rotate</source>
         <translation>회전</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="755"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="756"/>
         <source>Share</source>
         <translation>공유</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="764"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="765"/>
         <source>Flip</source>
         <translation>뒤집기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="772"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="773"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2397"/>
         <source>Autoroute</source>
         <translation>오토라우터</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="779"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="780"/>
         <source>Order PCB</source>
         <translation>PCB 주문</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="795"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="796"/>
         <source>Both Layers</source>
         <translation>양면 레이어</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="800"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="801"/>
         <source>Bottom Layer</source>
         <translation>바닥 레이어</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="805"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="806"/>
         <source>Top Layer</source>
         <translation>최상위 레이어</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="813"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="814"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="804"/>
         <source>Add a note</source>
         <translation>노트 추가</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="823"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="824"/>
         <source>Export for PCB</source>
         <translation>PCB 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="900"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="906"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="148"/>
         <source>Ready</source>
         <translation>준비</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1074"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1080"/>
         <source>Save %1</source>
         <translation>%1 저장</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1480"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="810"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1489"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="811"/>
         <source>Specify a file name</source>
         <translation>파일이름을 지정하세요</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2354"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="810"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2363"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="811"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="273"/>
         <source>Fritzing (*%1)</source>
         <translation>Fritzing (*%1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1156"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1174"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1395"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1437"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1450"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1515"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2076"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1162"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1180"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1404"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1446"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1459"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1524"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2085"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="168"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="173"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="589"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="640"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="727"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="879"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="985"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1198"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1368"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1373"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="590"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="641"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="728"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="880"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="986"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1199"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1369"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1374"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="183"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="194"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="248"/>
@@ -1595,164 +1605,164 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation>Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="880"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="881"/>
         <source>Unable to export %1 as shareable</source>
         <translation>%1 를 공유하기위해 내보낼 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1157"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1163"/>
         <source>Unable to open &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1175"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1181"/>
         <source>No Sketch found in &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1396"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1405"/>
         <source>Unable to open shareable %1</source>
         <translation>공유가능한 %1 를 열 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1438"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1447"/>
         <source>Unable to open shareable part %1</source>
         <translation>공유가능한 부품 %1 를 열 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1451"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1460"/>
         <source>Unable to read shareable part %1</source>
         <translation>공유가능한 부품 %1 를 읽을 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1482"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1491"/>
         <source>Fritzing Part (*%1)</source>
         <translation>Fritzing 부품 (*%1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1516"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1525"/>
         <source>Unable to export %1 to shareable sketch</source>
         <translation>%1 를 공유가능한 스케치로 내보낼 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1608"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1617"/>
         <source>Do you want to keep the imported parts?</source>
         <translation>불러온 부품을 유지하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1676"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1685"/>
         <source>No connections to route</source>
         <translation>라우트할 연결이 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1679"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1688"/>
         <source>Routing completed</source>
         <translation>라우팅 완료</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1682"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1691"/>
         <source>Routing completed using %n jumper part(s)</source>
         <translation>
             <numerusform>%n 점퍼 부품을 사용하여 라우팅 완료</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1685"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1694"/>
         <source>%1 of %2 nets routed - %n connector(s) still to be routed</source>
         <translation>
             <numerusform>%2 중 %1 네트가 라우팅 됨 - %n 개의 연결이 라우팅되야 합니다</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1721"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1730"/>
         <source>%1 - [%2]</source>
         <translation>%1 - [%2]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1852"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1861"/>
         <source>No copper top layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1853"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1862"/>
         <source>The copper top (copper 1) layer is not available on a one-sided board.  Please switch the board to double-sided or choose the copper bottom (copper 0) layer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1914"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1923"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3486"/>
         <source>Sorry!</source>
         <translation>죄송합니다!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1915"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1924"/>
         <source>No part with those characteristics.
 We&apos;re working to avoid this message, and only let you choose between properties that do exist</source>
         <translation>이러한 특성을 가진 부품이 없습니다.
 우리는 이런 메시지를 방지하기 위해 노력하고 있습니다. 존재하는 속성중에서 선택하세요</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1927"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1936"/>
         <source>No exactly matching part found; Fritzing chose the closest match.</source>
         <translation>정확하게 일치하는 부품이 없습니다; Fritzing이 가장 가까운 것을 선택했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1964"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1973"/>
         <source>Change to single layer pcb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1964"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1973"/>
         <source>Change to two layer pcb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1997"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2006"/>
         <source>Swapped %1 with module %2</source>
         <translation>%1를 %2와 바꿨습니다</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2019"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2028"/>
         <source>Change image to %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2077"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2086"/>
         <source>Svg %1 is missing a &apos;%2&apos; layer. For more information on how to create a custom board shape, see the tutorial at &lt;a href=&apos;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&apos;&gt;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&lt;/a&gt;.</source>
         <translation>Svg %1 에 %2&apos; 레이어가 없습니다. 사용자 정의 보드 세이프를 만들기 위해서는 다음 링크에 있는 튜토리얼을 참고하세요 &lt;a href=&apos;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&apos;&gt;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2114"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2123"/>
         <source>loading %1</source>
         <translation>불러오기 %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2123"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2132"/>
         <source>Loading...</source>
         <translation>불러오기...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2129"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2138"/>
         <source>new sketch</source>
         <translation>새로운 스케치</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2259"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2268"/>
         <source>Backing up &apos;%1&apos;</source>
         <translation>백업 &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2409"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2418"/>
         <source>Unrouted connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2410"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2419"/>
         <source>There are no unrouted connections in this view.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2690"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2712"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1762,7 +1772,7 @@ We&apos;re working to avoid this message, and only let you choose between proper
         <translation>Ctrl+D</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2449"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2458"/>
         <source>%1 %2 %3</source>
         <translation>%1 %2 %3</translation>
     </message>
@@ -1835,7 +1845,7 @@ We&apos;re working to avoid this message, and only let you choose between proper
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="203"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1378"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1379"/>
         <source>Choose a folder for exporting</source>
         <translation>내보낼 폴더 선택</translation>
     </message>
@@ -1856,225 +1866,225 @@ We&apos;re working to avoid this message, and only let you choose between proper
         <translation>내보내기...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="589"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="590"/>
         <source>Unable to save %1</source>
         <translation>%1을 저장할 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="640"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="641"/>
         <source>Cannot print to %1</source>
         <translation>%1을 프린트 할 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="728"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="729"/>
         <source>Cannot write file %1:
 %2.</source>
         <translation>파일을 쓸 수 없습니다 %1:
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="743"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="744"/>
         <source>Saved &apos;%1&apos;</source>
         <translation>저장 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="892"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="893"/>
         <source>&amp;Save</source>
         <translation>&amp;저장</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="893"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="894"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="894"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="899"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="895"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="900"/>
         <source>Save the current sketch</source>
         <translation>현재 스케치 저장</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="897"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="898"/>
         <source>&amp;Save As...</source>
         <translation>&amp;다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="898"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="899"/>
         <source>Shift+Ctrl+S</source>
         <translation>Shift+Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="902"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="903"/>
         <source>Share online...</source>
         <translation>온라인에 공유...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="903"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="904"/>
         <source>Post a project to the Fritzing website</source>
         <translation>Fritzing 웹사이트에 프로젝트 포스팅</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="906"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="907"/>
         <source>JPG...</source>
         <translation>JPG...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="908"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="909"/>
         <source>Export the visible area of the current sketch as a JPG image</source>
         <translation>현재 스케치의 보여지는 부분을 JPG 이미지로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="911"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="912"/>
         <source>PNG...</source>
         <translation>PNG...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="913"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="914"/>
         <source>Export the visible area of the current sketch as a PNG image</source>
         <translation>현재 스케치의 보여지는 부분을 PNG 이미지로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="916"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="917"/>
         <source>PostScript...</source>
         <translation>포스트스크립...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="918"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="919"/>
         <source>Export the visible area of the current sketch as a PostScript image</source>
         <translation>현재 스케치의 보여지는 부분을 포스트스크립 이미지로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="921"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="922"/>
         <source>PDF...</source>
         <translation>PDF...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="923"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="924"/>
         <source>Export the visible area of the current sketch as a PDF image</source>
         <translation>현재 스케치의 보여지는 부분을 PDF 이미지로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="926"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="927"/>
         <source>SVG...</source>
         <translation>SVG...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="928"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="929"/>
         <source>Export the current sketch as an SVG image</source>
         <translation>현재 스케치를 SVG 이미지로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="931"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="932"/>
         <source>List of parts (&amp;Bill of Materials)...</source>
         <translation>부품 리스트 (&amp;Bill of Materials)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="933"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="934"/>
         <source>Save a Bill of Materials (BoM)/Shopping List as text</source>
         <translation>BOM/쇼핑리스트를 텍스트로 저장</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="936"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="937"/>
         <source>XML Netlist...</source>
         <translation>XML 네트리스트...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="938"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="939"/>
         <source>Save a netlist in XML format</source>
         <translation>네트리스트를 XML 포멧으로 저장</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="941"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="942"/>
         <source>Eagle...</source>
         <translation>Eagle...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="943"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="944"/>
         <source>Export the current sketch to Eagle CAD</source>
         <translation>현재 스케치를 Eagle CAD로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="946"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="947"/>
         <source>Extended Gerber (RS-274X)...</source>
         <translation>Extended Gerber (RS-274X)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="948"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="949"/>
         <source>Export the current sketch to Extended Gerber format (RS-274X) for professional PCB production</source>
         <translation>현재 스케치를 프로페서널 PCB 생산을 위해 Extended Gerber 포맷 (RS-274X)으로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="951"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="952"/>
         <source>Etchable (PDF)...</source>
         <translation>Etchable (PDF)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="952"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="953"/>
         <source>Export the current sketch to PDF for DIY PCB production (photoresist)</source>
         <translation>현재 스케치를 DIY PCB 생산(photoresist)을 위해 PDF로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="956"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="957"/>
         <source>Etchable (SVG)...</source>
         <translation>Etchable (SVG)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="957"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="958"/>
         <source>Export the current sketch to SVG for DIY PCB production (photoresist)</source>
         <translation>현재 스케치를 DIY PCB 생산(photoresist)을 위해 SVG로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="966"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="967"/>
         <source>&amp;Print...</source>
         <translation>&amp;프린트...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="967"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="968"/>
         <source>Ctrl+P</source>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="968"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="969"/>
         <source>Print the current view</source>
         <translation>현재 뷰를 프린트</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="976"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="977"/>
         <source>This will soon provide an export of your Fritzing sketch to the EAGLE layout software. If you&apos;d like to have more exports to your favourite EDA tool, please let us know, or contribute.</source>
         <translation>Fritzing 스케치가 EAGEL layout 소프트웨어로 변환됩니다. 다른 EDA 툴로의 변환을 원하시면 알려주시거나 기여하시기 바랍니다.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1040"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1041"/>
         <source>Export SVG...</source>
         <translation>SVG 내보내기...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1181"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1182"/>
         <source>Export Bill of Materials (BoM)...</source>
         <translation>BOM 내보내기...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1198"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1199"/>
         <source>Unable to save BOM file, but the text is on the clipboard.</source>
         <translation>BOM파일을 저장할 수 없지만 텍스트는 클립보드에 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1291"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1292"/>
         <source>Export Netlist...</source>
         <translation>네트리스트 내보내기...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1369"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1370"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to export to Gerber.</source>
         <translation>스케치에 보드가 아직 없습니다! 거버를 만들기 위해 PCB를 추가하세요.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1374"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1375"/>
         <source>Gerber export can only handle one board at a time--please select the board you want to export.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1399"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1400"/>
         <source>Sketch exported to Gerber</source>
         <translation>스케치를 거버로 내보내기</translation>
     </message>
@@ -3343,12 +3353,12 @@ Would you like to convert &apos;%1&apos; to the .fzz format now or open it read-
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4055"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4063"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4055"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4063"/>
         <source>No parts matched search term &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3770,19 +3780,19 @@ Please check all views for potential side-effects.</source>
         <translation type="unfinished">실행취소 이력</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="450"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="451"/>
         <location filename="../src/mainwindow/mainwindow_dock.cpp" line="106"/>
         <source>Breadboard</source>
         <translation type="unfinished">브레드보드</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="459"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="460"/>
         <location filename="../src/mainwindow/mainwindow_dock.cpp" line="107"/>
         <source>Schematic</source>
         <translation type="unfinished">스케메틱</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="468"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="469"/>
         <location filename="../src/mainwindow/mainwindow_dock.cpp" line="108"/>
         <source>PCB</source>
         <translation type="unfinished">PCB</translation>
@@ -3921,156 +3931,156 @@ Reason: %2 (errcode %3)</source>
 <context>
     <name>PCBSketchWidget</name>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="260"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="270"/>
         <source>Create Trace from Ratsnest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="359"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="369"/>
         <source>Click this connector to drag out a new trace.</source>
         <translation>새로운 트레이스를 끌어내기 위해 이 컨넥터를 클릭하세요.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1127"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1159"/>
         <source>Change trace layer</source>
         <translation>트레이스층을 변경하기</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="314"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="319"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1524"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1529"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="324"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="329"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1553"/>
         <location filename="../src/sketch/pcbsketchwidget.cpp" line="1558"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1573"/>
         <location filename="../src/sketch/pcbsketchwidget.cpp" line="1587"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1609"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1627"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1666"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1671"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1678"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1688"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1602"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1616"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1639"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1658"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1697"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1702"/>
         <location filename="../src/sketch/pcbsketchwidget.cpp" line="1709"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1725"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2238"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2243"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2266"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2271"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2442"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2709"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1719"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1740"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1756"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2269"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2274"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2297"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2302"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2473"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2741"/>
         <source>Fritzing</source>
         <translation>Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1525"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1667"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1554"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1698"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use copper fill.</source>
         <translation>스케치가 아직 보드를 가지고 있지 않습니다! Copper fill을 사용하기 위해 PCB 를 추가하세요.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1530"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1559"/>
         <source>%1 Fill: please select the board you want to apply fill to.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1530"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1559"/>
         <source>Ground</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1530"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1559"/>
         <source>Copper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1672"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1703"/>
         <source>Copper fill: please select only the board you want to fill.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1540"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1569"/>
         <source>Please designate one or more ground fill seeds before doing a ground fill.
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="315"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="325"/>
         <source>Your sketch does not have a board yet! Please add a PCB in order to use this selection operation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="320"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2244"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2272"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="330"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2275"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2303"/>
         <source>Please click on a PCB first--this selection operation only works for one board at a time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1558"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1688"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1587"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1719"/>
         <source>Fritzing error: unable to render board svg (1).</source>
         <translation>Fritzing 에러: 보드 svg(1)을 렌더링할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1573"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1587"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1709"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1602"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1616"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1740"/>
         <source>Fritzing error: unable to render copper svg (1).</source>
         <translation>Fritzing 에러: copper svg(1)을 렌더링할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1609"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1639"/>
         <source>Fritzing error: unable to write copper fill (1).</source>
         <translation>Fritzing 에러: copper fill을 (1)을 쓸 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1627"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1658"/>
         <source>Fritzing error: unable to write copper fill (2).</source>
         <translation>Fritzing 에러: copper fill을 (2)을 쓸 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1678"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1709"/>
         <source>Unable to create copper fill--probably the part wasn&apos;t dropped onto the PCB.</source>
         <translation>Copper fill을 생성할 수 없습니다--아마도 부품이 PCB위에 있지 않은 것 같습니다.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1725"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1756"/>
         <source>Unable to create copper fill--possibly the part was dropped onto another part or wire rather than the actual PCB.</source>
         <translation>Copper fill을 생성할 수 없습니다--아마도 부품이 실제 PCB 대신에 다른 부품 또는 와이어 위에 있는 것 같습니다.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2100"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2131"/>
         <source>Clear ground fill seeds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2239"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2267"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2270"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2298"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use this selection operation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2443"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2474"/>
         <source>Unable to convert this via to a bendpoint because it is connected to a part that is only on the bottom layer and another part that is only on the top layer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2697"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2728"/>
         <source>Show part silkscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2697"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2728"/>
         <source>Hide part silkscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2710"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2742"/>
         <source>Your sketch does not have a board yet. You cannot fabricate this sketch without a PCB part.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2754"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2764"/>
         <source>%n copies of this sketch will cost %1 Euros.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -5946,8 +5956,8 @@ shift 키 스크롤축을 변경</translation>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="630"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="673"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="742"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="1289"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="1306"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1290"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1307"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="50"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="143"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2844"/>
@@ -5959,14 +5969,14 @@ shift 키 스크롤축을 변경</translation>
         <location filename="../src/model/modelbase.cpp" line="166"/>
         <location filename="../src/model/modelbase.cpp" line="339"/>
         <location filename="../src/model/modelbase.cpp" line="387"/>
-        <location filename="../src/model/palettemodel.cpp" line="104"/>
-        <location filename="../src/model/palettemodel.cpp" line="114"/>
-        <location filename="../src/model/palettemodel.cpp" line="344"/>
-        <location filename="../src/model/palettemodel.cpp" line="363"/>
-        <location filename="../src/model/palettemodel.cpp" line="469"/>
+        <location filename="../src/model/palettemodel.cpp" line="99"/>
+        <location filename="../src/model/palettemodel.cpp" line="109"/>
+        <location filename="../src/model/palettemodel.cpp" line="333"/>
+        <location filename="../src/model/palettemodel.cpp" line="352"/>
+        <location filename="../src/model/palettemodel.cpp" line="458"/>
         <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="502"/>
         <location filename="../src/program/programtab.cpp" line="597"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="866"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="907"/>
         <location filename="../src/svg/gerbergenerator.cpp" line="391"/>
         <source>Fritzing</source>
         <translation>Fritzing</translation>
@@ -6072,7 +6082,7 @@ shift 키 스크롤축을 변경</translation>
     </message>
     <message>
         <location filename="../src/model/modelbase.cpp" line="78"/>
-        <location filename="../src/model/palettemodel.cpp" line="345"/>
+        <location filename="../src/model/palettemodel.cpp" line="334"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>%1 파일을 읽을 수 없음:
@@ -6111,17 +6121,17 @@ shift 키 스크롤축을 변경</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="105"/>
+        <location filename="../src/model/palettemodel.cpp" line="100"/>
         <source>Parts folder not found.</source>
         <translation>부품 폴더가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="115"/>
+        <location filename="../src/model/palettemodel.cpp" line="110"/>
         <source>No parts found.</source>
         <translation>부품을 찾을 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="364"/>
+        <location filename="../src/model/palettemodel.cpp" line="353"/>
         <source>Parse error (2) at line %1, column %2:
 %3
 %4</source>
@@ -6130,7 +6140,7 @@ shift 키 스크롤축을 변경</translation>
 %4</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="470"/>
+        <location filename="../src/model/palettemodel.cpp" line="459"/>
         <source>The part &apos;%1&apos; at &apos;%2&apos; does not have a unique module id &apos;%3&apos;.</source>
         <translation>&apos;%2&apos;에 있는 부품 &apos;%1&apos;은 &apos;고유한 아이디 %3&apos;를 가지고 있지 않습니다.</translation>
     </message>
@@ -6183,7 +6193,7 @@ shift 키 스크롤축을 변경</translation>
     </message>
     <message>
         <location filename="../src/partsbinpalette/partsbinview.cpp" line="52"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="184"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="194"/>
         <source>PCB View</source>
         <translation>PCB 뷰</translation>
     </message>
@@ -6264,27 +6274,27 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
         <translation>bb</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="185"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="195"/>
         <source>pcb</source>
         <translation>pcb</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="298"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="308"/>
         <source>Select all &apos;Don&apos;t autoroute&apos; traces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="303"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="313"/>
         <source>Select all autorouteable traces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2319"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2350"/>
         <source>Convert to Via</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2450"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2481"/>
         <source>Convert Via to Bendpoint</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6294,79 +6304,79 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
         <translation>schem</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="867"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="908"/>
         <source>Error reading file %1: %2.</source>
         <translation>%1파일을 읽을 수 없습니다:%2.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3436"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3496"/>
         <source>%1 %2,%3 %4</source>
         <translation>%1 %2,%3 %4</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3465"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3525"/>
         <source>Change leg of %1,%2</source>
         <translation>%1,%2의 레그 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3622"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3682"/>
         <source>%1 %2 %3</source>
         <translation>%1 %2 %3</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3884"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3944"/>
         <source>%1 Layer</source>
         <translation>%1 레이어</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4108"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4125"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4168"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4185"/>
         <source>Bring forward</source>
         <translation>앞으로 가져오기</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4117"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4177"/>
         <source>Send backward</source>
         <translation>뒤로 보내기</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4134"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4194"/>
         <source>Bring to front</source>
         <translation>맨 앞으로 가져오기</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5392"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5473"/>
         <source>Split Wire</source>
         <translation>와이어 나누기</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5450"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5531"/>
         <source>Join Wire</source>
         <translation>와이어 연결</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7641"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7770"/>
         <source>Trace wires</source>
         <translation>트에이스 와이어</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7644"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7773"/>
         <source>Ratsnest wires</source>
         <translation>렛츠 네스트 와이어</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2257"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7646"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2288"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7775"/>
         <source>Select all %1</source>
         <translation>%1 전체 선택</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7929"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8058"/>
         <source>Select outdated parts</source>
         <translation>오래된 부품 선택</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7943"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8072"/>
         <source>Select locked parts</source>
         <translation>고정된 부품 선택</translation>
     </message>
@@ -6835,7 +6845,7 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
         <translation type="unfinished">in</translation>
     </message>
     <message>
-        <location filename="../src/commands.cpp" line="2052"/>
+        <location filename="../src/commands.cpp" line="2060"/>
         <source>Set Ground Fill Seed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6845,12 +6855,12 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="1289"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1290"/>
         <source>unable to copy file &apos;%1&apos; to &apos;%2&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="1306"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1307"/>
         <source>%1 wires moved from their saved position in %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6929,25 +6939,25 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
 <context>
     <name>QShortcut</name>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="479"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="480"/>
         <source>Ctrl</source>
         <comment>for naming shortcut keys on menu items</comment>
         <translation>Ctrl</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="480"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="481"/>
         <source>Alt</source>
         <comment>for naming shortcut keys on menu items</comment>
         <translation>Alt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="481"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="482"/>
         <source>Shift</source>
         <comment>for naming shortcut keys on menu items</comment>
         <translation>Shift</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="482"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="483"/>
         <source>Meta</source>
         <comment>for naming shortcut keys on menu items</comment>
         <translation>Meta</translation>
@@ -6961,29 +6971,29 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="127"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="128"/>
         <source>The total area of the %n boards in this sketch is %1 cm2 (%2 in2).</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="143"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="147"/>
         <source>Please note, price does not include shipping, possible additional taxes, or the checking fee.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="146"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="151"/>
         <source>For more information on pricing see &lt;a href=&apos;http://fab.fritzing.org/pricing&apos;&gt;http://fab.fritzing.org/pricing&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="150"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="156"/>
         <source>To order go to &lt;a href=&apos;http://fab.fritzing.org/fritzing-fab&apos;&gt;http://fab.fritzing.org/fritzing-fab&lt;/a&gt; and click &apos;Order Now&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="157"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="164"/>
         <source>OK</source>
         <translation type="unfinished">확인</translation>
     </message>
@@ -7268,325 +7278,325 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
 <context>
     <name>SketchWidget</name>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="667"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="708"/>
         <source>loading part</source>
         <translation>부품 불러오기</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="671"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="712"/>
         <source>done loading</source>
         <translation>불러오기 완료</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="1029"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="1070"/>
         <source>Delete ratsnest</source>
         <translation type="unfinished">Ratsnest를 제거하기</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="1076"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="1117"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="1079"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="1120"/>
         <source>%1 %2 items</source>
         <translation>%1 %2 아이템</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="1471"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="1512"/>
         <source>Select All</source>
         <translation>전체 선택</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="1471"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="1512"/>
         <source>Deselect</source>
         <translation>선택 취소</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="1935"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="1976"/>
         <source>Add %1</source>
         <translation>%1 추가</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="2039"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="2080"/>
         <source>Selection</source>
         <translation>선택</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3152"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3212"/>
         <source>Move %2 (%1)</source>
         <translation>%2 이동 (%1)</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3155"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3215"/>
         <source>Move %2 items (%1)</source>
         <translation>%2 아이템 이동 (%1)</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3333"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9182"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3393"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9311"/>
         <source>Select %1</source>
         <translation>%1 선택</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3336"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9185"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3396"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9314"/>
         <source>Select %1 items</source>
         <translation>%1 아이템 선택</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3424"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3606"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3484"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3666"/>
         <source>Disconnect</source>
         <translation>분리</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3425"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3485"/>
         <source>from %1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3428"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3488"/>
         <source>Move leg of</source>
         <translation>다리를 이동</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3432"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3618"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3492"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3678"/>
         <source>Connect</source>
         <translation>연결</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3433"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3619"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3493"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3679"/>
         <source>to %1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3488"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3548"/>
         <source>Change leg curvature for %1.</source>
         <translation>%1의 레그 곡률을 변경.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3514"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3574"/>
         <source>Change leg bendpoint for %1.</source>
         <translation>%1의 레그 밴드 포인트를 변경.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3614"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3674"/>
         <source>Change</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3672"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3732"/>
         <source>Create and connect wire</source>
         <translation>와이어를 생성 및 연결</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3794"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3854"/>
         <source>Fritzing</source>
         <translation type="unfinished">Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3794"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3854"/>
         <source>This seems like an attempt to create a trace across layers. This circumstance should not arise: please contact the developers.</source>
         <translation type="unfinished">다른 레이어로 트레이스를 생성하려고 한 것 같습니다. 이런 상황은 발생해서는 안됩니다. 개발자에게 연락바랍니다.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3801"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3861"/>
         <source>Create and connect %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3801"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3861"/>
         <source>wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3801"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3861"/>
         <source>trace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4434"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4494"/>
         <source>Rotate %2 (%1)</source>
         <translation>%2를 회전 (%1)</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4599"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4680"/>
         <source>Flip %2 (%1)</source>
         <translation>%2 뒤집기(%1)</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5550"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5631"/>
         <source>Double-click</source>
         <translation>더블클릭</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5550"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5631"/>
         <source>Drag or double-click</source>
         <translation>드래그 또는 더블클릭</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5551"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5632"/>
         <source>or alt-drag to move the segment</source>
         <translation>alt를 누리며 드래그를 하면 세그먼트의 이동 가능</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5616"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5697"/>
         <source>Double-click to delete this bend point</source>
         <translation>밴드포인트를 지우려면 더블클릭</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5678"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5759"/>
         <source>Note text change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5704"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5785"/>
         <source>Change %1 label to &apos;%2&apos;</source>
         <translation>%1 라벨을 &apos;%2&apos;로 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6163"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6284"/>
         <source>Change %1 color from %2 to %3</source>
         <translation>%1 색상을 %2 에서 %3로 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6169"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6290"/>
         <source>Change color of %1 wires to %2</source>
         <translation>%1 와이어의 색상을 %2로 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6215"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6336"/>
         <source>Change %1 width from %2 to %3</source>
         <translation>%1 폭을 %2 에서 %3로 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6221"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6342"/>
         <source>Change width of %1 wires to %2</source>
         <translation>%1 와이어의 폭을 %2로 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6898"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7019"/>
         <source>Move label &apos;%1&apos;</source>
         <translation>&apos;%1&apos;라벨 이동</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6905"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7026"/>
         <source>%1 label &apos;%2&apos;</source>
         <translation>%1 라벨 &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6905"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7026"/>
         <source>Rotate</source>
         <translation>회전</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6905"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7026"/>
         <source>Flip</source>
         <translation>뒤집기</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6940"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7061"/>
         <source>show %n part label(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="6943"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7064"/>
         <source>hide %n part label(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7458"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7587"/>
         <source>Resize ruler to %1 %2</source>
         <translation type="unfinished">눈금자를 %1 %2로 수정</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6957"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7078"/>
         <source>Resize Note</source>
         <translation>노트 크기 조정</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7329"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7456"/>
         <source>Change Resistance from %1 to %2</source>
         <translation>저항값을 %1 에서 %2로 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7353"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7362"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7480"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7489"/>
         <source>Change %1 from %2 to %3</source>
         <translation>%1을 %2 에서 %3으로 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7481"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8346"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7610"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8475"/>
         <source>Resize board to %1 %2</source>
         <translation type="unfinished">보드 사이즈를 %1 %2로  변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7538"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7667"/>
         <source>Create wire from Ratsnest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7743"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7872"/>
         <source>Disconnect all wires from %1</source>
         <translation>%1의 모든 와이어를 끊기</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7746"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7875"/>
         <source>Disconnect all wires from %1 items</source>
         <translation>%1 아이템들의 모든 와이어를 끊기</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8005"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8134"/>
         <source>Change image from %1 to %2</source>
         <translation>이미지를 %1 에서 %2로 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8731"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8860"/>
         <source>Rotate %1</source>
         <translation>회전 %1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8797"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8926"/>
         <source>change pin labels</source>
         <translation>핀 라벨 변경</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9088"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9217"/>
         <source>Unrouted connections are highlighted in yellow.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9089"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9218"/>
         <source>There are no unrouted connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9090"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9219"/>
         <source>Unrouted connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9091"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9220"/>
         <source>%1
 
 Note: you can also trigger this display by mousing down on the routing status text in the status bar.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9137"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9266"/>
         <source>Part &apos;%1&apos; not found in sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9179"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9308"/>
         <source>Deselect all</source>
         <translation type="unfinished"></translation>
     </message>
