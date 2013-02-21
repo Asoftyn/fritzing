@@ -936,11 +936,11 @@ void GerberGenerator::exportPickAndPlace(const QString & prefix, const QString &
 
     QTextStream stream(&out);
     stream << "*Pick And Place List\n"
-        << "*Company=IxDS\n"
-        << "*Author=IxDS\n"
+        << "*Company=\n"
+        << "*Author=\n"
         //*Tel=
         //*Fax=
-        << "*eMail=info@fritzing.org\n"
+        << "*eMail=\n"
         << "*\n"
         << QString("*Project=%1\n").arg(prefix)
         // *Variant=<alle Bauteile>
