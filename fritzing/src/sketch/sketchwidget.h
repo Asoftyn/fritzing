@@ -496,6 +496,7 @@ protected:
     void removeDragWire();
     QGraphicsItem * getClickedItem(QList<QGraphicsItem *> & items);
     void cleanupRatsnests(QList< QPointer<ConnectorItem> > & connectorItems, bool connect);
+    void rotateWire(Wire *, QTransform & rotation, QPointF center, bool undoOnly, QUndoCommand * parentCommand);
 
 protected:
 	static bool lessThan(int a, int b);

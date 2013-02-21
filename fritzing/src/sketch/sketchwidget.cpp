@@ -2315,8 +2315,10 @@ void SketchWidget::prepMove(ItemBase * originatingItem, bool rubberBandLegEnable
 	for (int i = 0; i < items.count(); i++) {
 		ItemBase * itemBase = items[i];
 		if (itemBase->itemType() == ModelPart::Wire) {
-			if (itemBase->isVisible()) {
-				wires.insert(qobject_cast<Wire *>(itemBase));
+            Wire * wire = qobject_cast<Wire *>(itemBase);
+			if (wire->isTraceType(getTraceFlag())) {
+				wires.insert(wire);
+               // wire->debugInfo("adding wire");
 			}
 			continue;
 		}
@@ -2325,14 +2327,20 @@ void SketchWidget::prepMove(ItemBase * originatingItem, bool rubberBandLegEnable
 		if (chief->moveLock()) continue;
 
 		m_savedItems.insert(chief->id(), chief);
+        //chief->debugInfo("adding saved");
 		if (chief->isSticky()) {
 			foreach(ItemBase * sitemBase, chief->stickyList()) {
 				if (sitemBase->isVisible()) {
 					if (sitemBase->itemType() == ModelPart::Wire) {
-						wires.insert(qobject_cast<Wire *>(sitemBase));
+                        Wire * wire = qobject_cast<Wire *>(sitemBase);
+                        if (wire->isTraceType(getTraceFlag())) {
+						    wires.insert(wire);
+                            //wire->debugInfo("adding wire");
+                        }
 					}
 					else {
 						m_savedItems.insert(sitemBase->layerKinChief()->id(), sitemBase);
+                        //sitemBase->debugInfo("adding sitem saved");
 						if (!items.contains(sitemBase)) {
 							items.append(sitemBase);
 						}
@@ -2353,7 +2361,13 @@ void SketchWidget::prepMove(ItemBase * originatingItem, bool rubberBandLegEnable
 				items.append(sitemBase);
 			}
 		}
-		chief->collectWireConnectees(wires);
+        QSet<Wire *> tempWires;
+		chief->collectWireConnectees(tempWires);
+        foreach (Wire * wire, tempWires) {
+            if (wire->isTraceType(getTraceFlag())) {
+                wires.insert(wire);
+            }
+        }
 	}
 
 	for (int i = m_checkUnder.count() - 1; i >= 0; i--) {
@@ -2659,11 +2673,13 @@ void SketchWidget::categorizeDragWires(QSet<Wire *> & wires, QList<ItemBase *> &
 			if (ct->status[0] == IN_) {
 				if (ct->status[1] == IN_ || ct->status[1] == FREE_) {
 					m_savedItems.insert(ct->wire->id(), ct->wire);
+                    //ct->wire->debugInfo("adding saved free");
 					if (ct->status[1] == FREE_) freeWires.append(ct->wire);
 				}
 				else {
 					// attach the connector that stays IN
 					m_savedWires.insert(ct->wire, ct->wire->connector0());
+                    //ct->wire->debugInfo("adding saved in");
 				}
 			}
 			else if (ct->status[0] == OUT_) {
@@ -2687,6 +2703,7 @@ void SketchWidget::categorizeDragWires(QSet<Wire *> & wires, QList<ItemBase *> &
 					if (ct->wire->isSelected()) {
 						m_savedItems.insert(ct->wire->id(), ct->wire);
 						freeWires.append(ct->wire);
+                        //ct->wire->debugInfo("adding saved free 2");
 					}
 					else {
 						outWires.append(ct->wire);
@@ -2732,6 +2749,7 @@ void SketchWidget::categorizeDragWires(QSet<Wire *> & wires, QList<ItemBase *> &
 						// we've elimated all OUT items so mark everybody IN
 						foreach (ConnectionThing * ct, connectionThings) {
 							m_savedItems.insert(ct->wire->id(), ct->wire);
+                            //ct->wire->debugInfo("adding saved in 2");
 							delete ct;
 						}						
 						connectionThings.clear();
@@ -2791,6 +2809,7 @@ void SketchWidget::prepDragWire(Wire * wire)
 
 	m_savedItems.clear();
 	m_savedItems.insert(wire->id(), wire);
+    //wire->debugInfo("adding saved wire");
 	wire->saveGeometry();
 	foreach (Wire * w, m_savedWires.keys()) {
 		w->saveGeometry();
@@ -4488,6 +4507,17 @@ void SketchWidget::rotateX(double degrees, bool rubberBandLegEnabled)
 	moveLegBendpoints(true, parentCommand);
 
 	rotatePartLabels(degrees, rotation, center, parentCommand);
+    
+    QList<Wire *> wires;
+	foreach (ItemBase * itemBase, m_savedItems.values()) {
+		if (itemBase->itemType() == ModelPart::Wire) {
+            wires << qobject_cast<Wire *>(itemBase);
+        }
+    }
+
+    foreach (Wire * wire, wires) {
+        rotateWire(wire, rotation, center, true, parentCommand);
+    }
 
 	foreach (ItemBase * itemBase, m_savedItems.values()) {
 		switch (itemBase->itemType()) {
@@ -4505,36 +4535,6 @@ void SketchWidget::rotateX(double degrees, bool rubberBandLegEnabled)
 				break;
 
 			case ModelPart::Wire:
-				{
-					Wire * wire = qobject_cast<Wire *>(itemBase);
-					QPointF p0 = wire->connector0()->sceneAdjustedTerminalPoint(NULL);
-					QPointF d0 = p0 - center;
-					QPointF d0t = rotation.map(d0);
-
-					QPointF p1 = wire->connector1()->sceneAdjustedTerminalPoint(NULL);
-					QPointF d1 = p1 - center;
-					QPointF d1t = rotation.map(d1);
-
-					ViewGeometry vg1 = itemBase->getViewGeometry();
-					new ChangeWireCommand(this, wire->id(), vg1.line(), QLineF(QPointF(0,0), d1t - d0t), vg1.loc(), d0t + center, true, true, parentCommand);
-
-                    const Bezier * bezier = wire->curve();
-                    if (bezier) {
-                        Bezier * newBezier = new Bezier();
-                        newBezier->set_endpoints(QPointF(0,0), d1t - d0t);
-                        QPointF c0 = p0 + bezier->cp0();
-                        QPointF dc0 = c0 - center;
-                        QPointF dc0t = rotation.map(dc0);
-                        newBezier->set_cp0(dc0t - d0t);
-
-                        QPointF c1 = p0 + bezier->cp1();
-                        QPointF dc1 = c1 - center;
-                        QPointF dc1t = rotation.map(dc1);
-                        newBezier->set_cp1(dc1t - d0t);
-
-                        new ChangeWireCurveCommand(this, wire->id(), bezier, newBezier, wire->getAutoroutable(), parentCommand);
-                    }
-				}
 				break;
 
 			default:
@@ -4551,6 +4551,10 @@ void SketchWidget::rotateX(double degrees, bool rubberBandLegEnabled)
 				break;
 		}
 	}
+
+    foreach (Wire * wire, wires) {
+        rotateWire(wire, rotation, center, false, parentCommand);
+    }
 
 	// change legs after connections have been updated (redo direction)
 	QList<ConnectorItem *> connectorItems;
@@ -4585,6 +4589,42 @@ void SketchWidget::rotateX(double degrees, bool rubberBandLegEnabled)
 	new CleanUpWiresCommand(this, CleanUpWiresCommand::RedoOnly, parentCommand);
 
 	m_undoStack->push(parentCommand);
+}
+
+void SketchWidget::rotateWire(Wire * wire, QTransform & rotation, QPointF center, bool undoOnly, QUndoCommand * parentCommand) {
+    //wire->debugInfo("rotating wire");
+	QPointF p0 = wire->connector0()->sceneAdjustedTerminalPoint(NULL);
+	QPointF d0 = p0 - center;
+	QPointF d0t = rotation.map(d0);
+
+	QPointF p1 = wire->connector1()->sceneAdjustedTerminalPoint(NULL);
+	QPointF d1 = p1 - center;
+	QPointF d1t = rotation.map(d1);
+
+	ViewGeometry vg1 = wire->getViewGeometry();
+	ChangeWireCommand * cwc = new ChangeWireCommand(this, wire->id(), vg1.line(), QLineF(QPointF(0,0), d1t - d0t), vg1.loc(), d0t + center, true, true, parentCommand);
+    if (undoOnly) cwc->setUndoOnly();
+    else cwc->setRedoOnly();
+
+    const Bezier * bezier = wire->curve();
+    if (bezier) {
+        Bezier * newBezier = new Bezier();
+        newBezier->set_endpoints(QPointF(0,0), d1t - d0t);
+        QPointF c0 = p0 + bezier->cp0();
+        QPointF dc0 = c0 - center;
+        QPointF dc0t = rotation.map(dc0);
+        newBezier->set_cp0(dc0t - d0t);
+
+        QPointF c1 = p0 + bezier->cp1();
+        QPointF dc1 = c1 - center;
+        QPointF dc1t = rotation.map(dc1);
+        newBezier->set_cp1(dc1t - d0t);
+
+        ChangeWireCurveCommand * cwcc = new ChangeWireCurveCommand(this, wire->id(), bezier, newBezier, wire->getAutoroutable(), parentCommand);
+        if (undoOnly) cwcc->setUndoOnly();
+        else cwcc->setRedoOnly();
+    }
+
 }
 
 void SketchWidget::rotatePartLabels(double degrees, QTransform &, QPointF center, QUndoCommand * parentCommand)
@@ -6617,7 +6657,7 @@ void SketchWidget::updateRoutingStatus(RoutingStatus & routingStatus, bool manua
 
 	foreach(QPointer<VirtualWire> vw, ratsToDelete) {
 		if (vw != NULL) {
-			vw->debugInfo("removing rat 2");
+			//vw->debugInfo("removing rat 2");
 			vw->scene()->removeItem(vw);
 			delete vw;
 		}
@@ -8932,10 +8972,10 @@ VirtualWire * SketchWidget::makeOneRatsnestWire(ConnectorItem * source, Connecto
 	makeRatsnestViewGeometry(viewGeometry, source, dest);
 	viewGeometry.setRouted(routed);
 
-	if (viewIdentifier() == ViewLayer::PCBView) {
-		source->debugInfo("making rat src");
-		dest->debugInfo("making rat dst");
-	}
+	//if (viewIdentifier() == ViewLayer::PCBView) {
+	//	source->debugInfo("making rat src");
+	//	dest->debugInfo("making rat dst");
+	//}
 
 	// ratsnest only added to one view
 	ItemBase * newItemBase = addItem(m_referenceModel->retrieveModelPart(ModuleIDNames::WireModuleIDName), source->attachedTo()->viewLayerSpec(), BaseCommand::SingleView, viewGeometry, newID, -1, NULL);		

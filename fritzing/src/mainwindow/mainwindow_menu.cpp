@@ -4039,6 +4039,14 @@ void MainWindow::findPartInSketch() {
     strings << text;
     QList<ItemBase *> matched;
     foreach (ItemBase * itemBase, itemBases) {
+
+#ifndef QT_NO_DEBUG
+        if (QString::number(itemBase->id()).contains(text)) {
+            matched << itemBase;
+            continue;
+        }
+#endif
+
         if (itemBase->instanceTitle().contains(text, Qt::CaseInsensitive)) {
             matched << itemBase;
             continue;
