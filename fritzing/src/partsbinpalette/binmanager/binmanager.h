@@ -69,7 +69,6 @@ class BinManager : public QFrame {
 		void insertBin(PartsBinPaletteWidget* bin, int index);
 		void addPartToBin(ModelPart *modelPart, int position = -1);
 		void addToMyParts(ModelPart *modelPart);
-		void addToContrib(ModelPart *modelPart);
 		void addToTempPartsBin(ModelPart *modelPart);
 		void hideTempPartsBin();
 
@@ -110,7 +109,7 @@ class BinManager : public QFrame {
 		void setTabIcon(PartsBinPaletteWidget* w, QIcon *);
 		void copyFilesToContrib(ModelPart *, QWidget * originator);
 		void importPartToCurrentBin(const QString & filename);
-		void importPartToContribBin(const QString & filename);
+		void importPartToMineBin(const QString & filename);
         bool isTempPartsBin(PartsBinPaletteWidget * bin);
         void setTempPartsBinLocation(const QString & filename);
         void hideTabBar();
@@ -165,6 +164,7 @@ class BinManager : public QFrame {
 		void readTheoreticalLocations(QList<BinLocation *> & theoreticalLocations);
 		void updateBinCombinedMenu(PartsBinPaletteWidget * bin);
         void importPart(const QString & filename, PartsBinPaletteWidget * bin);
+        void hackLocalContrib(QList<BinLocation *> &);
 
 
 protected:
@@ -217,7 +217,6 @@ protected:
         static QString SearchBinLocation;
         static QString SearchBinTemplateLocation;
 		static QString ContribPartsBinLocation;
-		static QString ContribPartsBinTemplateLocation;
 		static QString TempPartsBinTemplateLocation;
 		static QHash<QString, QString> StandardBinIcons;
 

@@ -51,10 +51,11 @@ PartsBinAddRemoveArrangeCommand::PartsBinAddRemoveArrangeCommand(class PartsBinP
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-PartsBinAddRemoveCommand::PartsBinAddRemoveCommand(class PartsBinPaletteWidget* bin, QString moduleID, int index, QUndoCommand *parent)
+PartsBinAddRemoveCommand::PartsBinAddRemoveCommand(class PartsBinPaletteWidget* bin, QString moduleID, QString path, int index, QUndoCommand *parent)
 	: PartsBinAddRemoveArrangeCommand(bin, moduleID, parent)
 {
 	m_index = index;
+    m_path = path;
 }
 
 void PartsBinAddRemoveCommand::add() {
@@ -62,13 +63,13 @@ void PartsBinAddRemoveCommand::add() {
 }
 
 void PartsBinAddRemoveCommand::remove() {
-	m_bin->removePart(m_moduleID);
+	m_bin->removePart(m_moduleID, m_path);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-PartsBinAddCommand::PartsBinAddCommand(class PartsBinPaletteWidget* bin, QString moduleID, int index, QUndoCommand *parent)
-	: PartsBinAddRemoveCommand(bin, moduleID, index, parent) {}
+PartsBinAddCommand::PartsBinAddCommand(class PartsBinPaletteWidget* bin, QString moduleID, QString path, int index, QUndoCommand *parent)
+	: PartsBinAddRemoveCommand(bin, moduleID, path, index, parent) {}
 
 void PartsBinAddCommand::undo() {
 	remove();
@@ -80,8 +81,8 @@ void PartsBinAddCommand::redo() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-PartsBinRemoveCommand::PartsBinRemoveCommand(class PartsBinPaletteWidget* bin, QString moduleID, int index, QUndoCommand *parent)
-	: PartsBinAddRemoveCommand(bin, moduleID, index, parent) {}
+PartsBinRemoveCommand::PartsBinRemoveCommand(class PartsBinPaletteWidget* bin, QString moduleID, QString path, int index, QUndoCommand *parent)
+	: PartsBinAddRemoveCommand(bin, moduleID, path, index, parent) {}
 
 void PartsBinRemoveCommand::undo() {
 	add();

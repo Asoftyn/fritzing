@@ -44,6 +44,7 @@ $Date$
 #include "../../waitpushundostack.h"
 #include "../../debugdialog.h"
 #include "../../utils/folderutils.h"
+#include "../../utils/textutils.h"
 #include "../../utils/fileprogressdialog.h"
 #include "../../referencemodel/referencemodel.h"
 #include "../partsbinpalettewidget.h"
@@ -95,7 +96,6 @@ QString BinManager::MyPartsBinTemplateLocation;
 QString BinManager::SearchBinLocation;
 QString BinManager::SearchBinTemplateLocation;
 QString BinManager::ContribPartsBinLocation;
-QString BinManager::ContribPartsBinTemplateLocation;
 QString BinManager::TempPartsBinTemplateLocation;
 QString BinManager::CorePartsBinLocation;
 
@@ -145,6 +145,9 @@ void BinManager::initStandardBins()
 	//DebugDialog::debug("init bin manager");
 	QList<BinLocation *> actualLocations;
 	findAllBins(actualLocations);
+
+    hackLocalContrib(actualLocations);
+
 	restoreStateAndGeometry(actualLocations);
 	foreach (BinLocation * location, actualLocations) {
 		PartsBinPaletteWidget* bin = newBin();
@@ -154,6 +157,8 @@ void BinManager::initStandardBins()
 		registerBin(bin);
 		delete location;
 	}
+    actualLocations.clear();
+
 	//DebugDialog::debug("open core bin");
 	openCoreBinIn();
 		
@@ -309,14 +314,6 @@ void BinManager::addPartToBin(ModelPart *modelPart, int position) {
 
 void BinManager::addToMyParts(ModelPart *modelPart) {
 	PartsBinPaletteWidget *bin = getOrOpenMyPartsBin();
-	if (bin) {
-		addPartToBinAux(bin,modelPart);
-		setAsCurrentTab(bin);
-	}
-}
-
-void BinManager::addToContrib(ModelPart *modelPart) {
-	PartsBinPaletteWidget *bin = getOrOpenBin(ContribPartsBinLocation, ContribPartsBinTemplateLocation);
 	if (bin) {
 		addPartToBinAux(bin,modelPart);
 		setAsCurrentTab(bin);
@@ -588,8 +585,8 @@ void BinManager::restoreStateAndGeometry(QList<BinLocation *> & actualLocations)
 	actualLocations.clear();
 
 	foreach (BinLocation * tLocation, theoreticalLocations) {
-                tLocation->marked = false;
-                bool gotOne = false;
+        tLocation->marked = false;
+        bool gotOne = false;
 
 		for (int ix = 0; ix < tempLocations.count(); ix++) {
 			BinLocation  * aLocation = tempLocations[ix];
@@ -658,12 +655,105 @@ void BinManager::readTheoreticalLocations(QList<BinLocation *> & theoreticalLoca
 	}
 }
 
+void BinManager::hackLocalContrib(QList<BinLocation *> & locations) 
+{
+    // with release 0.7.12, there is no more local contrib bin
+    // so clear out existing local contrib bins by copying parts to mine bin
+
+    BinLocation * localContrib = NULL;
+    BinLocation * myParts = NULL;
+    foreach (BinLocation * location, locations) {
+        if (location->location == BinLocation::User) {
+            if (location->title == "Contributed Parts") {
+                localContrib = location;
+            }
+            else if (location->title == "My Parts") {
+                myParts = location;
+            }
+        }
+    }
+
+    if (localContrib == NULL) return;
+
+    if (myParts == NULL) {
+        createIfBinNotExists(MyPartsBinLocation, MyPartsBinTemplateLocation);
+	    myParts = new BinLocation;
+	    myParts->location = BinLocation::User;
+	    myParts->path = MyPartsBinLocation;
+	    QString icon;
+	    getBinTitle(myParts->path, myParts->title, icon);
+	    locations.append(myParts);
+    }
+
+	QString errorStr;
+	int errorLine;
+	int errorColumn;
+
+    QFile contribFile(localContrib->path);
+    QDomDocument contribDoc;
+    bool result = contribDoc.setContent(&contribFile, true, &errorStr, &errorLine, &errorColumn);
+    locations.removeOne(localContrib);
+    contribFile.close();
+    bool removed = contribFile.remove();
+    if (!removed) {
+        DebugDialog::debug("failed to remove contrib bin");
+    }
+
+    if (!result) return;
+
+    QFile myPartsFile(myParts->path);
+    QDomDocument myPartsDoc;
+    if (!myPartsDoc.setContent(&myPartsFile, true, &errorStr, &errorLine, &errorColumn)) {
+        return;
+    }
+
+    QDomElement myPartsRoot = myPartsDoc.documentElement();
+    QDomElement myPartsInstances = myPartsRoot.firstChildElement("instances");
+
+    bool changed = false;
+
+    QDomElement contribRoot = contribDoc.documentElement();
+    QDomElement contribInstances = contribRoot.firstChildElement("instances");
+    QDomElement contribInstance = contribInstances.firstChildElement("instance");
+    while (!contribInstance.isNull()) {
+        QString moduleIDRef = contribInstance.attribute("moduleIdRef");
+        QDomElement myPartsInstance = myPartsInstances.firstChildElement("instance");
+        bool already = false;
+        while (!myPartsInstance.isNull()) {
+            QString midr = myPartsInstance.attribute("moduleIdRef");
+            if (midr == moduleIDRef) {
+                already = true;
+                break;
+            }
+            myPartsInstance = myPartsInstance.nextSiblingElement("instance");
+        }
+
+        if (!already) {
+            QDomNode node = contribInstance.cloneNode(true);
+            myPartsInstances.appendChild(node);
+            changed = true;
+        }
+
+        contribInstance = contribInstance.nextSiblingElement("instance");
+    }
+
+    if (changed) {
+        TextUtils::writeUtf8(myParts->path, myPartsDoc.toString(0));
+    }
+}
+
 void BinManager::findAllBins(QList<BinLocation *> & locations) 
 {
 	BinLocation * location = new BinLocation;
 	location->location = BinLocation::App;
 	location->path = CorePartsBinLocation;
 	QString icon;
+	getBinTitle(location->path, location->title, icon);
+	locations.append(location);
+
+	location = new BinLocation;
+	location->location = BinLocation::App;
+	location->path = ContribPartsBinLocation;
 	getBinTitle(location->path, location->title, icon);
 	locations.append(location);
 
@@ -773,7 +863,7 @@ void BinManager::initNames() {
     BinManager::MyPartsBinTemplateLocation =":/resources/bins/my_parts.fzb";
     BinManager::SearchBinLocation = FolderUtils::getUserDataStorePath("bins")+"/search.fzb";
     BinManager::SearchBinTemplateLocation =":/resources/bins/search.fzb";
-	BinManager::ContribPartsBinLocation = FolderUtils::getUserDataStorePath("bins")+"/contribParts.fzb";
+	BinManager::ContribPartsBinLocation = FolderUtils::getApplicationSubFolderPath("bins")+"/contribParts.fzb";
     BinManager::CorePartsBinLocation = FolderUtils::getApplicationSubFolderPath("bins")+"/core.fzb";
     BinManager::TempPartsBinTemplateLocation =":/resources/bins/temp.fzb";
 
@@ -972,10 +1062,10 @@ void BinManager::deleteBin() {
 	QFile::remove(filename);
 }
 
-void BinManager::importPartToContribBin(const QString & filename) {
+void BinManager::importPartToMineBin(const QString & filename) {
 
 	if (!filename.isEmpty() && !filename.isNull()) {
-        PartsBinPaletteWidget * bin = getOrOpenBin(ContribPartsBinLocation, ContribPartsBinTemplateLocation);
+        PartsBinPaletteWidget * bin = getOrOpenBin(MyPartsBinLocation, MyPartsBinTemplateLocation);
         if (bin == NULL) return;
 
         importPart(filename, bin);
@@ -1103,7 +1193,7 @@ bool BinManager::removeSelected() {
 
 
 	m_undoStack->push(new QUndoCommand("Parts bin: part removed"));
-	bin->removePart(mp->moduleID());
+	bin->removePart(mp->moduleID(), mp->path());
 	bin->setDirty();
 
 	return true;

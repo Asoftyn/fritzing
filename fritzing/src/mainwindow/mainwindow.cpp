@@ -1228,7 +1228,7 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
                 continue;
             }
 
-            mp = copyToPartsFolder(fzpInfo, false, false, PartFactory::folderPath(), "contrib");
+            mp = copyToPartsFolder(fzpInfo, false, PartFactory::folderPath(), "contrib");
             if (mp == NULL) {
                 DebugDialog::debug(QString("unable to create model part in %1: %2").arg(file.fileName()).arg(fzp));
                 continue;
@@ -1412,7 +1412,7 @@ bool MainWindow::loadBundledNonAtomicEntity(const QString &fileName, Bundler* bu
 	QDir unzipDir(unzipDirPath);
 
 	if (bundler->preloadBundledAux(unzipDir, dontAsk)) {
-		QList<ModelPart*> mps = moveToPartsFolder(unzipDir,this,addToBin,true,FolderUtils::getUserDataStorePath("parts"),"contrib");
+		QList<ModelPart*> mps = moveToPartsFolder(unzipDir,this,addToBin,true,FolderUtils::getUserDataStorePath("parts"), "contrib", false);
 		// the bundled itself
 		bundler->loadBundledAux(unzipDir,mps);
 	}
@@ -1451,13 +1451,25 @@ ModelPart* MainWindow::loadBundledPart(const QString &fileName, bool addToBin) {
 
 	QDir unzipDir(unzipDirPath);
 
-	QList<ModelPart*> mps = moveToPartsFolder(unzipDir, this, addToBin, true, FolderUtils::getUserDataStorePath("parts"), "contrib");
-	if (mps.count()!=1) {
+    QList<ModelPart*> mps;
+    try {
+	    mps = moveToPartsFolder(unzipDir, this, addToBin, true, FolderUtils::getUserDataStorePath("parts"), "user", true);
+    }
+    catch (const QString & msg) {
+		QMessageBox::warning(
+			this,
+			tr("Fritzing"),
+			msg
+		);
+        return NULL;
+    }
+
+	if (mps.count() != 1) {
 		// if this fails, that means that the bundled was wrong
 		QMessageBox::warning(
 			this,
 			tr("Fritzing"),
-			tr("Unable to read shareable part %1").arg(fileName)
+			tr("Unable to load part from '%1'").arg(fileName)
 		);
 		return NULL;
 	}
@@ -1556,29 +1568,50 @@ QStringList MainWindow::saveBundledAux(ModelPart *mp, const QDir &destFolder) {
 	return names;
 }
 
-QList<ModelPart*> MainWindow::moveToPartsFolder(QDir &unzipDir, MainWindow* mw, bool addToBin, bool addToAlien, const QString & prefixFolder, const QString &destFolder) {
+QList<ModelPart*> MainWindow::moveToPartsFolder(QDir &unzipDir, MainWindow* mw, bool addToBin, bool addToAlien, const QString & prefixFolder, const QString &destFolder, bool importingSinglePart) {
 	QStringList namefilters;
 	QList<ModelPart*> retval;
 
 	if (mw == NULL) {
-		throw "MainWindow::moveToPartsFolder mainwindow missing";
+		throw tr("MainWindow::moveToPartsFolder mainwindow missing");
 	}
 
-	if(mw) {
-		namefilters << ZIP_SVG+"*";
-		foreach(QFileInfo file, unzipDir.entryInfoList(namefilters)) { // svg files
-			//DebugDialog::debug("unzip svg " + file.absoluteFilePath());
-			mw->copyToSvgFolder(file, addToAlien, prefixFolder, destFolder);
-		}
+    namefilters.clear();
+	namefilters << ZIP_PART+"*"; 
+    QList<QFileInfo> partEntryInfoList = unzipDir.entryInfoList(namefilters);
 
-		namefilters.clear();
-		namefilters << ZIP_PART+"*"; 
+    if (importingSinglePart && partEntryInfoList.count() > 0) {
+        // TODO use a stream reader
+        QFile file(partEntryInfoList[0].absoluteFilePath());
+        file.open(QFile::ReadOnly);
+        QString fzp = file.readAll();
+        file.close();
+        QString moduleID = TextUtils::parseForModuleID(fzp);
+        if (!moduleID.isEmpty() && m_referenceModel->retrieveModelPart(moduleID) != NULL) {
+            throw tr("There is already a part with id '%1' loaded into Fritzing.").arg(moduleID);
+        }
+    }
 
-		foreach(QFileInfo file, unzipDir.entryInfoList(namefilters)) { // part files
-			//DebugDialog::debug("unzip part " + file.absoluteFilePath());
-			retval << mw->copyToPartsFolder(file, addToBin, addToAlien, prefixFolder, destFolder);
-		}
+
+	namefilters.clear();
+    namefilters << ZIP_SVG+"*";
+	foreach(QFileInfo file, unzipDir.entryInfoList(namefilters)) { // svg files
+		//DebugDialog::debug("unzip svg " + file.absoluteFilePath());
+		mw->copyToSvgFolder(file, addToAlien, prefixFolder, destFolder);
 	}
+
+
+	foreach(QFileInfo file, partEntryInfoList) { // part files
+		//DebugDialog::debug("unzip part " + file.absoluteFilePath());
+        ModelPart * mp = mw->copyToPartsFolder(file, addToAlien, prefixFolder, destFolder);
+		retval << mp;
+        if (addToBin) {
+            // should only be here when adding single new part
+		    m_binManager->addToMyParts(mp);
+	    }
+	}
+
+
 
 	return retval;
 }
@@ -1604,7 +1637,7 @@ QString MainWindow::copyToSvgFolder(const QFileInfo& file, bool addToAlien, cons
     return "";
 }
 
-ModelPart* MainWindow::copyToPartsFolder(const QFileInfo& file, bool addToBin, bool addToAlien, const QString & prefixFolder, const QString &destFolder) {
+ModelPart* MainWindow::copyToPartsFolder(const QFileInfo& file, bool addToAlien, const QString & prefixFolder, const QString &destFolder) {
 	QFile partfile(file.filePath());
 	// let's make sure that we remove just the suffix
 	QString destFilePath =
@@ -1619,10 +1652,6 @@ ModelPart* MainWindow::copyToPartsFolder(const QFileInfo& file, bool addToBin, b
 	}
 	ModelPart *mp = m_referenceModel->loadPart(destFilePath, true);
 	mp->setAlien(true);
-
-	if(addToBin) {
-		m_binManager->addToContrib(mp);
-	}
 
 	return mp;
 }

@@ -10,5 +10,5 @@
 	<bin title="Picaxe" location="more" />
 	<bin title="SparkFun" location="more" />
 	<bin title="Snootlab" location="more" />
-	<bin title="Contributed Parts" location="user" />
+	<bin title="Contributed Parts" location="app" />
 </order>

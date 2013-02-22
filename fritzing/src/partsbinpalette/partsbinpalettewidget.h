@@ -67,7 +67,7 @@ class PartsBinPaletteWidget : public QFrame, public Bundler {
 		void setInfoViewOnHover(bool infoViewOnHover);
 		void addPart(const QString& moduleID, int position);
 		void addNewPart(ModelPart *modelPart);
-        void removePart(const QString& moduleID);
+        void removePart(const QString & moduleID, const QString & path);
         void removeParts();
         void load(const QString& filename, QWidget * progressTarget, bool fastLoad);
 
@@ -183,6 +183,7 @@ class PartsBinPaletteWidget : public QFrame, public Bundler {
 		QStackedWidget * m_searchStackedWidget;
 		bool m_fastLoaded;
 		BinLocation::Location m_location;
+        QStringList m_removed;
 
     public:
         static void cleanup();

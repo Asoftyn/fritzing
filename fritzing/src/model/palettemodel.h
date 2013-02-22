@@ -58,6 +58,7 @@ public:
 	void clearPartHash();
 	void setOrdererChildren(QList<QObject*> children);
     void search(ModelPart * modelPart, const QStringList & searchStrings, QList<ModelPart *> & modelParts, bool allowObsolete);
+    QList<ModelPart *> findContribNoBin();
 
 protected:
 	QHash<QString, ModelPart *> m_partHash;
@@ -77,13 +78,6 @@ protected:
 	void loadParts(bool dbExists);
 	void loadPartsAux(QDir & dir, QStringList & nameFilters, int & loadedPart, int totalParts);
 	void countParts(QDir & dir, QStringList & nameFilters, int & partCount);
-
-	void writeCommonBinsHeader();
-	void writeCommonBinsHeaderAux(bool doIt, const QString &filename, const QString &binName);
-	void writeCommonBinsFooter();
-	void writeCommonBinsFooterAux(bool doIt, const QString &filename);
-	void writeCommonBinInstance(const QString &moduleID, const QString &path, bool doIt, const QString &filename);
-	void writeCommonBinAux(const QString &textToWrite, QIODevice::OpenMode openMode, bool doIt, const QString &filename);
 
 protected:
 	static bool CreateContribPartsBinFile;

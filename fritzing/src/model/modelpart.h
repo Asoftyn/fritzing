@@ -72,7 +72,8 @@ public:
 		CoreFlag = 1,
 		ContribFlag = 2,
 		AlienFlag = 4,
-		FzzFlag = 8
+		FzzFlag = 8,
+        InBinFlag = 16
 	};
 	Q_DECLARE_FLAGS(LocationFlags, LocationFlag)
 
@@ -140,6 +141,8 @@ public:
 	bool isFzz(); // from "outside" 
 	void setFzz(bool alien);
 	void setLocationFlag(bool setting, LocationFlag flag);
+    bool isInBin();
+    void setInBin(bool);
 
 	bool hasViewIdentifier(ViewLayer::ViewIdentifier);
 	bool canFlipVertical(ViewLayer::ViewIdentifier);

@@ -55,18 +55,19 @@ protected:
 class PartsBinAddRemoveCommand : public PartsBinAddRemoveArrangeCommand
 {
 public:
-	PartsBinAddRemoveCommand(class PartsBinPaletteWidget*, QString moduleID, int index, QUndoCommand *parent = 0);
+	PartsBinAddRemoveCommand(class PartsBinPaletteWidget*, QString moduleID, QString path, int index, QUndoCommand *parent = 0);
 
 protected:
 	void add();
 	void remove();
     int m_index;
+    QString m_path;
 };
 
 class PartsBinAddCommand : public PartsBinAddRemoveCommand
 {
 public:
-	PartsBinAddCommand(class PartsBinPaletteWidget*, QString moduleID, int index = -1, QUndoCommand *parent = 0);
+	PartsBinAddCommand(class PartsBinPaletteWidget*, QString moduleID, QString path, int index = -1, QUndoCommand *parent = 0);
     void undo();
     void redo();
 };
@@ -74,7 +75,7 @@ public:
 class PartsBinRemoveCommand : public PartsBinAddRemoveCommand
 {
 public:
-	PartsBinRemoveCommand(class PartsBinPaletteWidget*, QString moduleID, int index = -1, QUndoCommand *parent = 0);
+	PartsBinRemoveCommand(class PartsBinPaletteWidget*, QString moduleID, QString path, int index = -1, QUndoCommand *parent = 0);
     void undo();
     void redo();
 };

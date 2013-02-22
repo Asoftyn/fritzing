@@ -39,7 +39,6 @@ $Date$
 #include "../utils/textutils.h"
 #include "../items/moduleidnames.h"
 
-bool PaletteModel::CreateContribPartsBinFile = true;
 bool PaletteModel::CreateTempPartsBinFile = true;
 
 static bool JustAppendAllPartsInstances = false;
@@ -148,12 +147,10 @@ void PaletteModel::loadParts(bool dbExists) {
 
 
 	if (FirstTime) {
-		writeCommonBinsHeader();
 	}
 
 	int totalPartCount = 0;
 	emit loadedPart(0, totalPartCount);
-
 
 	QDir * dir1 = FolderUtils::getApplicationSubFolder("parts");
 	if (dir1 != NULL) {
@@ -181,7 +178,6 @@ void PaletteModel::loadParts(bool dbExists) {
     }
 
 	if (FirstTime) {
-		writeCommonBinsFooter();
 	}
 	
 	JustAppendAllPartsInstances = false;   
@@ -193,99 +189,6 @@ void PaletteModel::loadParts(bool dbExists) {
 
 	FirstTime = false;
 
-}
-
-void PaletteModel::writeCommonBinsHeader() {
-	writeCommonBinsHeaderAux(CreateContribPartsBinFile, ContribPartsBinFilePath, "Contributed Parts");
-}
-
-void PaletteModel::writeCommonBinsHeaderAux(bool doIt, const QString &filename, const QString &binName) {
-	QString header =
-		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
-		TextUtils::CreatedWithFritzingXmlComment +
-		QString("<module fritzingVersion='%1' icon='%2.png'>\n").arg(Version::versionString()).arg(binName) +
-		QString("\t<title>%1</title>\n").arg(binName) +
-		"\t<instances>\n";
-	writeCommonBinAux(header, QFile::WriteOnly, doIt, filename);
-}
-
-void PaletteModel::writeCommonBinsFooter() {
-	writeCommonBinsFooterAux(CreateContribPartsBinFile, ContribPartsBinFilePath);
-}
-
-void PaletteModel::writeCommonBinsFooterAux(bool doIt, const QString &filename) {
-	QString footer = "\t</instances>\n</module>\n";
-	writeCommonBinAux(footer, QFile::Append, doIt, filename);
-}
-
-void PaletteModel::writeCommonBinInstance(const QString &moduleID, const QString &path, bool doIt, const QString &filename) {
-	if (!doIt) return;
-	
-	QString pathAux = path;
-	pathAux.remove(FolderUtils::getApplicationSubFolderPath("")+"/");
-
-	if (JustAppendAllPartsInstances) {
-		QString instance = InstanceTemplate.arg(moduleID).arg("");
-		writeCommonBinAux(instance, QFile::Append, doIt, filename);
-	}
-	else {
-		QString errorStr;
-		int errorLine;
-		int errorColumn;
-		QDomDocument domDocument;
-
-		QFile file(filename);
-		if (!domDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
-			return;
-		}
-
-		QDomElement root = domDocument.documentElement();
-   		if (root.isNull()) {
-   			return;
-		}
-
-		if (root.tagName() != "module") {
-			return;
-		}
-
-		QDomElement instances = root.firstChildElement("instances");
-		if (instances.isNull()) return;
-
-		QDomElement instance = domDocument.createElement("instance");
-		instances.appendChild(instance);
-		instance.setAttribute("moduleIdRef", moduleID);
-		instance.setAttribute("path", "");
-		QDomElement views = domDocument.createElement("views");
-		instance.appendChild(views);
-		QDomElement iconView = domDocument.createElement("iconView");
-		views.appendChild(iconView);
-		iconView.setAttribute("layer", "icon");
-		QDomElement geometry = domDocument.createElement("geometry");
-		iconView.appendChild(geometry);
-		geometry.setAttribute("x", "-1");
-		geometry.setAttribute("y", "-1");
-		geometry.setAttribute("z", "-1");
-		writeCommonBinAux(domDocument.toString(), QFile::WriteOnly, doIt, filename);
-	}
-}
-
-void PaletteModel::writeCommonBinAux(const QString &textToWrite, QIODevice::OpenMode openMode, bool doIt, const QString &filename) {
-	if(!doIt) return;
-
-	if (FirstTimeWrite) {
-		FirstTimeWrite = false;
-		QFileInfo info(filename);
-		QDir dir = info.absoluteDir();
-		dir.mkpath(info.absolutePath());
-	}
-
-	QFile file(filename);
-	if (file.open(openMode | QFile::Text)) {
-		QTextStream out(&file);
-		out.setCodec("UTF-8");
-		out << textToWrite;
-		file.close();
-	}
 }
 
 void PaletteModel::countParts(QDir & dir, QStringList & nameFilters, int & partCount) {
@@ -319,7 +222,7 @@ void PaletteModel::loadPartsAux(QDir & dir, QStringList & nameFilters, int & loa
     	QString temp2 = dirs[i];
        	dir.cd(temp2);
 
-		m_loadingContrib = temp2=="contrib";
+		m_loadingContrib = (temp2 == "contrib");
 
     	loadPartsAux(dir, nameFilters, loadingPart, totalPartCount);
     	dir.cdUp();
@@ -474,21 +377,6 @@ ModelPart * PaletteModel::loadPart(const QString & path, bool update) {
 	else {
     	modelPart->setParent(m_root);
    	}
-
-    if (!m_fullLoad) {
-	    if (FirstTime) {
-		    // make sure saving to the common bin takes place after fastLoad
-		    //DebugDialog::debug(QString("all parts %1").arg(JustAppendAllPartsInstances));
-
-		    if (modelPart->isContrib()) {
-			    //if (path.startsWith(FritzingContribPath, Qt::CaseInsensitive)) {
-				    writeCommonBinInstance(moduleID,path,CreateContribPartsBinFile,ContribPartsBinFilePath);
-			    //}
-		    }
-
-		    //DebugDialog::debug(QString("non core parts %1").arg(JustAppendAllPartsInstances));
-	    }
-    }
 
     return modelPart;
 }
@@ -664,3 +552,14 @@ void PaletteModel::search(ModelPart * modelPart, const QStringList & searchStrin
 	}
 }
 
+QList<ModelPart *> PaletteModel::findContribNoBin() {
+    QList<ModelPart *> modelParts;
+    foreach (ModelPart * modelPart, m_partHash.values()) {
+        if (modelPart->isContrib()) {
+            if (!modelPart->isInBin()) {
+                modelParts << modelPart;
+            }
+        }
+    }
+    return modelParts;
+}

@@ -267,6 +267,7 @@ bool ModelBase::loadInstances(QDomDocument & domDocument, QDomElement & instance
 			}
    		}
 
+        modelPart->setInBin(true);
    		modelPart = addModelPart(m_root, modelPart);
    		modelPart->setInstanceDomElement(instance);
 		modelParts.append(modelPart);

@@ -260,6 +260,14 @@ bool PartsBinPaletteWidget::saveAsAux(const QString &filename) {
 	}
 	emit saved(hasAlienParts());
 
+    foreach (QString path, m_removed) {
+        bool result = QFile::remove(path);
+        if (!result) {
+            DebugDialog::debug("unable to delete '" + path + "' from bin");
+        }
+    }
+    m_removed.clear();
+
 	return true;
 }
 
@@ -609,14 +617,16 @@ void PartsBinPaletteWidget::addPart(const QString& moduleID, int position) {
 	addPart(modelPart, position);
 }
 
-void PartsBinPaletteWidget::removePart(const QString& moduleID) {
+void PartsBinPaletteWidget::removePart(const QString & moduleID, const QString & path) {
 	m_iconView->removePart(moduleID);
 	m_listView->removePart(moduleID);
 
 	// remove the model part from the model last, as this deletes it,
 	// and the removePart calls above still need the modelpart
 	m_model->removePart(moduleID);
-
+    if (path.contains(FolderUtils::getUserDataStorePath())) {
+        m_removed << path;
+    }
 }
 
 
@@ -631,7 +641,7 @@ void PartsBinPaletteWidget::removeParts() {
 
 void PartsBinPaletteWidget::removeAlienParts() {
 	foreach(QString moduleID, m_alienParts) {
-		removePart(moduleID);
+		removePart(moduleID, "");
 	}
 	m_alienParts.clear();
 }

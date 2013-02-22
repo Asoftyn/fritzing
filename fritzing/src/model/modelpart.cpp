@@ -588,6 +588,13 @@ bool ModelPart::isAlien() {
 void ModelPart::setAlien(bool alien) {
 	setLocationFlag(alien, AlienFlag);
 }
+bool ModelPart::isInBin() {
+	return (m_locationFlags & InBinFlag) != 0;;
+}
+
+void ModelPart::setInBin(bool inBin) {
+	setLocationFlag(inBin, InBinFlag);
+}
 
 bool ModelPart::isFzz() {
 	return (m_locationFlags & FzzFlag) != 0;;
