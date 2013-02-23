@@ -353,7 +353,7 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
 
 	ProcessEventBlocker::processEvents();
     
-    double dpi = (1000 / keepoutMils);
+    double dpi = 250; // (1000 / keepoutMils);  // turns out making a variable dpi doesn't work due to vector-to-raster issues
     QRectF boardRect = m_board->sceneBoundingRect();
     QRectF sourceRes(0, 0, 
 					 boardRect.width() * dpi / GraphicsUtils::SVGDPI, 
@@ -386,7 +386,10 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
 
     int emptyMasterCount = 0;
     foreach (ViewLayer::ViewLayerSpec viewLayerSpec, layerSpecs) {  
-        if (viewLayerSpec == ViewLayer::Top) emit wantTopVisible();
+        if (viewLayerSpec == ViewLayer::Top) {
+            emit wantTopVisible();
+            m_plusImage->fill(0xffffffff);
+        }
         else emit wantBottomVisible();
 
 	    LayerList viewLayerIDs = ViewLayer::copperLayers(viewLayerSpec);
