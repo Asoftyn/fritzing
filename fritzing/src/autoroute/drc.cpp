@@ -353,7 +353,7 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
 
 	ProcessEventBlocker::processEvents();
     
-    double dpi = 250; // (1000 / keepoutMils);  // turns out making a variable dpi doesn't work due to vector-to-raster issues
+    double dpi = qMax((double) 250, 1000 / keepoutMils);  // turns out making a variable dpi doesn't work due to vector-to-raster issues
     QRectF boardRect = m_board->sceneBoundingRect();
     QRectF sourceRes(0, 0, 
 					 boardRect.width() * dpi / GraphicsUtils::SVGDPI, 
