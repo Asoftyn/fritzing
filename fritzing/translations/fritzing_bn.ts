@@ -320,249 +320,249 @@
         <translation>পার্টস</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="375"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="372"/>
         <source>BinManager::setDirtyTab: Couldn&apos;t set the bin &apos;%1&apos; as dirty</source>
         <translation>Bin ম্যানেজারঃঃসেট অপরিচ্ছন্ন ট্যাবঃ বিন সেট করা %1 </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="385"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="382"/>
         <source>BinManager::updateTitle: Couldn&apos;t set the bin &apos;%1&apos; as dirty</source>
         <translation>Bin ম্যানেজারঃঃসেট শিরোনাম: ট্যাবঃ বিন সেট করা %1 </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="392"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="389"/>
         <source>New bin (%1)</source>
         <translation>নতুন বিন বক্স(%1)</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="403"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="400"/>
         <source>Select a Fritzing Parts Bin file to open</source>
         <translatorcomment>Fritzing নির্বাচিত ফাইল খুলতে</translatorcomment>
         <translation>একটি&apos; Fritzing&apos;​​ফাইল খোলতে নির্বাচন করুন </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="405"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="402"/>
         <source>Fritzing Bin Files (*%1 *%2);;Fritzing Bin (*%1);;Fritzing Shareable Bin (*%2)</source>
         <translatorcomment>Fritzing নেওয়ার যোগ্য বক্স </translatorcomment>
         <translation>Fritzing ফাইল বক্স(*%1&apos;*%2);;Fritzing বক্স (*%1);;Fritzing সেয়ারেবল বক্স</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="480"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="477"/>
         <source>Cannot set a NULL bin as the current one</source>
         <translation>বর্তমান বক্সে NULLএর মত বক্স তৈয়ার  কর</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="790"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="880"/>
         <source>Searching...</source>
         <translatorcomment>খোজ করার জন্য</translatorcomment>
         <translation>খোঁজ  কর</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="858"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="948"/>
         <source>Bin</source>
         <translation>বক্স বিন</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="860"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="950"/>
         <source>Import...</source>
         <translatorcomment>সংগ্রহ করা...</translatorcomment>
         <translation>আমদানি করতে...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="861"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="951"/>
         <source>Load a Fritzing part (.fzpz), or a Fritzing parts bin (.fzb, .fzbz)</source>
         <translation>একটি Fritzing অংশ (. fzpz),বা একটি Fritzing partsবিন লোড (.fzb,&apos;. fzbz)</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="864"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="954"/>
         <source>New Bin...</source>
         <translatorcomment>নতুন বক্স.বিন....</translatorcomment>
         <translation>নতুন বিন বক্স</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="865"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="955"/>
         <source>Create a new parts bin</source>
         <translatorcomment>নুতন পার্টস বক্স তইরিকরন বক্স</translatorcomment>
         <translation>নতুন পার্টস বিন তৈরি </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="868"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="958"/>
         <source>Close Bin</source>
         <translation>বন্ধ বিন বক্স</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="869"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="959"/>
         <source>Close parts bin</source>
         <translation>পার্টস বিন বক্স বন্দ কর</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="872"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="962"/>
         <source>Delete Bin</source>
         <translatorcomment> </translatorcomment>
         <translation> বিন  বক্স  মুছেফেলা</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="873"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="963"/>
         <source>Delete parts bin</source>
         <translatorcomment>পার্টস মুছে ফেলার জন্য বক্স</translatorcomment>
         <translation>পার্টস বিন  বক্স মুছে ফেলা </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="876"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="966"/>
         <source>Save Bin</source>
         <translatorcomment>সঞ্চিত করন বক্স</translatorcomment>
         <translation>সঞ্চয় বিন বক্স </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="877"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="967"/>
         <source>Save parts bin</source>
         <translatorcomment>পার্টস সঞ্চিত করন বক্স</translatorcomment>
         <translation>পার্টস সঞ্চয় বিন বক্স</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="880"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="970"/>
         <source>Save Bin As...</source>
         <translatorcomment>সঞ্চয় বক্স  ঐ রকম করে</translatorcomment>
         <translation>বিন হিসাবে সংরক্ষণ করুন...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="881"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="971"/>
         <source>Save parts bin as...</source>
         <translatorcomment>সঞ্চয় বক্স ঐ  রকম</translatorcomment>
         <translation>পার্টস বিন হিসাবে সংরক্ষণ করুন...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="884"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="974"/>
         <source>Export Bin...</source>
         <translation>বিন বক্স রপ্তানি করুন...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="885"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="975"/>
         <source>Save parts bin in compressed format...</source>
         <translation>compressedপার্টস বক্স সঞ্চয়  ফর্মেট...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="888"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="978"/>
         <source>Rename Bin...</source>
         <translatorcomment>বিন  বক্সের নামকরন...</translatorcomment>
         <translation>নামকরন বিন  বক্স...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="889"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="979"/>
         <source>Rename parts bin...</source>
         <translatorcomment>পার্টস বিন বক্স নামকরন...</translatorcomment>
         <translation>পার্টস বক্স নামকরন...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="892"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="982"/>
         <source>Show Bin in List View</source>
         <translatorcomment>তালিকা বিন বক্স দেখার জন্য</translatorcomment>
         <translation>তালিকা আকারে বিন দেখার জন্য</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="894"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="984"/>
         <source>Display parts as a list</source>
         <translatorcomment> পার্টস তালিকা প্রদর্শন</translatorcomment>
         <translation>দৃশ্যমান পার্টস তালিকা</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="897"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="987"/>
         <source>Show Bin in Icon View</source>
         <translatorcomment>দৃশ্যমান বিন বক্স চিত্র</translatorcomment>
         <translation>বিন প্রদর্শন আইকন</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="899"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="989"/>
         <source>Display parts as icons</source>
         <translation>পার্টস চিত্র সামুহ প্রদর্শন</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="916"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1006"/>
         <source>Edit Part (new parts editor)...</source>
         <translatorcomment>পার্টস সোগযগ করন..</translatorcomment>
         <translation>সং যুক্ত  (নতুন পার্টস এডিটর)</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="917"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1007"/>
         <source>Export Part...</source>
         <translatorcomment>পার্টস সংযোগ করতে</translatorcomment>
         <translation>পার্ট রপ্তানি</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="918"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1008"/>
         <source>Remove Part</source>
         <translatorcomment>পার্ট সরিয়ে ফেলতে</translatorcomment>
         <translation>পার্ট সরিয়ে ফেলা</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="919"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1009"/>
         <source>Find Part in Sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="962"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1052"/>
         <source>Delete bin</source>
         <translatorcomment>বক্স মুছে ফেলতে</translatorcomment>
         <translation>মুছে ফেলার বক্স</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="963"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1053"/>
         <source>Do you really want to delete bin &apos;%1&apos;?  This action cannot be undone.</source>
         <translation>আপনি কি বিন বক্স মুছতে চান &apos;%1&apos;?..যে কাজ টি অসমাপ্ত </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1012"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1102"/>
         <source>Read-only bin</source>
         <translatorcomment>বক্স টি পরতে</translatorcomment>
         <translation>বক্স টি পড়ার জন্য মাত্র</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1012"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1102"/>
         <source>This bin cannot be renamed.</source>
         <translatorcomment>এই বক্সটি নামকর হচ্ছেনা</translatorcomment>
         <translation>এই বিন নাম বদলানো যাবে না</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1019"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1109"/>
         <source>Rename bin</source>
         <translatorcomment>বক্সের নামকরন</translatorcomment>
         <translation> বক্স নামকরন</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1020"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1110"/>
         <source>Please choose a name for the bin:</source>
         <translatorcomment>দিন</translatorcomment>
         <translation>আনুগ্রহ করে বক্সের নাম ধার্য করুনঃ</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1090"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1180"/>
         <source>Remove from Bin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1090"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1180"/>
         <source>Unable to remove part &apos;%1&apos;--it is in use in a sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1096"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1186"/>
         <source>Remove from bin</source>
         <translatorcomment>বক্স হতে স্তানান্তর জন্য</translatorcomment>
         <translation>বক্স হতে সরাতে </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1097"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1187"/>
         <source>Do you really want to remove &apos;%1&apos; from the bin? This operation cannot be undone.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1194"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1284"/>
         <source>Select a Fritzing File to Open</source>
         <translatorcomment>frtzing ফাইল খোলা জন্য নির্বাচন</translatorcomment>
         <translation>frtzing ফাইল খোলা জন্য</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1196"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1286"/>
         <source>Fritzing Files (*%1 *%2 *%3);;Fritzing Part (*%1);;Fritzing Bin (*%2);;Fritzing Shareable Bin (*%3)</source>
         <translation>Fritzing ফাইল&apos;স(*%1&apos;*%2&apos; *%3);;Fritzing পার্ট (*%1)Fritzing বক্স (*%2);: Fritzing বিনিময় করা(*%3)</translation>
     </message>
@@ -807,39 +807,39 @@ Use the file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="400"/>
+        <location filename="../src/autoroute/drc.cpp" line="403"/>
         <source>No traces or connectors to check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="415"/>
+        <location filename="../src/autoroute/drc.cpp" line="418"/>
         <source>Unexpected SVG rendering failure--contact fritzing.org</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="448"/>
+        <location filename="../src/autoroute/drc.cpp" line="451"/>
         <source>Too close to a border (%1 layer)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="449"/>
-        <location filename="../src/autoroute/drc.cpp" line="553"/>
+        <location filename="../src/autoroute/drc.cpp" line="452"/>
+        <location filename="../src/autoroute/drc.cpp" line="556"/>
         <source>top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="449"/>
-        <location filename="../src/autoroute/drc.cpp" line="553"/>
+        <location filename="../src/autoroute/drc.cpp" line="452"/>
+        <location filename="../src/autoroute/drc.cpp" line="556"/>
         <source>bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="551"/>
+        <location filename="../src/autoroute/drc.cpp" line="554"/>
         <source>%1 is overlapping (%2 layer)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="605"/>
+        <location filename="../src/autoroute/drc.cpp" line="608"/>
         <source>A hole in %1 may lie outside the border of the board and would be clipped.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1668,9 +1668,10 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <location filename="../src/mainwindow/mainwindow.cpp" line="1180"/>
         <location filename="../src/mainwindow/mainwindow.cpp" line="1404"/>
         <location filename="../src/mainwindow/mainwindow.cpp" line="1446"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1459"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1524"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2085"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1461"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1471"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1536"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2114"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="168"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="173"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="590"/>
@@ -1726,49 +1727,58 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation>পার্টস বিনিময়ের জন্য অক্ষম %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1460"/>
-        <source>Unable to read shareable part %1</source>
-        <translatorcomment>অংশ বিশেষ খুলতে অপারগ %1</translatorcomment>
-        <translation>বিনিময়ের জন্য পড়তে অক্ষম অংশ %1</translation>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1472"/>
+        <source>Unable to load part from &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1489"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1501"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="811"/>
         <source>Specify a file name</source>
         <translatorcomment>একটি নিদৃষ্ট ফাইলের নাম </translatorcomment>
         <translation>নির্দেশিত একটি ফাইলের নাম</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1491"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1503"/>
         <source>Fritzing Part (*%1)</source>
         <translation>ফ্রিটজিং অংশ t(*%1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1525"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1537"/>
         <source>Unable to export %1 to shareable sketch</source>
         <translatorcomment> নকশারঅংশ বিশেষ রপ্তানিতে করতেঅপারগ</translatorcomment>
         <translation>%1বিনিময় স্কেচপাটাতে অক্ষম</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1617"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1576"/>
+        <source>MainWindow::moveToPartsFolder mainwindow missing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1591"/>
+        <source>There is already a part with id &apos;%1&apos; loaded into Fritzing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1650"/>
         <source>Do you want to keep the imported parts?</source>
         <translatorcomment>তুমি কি চাও আমদানি  করা যন্ত্রাংশ রাখতে?</translatorcomment>
         <translation>সংগ্রিিহত অংশ ধরে রাখতে চান?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1685"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1714"/>
         <source>No connections to route</source>
         <translatorcomment>ঘুরিয়ে সংযোগ নেই/ রাস্তার সাথে কোন সংযুক্তি নাই</translatorcomment>
         <translation>সংযোগ রাস্তা নেই</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1688"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1717"/>
         <source>Routing completed</source>
         <translatorcomment>রাস্তা তৈরি  সম্পন্ন  </translatorcomment>
         <translation>রাউটিং সমপণ্য</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1691"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1720"/>
         <source>Routing completed using %n jumper part(s)</source>
         <translation>
             <numerusform>সম্পূর্ণ রাউটিং ব্যবহারে %n জাম্পার অংস(S)</numerusform>
@@ -1776,7 +1786,7 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1694"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1723"/>
         <source>%1 of %2 nets routed - %n connector(s) still to be routed</source>
         <translation>
             <numerusform>%1এবং%2নিপিষ্ট জাল সংযোগ%n(s)কে স্থাপন</numerusform>
@@ -1784,29 +1794,29 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1730"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1759"/>
         <source>%1 - [%2]</source>
         <translation>%1 - [%2]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1861"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1890"/>
         <source>No copper top layer</source>
         <translatorcomment>উপরের স্তর এ কোন তামা নাই </translatorcomment>
         <translation>উপরে লেয়ারে কোণ কপার নাই</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1862"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1891"/>
         <source>The copper top (copper 1) layer is not available on a one-sided board.  Please switch the board to double-sided or choose the copper bottom (copper 0) layer.</source>
         <translation>উপলুব্ধ একতরফা তামা (copper1)বোর্ড টি হয়নি অনুগ্রহ করে দুই পাস  তামার বোর্ড আনতে(copper0)নির্বাচন করুন।</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1923"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1952"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3486"/>
         <source>Sorry!</source>
         <translation>দুঃখিত?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1924"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1953"/>
         <source>No part with those characteristics.
 We&apos;re working to avoid this message, and only let you choose between properties that do exist</source>
         <translation>ঐসব কোনো পার্টসে  নাই।  
@@ -1814,88 +1824,88 @@ We&apos;re working to avoid this message, and only let you choose between proper
     আমরা এই বার্তা বাদ দেবার চেষ্টা করছি এবং শুধু যেসব ধর্ম যোগ করা আছে  সেইগুলাই পছন্দ করতে দিব।</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1936"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1965"/>
         <source>No exactly matching part found; Fritzing chose the closest match.</source>
         <translation>যথাযথভাবে কোন অংশ মেলানোর জন্য পাওয়া যায় নি; কাছাকাছি মিল fritzing.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1973"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2002"/>
         <source>Change to single layer pcb</source>
         <translatorcomment>একক স্তর পি সি বি পরিবর্তন </translatorcomment>
         <translation>এক স্তর পি সি বি পরিবর্তন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1973"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2002"/>
         <source>Change to two layer pcb</source>
         <translatorcomment>দুই স্তর পি সি বি বদল</translatorcomment>
         <translation>দুই স্তরপি সি বি পরিবর্তন </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2006"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2035"/>
         <source>Swapped %1 with module %2</source>
         <translatorcomment>%1 সঙ্গে %2মডিউল বদল করতে</translatorcomment>
         <translation>মডিউল আনতে%1 পাঠাতে%2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2028"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2057"/>
         <source>Change image to %2</source>
         <translatorcomment>ইমেজ বদল করতে%2</translatorcomment>
         <translation>ইমেজ বদলে%2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2086"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2115"/>
         <source>Svg %1 is missing a &apos;%2&apos; layer. For more information on how to create a custom board shape, see the tutorial at &lt;a href=&apos;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&apos;&gt;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2123"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2152"/>
         <source>loading %1</source>
         <translatorcomment>বোঝাই করতে%1</translatorcomment>
         <translation>লোডিং %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2132"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2161"/>
         <source>Loading...</source>
         <translatorcomment>বোঝাই...</translatorcomment>
         <translation>লোডিং...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2138"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2167"/>
         <source>new sketch</source>
         <translatorcomment>নতুন  চাকতি</translatorcomment>
         <translation>নতুন স্কেচ </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2268"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2297"/>
         <source>Backing up &apos;%1&apos;</source>
         <translation>ফিরে আসতে %1 </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2363"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2392"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="811"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="273"/>
         <source>Fritzing (*%1)</source>
         <translation>ফ্রিটজিং(*%1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2418"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2447"/>
         <source>Unrouted connections</source>
         <translatorcomment>অসংযুক্ত রাস্তা</translatorcomment>
         <translation>অসংযুক্ত সংযোগ </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2419"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2448"/>
         <source>There are no unrouted connections in this view.</source>
         <translatorcomment>এখানে অসংযুক্ত রাস্তার চিত্র দেখা</translatorcomment>
         <translation>অসংযুক্ত রাস্তার চিত্র দেখতে </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2458"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2487"/>
         <source>%1 %2 %3</source>
         <translation>%1%2%3</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2712"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2741"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4045,7 +4055,7 @@ Please check all views for potential side-effects.</source>
 <context>
     <name>ModelBase</name>
     <message numerus="yes">
-        <location filename="../src/model/modelbase.cpp" line="333"/>
+        <location filename="../src/model/modelbase.cpp" line="334"/>
         <source>Unable to find the following %n part(s):</source>
         <translation>
             <numerusform>নিম্নলিখিত%n পার্টস গুলিকে খুঁজে পাওয়া যায়নি:</numerusform>
@@ -4053,17 +4063,17 @@ Please check all views for potential side-effects.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/model/modelbase.cpp" line="336"/>
+        <location filename="../src/model/modelbase.cpp" line="337"/>
         <source>at</source>
         <translation>এতে</translation>
     </message>
     <message>
-        <location filename="../src/model/modelbase.cpp" line="404"/>
+        <location filename="../src/model/modelbase.cpp" line="405"/>
         <source>File save failed!</source>
         <translation>ফাইল সংরক্ষনে বার্থ </translation>
     </message>
     <message>
-        <location filename="../src/model/modelbase.cpp" line="405"/>
+        <location filename="../src/model/modelbase.cpp" line="406"/>
         <source>Couldn&apos;t overwrite file &apos;%1&apos;.
 Reason: %2 (errcode %3)</source>
         <translation>ফাইল মুছে ফেলা জা</translation>
@@ -5496,99 +5506,99 @@ Go ahead and save?</source>
         <translation>বেনামী বিন </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="382"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="390"/>
         <source>Specify a file name</source>
         <translation>একটি ফাইলের নাম উল্লেখ</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="386"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="394"/>
         <source>Fritzing Bin (*%1)</source>
         <translation>ফ্রিটজিং বিন t(*%1)</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="427"/>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="434"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="435"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="442"/>
         <source>Fritzing</source>
         <translation>ফ্রিটজিং</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="428"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="436"/>
         <source>Cannot find file %1.</source>
         <translation>ফাইল খুজে পাচ্ছে না %1.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="435"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="443"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation> ফাইলটি পড়তে পারচ্ছে না %1:%2</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="484"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="492"/>
         <source>Loading...</source>
         <translation>লোডিং...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="487"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="495"/>
         <source>loading bin &apos;%1&apos;</source>
         <translation>লোডিং বিন %1 </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="554"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="562"/>
         <source>Save bin &quot;%1&quot;</source>
         <translation>সঞ্চয় বিন বক্স </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="555"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="563"/>
         <source>Do you want to save the changes you made in the bin &quot;%1&quot;?</source>
         <translation>আপনি কি পরিবর্তন বিন তৈরি &quot;% 1&quot; সংরক্ষণ করতে চান?</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="556"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="564"/>
         <source>Your changes will be lost if you don&apos;t save them.</source>
         <translation>আপনার পরিবর্তনগুলি হারিয়ে যাবে যদি তাদের সংরক্ষণ না করেন</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="561"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="569"/>
         <source>Save</source>
         <translation>সঞ্চয়</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="562"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="570"/>
         <source>Don&apos;t Save</source>
         <translation>সঞ্চয় প্রয়োজন নাই </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="563"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="571"/>
         <source>Ctrl+D</source>
         <translation>Ctrl+D</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="564"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="572"/>
         <source>Cancel</source>
         <translation>বাতিল </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="665"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="675"/>
         <source>Add to bin</source>
         <translation>বিন যুক্ত করুন </translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="666"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="676"/>
         <source>Do you really want to add the selected part to the bin?</source>
         <translation>আপনি কি সত্যিই বিনে নির্বাচিত অংশ যোগ করতে চান?</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="842"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="852"/>
         <source>Change icon color...</source>
         <translation>আইকন রঙ পরিবর্তন করুন...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="843"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="853"/>
         <source>Change the color of the icon for this bin.</source>
         <translation>এই বিন জন্য আইকনের রঙ পরিবর্তন করুন.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="854"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="864"/>
         <source>Select a color for this icon</source>
         <translation>এই আইকনের জন্য একটি রং নির্বাচন করুন</translation>
     </message>
@@ -6147,14 +6157,14 @@ shift key swaps scroll axis</source>
         <location filename="../src/model/modelbase.cpp" line="101"/>
         <location filename="../src/model/modelbase.cpp" line="108"/>
         <location filename="../src/model/modelbase.cpp" line="166"/>
-        <location filename="../src/model/modelbase.cpp" line="339"/>
-        <location filename="../src/model/modelbase.cpp" line="387"/>
-        <location filename="../src/model/palettemodel.cpp" line="99"/>
-        <location filename="../src/model/palettemodel.cpp" line="109"/>
-        <location filename="../src/model/palettemodel.cpp" line="333"/>
-        <location filename="../src/model/palettemodel.cpp" line="352"/>
-        <location filename="../src/model/palettemodel.cpp" line="458"/>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="502"/>
+        <location filename="../src/model/modelbase.cpp" line="340"/>
+        <location filename="../src/model/modelbase.cpp" line="388"/>
+        <location filename="../src/model/palettemodel.cpp" line="98"/>
+        <location filename="../src/model/palettemodel.cpp" line="108"/>
+        <location filename="../src/model/palettemodel.cpp" line="236"/>
+        <location filename="../src/model/palettemodel.cpp" line="255"/>
+        <location filename="../src/model/palettemodel.cpp" line="361"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="510"/>
         <location filename="../src/program/programtab.cpp" line="597"/>
         <location filename="../src/sketch/sketchwidget.cpp" line="907"/>
         <location filename="../src/svg/gerbergenerator.cpp" line="391"/>
@@ -6294,7 +6304,7 @@ shift key swaps scroll axis</source>
     </message>
     <message>
         <location filename="../src/model/modelbase.cpp" line="78"/>
-        <location filename="../src/model/palettemodel.cpp" line="334"/>
+        <location filename="../src/model/palettemodel.cpp" line="237"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation> ফাইলটি পড়তে পারচ্ছে না %1:
@@ -6325,7 +6335,7 @@ shift key swaps scroll axis</source>
         <translation>ফাইল %1 এটি Fritzing ফাইল নয় (3)।</translation>
     </message>
     <message>
-        <location filename="../src/model/modelbase.cpp" line="388"/>
+        <location filename="../src/model/modelbase.cpp" line="389"/>
         <source>Cannot write file temp:
 %1
 %2
@@ -6336,17 +6346,17 @@ shift key swaps scroll axis</source>
 % 3.</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="100"/>
+        <location filename="../src/model/palettemodel.cpp" line="99"/>
         <source>Parts folder not found.</source>
         <translation>পার্টস ফোল্ডার পাওয়া যায়নি </translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="110"/>
+        <location filename="../src/model/palettemodel.cpp" line="109"/>
         <source>No parts found.</source>
         <translation>কোন পোর্ট পাওয়া যায়নি</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="353"/>
+        <location filename="../src/model/palettemodel.cpp" line="256"/>
         <source>Parse error (2) at line %1, column %2:
 %3
 %4</source>
@@ -6355,7 +6365,7 @@ shift key swaps scroll axis</source>
 4%</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="459"/>
+        <location filename="../src/model/palettemodel.cpp" line="362"/>
         <source>The part &apos;%1&apos; at &apos;%2&apos; does not have a unique module id &apos;%3&apos;.</source>
         <translation>এ অংশে &apos;% 1&apos; &apos;% 2&apos; একটি অনন্য মডিউল আইডি &apos;% 3&apos; নেই.</translation>
     </message>
@@ -7105,7 +7115,7 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="502"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="510"/>
         <source>Fritzing cannot load the parts bin</source>
         <translation type="unfinished"></translation>
     </message>

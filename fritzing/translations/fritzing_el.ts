@@ -306,222 +306,222 @@
         <translation>Εξαρτήματα</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="375"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="372"/>
         <source>BinManager::setDirtyTab: Couldn&apos;t set the bin &apos;%1&apos; as dirty</source>
         <translation>BinManager::setDirtyTab: Δεν μπόρεσε να γίνει επισήμανση του δοχείου &apos;%1&apos; ως &quot;βρώμικο&quot;</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="385"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="382"/>
         <source>BinManager::updateTitle: Couldn&apos;t set the bin &apos;%1&apos; as dirty</source>
         <translation>BinManager::updateTitle: Δεν μπόρεσε να γίνει επισήμανση του δοχείου &apos;%1&apos; ως &quot;βρώμικο&quot;</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="392"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="389"/>
         <source>New bin (%1)</source>
         <translation>Νέο δοχείο (%1)</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="403"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="400"/>
         <source>Select a Fritzing Parts Bin file to open</source>
         <translation>Επιλέξτε για άνοιγμα ένα Δοχείο Εξαρτημάτων του Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="790"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="880"/>
         <source>Searching...</source>
         <translation>Αναζήτηση...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="858"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="948"/>
         <source>Bin</source>
         <translation>Δοχείο</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="860"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="950"/>
         <source>Import...</source>
         <translation>Εισαγωγή...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="861"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="951"/>
         <source>Load a Fritzing part (.fzpz), or a Fritzing parts bin (.fzb, .fzbz)</source>
         <translation>Φόρτωση ενός εξαρτήματος Fritzing (.fzpz), ή ενός δοδείου εξαρτημάτων Fritzing (.fzb, .fzbz)</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="864"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="954"/>
         <source>New Bin...</source>
         <translation>Νέο δοχείο...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="865"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="955"/>
         <source>Create a new parts bin</source>
         <translation>Δημιουργεί ένα νέο δοχείο εξαρτημάτων</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="868"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="958"/>
         <source>Close Bin</source>
         <translation>Κλείσιμο Δοχείου</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="869"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="959"/>
         <source>Close parts bin</source>
         <translation>Κλείνει ένα δοχείο εξαρτημάτων</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="872"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="962"/>
         <source>Delete Bin</source>
         <translation>Διαγραφή Δοχείου</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="873"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="963"/>
         <source>Delete parts bin</source>
         <translation>Διαγράφει ένα δοχείο εξαρτημάτων</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="876"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="966"/>
         <source>Save Bin</source>
         <translation>Αποθήκευση Δοχείου</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="877"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="967"/>
         <source>Save parts bin</source>
         <translation>Αποθηκεύει ένα δοχείο εξαρτημάτων</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="880"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="970"/>
         <source>Save Bin As...</source>
         <translation>Αποθήκευση δοχείου ως...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="881"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="971"/>
         <source>Save parts bin as...</source>
         <translation>Αποθηκεύει ένα δοχείο ως...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="884"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="974"/>
         <source>Export Bin...</source>
         <translation>Εξαγωγή Δοχείου...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="885"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="975"/>
         <source>Save parts bin in compressed format...</source>
         <translation>Αποθηκεύει τον δοχείο εξαρτημάτων σε συμπιεσμένη μορφή...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="888"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="978"/>
         <source>Rename Bin...</source>
         <translation>Μετονομασία Δοχείου...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="889"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="979"/>
         <source>Rename parts bin...</source>
         <translation>Μετονομάζει το δοχείο εξαρτημάτων...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="892"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="982"/>
         <source>Show Bin in List View</source>
         <translation>Προβολή του Δοχείου σε Λίστα</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="894"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="984"/>
         <source>Display parts as a list</source>
         <translation>Προβάλει τα εξαρτήματα σαν λίστα</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="897"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="987"/>
         <source>Show Bin in Icon View</source>
         <translation>Προβολή του Δοχείου σε Εικονίδια</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="899"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="989"/>
         <source>Display parts as icons</source>
         <translation>Προβάλει τα εξαρτήματα σαν εικονίδια</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="916"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1006"/>
         <source>Edit Part (new parts editor)...</source>
         <translation>Επεξεργασία εξαρτήματος (νέος επεξεργαστής εξαρτημάτων)...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="917"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1007"/>
         <source>Export Part...</source>
         <translation>Εξαγωγή Εξαρτήματος...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="918"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1008"/>
         <source>Remove Part</source>
         <translation>Αφαίρεση Εξαρτήματος</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="919"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1009"/>
         <source>Find Part in Sketch</source>
         <translation>Εύρεση Εξαρτήματος στο Σχέδιο</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="962"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1052"/>
         <source>Delete bin</source>
         <translation>Διαγραφή Δοχείου</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="963"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1053"/>
         <source>Do you really want to delete bin &apos;%1&apos;?  This action cannot be undone.</source>
         <translation>Θέλετε πραγματικά να διαγράψετε το δοχείο &apos;%1&apos;;  Αυτή η ενέργεια δεν αναιρείται.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1012"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1102"/>
         <source>Read-only bin</source>
         <translation>Δοχείο μόνο για ανάγνωση</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1012"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1102"/>
         <source>This bin cannot be renamed.</source>
         <translation>Αυτό το δοχείο δεν μπορεί να μετονομαστεί.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1019"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1109"/>
         <source>Rename bin</source>
         <translation>Μετονομασία δοχείου</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1020"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1110"/>
         <source>Please choose a name for the bin:</source>
         <translation>Παρακαλώ επιλέξτε ένα όνομα για το δοχείο:</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1090"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1180"/>
         <source>Remove from Bin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1090"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1180"/>
         <source>Unable to remove part &apos;%1&apos;--it is in use in a sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1096"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1186"/>
         <source>Remove from bin</source>
         <translation>Αφαίρεση από το δοχείο</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1097"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1187"/>
         <source>Do you really want to remove &apos;%1&apos; from the bin? This operation cannot be undone.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1194"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1284"/>
         <source>Select a Fritzing File to Open</source>
         <translation>Επιλέξτε για Άνοιγμα ένα αρχείο Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1196"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1286"/>
         <source>Fritzing Files (*%1 *%2 *%3);;Fritzing Part (*%1);;Fritzing Bin (*%2);;Fritzing Shareable Bin (*%3)</source>
         <translation>Αρχεία Fritzing (*%1 *%2 *%3);;Εξαρτήματα Fritzing (*%1);;Δοχείο Fritzing (*%2);;Διαμοιραζόμενο Δοχείο Fritzing (*%3)</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="405"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="402"/>
         <source>Fritzing Bin Files (*%1 *%2);;Fritzing Bin (*%1);;Fritzing Shareable Bin (*%2)</source>
         <translation>Αρχεία Δοχείων του Fritzing (*%1 *%2);;Δοχείο του Fritzing (*%1);;Κοινό Δοχείο του Fritzing (*%2)</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="480"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="477"/>
         <source>Cannot set a NULL bin as the current one</source>
         <translatorcomment>Τώρα το NULL πως να το πεις... ΚΕΝΟ; Θα δείξει...</translatorcomment>
         <translation>Δεν μπορείτε να επιλέξετε ένα NULL δοχείο ως τρέχον</translation>
@@ -749,39 +749,39 @@ Use the file?</source>
         <translation>Σφάλμα Fritzing: αδυναμία απόδοσης του svg της πλακέτας.</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="400"/>
+        <location filename="../src/autoroute/drc.cpp" line="403"/>
         <source>No traces or connectors to check</source>
         <translation>Δεν υπάρχουν ίχνη (χαλκο-διάδρομοι) ή συνδετήρες προς έλεγχο</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="415"/>
+        <location filename="../src/autoroute/drc.cpp" line="418"/>
         <source>Unexpected SVG rendering failure--contact fritzing.org</source>
         <translation>Απροσδόκητη αποτυχία απόδοσης SVG--ενημερώστε στο fritzing.org</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="551"/>
+        <location filename="../src/autoroute/drc.cpp" line="554"/>
         <source>%1 is overlapping (%2 layer)</source>
         <translation>το %1 συμπίπτει (επίπεδο %2)</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="605"/>
+        <location filename="../src/autoroute/drc.cpp" line="608"/>
         <source>A hole in %1 may lie outside the border of the board and would be clipped.</source>
         <translation>Μία οπή στο %1 μπορεί να βρίσκεται εκτός ορίου της πλακέτας και θα κοπεί.</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="449"/>
-        <location filename="../src/autoroute/drc.cpp" line="553"/>
+        <location filename="../src/autoroute/drc.cpp" line="452"/>
+        <location filename="../src/autoroute/drc.cpp" line="556"/>
         <source>top</source>
         <translation>πάνω μέρος</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="448"/>
+        <location filename="../src/autoroute/drc.cpp" line="451"/>
         <source>Too close to a border (%1 layer)</source>
         <translation>Πολύ κοντά στο όριο (επίπεδο %1)</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="449"/>
-        <location filename="../src/autoroute/drc.cpp" line="553"/>
+        <location filename="../src/autoroute/drc.cpp" line="452"/>
+        <location filename="../src/autoroute/drc.cpp" line="556"/>
         <source>bottom</source>
         <translation>κάτω μέρος</translation>
     </message>
@@ -1573,18 +1573,23 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation>Αποθήκευση %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1489"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1472"/>
+        <source>Unable to load part from &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1501"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="811"/>
         <source>Specify a file name</source>
         <translation>Προσδιορίστε ένα όνομα αρχείου</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2028"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2057"/>
         <source>Change image to %2</source>
         <translation>Αλλαγή εικόνας σε %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2363"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2392"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="811"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="273"/>
         <source>Fritzing (*%1)</source>
@@ -1595,9 +1600,10 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <location filename="../src/mainwindow/mainwindow.cpp" line="1180"/>
         <location filename="../src/mainwindow/mainwindow.cpp" line="1404"/>
         <location filename="../src/mainwindow/mainwindow.cpp" line="1446"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1459"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1524"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2085"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1461"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1471"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1536"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2114"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="168"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="173"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="590"/>
@@ -1656,37 +1662,42 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation>Αδυναμία ανοίγματος του κοινόχρηστου εξαρτήματος %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1460"/>
-        <source>Unable to read shareable part %1</source>
-        <translation>Αδυναμία ανάγνωσης του κοινόχρηστου %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1491"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1503"/>
         <source>Fritzing Part (*%1)</source>
         <translation>Εξάρτημα Fritzing (*%1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1525"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1537"/>
         <source>Unable to export %1 to shareable sketch</source>
         <translation>Αδυναμία εξαγωγής του %1 σε κοινόχρηστο σχέδιο</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1617"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1576"/>
+        <source>MainWindow::moveToPartsFolder mainwindow missing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1591"/>
+        <source>There is already a part with id &apos;%1&apos; loaded into Fritzing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1650"/>
         <source>Do you want to keep the imported parts?</source>
         <translation>Θέλετε να διατηρήσετε τα εισαγμένα εξαρτήματα;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1685"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1714"/>
         <source>No connections to route</source>
         <translation>Δεν υπάρχουν συνδέσεις για δρομολόγιση</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1688"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1717"/>
         <source>Routing completed</source>
         <translation>Η δρομολόγιση ολοκληρώθηκε</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1691"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1720"/>
         <source>Routing completed using %n jumper part(s)</source>
         <translation>
             <numerusform>Η δρομολόγιση ολοκληρώθηκε χρησιμοποιώντας %n βραχυκυκλωτήρες</numerusform>
@@ -1694,7 +1705,7 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1694"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1723"/>
         <source>%1 of %2 nets routed - %n connector(s) still to be routed</source>
         <translation>
             <numerusform>%1 από %2 δίκτυα δρομολογήθηκαν - %n συνδετήρες προς δρομολόγηση</numerusform>
@@ -1702,90 +1713,90 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1730"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1759"/>
         <source>%1 - [%2]</source>
         <translation>%1 - [%2]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1861"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1890"/>
         <source>No copper top layer</source>
         <translation>Δεν υπάρχει πάνω επίπεδο χαλκού</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1862"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1891"/>
         <source>The copper top (copper 1) layer is not available on a one-sided board.  Please switch the board to double-sided or choose the copper bottom (copper 0) layer.</source>
         <translation>Το πανω επίπεδο χαλκού (copper 1) δεν είναι διαθέσιμο σε μία μονής όψης πλακέτα.  Παρακαλώ αλλάξτε την πλακέτα σε διπλής όψης ή επιλέξτε το κάτω επίπεδο (copper 0) χαλκού.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1923"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1952"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3486"/>
         <source>Sorry!</source>
         <translation>Συγνώμη!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1924"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1953"/>
         <source>No part with those characteristics.
 We&apos;re working to avoid this message, and only let you choose between properties that do exist</source>
         <translation>Δεν υπάρχει εξάρτημα με αυτά τα χαρακτηριστικά.
 Προσπαθούμε να αποφύγουμε το μήνυμα αυτό, και σας επιτρέπουμε να επιλέξετε μεταξύ ιδιοτήτων που υπάρχουν</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1936"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1965"/>
         <source>No exactly matching part found; Fritzing chose the closest match.</source>
         <translation>Δεν βρέθηκε ακριβώς το  εξάρτημα, το Fritzing επέλεξε το πιο ταιριαστό.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1973"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2002"/>
         <source>Change to single layer pcb</source>
         <translation>Αλλαγή σε τυπωμένο μονής όψης</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1973"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2002"/>
         <source>Change to two layer pcb</source>
         <translation>Αλλαγή σε τυπωμένο διπλής όψης</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2006"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2035"/>
         <source>Swapped %1 with module %2</source>
         <translation>Ανταλλάχτηκε το το άρθρωμα %1 με το %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2086"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2115"/>
         <source>Svg %1 is missing a &apos;%2&apos; layer. For more information on how to create a custom board shape, see the tutorial at &lt;a href=&apos;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&apos;&gt;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&lt;/a&gt;.</source>
         <translation>Το Svg %1 στερείται ενός &apos;%2&apos; επιπέδου. Για περισσότερες πληροφορίες για την δημιουργία προσαρμοσμένου σχήματος πλακετών δείτε το βοήθημα στο &lt;a href=&apos;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&apos;&gt;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2123"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2152"/>
         <source>loading %1</source>
         <translation>φόρτωση %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2132"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2161"/>
         <source>Loading...</source>
         <translation>Φόρτωση...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2138"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2167"/>
         <source>new sketch</source>
         <translation>νέο σχέδιο</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2268"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2297"/>
         <source>Backing up &apos;%1&apos;</source>
         <translation>Αντιγραφή ασφαλείας &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2418"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2447"/>
         <source>Unrouted connections</source>
         <translation>Μη δρομολογημένες συνδέσεις</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2419"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2448"/>
         <source>There are no unrouted connections in this view.</source>
         <translation>Δεν υπάρχουν μη δρομολογημένες συνδέσεις σε αυτή την προβολή.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2712"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2741"/>
         <source>Code</source>
         <translation>Κώδικας</translation>
     </message>
@@ -1795,7 +1806,7 @@ We&apos;re working to avoid this message, and only let you choose between proper
         <translation>Ctrl+D</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2458"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2487"/>
         <source>%1 %2 %3</source>
         <translation>%1 %2 %3</translation>
     </message>
@@ -3911,7 +3922,7 @@ Please check all views for potential side-effects.</source>
 <context>
     <name>ModelBase</name>
     <message numerus="yes">
-        <location filename="../src/model/modelbase.cpp" line="333"/>
+        <location filename="../src/model/modelbase.cpp" line="334"/>
         <source>Unable to find the following %n part(s):</source>
         <translation>
             <numerusform>Αδυναμία εύρεσης των ακόλουθων %n εξαρτημάτων:</numerusform>
@@ -3919,17 +3930,17 @@ Please check all views for potential side-effects.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/model/modelbase.cpp" line="336"/>
+        <location filename="../src/model/modelbase.cpp" line="337"/>
         <source>at</source>
         <translation>στο</translation>
     </message>
     <message>
-        <location filename="../src/model/modelbase.cpp" line="404"/>
+        <location filename="../src/model/modelbase.cpp" line="405"/>
         <source>File save failed!</source>
         <translation>Η αποθήκευση αρχείου απέτυχε!</translation>
     </message>
     <message>
-        <location filename="../src/model/modelbase.cpp" line="405"/>
+        <location filename="../src/model/modelbase.cpp" line="406"/>
         <source>Couldn&apos;t overwrite file &apos;%1&apos;.
 Reason: %2 (errcode %3)</source>
         <translation>Αδυναμία αντικατάστασης του αρχείου &apos;%1&apos;
@@ -5357,100 +5368,100 @@ Go ahead and save?</source>
         <translation>Ανώνυμο Δοχείο</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="561"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="569"/>
         <source>Save</source>
         <translation>Αποθήκευση</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="382"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="390"/>
         <source>Specify a file name</source>
         <translation>Προσδιορίστε ένα όνομα αρχείου</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="386"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="394"/>
         <source>Fritzing Bin (*%1)</source>
         <translation>Δοχείο Fritzing (*%1)</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="427"/>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="434"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="435"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="442"/>
         <source>Fritzing</source>
         <translation>Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="428"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="436"/>
         <source>Cannot find file %1.</source>
         <translation>Αδυναμία εύρεσης του αρχείου %1.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="435"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="443"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Αδυναμία ανάγνωσης του αρχείου:%1:
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="484"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="492"/>
         <source>Loading...</source>
         <translation>Φόρτωση...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="487"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="495"/>
         <source>loading bin &apos;%1&apos;</source>
         <translation>φόρτωση δοχείου &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="554"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="562"/>
         <source>Save bin &quot;%1&quot;</source>
         <translation>Αποθήκευση δοχείου &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="555"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="563"/>
         <source>Do you want to save the changes you made in the bin &quot;%1&quot;?</source>
         <translation>Θέλετε να αποθηκεύσετε τις αλλαγές που κάνατε στο δοχείο &quot;%1&quot;;</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="556"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="564"/>
         <source>Your changes will be lost if you don&apos;t save them.</source>
         <translation>Οι αλλαγές σας θα χαθούν αν δεν τις αποθηκεύσετε.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="562"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="570"/>
         <source>Don&apos;t Save</source>
         <translation>Όχι Αποθήκευση</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="563"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="571"/>
         <source>Ctrl+D</source>
         <translation>Ctrl+D</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="564"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="572"/>
         <source>Cancel</source>
         <translation>Ακύρωση</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="665"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="675"/>
         <source>Add to bin</source>
         <translation>Προσθήκη στο δοχείο</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="666"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="676"/>
         <source>Do you really want to add the selected part to the bin?</source>
         <translation>Θέλετε πραγματικά να προσθέσετε το επιλεγμένο εξάρτημα στο δοχείο;</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="842"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="852"/>
         <source>Change icon color...</source>
         <translation>Αλλαγή χρώματος εικονιδίου...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="843"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="853"/>
         <source>Change the color of the icon for this bin.</source>
         <translation>Αλλάζει το χρώμα του εικονιδίου για αυτό το δοχείο.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="854"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="864"/>
         <source>Select a color for this icon</source>
         <translation>Επιλέξτε ένα χρώμα για αυτό το εικονίδιο</translation>
     </message>
@@ -6010,14 +6021,14 @@ shift key swaps scroll axis</source>
         <location filename="../src/model/modelbase.cpp" line="101"/>
         <location filename="../src/model/modelbase.cpp" line="108"/>
         <location filename="../src/model/modelbase.cpp" line="166"/>
-        <location filename="../src/model/modelbase.cpp" line="339"/>
-        <location filename="../src/model/modelbase.cpp" line="387"/>
-        <location filename="../src/model/palettemodel.cpp" line="99"/>
-        <location filename="../src/model/palettemodel.cpp" line="109"/>
-        <location filename="../src/model/palettemodel.cpp" line="333"/>
-        <location filename="../src/model/palettemodel.cpp" line="352"/>
-        <location filename="../src/model/palettemodel.cpp" line="458"/>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="502"/>
+        <location filename="../src/model/modelbase.cpp" line="340"/>
+        <location filename="../src/model/modelbase.cpp" line="388"/>
+        <location filename="../src/model/palettemodel.cpp" line="98"/>
+        <location filename="../src/model/palettemodel.cpp" line="108"/>
+        <location filename="../src/model/palettemodel.cpp" line="236"/>
+        <location filename="../src/model/palettemodel.cpp" line="255"/>
+        <location filename="../src/model/palettemodel.cpp" line="361"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="510"/>
         <location filename="../src/program/programtab.cpp" line="597"/>
         <location filename="../src/sketch/sketchwidget.cpp" line="907"/>
         <location filename="../src/svg/gerbergenerator.cpp" line="391"/>
@@ -6120,7 +6131,7 @@ shift key swaps scroll axis</source>
     </message>
     <message>
         <location filename="../src/model/modelbase.cpp" line="78"/>
-        <location filename="../src/model/palettemodel.cpp" line="334"/>
+        <location filename="../src/model/palettemodel.cpp" line="237"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Αδυναμία ανάγνωσης του αρχείου:%1:
@@ -6151,7 +6162,7 @@ shift key swaps scroll axis</source>
         <translation>Το αρχείο %1 δεν είναι ένα αρχείο Fritzing (3).</translation>
     </message>
     <message>
-        <location filename="../src/model/modelbase.cpp" line="388"/>
+        <location filename="../src/model/modelbase.cpp" line="389"/>
         <source>Cannot write file temp:
 %1
 %2
@@ -6162,17 +6173,17 @@ shift key swaps scroll axis</source>
 %3.</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="100"/>
+        <location filename="../src/model/palettemodel.cpp" line="99"/>
         <source>Parts folder not found.</source>
         <translation>Δεν βρέθηκε ο φάκελος των εξαρτημάτων.</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="110"/>
+        <location filename="../src/model/palettemodel.cpp" line="109"/>
         <source>No parts found.</source>
         <translation>Δεν βρέθηκαν εξαρτήματα.</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="353"/>
+        <location filename="../src/model/palettemodel.cpp" line="256"/>
         <source>Parse error (2) at line %1, column %2:
 %3
 %4</source>
@@ -6181,7 +6192,7 @@ shift key swaps scroll axis</source>
 %4</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="459"/>
+        <location filename="../src/model/palettemodel.cpp" line="362"/>
         <source>The part &apos;%1&apos; at &apos;%2&apos; does not have a unique module id &apos;%3&apos;.</source>
         <translation>Το εξάρτημα &apos;%1&apos; στο &apos;%2&apos; δεν έχει μία μοναδική ταυτότητα αρθρώματος &apos;%3&apos;.</translation>
     </message>
@@ -6956,7 +6967,7 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
         <translation>Επιλέξτε την περιγραφή των συνδετήρων</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="502"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="510"/>
         <source>Fritzing cannot load the parts bin</source>
         <translation>Το Fritzing αδυνατεί να φορτώσει το δοχείο εξαρτημάτων</translation>
     </message>

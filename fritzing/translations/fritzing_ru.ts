@@ -2143,10 +2143,6 @@ Please check all views for potential side-effects.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to read shareable part %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Backing up &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3013,6 +3009,18 @@ Go ahead and revert?</source>
     </message>
     <message>
         <source>No parts matched search term &apos;%1&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to load part from &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MainWindow::moveToPartsFolder mainwindow missing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There is already a part with id &apos;%1&apos; loaded into Fritzing.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

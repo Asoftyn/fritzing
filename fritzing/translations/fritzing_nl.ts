@@ -413,15 +413,15 @@
     </message>
     <message>
         <source>Remove from Bin</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder uit de koffer</translation>
     </message>
     <message>
         <source>Unable to remove part &apos;%1&apos;--it is in use in a sketch</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet mogelijk om onderdeel &apos;%1&apos; te verwijderen--het is momenteel in gebruik in een sketch</translation>
     </message>
     <message>
         <source>Do you really want to remove &apos;%1&apos; from the bin? This operation cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation>Weet u zeker dat u &apos;%1&apos; wilt verwijderen uit de koffer? Dit kan niet ongedaan worden gemaakt.</translation>
     </message>
 </context>
 <context>
@@ -2161,10 +2161,6 @@ Controleer a.u.b. alle weergaves voor potentiële fouten.</translation>
         <translation>Bovenste laag</translation>
     </message>
     <message>
-        <source>Unable to read shareable part %1</source>
-        <translation>Niet mogelijk om uitwisselbaar bestand %1 te lezen</translation>
-    </message>
-    <message>
         <source>Backing up &apos;%1&apos;</source>
         <translation>Backing up &apos;%1&apos;</translation>
     </message>
@@ -3038,6 +3034,18 @@ Doorgaan en terug naar vorige versie?</translation>
         <source>No parts matched search term &apos;%1&apos;.</source>
         <translation>Geen onderdelen gevonden met de zoekterm &apos;%1&apos;.</translation>
     </message>
+    <message>
+        <source>Unable to load part from &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MainWindow::moveToPartsFolder mainwindow missing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There is already a part with id &apos;%1&apos; loaded into Fritzing.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MazeRouter</name>
@@ -3340,7 +3348,7 @@ Reden : %2 (errcode %3)</translation>
     </message>
     <message>
         <source>Unable to parse fzp file  %1</source>
-        <translation>Niet mogelijk om fzb bestand %1 te analyseren</translation>
+        <translation>Niet mogelijk om fzp bestand %1 te analyseren</translation>
     </message>
     <message>
         <source>Icon View</source>
@@ -3364,7 +3372,7 @@ Reden : %2 (errcode %3)</translation>
     </message>
     <message>
         <source>Open Image</source>
-        <translation>Open afbeelding</translation>
+        <translation>Open Afbeelding</translation>
     </message>
     <message>
         <source>Copy problem</source>
@@ -3372,7 +3380,7 @@ Reden : %2 (errcode %3)</translation>
     </message>
     <message>
         <source>Unable to make a local copy of: &apos;%1&apos;</source>
-        <translation>Niet moeglijk een lokale kopie te maken van :&apos;%1&apos;</translation>
+        <translation>Niet mogelijk een lokale kopie te maken van :&apos;%1&apos;</translation>
     </message>
     <message>
         <source>You may use a PNG or JPG image to construct your part, but it is better to use an SVG. </source>
@@ -3380,7 +3388,7 @@ Reden : %2 (errcode %3)</translation>
     </message>
     <message>
         <source>PNG and JPG images retain their nature as bitmaps and do not look good when scaled--</source>
-        <translation>PNG en JPG afbeeldingen behouden hun bitmap eigenschappen en zullen er niet goed uit zien als ze van grootte veranden--</translation>
+        <translation>PNG en JPG afbeeldingen behouden hun bitmap eigenschappen en zullen er niet goed uit zien als ze vergroten--</translation>
     </message>
     <message>
         <source>so for Fritzing parts it is best to use PNG and JPG only as placeholders.</source>
@@ -3420,7 +3428,7 @@ Reden : %2 (errcode %3)</translation>
     </message>
     <message>
         <source>no schematics found in %1</source>
-        <translation>Geen schema&apos;s gevonden in %1</translation>
+        <translation>geen schema&apos;s gevonden in %1</translation>
     </message>
     <message>
         <source>schematic part</source>
@@ -3646,7 +3654,7 @@ Doorgaan en opslaan?</translation>
         <source>This part can not be saved as-is:
 
 </source>
-        <translation>Opslaan Als kan niet voor dit onderdeel:
+        <translation>&apos;Opslaan Als&apos; kan niet voor dit onderdeel:
 
 </translation>
     </message>
@@ -3738,11 +3746,11 @@ Doorgaan en opslaan?</translation>
     </message>
     <message>
         <source>Exiting the Parts Editor now is fine, as long as you remember to finish the assignments later.</source>
-        <translation>De Onderdeel bewerker nu verlaten is geen probleem, vergeet niet om later de toewijzingen af te maken.</translation>
+        <translation>De Onderdeel Bewerker nu verlaten is geen probleem, vergeet niet om later de toewijzingen af te maken.</translation>
     </message>
     <message>
         <source>Load image for view...</source>
-        <translation>Laad aafbeelding voor weergave...</translation>
+        <translation>Laad afbeelding voor weergave...</translation>
     </message>
     <message>
         <source>Open a file to use as the image for this view of the part.</source>
@@ -3770,7 +3778,7 @@ Doorgaan en opslaan?</translation>
     </message>
     <message>
         <source>If you make changes to breadboard view, or change connector metadata, the legs may no longer work. </source>
-        <translation>Als je wijzigingen maakt aan de breadboard weergave of de metadat voor de aansluitingen aanpast, is het moeglijk dat de pootjes niet meer (goed) werken.</translation>
+        <translation>Als je wijzigingen maakt aan de breadboard weergave of de metadat voor de aansluitingen aanpast, is het mogelijk dat de pootjes niet meer (goed) werken.</translation>
     </message>
     <message>
         <source>You can safely make changes to Schematic or PCB view.

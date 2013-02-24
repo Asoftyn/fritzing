@@ -306,222 +306,222 @@
         <translation>Součástky</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="375"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="372"/>
         <source>BinManager::setDirtyTab: Couldn&apos;t set the bin &apos;%1&apos; as dirty</source>
         <translation>BinManager::setDirtyTab: Nelze nastavit zásobník &apos;%1&apos; jako dirty</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="385"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="382"/>
         <source>BinManager::updateTitle: Couldn&apos;t set the bin &apos;%1&apos; as dirty</source>
         <translation>BinManager::updateTitle: Nelze nastavit zásobník &apos;%1&apos; jako dirty</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="392"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="389"/>
         <source>New bin (%1)</source>
         <translation>Nový zásobník (%1)</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="403"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="400"/>
         <source>Select a Fritzing Parts Bin file to open</source>
         <translation>Vybrat Fritzing soubor zásobníku součástek pro otevření</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="790"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="880"/>
         <source>Searching...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="858"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="948"/>
         <source>Bin</source>
         <translation>Zásobník</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="860"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="950"/>
         <source>Import...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="861"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="951"/>
         <source>Load a Fritzing part (.fzpz), or a Fritzing parts bin (.fzb, .fzbz)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="864"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="954"/>
         <source>New Bin...</source>
         <translation>Nový zásobník...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="865"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="955"/>
         <source>Create a new parts bin</source>
         <translation>Vytvoří nový zásobník součástek</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="868"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="958"/>
         <source>Close Bin</source>
         <translation>Zavřít zásobník</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="869"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="959"/>
         <source>Close parts bin</source>
         <translation>Zavře zásobník součástek</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="872"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="962"/>
         <source>Delete Bin</source>
         <translation>Vymazat zásobník</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="873"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="963"/>
         <source>Delete parts bin</source>
         <translation>Vymaže zásobník součástek</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="876"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="966"/>
         <source>Save Bin</source>
         <translation>Uložit zásobník</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="877"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="967"/>
         <source>Save parts bin</source>
         <translation>Uloží zásobník součástek</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="880"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="970"/>
         <source>Save Bin As...</source>
         <translation>Uložit zásobník jako...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="881"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="971"/>
         <source>Save parts bin as...</source>
         <translation>Uloží zásobník součástek jako...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="884"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="974"/>
         <source>Export Bin...</source>
         <translation>Exportovat zásobník...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="885"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="975"/>
         <source>Save parts bin in compressed format...</source>
         <translation>Uloží zásobník součástek v komprimovaném formátu...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="888"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="978"/>
         <source>Rename Bin...</source>
         <translation>Přejmenovat zásobník...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="889"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="979"/>
         <source>Rename parts bin...</source>
         <translation>Přejmenuje zásobník součástek...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="892"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="982"/>
         <source>Show Bin in List View</source>
         <translation>Zobrazit zásobník jako seznam</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="894"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="984"/>
         <source>Display parts as a list</source>
         <translation>Zobrazí součástky jako seznam</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="897"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="987"/>
         <source>Show Bin in Icon View</source>
         <translation>Zobrazit zásobník jako ikony</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="899"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="989"/>
         <source>Display parts as icons</source>
         <translation>Zobrazí součástky jako ikony</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="916"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1006"/>
         <source>Edit Part (new parts editor)...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="917"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1007"/>
         <source>Export Part...</source>
         <translation>Exportovat součástku...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="918"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1008"/>
         <source>Remove Part</source>
         <translation>Odstranit součástku</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="919"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1009"/>
         <source>Find Part in Sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="962"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1052"/>
         <source>Delete bin</source>
         <translation>Vymazat zásobník</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="963"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1053"/>
         <source>Do you really want to delete bin &apos;%1&apos;?  This action cannot be undone.</source>
         <translation>Opravdu chcete vymazat zásobník &apos;%1&apos;?  Tuto akci nelze vrátit.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1012"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1102"/>
         <source>Read-only bin</source>
         <translation>Zásobník pouze pro čtení</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1012"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1102"/>
         <source>This bin cannot be renamed.</source>
         <translation>Tento zásobník nelze přejmenovat.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1019"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1109"/>
         <source>Rename bin</source>
         <translation>Přejmenuje zásobník</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1020"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1110"/>
         <source>Please choose a name for the bin:</source>
         <translation>Zvolte název pro zásobník:</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1090"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1180"/>
         <source>Remove from Bin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1090"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1180"/>
         <source>Unable to remove part &apos;%1&apos;--it is in use in a sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1096"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1186"/>
         <source>Remove from bin</source>
         <translation>Odstranit ze zásobníku</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1097"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1187"/>
         <source>Do you really want to remove &apos;%1&apos; from the bin? This operation cannot be undone.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1194"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1284"/>
         <source>Select a Fritzing File to Open</source>
         <translation type="unfinished">Vybrat soubor Fritzing pro otevření</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1196"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="1286"/>
         <source>Fritzing Files (*%1 *%2 *%3);;Fritzing Part (*%1);;Fritzing Bin (*%2);;Fritzing Shareable Bin (*%3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="405"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="402"/>
         <source>Fritzing Bin Files (*%1 *%2);;Fritzing Bin (*%1);;Fritzing Shareable Bin (*%2)</source>
         <translation>Fritzing soubory zásobníku (*%1 *%2);;Fritzing zásobník (*%1);;Fritzing sdílený zásobník (*%2)</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="480"/>
+        <location filename="../src/partsbinpalette/binmanager/binmanager.cpp" line="477"/>
         <source>Cannot set a NULL bin as the current one</source>
         <translation>Nelze nastavit NULL zásobník jako aktuální</translation>
     </message>
@@ -743,39 +743,39 @@ Use the file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="400"/>
+        <location filename="../src/autoroute/drc.cpp" line="403"/>
         <source>No traces or connectors to check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="415"/>
+        <location filename="../src/autoroute/drc.cpp" line="418"/>
         <source>Unexpected SVG rendering failure--contact fritzing.org</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="551"/>
+        <location filename="../src/autoroute/drc.cpp" line="554"/>
         <source>%1 is overlapping (%2 layer)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="605"/>
+        <location filename="../src/autoroute/drc.cpp" line="608"/>
         <source>A hole in %1 may lie outside the border of the board and would be clipped.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="449"/>
-        <location filename="../src/autoroute/drc.cpp" line="553"/>
+        <location filename="../src/autoroute/drc.cpp" line="452"/>
+        <location filename="../src/autoroute/drc.cpp" line="556"/>
         <source>top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="448"/>
+        <location filename="../src/autoroute/drc.cpp" line="451"/>
         <source>Too close to a border (%1 layer)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/drc.cpp" line="449"/>
-        <location filename="../src/autoroute/drc.cpp" line="553"/>
+        <location filename="../src/autoroute/drc.cpp" line="452"/>
+        <location filename="../src/autoroute/drc.cpp" line="556"/>
         <source>bottom</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1504,13 +1504,13 @@ Je také možné zvolit konektory jako výplň země kliknutím pravým tlačít
         <translation>Uložit %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1489"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1501"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="811"/>
         <source>Specify a file name</source>
         <translation>Zadejte název souboru</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2363"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2392"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="811"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="273"/>
         <source>Fritzing (*%1)</source>
@@ -1521,9 +1521,10 @@ Je také možné zvolit konektory jako výplň země kliknutím pravým tlačít
         <location filename="../src/mainwindow/mainwindow.cpp" line="1180"/>
         <location filename="../src/mainwindow/mainwindow.cpp" line="1404"/>
         <location filename="../src/mainwindow/mainwindow.cpp" line="1446"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1459"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1524"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2085"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1461"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1471"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1536"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2114"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="168"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="173"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="590"/>
@@ -1572,37 +1573,32 @@ Je také možné zvolit konektory jako výplň země kliknutím pravým tlačít
         <translation>Nelze otevřít sdílenou součástku %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1460"/>
-        <source>Unable to read shareable part %1</source>
-        <translation>Nelze číst sdílenou součástku %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1491"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1503"/>
         <source>Fritzing Part (*%1)</source>
         <translation>Fritzing součástka (*%1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1525"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1537"/>
         <source>Unable to export %1 to shareable sketch</source>
         <translation>Nelze exportovat %1 do sdíleného návrhu</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1617"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1650"/>
         <source>Do you want to keep the imported parts?</source>
         <translation>Přejete zachovat importované součástky?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1685"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1714"/>
         <source>No connections to route</source>
         <translation>Žádné propojky k routování</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1688"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1717"/>
         <source>Routing completed</source>
         <translation>Routing dokončen</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1691"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1720"/>
         <source>Routing completed using %n jumper part(s)</source>
         <translation>
             <numerusform>Routing dokončen s použitím %n propojky</numerusform>
@@ -1611,22 +1607,22 @@ Je také možné zvolit konektory jako výplň země kliknutím pravým tlačít
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2418"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2447"/>
         <source>Unrouted connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2419"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2448"/>
         <source>There are no unrouted connections in this view.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2458"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2487"/>
         <source>%1 %2 %3</source>
         <translation>%1 %2 %3</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1694"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1723"/>
         <source>%1 of %2 nets routed - %n connector(s) still to be routed</source>
         <translation>
             <numerusform>%1 z %2 routovaných propojů - %n propojka, která bude ještě routována</numerusform>
@@ -1697,85 +1693,100 @@ Je také možné zvolit konektory jako výplň země kliknutím pravým tlačít
         <translation>V &apos;%1&apos; žádný návrh nenalezen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1730"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1472"/>
+        <source>Unable to load part from &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1576"/>
+        <source>MainWindow::moveToPartsFolder mainwindow missing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1591"/>
+        <source>There is already a part with id &apos;%1&apos; loaded into Fritzing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1759"/>
         <source>%1 - [%2]</source>
         <translation>%1 - [%2]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1861"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1890"/>
         <source>No copper top layer</source>
         <translation>Žádná měděná horní vrstva</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1862"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1891"/>
         <source>The copper top (copper 1) layer is not available on a one-sided board.  Please switch the board to double-sided or choose the copper bottom (copper 0) layer.</source>
         <translation>Na jednostranné desce není horní měděná vrstva (měď 1) k dispozici.  Přepněte desku na oboustrannou, nebo zvolte spodní měděnou vrstvu (měď 0).</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1923"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1952"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3486"/>
         <source>Sorry!</source>
         <translation>Promiňte!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1924"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1953"/>
         <source>No part with those characteristics.
 We&apos;re working to avoid this message, and only let you choose between properties that do exist</source>
         <translation>Součástka s touto charakteristikou neexistuje.
 Pracujeme na potlačení této zprávy a nyní Vám nezbývá, než zvolit mezi vlastnostmi, které existují</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1936"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1965"/>
         <source>No exactly matching part found; Fritzing chose the closest match.</source>
         <translation>Nebyla nalezena přesně shodná součástka; Fritzing vybral součástku s nejbližšími vlastnostmi.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1973"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2002"/>
         <source>Change to single layer pcb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1973"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2002"/>
         <source>Change to two layer pcb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2006"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2035"/>
         <source>Swapped %1 with module %2</source>
         <translation>Přepnut %1 s modulem %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2028"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2057"/>
         <source>Change image to %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2086"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2115"/>
         <source>Svg %1 is missing a &apos;%2&apos; layer. For more information on how to create a custom board shape, see the tutorial at &lt;a href=&apos;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&apos;&gt;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&lt;/a&gt;.</source>
         <translation>SVG %1 neobsahuje vrstvu &apos;%2&apos;. Další informace o tom, jak vytvořit vlastní obrazec desky naleznete v kurzu na &lt;a href=&apos;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&apos;&gt;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2123"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2152"/>
         <source>loading %1</source>
         <translation>načítání %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2132"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2161"/>
         <source>Loading...</source>
         <translation>Načítání...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2138"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2167"/>
         <source>new sketch</source>
         <translation>nový návrh</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2268"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2297"/>
         <source>Backing up &apos;%1&apos;</source>
         <translation>Zálohovat &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2712"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2741"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3898,7 +3909,7 @@ Zkontrolujte, všechny pohledy pro potenciální vedlejší účinky.</translati
 <context>
     <name>ModelBase</name>
     <message numerus="yes">
-        <location filename="../src/model/modelbase.cpp" line="333"/>
+        <location filename="../src/model/modelbase.cpp" line="334"/>
         <source>Unable to find the following %n part(s):</source>
         <translation>
             <numerusform>Nelze nalézt následující %n součástku:</numerusform>
@@ -3907,17 +3918,17 @@ Zkontrolujte, všechny pohledy pro potenciální vedlejší účinky.</translati
         </translation>
     </message>
     <message>
-        <location filename="../src/model/modelbase.cpp" line="336"/>
+        <location filename="../src/model/modelbase.cpp" line="337"/>
         <source>at</source>
         <translation>v</translation>
     </message>
     <message>
-        <location filename="../src/model/modelbase.cpp" line="404"/>
+        <location filename="../src/model/modelbase.cpp" line="405"/>
         <source>File save failed!</source>
         <translation>Uložení souboru selhalo!</translation>
     </message>
     <message>
-        <location filename="../src/model/modelbase.cpp" line="405"/>
+        <location filename="../src/model/modelbase.cpp" line="406"/>
         <source>Couldn&apos;t overwrite file &apos;%1&apos;.
 Reason: %2 (errcode %3)</source>
         <translation>Není možné přepsat soubor &apos;%1&apos;.
@@ -5341,100 +5352,100 @@ Go ahead and save?</source>
         <translation>Nepojmenovaný zásobník</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="561"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="569"/>
         <source>Save</source>
         <translation>Uložit</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="382"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="390"/>
         <source>Specify a file name</source>
         <translation>Zadejte název souboru</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="386"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="394"/>
         <source>Fritzing Bin (*%1)</source>
         <translation>Fritzing zásobník (*%1)</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="427"/>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="434"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="435"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="442"/>
         <source>Fritzing</source>
         <translation>Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="428"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="436"/>
         <source>Cannot find file %1.</source>
         <translation>Nelze nalézt soubor %1.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="435"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="443"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Nelze číst soubor %1:
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="484"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="492"/>
         <source>Loading...</source>
         <translation>Načítání...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="487"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="495"/>
         <source>loading bin &apos;%1&apos;</source>
         <translation>načítání zásobníku %1</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="554"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="562"/>
         <source>Save bin &quot;%1&quot;</source>
         <translation>Uložit zásobník &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="555"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="563"/>
         <source>Do you want to save the changes you made in the bin &quot;%1&quot;?</source>
         <translation>Přejete si uložit změny provedené v zásobníku &quot;%1&quot;?</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="556"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="564"/>
         <source>Your changes will be lost if you don&apos;t save them.</source>
         <translation>Vaše změny budou ztraceny, pokud je neuložíte.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="562"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="570"/>
         <source>Don&apos;t Save</source>
         <translation>Neukládat</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="563"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="571"/>
         <source>Ctrl+D</source>
         <translation>Ctrl+D</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="564"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="572"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="665"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="675"/>
         <source>Add to bin</source>
         <translation>Přidat do zásobníku</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="666"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="676"/>
         <source>Do you really want to add the selected part to the bin?</source>
         <translation>Opravdu chcete přidat vybranou součástku do zásobníku?</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="842"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="852"/>
         <source>Change icon color...</source>
         <translation>Změnit barvu ikony...</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="843"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="853"/>
         <source>Change the color of the icon for this bin.</source>
         <translation>Změnit barvu ikony tohoto zásobníku.</translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="854"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="864"/>
         <source>Select a color for this icon</source>
         <translation>Vybere barvu této ikony</translation>
     </message>
@@ -6034,14 +6045,14 @@ Klávesa Alt nebo klávesa %1 = posunout</translation>
         <location filename="../src/model/modelbase.cpp" line="101"/>
         <location filename="../src/model/modelbase.cpp" line="108"/>
         <location filename="../src/model/modelbase.cpp" line="166"/>
-        <location filename="../src/model/modelbase.cpp" line="339"/>
-        <location filename="../src/model/modelbase.cpp" line="387"/>
-        <location filename="../src/model/palettemodel.cpp" line="99"/>
-        <location filename="../src/model/palettemodel.cpp" line="109"/>
-        <location filename="../src/model/palettemodel.cpp" line="333"/>
-        <location filename="../src/model/palettemodel.cpp" line="352"/>
-        <location filename="../src/model/palettemodel.cpp" line="458"/>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="502"/>
+        <location filename="../src/model/modelbase.cpp" line="340"/>
+        <location filename="../src/model/modelbase.cpp" line="388"/>
+        <location filename="../src/model/palettemodel.cpp" line="98"/>
+        <location filename="../src/model/palettemodel.cpp" line="108"/>
+        <location filename="../src/model/palettemodel.cpp" line="236"/>
+        <location filename="../src/model/palettemodel.cpp" line="255"/>
+        <location filename="../src/model/palettemodel.cpp" line="361"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="510"/>
         <location filename="../src/program/programtab.cpp" line="597"/>
         <location filename="../src/sketch/sketchwidget.cpp" line="907"/>
         <location filename="../src/svg/gerbergenerator.cpp" line="391"/>
@@ -6104,7 +6115,7 @@ Klávesa Alt nebo klávesa %1 = posunout</translation>
     </message>
     <message>
         <location filename="../src/model/modelbase.cpp" line="78"/>
-        <location filename="../src/model/palettemodel.cpp" line="334"/>
+        <location filename="../src/model/palettemodel.cpp" line="237"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Nelze číst soubor %1:
@@ -6135,7 +6146,7 @@ Klávesa Alt nebo klávesa %1 = posunout</translation>
         <translation>Soubor %1 není soubor Fritzing (3).</translation>
     </message>
     <message>
-        <location filename="../src/model/modelbase.cpp" line="388"/>
+        <location filename="../src/model/modelbase.cpp" line="389"/>
         <source>Cannot write file temp:
 %1
 %2
@@ -6146,17 +6157,17 @@ Klávesa Alt nebo klávesa %1 = posunout</translation>
 %3.</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="100"/>
+        <location filename="../src/model/palettemodel.cpp" line="99"/>
         <source>Parts folder not found.</source>
         <translation>Složka součástek nenalezena.</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="110"/>
+        <location filename="../src/model/palettemodel.cpp" line="109"/>
         <source>No parts found.</source>
         <translation>Součástky nenalezeny.</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="353"/>
+        <location filename="../src/model/palettemodel.cpp" line="256"/>
         <source>Parse error (2) at line %1, column %2:
 %3
 %4</source>
@@ -6165,7 +6176,7 @@ Klávesa Alt nebo klávesa %1 = posunout</translation>
 %4</translation>
     </message>
     <message>
-        <location filename="../src/model/palettemodel.cpp" line="459"/>
+        <location filename="../src/model/palettemodel.cpp" line="362"/>
         <source>The part &apos;%1&apos; at &apos;%2&apos; does not have a unique module id &apos;%3&apos;.</source>
         <translation>Součástka &apos;%1&apos; na &apos;%2&apos; nemá jedinečné id modulu &apos;%3&apos;.</translation>
     </message>
@@ -6940,7 +6951,7 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="502"/>
+        <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="510"/>
         <source>Fritzing cannot load the parts bin</source>
         <translation type="unfinished"></translation>
     </message>

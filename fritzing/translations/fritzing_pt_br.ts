@@ -2142,10 +2142,6 @@ Por favor verifique em todos os modos de visualização para verificar alguma mo
         <translation>Camada Superior</translation>
     </message>
     <message>
-        <source>Unable to read shareable part %1</source>
-        <translation>Não é possivel ler o elemento compartilhável %1</translation>
-    </message>
-    <message>
         <source>Backing up &apos;%1&apos;</source>
         <translation>Voltando a &apos;%1&apos;</translation>
     </message>
@@ -3012,6 +3008,18 @@ Go ahead and revert?</source>
     </message>
     <message>
         <source>No parts matched search term &apos;%1&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to load part from &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MainWindow::moveToPartsFolder mainwindow missing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There is already a part with id &apos;%1&apos; loaded into Fritzing.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
