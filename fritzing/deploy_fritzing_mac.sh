@@ -1,16 +1,21 @@
 #!/bin/bash
 # don't forget to check phoenix.pro for the ppc/x86 config
 
-currentdir=$(pwd)    #`dirname $BASH_SOURCE`
+tdir=`dirname $BASH_SOURCE`
+cd $tdir
+currentdir=$(pwd)
 
 echo "current directory"
 echo $currentdir
-cd $currentdir
 
 deploydir=$currentdir/deploy/fritzing
 echo "deploy directory"
 echo $deploydir
 
+svn export https://fritzing.googlecode.com/svn/trunk/fritzing/LICENSE.GPL3 $deploydir/LICENSE.GPL3
+svn export https://fritzing.googlecode.com/svn/trunk/fritzing/LICENSE.GPL2 $deploydir/LICENSE.GPL2
+svn export https://fritzing.googlecode.com/svn/trunk/fritzing/LICENSE.CC-BY-SA $deploydir/LICENSE.CC-BY-SA
+svn export https://fritzing.googlecode.com/svn/trunk/fritzing/README.txt $deploydir/README.txt
 svn export https://fritzing.googlecode.com/svn/trunk/fritzing/translations $deploydir/translations
 svn export https://fritzing.googlecode.com/svn/trunk/fritzing/bins $deploydir/bins
 svn export https://fritzing.googlecode.com/svn/trunk/fritzing/sketches $deploydir/sketches
