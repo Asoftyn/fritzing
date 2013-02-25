@@ -594,6 +594,7 @@ void BinManager::restoreStateAndGeometry(QList<BinLocation *> & actualLocations)
 				gotOne = true;
 				actualLocations.append(aLocation);
 				tempLocations.removeAt(ix);
+                //DebugDialog::debug("adding loc 1 " + aLocation->path);
 				break;
 			}
 		}
@@ -606,7 +607,8 @@ void BinManager::restoreStateAndGeometry(QList<BinLocation *> & actualLocations)
 					gotOne = true;
 					actualLocations.append(aLocation);
 					tempLocations.removeAt(ix);
-					break;
+                    //DebugDialog::debug("adding loc 2 " + aLocation->path);
+                    break;
 				}
 			}
 		}
@@ -615,8 +617,9 @@ void BinManager::restoreStateAndGeometry(QList<BinLocation *> & actualLocations)
 		if (!tLocation->path.isEmpty()) {
 			QFileInfo info(tLocation->path);
 			if (info.exists()) {
+                //DebugDialog::debug("adding loc 3 " + tLocation->path);
 				actualLocations.append(tLocation);
-                                tLocation->marked = true;
+                tLocation->marked = true;
 			}		
 		}
 	}
@@ -629,6 +632,10 @@ void BinManager::restoreStateAndGeometry(QList<BinLocation *> & actualLocations)
 
 	// catch the leftovers
 	actualLocations.append(tempLocations);
+    //foreach (BinLocation * aLocation, tempLocations) {
+        //DebugDialog::debug("adding loc 4 " + aLocation->path);
+    //}
+
 
 }
 
