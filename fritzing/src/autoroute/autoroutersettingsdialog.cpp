@@ -259,7 +259,7 @@ QWidget * AutorouterSettingsDialog::createKeepoutWidget(const QString & keepoutS
     label = new QLabel(tr("A keepout of 0.01 inch (0.254 mm) is a good default."));
 	vLayout->addWidget(label);
 
-	label = new QLabel(tr("Note: the smaller the keepout, the slower the Autorouter will run."));
+	label = new QLabel(tr("Note: the smaller the keepout, the slower the DRC and Autorouter will run."));
 	vLayout->addWidget(label);
 
     QFrame * frame = new QFrame;

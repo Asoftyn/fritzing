@@ -2744,7 +2744,7 @@ void MainWindow::initProgrammingWidget() {
 void MainWindow::orderFabHoverEnter() {
     if (m_quoteDialog) return;
 
-    QTimer::singleShot(1, this, SLOT(fireQuote()));
+    // QTimer::singleShot(1, this, SLOT(fireQuote()));
 }
 
 void MainWindow::fireQuote() {

@@ -1328,7 +1328,7 @@ void MainWindow::createTraceMenus()
 	m_pcbTraceMenu->addAction(m_newAutorouteAct);
 	m_pcbTraceMenu->addAction(m_newDesignRulesCheckAct);
 	m_pcbTraceMenu->addAction(m_autorouterSettingsAct);
-	m_pcbTraceMenu->addAction(m_fabQuoteAct);
+	// m_pcbTraceMenu->addAction(m_fabQuoteAct);
 
 	QMenu * groundFillMenu = m_pcbTraceMenu->addMenu(tr("Ground Fill"));
 
