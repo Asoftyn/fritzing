@@ -1,7 +1,7 @@
 #!/bin/bash
 # don't forget to check phoenix.pro for the ppc/x86 config
 
-currentdir=`dirname $BASH_SOURCE`
+currentdir=$(pwd)    #`dirname $BASH_SOURCE`
 
 echo "current directory"
 echo $currentdir
