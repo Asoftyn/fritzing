@@ -71,17 +71,9 @@ if [ "$arch_aux" == 'x86_64' ] ; then
 	# only creates the source tarball, when running on the 64 platform
 	tarball_folder="fritzing-$relname.source"
 	cp -rf $compile_folder $tarball_folder
-	cp -rf $tarball_folder/pdb/contrib $tarball_folder/parts
-	cp -rf $tarball_folder/pdb/core $tarball_folder/parts
-	cp -rf $tarball_folder/pdb/obsolete $tarball_folder/parts
-	rm -rf $tarball_folder/pdb/contrib 
-	rm -rf $tarball_folder/pdb/core
-	rm -rf $tarball_folder/pdb/obsolete
-	rm -rf $tarball_folder/pdb/user
 	rm -rf $tarball_folder/SetupAPI.Lib
 	rm -rf $tarball_folder/deploy_fritzing.bat
 	rm -rf $tarball_folder/FritzingInfo.plist
-	rm -rf $tarball_folder/parts/parts.db
 	rm -rf $tarball_folder/datasheets
 	rm -rf $tarball_folder/not_quite_ready
 	rm -rf $tarball_folder/part-gen-scripts
