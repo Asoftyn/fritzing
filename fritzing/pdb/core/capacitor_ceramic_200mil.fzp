@@ -17,6 +17,7 @@
    </properties>
  <taxonomy>discreteParts.capacitor.ceramic</taxonomy>
  <description>100 nF multilayer Ceramic Capacitor</description>
+ <spice>c{instanceTitle} {net connector0} {net connector1} {capacitance} ic=0</spice>
  <views>
   <iconView>
    <layers image="icon/ceramic_capacitor_blue_icon.svg">

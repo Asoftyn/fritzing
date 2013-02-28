@@ -220,6 +220,7 @@ public:
 	void setItemIsSelectable(bool selectable);
 	virtual bool inRotation();
 	virtual void setInRotation(bool);
+	const QString & spice() const;
 
 public:
 	virtual void getConnectedColor(ConnectorItem *, QBrush * &, QPen * &, double & opacity, double & negativePenWidth, bool & negativeOffsetRect);

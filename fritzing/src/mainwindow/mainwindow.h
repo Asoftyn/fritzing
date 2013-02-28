@@ -430,6 +430,7 @@ protected:
 	void exportToGerber();
     void exportBOM();
     void exportNetlist();
+    void exportSpiceNetlist();
     void exportSvg(double res, bool selectedItems, bool flatten);
 	void exportSvgWatermark(QString & svg, double res);
 	void exportEtchable(bool wantPDF, bool wantSVG);
@@ -644,6 +645,7 @@ protected:
 	QAction *m_exportEtchableSvgAct;
 	QAction *m_exportBomAct;
 	QAction *m_exportNetlistAct;
+	QAction *m_exportSpiceNetlistAct;
 	QAction *m_exportSvgAct;
 
     // Edit Menu

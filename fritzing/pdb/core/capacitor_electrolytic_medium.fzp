@@ -17,6 +17,7 @@
   </properties>
  <taxonomy>discreteParts.capacitor.electrolytic</taxonomy>
  <description>electrolytic capacitor</description>
+ <spice>c{instanceTitle} {net connector0} {net connector1} {capacitance} ic=0</spice>
  <views>
   <iconView>
    <layers image="icon/electrolytic_capacitor_220uF_icon.svg">

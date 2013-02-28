@@ -176,6 +176,7 @@
 	<file>resources/parts/core/blocker.fzp</file>
 	<file>resources/parts/core/blocker0.fzp</file>
         <file>resources/parts/core/dcpower.fzp</file>
+        <file>resources/parts/core/acpower.fzp</file>
         <file>resources/parts/core/power.fzp</file>
         <file>resources/parts/core/jumper.fzp</file>
         <file>resources/parts/core/groundplane.fzp</file>
@@ -231,6 +232,7 @@
         <file>resources/parts/svg/core/schematic/ground.svg</file>
         <file>resources/parts/svg/core/schematic/netlabel.svg</file>
         <file>resources/parts/svg/core/schematic/cell.svg</file>
+        <file>resources/parts/svg/core/schematic/acpower.svg</file>
         <file>resources/parts/svg/core/schematic/power.svg</file>
         <file>resources/parts/svg/core/schematic/frame.svg</file>
         <file>resources/parts/svg/core/schematic/schematiclogo.svg</file>

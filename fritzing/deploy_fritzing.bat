@@ -11,6 +11,10 @@ set svndir="C:\Program Files\SlikSvn\bin\"
 
 %svndir%svn export https://fritzing.googlecode.com/svn/trunk/fritzing/pdb ./release/pdb
 %svndir%svn export https://fritzing.googlecode.com/svn/trunk/fritzing/help ./release/help
+%svndir%svn export https://fritzing.googlecode.com/svn/trunk/fritzing/README.txt ./release/README.txt
+%svndir%svn export https://fritzing.googlecode.com/svn/trunk/fritzing/LICENSE.GPL2 ./release/LICENSE.GPL2
+%svndir%svn export https://fritzing.googlecode.com/svn/trunk/fritzing/LICENSE.GPL3 ./release/LICENSE.GPL3
+%svndir%svn export https://fritzing.googlecode.com/svn/trunk/fritzing/LICENSE.CC-BY-SA ./release/LICENSE.CC-BY-SA
 
 
 

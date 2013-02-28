@@ -18,7 +18,8 @@
     </properties>
     <taxonomy>discreteParts.resistor.220</taxonomy>
     <description>A generic resistor (0.25W)</description>
-    <views>
+     <spice>r{instanceTitle} {net connector0} {net connector1} {resistance}</spice>
+   <views>
         <iconView>
             <layers image="icon/resistor_icon_220.svg">
                 <layer layerId="icon"/>

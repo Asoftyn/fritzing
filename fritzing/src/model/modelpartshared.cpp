@@ -137,6 +137,7 @@ bool ModelPartShared::setDomDocument(QDomDocument & domDocument) {
 	loadTagText(root, "version", m_version);
 	loadTagText(root, "author", m_author);
 	loadTagText(root, "description", m_description);
+	loadTagText(root, "spice", m_spice);
 	loadTagText(root, "url", m_url);
 	loadTagText(root, "taxonomy", m_taxonomy);
 	loadTagText(root, "date", m_date);
@@ -260,8 +261,16 @@ const QString & ModelPartShared::url() {
 	return m_url;
 }
 
+const QString & ModelPartShared::spice() {
+	return m_spice;
+}
+
 void ModelPartShared::setDescription(QString description) {
 	m_description = description;
+}
+
+void ModelPartShared::setSpice(QString spice) {
+	m_spice = spice;
 }
 
 void ModelPartShared::setUrl(QString url) {
@@ -416,6 +425,7 @@ void ModelPartShared::copy(ModelPartShared* other) {
 	setDate(other->date());
 	setLabel(other->label());
 	setDescription(other->description());
+	setSpice(other->spice());
 	setUrl(other->url());
 	setFamily(other->family());
 	setProperties(other->properties());

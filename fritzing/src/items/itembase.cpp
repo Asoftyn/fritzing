@@ -667,6 +667,12 @@ const QString & ItemBase::title() const {
 	return m_modelPart->title();
 }
 
+const QString & ItemBase::spice() const {
+	if (m_modelPart == NULL) return ___emptyString___;
+
+	return m_modelPart->spice();
+}
+
 bool ItemBase::getRatsnest() {
 	return m_viewGeometry.getRatsnest();
 }

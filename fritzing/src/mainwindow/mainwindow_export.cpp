@@ -75,6 +75,7 @@ static QString pngActionType = ".png";
 static QString svgActionType = ".svg";
 static QString bomActionType = ".html";
 static QString netlistActionType = ".xml";
+static QString spiceNetlistActionType = ".cir";
 
 static QHash<QString, QPrinter::OutputFormat> filePrintFormats;
 static QHash<QString, QImage::Format> fileExportFormats;
@@ -117,7 +118,7 @@ bool sortPartList(ItemBase * b1, ItemBase * b2) {
 
 void MainWindow::initNames()
 {
-	OtherKnownExtensions << jpgActionType << psActionType << pdfActionType << pngActionType << svgActionType << bomActionType << netlistActionType;
+	OtherKnownExtensions << jpgActionType << psActionType << pdfActionType << pngActionType << svgActionType << bomActionType << netlistActionType << spiceNetlistActionType;
 
 	filePrintFormats[pdfActionType] = QPrinter::PdfFormat;
 	filePrintFormats[psActionType] = QPrinter::PostScriptFormat;
@@ -477,6 +478,11 @@ void MainWindow::doExport() {
 
 	if (actionType.compare(netlistActionType) == 0) {
 		exportNetlist();
+		return;
+	}
+
+	if (actionType.compare(spiceNetlistActionType) == 0) {
+		exportSpiceNetlist();
 		return;
 	}
 
@@ -939,6 +945,11 @@ void MainWindow::createExportActions() {
     m_exportNetlistAct->setStatusTip(tr("Save a netlist in XML format"));
     connect(m_exportNetlistAct, SIGNAL(triggered()), this, SLOT(doExport()));
 
+    m_exportSpiceNetlistAct = new QAction(tr("SPICE Netlist..."), this);
+    m_exportSpiceNetlistAct->setData(spiceNetlistActionType);
+    m_exportSpiceNetlistAct->setStatusTip(tr("Save a netlist in SPICE format"));
+    connect(m_exportSpiceNetlistAct, SIGNAL(triggered()), this, SLOT(doExport()));
+
 	m_exportEagleAct = new QAction(tr("Eagle..."), this);
 	m_exportEagleAct->setData(eagleActionType);
 	m_exportEagleAct->setStatusTip(tr("Export the current sketch to Eagle CAD"));
@@ -1211,6 +1222,125 @@ void MainWindow::exportBOM() {
 	delete fileProgressDialog;
 }
 
+void MainWindow::exportSpiceNetlist() {
+    if (m_schematicGraphicsView == NULL) return;
+
+    QString path = defaultSaveFolder();
+    QString fileExt;
+    QString extFmt = fileExtFormats.value(spiceNetlistActionType);
+    QString fname = path + "/" + constructFileName("spice", spiceNetlistActionType);
+    //DebugDialog::debug(QString("fname %1\n%2").arg(fname).arg(extFmt));
+    QString fileName = FolderUtils::getSaveFileName(this,
+            tr("Export SPICE Netlist..."),
+            fname,
+            extFmt,
+            &fileExt
+    );
+
+    if (fileName.isEmpty()) {
+		return; //Cancel pressed
+    }
+
+    static QRegExp curlies("\\{([^\\}]*)\\}");
+
+    QFileInfo fileInfo(m_fwFilename);
+    QString output = fileInfo.completeBaseName();
+    output += "\n";
+
+	QHash<ConnectorItem *, int> indexer;
+	QList< QList<ConnectorItem *>* > netList;
+	this->m_schematicGraphicsView->collectAllNets(indexer, netList, true, false);
+
+    QSet<ItemBase *> itemBases;
+    QList<ConnectorItem *> * ground = NULL;
+	foreach (QList<ConnectorItem *> * net, netList) {
+        if (net->count() < 2) continue;
+
+        foreach (ConnectorItem * ci, *net) {
+            if (ci->isGrounded()) {
+                ground = net;
+            }
+            itemBases.insert(ci->attachedTo());
+        }
+    }
+
+    if (ground) {
+        // make sure ground is index zero
+        netList.removeOne(ground);
+        netList.prepend(ground);
+    }
+
+    foreach (ItemBase * itemBase, itemBases) {
+        QString spice = itemBase->spice();
+        if (spice.isEmpty()) continue;
+
+        while (true) {
+            int ix = curlies.indexIn(spice);
+            if (ix < 0) break;
+
+            QString token = curlies.cap(1).toLower();
+            QString replacement;
+            if (token == "instancetitle") {
+                replacement = itemBase->instanceTitle();
+                if (ix > 0 && replacement.at(0).toLower() == spice.at(ix - 1).toLower()) {
+                    // if the type letter is repeated
+                    replacement = replacement.mid(1);
+                }
+                replacement.replace(" ", "_");
+            }
+            else if (token.startsWith("net ")) {
+                QString cname = token.mid(4).trimmed();
+                foreach (ConnectorItem * ci, itemBase->cachedConnectorItems()) {
+                    if (ci->connectorSharedID().toLower() == cname) {
+                        int ix = -1;
+	                    foreach (QList<ConnectorItem *> * net, netList) {
+                            ix++;
+                            if (net->contains(ci)) break;
+                        }
+
+                        replacement = QString::number(ix);
+                        break;
+                    }
+                }
+            }
+            else {
+                QVariant variant = itemBase->modelPart()->localProp(token);
+                if (variant.isNull()) {
+                    replacement = itemBase->modelPart()->properties().value(token, "");
+                }
+                else {
+                    replacement = variant.toString();
+                }
+            }
+
+            spice.replace(ix, curlies.cap(0).count(), replacement);
+            DebugDialog::debug("spice " + spice);
+        }
+
+        output += spice;
+        output += "\n";    
+    }
+
+    output += ".end\n";
+
+	foreach (QList<ConnectorItem *> * net, netList) {
+		delete net;
+	}
+	netList.clear();
+
+	QClipboard *clipboard = QApplication::clipboard();
+	if (clipboard != NULL) {
+		clipboard->setText(output);
+	}
+
+    //DebugDialog::debug(fileExt + " selected to export");
+    if(!alreadyHasExtension(fileName, netlistActionType)) {
+		fileName += netlistActionType;
+    }
+
+    TextUtils::writeUtf8(fileName, output);
+}
+
 void MainWindow::exportNetlist() {
 	QHash<ConnectorItem *, int> indexer;
 	QList< QList<ConnectorItem *>* > netList;
@@ -1315,8 +1445,6 @@ void MainWindow::exportNetlist() {
 		clipboard->setText(doc.toByteArray());
 	}
 	delete fileProgressDialog;
-
-
 }
 
 FileProgressDialog * MainWindow::exportProgress() {

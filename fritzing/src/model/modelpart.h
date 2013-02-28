@@ -112,6 +112,7 @@ public:
 
 	const QString & title();
 	const QString & description();
+	const QString & spice();
 	const QString & url();
 	const QStringList & tags();
 	const QStringList & displayKeys();

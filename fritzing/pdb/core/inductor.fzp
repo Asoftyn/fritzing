@@ -15,6 +15,7 @@
      <property name="current" showInLabel="yes"></property>
      </properties>
     <description>Inductor</description>
+    <spice>l{instanceTitle} {net connector0} {net connector1} {inductance} ic=0</spice>
     <views>
         <iconView>
             <layers image="icon/inductor.svg">
