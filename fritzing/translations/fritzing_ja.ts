@@ -3020,6 +3020,14 @@ Go ahead and revert?</source>
         <source>There is already a part with id &apos;%1&apos; loaded into Fritzing.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>SPICE Netlist...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save a netlist in SPICE format</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MazeRouter</name>

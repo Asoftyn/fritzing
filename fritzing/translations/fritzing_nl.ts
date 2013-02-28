@@ -3036,14 +3036,22 @@ Doorgaan en terug naar vorige versie?</translation>
     </message>
     <message>
         <source>Unable to load part from &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet mogelijk om onderdeel te laden van &apos;%1&apos;</translation>
     </message>
     <message>
         <source>MainWindow::moveToPartsFolder mainwindow missing</source>
-        <translation type="unfinished"></translation>
+        <translation>MainWindow::verplaatsNaarOnderdeelMap Hoofdscherm mist</translation>
     </message>
     <message>
         <source>There is already a part with id &apos;%1&apos; loaded into Fritzing.</source>
+        <translation>Er is al een onderdeel met id &apos;%1&apos; geladen in Fritzing.</translation>
+    </message>
+    <message>
+        <source>SPICE Netlist...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save a netlist in SPICE format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
