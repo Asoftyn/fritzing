@@ -26,7 +26,7 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.statusmessages.interfaces import IStatusMessage
 
 from fritzing.fab.interfaces import IFabOrders, IFabOrder
-from fritzing.fab.tools import sendStatusMail, calculateSinglePrice
+from fritzing.fab.tools import sendStatusMail, calculateSinglePrice, submitToERP
 from fritzing.fab import _
 
 
@@ -102,8 +102,7 @@ class CurrentOrders(grok.View):
             self.productionRound = context.currentProductionRound
 
         # actions
-        workflowAction = self.request.get('workflowAction', None)
-        
+        workflowAction = self.request.get('workflowAction', None)        
         if workflowAction:
             portal_workflow = getToolByName(self, 'portal_workflow')
             for brain in self.getCurrentOrders(context, self.productionRound):
@@ -115,6 +114,14 @@ class CurrentOrders(grok.View):
                     pass
             IStatusMessage(self.request).addStatusMessage(
                 _(u"Workflow status changed"), "info")
+
+        updateERP = self.request.get('updateERP', None)
+        if updateERP:
+            for brain in self.getCurrentOrders(context, self.productionRound):
+                order = brain.getObject()
+                submitToERP(order)
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"Updated ERP"), "info")
 
 
     def getShippingCountry(self, value):

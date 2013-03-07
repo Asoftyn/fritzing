@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import urllib
 import re
-import DateTime
+from DateTime import DateTime
 
 from zope.component.hooks import getSite
 
@@ -14,6 +14,8 @@ from smtplib import SMTPRecipientsRefused
 
 from fritzing.fab.interfaces import IFabOrder
 from fritzing.fab import _
+from fritzing.fab import erp
+#from fritzing.fab import svn
 
 
 def canDelete(self, item):
@@ -280,6 +282,58 @@ def sendSketchUpdateMail(sketch, justReturn=False):
     except SMTPRecipientsRefused:
         # Don't disclose email address on failure
         raise SMTPRecipientsRefused('Recipient address rejected by server')
+
+
+def commitToSVN(faborder):
+    """ Commits the fzzs of a given fab order to commitToSVN
+    """
+    for sketch in faborder.listFolderContents():
+            svn.commitOrder(faborder.productionRound, faborder.id,
+                sketch.absolute_url()+"/@@download/orderItem/"+encodeFilename(None,sketch.orderItem.filename),
+                faborders.svnLogin, faborders.svnPassword, faborders.svnUrl)
+
+
+def submitToERP(faborder):
+    """ Sends faborder to ERPnext
+    """
+    # XXX: try/catch and write warning mail to fab@fritzing.org
+    # XXX: also call this in SketchUpdateForm, and on cancel
+
+    faborders = faborder.__parent__
+
+    items = []
+    for sketch in faborder.listFolderContents():
+        item = {}
+        item['filename'] = faborder.id + '_' + encodeFilename(None,sketch.orderItem.filename)
+        item['quantity'] = int(sketch.copies)
+        item['price'] = float('%.2f' % (sketch.copies * sketch.area * faborder.pricePerSquareCm + faborders.checkingFee))
+        item['size'] = float(sketch.area)
+        items.append(item)
+
+    erp.submitFabOrder(
+        faborders.erpUrl, 
+        faborders.erpLogin, 
+        faborders.erpPassword,
+        str(faborder.productionRound).zfill(6), 
+        faborder.id, 
+        items, 
+        faborder.priceTotalBrutto,
+        faborder.getOwner().getId(),
+        utf_8_encode(faborder.shippingFirstName) + " " + utf_8_encode(faborder.shippingLastName),
+        utf_8_encode(faborder.shippingCompany), 
+        utf_8_encode(faborder.shippingStreet), 
+        utf_8_encode(faborder.shippingAdditional),
+        utf_8_encode(faborder.shippingZIP), 
+        utf_8_encode(faborder.shippingCity), 
+        IFabOrder['shippingCountry'].vocabulary.getTerm(faborder.shippingCountry).title,
+        faborder.email, 
+        faborder.telephone, 
+        faborder.shipTo, 
+        faborder.shippingExpress,
+        faborder.paymentType, 
+        faborder.paymentId, 
+        DateTime(faborder.Date()).strftime('%Y-%m-%d'),
+        faborders.nextProductionDelivery.strftime('%Y-%m-%d'))
 
 
 def utf_8_encode(string):

@@ -25,7 +25,8 @@
               </p>
               <p style="float:left">
                 <a tal:attributes="href string:@@currentorders-csv?productionRound=${view/productionRound}">Download as CSV</a> -- 
-                <a tal:attributes="href string:@@currentorders-zip?productionRound=${view/productionRound}">Download as ZIP</a> --&nbsp;
+                <a tal:attributes="href string:@@currentorders-zip?productionRound=${view/productionRound}">Download as ZIP</a> -- 
+                <a tal:attributes="href string:@@currentorders?productionRound=${view/productionRound}&updateERP=1">Send to ERP</a> --&nbsp;
                 <form tal:attributes="action string:${request/URL}?productionRound=${view/productionRound}" method="post">
                   <label for="workflowAction" style="font-weight: normal">Mark all orders as</label>
                   <select type="select" name="workflowAction" id="workflowAction">

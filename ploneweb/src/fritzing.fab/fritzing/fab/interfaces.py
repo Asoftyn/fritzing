@@ -502,23 +502,20 @@ class IFabOrders(form.Schema):
 
     currentProductionRound = Int(
         title = _(u"Current production round ID"),
-        description = _(u"Identification number of the current production round"),
-        required = False)
+        description = _(u"Identification number of the current production round"))
     
     currentProductionOpeningDate = Datetime(
         title = _(u"Current production opening date"),
         description = _(u"Orders sent in after this date will be listed as current orders"),
-        required = False)
+        required = False))
 
     nextProductionClosingDate = Datetime(
         title = _(u"Current production closing date"),
-        description = _(u"Orders must be sent in before this date to be included in the next production run"),
-        required = False)
+        description = _(u"Orders must be sent in before this date to be included in the next production run"))
 
     nextProductionDelivery = Date(
         title = _(u"Current production delivery date"),
-        description = _(u"Estimated delivery date of PCBs from the next production"),
-        required = False)
+        description = _(u"Estimated delivery date of PCBs from the next production"))
 
     form.fieldset(
         'fees', 

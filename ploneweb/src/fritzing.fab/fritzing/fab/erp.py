@@ -4,6 +4,7 @@
 import sys, os, getopt, errno, requests, json, ConfigParser
 from pprint import pprint
 import datetime
+import inspect
 
     
 def usage():
@@ -84,8 +85,11 @@ def main():
 
     # dummy test order (dates are in isoformat)
     submitFabOrder(erp_url, username, password, 
-        pround, "76543210", [{'filename':"76543210_ÜntitledSketch.fzz", 'quantity':1, 'price':35.43, 'size':30.32}, 
-        {'filename':"76543210_Test.fzz", 'quantity':3, 'price':120.12, 'size':135.23}], 199.00,
+        pround, 
+        "76543210", 
+        [{'filename':"76543210_ÜntitledSketch.fzz", 'quantity':1, 'price':35.43, 'size':30.32}, 
+        {'filename':"76543210_Test.fzz", 'quantity':3, 'price':120.12, 'size':135.23}], 
+        199.00,
         u"dummy3", u"Peter Dümmy", u"ACME Inc.", u"123 Dümmmy Str", 
         u"", u"12345 AZ", "Berlin", u"Germany", 
         "me@acme.com", u"+49 (0)30/12345678", "Germany", False,
@@ -98,8 +102,14 @@ def submitFabOrder(erp_url, erp_user, erp_password,
         customerZIP, customerCity, customerCountry, customerEmail, customerPhone, customerTaxZone, shippingExpress,
         paymentType, paymentId, orderDate, deliveryDate):
 
-    # XXX: support Unicode
     # XXX: what should happen if the script fails at some point?
+
+    # prettyprint all delivered paramaters
+    #frame = inspect.currentframe()
+    #args, _, _, values = inspect.getargvalues(frame)
+    #print 'function name "%s"' % inspect.getframeinfo(frame)[2]
+    #for i in args:
+    #    print "    %s = %s" % (i, values[i])
 
     response = login(usr=erp_user, pwd=erp_password, server=erp_url)
     print "LOGIN", response.json()["message"]
