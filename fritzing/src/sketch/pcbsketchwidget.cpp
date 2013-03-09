@@ -2883,6 +2883,7 @@ void PCBSketchWidget::setGroundFillKeepout() {
                                           tr("Keepout is in mils (.001 inches).\n\n") +
                                           tr("Note that due to aliasing, distances may be too short by up to 2 mils\n") +
                                           tr("so you may want to increase the keepout value by that much.\n\n") +
+                                          tr("10 mils is a good default choice.\n\n") +
                                           tr("Enter keepout value:"),
                                           qRound(getKeepoutMils()), 0, 10 * 1000, 1, &ok);
 
