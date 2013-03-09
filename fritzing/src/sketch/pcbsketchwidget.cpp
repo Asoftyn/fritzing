@@ -1629,8 +1629,8 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 	    gpg0.setStrokeWidthIncrement(StrokeWidthIncrement);
 	    gpg0.setMinRunSize(10, 10);
 	    if (fillGroundTraces) {
-		    connect(&gpg0, SIGNAL(postImageSignal(GroundPlaneGenerator *, QImage *, QGraphicsItem *, QList<QRectF> *)), 
-				    this, SLOT(postImageSlot(GroundPlaneGenerator *, QImage *, QGraphicsItem *, QList<QRectF> *)),
+		    connect(&gpg0, SIGNAL(postImageSignal(GroundPlaneGenerator *, QImage *, QImage *, QGraphicsItem *, QList<QRectF> *)), 
+				    this, SLOT(postImageSlot(GroundPlaneGenerator *, QImage *, QImage *, QGraphicsItem *, QList<QRectF> *)),
                     Qt::DirectConnection);
 	    }
 
@@ -1649,8 +1649,8 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 		gpg1.setStrokeWidthIncrement(StrokeWidthIncrement);
 		gpg1.setMinRunSize(10, 10);
 		if (fillGroundTraces) {
-			connect(&gpg1, SIGNAL(postImageSignal(GroundPlaneGenerator *, QImage *, QGraphicsItem *, QList<QRectF> *)), 
-					this, SLOT(postImageSlot(GroundPlaneGenerator *, QImage *, QGraphicsItem *, QList<QRectF> *)),
+			connect(&gpg1, SIGNAL(postImageSignal(GroundPlaneGenerator *, QImage *, QImage *, QGraphicsItem *, QList<QRectF> *)), 
+					this, SLOT(postImageSlot(GroundPlaneGenerator *, QImage *, QImage *, QGraphicsItem *, QList<QRectF> *)),
                     Qt::DirectConnection);
 		}
 		bool result = gpg1.generateGroundPlane(boardSvg, boardImageRect.size(), svg1, copperImageRect.size(), exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */,
@@ -1934,7 +1934,7 @@ ViewGeometry::WireFlag PCBSketchWidget::getTraceFlag() {
 	return ViewGeometry::PCBTraceFlag;
 }
 
-void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * image, QGraphicsItem * board, QList<QRectF> * rects) {
+void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * copperImage, QImage * boardImage, QGraphicsItem * board, QList<QRectF> * rects) {
 
 	if (m_groundFillSeeds == NULL) return;
 
@@ -1970,10 +1970,10 @@ void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * image, 
 		check.setBottom(r.top());
 		bool checkUp = !hasNeighbor(connectorItem, viewLayerID, check);
 
-		double x1 = (r.left() - boardRect.left()) * image->width() / boardRect.width();
-		double x2 = (r.right() - boardRect.left()) * image->width() / boardRect.width();
-		double y1 = (r.top() - boardRect.top()) * image->height() / boardRect.height();
-		double y2 = (r.bottom() - boardRect.top()) * image->height() / boardRect.height();
+		double x1 = (r.left() - boardRect.left()) * copperImage->width() / boardRect.width();
+		double x2 = (r.right() - boardRect.left()) * copperImage->width() / boardRect.width();
+		double y1 = (r.top() - boardRect.top()) * copperImage->height() / boardRect.height();
+		double y2 = (r.bottom() - boardRect.top()) * copperImage->height() / boardRect.height();
 		double w = x2 - x1;
 		double h = y2 - y1;
 
@@ -1982,18 +1982,18 @@ void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * image, 
 		int cx = (x1 + x2) /2;
 		int cy = (y1 + y2) /2;
 
-		int rad = qFloor(connectorItem->calcClipRadius() * image->width() / boardRect.width());
+		int rad = qFloor(connectorItem->calcClipRadius() * copperImage->width() / boardRect.width());
 
-		double borderl = x1 - w;
-		double borderr = x2 + w;
-		double bordert = y1 - h;
-		double borderb = y2 + h;
+		double borderl = qMax(0, x1 - w);
+		double borderr = qMin(x2 + w, copperImage->width());
+		double bordert = qMax(0, y1 - h);
+		double borderb = qMin(y2 + h, copperImage->height());
 
 		// check left, up, right, down for groundplane, and if it's there draw to it from the connector
 
 		if (checkUp){
 			for (int y = y1; y > bordert; y--) {
-				if (image->pixel(cx, y) & 0xffffff) {
+				if ((copperImage->pixel(cx, y) & 0xffffff) || (boardImage->pixel(cx, y) == 0xff000000)) {
 					QRectF s(cx - cw, y - 1, cw + cw, cy - y - rad);
 					rects->append(s);
 					break;
@@ -2002,7 +2002,7 @@ void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * image, 
 		}
 		if (checkDown) {
 			for (int y = y2; y < borderb; y++) {
-				if (image->pixel(cx, y) & 0xffffff) {
+				if ((copperImage->pixel(cx, y) & 0xffffff) || (boardImage->pixel(cx, y) == 0xff000000)) {
 					QRectF s(cx - cw, cy + rad, cw + cw, y - cy - rad);
 					rects->append(s);
 					break;
@@ -2011,7 +2011,7 @@ void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * image, 
 		}
 		if (checkLeft) {
 			for (int x = x1; x > borderl; x--) {
-				if (image->pixel(x, cy) & 0xffffff) {
+				if ((copperImage->pixel(x, cy) & 0xffffff) || (boardImage->pixel(x, cy) == 0xff000000)) {
 					QRectF s(x - 1, cy - ch, cx - x - rad, ch + ch);
 					rects->append(s);
 					break;
@@ -2020,7 +2020,7 @@ void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * image, 
 		}
 		if (checkRight) {
 			for (int x = x2; x < borderr; x++) {
-				if (image->pixel(x, cy) & 0xffffff) {
+				if ((copperImage->pixel(x, cy) & 0xffffff) || (boardImage->pixel(x, cy) == 0xff000000)) {
 					QRectF s(cx + rad, cy - ch, x - cx - rad, ch + ch);
 					rects->append(s);
 					break;

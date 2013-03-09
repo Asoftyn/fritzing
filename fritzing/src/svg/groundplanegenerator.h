@@ -79,7 +79,7 @@ public:
 	static QString ConnectorName;
 
 signals:
-	void postImageSignal(GroundPlaneGenerator *, QImage *, QGraphicsItem * board, QList<QRectF> *);
+	void postImageSignal(GroundPlaneGenerator *, QImage * copperImage, QImage * boardImage, QGraphicsItem * board, QList<QRectF> *);
 
 protected:
 	void splitScanLines(QList<QRect> & rects, QList< QList<int> * > & pieces);

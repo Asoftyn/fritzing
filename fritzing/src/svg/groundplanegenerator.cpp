@@ -355,6 +355,8 @@ QImage * GroundPlaneGenerator::generateGroundPlaneAux(GPGParams & params, double
     DRC::extendBorder(BORDERINCHES * params.res, image);
     GraphicsUtils::drawBorder(image, BORDERINCHES * params.res);
 
+    QImage boardImage = image->copy();
+
     /*
 	for (double m = 0; m < BORDERINCHES; m += (1.0 / params.res)) {   // 1 mm
 		QList<QPoint> points;
@@ -420,7 +422,7 @@ QImage * GroundPlaneGenerator::generateGroundPlaneAux(GPGParams & params, double
 	image->save(FolderUtils::getUserDataStorePath("") + "/testGroundFillCopper.png");
 #endif
 
-	emit postImageSignal(this, image, params.board, &rects);	
+	emit postImageSignal(this, image, &boardImage, params.board, &rects);	
 
 	return image;
 }
