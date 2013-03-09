@@ -1559,15 +1559,20 @@ void MainWindow::updateWireMenu() {
 		}
 	}
 
+
+    QMenu* wireColorMenu = (m_currentGraphicsView == m_breadboardGraphicsView ? m_breadboardWireColorMenu : m_schematicWireColorMenu);
 	if (wire) {
-		m_wireColorMenu->setEnabled(true);
-		foreach (QAction * action, m_wireColorMenu->actions()) {
+		wireColorMenu->setEnabled(true);
+        QString colorString = wire->colorString();
+        //DebugDialog::debug("wire colorstring " + colorString);
+		foreach (QAction * action, wireColorMenu->actions()) {
 			QString colorName = action->data().toString();
-			action->setChecked(colorName.compare(wire->colorString()) == 0);
+            //DebugDialog::debug("colorname " + colorName);
+			action->setChecked(colorName.compare(colorString) == 0);
 		}
 	}
 	else {
-		m_wireColorMenu->setEnabled(false);
+		wireColorMenu->setEnabled(false);
 	}
 
 	m_bringToFrontWireAct->setWire(wire);
@@ -3047,13 +3052,14 @@ QMenu *MainWindow::breadboardWireMenu() {
 	QMenu *menu = new QMenu(QObject::tr("Wire"), this);
 	menu->addMenu(m_zOrderWireMenu);
 	menu->addSeparator();
-	m_wireColorMenu = menu->addMenu(tr("&Wire Color"));
+	m_breadboardWireColorMenu = menu->addMenu(tr("&Wire Color"));
 	foreach(QString colorName, Wire::colorNames) {
 		QString colorValue = Wire::colorTrans.value(colorName);
 		QAction * action = new QAction(colorName, this);
-		m_wireColorMenu->addAction(action);
+		m_breadboardWireColorMenu->addAction(action);
 		action->setData(colorValue);
 		action->setCheckable(true);
+        action->setChecked(false);
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(changeWireColor(bool)));
 	}
 	menu->addAction(m_createWireWireAct);
@@ -3103,12 +3109,12 @@ QMenu *MainWindow::schematicWireMenu() {
 	QMenu *menu = new QMenu(QObject::tr("Wire"), this);
 	menu->addMenu(m_zOrderWireMenu);
 	menu->addSeparator();
-	m_wireColorMenu = menu->addMenu(tr("&Wire Color"));
+	m_schematicWireColorMenu = menu->addMenu(tr("&Wire Color"));
 	foreach(QString colorName, Wire::colorNames) {
 		QString colorValue = Wire::colorTrans.value(colorName);
         if (colorValue == "white") continue;
 		QAction * action = new QAction(colorName, this);
-		m_wireColorMenu->addAction(action);
+		m_schematicWireColorMenu->addAction(action);
 		action->setData(colorValue);
 		action->setCheckable(true);
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(changeWireColor(bool)));

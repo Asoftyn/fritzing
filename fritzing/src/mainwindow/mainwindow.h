@@ -788,7 +788,8 @@ protected:
 	QAction *m_partsEditorHelpAct;
 
 	// Wire Color Menu
-	QMenu * m_wireColorMenu;
+	QMenu * m_breadboardWireColorMenu;
+	QMenu * m_schematicWireColorMenu;
 
     // Dot icons
     QIcon m_dotIcon;

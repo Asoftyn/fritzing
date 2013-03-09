@@ -196,7 +196,7 @@ MainWindow::MainWindow(ReferenceModel *referenceModel, QWidget * parent) :
 	m_activeLayerButtonWidget = NULL;
 	m_programView = m_programWindow = NULL;
 	m_windowMenuSeparator = NULL;
-	m_wireColorMenu = NULL;
+	m_schematicWireColorMenu = m_breadboardWireColorMenu = NULL;
 	m_viewSwitcherDock = NULL;
 	m_checkForUpdatesAct = NULL;
 	m_fileProgressDialog = NULL;
