@@ -36,8 +36,8 @@ $Date$
 QHash <Connector::ConnectorType, QString > Connector::Names;
 static const QList<SvgIdLayer *> EmptySvgIdLayerList;
 
-static inline int QuickHash(ViewLayer::ViewIdentifier viewIdentifier, ViewLayer::ViewLayerID viewLayerID) {
-	return (1000 * viewIdentifier) + viewLayerID;
+static inline int QuickHash(ViewLayer::ViewID viewID, ViewLayer::ViewLayerID viewLayerID) {
+	return (1000 * viewID) + viewLayerID;
 }
 
 Connector::Connector( ConnectorShared * connectorShared, ModelPart * modelPart)
@@ -94,12 +94,12 @@ ConnectorShared * Connector::connectorShared() {
 
 void Connector::addViewItem(ConnectorItem * item) {
 	//item->debugInfo(QString("add view item c:%1 ci:%2 b:%3").arg((long) this, 0, 16).arg((long) item, 0, 16).arg((long) m_bus.data(), 0, 16));
-	m_connectorItems.insert(QuickHash(item->attachedToViewIdentifier(), item->attachedToViewLayerID()), item);	
+	m_connectorItems.insert(QuickHash(item->attachedToViewID(), item->attachedToViewLayerID()), item);	
 }
 
 void Connector::removeViewItem(ConnectorItem * item) {
 	//DebugDialog::debug(QString("remove view item c:%1 ci:%2 b:%3").arg((long) this, 0, 16).arg((long) item, 0, 16).arg((long) m_bus.data(), 0, 16));
-	m_connectorItems.remove(QuickHash(item->attachedToViewIdentifier(), item->attachedToViewLayerID()));
+	m_connectorItems.remove(QuickHash(item->attachedToViewID(), item->attachedToViewLayerID()));
 }
 
 void Connector::connectTo(Connector * connector) {
@@ -131,9 +131,9 @@ void Connector::saveAsPart(QXmlStreamWriter & writer) {
 	writer.writeAttribute("name", connectorShared()->sharedName());
 	writer.writeTextElement("description", connectorShared()->description());
 	writer.writeStartElement("views");
-	QMultiHash<ViewLayer::ViewIdentifier,SvgIdLayer *> pins = m_connectorShared->pins();
-	foreach (ViewLayer::ViewIdentifier currView, pins.uniqueKeys()) {
-		writer.writeStartElement(ViewLayer::viewIdentifierXmlName(currView));
+	QMultiHash<ViewLayer::ViewID,SvgIdLayer *> pins = m_connectorShared->pins();
+	foreach (ViewLayer::ViewID currView, pins.uniqueKeys()) {
+		writer.writeStartElement(ViewLayer::viewIDXmlName(currView));
 		foreach (SvgIdLayer * svgIdLayer, pins.values(currView)) {
 			writer.writeStartElement("p");
 			writeLayerAttr(writer, svgIdLayer->m_svgViewLayerID);
@@ -151,12 +151,12 @@ void Connector::writeLayerAttr(QXmlStreamWriter &writer, ViewLayer::ViewLayerID 
 	writer.writeAttribute("layer",ViewLayer::viewLayerXmlNameFromID(viewLayerID));
 }
 
-void Connector::writeSvgIdAttr(QXmlStreamWriter &writer, ViewLayer::ViewIdentifier view, QString connId) {
+void Connector::writeSvgIdAttr(QXmlStreamWriter &writer, ViewLayer::ViewID view, QString connId) {
 	Q_UNUSED(view);
 	writer.writeAttribute("svgId",connId);
 }
 
-void Connector::writeTerminalIdAttr(QXmlStreamWriter &writer, ViewLayer::ViewIdentifier view, QString terminalId) {
+void Connector::writeTerminalIdAttr(QXmlStreamWriter &writer, ViewLayer::ViewID view, QString terminalId) {
         if((view == ViewLayer::BreadboardView || view == ViewLayer::SchematicView)
             &&
            (!terminalId.isNull() && !terminalId.isEmpty()) ) {
@@ -170,8 +170,8 @@ const QList<Connector *> & Connector::toConnectors() {
 	return m_toConnectors;
 }
 
-ConnectorItem * Connector::connectorItemByViewLayerID(ViewLayer::ViewIdentifier viewIdentifier, ViewLayer::ViewLayerID viewLayerID) {
-	return m_connectorItems.value(QuickHash(viewIdentifier, viewLayerID), NULL);
+ConnectorItem * Connector::connectorItemByViewLayerID(ViewLayer::ViewID viewID, ViewLayer::ViewLayerID viewLayerID) {
+	return m_connectorItems.value(QuickHash(viewID, viewLayerID), NULL);
 }
 
 bool Connector::connectionIsAllowed(Connector* that)
@@ -229,17 +229,17 @@ void Connector::setBus(Bus * bus) {
 	m_bus = bus;
 }
 
-void Connector::unprocess(ViewLayer::ViewIdentifier viewIdentifier, ViewLayer::ViewLayerID viewLayerID) {
-	SvgIdLayer * svgIdLayer = m_connectorShared->fullPinInfo(viewIdentifier, viewLayerID);
+void Connector::unprocess(ViewLayer::ViewID viewID, ViewLayer::ViewLayerID viewLayerID) {
+	SvgIdLayer * svgIdLayer = m_connectorShared->fullPinInfo(viewID, viewLayerID);
 	if (svgIdLayer != NULL) {
 		svgIdLayer->m_processed = false;
 	}
 }
 
-SvgIdLayer * Connector::fullPinInfo(ViewLayer::ViewIdentifier viewIdentifier, ViewLayer::ViewLayerID viewLayerID) {
+SvgIdLayer * Connector::fullPinInfo(ViewLayer::ViewID viewID, ViewLayer::ViewLayerID viewLayerID) {
 	if (m_connectorShared == NULL) return NULL;
 
-	return m_connectorShared->fullPinInfo(viewIdentifier, viewLayerID);
+	return m_connectorShared->fullPinInfo(viewID, viewLayerID);
 }
 
 long Connector::modelIndex() {
@@ -262,7 +262,7 @@ QList< QPointer<ConnectorItem> > Connector::viewItems() {
 	return m_connectorItems.values();
 }
 
-const QString & Connector::legID(ViewLayer::ViewIdentifier viewID, ViewLayer::ViewLayerID viewLayerID) {
+const QString & Connector::legID(ViewLayer::ViewID viewID, ViewLayer::ViewLayerID viewLayerID) {
 	if (m_connectorShared) return m_connectorShared->legID(viewID, viewLayerID);
 
 	return ___emptyString___;
@@ -287,7 +287,7 @@ const QList<SvgIdLayer *> Connector::svgIdLayers() const {
     return EmptySvgIdLayerList;
 }
 
-void Connector::addPin(ViewLayer::ViewIdentifier viewIdentifier, const QString & svgId, ViewLayer::ViewLayerID viewLayerId, const QString & terminalId, const QString & legId, bool hybrid)
+void Connector::addPin(ViewLayer::ViewID viewID, const QString & svgId, ViewLayer::ViewLayerID viewLayerId, const QString & terminalId, const QString & legId, bool hybrid)
 {
-    if (m_connectorShared) m_connectorShared->addPin(viewIdentifier, svgId, viewLayerId, terminalId, legId, hybrid);
+    if (m_connectorShared) m_connectorShared->addPin(viewID, svgId, viewLayerId, terminalId, legId, hybrid);
 }

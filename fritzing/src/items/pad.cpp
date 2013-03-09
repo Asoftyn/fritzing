@@ -60,8 +60,8 @@ static double OriginalWidth = 28;
 static double OriginalHeight = 32;
 static double TheOffset = 4;
 
-Pad::Pad( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: ResizableBoard(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+Pad::Pad( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: ResizableBoard(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 	m_decimalsAfter = 2;
     m_copperBlocker = false;
@@ -173,7 +173,7 @@ QString Pad::makeFirstLayerSvg(double mmW, double mmH, double milsW, double mils
 	return makeLayerSvg(moduleID().compare(ModuleIDNames::Copper0PadModuleIDName) == 0 ? ViewLayer::Copper0 : ViewLayer::Copper1, mmW, mmH, milsW, milsH);
 }
 
-ViewLayer::ViewIdentifier Pad::theViewIdentifier() {
+ViewLayer::ViewID Pad::theViewID() {
 	return ViewLayer::PCBView;
 }
 
@@ -340,8 +340,8 @@ bool Pad::copperBlocker() {
 
 //////////////////////////////////////////
 
-CopperBlocker::CopperBlocker( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: Pad(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+CopperBlocker::CopperBlocker( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: Pad(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
     m_copperBlocker = true;
 }
@@ -355,7 +355,7 @@ bool CopperBlocker::hasPartLabel() {
 
 QPainterPath CopperBlocker::hoverShape() const
 {
-    if (m_viewIdentifier != ViewLayer::PCBView) {
+    if (m_viewID != ViewLayer::PCBView) {
         return PaletteItem::hoverShape();
      }
 

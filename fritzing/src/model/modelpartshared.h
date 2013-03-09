@@ -38,7 +38,7 @@ $Date$
 #include "../viewlayer.h"
 
 struct ViewImage {
-    ViewLayer::ViewIdentifier viewIdentifier;
+    ViewLayer::ViewID viewID;
     qulonglong layers;
     qulonglong sticky;
     qulonglong flipped;
@@ -46,7 +46,7 @@ struct ViewImage {
     bool canFlipHorizontal;
     bool canFlipVertical;
 
-    ViewImage(ViewLayer::ViewIdentifier);
+    ViewImage(ViewLayer::ViewID);
 };
 
 class ModelPartShared : public QObject
@@ -57,7 +57,6 @@ public:
 	ModelPartShared(QDomDocument &, const QString & path);
 	~ModelPartShared();
 
-	bool setDomDocument(QDomDocument &);
 	//QDomDocument * domDocument();
 
 	void copy(ModelPartShared* other);
@@ -90,16 +89,16 @@ public:
     void setFritzingVersion(const QString &);
 
     const QList<ViewImage *> viewImages();
-    QString imageFileName(ViewLayer::ViewIdentifier, ViewLayer::ViewLayerID);
-    void setImageFileName(ViewLayer::ViewIdentifier, const QString & filename);
-    QString imageFileName(ViewLayer::ViewIdentifier);
-    bool anySticky(ViewLayer::ViewIdentifier);
-    bool hasMultipleLayers(ViewLayer::ViewIdentifier);
-    bool canFlipHorizontal(ViewLayer::ViewIdentifier);
-    bool canFlipVertical(ViewLayer::ViewIdentifier);
-    bool hasViewIdentifier(ViewLayer::ViewIdentifier viewIdentifier);
-    LayerList viewLayers(ViewLayer::ViewIdentifier viewIdentifier);
-    LayerList viewLayersFlipped(ViewLayer::ViewIdentifier viewIdentifier);
+    QString imageFileName(ViewLayer::ViewID, ViewLayer::ViewLayerID);
+    void setImageFileName(ViewLayer::ViewID, const QString & filename);
+    QString imageFileName(ViewLayer::ViewID);
+    bool anySticky(ViewLayer::ViewID);
+    bool hasMultipleLayers(ViewLayer::ViewID);
+    bool canFlipHorizontal(ViewLayer::ViewID);
+    bool canFlipVertical(ViewLayer::ViewID);
+    bool hasViewID(ViewLayer::ViewID viewID);
+    LayerList viewLayers(ViewLayer::ViewID viewID);
+    LayerList viewLayersFlipped(ViewLayer::ViewID viewID);
 
 	const QString & path();
 	void setPath(QString path);
@@ -108,7 +107,7 @@ public:
 
 	const QList< QPointer<class ConnectorShared> > connectorsShared();
 	void setConnectorsShared(QList< QPointer<class ConnectorShared> > connectors);
-	void connectorIDs(ViewLayer::ViewIdentifier viewId, ViewLayer::ViewLayerID viewLayerID, QStringList & connectorIDs, QStringList & terminalIDs, QStringList & legIDs);
+	void connectorIDs(ViewLayer::ViewID viewId, ViewLayer::ViewLayerID viewLayerID, QStringList & connectorIDs, QStringList & terminalIDs, QStringList & legIDs);
 
 	const QStringList &tags();
 	void setTags(const QStringList &tags);
@@ -136,9 +135,9 @@ public:
 	void setFlippedSMD(bool);
 	bool flippedSMD();	
 	bool needsCopper1();
-	bool hasViewFor(ViewLayer::ViewIdentifier);
-	bool hasViewFor(ViewLayer::ViewIdentifier, ViewLayer::ViewLayerID);
-	QString hasBaseNameFor(ViewLayer::ViewIdentifier);
+	bool hasViewFor(ViewLayer::ViewID);
+	bool hasViewFor(ViewLayer::ViewID, ViewLayer::ViewLayerID);
+	QString hasBaseNameFor(ViewLayer::ViewID);
     void setViewImage(ViewImage *);
     void addConnector(ConnectorShared *);
     void insertBus(class BusShared *);
@@ -154,7 +153,9 @@ protected:
 	void commonInit();
 	void ensurePartNumberProperty();
     void copyPins(ViewLayer::ViewLayerID from, ViewLayer::ViewLayerID to);
-    LayerList viewLayersAux(ViewLayer::ViewIdentifier viewIdentifier, qulonglong (*accessor)(ViewImage *));
+    LayerList viewLayersAux(ViewLayer::ViewID viewID, qulonglong (*accessor)(ViewImage *));
+    void addSchematicText(ViewImage *);
+	bool setDomDocument(QDomDocument &);
 
 protected slots:
     void removeOwner();
@@ -188,7 +189,7 @@ protected:
 
 	QHash<QString, QPointer<class ConnectorShared> > m_connectorSharedHash;
 	QHash<QString, class BusShared *> m_buses;
-    QHash<ViewLayer::ViewIdentifier, ViewImage *> m_viewImages;
+    QHash<ViewLayer::ViewID, ViewImage *> m_viewImages;
 
 	bool m_connectorsInitialized;
 	bool m_ignoreTerminalPoints;

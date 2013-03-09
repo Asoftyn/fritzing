@@ -37,8 +37,8 @@ const int TraceWire::MaxTraceWidthMils = 128;
 
 /////////////////////////////////////////////////////////
 
-TraceWire::TraceWire( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier,  const ViewGeometry & viewGeometry, long id, QMenu * itemMenu  ) 
-	: ClipableWire(modelPart, viewIdentifier,  viewGeometry,  id, itemMenu, true)
+TraceWire::TraceWire( ModelPart * modelPart, ViewLayer::ViewID viewID,  const ViewGeometry & viewGeometry, long id, QMenu * itemMenu  ) 
+	: ClipableWire(modelPart, viewID,  viewGeometry,  id, itemMenu, true)
 {
 	m_canChainMultiple = true;
 	m_wireDirection = TraceWire::NoDirection;

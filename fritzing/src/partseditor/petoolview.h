@@ -68,7 +68,7 @@ public:
     void setTerminalPointLimits(QSizeF);
 	void setChildrenVisible(bool vis);
     void enableConnectorChanges(bool enableTerminalPointDrag, bool enableTerminalPointControls, bool enableInfo, bool enableAssign);
-	void showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::ViewIdentifier);
+	void showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::ViewID);
 
 signals:
     void switchedConnector(int);

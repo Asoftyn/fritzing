@@ -28,8 +28,8 @@ $Date$
 #include "../connectors/connectoritem.h"
 #include "../model/modelpart.h"
 
-VirtualWire::VirtualWire( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier,  const ViewGeometry & viewGeometry, long id, QMenu * itemMenu  ) 
-	: ClipableWire(modelPart, viewIdentifier,  viewGeometry,  id, itemMenu, false)
+VirtualWire::VirtualWire( ModelPart * modelPart, ViewLayer::ViewID viewID,  const ViewGeometry & viewGeometry, long id, QMenu * itemMenu  ) 
+	: ClipableWire(modelPart, viewID,  viewGeometry,  id, itemMenu, false)
 {
 	// note: at this point in fritzing development, the VirtualWire class is only ever used for ratsnest wires
 	modelPart->setLocalProp("ratsnest", "true");
@@ -51,8 +51,8 @@ void VirtualWire::connectionChange(ConnectorItem * onMe, ConnectorItem * onIt, b
 	checkVisibility(onMe, onIt, connect);
 }
 
-FSvgRenderer * VirtualWire::setUpConnectors(ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier) {
-	FSvgRenderer * renderer = Wire::setUpConnectors(modelPart, viewIdentifier);
+FSvgRenderer * VirtualWire::setUpConnectors(ModelPart * modelPart, ViewLayer::ViewID viewID) {
+	FSvgRenderer * renderer = Wire::setUpConnectors(modelPart, viewID);
 	hideConnectors();
 	return renderer;
 }

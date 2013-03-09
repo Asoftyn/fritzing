@@ -129,6 +129,7 @@ void ViewLayer::initNames() {
 
 		names.insert(ViewLayer::SchematicFrame,  new NamePair("schematicframe", QObject::tr("Frame")));
 		names.insert(ViewLayer::Schematic,  new NamePair("schematic", QObject::tr("Parts")));
+		names.insert(ViewLayer::SchematicText,  new NamePair("schematicText", QObject::tr("Text")));
 		names.insert(ViewLayer::SchematicWire,  new NamePair("schematicWire",QObject::tr("Ratsnest")));
 		names.insert(ViewLayer::SchematicTrace,  new NamePair("schematicTrace",QObject::tr("Wires")));
 		names.insert(ViewLayer::SchematicLabel,  new NamePair("schematicLabel", QObject::tr("Part Labels")));
@@ -174,11 +175,11 @@ void ViewLayer::initNames() {
         }
 	}
 
-	if (ViewIdentifierNames.count() == 0) {
-		ViewIdentifierNames.insert(ViewLayer::IconView, new NameTriple("iconView", QObject::tr("icon view"), "icon"));
-		ViewIdentifierNames.insert(ViewLayer::BreadboardView, new NameTriple("breadboardView", QObject::tr("breadboard view"), "breadboard"));
-		ViewIdentifierNames.insert(ViewLayer::SchematicView, new NameTriple("schematicView", QObject::tr("schematic view"), "schematic"));
-		ViewIdentifierNames.insert(ViewLayer::PCBView, new NameTriple("pcbView", QObject::tr("pcb view"), "pcb"));
+	if (ViewIDNames.count() == 0) {
+		ViewIDNames.insert(ViewLayer::IconView, new NameTriple("iconView", QObject::tr("icon view"), "icon"));
+		ViewIDNames.insert(ViewLayer::BreadboardView, new NameTriple("breadboardView", QObject::tr("breadboard view"), "breadboard"));
+		ViewIDNames.insert(ViewLayer::SchematicView, new NameTriple("schematicView", QObject::tr("schematic view"), "schematic"));
+		ViewIDNames.insert(ViewLayer::PCBView, new NameTriple("pcbView", QObject::tr("pcb view"), "pcb"));
 	}
 
 	if (bb.count() == 0) {
@@ -187,8 +188,8 @@ void ViewLayer::initNames() {
 			<< ViewLayer::BreadboardWire << ViewLayer::BreadboardLabel 
 			<< ViewLayer::BreadboardRatsnest 
 			<< ViewLayer::BreadboardNote << ViewLayer::BreadboardRuler;
-		ss << ViewLayer::SchematicFrame << ViewLayer::Schematic 
-			<< ViewLayer::SchematicWire 
+		ss << ViewLayer::SchematicFrame << ViewLayer::Schematic
+			<< ViewLayer::SchematicText << ViewLayer::SchematicWire 
 			<< ViewLayer::SchematicTrace << ViewLayer::SchematicLabel 
 			<< ViewLayer::SchematicNote <<  ViewLayer::SchematicRuler;
 		pp << ViewLayer::Board << ViewLayer::GroundPlane0 
@@ -287,10 +288,10 @@ void ViewLayer::cleanup() {
 	}
 	names.clear();
 
-	foreach (NameTriple * nameTriple, ViewIdentifierNames) {
+	foreach (NameTriple * nameTriple, ViewIDNames) {
 		delete nameTriple;
 	}
-	ViewIdentifierNames.clear();
+	ViewIDNames.clear();
 }
 
 void ViewLayer::resetNextZ(double z) {
@@ -407,43 +408,43 @@ void ViewLayer::setIncludeChildLayers(bool incl) {
 
 /////////////////////////////////
 
-QHash <ViewLayer::ViewIdentifier, NameTriple * > ViewLayer::ViewIdentifierNames;
+QHash <ViewLayer::ViewID, NameTriple * > ViewLayer::ViewIDNames;
 
-QString & ViewLayer::viewIdentifierName(ViewLayer::ViewIdentifier viewIdentifier) {
-	if (viewIdentifier < 0 || viewIdentifier >= ViewLayer::ViewCount) {
-		throw "ViewLayer::viewIdentifierName bad identifier";
+QString & ViewLayer::viewIDName(ViewLayer::ViewID viewID) {
+	if (viewID < 0 || viewID >= ViewLayer::ViewCount) {
+		throw "ViewLayer::viewIDName bad identifier";
 	}
 
-	return ViewIdentifierNames[viewIdentifier]->viewName();
+	return ViewIDNames[viewID]->viewName();
 }
 
-QString & ViewLayer::viewIdentifierXmlName(ViewLayer::ViewIdentifier viewIdentifier) {
-	if (viewIdentifier < 0 || viewIdentifier >= ViewLayer::ViewCount) {
-		throw "ViewLayer::viewIdentifierXmlName bad identifier";
+QString & ViewLayer::viewIDXmlName(ViewLayer::ViewID viewID) {
+	if (viewID < 0 || viewID >= ViewLayer::ViewCount) {
+		throw "ViewLayer::viewIDXmlName bad identifier";
 	}
 
-	return ViewIdentifierNames[viewIdentifier]->xmlName();
+	return ViewIDNames[viewID]->xmlName();
 }
 
-QString & ViewLayer::viewIdentifierNaturalName(ViewLayer::ViewIdentifier viewIdentifier) {
-	if (viewIdentifier < 0 || viewIdentifier >= ViewLayer::ViewCount) {
-		throw "ViewLayer::viewIdentifierNaturalName bad identifier";
+QString & ViewLayer::viewIDNaturalName(ViewLayer::ViewID viewID) {
+	if (viewID < 0 || viewID >= ViewLayer::ViewCount) {
+		throw "ViewLayer::viewIDNaturalName bad identifier";
 	}
 
-	return ViewIdentifierNames[viewIdentifier]->naturalName();
+	return ViewIDNames[viewID]->naturalName();
 }
 
-ViewLayer::ViewIdentifier ViewLayer::idFromXmlName(const QString & name) {
-	foreach (ViewIdentifier id, ViewIdentifierNames.keys()) {
-		NameTriple * nameTriple = ViewIdentifierNames.value(id);
+ViewLayer::ViewID ViewLayer::idFromXmlName(const QString & name) {
+	foreach (ViewID id, ViewIDNames.keys()) {
+		NameTriple * nameTriple = ViewIDNames.value(id);
 		if (name.compare(nameTriple->xmlName()) == 0) return id;
 	}
 
 	return UnknownView;
 }
 
-const LayerList & ViewLayer::layersForView(ViewLayer::ViewIdentifier viewIdentifier) {
-	switch(viewIdentifier) {
+const LayerList & ViewLayer::layersForView(ViewLayer::ViewID viewID) {
+	switch(viewID) {
 		case IconView:
 			return ii;
 		case BreadboardView:
@@ -457,21 +458,21 @@ const LayerList & ViewLayer::layersForView(ViewLayer::ViewIdentifier viewIdentif
 	}
 }
 
-bool ViewLayer::viewHasLayer(ViewLayer::ViewIdentifier viewIdentifier, ViewLayer::ViewLayerID viewLayerID) {
-	return layersForView(viewIdentifier).contains(viewLayerID);
+bool ViewLayer::viewHasLayer(ViewLayer::ViewID viewID, ViewLayer::ViewLayerID viewLayerID) {
+	return layersForView(viewID).contains(viewLayerID);
 }
 
 
-QDomElement ViewLayer::getConnectorPElement(const QDomElement & element, ViewLayer::ViewIdentifier viewIdentifier)
+QDomElement ViewLayer::getConnectorPElement(const QDomElement & element, ViewLayer::ViewID viewID)
 {
-    QString viewName = ViewLayer::viewIdentifierXmlName(viewIdentifier);
+    QString viewName = ViewLayer::viewIDXmlName(viewID);
     QDomElement views = element.firstChildElement("views");
     QDomElement view = views.firstChildElement(viewName);
     return view.firstChildElement("p");
 }
 
-bool ViewLayer::getConnectorSvgIDs(QDomElement & element, ViewLayer::ViewIdentifier viewIdentifier, QString & id, QString & terminalID) {
-    QDomElement p = getConnectorPElement(element, viewIdentifier);
+bool ViewLayer::getConnectorSvgIDs(QDomElement & element, ViewLayer::ViewID viewID, QString & id, QString & terminalID) {
+    QDomElement p = getConnectorPElement(element, viewID);
     if (p.isNull()) {
 		return false;
 	}

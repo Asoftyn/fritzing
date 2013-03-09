@@ -27,8 +27,8 @@ $Date$
 #include "breadboard.h"
 
 
-Breadboard::Breadboard( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: PaletteItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+Breadboard::Breadboard( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: PaletteItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 }
 

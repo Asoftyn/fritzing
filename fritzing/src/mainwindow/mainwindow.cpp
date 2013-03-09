@@ -834,7 +834,7 @@ QWidget *MainWindow::createToolbarSpacer(SketchAreaWidget *parent) {
 	return toolbarSpacer;
 }
 
-QList<QWidget*> MainWindow::getButtonsForView(ViewLayer::ViewIdentifier viewId) {
+QList<QWidget*> MainWindow::getButtonsForView(ViewLayer::ViewID viewId) {
 	QList<QWidget*> retval;
 	SketchAreaWidget *parent;
 	switch(viewId) {
@@ -1156,11 +1156,12 @@ void MainWindow::setInfoViewOnHover(bool infoViewOnHover) {
 
 void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bool setAsLastOpened) {
 
-	if(!FolderUtils::unzipTo(fileName, m_fzzFolder)) {
+    QString error;
+	if(!FolderUtils::unzipTo(fileName, m_fzzFolder, error)) {
 		QMessageBox::warning(
 			this,
 			tr("Fritzing"),
-			tr("Unable to open '%1'").arg(fileName)
+			tr("Unable to open '%1': %2").arg(fileName).arg(error)
 		);
 
 		return;
@@ -1249,12 +1250,12 @@ void MainWindow::loadBundledSketch(const QString &fileName, bool addToRecent, bo
                         msi.modelPart = mp;
                         missingModelParts << mp;
                         msi.requestedPath = path;
-                        ViewLayer::ViewIdentifier viewIdentifier = ViewLayer::idFromXmlName(view.tagName());
+                        ViewLayer::ViewID viewID = ViewLayer::idFromXmlName(view.tagName());
                         QDomElement connectors = root.firstChildElement("connectors");
                         QDomElement connector = connectors.firstChildElement("connector");
                         while (!connector.isNull()) {
                             QString id, terminalID;
-                            ViewLayer::getConnectorSvgIDs(connector, viewIdentifier, id, terminalID);
+                            ViewLayer::getConnectorSvgIDs(connector, viewID, id, terminalID);
                             if (!id.isEmpty()) {
                                 msi.connectorSvgIds.append(id);
                             }
@@ -1398,11 +1399,12 @@ bool MainWindow::loadBundledNonAtomicEntity(const QString &fileName, Bundler* bu
 	FolderUtils::createFolderAnCdIntoIt(destFolder, TextUtils::getRandText());
 	QString unzipDirPath = destFolder.path();
 
-	if(!FolderUtils::unzipTo(fileName, unzipDirPath)) {
+    QString error;
+	if(!FolderUtils::unzipTo(fileName, unzipDirPath, error)) {
 		QMessageBox::warning(
 			this,
 			tr("Fritzing"),
-			tr("Unable to open shareable %1").arg(fileName)
+			tr("Unable to open shareable '%1': %2").arg(fileName).arg(error)
 		);
 
 		// gotta return now, or loadBundledSketchAux will crash
@@ -1440,11 +1442,12 @@ ModelPart* MainWindow::loadBundledPart(const QString &fileName, bool addToBin) {
 	FolderUtils::createFolderAnCdIntoIt(destFolder, TextUtils::getRandText());
 	QString unzipDirPath = destFolder.path();
 
-	if(!FolderUtils::unzipTo(fileName, unzipDirPath)) {
+    QString error;
+	if(!FolderUtils::unzipTo(fileName, unzipDirPath, error)) {
 		QMessageBox::warning(
 			this,
 			tr("Fritzing"),
-			tr("Unable to open shareable part %1").arg(fileName)
+			tr("Unable to open shareable part '%1': %2").arg(fileName).arg(error)
 		);
 		return NULL;
 	}
@@ -1549,10 +1552,10 @@ QStringList MainWindow::saveBundledAux(ModelPart *mp, const QDir &destFolder) {
 	names << fn;
 	file.copy(destFolder.path()+"/"+fn);
 
-	QList<ViewLayer::ViewIdentifier> identifiers;
-	identifiers << ViewLayer::IconView << ViewLayer::BreadboardView << ViewLayer::SchematicView << ViewLayer::PCBView;
-	foreach (ViewLayer::ViewIdentifier viewIdentifier, identifiers) {
-		QString basename = mp->hasBaseNameFor(viewIdentifier);
+	QList<ViewLayer::ViewID> viewIDs;
+	viewIDs << ViewLayer::IconView << ViewLayer::BreadboardView << ViewLayer::SchematicView << ViewLayer::PCBView;
+	foreach (ViewLayer::ViewID viewID, viewIDs) {
+		QString basename = mp->hasBaseNameFor(viewID);
 		if (basename.isEmpty()) continue;
 
 		QString filename = ItemBase::getSvgFilename(mp, basename);
@@ -2077,7 +2080,7 @@ long MainWindow::swapSelectedAuxAux(ItemBase * itemBase, const QString & moduleI
 	QList<SketchWidget *> sketchWidgets;
 
     // master view must go last, since it creates the delete command, and possibly has all the local props
-    switch (itemBase->viewIdentifier()) {
+    switch (itemBase->viewID()) {
         case ViewLayer::SchematicView:
 		    sketchWidgets << m_pcbGraphicsView << m_breadboardGraphicsView << m_schematicGraphicsView;
             break;
@@ -2744,7 +2747,7 @@ void MainWindow::initProgrammingWidget() {
 void MainWindow::orderFabHoverEnter() {
     if (m_quoteDialog) return;
 
-    // QTimer::singleShot(1, this, SLOT(fireQuote()));
+    QTimer::singleShot(1, this, SLOT(fireQuote()));
 }
 
 void MainWindow::fireQuote() {

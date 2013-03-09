@@ -1263,10 +1263,10 @@ void BinManager::copyFilesToContrib(ModelPart * mp, QWidget * originator) {
 	dir.cd("svg");
 	dir.cd("contrib");
 
-	QList<ViewLayer::ViewIdentifier> viewIdentifiers;
-	viewIdentifiers << ViewLayer::IconView << ViewLayer::BreadboardView << ViewLayer::SchematicView << ViewLayer::PCBView;
-	foreach (ViewLayer::ViewIdentifier viewIdentifier, viewIdentifiers) {
-		QString fn = mp->hasBaseNameFor(viewIdentifier);
+	QList<ViewLayer::ViewID> viewIDs;
+	viewIDs << ViewLayer::IconView << ViewLayer::BreadboardView << ViewLayer::SchematicView << ViewLayer::PCBView;
+	foreach (ViewLayer::ViewID viewID, viewIDs) {
+		QString fn = mp->hasBaseNameFor(viewID);
 		if (!fn.isEmpty()) {
 			QFile svg(dir.absoluteFilePath(fn));
 			svg.copy(prefix + fn);

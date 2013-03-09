@@ -209,8 +209,8 @@ QString LinkDialog::url() {
 
 /////////////////////////////////////////////
 
-Note::Note( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier,  const ViewGeometry & viewGeometry, long id, QMenu* itemMenu)
-	: ItemBase(modelPart, viewIdentifier, viewGeometry, id, itemMenu)
+Note::Note( ModelPart * modelPart, ViewLayer::ViewID viewID,  const ViewGeometry & viewGeometry, long id, QMenu* itemMenu)
+	: ItemBase(modelPart, viewID, viewGeometry, id, itemMenu)
 {
 	m_charsAdded = 0;
 	if (initialTextString.isEmpty()) {
@@ -745,13 +745,13 @@ QString Note::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QSt
 
 	switch (viewLayerID) {
 		case ViewLayer::BreadboardNote:
-			if (viewIdentifier() != ViewLayer::BreadboardView) return "";
+			if (viewID() != ViewLayer::BreadboardView) return "";
 			break;
 		case ViewLayer::PcbNote:
-			if (viewIdentifier() != ViewLayer::PCBView) return "";
+			if (viewID() != ViewLayer::PCBView) return "";
 			break;
 		case ViewLayer::SchematicNote:
-			if (viewIdentifier() != ViewLayer::SchematicView) return "";
+			if (viewID() != ViewLayer::SchematicView) return "";
 			break;
 		default:
 			return "";
@@ -834,7 +834,7 @@ QString Note::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QSt
 	return svg;	
 }
 
-ViewLayer::ViewIdentifier Note::useViewIdentifierForPixmap(ViewLayer::ViewIdentifier, bool) 
+ViewLayer::ViewID Note::useViewIDForPixmap(ViewLayer::ViewID, bool) 
 {
     return ViewLayer::IconView;
 }

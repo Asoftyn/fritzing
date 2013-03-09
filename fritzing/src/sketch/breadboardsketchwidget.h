@@ -36,7 +36,7 @@ class BreadboardSketchWidget : public SketchWidget
 	Q_OBJECT
 
 public:
-    BreadboardSketchWidget(ViewLayer::ViewIdentifier, QWidget *parent=0);
+    BreadboardSketchWidget(ViewLayer::ViewID, QWidget *parent=0);
 
 	void addViewLayers();
 	void initWire(Wire *, int penWidth);

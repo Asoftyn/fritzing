@@ -30,6 +30,7 @@ $Date$
 #include <QLineF>
 #include <QBuffer>
 #include <qmath.h>
+#include <QtDebug>
 
 
 const double GraphicsUtils::IllustratorDPI = 72;
@@ -440,3 +441,62 @@ QPointF GraphicsUtils::calcRotation(QTransform & rotation, QPointF rCenter, QPoi
 	QPointF mc = tc.map(QPointF(0,0));
 	return (p + mp - mc);
 }
+
+void GraphicsUtils::drawBorder(QImage * image, int border) {
+    int halfBorder = border / 2;
+    QPainter painter;
+	painter.begin(image);
+	painter.setRenderHint(QPainter::Antialiasing, false);
+    QPen pen = painter.pen();
+    pen.setWidth(border);
+    pen.setColor(0xff000000);
+    painter.setPen(pen);
+    painter.drawLine(0, halfBorder, image->width() - 1, halfBorder);
+    painter.drawLine(0, image->height() - halfBorder, image->width() - 1, image->height() - halfBorder);
+    painter.drawLine(halfBorder, 0, halfBorder, image->height() - 1);
+    painter.drawLine(image->width() - halfBorder, 0, image->width() - halfBorder, image->height() - 1);
+	painter.end();
+}
+
+bool GraphicsUtils::isFlipped(const QMatrix & matrix, double & rotation) {
+    // flipped means flipped horizontally (around the vertical axis)
+    // rotation values are ccw
+    if (matrix.m11() == 1) {
+        if (matrix.m22() == 1) {
+            rotation = 0;
+            return false;
+        }
+        rotation = 180;
+        return true;
+    }
+    if (matrix.m11() == -1) {
+        if (matrix.m22() == -1) {
+            rotation = 180;
+            return false;
+        }
+        rotation = 0;
+        return true;
+    }
+    if (matrix.m12() == 1) {
+        if (matrix.m21() == -1) {
+            rotation = 270;
+            return false;
+        }
+        rotation = 90;
+        return true;
+    }
+    if (matrix.m12() == -1) {
+        if (matrix.m21() == 1) {
+            rotation = 80;
+            return false;
+        }
+        rotation = 270;
+        return true;
+    }
+
+    qWarning() << QString("unknown matrix %1 %2 %3 %4").arg(matrix.m11()).arg(matrix.m12()).arg(matrix.m21()).arg(matrix.m22());
+    rotation = 0;
+    return false;
+}
+
+

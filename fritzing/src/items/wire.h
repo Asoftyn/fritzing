@@ -60,7 +60,7 @@ class Wire : public ItemBase, public CursorKeyListener
 Q_OBJECT
 
 public:
-	Wire(class ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry &, long id, QMenu * itemMenu, bool initLabel);
+	Wire(class ModelPart *, ViewLayer::ViewID, const ViewGeometry &, long id, QMenu * itemMenu, bool initLabel);
 	virtual ~Wire();
 
 
@@ -190,7 +190,7 @@ protected:
 	bool acceptsMouseDoubleClickConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
 	bool acceptsMouseMoveConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
 	bool acceptsMouseReleaseConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
- 	virtual class FSvgRenderer * setUpConnectors(class ModelPart *, ViewLayer::ViewIdentifier);
+ 	virtual class FSvgRenderer * setUpConnectors(class ModelPart *, ViewLayer::ViewID);
 	void collectChained(ConnectorItem * connectorItem, QList<Wire *> & chained, QList<ConnectorItem *> & ends);
 	void setConnector0Rect();
 	void setConnector1Rect();
@@ -212,7 +212,7 @@ protected:
 	void hoverEnterEvent( QGraphicsSceneHoverEvent * event );
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 	void updateCursor(Qt::KeyboardModifiers);
-    ViewLayer::ViewIdentifier useViewIdentifierForPixmap(ViewLayer::ViewIdentifier, bool swappingEnabled);
+    ViewLayer::ViewID useViewIDForPixmap(ViewLayer::ViewID, bool swappingEnabled);
 
 protected:
 	QLineF	m_line;

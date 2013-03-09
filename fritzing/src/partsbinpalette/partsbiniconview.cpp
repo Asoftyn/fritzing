@@ -243,7 +243,7 @@ void PartsBinIconView::loadFromModel(PaletteModel * model) {
 		QDomElement views = instance.firstChildElement("views");
 		if (views.isNull()) continue;
 
-		QString name = ViewLayer::viewIdentifierXmlName(ViewLayer::IconView);
+		QString name = ViewLayer::viewIDXmlName(ViewLayer::IconView);
 		QDomElement view = views.firstChildElement(name);
 		if (view.isNull()) continue;
 

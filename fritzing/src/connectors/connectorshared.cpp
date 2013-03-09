@@ -127,37 +127,37 @@ void ConnectorShared::setConnectorType(Connector::ConnectorType type) {
 	m_type = type;
 }
 
-const QMultiHash<ViewLayer::ViewIdentifier,SvgIdLayer*> & ConnectorShared::pins() {
+const QMultiHash<ViewLayer::ViewID,SvgIdLayer*> & ConnectorShared::pins() {
 	return m_pins;
 }
 
-void ConnectorShared::insertPin(ViewLayer::ViewIdentifier layer, SvgIdLayer * svgIdLayer) {
+void ConnectorShared::insertPin(ViewLayer::ViewID layer, SvgIdLayer * svgIdLayer) {
 	m_pins.insert(layer, svgIdLayer);
 }
 
-void ConnectorShared::addPin(ViewLayer::ViewIdentifier viewIdentifier, const QString & svgId, ViewLayer::ViewLayerID viewLayerID, const QString & terminalId, const QString & legId, bool hybrid) {
-	SvgIdLayer * svgIdLayer = new SvgIdLayer(viewIdentifier);
+void ConnectorShared::addPin(ViewLayer::ViewID viewID, const QString & svgId, ViewLayer::ViewLayerID viewLayerID, const QString & terminalId, const QString & legId, bool hybrid) {
+	SvgIdLayer * svgIdLayer = new SvgIdLayer(viewID);
 	svgIdLayer->m_svgViewLayerID = viewLayerID;
 	svgIdLayer->m_svgId = svgId;
 	svgIdLayer->m_terminalId = terminalId;
     svgIdLayer->m_hybrid = hybrid;
     svgIdLayer->m_legId = legId;
-	m_pins.insert(viewIdentifier, svgIdLayer);
+	m_pins.insert(viewID, svgIdLayer);
 	// DebugDialog::debug(QString("insert a %1 %2 %3").arg(layer).arg(connectorId).arg(viewLayerID));
 }
 
-void ConnectorShared::removePins(ViewLayer::ViewIdentifier layer) {
+void ConnectorShared::removePins(ViewLayer::ViewID layer) {
 	m_pins.remove(layer);
 	if (m_pins.values(layer).size() != 0) {
 		throw "ConnectorShared::removePins";
 	}
 }
 
-void ConnectorShared::removePin(ViewLayer::ViewIdentifier layer, SvgIdLayer * svgIdLayer) {
+void ConnectorShared::removePin(ViewLayer::ViewID layer, SvgIdLayer * svgIdLayer) {
 	m_pins.remove(layer, svgIdLayer);
 }
 
-SvgIdLayer * ConnectorShared::fullPinInfo(ViewLayer::ViewIdentifier viewId, ViewLayer::ViewLayerID viewLayerID) {
+SvgIdLayer * ConnectorShared::fullPinInfo(ViewLayer::ViewID viewId, ViewLayer::ViewLayerID viewLayerID) {
 	QList<SvgIdLayer *> svgLayers = m_pins.values(viewId);
 	foreach ( SvgIdLayer * svgIdLayer, svgLayers) {
 		if (svgIdLayer->m_svgViewLayerID == viewLayerID) {
@@ -168,7 +168,7 @@ SvgIdLayer * ConnectorShared::fullPinInfo(ViewLayer::ViewIdentifier viewId, View
 	return NULL;
 }
 
-const QString & ConnectorShared::legID(ViewLayer::ViewIdentifier viewId, ViewLayer::ViewLayerID viewLayerID) {
+const QString & ConnectorShared::legID(ViewLayer::ViewID viewId, ViewLayer::ViewLayerID viewLayerID) {
 	QList<SvgIdLayer *> svgLayers = m_pins.values(viewId);
 	foreach ( SvgIdLayer * svgIdLayer, svgLayers) {
 		if (svgIdLayer->m_svgViewLayerID == viewLayerID) {
@@ -190,7 +190,7 @@ void ConnectorShared::loadPins(const QDomElement & domElement) {
 	loadPin(viewsTag.firstChildElement("pcbView"),ViewLayer::PCBView);
 }
 
-void ConnectorShared::loadPin(QDomElement elem, ViewLayer::ViewIdentifier viewIdentifier) {
+void ConnectorShared::loadPin(QDomElement elem, ViewLayer::ViewID viewID) {
 	QDomElement pinElem = elem.firstChildElement("p");
 	while (!pinElem.isNull()) {
 		//QString temp;
@@ -200,7 +200,7 @@ void ConnectorShared::loadPin(QDomElement elem, ViewLayer::ViewIdentifier viewId
 		QString svgId = pinElem.attribute("svgId");
 		//svgId = svgId.left(svgId.lastIndexOf(QRegExp("\\d"))+1);
 		QString layer = pinElem.attribute("layer");
-		SvgIdLayer * svgIdLayer = new SvgIdLayer(viewIdentifier);
+		SvgIdLayer * svgIdLayer = new SvgIdLayer(viewID);
 		svgIdLayer->m_hybrid = (pinElem.attribute("hybrid").compare("yes") == 0);
 		svgIdLayer->m_legId = pinElem.attribute("legId");
 		svgIdLayer->m_svgId = svgId;
@@ -211,7 +211,7 @@ void ConnectorShared::loadPin(QDomElement elem, ViewLayer::ViewIdentifier viewId
 		//if (!svgIdLayer->m_terminalId.isEmpty()) {
 		//	DebugDialog::debug("terminalid " + svgIdLayer->m_terminalId);
 		//}
-		m_pins.insert(viewIdentifier, svgIdLayer);
+		m_pins.insert(viewID, svgIdLayer);
 		//DebugDialog::debug(QString("insert b %1 %2 %3").arg(viewId).arg(svgId).arg(layer));
 
 		pinElem = pinElem.nextSiblingElement("p");

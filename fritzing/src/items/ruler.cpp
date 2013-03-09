@@ -46,8 +46,8 @@ static const int IndexIn = 1;
 
 static QString DefaultWidth = "";
 
-Ruler::Ruler( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: PaletteItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+Ruler::Ruler( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: PaletteItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 	m_widthEditor = NULL;
 	m_unitsEditor = NULL;
@@ -192,7 +192,7 @@ QString Ruler::makeSvg(double inches) {
 }
 
 bool Ruler::hasCustomSVG() {
-	switch (m_viewIdentifier) {
+	switch (m_viewID) {
 		case ViewLayer::PCBView:
 		case ViewLayer::SchematicView:
 		case ViewLayer::BreadboardView:
@@ -336,7 +336,7 @@ bool Ruler::canFindConnectorsUnder() {
 	return false;
 }
 
-ViewLayer::ViewIdentifier Ruler::useViewIdentifierForPixmap(ViewLayer::ViewIdentifier, bool) 
+ViewLayer::ViewID Ruler::useViewIDForPixmap(ViewLayer::ViewID, bool) 
 {
     return ViewLayer::IconView;
 }

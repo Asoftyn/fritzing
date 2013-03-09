@@ -118,9 +118,10 @@ bool byID(Connector * c1, Connector * c2)
 
 /////////////////////////////////////////////////
 
-PaletteItem::PaletteItem( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: PaletteItemBase(modelPart, viewIdentifier, viewGeometry, id, itemMenu)
+PaletteItem::PaletteItem( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: PaletteItemBase(modelPart, viewID, viewGeometry, id, itemMenu)
 {
+    m_flipCount = 0;
 	if(doLabel) {
 		m_partLabel = new PartLabel(this, NULL);
 		m_partLabel->setVisible(false);
@@ -135,9 +136,9 @@ PaletteItem::~PaletteItem() {
 	}
 }
 
-bool PaletteItem::renderImage(ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, bool doConnectors, QString & error) {
+bool PaletteItem::renderImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, bool doConnectors, QString & error) {
 	LayerAttributes layerAttributes; 
-	bool result = setUpImage(modelPart, viewIdentifier, viewLayers, viewLayerID, this->viewLayerSpec(), doConnectors, layerAttributes, error);
+	bool result = setUpImage(modelPart, viewID, viewLayers, viewLayerID, this->viewLayerSpec(), doConnectors, layerAttributes, error);
 
 	m_syncMoved = this->pos();
 	return result;
@@ -202,11 +203,11 @@ void PaletteItem::loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLaye
 	foreach (ViewLayer::ViewLayerID viewLayerID, viewLayers.keys()) {
 		if (viewLayerID == m_viewLayerID) continue;
 		if (notLayers.contains(viewLayerID)) continue;
-		if (!m_modelPart->hasViewFor(m_viewIdentifier, viewLayerID)) continue;
+		if (!m_modelPart->hasViewFor(m_viewID, viewLayerID)) continue;
 
-		LayerKinPaletteItem * lkpi = newLayerKinPaletteItem(this, m_modelPart, m_viewIdentifier, viewGeometry, id, viewLayerID, viewLayerSpec, m_itemMenu, viewLayers);
+		LayerKinPaletteItem * lkpi = newLayerKinPaletteItem(this, m_modelPart, m_viewID, viewGeometry, id, viewLayerID, viewLayerSpec, m_itemMenu, viewLayers);
 		if (lkpi->ok()) {
-			//DebugDialog::debug(QString("adding layer kin %1 %2 %3").arg(id).arg(m_viewIdentifier).arg(viewLayerID) );
+			//DebugDialog::debug(QString("adding layer kin %1 %2 %3").arg(id).arg(m_viewID).arg(viewLayerID) );
 			lkpi->setViewLayerSpec(viewLayerSpec);
 			addLayerKin(lkpi);
 			id++;
@@ -297,7 +298,7 @@ void PaletteItem::rotateItem(double degrees) {
 void PaletteItem::flipItem(Qt::Orientations orientation) {
 	PaletteItemBase::flipItem(orientation);
 	foreach (ItemBase * lkpi, m_layerKin) {
-		lkpi->flipItem(orientation);
+        lkpi->flipItem(orientation);
 	}
 }
 
@@ -502,12 +503,12 @@ void PaletteItem::slamZ(double z) {
 
 void PaletteItem::resetImage(InfoGraphicsView * infoGraphicsView) {
 	foreach (Connector * connector, modelPart()->connectors()) {
-		connector->unprocess(this->viewIdentifier(), this->viewLayerID());
+		connector->unprocess(this->viewID(), this->viewLayerID());
 	}
 
 	QString error;
 	LayerAttributes layerAttributes;
-	this->setUpImage(modelPart(), this->viewIdentifier(), infoGraphicsView->viewLayers(), this->viewLayerID(), this->viewLayerSpec(), true, layerAttributes, error);
+	this->setUpImage(modelPart(), this->viewID(), infoGraphicsView->viewLayers(), this->viewLayerID(), this->viewLayerSpec(), true, layerAttributes, error);
 	
 	foreach (ItemBase * layerKin, m_layerKin) {
 		resetKinImage(layerKin, infoGraphicsView);
@@ -517,11 +518,11 @@ void PaletteItem::resetImage(InfoGraphicsView * infoGraphicsView) {
 void PaletteItem::resetKinImage(ItemBase * layerKin, InfoGraphicsView * infoGraphicsView) 
 {
 	foreach (Connector * connector, modelPart()->connectors()) {
-		connector->unprocess(layerKin->viewIdentifier(), layerKin->viewLayerID());
+		connector->unprocess(layerKin->viewID(), layerKin->viewLayerID());
 	}
 	QString error;
 	LayerAttributes layerAttributes;
-	qobject_cast<PaletteItemBase *>(layerKin)->setUpImage(modelPart(), layerKin->viewIdentifier(), infoGraphicsView->viewLayers(), layerKin->viewLayerID(), layerKin->viewLayerSpec(), true, layerAttributes, error);
+	qobject_cast<PaletteItemBase *>(layerKin)->setUpImage(modelPart(), layerKin->viewID(), infoGraphicsView->viewLayers(), layerKin->viewLayerID(), layerKin->viewLayerSpec(), true, layerAttributes, error);
 }
 
 QString PaletteItem::genFZP(const QString & moduleid, const QString & templateName, int minPins, int maxPins, int steps, bool smd)
@@ -716,7 +717,7 @@ QList<Connector *> PaletteItem::sortConnectors() {
 bool PaletteItem::changePinLabels(bool singleRow, bool sip) {
 	Q_UNUSED(singleRow);
 	Q_UNUSED(sip);
-	if (m_viewIdentifier != ViewLayer::SchematicView) return true;
+	if (m_viewID != ViewLayer::SchematicView) return true;
 
 	return false;
 }
@@ -738,12 +739,12 @@ QStringList PaletteItem::getPinLabels(bool & hasLocal) {
 }
 
 void PaletteItem::resetConnectors() {
-	if (m_viewIdentifier != ViewLayer::SchematicView) return;
+	if (m_viewID != ViewLayer::SchematicView) return;
 
 	QSizeF size = fsvgRenderer()->defaultSizeF();   // pixels
 	QRectF viewBox = fsvgRenderer()->viewBoxF();
 	foreach (ConnectorItem * connectorItem, cachedConnectorItems()) {
-		SvgIdLayer * svgIdLayer = connectorItem->connector()->fullPinInfo(m_viewIdentifier, m_viewLayerID);
+		SvgIdLayer * svgIdLayer = connectorItem->connector()->fullPinInfo(m_viewID, m_viewLayerID);
 		if (svgIdLayer == NULL) continue;
 
 		QRectF bounds = fsvgRenderer()->boundsOnElement(svgIdLayer->m_svgId);
@@ -761,8 +762,8 @@ void PaletteItem::resetConnectors(ItemBase * otherLayer, FSvgRenderer * otherLay
 	foreach (Connector * connector, m_modelPart->connectors().values()) {
 		if (connector == NULL) continue;
 
-		connector->unprocess(m_viewIdentifier, m_viewLayerID);
-		SvgIdLayer * svgIdLayer = connector->fullPinInfo(m_viewIdentifier, m_viewLayerID);
+		connector->unprocess(m_viewID, m_viewLayerID);
+		SvgIdLayer * svgIdLayer = connector->fullPinInfo(m_viewID, m_viewLayerID);
 		if (svgIdLayer == NULL) continue;
 
 		bool result = fsvgRenderer()->setUpConnector(svgIdLayer, false);
@@ -775,8 +776,8 @@ void PaletteItem::resetConnectors(ItemBase * otherLayer, FSvgRenderer * otherLay
 		foreach (Connector * connector, m_modelPart->connectors().values()) {
 			if (connector == NULL) continue;
 
-			connector->unprocess(m_viewIdentifier, otherLayer->viewLayerID());
-			SvgIdLayer * svgIdLayer = connector->fullPinInfo(m_viewIdentifier, otherLayer->viewLayerID());
+			connector->unprocess(m_viewID, otherLayer->viewLayerID());
+			SvgIdLayer * svgIdLayer = connector->fullPinInfo(m_viewID, otherLayer->viewLayerID());
 			if (svgIdLayer == NULL) continue;
 
 			bool result = otherLayerRenderer->setUpConnector(svgIdLayer, false);
@@ -792,7 +793,7 @@ void PaletteItem::resetConnectors(ItemBase * otherLayer, FSvgRenderer * otherLay
 void PaletteItem::resetConnector(ItemBase * itemBase, SvgIdLayer * svgIdLayer) 
 {
 	foreach (ConnectorItem * connectorItem, itemBase->cachedConnectorItems()) {
-		//DebugDialog::debug(QString("via set rect %1").arg(itemBase->viewIdentifier()), svgIdLayer->m_rect);
+		//DebugDialog::debug(QString("via set rect %1").arg(itemBase->viewID()), svgIdLayer->m_rect);
 
 		connectorItem->setRect(svgIdLayer->m_rect);
 		connectorItem->setTerminalPoint(svgIdLayer->m_point);
@@ -1142,7 +1143,7 @@ QStringList PaletteItem::getSizes(QString & holeSize, HoleSettings & holeSetting
 }
 
 void PaletteItem::changeHoleSize(const QString & newSize) {
-    if (this->m_viewIdentifier != ViewLayer::PCBView) {
+    if (this->m_viewID != ViewLayer::PCBView) {
         PaletteItem * paletteItem = qobject_cast<PaletteItem *>(modelPart()->viewItem(ViewLayer::PCBView));
         if (paletteItem == NULL) return;
 
@@ -1453,16 +1454,18 @@ bool PaletteItem::changeDiameter(HoleSettings & holeSettings, QObject * sender)
 	return (newValue != oldValue);
 }
 
-void PaletteItem::makeLocalModifications(QByteArray & svg, const QString & filename) {
+bool PaletteItem::makeLocalModifications(QByteArray & svg, const QString & filename) {
+    // a bottleneck for modifying part svg xml at setupImage time
+
     // for saved-as-new-part parts (i.e. that are no longer MysteryParts) that still have a chip-label or custom pin names
     // also handles adding a title if there is a label id in the 
-    switch (m_viewIdentifier) {
+    switch (m_viewID) {
         case ViewLayer::PCBView:
-            return;
+            return false;
             
         default:
-            if (itemType() != ModelPart::Part) return;
-            if (filename.startsWith("icon")) return;
+            if (itemType() != ModelPart::Part) return false;
+            if (filename.startsWith("icon")) return false;
 
             break;
     }
@@ -1474,19 +1477,21 @@ void PaletteItem::makeLocalModifications(QByteArray & svg, const QString & filen
         gotChipLabel = true;
     }
 
-    if (m_viewIdentifier == ViewLayer::SchematicView) {
+    bool modified = false;
+    if (m_viewID == ViewLayer::SchematicView) {
         QString value = modelPart()->properties().value("editable pin labels", "");
         if (value.compare("true") == 0) {
             bool hasLayout, sip;
-            QStringList labels = sipOrDipOr(hasLayout, sip);
+            QStringList labels = sipOrDipOrLabels(hasLayout, sip);
             if (labels.count() > 0) {
-                svg = PartFactory::makeSipOrDipOr(labels, hasLayout, sip).toUtf8();
+                svg = PartFactory::makeSchematicSipOrDipOr(labels, hasLayout, sip).toUtf8();
+                modified = true;
             }
         }
         gotChipLabel = true;
     }
 
-    if (gotChipLabel) return;
+    if (gotChipLabel) return modified;
 
     int rix = svg.indexOf("label");
     if (rix >= 0) {
@@ -1500,12 +1505,15 @@ void PaletteItem::makeLocalModifications(QByteArray & svg, const QString & filen
             int lix = svg.lastIndexOf("<", ix);
             if (tix == lix) {
                 svg = TextUtils::replaceTextElement(svg, "label", modelPart()->title());
+                modified = true;
             }
         }
     }
+
+    return modified;
 }
 
-QStringList PaletteItem::sipOrDipOr(bool & hasLayout, bool & sip) {
+QStringList PaletteItem::sipOrDipOrLabels(bool & hasLayout, bool & sip) {
 	hasLayout = sip = false;
     bool hasLocal = false;
 	QStringList labels = getPinLabels(hasLocal);

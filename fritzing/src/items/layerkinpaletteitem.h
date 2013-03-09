@@ -35,7 +35,7 @@ class LayerKinPaletteItem : public PaletteItemBase
 Q_OBJECT
 
 public:       
-	LayerKinPaletteItem(PaletteItemBase * chief, ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu);
+	LayerKinPaletteItem(PaletteItemBase * chief, ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu);
 	void setOffset(double x, double y);
 	ItemBase * layerKinChief();
 	bool ok();
@@ -71,5 +71,24 @@ protected:
 	QPointer<PaletteItemBase> m_layerKinChief;
 	bool m_ok;
 };
+
+class SchematicTextLayerKinPaletteItem : public LayerKinPaletteItem
+{
+Q_OBJECT
+
+public:       
+	SchematicTextLayerKinPaletteItem(PaletteItemBase * chief, ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu);
+
+    void transformItem(const QTransform &);
+ 	bool setUpImage(ModelPart* modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, bool doConnectors, LayerAttributes &, QString & error);
+
+protected:
+    bool makeFlipTextSvg();
+
+protected:
+    bool m_flipped;
+
+};
+
 
 #endif

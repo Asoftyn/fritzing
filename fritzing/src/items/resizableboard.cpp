@@ -69,8 +69,8 @@ static const double JND = (double) 0.01;
 QString Board::OneLayerTranslated;
 QString Board::TwoLayersTranslated;
 
-Board::Board( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: PaletteItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+Board::Board( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: PaletteItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
     m_svgOnly = true;
 	m_fileNameComboBox = NULL;
@@ -517,7 +517,7 @@ void Board::prepLoadImageAux(const QString & fileName, bool addName)
 	}
 }
 
-ViewLayer::ViewIdentifier Board::useViewIdentifierForPixmap(ViewLayer::ViewIdentifier vid, bool) 
+ViewLayer::ViewID Board::useViewIDForPixmap(ViewLayer::ViewID vid, bool) 
 {
     if (vid == ViewLayer::PCBView) {
         return ViewLayer::IconView;
@@ -528,8 +528,8 @@ ViewLayer::ViewIdentifier Board::useViewIdentifierForPixmap(ViewLayer::ViewIdent
 
 ///////////////////////////////////////////////////////////
 
-ResizableBoard::ResizableBoard( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: Board(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+ResizableBoard::ResizableBoard( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: Board(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 	fixWH();
 
@@ -761,14 +761,14 @@ void ResizableBoard::mouseReleaseEvent(QGraphicsSceneMouseEvent * event) {
 	}
 }
 
-bool ResizableBoard::setUpImage(ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
+bool ResizableBoard::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
 {
-	bool result = Board::setUpImage(modelPart, viewIdentifier, viewLayers, viewLayerID, viewLayerSpec, doConnectors, layerAttributes, error);
+	bool result = Board::setUpImage(modelPart, viewID, viewLayers, viewLayerID, viewLayerSpec, doConnectors, layerAttributes, error);
 
 	return result;
 }
 
-ViewLayer::ViewIdentifier ResizableBoard::theViewIdentifier() {
+ViewLayer::ViewID ResizableBoard::theViewID() {
 	return ViewLayer::PCBView;
 }
 
@@ -780,7 +780,7 @@ bool ResizableBoard::resizeMM(double mmW, double mmH, const LayerHash & viewLaye
 	if (mmW == 0 || mmH == 0) {
 		QString error;
 		LayerAttributes layerAttributes;
-		setUpImage(modelPart(), m_viewIdentifier, viewLayers, m_viewLayerID, m_viewLayerSpec, true, layerAttributes, error);
+		setUpImage(modelPart(), m_viewID, viewLayers, m_viewLayerID, m_viewLayerSpec, true, layerAttributes, error);
 		modelPart()->setLocalProp("height", QVariant());
 		modelPart()->setLocalProp("width", QVariant());
 		// do the layerkin
@@ -956,7 +956,7 @@ void ResizableBoard::getParams(QPointF & p, QSizeF & s) {
 }
 
 bool ResizableBoard::hasCustomSVG() {
-	return theViewIdentifier() == m_viewIdentifier;
+	return theViewID() == m_viewID;
 }
 
 bool ResizableBoard::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget)

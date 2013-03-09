@@ -528,7 +528,7 @@ void ConnectorItem::restoreColor(bool doBuses, int busConnectionCount, bool doCr
 		.arg(this->connectorSharedName())
 		.arg(this->attachedToID())
 		.arg(this->attachedToInstanceTitle())
-		.arg(this->attachedToViewIdentifier())
+		.arg(this->attachedToViewID())
 		.arg(this->attachedToViewLayerID())
 		);
 		*/
@@ -591,7 +591,7 @@ void ConnectorItem::restoreColor(bool doBuses, int busConnectionCount, bool doCr
 		.arg(this->connectorSharedName())
 		.arg(this->attachedToID())
 		.arg(this->attachedToInstanceTitle())
-		.arg(this->attachedToViewIdentifier())
+		.arg(this->attachedToViewID())
 		.arg(this->attachedToViewLayerID())
 		.arg(how)
 	);
@@ -1088,10 +1088,10 @@ ViewLayer::ViewLayerSpec ConnectorItem::attachedToViewLayerSpec() {
 	return m_attachedTo->viewLayerSpec();
 }
 
-ViewLayer::ViewIdentifier ConnectorItem::attachedToViewIdentifier() {
+ViewLayer::ViewID ConnectorItem::attachedToViewID() {
 	if (m_attachedTo == NULL) return ViewLayer::UnknownView;
 
-	return m_attachedTo->viewIdentifier();
+	return m_attachedTo->viewID();
 }
 
 Connector::ConnectorType ConnectorItem::connectorType() {
@@ -1590,14 +1590,14 @@ bool ConnectorItem::isGrounded() {
 ConnectorItem * ConnectorItem::getCrossLayerConnectorItem() {
 	if (m_connector == NULL) return NULL;
 	if (m_attachedTo == NULL) return NULL;
-	if (m_attachedTo->viewIdentifier() != ViewLayer::PCBView) return NULL;
+	if (m_attachedTo->viewID() != ViewLayer::PCBView) return NULL;
 
 	ViewLayer::ViewLayerID viewLayerID = attachedToViewLayerID();
 	if (viewLayerID == ViewLayer::Copper0) {
-		return m_connector->connectorItemByViewLayerID(this->attachedToViewIdentifier(), ViewLayer::Copper1);
+		return m_connector->connectorItemByViewLayerID(this->attachedToViewID(), ViewLayer::Copper1);
 	}
 	if (viewLayerID == ViewLayer::Copper1) {
-		return m_connector->connectorItemByViewLayerID(this->attachedToViewIdentifier(), ViewLayer::Copper0);
+		return m_connector->connectorItemByViewLayerID(this->attachedToViewID(), ViewLayer::Copper0);
 	}
 
 	return NULL;
@@ -1640,7 +1640,7 @@ void ConnectorItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * o
 
 	if (m_effectively == EffectivelyUnknown) {
 		if (!m_circular && m_shape.isEmpty()) {
-			if (this->attachedTo()->viewIdentifier() == ViewLayer::PCBView) {
+			if (this->attachedTo()->viewID() == ViewLayer::PCBView) {
 				QRectF r = rect();
 				if (qAbs(r.width() - r.height()) < 0.01) m_effectively = EffectivelyCircular;
 				else m_effectively = EffectivelyRectangular;
@@ -1927,7 +1927,7 @@ void ConnectorItem::debugInfo(const QString & msg)
 			.arg(this->attachedToItemType())
 			.arg(this->attachedToInstanceTitle())
 			.arg(this->attachedToViewLayerID())
-			.arg(this->attachedToViewIdentifier())
+			.arg(this->attachedToViewID())
 			.arg(this->attachedToViewLayerSpec())
 			.arg(this->attachedTo()->wireFlags()) 
 			.arg(this->m_hybrid)
@@ -2342,7 +2342,7 @@ double ConnectorItem::findT(Bezier * bezier, double blen, double length)
 	return t;
 }
 
-const QString & ConnectorItem::legID(ViewLayer::ViewIdentifier viewID, ViewLayer::ViewLayerID viewLayerID) {
+const QString & ConnectorItem::legID(ViewLayer::ViewID viewID, ViewLayer::ViewLayerID viewLayerID) {
 	if (m_connector) return m_connector->legID(viewID, viewLayerID);
 
 	return ___emptyString___;

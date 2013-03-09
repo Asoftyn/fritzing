@@ -61,134 +61,134 @@ $Date$
 static QString PartFactoryFolderPath;
 static QHash<QString, LockedFile *> LockedFiles;
 
-ItemBase * PartFactory::createPart( ModelPart * modelPart, ViewLayer::ViewLayerSpec viewLayerSpec, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, QMenu * wireMenu, bool doLabel)
+ItemBase * PartFactory::createPart( ModelPart * modelPart, ViewLayer::ViewLayerSpec viewLayerSpec, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, QMenu * wireMenu, bool doLabel)
 {
 	modelPart->setModelIndexFromMultiplied(id);			// make sure the model index is synched with the id; this is not always the case when parts are first created.
-	ItemBase * itemBase = createPartAux(modelPart, viewIdentifier, viewGeometry, id, itemMenu, wireMenu, doLabel);
+	ItemBase * itemBase = createPartAux(modelPart, viewID, viewGeometry, id, itemMenu, wireMenu, doLabel);
 	if (itemBase) {
 		itemBase->setViewLayerSpec(viewLayerSpec);
 	}
 	return itemBase;
 }
 
-ItemBase * PartFactory::createPartAux( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, QMenu * wireMenu, bool doLabel)
+ItemBase * PartFactory::createPartAux( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, QMenu * wireMenu, bool doLabel)
 {
 	switch (modelPart->itemType()) {
 		case ModelPart::Wire:
 		{
 			bool ratsnest = viewGeometry.getRatsnest();
 			if (ratsnest) {
-				return new VirtualWire(modelPart, viewIdentifier, viewGeometry, id, wireMenu);		
+				return new VirtualWire(modelPart, viewID, viewGeometry, id, wireMenu);		
 			}
 			if (viewGeometry.getAnyTrace()) {
-				TraceWire * traceWire = new TraceWire(modelPart, viewIdentifier, viewGeometry, id, wireMenu);
+				TraceWire * traceWire = new TraceWire(modelPart, viewID, viewGeometry, id, wireMenu);
 				return traceWire;
 			}
-			return new Wire(modelPart, viewIdentifier, viewGeometry, id, wireMenu, false);
+			return new Wire(modelPart, viewID, viewGeometry, id, wireMenu, false);
 
 		}
 		case ModelPart::Note:
-			return new Note(modelPart, viewIdentifier, viewGeometry, id, NULL);
+			return new Note(modelPart, viewID, viewGeometry, id, NULL);
 		case ModelPart::CopperFill:
-			return new GroundPlane(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+			return new GroundPlane(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 		case ModelPart::Jumper:
-			return new JumperItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+			return new JumperItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 		case ModelPart::ResizableBoard:
-			return new ResizableBoard(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+			return new ResizableBoard(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 		case ModelPart::Board:
-			return new Board(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+			return new Board(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 		case ModelPart::Logo:
 			if (modelPart->moduleID().startsWith("copper", Qt::CaseInsensitive)) {
-				return new CopperLogoItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+				return new CopperLogoItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 			}
             else if (modelPart->moduleID().startsWith("Schematic", Qt::CaseInsensitive)) {
-                return new SchematicLogoItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+                return new SchematicLogoItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
             }
             else if (modelPart->moduleID().startsWith("Breadboard", Qt::CaseInsensitive)) {
-                return new BreadboardLogoItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+                return new BreadboardLogoItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
             }
             // make sure "board" match comes after "breadboard" match
             else if (modelPart->moduleID().contains("board", Qt::CaseInsensitive)) {
-                return new BoardLogoItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+                return new BoardLogoItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
             }
-			return new LogoItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+			return new LogoItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 		case ModelPart::Ruler:
-			return new Ruler(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+			return new Ruler(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 		case ModelPart::Symbol:
-			return new SymbolPaletteItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+			return new SymbolPaletteItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 		case ModelPart::Via:
-			return new Via(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+			return new Via(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 		case ModelPart::Hole:
-			return new Hole(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+			return new Hole(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 		default:
 			{
 				QString moduleID = modelPart->moduleID();
 				if (moduleID.endsWith(ModuleIDNames::ModuleIDNameSuffix)) {
 					if (moduleID.endsWith(ModuleIDNames::ResistorModuleIDName)) {
-						return new Resistor(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new Resistor(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::CapacitorModuleIDName)) {
-						return new Capacitor(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new Capacitor(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::CrystalModuleIDName)) {
-						return new Capacitor(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new Capacitor(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::ThermistorModuleIDName)) {
-						return new Capacitor(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new Capacitor(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::ZenerDiodeModuleIDName)) {
-						return new Capacitor(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new Capacitor(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::PotentiometerModuleIDName)) {
-						return new Capacitor(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new Capacitor(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::InductorModuleIDName)) {
-						return new Capacitor(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new Capacitor(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::ColorLEDModuleIDName)) {
-						return new LED(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new LED(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::ColorFluxLEDModuleIDName)) {
-						return new LED(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new LED(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::LEDModuleIDName)) {
-						return new Capacitor(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new Capacitor(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::PerfboardModuleIDName)) {
-						return new Perfboard(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new Perfboard(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::StripboardModuleIDName)) {
-						return new Stripboard(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new Stripboard(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::SchematicFrameModuleIDName)) {
-						return new SchematicFrame(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new SchematicFrame(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::PadModuleIDName)) {
-						return new Pad(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new Pad(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					if (moduleID.endsWith(ModuleIDNames::CopperBlockerModuleIDName)) {
-						return new CopperBlocker(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new CopperBlocker(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 					// must get the subclasses first
 					if (modelPart->itemType() == ModelPart::Breadboard) {
-						return new Breadboard(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+						return new Breadboard(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
 
 				}
 				QString family = modelPart->properties().value("family", "");
 				if (family.compare("mystery part", Qt::CaseInsensitive) == 0) {
-					return new MysteryPart(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+					return new MysteryPart(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 				}
 				if (family.compare("screw terminal", Qt::CaseInsensitive) == 0) {
-					return new ScrewTerminal(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+					return new ScrewTerminal(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 				}
 				if (family.compare("pin header", Qt::CaseInsensitive) == 0) {
-					return new PinHeader(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+					return new PinHeader(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 				}
 				if (family.compare("generic IC", Qt::CaseInsensitive) == 0) {
-					return new Dip(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+					return new Dip(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 				}
-				return new PaletteItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel);
+				return new PaletteItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 
 			}
 	}
@@ -452,7 +452,7 @@ QString PartFactory::partPath() {
     return PartFactoryFolderPath + "/svg/core/";
 }
 
-QString PartFactory::makeSipOrDipOr(const QStringList & labels, bool hasLayout, bool sip) 
+QString PartFactory::makeSchematicSipOrDipOr(const QStringList & labels, bool hasLayout, bool sip) 
 {		
 	if (hasLayout) {
 		return MysteryPart::makeSchematicSvg(labels, false);

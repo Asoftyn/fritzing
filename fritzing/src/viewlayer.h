@@ -56,6 +56,7 @@ public:
 		BreadboardRuler,
 		SchematicFrame,
 		Schematic,
+        SchematicText,
 		SchematicWire,
 		SchematicTrace,
 		SchematicLabel,
@@ -98,7 +99,7 @@ public:
 		UnknownSpec
 	};
 
-   enum ViewIdentifier {
+   enum ViewID {
     	IconView,
     	BreadboardView,
     	SchematicView,
@@ -163,15 +164,15 @@ public:
 	static bool isCopperLayer(ViewLayer::ViewLayerID);
 	static bool isNonCopperLayer(ViewLayer::ViewLayerID viewLayerID);  // for pcb view layers only
 
-    static QString & viewIdentifierName(ViewLayer::ViewIdentifier);
-	static QString & viewIdentifierXmlName(ViewLayer::ViewIdentifier);
-	static QString & viewIdentifierNaturalName(ViewLayer::ViewIdentifier);
-	static ViewIdentifier idFromXmlName(const QString & name);
-	static const QList<ViewLayer::ViewLayerID> & layersForView(ViewLayer::ViewIdentifier);
-	static bool viewHasLayer(ViewIdentifier, ViewLayer::ViewLayerID);
+    static QString & viewIDName(ViewLayer::ViewID);
+	static QString & viewIDXmlName(ViewLayer::ViewID);
+	static QString & viewIDNaturalName(ViewLayer::ViewID);
+	static ViewID idFromXmlName(const QString & name);
+	static const QList<ViewLayer::ViewLayerID> & layersForView(ViewLayer::ViewID);
+	static bool viewHasLayer(ViewID, ViewLayer::ViewLayerID);
 
-    static bool getConnectorSvgIDs(QDomElement & connector, ViewLayer::ViewIdentifier, QString & id, QString & terminalID);
-    static QDomElement getConnectorPElement(const QDomElement & connector, ViewLayer::ViewIdentifier);
+    static bool getConnectorSvgIDs(QDomElement & connector, ViewLayer::ViewID, QString & id, QString & terminalID);
+    static QDomElement getConnectorPElement(const QDomElement & connector, ViewLayer::ViewID);
 
 
 
@@ -186,7 +187,7 @@ protected:
 	bool m_active;
 	bool m_includeChildLayers;
 
-    static QHash <ViewIdentifier, class NameTriple * > ViewIdentifierNames;
+    static QHash <ViewID, class NameTriple * > ViewIDNames;
 
 };
 

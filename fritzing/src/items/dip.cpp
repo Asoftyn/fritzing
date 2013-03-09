@@ -43,8 +43,8 @@ static int MaxDipPins = 128;
 
 //////////////////////////////////////////////////
 
-Dip::Dip( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: MysteryPart(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+Dip::Dip( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: MysteryPart(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 }
 
@@ -366,7 +366,7 @@ QString Dip::makeBreadboardDipSvg(const QString & expectedFileName)
 }
 
 bool Dip::changePinLabels(bool singleRow, bool sip) {
-	if (m_viewIdentifier != ViewLayer::SchematicView) return true;
+	if (m_viewID != ViewLayer::SchematicView) return true;
 
 	bool hasLocal = false;
 	QStringList labels = getPinLabels(hasLocal);

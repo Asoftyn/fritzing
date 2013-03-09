@@ -53,8 +53,8 @@ static HoleClassThing TheHoleThing;
 
 //////////////////////////////////////////////////
 
-Hole::Hole( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: PaletteItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+Hole::Hole( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: PaletteItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 	PaletteItem::setUpHoleSizes("hole", TheHoleThing);
 }
@@ -77,7 +77,7 @@ QString Hole::holeSize() {
 
 
 void Hole::setHoleSize(QString newSize, bool force) {
-	//DebugDialog::debug(QString("old holesize %1").arg(viewIdentifier()) + holeSize(), sceneBoundingRect());
+	//DebugDialog::debug(QString("old holesize %1").arg(viewID()) + holeSize(), sceneBoundingRect());
 	//foreach (QGraphicsItem * childItem, childItems()) {
 	//	DebugDialog::debug(QString("   child"), childItem->sceneBoundingRect());
 	//}
@@ -88,7 +88,7 @@ void Hole::setHoleSize(QString newSize, bool force) {
 
 		if (m_partLabel) m_partLabel->displayTextsIf();	
 	}
-	//DebugDialog::debug(QString("new holesize %1 ").arg(viewIdentifier()) + holeSize(), sceneBoundingRect());
+	//DebugDialog::debug(QString("new holesize %1 ").arg(viewID()) + holeSize(), sceneBoundingRect());
 	//foreach (QGraphicsItem * childItem, childItems()) {
 	//	DebugDialog::debug(QString("   child"), childItem->sceneBoundingRect());
 	//}
@@ -107,7 +107,7 @@ QRectF Hole::getRect(const QString & newSize) {
 }
 
 void Hole::setBoth(const QString & holeDiameter, const QString & ringThickness) {
-	if (this->m_viewIdentifier != ViewLayer::PCBView) return;
+	if (this->m_viewID != ViewLayer::PCBView) return;
 
 	ItemBase * otherLayer = setBothSvg(holeDiameter, ringThickness);
 
@@ -159,7 +159,7 @@ void Hole::setBothNonConnectors(ItemBase * itemBase, SvgIdLayer * svgIdLayer) {
 		NonConnectorItem * nonConnectorItem = dynamic_cast<NonConnectorItem *>(child);
 		if (nonConnectorItem == NULL) continue;
 
-		//DebugDialog::debug(QString("hole set rect %1").arg(m_viewIdentifier), svgIdLayer->m_rect);
+		//DebugDialog::debug(QString("hole set rect %1").arg(m_viewID), svgIdLayer->m_rect);
 		nonConnectorItem->setRect(svgIdLayer->m_rect);
 		nonConnectorItem->setRadius(svgIdLayer->m_radius, svgIdLayer->m_strokeWidth);
 		break;
@@ -241,7 +241,7 @@ void Hole::addedToScene(bool temporary)
 }
 
 bool Hole::hasCustomSVG() {
-	switch (m_viewIdentifier) {
+	switch (m_viewID) {
 		case ViewLayer::PCBView:
 			return true;
 		default:
@@ -255,7 +255,7 @@ ItemBase::PluralType Hole::isPlural() {
 
 QString Hole::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
 {
-	if (m_viewIdentifier != ViewLayer::PCBView || 
+	if (m_viewID != ViewLayer::PCBView || 
 		(viewLayerID != ViewLayer::Copper0 && viewLayerID != ViewLayer::Copper1)) 
 	{
 		return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
@@ -311,7 +311,7 @@ bool Hole::canFindConnectorsUnder() {
 	return false;
 }
 
-ViewLayer::ViewIdentifier Hole::useViewIdentifierForPixmap(ViewLayer::ViewIdentifier vid, bool) 
+ViewLayer::ViewID Hole::useViewIDForPixmap(ViewLayer::ViewID vid, bool) 
 {
     if (vid == ViewLayer::PCBView) {
         return ViewLayer::IconView;

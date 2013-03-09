@@ -35,7 +35,7 @@ $Date$
 #include "partlabel.h"
 #include "pinheader.h"
 #include "../connectors/connectoritem.h"
-
+#include "../svg/svgfilesplitter.h"
 
 #include <QDomNodeList>
 #include <QDomDocument>
@@ -56,8 +56,8 @@ static HoleClassThing TheHoleThing;
 // TODO
 //	save into parts bin
 
-MysteryPart::MysteryPart( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: PaletteItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+MysteryPart::MysteryPart( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: PaletteItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 	m_chipLabel = modelPart->localProp("chip label").toString();
 	if (m_chipLabel.isEmpty()) {
@@ -88,13 +88,21 @@ void MysteryPart::setChipLabel(QString chipLabel, bool force) {
 	m_chipLabel = chipLabel;
 
 	QString svg;
-	switch (this->m_viewIdentifier) {
+	switch (this->m_viewID) {
 		case ViewLayer::BreadboardView:
 			svg = makeSvg(chipLabel, true);
 			break;
 		case ViewLayer::SchematicView:
 			svg = makeSvg(chipLabel, false);
 			svg = retrieveSchematicSvg(svg);
+            if (m_viewLayerID == ViewLayer::Schematic) {
+                svg = SvgFileSplitter::hideText3(svg);
+            }
+            else if (m_viewLayerID == ViewLayer::SchematicText) {
+                bool hasText;
+                svg = SvgFileSplitter::showText3(svg, hasText);
+            }
+
 			break;
 		default:
 			break;
@@ -256,7 +264,7 @@ const QString & MysteryPart::title() {
 }
 
 bool MysteryPart::hasCustomSVG() {
-	switch (m_viewIdentifier) {
+	switch (m_viewID) {
 		case ViewLayer::BreadboardView:
 		case ViewLayer::SchematicView:
 		case ViewLayer::IconView:
@@ -544,7 +552,7 @@ QString MysteryPart::makeBreadboardSipSvg(const QString & expectedFileName)
 bool MysteryPart::changePinLabels(bool singleRow, bool sip) {
 	Q_UNUSED(singleRow);
 
-	if (m_viewIdentifier != ViewLayer::SchematicView) return true;
+	if (m_viewID != ViewLayer::SchematicView) return true;
 
 	bool hasLocal = false;
 	QStringList labels = getPinLabels(hasLocal);
@@ -632,7 +640,4 @@ QString MysteryPart::makePcbDipSvg(const QString & expectedFileName)
     }
 
 	return svg;
-}
-
-void MysteryPart::makeLocalModifications(QByteArray &, const QString &) {
 }

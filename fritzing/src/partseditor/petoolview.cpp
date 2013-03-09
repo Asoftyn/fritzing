@@ -252,7 +252,7 @@ void PEToolView::initConnectors(QList<QDomElement> * connectorList) {
     m_connectorListWidget->blockSignals(false);
 }
 
-void PEToolView::showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::ViewIdentifier viewIdentifier) {
+void PEToolView::showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::ViewID viewID) {
 	QDomElement svgRoot = svgDoc->documentElement();
 
 	for (int i = 0; i < m_connectorListWidget->topLevelItemCount(); i++) {
@@ -260,7 +260,7 @@ void PEToolView::showAssignedConnectors(const QDomDocument * svgDoc, ViewLayer::
 		int index = item->data(0, Qt::UserRole).toInt();
 		QDomElement connector = m_connectorList->at(index);
 		QString svgID, terminalID;
-        bool ok = ViewLayer::getConnectorSvgIDs(connector, viewIdentifier, svgID, terminalID);
+        bool ok = ViewLayer::getConnectorSvgIDs(connector, viewID, svgID, terminalID);
 		if (!ok) {
 			continue;
 		}

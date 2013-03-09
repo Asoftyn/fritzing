@@ -28,9 +28,11 @@ $Date$
 #include "../sketch/infographicsview.h"
 #include "../debugdialog.h"
 #include "../layerattributes.h"
+#include "../utils/graphicsutils.h"
+#include "../svg/svgfilesplitter.h"
 
-LayerKinPaletteItem::LayerKinPaletteItem(PaletteItemBase * chief, ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu* itemMenu)
-	: PaletteItemBase(modelPart, viewIdentifier, viewGeometry, id, itemMenu)
+LayerKinPaletteItem::LayerKinPaletteItem(PaletteItemBase * chief, ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu* itemMenu)
+	: PaletteItemBase(modelPart, viewID, viewGeometry, id, itemMenu)
 
 {
     m_layerKinChief = chief;
@@ -42,8 +44,8 @@ void LayerKinPaletteItem::init(ViewLayer::ViewLayerID viewLayerID, ViewLayer::Vi
 	m_viewLayerSpec = viewLayerSpec;
 	QString error;
 	LayerAttributes layerAttributes;
-	m_ok = setUpImage(m_modelPart, m_viewIdentifier, viewLayers, viewLayerID, m_viewLayerSpec, true, layerAttributes, error);
-	//DebugDialog::debug(QString("lk accepts hover %1 %2 %3 %4 %5").arg(title()).arg(m_viewIdentifier).arg(m_id).arg(viewLayerID).arg(this->acceptHoverEvents()));
+	m_ok = setUpImage(m_modelPart, m_viewID, viewLayers, viewLayerID, m_viewLayerSpec, true, layerAttributes, error);
+	//DebugDialog::debug(QString("lk accepts hover %1 %2 %3 %4 %5").arg(title()).arg(m_viewID).arg(m_id).arg(viewLayerID).arg(this->acceptHoverEvents()));
 }
 
 QVariant LayerKinPaletteItem::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -188,3 +190,94 @@ bool LayerKinPaletteItem::inRotation() {
 void LayerKinPaletteItem::setInRotation(bool val) {
     layerKinChief()->setInRotation(val);
 }
+
+//////////////////////////////////////////////////
+
+SchematicTextLayerKinPaletteItem::SchematicTextLayerKinPaletteItem(PaletteItemBase * chief, ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu* itemMenu)
+	: LayerKinPaletteItem(chief, modelPart, viewID, viewGeometry, id, itemMenu)
+
+{
+    m_flipped = false;
+}
+
+bool SchematicTextLayerKinPaletteItem::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
+{
+	bool result = PaletteItemBase::setUpImage(modelPart, viewID, viewLayers, viewLayerID, viewLayerSpec, doConnectors, layerAttributes, error);
+    this->setProperty("textSvg", layerAttributes.loaded());
+    return result;
+}
+
+
+void SchematicTextLayerKinPaletteItem::transformItem(const QTransform & currTransf) {
+    Q_UNUSED(currTransf);
+    double rotation;
+    QTransform chiefMatrix = layerKinChief()->transform();      // assume chief already has rotation
+    bool isFlipped = GraphicsUtils::isFlipped(chiefMatrix.toAffine(), rotation);
+    if (isFlipped) {
+        if (!m_flipped) {
+             makeFlipTextSvg();
+        }
+    }
+    else if (m_flipped) {
+        QString textSvg = this->property("textSvg").toString();
+        reloadRenderer(textSvg, true);
+        m_flipped = false;
+    }
+
+    QPointF p = layerKinChief()->sceneBoundingRect().topLeft();
+    QTransform transform;
+    QRectF bounds = boundingRect();
+    transform.translate(bounds.width() / -2, bounds.height() / -2);
+    transform.rotate(rotation);
+    //transform.translate(bounds.width() / 2, bounds.height() / 2);
+    this->blockSignals(true);
+    this->setTransform(transform);
+    this->blockSignals(false);
+    this->setPos(p);
+}
+
+bool SchematicTextLayerKinPaletteItem::makeFlipTextSvg() {
+    QByteArray textSvg = this->property("textSvg").toByteArray();
+
+    QDomDocument doc;
+    QString errorStr;
+	int errorLine;
+	int errorColumn;
+    if (!doc.setContent(textSvg, &errorStr, &errorLine, &errorColumn)) {
+        DebugDialog::debug(QString("unable to parse schematic text: %1 %2 %3:\n%4").arg(errorStr).arg(errorLine).arg(errorColumn).arg(QString(textSvg)));
+		return false;
+    }
+
+    QDomElement root = doc.documentElement();
+    QDomNodeList nodeList = root.elementsByTagName("text");
+    QList<QDomElement> texts;
+    for (int i = 0; i < nodeList.count(); i++) {
+        texts.append(nodeList.at(i).toElement());
+    }
+
+    QString idString("-_-_-text-_-_-%1");
+    int ix = 0;
+    foreach (QDomElement text, texts) {
+        text.setAttribute("id", idString.arg(ix++));
+    }
+
+    QSvgRenderer renderer;
+    renderer.load(doc.toByteArray());
+    QRectF viewBox = renderer.viewBoxF();
+    ix = 0;
+    foreach (QDomElement text, texts) {
+        QString id = idString.arg(ix++);
+        double x = text.attribute("x").toDouble();
+        double y = text.attribute("y").toDouble();
+        QRectF wasteOfTime = renderer.boundsOnElement(id); // returns a null rectangle with <text> elements
+        QRectF shit(x, y, 10, 10);
+        QRectF r = renderer.matrixForElement(id).mapRect(shit);
+        text.setAttribute("x", viewBox.width() - r.right());
+    }
+
+    QString debug = doc.toString();
+    reloadRenderer(debug, true);
+    m_flipped = true;
+    return true;
+}
+

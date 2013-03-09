@@ -46,7 +46,7 @@ class Board : public PaletteItem
 
 public:
 	// after calling this constructor if you want to render the loaded svg (either from model or from file), MUST call <renderImage>
-	Board(ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
+	Board(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~Board();
 
 	QStringList collectValues(const QString & family, const QString & prop, QString & value);
@@ -66,7 +66,7 @@ protected:
 	void unableToLoad(const QString & fileName, const QString & reason);
 	bool canLoad(const QString & fileName, const QString & reason);
 	virtual void prepLoadImageAux(const QString & fileName, bool addName);
-    ViewLayer::ViewIdentifier useViewIdentifierForPixmap(ViewLayer::ViewIdentifier, bool swappingEnabled);
+    ViewLayer::ViewID useViewIDForPixmap(ViewLayer::ViewID, bool swappingEnabled);
 
 protected:
     static void moreCheckImage(const QString & filename);
@@ -99,10 +99,10 @@ class ResizableBoard : public Board
 
 public:
 	// after calling this constructor if you want to render the loaded svg (either from model or from file), MUST call <renderImage>
-	ResizableBoard(ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
+	ResizableBoard(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~ResizableBoard();
 
-	bool setUpImage(ModelPart* modelPart, ViewLayer::ViewIdentifier viewIdentifier, const LayerHash & viewLayers, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, bool doConnectors, LayerAttributes &, QString & error);
+	bool setUpImage(ModelPart* modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, bool doConnectors, LayerAttributes &, QString & error);
 	virtual bool resizeMM(double w, double h, const LayerHash & viewLayers);
 	void resizePixels(double w, double h, const LayerHash & viewLayers);
  	void loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLayerSpec);
@@ -148,7 +148,7 @@ protected:
 	virtual void loadTemplates();
 	virtual double minWidth();
 	virtual double minHeight();
-	virtual ViewLayer::ViewIdentifier theViewIdentifier();
+	virtual ViewLayer::ViewID theViewID();
 	virtual QString makeLayerSvg(ViewLayer::ViewLayerID viewLayerID, double mmW, double mmH, double milsW, double milsH);
 	virtual QString makeFirstLayerSvg(double mmW, double mmH, double milsW, double milsH);
 	virtual QString makeNextLayerSvg(ViewLayer::ViewLayerID, double mmW, double mmH, double milsW, double milsH);

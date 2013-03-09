@@ -69,6 +69,8 @@ public:
 	static QPainterPath shapeFromPath(const QPainterPath &path, const QPen &pen, double shapeStrokeWidth, bool includeOriginalPath);
 	static void qt_graphicsItem_highlightSelected(QPainter *painter, const QStyleOptionGraphicsItem *option, const QRectF & boundingRect, const QPainterPath & path);
 	static QPointF calcRotation(QTransform & rotation, QPointF rCenter, QPointF p, QPointF pCenter); 
+    static void drawBorder(QImage * image, int border);
+    static bool isFlipped(const QMatrix & matrix, double & rotation);
 
 public:
 	static const double IllustratorDPI;

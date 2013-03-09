@@ -42,7 +42,7 @@ class Ruler : public PaletteItem
 
 public:
 	// after calling this constructor if you want to render the loaded svg (either from model or from file), MUST call <renderImage>
-	Ruler(ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
+	Ruler(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~Ruler();
 
 	void resizeMM(double magnitude, double unitsFlag, const LayerHash & viewLayers);
@@ -62,7 +62,7 @@ public slots:
 
 protected:
 	QString makeSvg(double inches);
-    ViewLayer::ViewIdentifier useViewIdentifierForPixmap(ViewLayer::ViewIdentifier, bool swappingEnabled);
+    ViewLayer::ViewID useViewIDForPixmap(ViewLayer::ViewID, bool swappingEnabled);
 	
 protected:
 	QPointer<QLineEdit> m_widthEditor;

@@ -729,7 +729,7 @@ void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, 
         }
         
         QString sid = QString::number(itemBase->id());
-        SvgIdLayer * svgIdLayer = equ->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
+        SvgIdLayer * svgIdLayer = equ->connector()->fullPinInfo(itemBase->viewID(), itemBase->viewLayerID());
         partSvgIDs.insert(sid, svgIdLayer->m_svgId);
         if (!svgIdLayer->m_terminalId.isEmpty()) {
             partTerminalIDs.insert(sid, svgIdLayer->m_terminalId);
@@ -828,7 +828,7 @@ void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & part
     if (checkIntersection && itemBases.count() > 0) {
         ItemBase * itemBase = itemBases.at(0);
         foreach (ConnectorItem * connectorItem, itemBase->cachedConnectorItems()) {
-            SvgIdLayer * svgIdLayer = connectorItem->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
+            SvgIdLayer * svgIdLayer = connectorItem->connector()->fullPinInfo(itemBase->viewID(), itemBase->viewLayerID());
             if (!svgIDs.contains(svgIdLayer->m_svgId)) {
                 notSvgIDs.append(svgIdLayer->m_svgId);
             }

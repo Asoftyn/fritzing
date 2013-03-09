@@ -697,7 +697,7 @@ bool FSvgRenderer::setUpConnector(SvgIdLayer * svgIdLayer, bool ignoreTerminalPo
 	/*DebugDialog::debug(QString("identity matrix %11 %1 %2, viewbox: %3 %4 %5 %6, bounds: %7 %8 %9 %10, size: %12 %13").arg(m_modelPart->title()).arg(connectorSharedID())
 					   .arg(viewBox.x()).arg(viewBox.y()).arg(viewBox.width()).arg(viewBox.height())
 					   .arg(bounds.x()).arg(bounds.y()).arg(bounds.width()).arg(bounds.height())
-					   .arg(viewIdentifier)
+					   .arg(viewID)
 					   .arg(defaultSizeF.width()).arg(defaultSizeF.height())
 	);
 	*/

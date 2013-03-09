@@ -35,7 +35,7 @@ class SchematicSketchWidget : public PCBSketchWidget
 	Q_OBJECT
 
 public:
-    SchematicSketchWidget(ViewLayer::ViewIdentifier, QWidget *parent=0);
+    SchematicSketchWidget(ViewLayer::ViewID, QWidget *parent=0);
 
 	void addViewLayers();
 	ViewLayer::ViewLayerID getWireViewLayerID(const ViewGeometry & viewGeometry, ViewLayer::ViewLayerSpec);

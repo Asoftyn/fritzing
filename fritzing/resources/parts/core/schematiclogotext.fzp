@@ -32,7 +32,7 @@
   </breadboardView>
   <schematicView>
    <layers image="schematic/schematiclogo.svg" >
-    <layer layerId="schematic" />
+    <layer layerId="schematicText" />
    </layers>
   </schematicView>
   <pcbView>

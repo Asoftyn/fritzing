@@ -39,7 +39,7 @@ class IconSketchWidget : public SketchWidget
 	Q_OBJECT
 
 public:
-    IconSketchWidget(ViewLayer::ViewIdentifier, QWidget *parent=0);
+    IconSketchWidget(ViewLayer::ViewID, QWidget *parent=0);
 
 	void addViewLayers();
 };
@@ -79,8 +79,8 @@ public:
 	void addBusConnector(const QString & busID, const QString & connectorID);
 	void removeBusConnector(const QString & busID, const QString & connectorID, bool display);
 	void changeSMD(const QString & smd, const QString & filename, int changeDirection);
-    void changeReferenceFile(ViewLayer::ViewIdentifier viewIdentifier, const QString referenceFile);
-    void changeOriginalFile(ViewLayer::ViewIdentifier viewIdentifier, const QString originalFile, int changeCount);
+    void changeReferenceFile(ViewLayer::ViewID viewID, const QString referenceFile);
+    void changeOriginalFile(ViewLayer::ViewID viewID, const QString originalFile, int changeCount);
 
 signals:
     void addToMyPartsSignal(ModelPart *);
@@ -122,7 +122,7 @@ protected:
     void moreInitDock();
     void createActions();
     void createMenus();
-    QList<QWidget*> getButtonsForView(ViewLayer::ViewIdentifier);
+    QList<QWidget*> getButtonsForView(ViewLayer::ViewID);
     void connectPairs();
 	QMenu *breadboardItemMenu();
 	QMenu *schematicItemMenu();
@@ -184,9 +184,9 @@ protected:
 	void setConnectorSMD(bool toSMD, QDomElement & connector);
 	bool activeLayerWidgetAlwaysOn();
 	void updateFileMenu();
-	void reuseImage(ViewLayer::ViewIdentifier);
+	void reuseImage(ViewLayer::ViewID);
 	void setImageAttribute(QDomElement & layers, const QString & image);
-    void setImageAttribute(QDomElement & fzpRoot, const QString & svgPath, ViewLayer::ViewIdentifier viewIdentifier);
+    void setImageAttribute(QDomElement & fzpRoot, const QString & svgPath, ViewLayer::ViewID viewID);
 	QString makeNewVariant(const QString & family);
 	void connectorWarning();
     bool anyMarquee();
@@ -245,7 +245,7 @@ protected:
     class PESvgView * m_peSvgView;
     QString m_guid;
     int m_fileIndex;
-    QHash<ViewLayer::ViewIdentifier, ViewThing *> m_viewThings;
+    QHash<ViewLayer::ViewID, ViewThing *> m_viewThings;
     QString m_userPartsFolderPath;
     QString m_userPartsFolderSvgPath;
     bool m_canSave;

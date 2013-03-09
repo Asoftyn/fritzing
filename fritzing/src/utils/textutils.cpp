@@ -1783,3 +1783,27 @@ QString TextUtils::getRandText() {
 }*/
 
 
+bool TextUtils::ensureViewBox(QDomDocument doc, double dpi, QRectF & rect) {
+    bool isIllustrator = TextUtils::isIllustratorDoc(doc);
+
+    QDomElement root = doc.documentElement();
+	QString viewBox = root.attribute("viewBox");
+	if (viewBox.isEmpty()) {
+		bool ok1, ok2;
+		double w = TextUtils::convertToInches(root.attribute("width"), &ok1, isIllustrator) * dpi;
+		double h = TextUtils::convertToInches(root.attribute("height"), &ok2, isIllustrator) * dpi;
+		if (!ok1 || !ok2) {
+			return false;
+		}
+
+		root.setAttribute("viewBox", QString("0 0 %1 %2").arg(w).arg(h));
+        rect.setRect(0, 0, w, h);
+        return true;
+	}
+
+    QStringList coords = viewBox.split(QRegExp(" |,"));
+    if (coords.count() != 4) return false;
+
+    rect.setRect(coords.at(0).toDouble(), coords.at(1).toDouble(), coords.at(2).toDouble(), coords.at(3).toDouble());
+    return true;
+}

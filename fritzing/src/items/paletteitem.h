@@ -78,7 +78,7 @@ class PaletteItem : public PaletteItemBase
 
 public:
 	// after calling this constructor if you want to render the loaded svg (either from model or from file), MUST call <renderImage>
-	PaletteItem(ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
+	PaletteItem(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~PaletteItem();
 
 	void removeLayerKin();
@@ -91,7 +91,7 @@ public:
 	void transformItem2(const QMatrix &);
 	void setItemPos(QPointF & pos);
 
-	bool renderImage(ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const LayerHash & viewLayers, ViewLayer::ViewLayerID, bool doConnectors, QString & error);
+	bool renderImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID, bool doConnectors, QString & error);
 
 	void setTransforms();
 	void syncKinMoved(QPointF offset, QPointF loc);
@@ -118,7 +118,7 @@ public:
 	void resetConnectors();
 	void resetConnectors(ItemBase * otherLayer, FSvgRenderer * otherLayerRenderer);
 	void resetConnector(ItemBase * itemBase, SvgIdLayer * svgIdLayer);
-    QStringList sipOrDipOr(bool & hasLayout, bool & sip);
+    QStringList sipOrDipOrLabels(bool & hasLayout, bool & sip);
 
 public:
 	static QString genFZP(const QString & moduleid, const QString & templateName, int minPins, int maxPins, int steps, bool smd);
@@ -151,7 +151,7 @@ protected:
     QString hackFzpHoleSize(const QString & moduleID, const QString & pcbFilename, const QString & holeSize);
     QString appendHoleSize(const QString & moduleID, const QString & holeSize, const QString & ringThickness);
     void generateSwap(const QString & text, GenModuleID, GenFzp, GenSvg makeBreadboardSvg, GenSvg makeSchematicSvg, GenSvg makePcbSvg);
-    void makeLocalModifications(QByteArray & svg, const QString & filename);
+    bool makeLocalModifications(QByteArray & svg, const QString & filename);
 
 protected:
     void setUpHoleSizes(const QString & type, HoleClassThing &);
@@ -176,6 +176,7 @@ public:
 protected:
  	QList<class ItemBase *> m_layerKin;
     HoleSettings m_holeSettings;
+    int m_flipCount;
 
 };
 

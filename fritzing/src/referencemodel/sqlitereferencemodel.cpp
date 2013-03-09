@@ -284,7 +284,7 @@ bool SqliteReferenceModel::loadFromDB(QSqlDatabase & keep_db, QSqlDatabase & db)
     while (query.next()) {
         int ix = 0;
         ViewImage * viewImage = new ViewImage(ViewLayer::BreadboardView);
-        viewImage->viewIdentifier = (ViewLayer::ViewIdentifier) query.value(ix++).toInt();
+        viewImage->viewID = (ViewLayer::ViewID) query.value(ix++).toInt();
         viewImage->image = query.value(ix++).toString();
         viewImage->layers = query.value(ix++).toULongLong();
         viewImage->sticky = query.value(ix++).toULongLong();
@@ -384,7 +384,7 @@ bool SqliteReferenceModel::loadFromDB(QSqlDatabase & keep_db, QSqlDatabase & db)
 
     while (query.next()) {
         int ix = 0;
-        ViewLayer::ViewIdentifier viewIdentifier = (ViewLayer::ViewIdentifier) query.value(ix++).toInt();
+        ViewLayer::ViewID viewID = (ViewLayer::ViewID) query.value(ix++).toInt();
         ViewLayer::ViewLayerID viewLayerID = (ViewLayer::ViewLayerID) query.value(ix++).toInt();
         QString svgID = query.value(ix++).toString();
         bool hybrid = query.value(ix++).toInt() == 0 ? false : true;
@@ -393,7 +393,7 @@ bool SqliteReferenceModel::loadFromDB(QSqlDatabase & keep_db, QSqlDatabase & db)
         qulonglong cid = query.value(ix++).toULongLong();
         Connector * connector = connectors.at(cid);
         if (connector) {
-            connectors[cid]->addPin(viewIdentifier, svgID, viewLayerID, terminalID, legID, hybrid);
+            connectors[cid]->addPin(viewID, svgID, viewLayerID, terminalID, legID, hybrid);
         }
     }
 
@@ -460,6 +460,10 @@ bool SqliteReferenceModel::loadFromDB(QSqlDatabase & keep_db, QSqlDatabase & db)
     }
     foreach (ModelPart * modelPart, m_partHash.values()) {
         if (modelPart->dbid() != 0) {
+            // initConnectors is not redundant here
+            // there may be parts in m_partHash loaded from a file rather from the database
+            // 
+            modelPart->initConnectors();    
             modelPart->flipSMDAnd();
             modelPart->initBuses();
             modelPart->setParent(m_root);
@@ -494,7 +498,7 @@ bool SqliteReferenceModel::createConnection(const QString & databaseName, bool f
         QSqlQuery query;
         result = query.exec("CREATE TABLE viewimages (\n"
 			"id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n"
-			"viewid INTEGER NOT NULL,\n"                     // ViewLayer::ViewIdentifier
+			"viewid INTEGER NOT NULL,\n"                     // ViewLayer::ViewID
 			"image TEXT NOT NULL,\n"
 			"layers INTEGER NOT NULL,\n"                     // bit flag (max 8 bytes = 64 layers)
 			"sticky INTEGER NOT NULL,\n"                     // bit flag (max 8 bytes = 64 layers)
@@ -520,7 +524,7 @@ bool SqliteReferenceModel::createConnection(const QString & databaseName, bool f
 
         result = query.exec("CREATE TABLE connectorlayers (\n"
 			"id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n"
-			"view INTEGER NOT NULL,\n"                      // ViewLayer::ViewIdentifier
+			"view INTEGER NOT NULL,\n"                      // ViewLayer::ViewID
 			"layer INTEGER NOT NULL,\n"                     // ViewLayer::ViewLayerID
 			"svgid TEXT NOT NULL,\n"
 			"hybrid INTEGER NOT NULL,\n"
@@ -943,7 +947,7 @@ bool SqliteReferenceModel::insertViewImage(const ViewImage * viewImage, qulonglo
 	QSqlQuery query;
 	query.prepare("INSERT INTO viewimages(viewid, image, layers, sticky, flipvertical, fliphorizontal, part_id) "
                     "VALUES (:viewid, :image, :layers, :sticky, :flipvertical, :fliphorizontal, :part_id)");
-	query.bindValue(":viewid", viewImage->viewIdentifier);
+	query.bindValue(":viewid", viewImage->viewID);
 	query.bindValue(":image", viewImage->image);
 	query.bindValue(":layers", viewImage->layers);
 	query.bindValue(":sticky", viewImage->sticky);
@@ -1025,7 +1029,7 @@ bool SqliteReferenceModel::insertConnectorLayer(const SvgIdLayer * svgIdLayer, q
 	QSqlQuery query;
 	query.prepare("INSERT INTO connectorLayers(view, layer, svgid, hybrid, terminalid, legid, connector_id) VALUES "
                                             "(:view, :layer, :svgid, :hybrid, :terminalid, :legid, :connector_id)");
-	query.bindValue(":view", svgIdLayer->m_viewIdentifier);
+	query.bindValue(":view", svgIdLayer->m_viewID);
 	query.bindValue(":layer", svgIdLayer->m_svgViewLayerID);
 	query.bindValue(":svgid", svgIdLayer->m_svgId);
 	query.bindValue(":hybrid", svgIdLayer->m_hybrid ? 1 : 0);

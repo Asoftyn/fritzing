@@ -57,8 +57,8 @@ bool Perfboard::m_gotWarning = false;
 
 /////////////////////////////////////////////////////////////////////
 
-Perfboard::Perfboard( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: Capacitor(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+Perfboard::Perfboard( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: Capacitor(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 	m_size = modelPart->localProp("size").toString();
 	if (m_size.isEmpty()) {
@@ -76,7 +76,7 @@ void Perfboard::setProp(const QString & prop, const QString & value)
 		Capacitor::setProp(prop, value);
 		return;
 	}
-	switch (this->m_viewIdentifier) {
+	switch (this->m_viewID) {
 		case ViewLayer::BreadboardView:
 			if (value.compare(m_size) != 0) {
                 QString temp = value;

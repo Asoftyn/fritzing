@@ -59,12 +59,12 @@ const static QString InstanceTemplate(
         		"\t\t</instance>\n");
 
 
-void setFlip(ViewLayer::ViewIdentifier viewIdentifier, QXmlStreamReader & xml, QHash<ViewLayer::ViewIdentifier, ViewImage *> & viewImages)
+void setFlip(ViewLayer::ViewID viewID, QXmlStreamReader & xml, QHash<ViewLayer::ViewID, ViewImage *> & viewImages)
 {
     bool fv = xml.attributes().value("flipvertical", "").toString().compare("true") == 0;
     bool fh = xml.attributes().value("fliphorizontal", "").toString().compare("true") == 0;
-    viewImages.value(viewIdentifier)->canFlipHorizontal = fh;
-    viewImages.value(viewIdentifier)->canFlipVertical = fv;
+    viewImages.value(viewID)->canFlipHorizontal = fh;
+    viewImages.value(viewID)->canFlipVertical = fv;
 }
 
 /////////////////////////////////////

@@ -54,7 +54,7 @@ class SvgIconWidget : public QGraphicsWidget
 {
 Q_OBJECT
 public:
-	SvgIconWidget(ModelPart *, ViewLayer::ViewIdentifier, ItemBase *, bool plural);
+	SvgIconWidget(ModelPart *, ViewLayer::ViewID, ItemBase *, bool plural);
 	~SvgIconWidget();
 	ItemBase * itemBase() const;
 	ModelPart * modelPart() const;
@@ -68,7 +68,7 @@ protected:
 	void hoverEnterEvent ( QGraphicsSceneHoverEvent * event );
 	void hoverLeaveEvent ( QGraphicsSceneHoverEvent * event );
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-	void setupImage(bool plural, ViewLayer::ViewIdentifier viewIdentifier);
+	void setupImage(bool plural, ViewLayer::ViewID viewID);
 
 protected:
 	QPointer<ItemBase> m_itemBase;

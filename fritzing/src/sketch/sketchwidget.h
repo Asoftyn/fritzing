@@ -90,7 +90,7 @@ class SketchWidget : public InfoGraphicsView
 	Q_OBJECT
 
 public:
-    SketchWidget(ViewLayer::ViewIdentifier, QWidget *parent=0, int size=400, int minSize=300);
+    SketchWidget(ViewLayer::ViewID, QWidget *parent=0, int size=400, int minSize=300);
 	~SketchWidget();
 
 	void pushCommand(QUndoCommand *, QObject * signalTarget);
@@ -165,7 +165,7 @@ public:
 
  	ItemCount calcItemCount();
 
-	ViewLayer::ViewIdentifier viewIdentifier();
+	ViewLayer::ViewID viewID();
 	void setViewLayerIDs(ViewLayer::ViewLayerID part, ViewLayer::ViewLayerID wire, ViewLayer::ViewLayerID connector, ViewLayer::ViewLayerID ruler, ViewLayer::ViewLayerID note);
 	void stickem(long stickTargetID, long stickSourceID, bool stick);
 	void stickyScoop(ItemBase * stickyOne, bool checkCurrent, CheckStickyCommand *);
@@ -180,8 +180,8 @@ public:
 	void noteChanged(ItemBase *, const QString & oldText, const QString &newtext, QSizeF oldSize, QSizeF newSize);
 
 	void setInfoViewOnHover(bool infoViewOnHover);
-	virtual ItemBase * addItemAux(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, bool doConnectors, ViewLayer::ViewIdentifier, bool temporary);
-	ItemBase * addItemAuxTemp(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, bool doConnectors, ViewLayer::ViewIdentifier, bool temporary);
+	virtual ItemBase * addItemAux(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, bool doConnectors, ViewLayer::ViewID, bool temporary);
+	ItemBase * addItemAuxTemp(ModelPart *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, bool doConnectors, ViewLayer::ViewID, bool temporary);
 
     bool swappingEnabled(ItemBase *);
 
@@ -341,7 +341,7 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
     void paintEvent(QPaintEvent *);
-    virtual PaletteItem* addPartItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec, PaletteItem * paletteItem, bool doConnectors, bool & ok, ViewLayer::ViewIdentifier, bool temporary);
+    virtual PaletteItem* addPartItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec, PaletteItem * paletteItem, bool doConnectors, bool & ok, ViewLayer::ViewID, bool temporary);
 	void clearHoldingSelectItem();
 	bool startZChange(QList<ItemBase *> & bases);
 	void continueZChange(QList<ItemBase *> & bases, int start, int end, bool (*test)(int current, int start), int inc, const QString & text);
@@ -383,7 +383,7 @@ protected:
 	void dragWireChanged(class Wire* wire, ConnectorItem * from, ConnectorItem * to);
 	void dragRatsnestChanged();
 	void killDroppingItem();
-	ViewLayer::ViewLayerID getViewLayerID(ModelPart *, ViewLayer::ViewIdentifier, ViewLayer::ViewLayerSpec);
+	ViewLayer::ViewLayerID getViewLayerID(ModelPart *, ViewLayer::ViewID, ViewLayer::ViewLayerSpec);
 	ItemBase * overSticky(ItemBase *);
 	virtual void setNewPartVisible(ItemBase *);
 	virtual bool collectFemaleConnectees(ItemBase *, QSet<ItemBase *> &);
@@ -398,7 +398,7 @@ protected:
 	void clearDragWireTempCommand();
 	bool draggingWireEnd();
 	void moveItems(QPoint globalPos, bool checkAutoScroll, bool rubberBandLegEnabled);
-	virtual ViewLayer::ViewLayerID multiLayerGetViewLayerID(ModelPart * modelPart, ViewLayer::ViewIdentifier, ViewLayer::ViewLayerSpec, LayerList &);
+	virtual ViewLayer::ViewLayerID multiLayerGetViewLayerID(ModelPart * modelPart, ViewLayer::ViewID, ViewLayer::ViewLayerSpec, LayerList &);
 	virtual BaseCommand::CrossViewType wireSplitCrossView();
 	virtual bool canChainMultiple();
 	virtual bool canChainWire(Wire *);
@@ -627,7 +627,7 @@ protected:
 protected:
 	QPointer<class ReferenceModel> m_referenceModel;
 	QPointer<SketchModel> m_sketchModel;
-	ViewLayer::ViewIdentifier m_viewIdentifier;
+	ViewLayer::ViewID m_viewID;
 	class WaitPushUndoStack * m_undoStack;
 	class SelectItemCommand * m_holdingSelectItemCommand;
 	class SelectItemCommand * m_tempDragWireCommand;
@@ -730,7 +730,7 @@ protected:
 	QPointer<class ResizableBoard> m_resizingBoard;
 
 public:
-	static ViewLayer::ViewLayerID defaultConnectorLayer(ViewLayer::ViewIdentifier viewId);
+	static ViewLayer::ViewLayerID defaultConnectorLayer(ViewLayer::ViewID viewId);
 	static const int PropChangeDelay;
     static bool m_blockUI;
 

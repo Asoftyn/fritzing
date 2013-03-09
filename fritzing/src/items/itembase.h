@@ -61,7 +61,7 @@ public:
 	};
 
 public:
-	ItemBase(class ModelPart*, ViewLayer::ViewIdentifier, const ViewGeometry &, long id, QMenu * itemMenu);
+	ItemBase(class ModelPart*, ViewLayer::ViewID, const ViewGeometry &, long id, QMenu * itemMenu);
 	virtual ~ItemBase();
 
 	qint64 id() const;
@@ -83,11 +83,11 @@ public:
 	virtual void setItemPos(QPointF & pos);
 	virtual void rotateItem(double degrees);
 	virtual void flipItem(Qt::Orientations orientation);
-	void transformItem(const QTransform &);
+	virtual void transformItem(const QTransform &);
 	virtual void transformItem2(const QMatrix &);
 	virtual void removeLayerKin();
-	ViewLayer::ViewIdentifier viewIdentifier();
-	QString & viewIdentifierName();
+	ViewLayer::ViewID viewID();
+	QString & viewIDName();
 	ViewLayer::ViewLayerID viewLayerID() const;
 	void setViewLayerID(ViewLayer::ViewLayerID, const LayerHash & viewLayers);
 	void setViewLayerID(const QString & layerName, const LayerHash & viewLayers);
@@ -215,7 +215,7 @@ public:
 	bool resetRenderer(const QString & svg);
 	bool resetRenderer(const QString & svg, QString & newSvg);
     void getPixmaps(QPixmap * &, QPixmap * &, QPixmap * &, bool swappingEnabled, QSize);
-    class FSvgRenderer * setUpImage(class ModelPart * modelPart, ViewLayer::ViewIdentifier, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, class LayerAttributes &, QString & error);
+    class FSvgRenderer * setUpImage(class ModelPart * modelPart, ViewLayer::ViewID, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, class LayerAttributes &, QString & error);
 	void showConnectors(const QStringList &);
 	void setItemIsSelectable(bool selectable);
 	virtual bool inRotation();
@@ -312,9 +312,9 @@ protected:
 	virtual void setDefaultTooltip();
 	void setInstanceTitleAux(const QString & title);
 	void saveLocAndTransform(QXmlStreamWriter & streamWriter);
-    QPixmap * getPixmap(ViewLayer::ViewIdentifier, bool swappingEnabled, QSize size);
-    virtual ViewLayer::ViewIdentifier useViewIdentifierForPixmap(ViewLayer::ViewIdentifier, bool swappingEnabled);
-    virtual void makeLocalModifications(QByteArray & svg, const QString & filename);
+    QPixmap * getPixmap(ViewLayer::ViewID, bool swappingEnabled, QSize size);
+    virtual ViewLayer::ViewID useViewIDForPixmap(ViewLayer::ViewID, bool swappingEnabled);
+    virtual bool makeLocalModifications(QByteArray & svg, const QString & filename);
     void updateHidden();
 
 protected:
@@ -326,7 +326,7 @@ protected:
 	qint64 m_id;
 	ViewGeometry m_viewGeometry;
 	QPointer<ModelPart> m_modelPart;
-	ViewLayer::ViewIdentifier m_viewIdentifier;
+	ViewLayer::ViewID m_viewID;
 	ViewLayer::ViewLayerID m_viewLayerID;
 	int m_connectorHoverCount;
 	int m_connectorHoverCount2;

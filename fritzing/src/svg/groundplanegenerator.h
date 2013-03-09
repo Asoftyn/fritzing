@@ -45,6 +45,7 @@ struct GPGParams {
     QGraphicsItem * board;
     double res;
     QString color;
+    double keepoutMils;
 };
 
 class GroundPlaneGenerator : public QObject
@@ -55,9 +56,9 @@ public:
 	~GroundPlaneGenerator();
 
 	bool generateGroundPlane(const QString & boardSvg, QSizeF boardImageSize, const QString & svg, QSizeF copperImageSize, QStringList & exceptions, 
-							 QGraphicsItem * board, double res, const QString & color); 
+							 QGraphicsItem * board, double res, const QString & color, double keepoutMils); 
 	bool generateGroundPlaneUnit(const QString & boardSvg, QSizeF boardImageSize, const QString & svg, QSizeF copperImageSize, QStringList & exceptions, 
-							 QGraphicsItem * board, double res, const QString & color, QPointF whereToStart); 
+							 QGraphicsItem * board, double res, const QString & color, QPointF whereToStart, double keepoutMils); 
 	void scanImage(QImage & image, double bWidth, double bHeight, double pixelFactor, double res, 
 					const QString & colorString, bool makeConnector, 
 					bool makeOffset, QSizeF minAreaInches, double minDimensionInches, QPointF offsetPolygons);  
@@ -107,6 +108,11 @@ protected:
 	double m_strokeWidthIncrement;
 	int m_minRunSize;
 	int m_minRiseSize;
+
+public:
+    static const QString KeepoutSettingName;
+    static const double KeepoutDefaultMils;
+
 };
 
 #endif

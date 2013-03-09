@@ -53,10 +53,10 @@ void copyPinAttributes(QDomElement & from, QDomElement & to)
 
 ///////////////////////////////////////////////
 
-ViewImage::ViewImage(ViewLayer::ViewIdentifier vi) {
+ViewImage::ViewImage(ViewLayer::ViewID vi) {
     flipped = sticky = layers = 0;
     canFlipVertical = canFlipHorizontal = false;
-    viewIdentifier = vi;
+    viewID = vi;
 }
 
 ///////////////////////////////////////////////
@@ -123,6 +123,8 @@ ModelPartShared::~ModelPartShared() {
 }
 
 bool ModelPartShared::setDomDocument(QDomDocument & domDocument) {
+    static qulonglong one = 1;
+
 	QDomElement root = domDocument.documentElement();
 	if (root.isNull()) {
 		return false;
@@ -157,9 +159,9 @@ bool ModelPartShared::setDomDocument(QDomDocument & domDocument) {
 	if (!views.isNull()) {
 		QDomElement view = views.firstChildElement();
 		while (!view.isNull()) {
-			ViewLayer::ViewIdentifier viewIdentifier = ViewLayer::idFromXmlName(view.nodeName());
-            ViewImage * viewImage = new ViewImage(viewIdentifier);
-            m_viewImages.insert(viewIdentifier, viewImage);
+			ViewLayer::ViewID viewID = ViewLayer::idFromXmlName(view.nodeName());
+            ViewImage * viewImage = new ViewImage(viewID);
+            m_viewImages.insert(viewID, viewImage);
             viewImage->canFlipHorizontal = view.attribute("fliphorizontal","").compare("true") == 0;
             viewImage->canFlipVertical = view.attribute("flipvertical","").compare("true") == 0;
 			QDomElement layers = view.firstChildElement("layers");
@@ -169,12 +171,13 @@ bool ModelPartShared::setDomDocument(QDomDocument & domDocument) {
 				while (!layer.isNull()) {
 					ViewLayer::ViewLayerID viewLayerID = ViewLayer::viewLayerIDFromXmlString(layer.attribute("layerId"));
                     qulonglong sticky = (layer.attribute("sticky", "").compare("true") == 0) ? 1 : 0;
-                    qulonglong one = 1;
                     viewImage->layers |= (one << viewLayerID); 
                     viewImage->sticky |= (sticky << viewLayerID); 
 					layer = layer.nextSiblingElement("layer");
 				}
 			}
+
+            addSchematicText(viewImage);
 
 			view = view.nextSiblingElement();
 		}
@@ -435,15 +438,15 @@ void ModelPartShared::copy(ModelPartShared* other) {
 	setUri(other->uri());
 	setVersion(other->version());
 
-	foreach (ViewLayer::ViewIdentifier viewIdentifier, other->m_viewImages.keys()) {
-        ViewImage * otherViewImage = other->m_viewImages.value(viewIdentifier);
-        ViewImage * viewImage = new ViewImage(viewIdentifier);
+	foreach (ViewLayer::ViewID viewID, other->m_viewImages.keys()) {
+        ViewImage * otherViewImage = other->m_viewImages.value(viewID);
+        ViewImage * viewImage = new ViewImage(viewID);
         viewImage->layers = otherViewImage->layers;
         viewImage->sticky = otherViewImage->sticky;
         viewImage->canFlipHorizontal = otherViewImage->canFlipHorizontal;
         viewImage->canFlipVertical = otherViewImage->canFlipVertical;
         viewImage->image = otherViewImage->image;
-        m_viewImages.insert(viewIdentifier, viewImage);
+        m_viewImages.insert(viewID, viewImage);
 	}
 }
 
@@ -471,9 +474,9 @@ bool ModelPartShared::needsCopper1() {
 	return m_needsCopper1;
 }
 
-void ModelPartShared::connectorIDs(ViewLayer::ViewIdentifier viewIdentifier, ViewLayer::ViewLayerID viewLayerID, QStringList & connectorIDs, QStringList & terminalIDs, QStringList & legIDs) {
+void ModelPartShared::connectorIDs(ViewLayer::ViewID viewID, ViewLayer::ViewLayerID viewLayerID, QStringList & connectorIDs, QStringList & terminalIDs, QStringList & legIDs) {
 	foreach (ConnectorShared * connectorShared, m_connectorSharedHash.values()) {
-		SvgIdLayer * svgIdLayer = connectorShared->fullPinInfo(viewIdentifier, viewLayerID);
+		SvgIdLayer * svgIdLayer = connectorShared->fullPinInfo(viewID, viewLayerID);
 		if (svgIdLayer == NULL) {
 			continue;
 		}
@@ -532,26 +535,30 @@ void ModelPartShared::flipSMDAnd() {
 	    viewImage->flipped |= (one << ViewLayer::Silkscreen0);
     }
 
+    //if (this->moduleID() == "df9d072afa2b594ac67b60b4153ff57b_29") {
+    //    DebugDialog::debug("alive in here");
+    //}
+
     copyPins(ViewLayer::Copper1, ViewLayer::Copper0);   
 }
 
-bool ModelPartShared::hasViewFor(ViewLayer::ViewIdentifier viewIdentifier) {
-    ViewImage * viewImage = m_viewImages.value(viewIdentifier, NULL);
+bool ModelPartShared::hasViewFor(ViewLayer::ViewID viewID) {
+    ViewImage * viewImage = m_viewImages.value(viewID, NULL);
     if (viewImage == NULL) return false;
 
     return viewImage->layers != 0;
 }
 
-bool ModelPartShared::hasViewFor(ViewLayer::ViewIdentifier viewIdentifier, ViewLayer::ViewLayerID viewLayerID) {
-    ViewImage * viewImage = m_viewImages.value(viewIdentifier, NULL);
+bool ModelPartShared::hasViewFor(ViewLayer::ViewID viewID, ViewLayer::ViewLayerID viewLayerID) {
+    ViewImage * viewImage = m_viewImages.value(viewID, NULL);
     if (viewImage == NULL) return false;
 
     qulonglong one = 1;
     return (viewImage->layers & (one << viewLayerID)) != 0;
 }
 
-QString ModelPartShared::hasBaseNameFor(ViewLayer::ViewIdentifier viewIdentifier) {
-    ViewImage * viewImage = m_viewImages.value(viewIdentifier, NULL);
+QString ModelPartShared::hasBaseNameFor(ViewLayer::ViewID viewID) {
+    ViewImage * viewImage = m_viewImages.value(viewID, NULL);
     if (viewImage == NULL) return "";
 
     return viewImage->image;
@@ -589,50 +596,52 @@ void ModelPartShared::setFritzingVersion(const QString & fv) {
 }
 
 void ModelPartShared::setViewImage(ViewImage * viewImage) {
-    ViewImage * old = m_viewImages.value(viewImage->viewIdentifier);
+    ViewImage * old = m_viewImages.value(viewImage->viewID);
     if (old) delete old;
-    m_viewImages.insert(viewImage->viewIdentifier, viewImage);
+    m_viewImages.insert(viewImage->viewID, viewImage);
+
+    addSchematicText(viewImage);
 }
 
 const QList<ViewImage *> ModelPartShared::viewImages() {
     return m_viewImages.values();
 }
 
-QString ModelPartShared::imageFileName(ViewLayer::ViewIdentifier viewIdentifier, ViewLayer::ViewLayerID viewLayerID) {
-    ViewImage * viewImage = m_viewImages.value(viewIdentifier);
+QString ModelPartShared::imageFileName(ViewLayer::ViewID viewID, ViewLayer::ViewLayerID viewLayerID) {
+    ViewImage * viewImage = m_viewImages.value(viewID);
     if (viewImage == NULL) return "";
 
     qulonglong one = 1;
     if ((viewImage->layers & (one << viewLayerID)) == 0) return "";
 
-    // DebugDialog::debug(QString("image filename %1 %2 %3").arg(viewImage->image).arg(viewIdentifier).arg(viewLayerID));
+    // DebugDialog::debug(QString("image filename %1 %2 %3").arg(viewImage->image).arg(viewID).arg(viewLayerID));
 
     return viewImage->image;
 }
 
-QString ModelPartShared::imageFileName(ViewLayer::ViewIdentifier viewIdentifier) {
-    ViewImage * viewImage = m_viewImages.value(viewIdentifier);
+QString ModelPartShared::imageFileName(ViewLayer::ViewID viewID) {
+    ViewImage * viewImage = m_viewImages.value(viewID);
     if (viewImage == NULL) return "";
 
     return viewImage->image;
 }
 
-void ModelPartShared::setImageFileName(ViewLayer::ViewIdentifier viewIdentifier, const QString & filename) {
-    ViewImage * viewImage = m_viewImages.value(viewIdentifier);
+void ModelPartShared::setImageFileName(ViewLayer::ViewID viewID, const QString & filename) {
+    ViewImage * viewImage = m_viewImages.value(viewID);
     if (viewImage == NULL) return;
 
     viewImage->image = filename;
 }
 
-bool ModelPartShared::hasViewIdentifier(ViewLayer::ViewIdentifier viewIdentifier) {
-    ViewImage * viewImage = m_viewImages.value(viewIdentifier);
+bool ModelPartShared::hasViewID(ViewLayer::ViewID viewID) {
+    ViewImage * viewImage = m_viewImages.value(viewID);
     if (viewImage == NULL) return false;
 
     return viewImage->layers != 0;
 }
 
-bool ModelPartShared::hasMultipleLayers(ViewLayer::ViewIdentifier viewIdentifier) {
-    ViewImage * viewImage = m_viewImages.value(viewIdentifier);
+bool ModelPartShared::hasMultipleLayers(ViewLayer::ViewID viewID) {
+    ViewImage * viewImage = m_viewImages.value(viewID);
     if (viewImage == NULL) return false;
 
     // http://eli.thegreenplace.net/2004/07/30/a-cool-algorithm-for-counting-ones-in-a-bitstring/
@@ -649,20 +658,20 @@ qulonglong flipped(ViewImage * viewImage) {
     return viewImage->flipped;
 }
 
-LayerList ModelPartShared::viewLayersFlipped(ViewLayer::ViewIdentifier viewIdentifier) {
-    return viewLayersAux(viewIdentifier, flipped);
+LayerList ModelPartShared::viewLayersFlipped(ViewLayer::ViewID viewID) {
+    return viewLayersAux(viewID, flipped);
 }
 
-LayerList ModelPartShared::viewLayers(ViewLayer::ViewIdentifier viewIdentifier) {
-    return viewLayersAux(viewIdentifier, layers);
+LayerList ModelPartShared::viewLayers(ViewLayer::ViewID viewID) {
+    return viewLayersAux(viewID, layers);
 }
 
-LayerList ModelPartShared::viewLayersAux(ViewLayer::ViewIdentifier viewIdentifier, qulonglong (*accessor)(ViewImage *)) {
+LayerList ModelPartShared::viewLayersAux(ViewLayer::ViewID viewID, qulonglong (*accessor)(ViewImage *)) {
 
     static QHash<qulonglong, ViewLayer::ViewLayerID> ToLayerIDs;
 
     LayerList layerList;
-    ViewImage * viewImage = m_viewImages.value(viewIdentifier);
+    ViewImage * viewImage = m_viewImages.value(viewID);
     if (viewImage == NULL) return layerList;
 
     // http://eli.thegreenplace.net/2004/07/30/a-cool-algorithm-for-counting-ones-in-a-bitstring/
@@ -687,22 +696,22 @@ LayerList ModelPartShared::viewLayersAux(ViewLayer::ViewIdentifier viewIdentifie
 }
 
 
-bool ModelPartShared::canFlipHorizontal(ViewLayer::ViewIdentifier viewIdentifier) {
-    ViewImage * viewImage = m_viewImages.value(viewIdentifier);
+bool ModelPartShared::canFlipHorizontal(ViewLayer::ViewID viewID) {
+    ViewImage * viewImage = m_viewImages.value(viewID);
     if (viewImage == NULL) return false;
 
     return viewImage->canFlipHorizontal;
 }
 
-bool ModelPartShared::canFlipVertical(ViewLayer::ViewIdentifier viewIdentifier) {
-    ViewImage * viewImage = m_viewImages.value(viewIdentifier);
+bool ModelPartShared::canFlipVertical(ViewLayer::ViewID viewID) {
+    ViewImage * viewImage = m_viewImages.value(viewID);
     if (viewImage == NULL) return false;
 
     return viewImage->canFlipVertical;
 }
 
-bool ModelPartShared::anySticky(ViewLayer::ViewIdentifier viewIdentifier) {
-    ViewImage * viewImage = m_viewImages.value(viewIdentifier);
+bool ModelPartShared::anySticky(ViewLayer::ViewID viewID) {
+    ViewImage * viewImage = m_viewImages.value(viewID);
     if (viewImage == NULL) return false;
 
     return (viewImage->sticky != 0);
@@ -763,4 +772,14 @@ void ModelPartShared::removeOwner() {
         // DebugDialog::debug(QString("last owner %1").arg(moduleID()));
         // this->deleteLater();
     }
+}
+
+void ModelPartShared::addSchematicText(ViewImage * viewImage) {
+    if (viewImage->viewID != ViewLayer::SchematicView) return;
+
+    qulonglong one = 1;
+    if ((viewImage->layers & (one << ViewLayer::Schematic)) == 0) return;
+
+    viewImage->canFlipHorizontal = viewImage->canFlipVertical = true;
+    viewImage->layers |= (one << ViewLayer::SchematicText); 
 }

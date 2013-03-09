@@ -55,8 +55,8 @@ static QPointF RotationAxis;
 static QTransform OriginalTransform;
 
 
-PaletteItemBase::PaletteItemBase(ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu ) :
-	ItemBase(modelPart, viewIdentifier, viewGeometry, id, itemMenu)
+PaletteItemBase::PaletteItemBase(ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu ) :
+	ItemBase(modelPart, viewID, viewGeometry, id, itemMenu)
 {
 	m_syncSelected = false;
 	m_offset.setX(0);
@@ -217,7 +217,7 @@ void PaletteItemBase::mousePressConnectorEvent(ConnectorItem * connectorItem, QG
 bool PaletteItemBase::acceptsMousePressConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent * event) {
 	Q_UNUSED(event);
 	
-	//if (m_viewIdentifier != ViewLayer::PCBView) {
+	//if (m_viewID != ViewLayer::PCBView) {
 		return true;
 	//}
 }
@@ -274,7 +274,7 @@ void PaletteItemBase::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 	double deltaAngle = (a2 - a1) * 180 / M_PI;
 	//DebugDialog::debug(QString("original:%1 delta:%2").arg(originalAngle).arg(deltaAngle));
-	switch (m_viewIdentifier) {
+	switch (m_viewID) {
 		case ViewLayer::BreadboardView:
 		case ViewLayer::PCBView:
 			{
@@ -379,22 +379,22 @@ void PaletteItemBase::collectWireConnectees(QSet<Wire *> & wires) {
 	}
 }
 
-bool PaletteItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
+bool PaletteItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
 {
-	FSvgRenderer * renderer = ItemBase::setUpImage(modelPart, viewIdentifier, viewLayerID, viewLayerSpec, layerAttributes, error);
+	FSvgRenderer * renderer = ItemBase::setUpImage(modelPart, viewID, viewLayerID, viewLayerSpec, layerAttributes, error);
 	if (renderer == NULL) {
 		return false;
 	}
 
-	m_canFlipVertical = modelPart->canFlipVertical(viewIdentifier);
-	m_canFlipHorizontal = modelPart->canFlipHorizontal(viewIdentifier);
+	m_canFlipVertical = modelPart->canFlipVertical(viewID);
+	m_canFlipHorizontal = modelPart->canFlipHorizontal(viewID);
 	m_filename = layerAttributes.filename();
 	//DebugDialog::debug(QString("filename %1").arg(m_filename) );
-	setSticky(modelPart->anySticky(viewIdentifier));
+	setSticky(modelPart->anySticky(viewID));
 	QString elementID = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
 	setViewLayerID(elementID, viewLayers);
 
-	//DebugDialog::debug(QString("setting layer %1 view:%2 z:%3").arg(modelPart->title()).arg(viewIdentifier).arg(this->z()) );
+	//DebugDialog::debug(QString("setting layer %1 view:%2 z:%3").arg(modelPart->title()).arg(viewID).arg(this->z()) );
 	this->setZValue(this->z());
 	this->setSharedRendererEx(renderer);
 
@@ -415,10 +415,10 @@ bool PaletteItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewIdentifie
 void PaletteItemBase::setUpConnectors(FSvgRenderer * renderer, bool ignoreTerminalPoints) {
 	clearConnectorItemCache();
 
-	if (m_viewIdentifier == ViewLayer::PCBView && ViewLayer::isNonCopperLayer(m_viewLayerID)) {
+	if (m_viewID == ViewLayer::PCBView && ViewLayer::isNonCopperLayer(m_viewLayerID)) {
 		//DebugDialog::debug(QString("skip connectors: %1 vid:%2 vlid:%3")
 		//				   .arg(this->title())
-		//				   .arg(m_viewIdentifier) 
+		//				   .arg(m_viewID) 
 		//				   .arg(m_viewLayerID)
 		//	);
 		// don't waste time
@@ -430,16 +430,16 @@ void PaletteItemBase::setUpConnectors(FSvgRenderer * renderer, bool ignoreTermin
 
 		//DebugDialog::debug(QString("id:%1 vid:%2 vlid:%3")
 		//				   .arg(connector->connectorSharedID())
-		//				   .arg(m_viewIdentifier) 
+		//				   .arg(m_viewID) 
 		//				   .arg(m_viewLayerID)
 		//	);
 
 
-		SvgIdLayer * svgIdLayer = connector->fullPinInfo(m_viewIdentifier, m_viewLayerID);
+		SvgIdLayer * svgIdLayer = connector->fullPinInfo(m_viewID, m_viewLayerID);
 		if (svgIdLayer == NULL) {
 			DebugDialog::debug(QString("svgidlayer fail %1 vid:%2 vlid:%3 %4")
                 .arg(connector->connectorSharedID())
-                .arg(m_viewIdentifier)
+                .arg(m_viewID)
                 .arg(m_viewLayerID)
                 .arg(m_modelPart->path())
                 );
@@ -450,7 +450,7 @@ void PaletteItemBase::setUpConnectors(FSvgRenderer * renderer, bool ignoreTermin
 		if (!result) {
 			DebugDialog::debug(QString("setup connector fail %1 vid:%2 vlid:%3 %4")
                 .arg(connector->connectorSharedID())
-                .arg(m_viewIdentifier)
+                .arg(m_viewID)
                 .arg(m_viewLayerID)
                 .arg(m_modelPart->path())
                 );
@@ -496,7 +496,7 @@ void PaletteItemBase::connectedMoved(ConnectorItem * from, ConnectorItem * to) {
 	if (from->connectorType() != Connector::Female) return;
 
 	// female connectors really only operate in breadboard view
-	if (m_viewIdentifier != ViewLayer::BreadboardView) return;
+	if (m_viewID != ViewLayer::BreadboardView) return;
 
 	QTransform t = this->transform();
 	if (t.isRotating()) {
@@ -588,14 +588,19 @@ void PaletteItemBase::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
 
 
 LayerKinPaletteItem *PaletteItemBase::newLayerKinPaletteItem(PaletteItemBase * chief, ModelPart * modelPart, 
-															 ViewLayer::ViewIdentifier viewIdentifier,
+															 ViewLayer::ViewID viewID,
 															 const ViewGeometry & viewGeometry, long id,
 															 ViewLayer::ViewLayerID viewLayerID, 
 															 ViewLayer::ViewLayerSpec viewLayerSpec, 
 															 QMenu* itemMenu, const LayerHash & viewLayers)
 {
-	LayerKinPaletteItem *lk = new
-                LayerKinPaletteItem(chief, modelPart, viewIdentifier, viewGeometry, id, itemMenu);
+	LayerKinPaletteItem *lk = NULL;
+    if (viewLayerID == ViewLayer::SchematicText) {
+        lk = new /*SchematicText*/LayerKinPaletteItem(chief, modelPart, viewID, viewGeometry, id, itemMenu);
+    }
+    else {
+        lk = new LayerKinPaletteItem(chief, modelPart, viewID, viewGeometry, id, itemMenu);
+    }
 	lk->init(viewLayerID, viewLayerSpec, viewLayers);
 	return lk;
 }
@@ -634,7 +639,7 @@ QString PaletteItemBase::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<Q
 		foreach (ConnectorItem * connectorItem, cachedConnectorItems()) {
 			if (!connectorItem->hasRubberBandLeg()) continue;
 
-			splitter.gReplace(connectorItem->legID(m_viewIdentifier, m_viewLayerID));
+			splitter.gReplace(connectorItem->legID(m_viewID, m_viewLayerID));
 		}
 	}
 
@@ -722,7 +727,7 @@ bool PaletteItemBase::freeRotationAllowed(Qt::KeyboardModifiers modifiers) {
 bool PaletteItemBase::inRotationLocation(QPointF scenePos, Qt::KeyboardModifiers modifiers, QPointF & returnPoint)
 {
 	if (!freeRotationAllowed(modifiers)) return false;
-	if (m_viewIdentifier == ViewLayer::SchematicView) return false;
+	if (m_viewID == ViewLayer::SchematicView) return false;
 
 	QRectF r = this->boundingRectWithoutLegs();
 	QPolygonF polygon;

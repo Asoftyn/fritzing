@@ -55,14 +55,14 @@ public:
 	void setConnectorType(Connector::ConnectorType);
 	Connector::ConnectorType connectorType();
 
-	const QString & legID(ViewLayer::ViewIdentifier viewId, ViewLayer::ViewLayerID viewLayerID);
-	const QMultiHash<ViewLayer::ViewIdentifier,SvgIdLayer *> &pins();
-	SvgIdLayer * fullPinInfo(ViewLayer::ViewIdentifier viewId, ViewLayer::ViewLayerID viewLayerID);
+	const QString & legID(ViewLayer::ViewID viewId, ViewLayer::ViewLayerID viewLayerID);
+	const QMultiHash<ViewLayer::ViewID,SvgIdLayer *> &pins();
+	SvgIdLayer * fullPinInfo(ViewLayer::ViewID viewId, ViewLayer::ViewLayerID viewLayerID);
     const QList<SvgIdLayer *> svgIdLayers() const;
-	void addPin(ViewLayer::ViewIdentifier, const QString & svgId, ViewLayer::ViewLayerID, const QString & terminalId, const QString & legId, bool hybrid);
-	void insertPin(ViewLayer::ViewIdentifier layer, SvgIdLayer * svgIdLayer);
-	void removePins(ViewLayer::ViewIdentifier layer);
-	void removePin(ViewLayer::ViewIdentifier layer, SvgIdLayer * svgIdLayer);
+	void addPin(ViewLayer::ViewID, const QString & svgId, ViewLayer::ViewLayerID, const QString & terminalId, const QString & legId, bool hybrid);
+	void insertPin(ViewLayer::ViewID layer, SvgIdLayer * svgIdLayer);
+	void removePins(ViewLayer::ViewID layer);
+	void removePin(ViewLayer::ViewID layer, SvgIdLayer * svgIdLayer);
 
 	class BusShared * bus();
 	void setBus(class BusShared *);
@@ -71,7 +71,7 @@ public:
 
 protected:
 	void loadPins(const QDomElement & domElement);
-	void loadPin(QDomElement elem, ViewLayer::ViewIdentifier viewId);
+	void loadPin(QDomElement elem, ViewLayer::ViewID viewId);
 
 	QString m_description;
 	QString m_id;
@@ -82,7 +82,7 @@ protected:
 	class ErcData * m_ercData;
 	class BusShared * m_bus;
 
-	QMultiHash<ViewLayer::ViewIdentifier, SvgIdLayer*> m_pins;
+	QMultiHash<ViewLayer::ViewID, SvgIdLayer*> m_pins;
 };
 
 static QList<ConnectorShared *> ___emptyConnectorSharedList___;

@@ -34,6 +34,7 @@ $Date$
 #include "../utils/textutils.h"
 #include "../items/wire.h"
 #include "../processeventblocker.h"
+#include "../autoroute/drc.h"
 
 #include <QBitArray>
 #include <QPainter>
@@ -45,6 +46,9 @@ $Date$
 #include <QtConcurrentRun>
 
 static const double BORDERINCHES = 0.04;
+
+const QString GroundPlaneGenerator::KeepoutSettingName("GPG_Keepout");
+const double GroundPlaneGenerator::KeepoutDefaultMils = 10;  
 
 inline int OFFSET(int x, int y, QImage * image) { return (y * image->width()) + x; }
 
@@ -149,7 +153,7 @@ bool GroundPlaneGenerator::getBoardRects(const QByteArray & boardByteArray, QGra
 
 bool GroundPlaneGenerator::generateGroundPlaneUnit(const QString & boardSvg, QSizeF boardImageSize, const QString & svg, QSizeF copperImageSize, 
 												   QStringList & exceptions, QGraphicsItem * board, double res, const QString & color,
-												   QPointF whereToStart) 
+												   QPointF whereToStart, double keepoutMils) 
 {
     GPGParams params;
     params.boardSvg = boardSvg;
@@ -160,6 +164,7 @@ bool GroundPlaneGenerator::generateGroundPlaneUnit(const QString & boardSvg, QSi
     params.board = board;
     params.res = res;
     params.color = color;
+    params.keepoutMils = keepoutMils;
 
     double bWidth, bHeight;
     QList<QRectF> rects;
@@ -237,10 +242,11 @@ bool GroundPlaneGenerator::generateGroundPlaneUnit(const QString & boardSvg, QSi
 }
 
 bool GroundPlaneGenerator::generateGroundPlane(const QString & boardSvg, QSizeF boardImageSize, const QString & svg, QSizeF copperImageSize, 
-												QStringList & exceptions, QGraphicsItem * board, double res, const QString & color) 
+												QStringList & exceptions, QGraphicsItem * board, double res, const QString & color, double keepoutMils) 
 {
     GPGParams params;
     params.boardSvg = boardSvg;
+    params.keepoutMils = keepoutMils;
     params.boardImageSize = boardImageSize;
     params.svg = svg;
     params.copperImageSize =  copperImageSize;
@@ -298,10 +304,22 @@ QImage * GroundPlaneGenerator::generateGroundPlaneAux(GPGParams & params, double
 	//out0 << boardByteArray;
 	//file0.close();
 	
-	QByteArray copperByteArray;
-	if (!SvgFileSplitter::changeStrokeWidth(params.svg, m_strokeWidthIncrement, false, true, copperByteArray)) {
+
+    /*
+    QByteArray copperByteArray;
+    if (!SvgFileSplitter::changeStrokeWidth(params.svg, m_strokeWidthIncrement, false, true, copperByteArray)) {
 		return NULL;
 	}
+    */
+
+	QString errorStr;
+	int errorLine;
+	int errorColumn;
+    QDomDocument doc;
+    doc.setContent(params.svg, &errorStr, &errorLine, &errorColumn);
+    QDomElement root = doc.documentElement();
+    SvgFileSplitter::forceStrokeWidth(root, 2 * params.keepoutMils, "#000000", true, true);
+    QByteArray copperByteArray = doc.toByteArray(0);
 	
 	//QFile file1("testGroundFillCopper.svg");
 	//file1.open(QIODevice::WriteOnly);
@@ -334,42 +352,48 @@ QImage * GroundPlaneGenerator::generateGroundPlaneAux(GPGParams & params, double
 	image->save(FolderUtils::getUserDataStorePath("") + "/testGroundFillBoard.png");
 #endif
 
+    DRC::extendBorder(BORDERINCHES * params.res, image);
+    GraphicsUtils::drawBorder(image, BORDERINCHES * params.res);
+
+    /*
 	for (double m = 0; m < BORDERINCHES; m += (1.0 / params.res)) {   // 1 mm
 		QList<QPoint> points;
 		collectBorderPoints(*image, points);
 
 #ifndef QT_NO_DEBUG
-		/*
-		// for debugging
-		double pixelFactor = GraphicsUtils::StandardFritzingDPI / res;
-		QPolygon polygon;
-		foreach(QPoint p, points) {
-			polygon.append(QPoint(p.x() * pixelFactor, p.y() * pixelFactor));
-		}
 
-		QList<QPolygon> polygons;
-		polygons.append(polygon);
-		QPointF offset;
-		this
-		QString pSvg = makePolySvg(polygons, res, bWidth, bHeight, pixelFactor, "#ffffff", false,  NULL, QSizeF(0,0), 0, QPointF(0, 0));
-		*/
+		// for debugging
+		//double pixelFactor = GraphicsUtils::StandardFritzingDPI / res;
+		//QPolygon polygon;
+		//foreach(QPoint p, points) {
+		//	polygon.append(QPoint(p.x() * pixelFactor, p.y() * pixelFactor));
+		//}
+
+		//QList<QPolygon> polygons;
+		//polygons.append(polygon);
+		//QPointF offset;
+		//this
+		//QString pSvg = makePolySvg(polygons, res, bWidth, bHeight, pixelFactor, "#ffffff", false,  NULL, QSizeF(0,0), 0, QPointF(0, 0));
+		
 #endif
 
 		foreach (QPoint p, points) image->setPixel(p, 0);
 	}
+    */
 
 #ifndef QT_NO_DEBUG
 	image->save(FolderUtils::getUserDataStorePath("") + "/testGroundFillBoardBorder.png");
 #endif
 	
-	// "blur" the image a little
-
 	QSvgRenderer renderer2(copperByteArray);
 	painter.begin(image);
 	painter.setRenderHint(QPainter::Antialiasing, false);
 	QRectF bounds(0, 0, params.res * params.copperImageSize.width() / GraphicsUtils::SVGDPI, params.res * params.copperImageSize.height() / GraphicsUtils::SVGDPI);
 	DebugDialog::debug("copperbounds", bounds);
 	renderer2.render(&painter, bounds);
+
+    /*
+	// "blur" the image a little
 	if (m_blurBy != 0) {
 		bounds.moveTo(m_blurBy, 0);
 		renderer2.render(&painter, bounds);
@@ -388,6 +412,8 @@ QImage * GroundPlaneGenerator::generateGroundPlaneAux(GPGParams & params, double
 		bounds.moveTo(m_blurBy, -m_blurBy);
 		renderer2.render(&painter, bounds);
 	}
+    */
+
 	painter.end();
 
 #ifndef QT_NO_DEBUG

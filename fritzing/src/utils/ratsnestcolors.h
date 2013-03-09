@@ -41,25 +41,25 @@ public:
 
 	static void initNames();
 	static void cleanup();
-	static const QColor & netColor(ViewLayer::ViewIdentifier m_viewIdentifier);
+	static const QColor & netColor(ViewLayer::ViewID m_viewID);
 	static bool findConnectorColor(const QStringList & names, QColor & color);
-	static bool isConnectorColor(ViewLayer::ViewIdentifier m_viewIdentifier, const QColor &);
-	static void reset(ViewLayer::ViewIdentifier m_viewIdentifier);
-	static QColor backgroundColor(ViewLayer::ViewIdentifier);
-	static const QString & shadowColor(ViewLayer::ViewIdentifier, const QString& name);
-	static QString wireColor(ViewLayer::ViewIdentifier, QString& name);
+	static bool isConnectorColor(ViewLayer::ViewID m_viewID, const QColor &);
+	static void reset(ViewLayer::ViewID m_viewID);
+	static QColor backgroundColor(ViewLayer::ViewID);
+	static const QString & shadowColor(ViewLayer::ViewID, const QString& name);
+	static QString wireColor(ViewLayer::ViewID, QString& name);
 
 protected:
 	const QColor & getNextColor();
 
 protected:
-	ViewLayer::ViewIdentifier m_viewIdentifier;
+	ViewLayer::ViewID m_viewID;
 	QColor m_backgroundColor;
 	int m_index;
 	QHash<QString, class RatsnestColor *> m_ratsnestColorHash;
 	QList<class RatsnestColor *> m_ratsnestColorList;
 
-	static QHash<ViewLayer::ViewIdentifier, RatsnestColors *> m_viewList;
+	static QHash<ViewLayer::ViewID, RatsnestColors *> m_viewList;
 	static QHash<QString, class RatsnestColor *> m_allNames;
 };
 

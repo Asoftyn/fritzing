@@ -812,10 +812,10 @@ void FApplication::runSvgServiceAux()
 		FolderUtils::setOpenSaveFolderAux(m_outputFolder);
 		if (mainWindow->loadWhich(filepath, false, false, "")) {
             QFileInfo info(filepath);
-            QList<ViewLayer::ViewIdentifier> ids;
+            QList<ViewLayer::ViewID> ids;
             ids << ViewLayer::BreadboardView << ViewLayer::SchematicView << ViewLayer::PCBView;
-            foreach (ViewLayer::ViewIdentifier id, ids) {
-                QString fn = QString("%1_%2.svg").arg(info.completeBaseName()).arg(ViewLayer::viewIdentifierNaturalName(id));
+            foreach (ViewLayer::ViewID id, ids) {
+                QString fn = QString("%1_%2.svg").arg(info.completeBaseName()).arg(ViewLayer::viewIDNaturalName(id));
                 QString svgPath = dir.absoluteFilePath(fn);
                 mainWindow->setCurrentView(id);
                 mainWindow->exportSvg(GraphicsUtils::StandardFritzingDPI, false, false, svgPath);
@@ -1219,7 +1219,7 @@ void FApplication::initSplash(FSplashScreen & splash) {
 
 struct Thing {
         QString moduleID;
-        ViewLayer::ViewIdentifier viewIdentifier;
+        ViewLayer::ViewID viewID;
         ViewLayer::ViewLayerID viewLayerID;
 };
 

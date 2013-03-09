@@ -54,8 +54,8 @@ bool sameGround(ConnectorItem * c1, ConnectorItem * c2)
 
 ///////////////////////////////////////////////////
 
-SchematicSketchWidget::SchematicSketchWidget(ViewLayer::ViewIdentifier viewIdentifier, QWidget *parent)
-    : PCBSketchWidget(viewIdentifier, parent)
+SchematicSketchWidget::SchematicSketchWidget(ViewLayer::ViewID viewID, QWidget *parent)
+    : PCBSketchWidget(viewID, parent)
 {
 	m_shortName = QObject::tr("schem");
 	m_viewName = QObject::tr("Schematic View");

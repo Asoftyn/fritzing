@@ -44,8 +44,8 @@ static QHash<QString, QString> Spacings;
 
 static HoleClassThing TheHoleThing;
 
-ScrewTerminal::ScrewTerminal( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: PaletteItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+ScrewTerminal::ScrewTerminal( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: PaletteItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
     setUpHoleSizes("screwterminal", TheHoleThing);
 }

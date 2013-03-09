@@ -81,7 +81,7 @@ void SvgIconPixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 
 ////////////////////////////////////////////////////////////
 
-SvgIconWidget::SvgIconWidget(ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, ItemBase * itemBase, bool plural)
+SvgIconWidget::SvgIconWidget(ModelPart * modelPart, ViewLayer::ViewID viewID, ItemBase * itemBase, bool plural)
 	: QGraphicsWidget() 
 {
 	m_moduleId = modelPart->moduleID();
@@ -105,7 +105,7 @@ SvgIconWidget::SvgIconWidget(ModelPart * modelPart, ViewLayer::ViewIdentifier vi
 		this->setMaximumSize(PluralImage->size());
 		setAcceptHoverEvents(true);
 		setFlags(QGraphicsItem::ItemIsSelectable);
-		setupImage(plural, viewIdentifier);
+		setupImage(plural, viewID);
 	}
 }
 
@@ -191,15 +191,15 @@ void SvgIconWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 void SvgIconWidget::setItemBase(ItemBase * itemBase, bool plural)
 {
 	m_itemBase = itemBase;
-	setupImage(plural, itemBase->viewIdentifier());
+	setupImage(plural, itemBase->viewID());
 }
 
-void SvgIconWidget::setupImage(bool plural, ViewLayer::ViewIdentifier viewIdentifier)
+void SvgIconWidget::setupImage(bool plural, ViewLayer::ViewID viewID)
 {
 	QString error;
 	LayerAttributes layerAttributes;
 	ModelPart * modelPart = m_itemBase->modelPart();
-	FSvgRenderer * renderer = m_itemBase->setUpImage(modelPart, viewIdentifier, ViewLayer::Icon, ViewLayer::ThroughHoleThroughTop_OneLayer, layerAttributes, error);
+	FSvgRenderer * renderer = m_itemBase->setUpImage(modelPart, viewID, ViewLayer::Icon, ViewLayer::ThroughHoleThroughTop_OneLayer, layerAttributes, error);
     if (renderer == NULL) {
         DebugDialog::debug(QString("missing renderer for icon %1").arg(modelPart->moduleID()));
     }

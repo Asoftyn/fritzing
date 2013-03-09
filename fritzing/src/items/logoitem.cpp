@@ -54,8 +54,8 @@ static QStringList NewLogoImageNames;
 static QStringList Copper0ImageNames;
 static QStringList Copper1ImageNames;
 
-LogoItem::LogoItem( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: ResizableBoard(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+LogoItem::LogoItem( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: ResizableBoard(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 	if (LogoImageNames.count() == 0) {
 		LogoImageNames << "Made with Fritzing" << "Fritzing icon" << "OHANDA logo" << "OSHW logo";
@@ -342,20 +342,8 @@ void LogoItem::loadImage(const QString & fileName, bool addName)
             // todo: change opacity?
         }
 
-		bool isIllustrator = TextUtils::isIllustratorDoc(domDocument);
-
-		QString viewBox = root.attribute("viewBox");
-		if (viewBox.isEmpty()) {
-			bool ok1, ok2;
-			double w = TextUtils::convertToInches(root.attribute("width"), &ok1, isIllustrator) * GraphicsUtils::SVGDPI;
-			double h = TextUtils::convertToInches(root.attribute("height"), &ok2, isIllustrator) * GraphicsUtils::SVGDPI;
-			if (!ok1 || !ok2) {
-				unableToLoad(fileName, tr("because of an improper width or height attribute"));
-				return;
-			}
-
-			root.setAttribute("viewBox", QString("0 0 %1 %2").arg(w).arg(h));
-		}
+        QRectF vb;
+		TextUtils::ensureViewBox(domDocument, GraphicsUtils::SVGDPI, vb);
 
         QDomElement layerElement = TextUtils::findElementWithAttribute(root, "id", layerName());
         if (layerElement.isNull()) {
@@ -738,8 +726,8 @@ void LogoItem::paintHover(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
 ///////////////////////////////////////////////////////////////////////
 
-SchematicLogoItem::SchematicLogoItem( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: LogoItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+SchematicLogoItem::SchematicLogoItem( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: LogoItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 }
 
@@ -747,7 +735,7 @@ SchematicLogoItem::~SchematicLogoItem() {
 }
 
 ViewLayer::ViewLayerID SchematicLogoItem::layer() {
-	return ViewLayer::Schematic;
+	return (m_hasLogo ? ViewLayer::SchematicText : ViewLayer::Schematic);
 }
 
 QString SchematicLogoItem::colorString() {
@@ -756,8 +744,8 @@ QString SchematicLogoItem::colorString() {
 
 ///////////////////////////////////////////////////////////////////////
 
-BreadboardLogoItem::BreadboardLogoItem( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: LogoItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+BreadboardLogoItem::BreadboardLogoItem( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: LogoItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 }
 
@@ -774,8 +762,8 @@ QString BreadboardLogoItem::colorString() {
 
 ///////////////////////////////////////////////////////////////////////
 
-CopperLogoItem::CopperLogoItem( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: LogoItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+CopperLogoItem::CopperLogoItem( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: LogoItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 	if (Copper1ImageNames.count() == 0) {
 		Copper1ImageNames << "Fritzing icon copper1";
@@ -852,8 +840,8 @@ bool CopperLogoItem::isCopper0() {
 //
 // don't mess with colors at all?
 
-BoardLogoItem::BoardLogoItem(ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel) 
-    : LogoItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+BoardLogoItem::BoardLogoItem(ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel) 
+    : LogoItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
     m_hasLogo = false;
     m_svgOnly = true;

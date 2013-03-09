@@ -58,7 +58,7 @@ class PCBSketchWidget : public SketchWidget
 	Q_OBJECT
 
 public:
-    PCBSketchWidget(ViewLayer::ViewIdentifier, QWidget *parent=0);
+    PCBSketchWidget(ViewLayer::ViewID, QWidget *parent=0);
 
 	void addViewLayers();
 	bool canDeleteItem(QGraphicsItem * item, int count);
@@ -140,6 +140,7 @@ public:
     void hidePartSilkscreen();
     void fabQuote();
     QDialog * quoteDialog(QWidget * parent);
+    void setGroundFillKeepout();
 
 public slots:
 	void resizeBoard(double w, double h, bool doEmit);
@@ -159,7 +160,7 @@ public:
 protected:
 	void setWireVisible(Wire * wire);
 	// void checkAutorouted();
-	ViewLayer::ViewLayerID multiLayerGetViewLayerID(ModelPart * modelPart, ViewLayer::ViewIdentifier, ViewLayer::ViewLayerSpec, LayerList &);
+	ViewLayer::ViewLayerID multiLayerGetViewLayerID(ModelPart * modelPart, ViewLayer::ViewID, ViewLayer::ViewLayerSpec, LayerList &);
 	bool canChainWire(Wire *);
 	bool canDragWire(Wire * wire);
 	const QString & hoverEnterPartConnectorMessage(QGraphicsSceneHoverEvent * event, ConnectorItem * item);
@@ -199,8 +200,9 @@ protected:
     void setQuoteMessage(int index, const QString &);
     void requestQuote(double area);
     double calcBoardArea(int & boardCount);
-    PaletteItem* addPartItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec, PaletteItem * paletteItem, bool doConnectors, bool & ok, ViewLayer::ViewIdentifier, bool temporary);
+    PaletteItem* addPartItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec, PaletteItem * paletteItem, bool doConnectors, bool & ok, ViewLayer::ViewID, bool temporary);
     void requestQuoteSoon();
+    double getKeepoutMils();
 
 signals:
 	void subSwapSignal(SketchWidget *, ItemBase *, const QString & newModuleID, ViewLayer::ViewLayerSpec, long & newID, QUndoCommand * parentCommand);

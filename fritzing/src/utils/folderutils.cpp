@@ -408,12 +408,17 @@ bool FolderUtils::createZipAndSaveTo(const QDir &dirToCompress, const QString &f
 }
 
 
-bool FolderUtils::unzipTo(const QString &filepath, const QString &dirToDecompress) {
+bool FolderUtils::unzipTo(const QString &filepath, const QString &dirToDecompress, QString & error) {
+    static QChar badCharacters[] = { '\\', '/', ':', '*', '?', '"', '<', '>', '|' };
+    static QChar underscore('_');
+
 	QuaZip zip(filepath);
 	if(!zip.open(QuaZip::mdUnzip)) {
-		qWarning("zip.open(): %d", zip.getZipError());
+        error = QString("zip.open(): %d").arg(zip.getZipError());
+		DebugDialog::debug(error);
 		return false;
 	}
+
 	zip.setFileNameCodec("IBM866");
 	DebugDialog::debug(QString("unzipping %1 entries from %2").arg(zip.getEntriesCount()).arg(filepath));
 	QuaZipFileInfo info;
@@ -423,25 +428,43 @@ bool FolderUtils::unzipTo(const QString &filepath, const QString &dirToDecompres
 	char c;
 	for(bool more=zip.goToFirstFile(); more; more=zip.goToNextFile()) {
 		if(!zip.getCurrentFileInfo(&info)) {
-			qWarning("getCurrentFileInfo(): %d\n", zip.getZipError());
+			error = QString("getCurrentFileInfo(): %d\n").arg(zip.getZipError());
+			DebugDialog::debug(error);
 			return false;
 		}
 
 		if(!file.open(QIODevice::ReadOnly)) {
-			qWarning("file.open(): %d", file.getZipError());
+			error = QString("file.open(): %d").arg(file.getZipError());
+			DebugDialog::debug(error);
 			return false;
 		}
 		name=file.getActualFileName();
 		if(file.getZipError()!=UNZ_OK) {
-			qWarning("file.getFileName(): %d", file.getZipError());
+			error = QString("file.getFileName(): %d").arg(file.getZipError());
+			DebugDialog::debug(error);
 			return false;
 		}
 
 		out.setFileName(dirToDecompress+"/"+name);
 		// this will fail if "name" contains subdirectories, but we don't mind that
 		if(!out.open(QIODevice::WriteOnly)) {
-			qWarning("out.open(): %s", out.errorString().toLocal8Bit().constData());
-			return false;
+            for (int i = 0; i < name.length(); i++) {
+                if (name[i].unicode() < 32) {
+                    name.replace(i, 1, &underscore, 1);
+                }
+                else for (int j = 0; j < (sizeof(badCharacters) / sizeof(QChar)); j++) {
+                    if (name[i] == badCharacters[j]) {
+                        name.replace(i, 1, &underscore, 1);
+                        break;
+                    }
+                }
+            }
+            out.setFileName(dirToDecompress+"/"+name);
+            if(!out.open(QIODevice::WriteOnly)) {
+                error = QString("out.open(): %s").arg(out.errorString().toLocal8Bit().constData());
+			    DebugDialog::debug(error);
+			    return false;
+            }
 		}
 
 		// Slow like hell (on GNU/Linux at least), but it is not my fault.
@@ -465,22 +488,26 @@ bool FolderUtils::unzipTo(const QString &filepath, const QString &dirToDecompres
 
 		out.close();
 		if(file.getZipError()!=UNZ_OK) {
-			qWarning("file.getFileName(): %d", file.getZipError());
+			error = QString("file.getFileName(): %d").arg(file.getZipError());
+			DebugDialog::debug(error);
 			return false;
 		}
 		if(!file.atEnd()) {
-			qWarning("read all but not EOF");
+			error = "read all but not EOF";
+			DebugDialog::debug(error);
 			return false;
 		}
 		file.close();
 		if(file.getZipError()!=UNZ_OK) {
-			qWarning("file.close(): %d", file.getZipError());
+			error = QString("file.close(): %d").arg(file.getZipError());
+			DebugDialog::debug(error);
 			return false;
 		}
 	}
 	zip.close();
 	if(zip.getZipError()!=UNZ_OK) {
-		qWarning("zip.close(): %d", zip.getZipError());
+		error = QString("zip.close(): %d").arg(zip.getZipError());
+		DebugDialog::debug(error);
 		return false;
 	}
 	return true;

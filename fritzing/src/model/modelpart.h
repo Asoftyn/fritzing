@@ -97,7 +97,7 @@ public:
 	void removeViewItem(class ItemBase *);
     void killViewItems();
 	class ItemBase * viewItem(QGraphicsScene * scene);
-	class ItemBase * viewItem(ViewLayer::ViewIdentifier);
+	class ItemBase * viewItem(ViewLayer::ViewID);
 	bool hasViewItems();
 	void initConnectors(bool force=false);
 	const QHash<QString, QPointer<Connector> > & connectors();
@@ -145,14 +145,14 @@ public:
     bool isInBin();
     void setInBin(bool);
 
-	bool hasViewIdentifier(ViewLayer::ViewIdentifier);
-	bool canFlipVertical(ViewLayer::ViewIdentifier);
-	bool canFlipHorizontal(ViewLayer::ViewIdentifier);
-	bool anySticky(ViewLayer::ViewIdentifier);
-    QString imageFileName(ViewLayer::ViewIdentifier);
-    void setImageFileName(ViewLayer::ViewIdentifier, const QString & filename);
-    QString imageFileName(ViewLayer::ViewIdentifier, ViewLayer::ViewLayerID);
-    LayerList viewLayers(ViewLayer::ViewIdentifier);
+	bool hasViewID(ViewLayer::ViewID);
+	bool canFlipVertical(ViewLayer::ViewID);
+	bool canFlipHorizontal(ViewLayer::ViewID);
+	bool anySticky(ViewLayer::ViewID);
+    QString imageFileName(ViewLayer::ViewID);
+    void setImageFileName(ViewLayer::ViewID, const QString & filename);
+    QString imageFileName(ViewLayer::ViewID, ViewLayer::ViewLayerID);
+    LayerList viewLayers(ViewLayer::ViewID);
     void setViewImage(struct ViewImage *);
 
 	QList<ModelPart*> getAllParts();
@@ -178,9 +178,9 @@ public:
 
 	bool flippedSMD();
 	bool needsCopper1();
-	bool hasViewFor(ViewLayer::ViewIdentifier);
-	bool hasViewFor(ViewLayer::ViewIdentifier, ViewLayer::ViewLayerID);
-	QString hasBaseNameFor(ViewLayer::ViewIdentifier);
+	bool hasViewFor(ViewLayer::ViewID);
+	bool hasViewFor(ViewLayer::ViewID, ViewLayer::ViewLayerID);
+	QString hasBaseNameFor(ViewLayer::ViewID);
 	void initBuses();
 	void clearBuses();
 	void setConnectorLocalName(const QString & id, const QString & name);
@@ -217,7 +217,6 @@ protected:
 	ItemType m_type;
 	QPointer<ModelPartShared> m_modelPartShared;
 	QHash<QString, QPointer<Connector> > m_connectorHash;
-	QList< QPointer<Connector> > m_deletedConnectors;
 	QHash<QString, QPointer<Bus> > m_busHash;
 	long m_index;						// only used at save time to identify model parts in the xml
 	QDomElement m_instanceDomElement;	// only used at load time (so far)

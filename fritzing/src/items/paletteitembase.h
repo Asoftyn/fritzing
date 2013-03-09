@@ -42,7 +42,7 @@ class PaletteItemBase : public ItemBase, public CursorKeyListener
 	Q_OBJECT
 
 public:
-	PaletteItemBase(ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu);
+	PaletteItemBase(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu);
 
 	void saveGeometry();
 	bool itemMoved();
@@ -55,7 +55,7 @@ public:
  	QPointF syncMoved();
 	void mousePressConnectorEvent(class ConnectorItem *, QGraphicsSceneMouseEvent *);
 	bool acceptsMousePressConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
- 	virtual bool setUpImage(ModelPart* modelPart, ViewLayer::ViewIdentifier viewIdentifier, const LayerHash & viewLayers, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, bool doConnectors, LayerAttributes &, QString & error);
+ 	virtual bool setUpImage(ModelPart* modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, bool doConnectors, LayerAttributes &, QString & error);
 	void connectedMoved(ConnectorItem * from, ConnectorItem * to);
 	bool collectFemaleConnectees(QSet<ItemBase *> & items);
 	void collectWireConnectees(QSet<class Wire *> & wires);
@@ -98,7 +98,7 @@ protected:
 	void checkFreeRotation(Qt::KeyboardModifiers modifiers, QPointF scenePos);
 
 	virtual LayerKinPaletteItem * newLayerKinPaletteItem(
-		PaletteItemBase * chief, ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier,
+		PaletteItemBase * chief, ModelPart * modelPart, ViewLayer::ViewID viewID,
 		const ViewGeometry & viewGeometry, long id,ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, QMenu* itemMenu, const LayerHash & viewLayers
 	);
 

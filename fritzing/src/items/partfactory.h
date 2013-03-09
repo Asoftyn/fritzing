@@ -37,7 +37,7 @@ $Date$
 class PartFactory
 {
 public:
-	static class ItemBase * createPart(class ModelPart *, ViewLayer::ViewLayerSpec, ViewLayer::ViewIdentifier, const class ViewGeometry & viewGeometry, long id, QMenu * itemMenu, QMenu * wireMenu, bool doLabel);
+	static class ItemBase * createPart(class ModelPart *, ViewLayer::ViewLayerSpec, ViewLayer::ViewID, const class ViewGeometry & viewGeometry, long id, QMenu * itemMenu, QMenu * wireMenu, bool doLabel);
 	static QString getSvgFilename(class ModelPart *, const QString & filename);
 	static QString getFzpFilename(const QString & moduleID);
 	static void initFolder();
@@ -48,13 +48,13 @@ public:
 	static QString partPath();
     static bool svgFileExists(const QString & expectedFileName, QString & path);
     static bool fzpFileExists(const QString & moduleID, QString & path);
-    static QString makeSipOrDipOr(const QStringList & labels, bool hasLayout, bool sip);
+    static QString makeSchematicSipOrDipOr(const QStringList & labels, bool hasLayout, bool sip);
 
 
 protected:
 	static QString getFzpFilenameAux(const QString & moduleID, GenFzp);
 	static QString getSvgFilenameAux(const QString & expectedFileName, const ModelPart *, GenSvg);
-	static class ItemBase * createPartAux(class ModelPart *, ViewLayer::ViewIdentifier, const class ViewGeometry & viewGeometry, long id, QMenu * itemMenu, QMenu * wireMenu, bool doLabel);
+	static class ItemBase * createPartAux(class ModelPart *, ViewLayer::ViewID, const class ViewGeometry & viewGeometry, long id, QMenu * itemMenu, QMenu * wireMenu, bool doLabel);
 };
 
 #endif

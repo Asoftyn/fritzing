@@ -165,7 +165,7 @@ public:
 	void copperFill(ViewLayer::ViewLayerID);
     bool hasAnyAlien();
     void exportSvg(double res, bool selectedItems, bool flatten, const QString & filename);
-    void setCurrentView(ViewLayer::ViewIdentifier);
+    void setCurrentView(ViewLayer::ViewID);
     bool usesPart(const QString & moduleID);
     bool anyUsePart(const QString & moduleID);
     bool updateParts(const QString & moduleID, QUndoCommand * parentCommand);
@@ -209,6 +209,7 @@ public slots:
     void showStatusMessage(const QString &);
     void orderFabHoverEnter();
     void orderFabHoverLeave();
+    void setGroundFillKeepout();
 
 protected slots:
 	void mainLoad();
@@ -435,7 +436,7 @@ protected:
 	void exportSvgWatermark(QString & svg, double res);
 	void exportEtchable(bool wantPDF, bool wantSVG);
 
-	virtual QList<QWidget*> getButtonsForView(ViewLayer::ViewIdentifier viewId);
+	virtual QList<QWidget*> getButtonsForView(ViewLayer::ViewID viewId);
 	const QString untitledFileName();
 	int &untitledFileCount();
 	const QString fileExtension();
@@ -764,6 +765,7 @@ protected:
 	class ConnectorItemAction *m_setOneGroundFillSeedAct;
 	QAction *m_setGroundFillSeedsAct;
 	QAction *m_clearGroundFillSeedsAct;
+    QAction *m_setGroundFillKeepoutAct;
 	QAction *m_newDesignRulesCheckAct;
 	QAction *m_autorouterSettingsAct;
 	QAction *m_fabQuoteAct;

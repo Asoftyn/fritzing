@@ -117,6 +117,7 @@ public:
 	static void fixStyleAttribute(QDomElement & element);
     static QString parseForModuleID(const QString & fzp);
 	static QString getRandText();
+    static bool ensureViewBox(QDomDocument doc, double dpi, QRectF & rect);
 
 public:
 	static const QRegExp FindWhitespace;

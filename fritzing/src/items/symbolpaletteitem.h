@@ -57,7 +57,7 @@ class SymbolPaletteItem : public PaletteItem
 	Q_OBJECT
 
 public:
-	SymbolPaletteItem(ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
+	SymbolPaletteItem(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~SymbolPaletteItem();
 
 	ConnectorItem* newConnectorItem(class Connector *connector);
@@ -95,7 +95,7 @@ protected:
 	QString makeSvg();
 	QString makeNetLabelSvg();
 	QString replaceTextElement(QString svg);
-    ViewLayer::ViewIdentifier useViewIdentifierForPixmap(ViewLayer::ViewIdentifier, bool swappingEnabled);
+    ViewLayer::ViewID useViewIDForPixmap(ViewLayer::ViewID, bool swappingEnabled);
     QString retrieveNetLabelSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
 
 protected:

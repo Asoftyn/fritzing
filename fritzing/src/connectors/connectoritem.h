@@ -80,7 +80,7 @@ public:
 	void setOverConnectorItem(ConnectorItem *);
 	ViewLayer::ViewLayerID attachedToViewLayerID();
 	ViewLayer::ViewLayerSpec attachedToViewLayerSpec();
-	ViewLayer::ViewIdentifier attachedToViewIdentifier();
+	ViewLayer::ViewID attachedToViewID();
 	const QString & connectorSharedID();
 	const QString & connectorSharedName();
 	const QString & connectorSharedDescription();
@@ -140,7 +140,7 @@ public:
 	void moveDone(int & index0, QPointF & oldPos0, QPointF & newPos0, int & index1, QPointF & oldPos1, QPointF & newPos1);
 	void killRubberBandLeg();  // hack; see caller
 	QRectF boundingRect() const;
-	const QString & legID(ViewLayer::ViewIdentifier, ViewLayer::ViewLayerID);
+	const QString & legID(ViewLayer::ViewID, ViewLayer::ViewLayerID);
 	QPainterPath shape() const;
 	QPainterPath hoverShape() const;
 	void changeLegCurve(int index, const class Bezier *);

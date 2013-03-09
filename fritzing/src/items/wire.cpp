@@ -124,8 +124,8 @@ Wire * WireAction::wire() {
 
 /////////////////////////////////////////////////////////////
 
-Wire::Wire( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier,  const ViewGeometry & viewGeometry, long id, QMenu* itemMenu, bool initLabel)
-	: ItemBase(modelPart, viewIdentifier, viewGeometry, id, itemMenu)
+Wire::Wire( ModelPart * modelPart, ViewLayer::ViewID viewID,  const ViewGeometry & viewGeometry, long id, QMenu* itemMenu, bool initLabel)
+	: ItemBase(modelPart, viewID, viewGeometry, id, itemMenu)
 {
 	m_bezier = NULL;
 	m_displayBendpointCursor = m_canHaveCurve = true;
@@ -158,7 +158,7 @@ Wire::~Wire() {
 
 FSvgRenderer * Wire::setUp(ViewLayer::ViewLayerID viewLayerID, const LayerHash &  viewLayers, InfoGraphicsView * infoGraphicsView) {
 	ItemBase::setViewLayerID(viewLayerID, viewLayers);
-	FSvgRenderer * svgRenderer = setUpConnectors(m_modelPart, m_viewIdentifier);
+	FSvgRenderer * svgRenderer = setUpConnectors(m_modelPart, m_viewID);
 	if (svgRenderer != NULL) {
 		initEnds(m_viewGeometry, svgRenderer->viewBox(), infoGraphicsView);
 	}
@@ -285,7 +285,7 @@ void Wire::paintBody(QPainter * painter, const QStyleOptionGraphicsItem * option
 		painter->restore();
 	}
 	   
-	// DebugDialog::debug(QString("pen width %1 %2").arg(m_pen.widthF()).arg(m_viewIdentifier));
+	// DebugDialog::debug(QString("pen width %1 %2").arg(m_pen.widthF()).arg(m_viewID));
 	painter->setPen(m_pen);
 	if (painterPath.isEmpty()) {
 		painter->drawLine(getPaintLine());	
@@ -856,7 +856,7 @@ void Wire::simpleConnectedMoved(ConnectorItem * from, ConnectorItem * to)
 
 	this->setPos(p1);
 	this->setLine(0,0, p2.x() - p1.x(), p2.y() - p1.y() );
-	//DebugDialog::debug(QString("set line %5: %1 %2, %3 %4, vis:%6 lyr:%7").arg(p1.x()).arg(p1.y()).arg(p2.x()).arg(p2.y()).arg(id()).arg(isVisible()).arg(m_viewIdentifier) );
+	//DebugDialog::debug(QString("set line %5: %1 %2, %3 %4, vis:%6 lyr:%7").arg(p1.x()).arg(p1.y()).arg(p2.x()).arg(p2.y()).arg(id()).arg(isVisible()).arg(m_viewID) );
 	setConnector1Rect();
 }
 
@@ -920,7 +920,7 @@ void Wire::connectedMoved(ConnectorItem * from, ConnectorItem * to) {
 	}
 	this->setPos(p1);
 	this->setLine(0,0, p2.x() - p1.x(), p2.y() - p1.y() );
-	//DebugDialog::debug(QString("set line %5: %1 %2, %3 %4, vis:%6 lyr:%7").arg(p1.x()).arg(p1.y()).arg(p2.x()).arg(p2.y()).arg(id()).arg(isVisible()).arg(m_viewIdentifier) );
+	//DebugDialog::debug(QString("set line %5: %1 %2, %3 %4, vis:%6 lyr:%7").arg(p1.x()).arg(p1.y()).arg(p2.x()).arg(p2.y()).arg(id()).arg(isVisible()).arg(m_viewID) );
 	setConnector1Rect();
 
 	if (chained) {
@@ -933,13 +933,13 @@ void Wire::connectedMoved(ConnectorItem * from, ConnectorItem * to) {
 }
 
 
-FSvgRenderer * Wire::setUpConnectors(ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier) 
+FSvgRenderer * Wire::setUpConnectors(ModelPart * modelPart, ViewLayer::ViewID viewID) 
 {
 	clearConnectorItemCache();
 
 	QString error;
 	LayerAttributes layerAttributes;
-	FSvgRenderer * renderer = ItemBase::setUpImage(modelPart, viewIdentifier, m_viewLayerID, m_viewLayerSpec, layerAttributes, error);
+	FSvgRenderer * renderer = ItemBase::setUpImage(modelPart, viewID, m_viewLayerID, m_viewLayerSpec, layerAttributes, error);
 	if (renderer == NULL) {
 		return NULL;
 	}
@@ -947,7 +947,7 @@ FSvgRenderer * Wire::setUpConnectors(ModelPart * modelPart, ViewLayer::ViewIdent
 	foreach (Connector * connector, modelPart->connectors().values()) {
 		if (connector == NULL) continue;
 
-		SvgIdLayer * svgIdLayer = connector->fullPinInfo(viewIdentifier, m_viewLayerID);
+		SvgIdLayer * svgIdLayer = connector->fullPinInfo(viewID, m_viewLayerID);
 		if (svgIdLayer == NULL) continue;
 
 		bool result = renderer->setUpConnector(svgIdLayer, false);
@@ -1137,7 +1137,7 @@ void Wire::setColorString(QString colorName, double op) {
 	// sets a color using the name (.e. "red")
 	// note: colorName is associated with a Fritzing color, not a Qt color
 
-	QString colorString = RatsnestColors::wireColor(m_viewIdentifier, colorName);     
+	QString colorString = RatsnestColors::wireColor(m_viewID, colorName);     
 	if (colorString.isEmpty()) {
 		colorString = colorName;
 	}
@@ -1147,7 +1147,7 @@ void Wire::setColorString(QString colorName, double op) {
 	setColor(c, op);
 	m_colorName = colorName;
 
-	QString shadowColorString = RatsnestColors::shadowColor(m_viewIdentifier, colorName);
+	QString shadowColorString = RatsnestColors::shadowColor(m_viewID, colorName);
 	if (shadowColorString.isEmpty()) {
 		shadowColorString = colorString;
 	}
@@ -1262,7 +1262,7 @@ bool Wire::canChangeColor() {
 	if (getRatsnest()) return false;
 	if (!getTrace()) return true;
 
-	return (this->m_viewIdentifier == ViewLayer::SchematicView);
+	return (this->m_viewID == ViewLayer::SchematicView);
 }
 
 void Wire::collectDirectWires(QList<Wire *> & wires) {
@@ -1411,7 +1411,7 @@ bool Wire::connectionIsAllowed(ConnectorItem * to) {
 
 	if (w->getRatsnest()) return false;
 
-	return m_viewIdentifier != ViewLayer::BreadboardView;
+	return m_viewID != ViewLayer::BreadboardView;
 }
 
 bool Wire::isGrounded() {
@@ -1453,7 +1453,7 @@ bool Wire::collectExtraInfo(QWidget * parent, const QString & family, const QStr
 			QString englishCurrColor = colorString();
 			foreach(QString transColorName, Wire::colorNames) {
 				QString englishColorName = Wire::colorTrans.value(transColorName);
-				bool ok = (this->m_viewIdentifier != ViewLayer::SchematicView || englishColorName.compare("white", Qt::CaseInsensitive) != 0);
+				bool ok = (this->m_viewID != ViewLayer::SchematicView || englishColorName.compare("white", Qt::CaseInsensitive) != 0);
 				if (ok) {
 					comboBox->addItem(transColorName, QVariant(englishColorName));
 					if (englishColorName.compare(englishCurrColor, Qt::CaseInsensitive) == 0) {
@@ -1742,7 +1742,7 @@ bool Wire::canChainMultiple()
 	return m_canChainMultiple;
 }
 
-ViewLayer::ViewIdentifier Wire::useViewIdentifierForPixmap(ViewLayer::ViewIdentifier vid, bool) 
+ViewLayer::ViewID Wire::useViewIDForPixmap(ViewLayer::ViewID vid, bool) 
 {
     if (vid == ViewLayer::BreadboardView) {
         return ViewLayer::IconView;

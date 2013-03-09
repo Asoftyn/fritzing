@@ -345,6 +345,11 @@ bool ModelBase::loadInstances(QDomDocument & domDocument, QDomElement & instance
 }
 
 ModelPart * ModelBase::addModelPart(ModelPart * parent, ModelPart * copyChild) {
+
+    //if (copyChild->moduleID() == "df9d072afa2b594ac67b60b4153ff57b_29") {
+    //    DebugDialog::debug("alive in here");
+    //}
+
 	ModelPart * modelPart = new ModelPart();
 	modelPart->copyNew(copyChild);
 	modelPart->setParent(parent);

@@ -139,8 +139,8 @@ register int	line_flag ;
 
 /////////////////////////////////////////////////////////
 
-ClipableWire::ClipableWire( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier,  const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool initLabel ) 
-	: Wire(modelPart, viewIdentifier,  viewGeometry,  id, itemMenu, initLabel)
+ClipableWire::ClipableWire( ModelPart * modelPart, ViewLayer::ViewID viewID,  const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool initLabel ) 
+	: Wire(modelPart, viewID,  viewGeometry,  id, itemMenu, initLabel)
 {
 	m_clipEnds = false;
 	m_trackHoverItem = NULL;
@@ -252,7 +252,7 @@ bool ClipableWire::filterMousePressConnectorEvent(ConnectorItem * connectorItem,
 	m_justFilteredEvent = NULL;
 
 	if (!m_clipEnds) return false;
-	if (m_viewIdentifier != ViewLayer::PCBView) return false;
+	if (m_viewID != ViewLayer::PCBView) return false;
 
 	ConnectorItem * to = NULL;
 	foreach (ConnectorItem * toConnectorItem, connectorItem->connectedToItems()) {

@@ -29,7 +29,7 @@ $Date$
 
 #include <QFile>
 
-QHash<ViewLayer::ViewIdentifier, RatsnestColors *> RatsnestColors::m_viewList;
+QHash<ViewLayer::ViewID, RatsnestColors *> RatsnestColors::m_viewList;
 QHash<QString, class RatsnestColor *> RatsnestColors::m_allNames;
 
 QColor ErrorColor(0, 0, 0);
@@ -72,7 +72,7 @@ RatsnestColor::~RatsnestColor() {
 
 RatsnestColors::RatsnestColors(const QDomElement & view) 
 {
-	m_viewIdentifier = ViewLayer::idFromXmlName(view.attribute("name"));
+	m_viewID = ViewLayer::idFromXmlName(view.attribute("name"));
 	m_backgroundColor.setNamedColor(view.attribute("background"));
 	m_index = 0;
 	QDomElement color = view.firstChildElement("color");
@@ -120,7 +120,7 @@ void RatsnestColors::initNames() {
 	QDomElement view = root.firstChildElement("view");
 	while (!view.isNull()) {
 		RatsnestColors * ratsnestColors = new RatsnestColors(view);
-		m_viewList.insert(ratsnestColors->m_viewIdentifier, ratsnestColors);
+		m_viewList.insert(ratsnestColors->m_viewID, ratsnestColors);
 		view = view.nextSiblingElement("view");
 	}
 }
@@ -132,8 +132,8 @@ void RatsnestColors::cleanup() {
 	m_viewList.clear();
 }
 
-const QColor & RatsnestColors::netColor(ViewLayer::ViewIdentifier viewIdentifier) {
-	RatsnestColors * ratsnestColors = m_viewList.value(viewIdentifier, NULL);
+const QColor & RatsnestColors::netColor(ViewLayer::ViewID viewID) {
+	RatsnestColors * ratsnestColors = m_viewList.value(viewID, NULL);
 	if (ratsnestColors == NULL) return ErrorColor;
 
 	return ratsnestColors->getNextColor();
@@ -180,8 +180,8 @@ bool RatsnestColors::findConnectorColor(const QStringList & names, QColor & colo
 	return false;
 }
 
-bool RatsnestColors::isConnectorColor(ViewLayer::ViewIdentifier m_viewIdentifier, const QColor & color) {
-	RatsnestColors * ratsnestColors = m_viewList.value(m_viewIdentifier, NULL);
+bool RatsnestColors::isConnectorColor(ViewLayer::ViewID m_viewID, const QColor & color) {
+	RatsnestColors * ratsnestColors = m_viewList.value(m_viewID, NULL);
 	if (ratsnestColors == NULL) return false;
 
 	foreach (RatsnestColor * ratsnestColor, ratsnestColors->m_ratsnestColorList) {
@@ -193,24 +193,24 @@ bool RatsnestColors::isConnectorColor(ViewLayer::ViewIdentifier m_viewIdentifier
 	return false;
 }
 
-void RatsnestColors::reset(ViewLayer::ViewIdentifier m_viewIdentifier) {
-	RatsnestColors * ratsnestColors = m_viewList.value(m_viewIdentifier, NULL);
+void RatsnestColors::reset(ViewLayer::ViewID m_viewID) {
+	RatsnestColors * ratsnestColors = m_viewList.value(m_viewID, NULL);
 	if (ratsnestColors == NULL) return;
 
 	ratsnestColors->m_index = 0;
 }
 
-QColor RatsnestColors::backgroundColor(ViewLayer::ViewIdentifier viewIdentifier) 
+QColor RatsnestColors::backgroundColor(ViewLayer::ViewID viewID) 
 {
-	RatsnestColors * ratsnestColors = m_viewList.value(viewIdentifier, NULL);
+	RatsnestColors * ratsnestColors = m_viewList.value(viewID, NULL);
 	if (ratsnestColors == NULL) return QColor();
 
 	return ratsnestColors->m_backgroundColor;
 }
 
-const QString & RatsnestColors::shadowColor(ViewLayer::ViewIdentifier viewIdentifier, const QString & name)
+const QString & RatsnestColors::shadowColor(ViewLayer::ViewID viewID, const QString & name)
 {
-	RatsnestColors * ratsnestColors = m_viewList.value(viewIdentifier, NULL);
+	RatsnestColors * ratsnestColors = m_viewList.value(viewID, NULL);
 	if (ratsnestColors == NULL) return ___emptyString___;
 
 	RatsnestColor * ratsnestColor = ratsnestColors->m_ratsnestColorHash.value(name.toLower(), NULL);
@@ -219,9 +219,9 @@ const QString & RatsnestColors::shadowColor(ViewLayer::ViewIdentifier viewIdenti
 	return ratsnestColor->m_shadow;
 }
 
-QString RatsnestColors::wireColor(ViewLayer::ViewIdentifier viewIdentifier, QString & name)
+QString RatsnestColors::wireColor(ViewLayer::ViewID viewID, QString & name)
 {
-	RatsnestColors * ratsnestColors = m_viewList.value(viewIdentifier, NULL);
+	RatsnestColors * ratsnestColors = m_viewList.value(viewID, NULL);
 	if (ratsnestColors == NULL) return ___emptyString___;
 
 	RatsnestColor * ratsnestColor = ratsnestColors->m_ratsnestColorHash.value(name.toLower(), NULL);

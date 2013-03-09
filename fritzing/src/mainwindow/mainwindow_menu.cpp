@@ -1329,7 +1329,7 @@ void MainWindow::createTraceMenus()
 	m_pcbTraceMenu->addAction(m_newAutorouteAct);
 	m_pcbTraceMenu->addAction(m_newDesignRulesCheckAct);
 	m_pcbTraceMenu->addAction(m_autorouterSettingsAct);
-	// m_pcbTraceMenu->addAction(m_fabQuoteAct);
+	m_pcbTraceMenu->addAction(m_fabQuoteAct);
 
 	QMenu * groundFillMenu = m_pcbTraceMenu->addMenu(tr("Ground Fill"));
 
@@ -1338,6 +1338,7 @@ void MainWindow::createTraceMenus()
 	groundFillMenu->addAction(m_removeGroundFillAct);
 	groundFillMenu->addAction(m_setGroundFillSeedsAct);
 	groundFillMenu->addAction(m_clearGroundFillSeedsAct);
+	groundFillMenu->addAction(m_setGroundFillKeepoutAct);
 	//m_pcbTraceMenu->addAction(m_updateRoutingStatusAct);
 	m_pcbTraceMenu->addSeparator();
 
@@ -1826,7 +1827,7 @@ void MainWindow::updateEditMenu() {
 			}
 		}
 
-		//DebugDialog::debug(QString("enable cut/copy/duplicate/delete %1 %2 %3").arg(copyActsEnabled).arg(deleteActsEnabled).arg(m_currentWidget->viewIdentifier()) );
+		//DebugDialog::debug(QString("enable cut/copy/duplicate/delete %1 %2 %3").arg(copyActsEnabled).arg(deleteActsEnabled).arg(m_currentWidget->viewID()) );
 		m_deleteAct->setEnabled(deleteActsEnabled);
 		m_deletePlusAct->setEnabled(deleteActsEnabled);
 		m_deleteAct->setText(tr("Delete"));
@@ -2018,11 +2019,11 @@ void MainWindow::showProgramView() {
 	setCurrentTabIndex(3);
 }
 
-void MainWindow::setCurrentView(ViewLayer::ViewIdentifier viewIdentifier)
+void MainWindow::setCurrentView(ViewLayer::ViewID viewID)
 {
-    if (viewIdentifier == ViewLayer::BreadboardView) showBreadboardView();
-    else if (viewIdentifier == ViewLayer::SchematicView) showSchematicView();
-    else if (viewIdentifier == ViewLayer::PCBView) showPCBView();
+    if (viewID == ViewLayer::BreadboardView) showBreadboardView();
+    else if (viewID == ViewLayer::SchematicView) showSchematicView();
+    else if (viewID == ViewLayer::PCBView) showPCBView();
 }
 
 void MainWindow::showPartsBinIconView() {
@@ -2487,6 +2488,12 @@ void MainWindow::createTraceMenuActions() {
 	m_clearGroundFillSeedsAct = new ConnectorItemAction(tr("Clear Ground Fill Seeds"), this);
 	m_clearGroundFillSeedsAct->setStatusTip(tr("Clear ground fill seeds--enable copper fill only."));
 	connect(m_clearGroundFillSeedsAct, SIGNAL(triggered()), this, SLOT(clearGroundFillSeeds()));
+
+	m_setGroundFillKeepoutAct = new QAction(tr("Set Ground Fill Keepout..."), this);
+	m_setGroundFillKeepoutAct->setStatusTip(tr("Set the minimum distance between ground fill and traces or connectors"));
+	connect(m_setGroundFillKeepoutAct, SIGNAL(triggered()), this, SLOT(setGroundFillKeepout()));
+
+
 
 	m_newDesignRulesCheckAct = new QAction(tr("Design Rules Check (DRC)"), this);
 	m_newDesignRulesCheckAct->setStatusTip(tr("Highlights any parts that are too close together for safe board production"));
@@ -3199,7 +3206,7 @@ void MainWindow::startSaveInstancesSlot(const QString & fileName, ModelPart *, Q
 	views << m_breadboardGraphicsView << m_schematicGraphicsView << m_pcbGraphicsView;
 	foreach  (SketchWidget * sketchWidget, views) {
 		streamWriter.writeStartElement("view");
-		streamWriter.writeAttribute("name", ViewLayer::viewIdentifierXmlName(sketchWidget->viewIdentifier()));
+		streamWriter.writeAttribute("name", ViewLayer::viewIDXmlName(sketchWidget->viewID()));
 		streamWriter.writeAttribute("backgroundColor", sketchWidget->background().name());
 		streamWriter.writeAttribute("gridSize", sketchWidget->gridSizeText());
 		streamWriter.writeAttribute("showGrid", sketchWidget->showingGrid() ? "1" : "0");
@@ -3276,9 +3283,9 @@ void MainWindow::loadedViewsSlot(ModelBase *, QDomElement & views) {
 	QDomElement view = views.firstChildElement("view");
 	while (!view.isNull()) {
 		QString name = view.attribute("name");
-		ViewLayer::ViewIdentifier viewIdentifier = ViewLayer::idFromXmlName(name);
+		ViewLayer::ViewID viewID = ViewLayer::idFromXmlName(name);
         SketchWidget * sketchWidget = NULL;
-		switch (viewIdentifier) {
+		switch (viewID) {
 			case ViewLayer::BreadboardView:
 				sketchWidget = m_breadboardGraphicsView;
 				break;
@@ -4022,7 +4029,7 @@ void MainWindow::findPartInSketch() {
 	if (m_currentGraphicsView == NULL) return;
 
     bool ok;
-    QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+    QString text = QInputDialog::getText(this, tr("Enter Text"),
                                           tr("Text will match part label, description, title, etc. Enter text to search for:"), 
                                           QLineEdit::Normal, lastSearchText, &ok);
     if (!ok || text.isEmpty()) return;
@@ -4068,4 +4075,7 @@ void MainWindow::findPartInSketch() {
     m_currentGraphicsView->selectItems(matched);
 }
 
+void MainWindow::setGroundFillKeepout() {
+    if (m_pcbGraphicsView != NULL) m_pcbGraphicsView->setGroundFillKeepout();
+}
 

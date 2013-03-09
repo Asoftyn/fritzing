@@ -35,7 +35,7 @@ struct SvgIdLayer
 {
 	QString m_svgId;
 	QString m_terminalId;
-    ViewLayer::ViewIdentifier m_viewIdentifier;
+    ViewLayer::ViewID m_viewID;
 	ViewLayer::ViewLayerID m_svgViewLayerID;
 	bool m_svgVisible;
 	bool m_hybrid;
@@ -50,7 +50,7 @@ struct SvgIdLayer
 	QLineF m_legLine;
     bool m_path;
 
-	SvgIdLayer(ViewLayer::ViewIdentifier);
+	SvgIdLayer(ViewLayer::ViewID);
 	SvgIdLayer * copyLayer();
 };
 

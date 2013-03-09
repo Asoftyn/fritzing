@@ -472,6 +472,10 @@ QString GerberGenerator::clipToBoard(QString svgString, QRectF & boardRect, cons
 		anyConverted = true;
     }
 
+    if (TextUtils::squashElement(domDocument1, "image", "", QRegExp())) {
+		anyConverted = true;
+    }
+
     // can't handle scaled paths very well. There is probably a deeper bug that needs to be chased down.
     // is this only necessary for contour view?
     QDomNodeList nodeList = root1.elementsByTagName("path"); 
@@ -1000,7 +1004,7 @@ void GerberGenerator::handleDonuts(QDomElement & root1, QMultiHash<long, Connect
         QStringList ids;
         foreach (ConnectorItem * connectorItem, treatAsCircle.values()) {
             ItemBase * itemBase = connectorItem->attachedTo();
-            SvgIdLayer * svgIdLayer = connectorItem->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
+            SvgIdLayer * svgIdLayer = connectorItem->connector()->fullPinInfo(itemBase->viewID(), itemBase->viewLayerID());
             DebugDialog::debug(QString("treat as circle %1").arg(svgIdLayer->m_svgId));
             ids << svgIdLayer->m_svgId;
         }
@@ -1024,7 +1028,7 @@ void GerberGenerator::handleDonuts(QDomElement & root1, QMultiHash<long, Connect
 
                 foreach (ConnectorItem * candidate, connectorItems) {
                     ItemBase * itemBase = candidate->attachedTo();
-                    SvgIdLayer * svgIdLayer = candidate->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
+                    SvgIdLayer * svgIdLayer = candidate->connector()->fullPinInfo(itemBase->viewID(), itemBase->viewLayerID());
                     if (svgIdLayer->m_svgId == id) {
                         connectorItem = candidate;
                         break;

@@ -1304,3 +1304,135 @@ void SvgFileSplitter::gReplace(const QString & id)
 
 	element.setTagName("g");
 }
+
+QByteArray SvgFileSplitter::hideText(const QString & filename) {
+    QString errorStr;
+	int errorLine;
+	int errorColumn;
+    QDomDocument doc;
+
+    QFile file(filename);
+	if (!doc.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
+        return QByteArray();
+    }
+
+    hideTextAux(doc.documentElement(), false);
+
+    return TextUtils::removeXMLEntities(doc.toString()).toUtf8();
+}
+
+QByteArray SvgFileSplitter::hideText2(const QByteArray & svg) {
+    QString errorStr;
+	int errorLine;
+	int errorColumn;
+    QDomDocument doc;
+
+	if (!doc.setContent(svg, &errorStr, &errorLine, &errorColumn)) {
+        return QByteArray();
+    }
+
+    hideTextAux(doc.documentElement(), false);
+
+    return TextUtils::removeXMLEntities(doc.toString()).toUtf8();
+}
+
+QString SvgFileSplitter::hideText3(const QString & svg) {
+    QString errorStr;
+	int errorLine;
+	int errorColumn;
+    QDomDocument doc;
+
+	if (!doc.setContent(svg, &errorStr, &errorLine, &errorColumn)) {
+        return "";
+    }
+
+    hideTextAux(doc.documentElement(), false);
+
+    return TextUtils::removeXMLEntities(doc.toString());
+}
+
+
+void SvgFileSplitter::hideTextAux(QDomElement & parent, bool hideChildren) {
+    if (hideChildren || parent.tagName() == "text") {
+        parent.setTagName("g");
+        hideChildren = true;
+    }
+
+    QDomElement child = parent.firstChildElement();
+    while (!child.isNull()) {
+        hideTextAux(child, hideChildren);
+        child = child.nextSiblingElement();
+    }
+}
+
+QByteArray SvgFileSplitter::showText(const QString & filename, bool & hasText) {
+    QString errorStr;
+	int errorLine;
+	int errorColumn;
+    QDomDocument doc;
+
+    QFile file(filename);
+	if (!doc.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
+        return QByteArray();
+    }
+
+    showTextAux(doc.documentElement(), hasText, true);
+    if (!hasText) {
+        return QByteArray();
+    }
+
+    return TextUtils::removeXMLEntities(doc.toString()).toUtf8();
+}
+
+QByteArray SvgFileSplitter::showText2(const QByteArray & svg, bool & hasText) {
+    QString errorStr;
+	int errorLine;
+	int errorColumn;
+    QDomDocument doc;
+
+	if (!doc.setContent(svg, &errorStr, &errorLine, &errorColumn)) {
+        return QByteArray();
+    }
+
+    showTextAux(doc.documentElement(), hasText, true);
+    if (!hasText) {
+        return QByteArray();
+    }
+
+    return TextUtils::removeXMLEntities(doc.toString()).toUtf8();
+}
+
+QString SvgFileSplitter::showText3(const QString & svg, bool & hasText) {
+    QString errorStr;
+	int errorLine;
+	int errorColumn;
+    QDomDocument doc;
+
+	if (!doc.setContent(svg, &errorStr, &errorLine, &errorColumn)) {
+        return "";
+    }
+
+    showTextAux(doc.documentElement(), hasText, true);
+    if (!hasText) {
+        return "";
+    }
+
+    return TextUtils::removeXMLEntities(doc.toString());
+}
+
+void SvgFileSplitter::showTextAux(QDomElement & parent, bool & hasText, bool root) {
+    if (parent.tagName() == "text") {
+        hasText = true;
+        return;
+    }
+
+    if (!root) {
+        parent.setTagName("g");
+    }
+
+    QDomElement child = parent.firstChildElement();
+    while (!child.isNull()) {
+        showTextAux(child, hasText, false);
+        child = child.nextSiblingElement();
+    }
+}

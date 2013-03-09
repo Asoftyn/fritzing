@@ -230,7 +230,7 @@ void ChangeSvgCommand::redo()
 QString ChangeSvgCommand::getParamString() const {
 	return "ChangeSvgCommand " + 
         QString(" id:%1, old:%2, new:%3")
-            .arg(m_sketchWidget->viewIdentifier())
+            .arg(m_sketchWidget->viewID())
             .arg(m_oldFilename)
             .arg(m_newFilename)
         ;
@@ -265,7 +265,7 @@ void RelocateConnectorSvgCommand::redo()
 QString RelocateConnectorSvgCommand::getParamString() const {
 	return "RelocateConnectorSvgCommand " + 
         QString(" vid:%1 id:%2, terminalid:%3, oldgorn:%4, oldgornterminal:%5, newgorn:%6, newgornterminal:%7")
-            .arg(m_sketchWidget->viewIdentifier())
+            .arg(m_sketchWidget->viewID())
             .arg(m_id)
             .arg(m_terminalID)
             .arg(m_oldGorn)
@@ -301,7 +301,7 @@ void MoveTerminalPointCommand::redo()
 QString MoveTerminalPointCommand::getParamString() const {
 	return "RelocateConnectorSvgCommand " + 
         QString(" vid:%1, id:%2, old:%3,%4, new:%5,%6")
-            .arg(m_sketchWidget->viewIdentifier())
+            .arg(m_sketchWidget->viewID())
             .arg(m_id)
             .arg(m_oldLocation.x())
             .arg(m_oldLocation.y())

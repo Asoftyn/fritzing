@@ -77,8 +77,8 @@ void FocusBugLineEdit::editingFinishedSlot() {
 
 ////////////////////////////////////////
 
-SymbolPaletteItem::SymbolPaletteItem( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: PaletteItem(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+SymbolPaletteItem::SymbolPaletteItem( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: PaletteItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 	if (Voltages.count() == 0) {
 		Voltages.append(0.0);
@@ -546,7 +546,7 @@ bool SymbolPaletteItem::hasPartNumberProperty()
 	return false;
 }
 
-ViewLayer::ViewIdentifier SymbolPaletteItem::useViewIdentifierForPixmap(ViewLayer::ViewIdentifier vid, bool) 
+ViewLayer::ViewID SymbolPaletteItem::useViewIDForPixmap(ViewLayer::ViewID vid, bool) 
 {
     if (vid == ViewLayer::SchematicView) {
         return ViewLayer::IconView;

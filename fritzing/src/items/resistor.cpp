@@ -52,8 +52,8 @@ static QHash<QString, QColor> Tolerances;
 //	save into parts bin
 //	other manifestations of "220"?
 
-Resistor::Resistor( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
-	: Capacitor(modelPart, viewIdentifier, viewGeometry, id, itemMenu, doLabel)
+Resistor::Resistor( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: Capacitor(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
 	m_changingPinSpacing = false;
 	if (Resistances.count() == 0) {
@@ -134,7 +134,7 @@ void Resistor::setResistance(QString resistance, QString pinSpacing, bool force)
 
 	modelPart()->setLocalTitle(resistance + " " + OhmSymbol + " " + tr("Resistor"));
 
-	switch (this->m_viewIdentifier) {
+	switch (this->m_viewID) {
 		case ViewLayer::BreadboardView:
 			if (force || resistance.compare(m_ohms) != 0) {
 				QString svg = makeSvg(resistance, m_viewLayerID);
@@ -154,12 +154,12 @@ void Resistor::setResistance(QString resistance, QString pinSpacing, bool force)
 					QString filename = PinSpacings.value(pinSpacing, "");
 					if (filename.isEmpty()) break;
 
-                    QString original = modelPart()->imageFileName(m_viewIdentifier);
-                    modelPart()->setImageFileName(m_viewIdentifier, filename);
+                    QString original = modelPart()->imageFileName(m_viewID);
+                    modelPart()->setImageFileName(m_viewID, filename);
 					m_changingPinSpacing = true;
 					resetImage(infoGraphicsView);
 					m_changingPinSpacing = false;
-                    modelPart()->setImageFileName(m_viewIdentifier, original);
+                    modelPart()->setImageFileName(m_viewID, original);
 
 					updateConnections();
 				}
@@ -328,7 +328,7 @@ void Resistor::updateResistances(QString r) {
 
 ConnectorItem* Resistor::newConnectorItem(Connector *connector) {
 	if (m_changingPinSpacing) {
-		return connector->connectorItemByViewLayerID(viewIdentifier(), viewLayerID());
+		return connector->connectorItemByViewLayerID(viewID(), viewLayerID());
 	}
 
 	return Capacitor::newConnectorItem(connector);
@@ -336,14 +336,14 @@ ConnectorItem* Resistor::newConnectorItem(Connector *connector) {
 
 ConnectorItem* Resistor::newConnectorItem(ItemBase * layerKin, Connector *connector) {
 	if (m_changingPinSpacing) {
-		return connector->connectorItemByViewLayerID(viewIdentifier(), layerKin->viewLayerID());
+		return connector->connectorItemByViewLayerID(viewID(), layerKin->viewLayerID());
 	}
 
 	return Capacitor::newConnectorItem(layerKin, connector);
 }
 
 bool Resistor::hasCustomSVG() {
-	switch (m_viewIdentifier) {
+	switch (m_viewID) {
 		case ViewLayer::BreadboardView:
 		case ViewLayer::IconView:
 			return true;
@@ -391,9 +391,9 @@ void Resistor::setProp(const QString & prop, const QString & value)
 	}
 }
 
-bool Resistor::setUpImage(ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
+bool Resistor::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
 {
-	bool result = Capacitor::setUpImage(modelPart, viewIdentifier, viewLayers, viewLayerID, viewLayerSpec, doConnectors, layerAttributes, error);
+	bool result = Capacitor::setUpImage(modelPart, viewID, viewLayers, viewLayerID, viewLayerSpec, doConnectors, layerAttributes, error);
 	if (viewLayerID == ViewLayer::Breadboard) {
 		if (result && m_breadboardSvgFile.isEmpty()) m_breadboardSvgFile = layerAttributes.filename();
 	}
@@ -403,10 +403,10 @@ bool Resistor::setUpImage(ModelPart * modelPart, ViewLayer::ViewIdentifier viewI
 	return result;
 }
 
-ViewLayer::ViewIdentifier Resistor::useViewIdentifierForPixmap(ViewLayer::ViewIdentifier vid, bool swappingEnabled) {
+ViewLayer::ViewID Resistor::useViewIDForPixmap(ViewLayer::ViewID vid, bool swappingEnabled) {
     if (swappingEnabled && vid == ViewLayer::BreadboardView) {
         return vid;
     }
 
-    return ItemBase::useViewIdentifierForPixmap(vid, swappingEnabled);
+    return ItemBase::useViewIDForPixmap(vid, swappingEnabled);
 }

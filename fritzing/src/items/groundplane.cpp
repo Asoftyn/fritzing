@@ -65,15 +65,15 @@ void loadIconSvg()
 
 /////////////////////////////////////////////////////////
 
-GroundPlane::GroundPlane( ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier,  const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel) 
-	: PaletteItem(modelPart, viewIdentifier,  viewGeometry,  id, itemMenu, doLabel)
+GroundPlane::GroundPlane( ModelPart * modelPart, ViewLayer::ViewID viewID,  const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel) 
+	: PaletteItem(modelPart, viewID,  viewGeometry,  id, itemMenu, doLabel)
 {
 	m_connector0 = NULL;
 }
 
-bool GroundPlane::setUpImage(ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
+bool GroundPlane::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
 {
-	bool result = PaletteItem::setUpImage(modelPart, viewIdentifier, viewLayers, viewLayerID, viewLayerSpec, doConnectors, layerAttributes, error);
+	bool result = PaletteItem::setUpImage(modelPart, viewID, viewLayers, viewLayerID, viewLayerSpec, doConnectors, layerAttributes, error);
 
 	if (doConnectors) {
 		foreach (ConnectorItem * item, cachedConnectorItems()) {
@@ -111,7 +111,7 @@ ConnectorItem * GroundPlane::connector0() {
 }
 
 bool GroundPlane::hasCustomSVG() {
-	switch (m_viewIdentifier) {
+	switch (m_viewID) {
 		case ViewLayer::PCBView:
 			return true;
 		default:
@@ -157,7 +157,7 @@ void GroundPlane::setSvg(const QString & svg) {
 
 void GroundPlane::setSvgAux(const QString & svg) {
 	if (svg.isEmpty()) return;
-	if (m_viewIdentifier == ViewLayer::BreadboardView || m_viewIdentifier == ViewLayer::SchematicView) return;
+	if (m_viewID == ViewLayer::BreadboardView || m_viewID == ViewLayer::SchematicView) return;
 
 	QString xmlName = ViewLayer::viewLayerXmlNameFromID(m_viewLayerID);
 	SvgFileSplitter	splitter;
@@ -253,7 +253,7 @@ QPainterPath GroundPlane::shape() const
     return PaletteItemBase::shape();
 }
 
-ViewLayer::ViewIdentifier GroundPlane::useViewIdentifierForPixmap(ViewLayer::ViewIdentifier vid, bool) 
+ViewLayer::ViewID GroundPlane::useViewIDForPixmap(ViewLayer::ViewID vid, bool) 
 {
     if (vid == ViewLayer::PCBView) {
         return ViewLayer::IconView;

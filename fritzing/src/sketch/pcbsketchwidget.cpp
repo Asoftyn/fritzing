@@ -68,6 +68,7 @@ $Date$
 #include <QPushButton>
 #include <QMessageBox>
 #include <QNetworkAccessManager>
+#include <QInputDialog>
 
 /////////////////////////////////////////////////////
 
@@ -183,8 +184,8 @@ void QuoteDialog::setMessage(int index, const QString & message) {
 
 const char * PCBSketchWidget::FakeTraceProperty = "FakeTrace";
 
-PCBSketchWidget::PCBSketchWidget(ViewLayer::ViewIdentifier viewIdentifier, QWidget *parent)
-    : SketchWidget(viewIdentifier, parent)
+PCBSketchWidget::PCBSketchWidget(ViewLayer::ViewID viewID, QWidget *parent)
+    : SketchWidget(viewID, parent)
 {
     m_requestQuoteTimer.setSingleShot(true);
     m_requestQuoteTimer.setInterval(100);
@@ -218,7 +219,7 @@ void PCBSketchWidget::addViewLayers() {
 
 
 
-ViewLayer::ViewLayerID PCBSketchWidget::multiLayerGetViewLayerID(ModelPart * modelPart, ViewLayer::ViewIdentifier viewIdentifier, ViewLayer::ViewLayerSpec viewLayerSpec, LayerList & layerList) 
+ViewLayer::ViewLayerID PCBSketchWidget::multiLayerGetViewLayerID(ModelPart * modelPart, ViewLayer::ViewID viewID, ViewLayer::ViewLayerSpec viewLayerSpec, LayerList & layerList) 
 {
 	if (viewLayerSpec == ViewLayer::GroundPlane_Bottom) return ViewLayer::GroundPlane0;
 	else if (viewLayerSpec == ViewLayer::GroundPlane_Top) return ViewLayer::GroundPlane1;
@@ -227,7 +228,7 @@ ViewLayer::ViewLayerID PCBSketchWidget::multiLayerGetViewLayerID(ModelPart * mod
 	ViewLayer::ViewLayerID wantLayer = modelPart->flippedSMD() && viewLayerSpec == ViewLayer::ThroughHoleThroughTop_TwoLayers ? ViewLayer::Copper1 : ViewLayer::Copper0;
 	if (layerList.contains(wantLayer)) return wantLayer;
 
-    return SketchWidget::multiLayerGetViewLayerID(modelPart, viewIdentifier, viewLayerSpec, layerList);   
+    return SketchWidget::multiLayerGetViewLayerID(modelPart, viewID, viewLayerSpec, layerList);   
 }
 
 bool PCBSketchWidget::canDeleteItem(QGraphicsItem * item, int count)
@@ -1634,7 +1635,7 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 	    }
 
 	    bool result = gpg0.generateGroundPlane(boardSvg, boardImageRect.size(), svg0, copperImageRect.size(), exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */,
-											    ViewLayer::Copper0Color);
+											    ViewLayer::Copper0Color, getKeepoutMils());
 	    if (result == false) {
             QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to write copper fill (1)."));
 		    return false;
@@ -1653,7 +1654,7 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
                     Qt::DirectConnection);
 		}
 		bool result = gpg1.generateGroundPlane(boardSvg, boardImageRect.size(), svg1, copperImageRect.size(), exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */,
-												ViewLayer::Copper1Color);
+												ViewLayer::Copper1Color, getKeepoutMils());
 		if (result == false) {
 			QMessageBox::critical(this, tr("Fritzing"), tr("Fritzing error: unable to write copper fill (2)."));
 			return false;
@@ -1750,7 +1751,7 @@ QString PCBSketchWidget::generateCopperFillUnit(ItemBase * itemBase, QPointF whe
 	gpg.setLayerName(gpLayerName);
 	gpg.setMinRunSize(10, 10);
 	bool result = gpg.generateGroundPlaneUnit(boardSvg, boardImageRect.size(), svg, copperImageRect.size(), exceptions, board, GraphicsUtils::StandardFritzingDPI / 2.0  /* 2 MIL */, 
-												color, whereToStart);
+												color, whereToStart, getKeepoutMils());
 
 	if (result == false || gpg.newSVGs().count() < 1) {
         QMessageBox::critical(this, tr("Fritzing"), tr("Unable to create copper fill--possibly the part was dropped onto another part or wire rather than the actual PCB."));
@@ -2700,7 +2701,7 @@ QHash<QString, QString> PCBSketchWidget::getAutorouterSettings() {
 
 void PCBSketchWidget::setAutorouterSettings(QHash<QString, QString> & autorouterSettings) {
     QList<QString> keys;
-    keys << DRC::KeepoutSettingName << AutorouterSettingsDialog::AutorouteTraceWidth << Via::AutorouteViaHoleSize << Via::AutorouteViaRingThickness;
+    keys << DRC::KeepoutSettingName << AutorouterSettingsDialog::AutorouteTraceWidth << Via::AutorouteViaHoleSize << Via::AutorouteViaRingThickness << GroundPlaneGenerator::KeepoutSettingName;
     foreach (QString key, keys) {
         m_autorouterSettings.insert(key, autorouterSettings.value(key, ""));
     }
@@ -2823,11 +2824,11 @@ double PCBSketchWidget::calcBoardArea(int & boardCount) {
     return area;
 }
 
-PaletteItem* PCBSketchWidget::addPartItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec viewLayerSpec, PaletteItem * paletteItem, bool doConnectors, bool & ok, ViewLayer::ViewIdentifier viewIdentifier, bool temporary) {
-    if (viewIdentifier == ViewLayer::PCBView && Board::isBoard(modelPart)) {
+PaletteItem* PCBSketchWidget::addPartItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec viewLayerSpec, PaletteItem * paletteItem, bool doConnectors, bool & ok, ViewLayer::ViewID viewID, bool temporary) {
+    if (viewID == ViewLayer::PCBView && Board::isBoard(modelPart)) {
         requestQuoteSoon();
     }
-    return SketchWidget::addPartItem(modelPart, viewLayerSpec, paletteItem, doConnectors, ok, viewIdentifier, temporary);
+    return SketchWidget::addPartItem(modelPart, viewLayerSpec, paletteItem, doConnectors, ok, viewID, temporary);
 }
 
 void PCBSketchWidget::requestQuoteSoon() {
@@ -2854,3 +2855,44 @@ QDialog * PCBSketchWidget::quoteDialog(QWidget * parent) {
     quoteDialog->setMessage(0, m_quoteMessage[0]);
     return quoteDialog;
 }
+
+
+double PCBSketchWidget::getKeepoutMils() {
+    QSettings settings;
+    QString keepoutString = m_autorouterSettings.value(GroundPlaneGenerator::KeepoutSettingName);
+    if (keepoutString.isEmpty()) {
+        keepoutString = settings.value(GroundPlaneGenerator::KeepoutSettingName, "").toString();
+    }
+
+    bool ok;
+    double mils = TextUtils::convertToInches(keepoutString, &ok, false);
+    if (ok) {
+        mils *= 1000;  // convert from inches
+    }
+    else {
+        mils = GroundPlaneGenerator::KeepoutDefaultMils;
+    }
+
+    return mils;
+}
+
+void PCBSketchWidget::setGroundFillKeepout() {
+
+    bool ok;
+    double mils = QInputDialog::getInt(this, tr("Enter Keepout"),
+                                          tr("Keepout is in mils (.001 inches).\n\n") +
+                                          tr("Note that due to aliasing, distances may be too short by up to 2 mils\n") +
+                                          tr("so you may want to increase the keepout value by that much.\n\n") +
+                                          tr("Enter keepout value:"),
+                                          qRound(getKeepoutMils()), 0, 10 * 1000, 1, &ok);
+
+
+    if (!ok) return;
+
+    QString keepoutString = QString("%1in").arg(mils / 1000);
+    m_autorouterSettings.insert(GroundPlaneGenerator::KeepoutSettingName, keepoutString);
+
+    QSettings settings;
+    settings.setValue(GroundPlaneGenerator::KeepoutSettingName, keepoutString);
+}
+

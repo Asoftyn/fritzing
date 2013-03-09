@@ -173,22 +173,6 @@ uint getColor(GridValue val) {
     else return 0xffff6060;
 }
 
-void drawBorder(QImage * image, int border) {
-    int halfBorder = border / 2;
-    QPainter painter;
-	painter.begin(image);
-	painter.setRenderHint(QPainter::Antialiasing, false);
-    QPen pen = painter.pen();
-    pen.setWidth(border);
-    pen.setColor(0xff000000);
-    painter.setPen(pen);
-    painter.drawLine(0, halfBorder, image->width() - 1, halfBorder);
-    painter.drawLine(0, image->height() - halfBorder, image->width() - 1, image->height() - halfBorder);
-    painter.drawLine(halfBorder, 0, halfBorder, image->height() - 1);
-    painter.drawLine(image->width() - halfBorder, 0, image->width() - halfBorder, image->height() - 1);
-	painter.end();
-}
-
 void fastCopy(QImage * from, QImage * to) {
     uchar * fromBits = from->scanLine(0);
     uchar * toBits = to->scanLine(0);
@@ -755,7 +739,7 @@ void MazeRouter::start()
         QRectF r4(QPointF(0, 0), gridSize * 4);
         makeBoard(m_boardImage, m_keepoutGrid * 4, r4);   
     }
-    drawBorder(m_boardImage, 4);
+    GraphicsUtils::drawBorder(m_boardImage, 4);
 
 	ProcessEventBlocker::processEvents(); // to keep the app  from freezing
 	if (m_cancelled || m_stopTracing) {
@@ -871,7 +855,7 @@ void MazeRouter::start()
         QRectF r2(0, 0, m_boardImage->width(), m_boardImage->height());
         makeBoard(m_boardImage, m_keepoutPixels * 2, r2);
     }
-    drawBorder(m_boardImage, 2);
+    GraphicsUtils::drawBorder(m_boardImage, 2);
 
     createTraces(netList, bestScore, parentCommand);
 
@@ -1458,7 +1442,7 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * g
     QRectF itemsBoundingRect;
     foreach (ConnectorItem * connectorItem, subnet) {
         ItemBase * itemBase = connectorItem->attachedTo();
-        SvgIdLayer * svgIdLayer = connectorItem->connector()->fullPinInfo(itemBase->viewIdentifier(), itemBase->viewLayerID());
+        SvgIdLayer * svgIdLayer = connectorItem->connector()->fullPinInfo(itemBase->viewID(), itemBase->viewLayerID());
         partIDs.insert(QString::number(itemBase->id()), svgIdLayer->m_svgId);
         if (!svgIdLayer->m_terminalId.isEmpty()) {
             terminalIDs.insert(QString::number(itemBase->id()), svgIdLayer->m_terminalId);

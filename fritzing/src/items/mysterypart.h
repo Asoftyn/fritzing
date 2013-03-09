@@ -40,7 +40,7 @@ class MysteryPart : public PaletteItem
 
 public:
 	// after calling this constructor if you want to render the loaded svg (either from model or from file), MUST call <renderImage>
-	MysteryPart(ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
+	MysteryPart(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~MysteryPart();
 
 	QString retrieveSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
@@ -77,7 +77,6 @@ protected:
 	virtual bool otherPropsChange(const QMap<QString, QString> & propsMap);
 	virtual const QStringList & spacings();
 	virtual QString retrieveSchematicSvg(QString & svg);
-    void makeLocalModifications(QByteArray & svg, const QString & filename);
 
 protected:
     static QString hackFzpHoleSize(const QString & fzp, const QString & moduleid); 

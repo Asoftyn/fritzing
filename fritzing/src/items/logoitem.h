@@ -42,7 +42,7 @@ class LogoItem : public ResizableBoard
 	Q_OBJECT
 
 public:
-	LogoItem(ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
+	LogoItem(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~LogoItem();
 
 	QString retrieveSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
@@ -98,7 +98,7 @@ class CopperLogoItem : public LogoItem
 Q_OBJECT
 	
 public:
-	CopperLogoItem(ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
+	CopperLogoItem(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~CopperLogoItem();
 
 	bool reloadImage(const QString & svg, const QSizeF & aspectRatio, const QString & fileName, bool addName);
@@ -117,7 +117,7 @@ class SchematicLogoItem : public LogoItem
 Q_OBJECT
 	
 public:
-	SchematicLogoItem(ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
+	SchematicLogoItem(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~SchematicLogoItem();
 
 protected:
@@ -130,7 +130,7 @@ class BreadboardLogoItem : public LogoItem
 Q_OBJECT
 	
 public:
-	BreadboardLogoItem(ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
+	BreadboardLogoItem(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~BreadboardLogoItem();
 
 protected:
@@ -142,7 +142,7 @@ class BoardLogoItem : public LogoItem
 {
 Q_OBJECT
 public:
-	BoardLogoItem(ModelPart *, ViewLayer::ViewIdentifier, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
+	BoardLogoItem(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~BoardLogoItem();
 
     bool resizeMM(double w, double h, const LayerHash & viewLayers);
