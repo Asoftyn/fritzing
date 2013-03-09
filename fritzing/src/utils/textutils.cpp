@@ -971,6 +971,7 @@ bool TextUtils::fixInternalUnits(QString & svg)
 				// svg is messed up
 				return false;
 			}
+            firstTime = false;
 		}
 
 		QString old = findInternalUnits.cap(1) + findInternalUnits.cap(2); 
@@ -1703,26 +1704,33 @@ void TextUtils::gornTreeAux(QDomElement & root) {
 }
 
 bool TextUtils::elevateTransform(QDomElement & root) {
-    bool result = false;
-    if (root.hasChildNodes()) {
-        QDomElement child = root.firstChildElement();
-        while (!child.isNull()) {
-            QDomElement next = child.nextSiblingElement();
-            result |= elevateTransform(child);
-            child = next;
-        }
-        return result;
+    QList<QDomElement> transforms;
+    collectTransforms(root, transforms);
+    if (transforms.length() == 0) return false;
+
+    foreach (QDomElement element, transforms) {
+        QString transform = element.attribute("transform");
+        element.removeAttribute("transform");
+        QDomElement g = element.ownerDocument().createElement("g");
+        g.setAttribute("transform", transform);
+        element.parentNode().insertBefore(g, element);
+        g.appendChild(element);
     }
 
-    QString transform = root.attribute("transform");
-    if (transform.isEmpty()) return result;
-
-    root.removeAttribute("transform");
-    QDomElement g = root.ownerDocument().createElement("g");
-    g.setAttribute("transform", transform);
-    root.parentNode().insertBefore(g, root);
-    g.appendChild(root);
     return true;
+}
+
+void TextUtils::collectTransforms(QDomElement & root, QList<QDomElement> & transforms) {
+    QString transform = root.attribute("transform");
+    if (!transform.isEmpty()) {
+        transforms.append(root);
+    }
+
+    QDomElement child = root.firstChildElement();
+    while (!child.isNull()) {
+        collectTransforms(child, transforms);
+        child = child.nextSiblingElement();
+    }
 }
 
 bool TextUtils::fixFonts(QString & svg, const QString & destFont) {

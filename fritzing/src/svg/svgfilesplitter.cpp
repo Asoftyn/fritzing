@@ -356,6 +356,7 @@ void SvgFileSplitter::normalizeChild(QDomElement & element,
 	if (nodeName.compare("g") == 0) {
 		TextUtils::fixStyleAttribute(element);
 		normalizeAttribute(element, "stroke-width", sNewWidth, vbWidth);
+		normalizeAttribute(element, "font-size", sNewWidth, vbWidth);
 		setStrokeOrFill(element, blackOnly, "black", false);
 		doChildren = true;
 	}

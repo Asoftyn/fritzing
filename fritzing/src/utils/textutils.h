@@ -146,6 +146,8 @@ protected:
     static bool fixStrokeWidth(QDomDocument & svgDoc);
     static bool fixViewBox(QDomElement & root);
     static void chopNotDigits(QString &);
+    static void collectTransforms(QDomElement & root, QList<QDomElement> & transforms);
+
 };
 
 #endif
