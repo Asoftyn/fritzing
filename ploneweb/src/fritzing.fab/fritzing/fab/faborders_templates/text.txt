@@ -1,6 +1,0 @@
-workflow currently:
-open -process-> in_process -complete-> completed
-
-workflow future:
-open -process-> in_process -produce-> in_production -complete-> completed
-     <-cancel-

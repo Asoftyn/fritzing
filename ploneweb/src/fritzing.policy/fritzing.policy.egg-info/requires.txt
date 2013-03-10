@@ -1,7 +1,0 @@
-setuptools
-Plone
-fritzing.projects
-fritzing.parts
-
-[test]
-plone.app.testing

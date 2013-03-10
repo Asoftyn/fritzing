@@ -1,9 +1,0 @@
-setuptools
-Plone
-plone.app.dexterity [grok]
-plone.app.referenceablebehavior
-plone.namedfile [blobs]
-fritzing.parts
-
-[test]
-plone.app.testing
