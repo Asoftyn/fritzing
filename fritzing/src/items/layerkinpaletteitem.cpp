@@ -211,8 +211,8 @@ bool SchematicTextLayerKinPaletteItem::setUpImage(ModelPart * modelPart, ViewLay
 void SchematicTextLayerKinPaletteItem::transformItem(const QTransform & currTransf) {
     Q_UNUSED(currTransf);
     double rotation;
-    QTransform chiefMatrix = layerKinChief()->transform();      // assume chief already has rotation
-    bool isFlipped = GraphicsUtils::isFlipped(chiefMatrix.toAffine(), rotation);
+    QTransform chiefTransform = layerKinChief()->transform();      // assume chief already has rotation
+    bool isFlipped = GraphicsUtils::isFlipped(chiefTransform.toAffine(), rotation);
     if (isFlipped) {
         if (!m_flipped) {
              makeFlipTextSvg();
@@ -227,13 +227,10 @@ void SchematicTextLayerKinPaletteItem::transformItem(const QTransform & currTran
     QPointF p = layerKinChief()->sceneBoundingRect().topLeft();
     QTransform transform;
     QRectF bounds = boundingRect();
-    transform.translate(bounds.width() / -2, bounds.height() / -2);
+    transform.translate(bounds.width() / 2, bounds.height() / 2);
     transform.rotate(rotation);
-    //transform.translate(bounds.width() / 2, bounds.height() / 2);
-    this->blockSignals(true);
+    transform.translate(bounds.width() / -2, bounds.height() / -2);
     this->setTransform(transform);
-    this->blockSignals(false);
-    this->setPos(p);
 }
 
 bool SchematicTextLayerKinPaletteItem::makeFlipTextSvg() {

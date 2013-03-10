@@ -458,39 +458,84 @@ void GraphicsUtils::drawBorder(QImage * image, int border) {
 	painter.end();
 }
 
+bool almostEqual(qreal a, qreal b) {
+    static qreal nearly = 0.001;
+    return (qAbs(a - b) < nearly);
+}
+
 bool GraphicsUtils::isFlipped(const QMatrix & matrix, double & rotation) {
+    static qreal halfSqrt2 = 0.7071;
+
     // flipped means flipped horizontally (around the vertical axis)
-    // rotation values are ccw
-    if (matrix.m11() == 1) {
-        if (matrix.m22() == 1) {
+    // rotation values are ccw and upright is zero
+    if (almostEqual(matrix.m11(), 1.0))  {
+        if (almostEqual(matrix.m22(), 1.0)) {
             rotation = 0;
             return false;
         }
         rotation = 180;
         return true;
     }
-    if (matrix.m11() == -1) {
-        if (matrix.m22() == -1) {
+    if (almostEqual(matrix.m11(), -1.0)) {
+        if (almostEqual(matrix.m22(), -1.0)) {
             rotation = 180;
             return false;
         }
         rotation = 0;
         return true;
     }
-    if (matrix.m12() == 1) {
-        if (matrix.m21() == -1) {
+    if (almostEqual(matrix.m12(), 1.0)) {
+        if (almostEqual(matrix.m21(), -1.0)) {
+            rotation = 90;
+            return false;
+        }
+        rotation = 270;
+        return true;
+    }
+    if (almostEqual(matrix.m12(), -1.0)) {
+        if (almostEqual(matrix.m21(), 1)) {
             rotation = 270;
             return false;
         }
         rotation = 90;
         return true;
     }
-    if (matrix.m12() == -1) {
-        if (matrix.m21() == 1) {
-            rotation = 80;
+    if (almostEqual(matrix.m11(), halfSqrt2)) {
+        if (almostEqual(matrix.m22(), halfSqrt2)) {
+            if (almostEqual(matrix.m12(), -halfSqrt2)) {
+                rotation = 315;
+                return false;
+            }
+
+            rotation = 45;
             return false;
         }
-        rotation = 270;
+
+        if (almostEqual(matrix.m12(), halfSqrt2)) {
+            rotation = 225;
+            return true;
+        }
+
+        rotation = 135;            
+        return true;
+    }
+    if (almostEqual(matrix.m11(), -halfSqrt2)) {
+        if (almostEqual(matrix.m22(), -halfSqrt2)) {
+            if (almostEqual(matrix.m12(), -halfSqrt2)) {
+                rotation = 225;
+                return false;
+            }
+                
+            rotation = 135;
+            return false;
+        }
+      
+        if (almostEqual(matrix.m12(), -halfSqrt2)) {
+            rotation = 45;
+            return true;
+        }
+
+        rotation = 315;
         return true;
     }
 

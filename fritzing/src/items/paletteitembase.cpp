@@ -596,7 +596,7 @@ LayerKinPaletteItem *PaletteItemBase::newLayerKinPaletteItem(PaletteItemBase * c
 {
 	LayerKinPaletteItem *lk = NULL;
     if (viewLayerID == ViewLayer::SchematicText) {
-        lk = new /*SchematicText*/LayerKinPaletteItem(chief, modelPart, viewID, viewGeometry, id, itemMenu);
+        lk = new SchematicTextLayerKinPaletteItem(chief, modelPart, viewID, viewGeometry, id, itemMenu);
     }
     else {
         lk = new LayerKinPaletteItem(chief, modelPart, viewID, viewGeometry, id, itemMenu);

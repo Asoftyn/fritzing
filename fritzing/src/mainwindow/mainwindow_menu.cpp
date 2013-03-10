@@ -1649,8 +1649,8 @@ void MainWindow::updatePartMenu() {
 	m_rotate90cwAct->setEnabled(renable && enable);
 	m_rotate180Act->setEnabled(renable && enable);
 	m_rotate90ccwAct->setEnabled(renable && enable);
-	m_rotate45ccwAct->setEnabled(renable && renable45 && enable && m_currentGraphicsView != m_schematicGraphicsView);
-	m_rotate45cwAct->setEnabled(renable && renable45 && enable && m_currentGraphicsView != m_schematicGraphicsView);
+	m_rotate45ccwAct->setEnabled(renable && renable45 && enable);
+	m_rotate45cwAct->setEnabled(renable && renable45 && enable);
 
 	m_flipHorizontalAct->setEnabled(enable && (itemCount.selHFlipable > 0) && (m_currentGraphicsView != m_pcbGraphicsView));
 	m_flipVerticalAct->setEnabled(enable && (itemCount.selVFlipable > 0) && (m_currentGraphicsView != m_pcbGraphicsView));
@@ -1737,13 +1737,15 @@ void MainWindow::updateTransformationActions() {
 
 	ItemCount itemCount = m_currentGraphicsView->calcItemCount();
 	bool enable = (itemCount.selRotatable > 0);
+    bool renable = (itemCount.sel45Rotatable > 0);
 
 	//DebugDialog::debug(QString("enable rotate (1) %1").arg(enable));
 
 	m_rotate90cwAct->setEnabled(enable);
 	m_rotate180Act->setEnabled(enable);
 	m_rotate90ccwAct->setEnabled(enable);
-	m_rotate45ccwAct->setEnabled(enable);
+	m_rotate45ccwAct->setEnabled(enable && renable);
+	m_rotate45cwAct->setEnabled(enable && renable);
 	foreach(SketchToolButton* rotateButton, m_rotateButtons) {
 		rotateButton->setEnabled(enable);
 	}
