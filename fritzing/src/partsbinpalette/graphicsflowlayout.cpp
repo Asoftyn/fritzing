@@ -27,6 +27,7 @@ $Date$
 
 #include <QtGui>
 #include "graphicsflowlayout.h"
+#include "../utils/misc.h"
 
 static const int SpaceBefore = 5;
 static const int SpaceAfter = 3;
