@@ -83,12 +83,14 @@ def main():
     except:
         pass
 
+        #{'filename':"76543210_ÜntitledSketch3.fzz", 'quantity':1, 'price':35.43, 'size':30.32}, 
+        #{'filename':"76543210_Test3.fzz", 'quantity':3, 'price':120.12, 'size':135.23}
+
     # dummy test order (dates are in isoformat)
     submitFabOrder(erp_url, username, password, 
         pround, 
         "76543210", 
-        [{'filename':"76543210_ÜntitledSketch.fzz", 'quantity':1, 'price':35.43, 'size':30.32}, 
-        {'filename':"76543210_Test.fzz", 'quantity':3, 'price':120.12, 'size':135.23}], 
+        [], 
         199.00,
         u"dummy3", u"Peter Dümmy", u"ACME Inc.", u"123 Dümmmy Str", 
         u"", u"12345 AZ", "Berlin", u"Germany", 
@@ -127,8 +129,8 @@ def submitFabOrder(erp_url, erp_user, erp_password,
             print "CREATE item", itemID
             if itemID:
                 orderItem['itemID'] = itemID
-                print "ADDTO bom", addToBOM(erp_url, productionRound, itemID, 
-                    orderItem.get('quantity', 0), orderItem.get('size', 0))
+
+        print "ADDTO bom", addToBOM(erp_url, productionRound, orderItems, orderNumber)
 
         print "CREATE sales order", createSalesOrder(erp_url, customerUserName, productionRound, 
             orderItems, grandTotal, customerCountry, customerTaxZone, shippingExpress, orderNumber, orderDate, deliveryDate)
@@ -376,6 +378,22 @@ def createSalesOrder(server, username, productionRound, orderItems, grandTotal,
 
             print "sales order item", orderItem.get('itemID'), "already =", already
 
+
+    # now deal with update or cancel
+    doc = get_doc(server, "Sales Order", filters={"po_no":orderNumber})
+    if not responseOK(doc, "po_no", orderNumber):
+        # something is very messed up
+        print "unable to read Sales Order", orderNumber
+        return False
+        
+    rows = doc.json().get("message") 
+    result = checkDeleted(server, orderNumber, rows, orderItems)
+    if result != None:
+        if responseOK(doc, "po_no", orderNumber):          
+            print "delete SalesOrder items success"
+        else:
+            print "delete SalesOrder items fail"
+
     return True
 
 
@@ -421,7 +439,21 @@ def createJournalVoucher(server, username, fullname, productionRound, orderItems
     if status == 1:
         # already submitted, we are done
         print "journal voucher", orderNumber, "already submitted"
-        return True
+        if len(orderItems) > 0:
+            return True
+        
+        result = cancel(server, "Journal Voucher", jvName)
+        if responseOK(result, "bill_no", orderNumber):
+            print "Journal Voucher", jvName, "cancel success"  
+            result = delete(server, "Journal Voucher", jvName)
+            message = result.json().get("message")
+            #print "message", message, type(message)
+            if isinstance(message, basestring) and message == "okay":
+                print "successfully deleted Journal Voucher", jvName
+            else:
+                print "unable to delete Journal Voucher", jvName
+        else:
+            print "unable to cancel Journal Voucher", jvName
     
     already = False
     for row in rows:
@@ -475,7 +507,7 @@ def createJournalVoucher(server, username, fullname, productionRound, orderItems
     return True
 
 
-def addToBOM(server, productionRound, entryID, quantity, size):
+def addToBOM(server, productionRound, orderItems, orderNumber):
     # TODO: also include board size, number of boards per sketch, and more?
 
     bomItemName = "FabRun" + productionRound
@@ -503,35 +535,89 @@ def addToBOM(server, productionRound, entryID, quantity, size):
 
     already = False
     rows = doc.json().get("message")
-    for row in rows:
-        if ensure_unicode(row.get("item_code")) == ensure_unicode(entryID) and row.get("doctype") == "BOM Item" and row.get("count") == quantity:
-            print "already got BOM Item", entryID
-            already = True
-            break
 
-    if not already:
-        response = insert(server, [{
-        "doctype":"BOM Item",
-        "item_code": entryID,
-        "optional_priority":0,
-        "qty":1.0, 
-        "optional":0, 
-        "stock_uom":"Nos",
-        "count":quantity,
-        "pcb_size":size/quantity,
-        "amount":0.00,
-        "parenttype":"BOM",
-        "parentfield":"bom_materials",
-        "parent":bomName
-        }])
-        print "adding bom item", entryID
-        if not responseOK(response, "item_code", entryID):
-            print "failed to add BOM item"
-            #pprint(vars(response))
-            return False
+    for orderItem in orderItems:
+        entryID = orderItem.get('itemID')
+        if entryID == None:
+            continue
 
+        quantity = orderItem.get('quantity', 0)
+        if quantity == None:
+            continue
+
+        size = orderItem.get('size', 0)
+        if size == None:
+            continue
+
+        for row in rows:
+            if ensure_unicode(row.get("item_code")) == ensure_unicode(entryID) and row.get("doctype") == "BOM Item" and row.get("count") == quantity:
+                print "already got BOM Item", entryID
+                already = True
+                break
+
+        if not already:
+            response = insert(server, [{
+            "doctype":"BOM Item",
+            "item_code": entryID,
+            "optional_priority":0,
+            "qty":1.0, 
+            "optional":0, 
+            "stock_uom":"Nos",
+            "count":quantity,
+            "pcb_size":size/quantity,
+            "amount":0.00,
+            "parenttype":"BOM",
+            "parentfield":"bom_materials",
+            "parent":bomName
+            }])
+            print "adding bom item", entryID
+            if not responseOK(response, "item_code", entryID):
+                print "failed to add BOM item"
+                #pprint(vars(response))
+                return False
+
+    # now deal with update or cancel
+    doc = get_doc(server, "BOM", bomName)
+    if not responseOK(doc, "name", bomName):
+        # something is very messed up
+        print "unable to read BOM", productionRound
+        return False
+        
+    rows = doc.json().get("message") 
+    result = checkDeleted(server, orderNumber, rows, orderItems)
+    if result != None:
+        if responseOK(result, "name", bomName):          
+            print "delete BOM items success"
+        else:
+            print "delete BOM items fail"
+        
     return True
 
+def checkDeleted(server, orderNumber, rows, orderItems):
+    toDelete = []
+    orderNumber = ensure_unicode(orderNumber)
+    for ix, row in enumerate(rows):
+        itemcode = ensure_unicode(row.get("item_code"))
+        if itemcode == None:
+            continue
+
+        if itemcode.startswith(orderNumber):
+            gotOne = False            
+            for orderItem in orderItems:
+                orderID = ensure_unicode(orderItem.get('itemID'))
+                if orderID == itemcode:
+                    gotOne = True
+                    break
+            if not gotOne:
+                toDelete.insert(0, ix)
+
+    if len(toDelete) == 0:
+        return None
+   
+    for ix in toDelete:
+        del rows[ix]
+    
+    return update(server, rows)
 
 def makeItemForBOM(server, productionRound, bomItemName):
     response = get_doc(server, "Item", bomItemName)
@@ -610,7 +696,13 @@ def delete(server, doctype, name):
         "doctype": doctype,
         "name": name
     })
-
+   
+def cancel(server, doctype, name):
+    return request(server, {
+        "cmd": "webnotes.client.cancel",
+        "doctype": doctype,
+        "name": name
+    })
 
 def get_doc(server, doctype, name = None, filters = None):
     params = {
@@ -635,10 +727,13 @@ def responseOK(response, name, value):
     try:
         message = response.json().get("message")
         if not isinstance(message, list) or len(message) == 0:
+            #print "unexpected response format", message
             return False
                     
         messagevalue = ensure_unicode(message[0].get(name))
         value = ensure_unicode(value)
+        #if messagevalue.lower() != value.lower():
+            #print "not found", messagevalue, value
         return messagevalue.lower() == value.lower()
     except:
         return False
