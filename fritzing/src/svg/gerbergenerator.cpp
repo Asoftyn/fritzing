@@ -173,7 +173,7 @@ int GerberGenerator::doCopper(ItemBase * board, PCBSketchWidget * sketchWidget, 
 	bool empty;
 	QString svg = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
 	if (svg.isEmpty()) {
-		displayMessage(QObject::tr("%1 file export failure (1)").arg(copperName), displayMessageBoxes);
+		displayMessage(QObject::tr("%1 layer export is empty.").arg(copperName), displayMessageBoxes);
 		return 0;
 	}
     
@@ -191,7 +191,7 @@ int GerberGenerator::doCopper(ItemBase * board, PCBSketchWidget * sketchWidget, 
 
 	svg = clipToBoard(svg, board, copperName, SVG2gerber::ForCopper, "", displayMessageBoxes, treatAsCircle);
 	if (svg.isEmpty()) {
-		displayMessage(QObject::tr("%1 file export failure (3)").arg(copperName), displayMessageBoxes);
+		displayMessage(QObject::tr("%1 layer export is empty (after clipping)").arg(copperName), displayMessageBoxes);
 		return 0;
 	}
 
@@ -205,7 +205,7 @@ int GerberGenerator::doSilk(LayerList silkLayerIDs, const QString & silkName, co
 	bool empty;
 	QString svgSilk = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, silkLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
     if (svgSilk.isEmpty()) {
-		displayMessage(QObject::tr("silk file export failure (1)"), displayMessageBoxes);
+		displayMessage(QObject::tr("silk layer export is empty"), displayMessageBoxes);
         return 0;
     }
 
@@ -248,7 +248,7 @@ int GerberGenerator::doDrill(ItemBase * board, PCBSketchWidget * sketchWidget, c
 	bool empty;
 	QString svgDrill = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, drillLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
     if (svgDrill.isEmpty()) {
-		displayMessage(QObject::tr("drill file export failure (1)"), displayMessageBoxes);
+		displayMessage(QObject::tr("exported drill file is empty"), displayMessageBoxes);
         return 0;
     }
 
@@ -287,7 +287,7 @@ int GerberGenerator::doMask(LayerList maskLayerIDs, const QString &maskName, con
 	bool empty;
 	QString svgMask = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, maskLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
     if (svgMask.isEmpty()) {
-		displayMessage(QObject::tr("mask file export failure (1)"), displayMessageBoxes);
+		displayMessage(QObject::tr("exported mask layer %1 is empty").arg(maskName), displayMessageBoxes);
         return 0;
     }
 
@@ -329,7 +329,7 @@ int GerberGenerator::doPasteMask(LayerList maskLayerIDs, const QString &maskName
 	bool empty;
 	QString svgMask = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, maskLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
     if (svgMask.isEmpty()) {
-		displayMessage(QObject::tr("mask file export failure (1)"), displayMessageBoxes);
+		displayMessage(QObject::tr("exported paste mask layer is empty"), displayMessageBoxes);
         return 0;
     }
 
@@ -373,7 +373,7 @@ bool GerberGenerator::saveEnd(const QString & layerName, const QString & exportD
     QString outname = exportDir + "/" +  prefix + suffix;
     QFile out(outname);
 	if (!out.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		displayMessage(QObject::tr("%1 file export failure (2): %2").arg(layerName).arg(outname), displayMessageBoxes);
+		displayMessage(QObject::tr("%1 layer: unable to save to '%2'").arg(layerName).arg(outname), displayMessageBoxes);
 		return false;
 	}
 
@@ -934,7 +934,7 @@ void GerberGenerator::exportPickAndPlace(const QString & prefix, const QString &
     QString outname = exportDir + "/" + prefix + "_pnp.txt";
     QFile out(outname);
 	if (!out.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		displayMessage(QObject::tr("%1 file export failure (2): %2").arg("pick and place").arg(outname), displayMessageBoxes);
+		displayMessage(QObject::tr("Unable to save pick and place file: %2").arg(outname), displayMessageBoxes);
 		return;
 	}
 
