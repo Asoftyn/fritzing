@@ -90,7 +90,7 @@ def main():
     submitFabOrder(erp_url, username, password, 
         pround, 
         "76543210", 
-        [], 
+        [],    # cancel an order by sending an empty list of items
         199.00,
         u"dummy3", u"Peter Dümmy", u"ACME Inc.", u"123 Dümmmy Str", 
         u"", u"12345 AZ", "Berlin", u"Germany", 
