@@ -90,7 +90,7 @@ def main():
     submitFabOrder(erp_url, username, password, 
         pround, 
         "76543210", 
-        [],    # cancel an order by sending an empty list of items
+        [],   # empty orderItems list means cancel
         199.00,
         u"dummy3", u"Peter Dümmy", u"ACME Inc.", u"123 Dümmmy Str", 
         u"", u"12345 AZ", "Berlin", u"Germany", 
@@ -406,6 +406,11 @@ def createJournalVoucher(server, username, fullname, productionRound, orderItems
     if responseOK(response, "bill_no", orderNumber):
         print "got journal voucher", orderNumber
     else:
+        if len(orderItems) == 0:
+            # this is a cancelation
+            print "do not create a journal voucher with an empty order"
+            return True
+	    
         response = insert(server, [{
         "doctype":"Journal Voucher",
         "bill_no":orderNumber,
@@ -454,6 +459,7 @@ def createJournalVoucher(server, username, fullname, productionRound, orderItems
                 print "unable to delete Journal Voucher", jvName
         else:
             print "unable to cancel Journal Voucher", jvName
+        return True
     
     already = False
     for row in rows:
