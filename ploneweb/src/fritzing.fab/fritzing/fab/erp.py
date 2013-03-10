@@ -410,7 +410,7 @@ def createJournalVoucher(server, username, fullname, productionRound, orderItems
             # this is a cancelation
             print "do not create a journal voucher with an empty order"
             return True
-	    
+        
         response = insert(server, [{
         "doctype":"Journal Voucher",
         "bill_no":orderNumber,
