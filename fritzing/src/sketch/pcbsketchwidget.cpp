@@ -1984,9 +1984,9 @@ void PCBSketchWidget::postImageSlot(GroundPlaneGenerator * gpg, QImage * copperI
 
 		int rad = qFloor(connectorItem->calcClipRadius() * copperImage->width() / boardRect.width());
 
-		double borderl = qMax(0, x1 - w);
+		double borderl = qMax(0.0, x1 - w);
 		double borderr = qMin(x2 + w, copperImage->width());
-		double bordert = qMax(0, y1 - h);
+		double bordert = qMax(0.0, y1 - h);
 		double borderb = qMin(y2 + h, copperImage->height());
 
 		// check left, up, right, down for groundplane, and if it's there draw to it from the connector
