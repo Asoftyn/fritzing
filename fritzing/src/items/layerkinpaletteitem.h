@@ -84,6 +84,7 @@ public:
 
 protected:
     bool makeFlipTextSvg();
+    void positionTexts(QDomDocument & doc, QList<QDomElement> & texts);
 
 protected:
     bool m_flipped;

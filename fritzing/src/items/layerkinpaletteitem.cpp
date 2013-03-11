@@ -29,7 +29,18 @@ $Date$
 #include "../debugdialog.h"
 #include "../layerattributes.h"
 #include "../utils/graphicsutils.h"
+#include "../utils/textutils.h"
+#include "../utils/folderutils.h"
 #include "../svg/svgfilesplitter.h"
+
+#include <qmath.h>
+
+////////////////////////////////////////////////
+
+static QString IDString("-_-_-text-_-_-%1");
+
+
+////////////////////////////////////////////////
 
 LayerKinPaletteItem::LayerKinPaletteItem(PaletteItemBase * chief, ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu* itemMenu)
 	: PaletteItemBase(modelPart, viewID, viewGeometry, id, itemMenu)
@@ -252,24 +263,21 @@ bool SchematicTextLayerKinPaletteItem::makeFlipTextSvg() {
         texts.append(nodeList.at(i).toElement());
     }
 
-    QString idString("-_-_-text-_-_-%1");
     int ix = 0;
     foreach (QDomElement text, texts) {
-        text.setAttribute("id", idString.arg(ix++));
+        text.setAttribute("id", IDString.arg(ix++));
     }
+
+    positionTexts(doc, texts);
 
     QSvgRenderer renderer;
     renderer.load(doc.toByteArray());
-    QRectF viewBox = renderer.viewBoxF();
     ix = 0;
     foreach (QDomElement text, texts) {
-        QString id = idString.arg(ix++);
-        double x = text.attribute("x").toDouble();
-        double y = text.attribute("y").toDouble();
-        QRectF wasteOfTime = renderer.boundsOnElement(id); // returns a null rectangle with <text> elements
-        QRectF shit(x, y, 10, 10);
-        QRectF r = renderer.matrixForElement(id).mapRect(shit);
-        text.setAttribute("x", viewBox.width() - r.right());
+        QString id = IDString.arg(ix++);
+        double x = this->property(id.toUtf8().constData()).toDouble();    
+        // can't just use boundsOnElement() because it returns a null rectangle with <text> elements
+        text.setAttribute("x", x);
     }
 
     QString debug = doc.toString();
@@ -278,3 +286,95 @@ bool SchematicTextLayerKinPaletteItem::makeFlipTextSvg() {
     return true;
 }
 
+#define MINMAX(mx, my)          \
+    if (mx < minX) minX = mx;   \
+    if (mx > maxX) maxX = mx;   \
+    if (my < minY) minY = my;   \
+    if (my > maxY) maxY = my;  
+
+
+void SchematicTextLayerKinPaletteItem::positionTexts(QDomDocument & doc, QList<QDomElement> & texts) {
+    QString id = IDString.arg(0);
+    if (this->property(id.toUtf8().constData()).isValid()) {
+        // calculated this already
+        return;
+    }
+
+    foreach (QDomElement text, texts) {
+        text.setTagName("g");
+    }
+
+    QRectF br = boundingRect();
+    QImage image(qCeil(br.width()), qCeil(br.height()), QImage::Format_Mono);
+
+    int ix = 0;
+    foreach (QDomElement text, texts) {
+        text.setTagName("text");
+        id = IDString.arg(ix++);
+
+        image.fill(0xffffffff);
+        QSvgRenderer renderer(doc.toByteArray());
+	    QPainter painter;
+	    painter.begin(&image);
+	    painter.setRenderHint(QPainter::Antialiasing, false);
+	    renderer.render(&painter  /*, sourceRes */);
+	    painter.end();
+
+#ifndef QT_NO_DEBUG
+	    image.save(FolderUtils::getUserDataStorePath("") + "/" + id + ".png");
+#endif
+
+        QRectF viewBox = renderer.viewBoxF();
+        double x = text.attribute("x").toDouble();
+        double y = text.attribute("y").toDouble();
+        QPointF p(image.width() * x / viewBox.width(), image.height() * y / viewBox.height());
+        QMatrix matrix = renderer.matrixForElement(id);
+        QPointF q = matrix.map(p);
+        QPoint iq((int) q.x(), (int) q.y());
+
+        int minX = image.width() + 1;
+        int maxX = -1;
+        int minY = image.height() + 1;
+        int maxY = -1;
+
+        // spiral around q
+        int limit = qMax(image.width(), image.height());
+        for (int lim = 0; lim < limit; lim++) {
+            int t = qMax(0, iq.y() - lim);
+            int b = qMin(iq.y() + lim, image.height() - 1);
+            int l = qMax(0, iq.x() - lim);
+            int r = qMin(iq.x() + lim, image.width() - 1);
+
+            for (int iy = t; iy <= b; iy++) {
+                if (image.pixel(l, iy) == 0xff000000) {
+                    MINMAX(l, iy);
+                }
+                if (image.pixel(r, iy) == 0xff000000) {
+                    MINMAX(r, iy);
+                }
+            }
+
+            for (int ix = l + 1; ix < r; ix++) {
+                if (image.pixel(ix, t) == 0xff000000) {
+                    MINMAX(ix, t);
+                }
+                if (image.pixel(ix, b) == 0xff000000) {
+                    MINMAX(ix, b);
+                }
+            }
+        }
+
+        QMatrix inv = matrix.inverted();
+        QPointF rp((image.width() - maxX) * viewBox.width() / image.width(), (image.height() - maxY) * viewBox.height() / image.height());
+        QPointF rq = inv.map(rp);
+        // how do we know which corner of the minX to maxX, minY to maxY to use)
+        this->setProperty(id.toUtf8().constData(), rq.x());
+        text.setTagName("g");
+    }
+
+    foreach (QDomElement text, texts) {
+        text.setTagName("text");
+    }
+
+
+}
