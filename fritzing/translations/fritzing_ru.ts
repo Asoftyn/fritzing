@@ -1156,10 +1156,6 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>because of an improper width or height attribute</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>for unknown reasons--possibly the image file is corrupted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1213,14 +1209,6 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
     <message>
         <source>Unable to export %1 as shareable</source>
         <translation>Невозможно экспортировать %1 в общий</translation>
-    </message>
-    <message>
-        <source>Unable to open shareable %1</source>
-        <translation>Невозможно открыть общий %1</translation>
-    </message>
-    <message>
-        <source>Unable to open shareable part %1</source>
-        <translation>Невозможно открыть общий элемент %1</translation>
     </message>
     <message>
         <source>Fritzing Part (*%1)</source>
@@ -2519,10 +2507,6 @@ Please check all views for potential side-effects.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to open &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>No Sketch found in &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2996,10 +2980,6 @@ Go ahead and revert?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>QInputDialog::getText()</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Text will match part label, description, title, etc. Enter text to search for:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3029,6 +3009,34 @@ Go ahead and revert?</source>
     </message>
     <message>
         <source>Save a netlist in SPICE format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open &apos;%1&apos;: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open shareable &apos;%1&apos;: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open shareable part &apos;%1&apos;: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export SPICE Netlist...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Ground Fill Keepout...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the minimum distance between ground fill and traces or connectors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter Text</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3237,6 +3245,37 @@ Reason: %2 (errcode %3)</source>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Enter Keepout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keepout is in mils (.001 inches).
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Note that due to aliasing, distances may be too short by up to 2 mils
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>so you may want to increase the keepout value by that much.
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>10 mils is a good default choice.
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter keepout value:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5243,31 +5282,11 @@ Fritzing по-прежнему работает, но вы не сможете �
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 file export failure (1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 file export failure (3)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>silk file export failure (1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>silk export failure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>drill file export failure (1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>drill export failure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mask file export failure (1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5426,10 +5445,6 @@ Fritzing по-прежнему работает, но вы не сможете �
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 file export failure (2): %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Fritzing cannot load the parts bin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5471,6 +5486,42 @@ Fritzing по-прежнему работает, но вы не сможете �
     </message>
     <message>
         <source>Autorouter Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 layer export is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 layer export is empty (after clipping)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>silk layer export is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>exported drill file is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>exported mask layer %1 is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>exported paste mask layer is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 layer: unable to save to &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to save pick and place file: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
