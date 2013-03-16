@@ -534,7 +534,8 @@
             </views>
         </instance>
 	
-	<instance moduleIdRef="__spacer__" modelIndex="3" path="Power">
+	<instance moduleIdRef="__spacer__" modelIndex="3" path="
+	">
         <views>
           <iconView layer="icon">
             <geometry z="-1" x="-1" y="-1"></geometry>
@@ -843,7 +844,7 @@
           </iconView>
         </views>
       </instance>
-      <instance moduleIdRef="PowerModuleID" modelIndex="52" path=":/resources/parts/core/dcpower.fzp">
+      <instance moduleIdRef="DC2PowerModuleID" modelIndex="52" path=":/resources/parts/core/dcpower2.fzp">
         <views>
           <iconView layer="icon">
             <geometry z="-1" x="-1" y="-1"></geometry>

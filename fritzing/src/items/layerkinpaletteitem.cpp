@@ -376,5 +376,4 @@ void SchematicTextLayerKinPaletteItem::positionTexts(QDomDocument & doc, QList<Q
         text.setTagName("text");
     }
 
-
 }

@@ -304,6 +304,9 @@ ModelPart * PaletteModel::loadPart(const QString & path, bool update) {
 	else if (moduleID.compare(ModuleIDNames::NoteModuleIDName) == 0) {
 		type = ModelPart::Note;
 	}
+	else if (moduleID.endsWith(ModuleIDNames::TwoPowerModuleIDName)) {
+		type = ModelPart::Part;
+	}
 	else if (moduleID.endsWith(ModuleIDNames::PowerModuleIDName)) {
 		type = ModelPart::Symbol;
 	}

@@ -45,6 +45,19 @@
 	<menuItem value="50" />
 	<menuItem value="100" />
 </property>
+
+<property name="voltage" symbol="V" minValue="0" maxValue="1000" defaultValue="5" numeric="yes" editable="yes">
+  <suffix suffix="DC2PowerModuleID"/>
+  <suffix suffix="AC2PowerModuleID"/>
+  <menuItem value="3.3" />
+	<menuItem value="5" />
+	<menuItem value="12" />
+</property>
+
+<property name="frequency" symbol="Hz" minValue="0" maxValue="1000" defaultValue="60" numeric="yes" editable="yes">
+ 	<suffix suffix="AC2PowerModuleID"/>
+	<menuItem value="60" />
+</property>
   
 <property name="frequency" symbol="" minValue="" maxValue="" defaultValue="16 MHz" numeric="no" editable="no">
    	<suffix suffix="CrystalModuleID"/>

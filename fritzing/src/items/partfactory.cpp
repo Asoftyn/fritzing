@@ -145,6 +145,9 @@ ItemBase * PartFactory::createPartAux( ModelPart * modelPart, ViewLayer::ViewID 
 					if (moduleID.endsWith(ModuleIDNames::InductorModuleIDName)) {
 						return new Capacitor(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}
+					if (moduleID.endsWith(ModuleIDNames::TwoPowerModuleIDName)) {
+						return new Capacitor(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
+					}
 					if (moduleID.endsWith(ModuleIDNames::ColorLEDModuleIDName)) {
 						return new LED(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 					}

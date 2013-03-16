@@ -237,6 +237,8 @@ bool ModelBase::loadInstances(QDomDocument & domDocument, QDomElement & instance
 
    		// for now assume all parts are in the palette
    		QString moduleIDRef = instance.attribute("moduleIdRef");
+
+        //DebugDialog::debug("loading " + moduleIDRef);
 		if (moduleIDRef.compare(ModuleIDNames::SpacerModuleIDName) == 0) {
 			ModelPart * mp = new ModelPart(ModelPart::Space);
 			mp->setInstanceText(instance.attribute("path"));

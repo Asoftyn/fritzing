@@ -1,23 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <module moduleId="PowerModuleID" >
- <version>4</version>
+ <version replacedby="DC2PowerModuleID">4</version>
  <author>Brendan Howell</author>
  <title>DC Power</title>
  <date>2008-07-28</date>
  <label>DC Power</label>
  <tags>
+   <tag>obsolete</tag>
    <tag>dc power</tag>
    <tag>symbol</tag>
    <tag>fritzing core</tag>
  </tags>
  <properties>
-   <property name="family">power symbol</property>
+   <property name="family">obsolete power symbol</property>
    <property name="type">dc battery/supply</property>
    <property name="voltage">5</property>
  </properties>
  <taxonomy>discreteParts.power.power.dcpower</taxonomy>
  <description>A generic dc power symbol</description>
- <spice>v{instanceTitle} {net connector0} {net connector1} dc {voltage}</spice>
  <views>
   <defaultUnits>cmil</defaultUnits>
   <iconView>

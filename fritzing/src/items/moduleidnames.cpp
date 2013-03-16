@@ -44,6 +44,7 @@ const QString ModuleIDNames::JumperModuleIDName = "JumperModuleID";
 const QString ModuleIDNames::GroundPlaneModuleIDName = "GroundPlaneModuleID";
 const QString ModuleIDNames::GroundModuleIDName = "GroundModuleID";
 const QString ModuleIDNames::PowerModuleIDName = "PowerModuleID";
+const QString ModuleIDNames::TwoPowerModuleIDName = "2PowerModuleID";
 const QString ModuleIDNames::NetLabelModuleIDName = "NetLabelModuleID";
 const QString ModuleIDNames::LeftNetLabelModuleIDName = "LeftNetLabelModuleID";
 const QString ModuleIDNames::JustPowerModuleIDName = "JustPowerModuleID";
