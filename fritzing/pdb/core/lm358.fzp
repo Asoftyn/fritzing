@@ -27,7 +27,11 @@
         </breadboardView>
         <schematicView>
             <layers image="schematic/lm358_schematic.svg">
-                <layer layerId="schematic"/>
+                <layer layerId="schematic">
+		<subpart id="subpart1" />
+		<subpart id="subpart2" />
+		<subpart id="subpart3" />
+                </layer>
             </layers>
         </schematicView>
         <pcbView>

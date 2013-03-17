@@ -1847,65 +1847,22 @@ void MainWindow::updateEditMenu() {
 void MainWindow::updateTraceMenu() {
     if (m_pcbTraceMenu == NULL) return;
 
-	bool jiEnabled = false;
-	bool viaEnabled = false;
 	bool tEnabled = false;
-	bool exEnabled = false;
-	bool exChecked = true;
 	bool twEnabled = false;
-	bool gfrEnabled = false;
 	bool ctlEnabled = false;
 	bool arEnabled = false;
-	bool gfsEnabled = false;
-    int boardCount = 0;
-    int boardSelectedCount = 0;
+
+    TraceMenuThing traceMenuThing;
 
 	if (m_currentGraphicsView != NULL) {
 		QList<QGraphicsItem *> items = m_currentGraphicsView->scene()->items();
 		foreach (QGraphicsItem * item, items) {
 			Wire * wire = dynamic_cast<Wire *>(item);
 			if (wire == NULL) {
-				if (m_currentGraphicsView != m_pcbGraphicsView) continue;
-
-				ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
-				if (itemBase == NULL) continue;
-				if (!itemBase->isEverVisible()) continue;
-				
-				if (!gfsEnabled) {
-					gfsEnabled = itemBase->itemType() != ModelPart::CopperFill && itemBase->hasConnectors();
-				}
-
-                if (Board::isBoard(itemBase)) {
-                    boardCount++;
-                    if (itemBase->isSelected()) boardSelectedCount++;
+				if (m_currentGraphicsView == m_pcbGraphicsView) {
+                    updatePCBTraceMenu(item, traceMenuThing);
                 }
-
-				switch (itemBase->itemType()) {
-					case ModelPart::Jumper:
-						jiEnabled = true;
-						if (itemBase->isSelected()) {
-							exEnabled = true;
-							if (qobject_cast<JumperItem *>(itemBase->layerKinChief())->getAutoroutable()) {
-								exChecked = false;
-							}
-						}
-						break;
-					case ModelPart::Via:
-						viaEnabled = true;
-						if (itemBase->isSelected()) {
-							exEnabled = true;
-							if (qobject_cast<Via *>(itemBase->layerKinChief())->getAutoroutable()) {
-								exChecked = false;
-							}
-						}
-						break;
-					case ModelPart::CopperFill:
-						gfrEnabled = true;
-					default:
-						break;
-				}
-
-				continue;
+                continue;
 			}
 
 			if (!wire->isEverVisible()) continue;
@@ -1920,9 +1877,9 @@ void MainWindow::updateTraceMenu() {
 				tEnabled = true;
 				twEnabled = true;
 				if (wire->isSelected()) {
-					exEnabled = true;
+					traceMenuThing.exEnabled = true;
 					if (wire->getAutoroutable()) {
-						exChecked = false;
+						traceMenuThing.exChecked = false;
 					}
 				}
 				if (m_currentGraphicsView == m_pcbGraphicsView && m_currentGraphicsView->boardLayers() > 1) {
@@ -1940,36 +1897,78 @@ void MainWindow::updateTraceMenu() {
 		}
 	}
 
-    bool anyOrNo = (boardCount >= 1 || m_currentGraphicsView != m_pcbGraphicsView);
+    bool anyOrNo = (traceMenuThing.boardCount >= 1 || m_currentGraphicsView != m_pcbGraphicsView);
 
-	m_excludeFromAutorouteAct->setEnabled(exEnabled);
-	m_excludeFromAutorouteAct->setChecked(exChecked);
+	m_excludeFromAutorouteAct->setEnabled(traceMenuThing.exEnabled);
+	m_excludeFromAutorouteAct->setChecked(traceMenuThing.exChecked);
 	m_changeTraceLayerAct->setEnabled(ctlEnabled);
-	m_orderFabAct->setEnabled(boardCount > 0);
+	m_orderFabAct->setEnabled(traceMenuThing.boardCount > 0);
 	m_showUnroutedAct->setEnabled(true);
 	m_selectAllTracesAct->setEnabled(tEnabled && anyOrNo);
 	m_selectAllWiresAct->setEnabled(tEnabled && anyOrNo);
-	m_selectAllCopperFillAct->setEnabled(gfrEnabled && boardCount >= 1);
+	m_selectAllCopperFillAct->setEnabled(traceMenuThing.gfrEnabled && traceMenuThing.boardCount >= 1);
 	m_selectAllExcludedTracesAct->setEnabled(tEnabled && anyOrNo);
 	m_selectAllIncludedTracesAct->setEnabled(tEnabled && anyOrNo);
-	m_selectAllJumperItemsAct->setEnabled(jiEnabled && boardCount >= 1);
-	m_selectAllViasAct->setEnabled(viaEnabled && boardCount >= 1);
+	m_selectAllJumperItemsAct->setEnabled(traceMenuThing.jiEnabled && traceMenuThing.boardCount >= 1);
+	m_selectAllViasAct->setEnabled(traceMenuThing.viaEnabled && traceMenuThing.boardCount >= 1);
 	m_tidyWiresAct->setEnabled(twEnabled);
-	m_groundFillAct->setEnabled(boardCount >= 1);
-	m_copperFillAct->setEnabled(boardCount >= 1);
-	m_removeGroundFillAct->setEnabled(gfrEnabled && boardCount >= 1);
+	m_groundFillAct->setEnabled(traceMenuThing.boardCount >= 1);
+	m_copperFillAct->setEnabled(traceMenuThing.boardCount >= 1);
+	m_removeGroundFillAct->setEnabled(traceMenuThing.gfrEnabled && traceMenuThing.boardCount >= 1);
 
 	// TODO: set and clear enabler logic
-	m_setGroundFillSeedsAct->setEnabled(gfsEnabled && boardCount >= 1);
-	m_clearGroundFillSeedsAct->setEnabled(gfsEnabled && boardCount >= 1);
+	m_setGroundFillSeedsAct->setEnabled(traceMenuThing.gfsEnabled && traceMenuThing.boardCount >= 1);
+	m_clearGroundFillSeedsAct->setEnabled(traceMenuThing.gfsEnabled && traceMenuThing.boardCount >= 1);
 
-	m_newDesignRulesCheckAct->setEnabled(boardCount >= 1);
+	m_newDesignRulesCheckAct->setEnabled(traceMenuThing.boardCount >= 1);
 	m_checkLoadedTracesAct->setEnabled(true);
 	m_autorouterSettingsAct->setEnabled(m_currentGraphicsView == m_pcbGraphicsView);
 	m_updateRoutingStatusAct->setEnabled(true);
 
 
 	m_fabQuoteAct->setEnabled(m_currentGraphicsView == m_pcbGraphicsView);
+}
+
+
+void MainWindow::updatePCBTraceMenu(QGraphicsItem * item, TraceMenuThing & traceMenuThing) 
+{
+	ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
+	if (itemBase == NULL) return;
+	if (!itemBase->isEverVisible()) return;
+				
+	if (!traceMenuThing.gfsEnabled) {
+		traceMenuThing.gfsEnabled = itemBase->itemType() != ModelPart::CopperFill && itemBase->hasConnectors();
+	}
+
+    if (Board::isBoard(itemBase)) {
+        traceMenuThing.boardCount++;
+        if (itemBase->isSelected()) traceMenuThing.boardSelectedCount++;
+    }
+
+	switch (itemBase->itemType()) {
+		case ModelPart::Jumper:
+			traceMenuThing.jiEnabled = true;
+			if (itemBase->isSelected()) {
+				traceMenuThing.exEnabled = true;
+				if (qobject_cast<JumperItem *>(itemBase->layerKinChief())->getAutoroutable()) {
+					traceMenuThing.exChecked = false;
+				}
+			}
+			break;
+		case ModelPart::Via:
+			traceMenuThing.viaEnabled = true;
+			if (itemBase->isSelected()) {
+				traceMenuThing.exEnabled = true;
+				if (qobject_cast<Via *>(itemBase->layerKinChief())->getAutoroutable()) {
+					traceMenuThing.exChecked = false;
+				}
+			}
+			break;
+		case ModelPart::CopperFill:
+			traceMenuThing.gfrEnabled = true;
+		default:
+			break;
+	}
 }
 
 void MainWindow::zoomIn() {

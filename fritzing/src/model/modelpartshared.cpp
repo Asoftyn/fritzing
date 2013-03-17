@@ -174,6 +174,12 @@ bool ModelPartShared::setDomDocument(QDomDocument & domDocument) {
                     viewImage->layers |= (one << viewLayerID); 
                     viewImage->sticky |= (sticky << viewLayerID); 
 					layer = layer.nextSiblingElement("layer");
+                    QDomElement subpart = layer.firstChildElement("subpart");
+                    while (!subpart.isNull()) {
+                        QString id = subpart.attribute("id");
+                        if (!id.isEmpty()) viewImage->subparts << id;
+                        subpart = subpart.nextSiblingElement("subpart");
+                    }
 				}
 			}
 

@@ -107,6 +107,29 @@ protected:
     GridSizeThing * m_gridSizeThing;
 };
 
+
+struct TraceMenuThing {
+    int boardCount;
+    int boardSelectedCount;
+	bool jiEnabled;
+	bool exEnabled;
+	bool viaEnabled;
+	bool exChecked;
+	bool gfrEnabled;
+    bool gfsEnabled;
+
+    TraceMenuThing() {
+        boardCount = 0;
+        boardSelectedCount = 0;
+        gfsEnabled = false;
+        jiEnabled = false;
+	    exEnabled = false;
+	    exChecked = true;
+	    viaEnabled = false;
+	    gfrEnabled = false;
+    }
+};
+
 class MainWindow : public FritzingWindow
 {
     Q_OBJECT
@@ -448,6 +471,7 @@ protected:
 	void createTraceMenuActions();
 	void hideShowTraceMenu();
     void hideShowProgramMenu();
+    void updatePCBTraceMenu(QGraphicsItem *, TraceMenuThing &);
 
 	QList<ModelPart*> moveToPartsFolder(QDir &unzipDir, MainWindow* mw, bool addToBin, bool addToAlien, const QString & prefixFolder, const QString &destFolder, bool importingSinglePart);
 	QString copyToSvgFolder(const QFileInfo& file, bool addToAlien, const QString & prefixFolder, const QString &destFolder);

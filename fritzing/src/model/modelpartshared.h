@@ -42,6 +42,7 @@ struct ViewImage {
     qulonglong layers;
     qulonglong sticky;
     qulonglong flipped;
+    QStringList subparts;
     QString image;
     bool canFlipHorizontal;
     bool canFlipVertical;

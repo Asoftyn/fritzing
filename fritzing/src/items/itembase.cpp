@@ -1351,6 +1351,7 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewID vie
 			modelPartShared->connectorIDs(viewID, viewLayerID, loadInfo.connectorIDs, loadInfo.terminalIDs, loadInfo.legIDs);
 			break;
         default:
+            // don't need connectorIDs() for schematic view since these parts do not have bendable legs or connectors with drill holes
             break;
 	}
 
