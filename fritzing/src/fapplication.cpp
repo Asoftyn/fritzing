@@ -1011,9 +1011,13 @@ int FApplication::startup()
 		QString currVersion = Version::versionString();
 		if(prevVersion != currVersion) {
 			QVariant pid = settings.value("pid");
+            QVariant language = settings.value("language");
 			settings.clear();
 			if (!pid.isNull()) {
 				settings.setValue("pid", pid);
+			}
+			if (!language.isNull()) {
+				settings.setValue("language", language);
 			}
 		}
 	}

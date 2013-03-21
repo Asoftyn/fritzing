@@ -83,12 +83,17 @@ struct BestPlace
     BestPlace();
 };
 
+struct PanelType {
+    double width;
+    double height;
+    double c1;
+    double c2;
+    QString name;
+};
+
 struct PanelParams
 {
-	double panelWidth;
-	double panelHeight;
-	double panelSmallWidth;
-	double panelSmallHeight;
+    QList<PanelType *> panelTypes;
 	double panelSpacing;
 	double panelBorder;
 	QString prefix;
@@ -126,11 +131,14 @@ protected:
 	static void addOptional(int optionalCount, QList<PanelItem *> & refPanelItems, QList<PanelItem *> & insertPanelItems, PanelParams &, QList<PlanePair *> &);
 	static class MainWindow * inscribeBoard(QDomElement & board, QHash<QString, QString> & fzzFilePaths, FApplication * app, QDir & fzDir, bool drc, QDir & copyDir);
     static void doOnePanelItem(PlanePair * planePair, QList<LayerThing> & layerThingList, PanelItem * panelItem, QDir & svgDir);
-    static void makeSVGs(MainWindow *, ItemBase *, const QString & boardName, QList<LayerThing> & layerThingList, QDir & saveDir);
+    static void makeSVGs(MainWindow *, ItemBase *, const QString & boardName, QList<LayerThing> & layerThingList, QDir & saveDir, QFileInfo & copyInfo);
     static void shrinkLastPanel( QList<PlanePair *> & planePairs, QList<PanelItem *> & insertPanelItems, PanelParams &, bool customPartsOnly);
     static int checkDonuts(MainWindow *, bool displayMessage);
     static int checkText(MainWindow *, bool displayMessage);
     static void incProduced(const QString & path, long boardID, QList<PanelItem *> & refPanelItems);
+    static int bestFitLoop(QList<PanelItem *> & refPanelItems, PanelParams &, bool customPartsOnly, QList<PlanePair *> & returnPlanePairs, QList<PanelItem *> & returnInsertPanelItems);
+    static double calcCost(PanelParams &, QList<PlanePair *> &, int divisor);
+
 };
 
 #endif

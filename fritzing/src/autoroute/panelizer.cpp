@@ -346,25 +346,11 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 	board = boards.firstChildElement("board");
 	if (!openWindows(board, fzzFilePaths, app, panelParams, fzDir, svgDir, refPanelItems, layerThingList, customPartsOnly, copyDir)) return;
 
-	QList<PanelItem *> insertPanelItems;
-	int optionalCount = 0;
-	foreach (PanelItem * panelItem, refPanelItems) {
-		for (int i = 0; i < panelItem->required; i++) {
-			PanelItem * copy = new PanelItem(panelItem);
-			insertPanelItems.append(copy);
-		}
-		optionalCount += panelItem->maxOptional;
-	}
+    
 
 	QList<PlanePair *> planePairs;
-	planePairs << makePlanePair(panelParams, true);  
-
-	qSort(insertPanelItems.begin(), insertPanelItems.end(), areaGreaterThan);
-	bestFit(refPanelItems, insertPanelItems, panelParams, planePairs, customPartsOnly);
-
-    shrinkLastPanel(planePairs, insertPanelItems, panelParams, customPartsOnly);
-
-	addOptional(optionalCount, refPanelItems, insertPanelItems, panelParams, planePairs);
+    QList<PanelItem *> insertPanelItems;
+    int duplicates = bestFitLoop(refPanelItems, panelParams, customPartsOnly, planePairs, insertPanelItems);
 
 	foreach (PlanePair * planePair, planePairs) {
 		planePair->layoutSVG += "</svg>";
@@ -464,6 +450,12 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
     }
 
     TextUtils::writeUtf8(panelFilename, panelizerDocument.toString(4));
+
+    DebugDialog::debug("");
+    DebugDialog::debug(QString("Panelizer finished: %1 panel(s), with %2 additional copy(ies) for each panel").arg(planePairs.count()).arg(duplicates - 1));
+    QMessageBox::information(NULL, QObject::tr("Fritzing"), 
+        QObject::tr("Panelizer finished: %1 panel(s), with %2 additional copy(ies) for each panel").arg(planePairs.count()).arg(duplicates - 1)
+    );
 
 }
 
@@ -610,12 +602,22 @@ PlanePair * Panelizer::makePlanePair(PanelParams & panelParams, bool big)
 	PlanePair * planePair = new PlanePair;
 
     if (big) {
-        planePair->panelWidth = panelParams.panelWidth;
-        planePair->panelHeight = panelParams.panelHeight;
+        foreach (PanelType * panelType, panelParams.panelTypes) {
+            if (panelType->name == "big") {
+                planePair->panelWidth = panelType->width;
+                planePair->panelHeight = panelType->height;
+                break;
+            }
+        }
     }
     else {
-        planePair->panelWidth = panelParams.panelSmallWidth;
-        planePair->panelHeight = panelParams.panelSmallHeight;
+        foreach (PanelType * panelType, panelParams.panelTypes) {
+            if (panelType->name == "small") {
+                planePair->panelWidth = panelType->width;
+                planePair->panelHeight = panelType->height;
+                break;
+            }
+        }
     }
 
 	// for debugging
@@ -766,6 +768,19 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
     norotateDir.mkdir("norotate");
     norotateDir.cd("norotate");
 
+    PanelType * bigPanelType = NULL;
+    foreach (PanelType * panelType, panelParams.panelTypes) {
+        if (panelType->name == "big") {
+            bigPanelType = panelType;
+            break;
+        }
+    }
+
+    if (bigPanelType == NULL) {
+        DebugDialog::debug("No panel types defined");
+        return false;
+    }
+
 	while (!boardElement.isNull()) {
 		int required = boardElement.attribute("requiredCount", "").toInt();
 		int optional = boardElement.attribute("maxOptionalCount", "").toInt();
@@ -780,13 +795,30 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
 		}
 
 		QString boardName = boardElement.attribute("name");
-		QString oldPath = fzzFilePaths.value(boardName, "");
+		QString originalPath = fzzFilePaths.value(boardName, "");
+        QFileInfo originalInfo(originalPath);
+        QString copyPath = copyDir.absoluteFilePath(boardName);
+        QFileInfo copyInfo(copyPath);
+
+        if (!copyInfo.exists()) {
+            DebugDialog::debug(QString("failed to load copy'%1'").arg(copyPath));
+            return false;
+        }
+
+        if (!originalInfo.exists()) {
+            DebugDialog::debug(QString("failed to find original'%1'").arg(originalPath));
+            return false;
+        }
+
+        if (originalInfo.lastModified() > copyInfo.lastModified()) {
+            DebugDialog::debug(QString("copy %1 is not up to date--rerun the inscriber").arg(copyPath));
+            return false;
+        }
+
 		MainWindow * mainWindow = app->openWindowForService(false);
         mainWindow->setCloseSilently(true);
 
 		FolderUtils::setOpenSaveFolderAux(fzDir.absolutePath());
-
-        QString copyPath = copyDir.absoluteFilePath(boardName);
 
 		if (!mainWindow->loadWhich(copyPath, false, false, "")) {
 			DebugDialog::debug(QString("failed to load '%1'").arg(copyPath));
@@ -807,7 +839,6 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
 			continue;
         }
         
-
 		mainWindow->showPCBView();
 		foreach (QGraphicsItem * item, mainWindow->pcbView()->scene()->items()) {
 			ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
@@ -820,7 +851,7 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
         foreach (ItemBase * boardItem, boards) {
 		    PanelItem * panelItem = new PanelItem;
 		    panelItem->boardName = boardName;
-		    panelItem->path = oldPath;
+		    panelItem->path = originalPath;
 		    panelItem->required = required;
 		    panelItem->maxOptional = optional;
             panelItem->optionalPriority = priority;
@@ -853,29 +884,29 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
 		    */
 
 		    bool tooBig = false;
-		    if (panelItem->boardSizeInches.width() >= panelParams.panelWidth) {
-			    tooBig = panelItem->boardSizeInches.width() >= panelParams.panelHeight;
+		    if (panelItem->boardSizeInches.width() >= bigPanelType->width) {
+			    tooBig = panelItem->boardSizeInches.width() >= bigPanelType->height;
 			    if (!tooBig) {
-				    tooBig = panelItem->boardSizeInches.height() >= panelParams.panelWidth;
+				    tooBig = panelItem->boardSizeInches.height() >= bigPanelType->width;
 			    }
 		    }
 
 		    if (!tooBig) {
-			    if (panelItem->boardSizeInches.height() >= panelParams.panelHeight) {
-				    tooBig = panelItem->boardSizeInches.height() >= panelParams.panelWidth;
+			    if (panelItem->boardSizeInches.height() >= bigPanelType->height) {
+				    tooBig = panelItem->boardSizeInches.height() >= bigPanelType->width;
 				    if (!tooBig) {
-					    tooBig = panelItem->boardSizeInches.width() >= panelParams.panelHeight;
+					    tooBig = panelItem->boardSizeInches.width() >= bigPanelType->height;
 				    }
 			    }
 		    }
 
 		    if (tooBig) {
-			    DebugDialog::debug(QString("board is too big for panel '%1'").arg(oldPath));
+			    DebugDialog::debug(QString("board is too big for panel '%1'").arg(originalPath));
 			    return false;
 		    }
 
 
-            makeSVGs(mainWindow, boardItem, boardName, layerThingList, norotateDir);
+            makeSVGs(mainWindow, boardItem, boardName, layerThingList, norotateDir, copyInfo);
 
 		    refPanelItems << panelItem;
         }
@@ -886,7 +917,7 @@ bool Panelizer::openWindows(QDomElement & boardElement, QHash<QString, QString> 
 		mainWindow->pcbView()->rotateX(90, false);
 
         foreach (ItemBase * boardItem, boards) {
-            makeSVGs(mainWindow, boardItem, boardName, layerThingList, rotateDir);
+            makeSVGs(mainWindow, boardItem, boardName, layerThingList, rotateDir, copyInfo);
         }
 
         mainWindow->close();
@@ -906,31 +937,49 @@ bool Panelizer::initPanelParams(QDomElement & root, PanelParams & panelParams)
 		return false;
 	}
 
-	bool ok;
-	panelParams.panelWidth = TextUtils::convertToInches(root.attribute("width"), &ok, false);
-	if (!ok) {
-		DebugDialog::debug(QString("Can't parse panel width '%1'").arg(root.attribute("width")));
-		return false;
-	}
+    QDomElement panels = root.firstChildElement("panels");
+    QDomElement panel = panels.firstChildElement("panel");
+    while (!panel.isNull()) {
+        PanelType * panelType = new PanelType;
 
-	panelParams.panelHeight = TextUtils::convertToInches(root.attribute("height"), &ok, false);
-	if (!ok) {
-		DebugDialog::debug(QString("Can't parse panel height '%1'").arg(root.attribute("height")));
-		return false;
-	}
+        panelType->name = panel.attribute("name");
 
-	panelParams.panelSmallWidth = TextUtils::convertToInches(root.attribute("small-width"), &ok, false);
-	if (!ok) {
-		DebugDialog::debug(QString("Can't parse panel small-width '%1'").arg(root.attribute("small-width")));
-		return false;
-	}
+        bool ok;
+	    panelType->width = TextUtils::convertToInches(panel.attribute("width"), &ok, false);
+	    if (!ok) {
+		    DebugDialog::debug(QString("Can't parse panel width '%1'").arg(panel.attribute("width")));
+		    return false;
+	    }
 
-	panelParams.panelSmallHeight = TextUtils::convertToInches(root.attribute("small-height"), &ok, false);
-	if (!ok) {
-		DebugDialog::debug(QString("Can't parse panel small-height '%1'").arg(root.attribute("small-height")));
-		return false;
-	}
+	    panelType->height = TextUtils::convertToInches(panel.attribute("height"), &ok, false);
+	    if (!ok) {
+		    DebugDialog::debug(QString("Can't parse panel height '%1'").arg(panel.attribute("height")));
+		    return false;
+	    }
 
+	    panelType->c1 = panel.attribute("c1").toDouble(&ok);
+	    if (!ok) {
+		    DebugDialog::debug(QString("Can't parse panel c1 '%1'").arg(panel.attribute("c1")));
+		    return false;
+	    }
+
+	    panelType->c2 = panel.attribute("c2").toDouble(&ok);
+	    if (!ok) {
+		    DebugDialog::debug(QString("Can't parse panel c2 '%1'").arg(panel.attribute("c2")));
+		    return false;
+	    }
+
+        panelParams.panelTypes << panelType;
+
+        panel = panel.nextSiblingElement("panel");
+    }
+
+    if (panelParams.panelTypes.count() == 0) {
+		DebugDialog::debug(QString("No panel types defined."));
+		return false;
+    }
+
+    bool ok;
 	panelParams.panelSpacing = TextUtils::convertToInches(root.attribute("spacing"), &ok, false);
 	if (!ok) {
 		DebugDialog::debug(QString("Can't parse panel spacing '%1'").arg(root.attribute("spacing")));
@@ -1264,30 +1313,30 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
 	int required = board.attribute("requiredCount", "").toInt();
     if (optional <= 0 && required <= 0) return NULL;
 
-	QString oldPath = fzzFilePaths.value(boardName, "");
-    QFileInfo original(oldPath);
-    QString copyPath = copyDir.absoluteFilePath(original.fileName());
-    QFileInfo copy(copyPath);
+	QString originalPath = fzzFilePaths.value(boardName, "");
+    QFileInfo originalInfo(originalPath);
+    QString copyPath = copyDir.absoluteFilePath(originalInfo.fileName());
+    QFileInfo copyInfo(copyPath);
 
 
-    if (!copy.exists()) {
+    if (!copyInfo.exists()) {
     }
     else {
         DebugDialog::debug("");
         //DebugDialog::debug(oldPath);
         //DebugDialog::debug(copyPath);
-        DebugDialog::debug(QString("%1 original=%2, copy=%3").arg(original.fileName()).arg(original.lastModified().toString()).arg(copy.lastModified().toString()));
-        if (original.lastModified() <= copy.lastModified()) {
+        DebugDialog::debug(QString("%1 original=%2, copy=%3").arg(originalInfo.fileName()).arg(originalInfo.lastModified().toString()).arg(copyInfo.lastModified().toString()));
+        if (originalInfo.lastModified() <= copyInfo.lastModified()) {
             DebugDialog::debug(QString("copy %1 is up to date").arg(copyPath));
             return NULL;
         }
     }
 
-    QFile file(oldPath);
+    QFile file(originalPath);
     QFile::remove(copyPath);
     bool ok = file.copy(copyPath);
     if (!ok) {
-        QMessageBox::warning(NULL, QObject::tr("Fritzing"), QObject::tr("unable to copy file '%1' to '%2'.").arg(oldPath).arg(copyPath));
+        QMessageBox::warning(NULL, QObject::tr("Fritzing"), QObject::tr("unable to copy file '%1' to '%2'.").arg(originalPath).arg(copyPath));
         return NULL;
     }
 
@@ -1304,8 +1353,8 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
 
     int moved = mainWindow->pcbView()->checkLoadedTraces();
     if (moved > 0) {
-        QMessageBox::warning(NULL, QObject::tr("Fritzing"), QObject::tr("%1 wires moved from their saved position in %2.").arg(moved).arg(oldPath));
-        DebugDialog::debug(QString("\ncheckloadedtraces %1\n").arg(oldPath)); 
+        QMessageBox::warning(NULL, QObject::tr("Fritzing"), QObject::tr("%1 wires moved from their saved position in %2.").arg(moved).arg(originalPath));
+        DebugDialog::debug(QString("\ncheckloadedtraces %1\n").arg(originalPath)); 
     }
 
 	foreach (QGraphicsItem * item, mainWindow->pcbView()->scene()->items()) {
@@ -1374,7 +1423,7 @@ MainWindow * Panelizer::inscribeBoard(QDomElement & board, QHash<QString, QStrin
 	return mainWindow;
 }
 
-void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QString & boardName, QList<LayerThing> & layerThingList, QDir & saveDir) {
+void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QString & boardName, QList<LayerThing> & layerThingList, QDir & saveDir, QFileInfo & copyInfo) {
 	try {
 		
 		QRectF imageRect;
@@ -1385,9 +1434,37 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
         QStringList texts;
         QMultiHash<long, ConnectorItem *> treatAsCircle;
 
-		foreach (LayerThing layerThing, layerThingList) {					
-			SVG2gerber::ForWhy forWhy = layerThing.forWhy;
+        bool needsRedo = false;
+        int missing = 0;
+		foreach (LayerThing layerThing, layerThingList) {	
 			QString name = layerThing.name;
+            QString filename = saveDir.absoluteFilePath(QString("%1_%2_%3.svg").arg(boardName).arg(board->id()).arg(name));
+            QFileInfo info(filename);
+            if (info.exists()) {
+                if (info.lastModified() <= copyInfo.lastModified()) {
+                    // need to save these files again
+                    needsRedo = true;
+                    break;
+                }
+            }
+            else {
+                missing++;
+            }
+        }
+
+        if (!needsRedo) {
+            if (missing < layerThingList.count()) {
+                // assume some number of missing files wouldn't have been written out anyway
+                // but if all are missing, then they were never written in the first place
+                return;
+            }
+        }
+
+		foreach (LayerThing layerThing, layerThingList) {	
+			QString name = layerThing.name;
+            QString filename = saveDir.absoluteFilePath(QString("%1_%2_%3.svg").arg(boardName).arg(board->id()).arg(name));
+
+			SVG2gerber::ForWhy forWhy = layerThing.forWhy;
 			QList<ItemBase *> copperLogoItems, holes;
             switch (forWhy) {
                 case SVG2gerber::ForPasteMask:
@@ -1460,7 +1537,6 @@ void Panelizer::makeSVGs(MainWindow * mainWindow, ItemBase * board, const QStrin
             treatAsCircle.clear();
             if (two.isEmpty()) continue;
 
-            QString filename = saveDir.absoluteFilePath(QString("%1_%2_%3.svg").arg(boardName).arg(board->id()).arg(name));
             TextUtils::writeUtf8(filename, two);
 		}
 
@@ -1636,4 +1712,88 @@ void Panelizer::incProduced(const QString & path, long boardID, QList<PanelItem 
             break;
         }
     }
+}
+
+
+int Panelizer::bestFitLoop(QList<PanelItem *> & refPanelItems, PanelParams & panelParams, bool customPartsOnly, QList<PlanePair *> & returnPlanePairs, QList<PanelItem *> & returnInsertPanelItems) 
+{
+	int optionalCount = 0;
+	foreach (PanelItem * panelItem, refPanelItems) {
+		optionalCount += panelItem->maxOptional;
+	}
+
+    double bestCost = 0;
+    double bestDivisor = 1;
+    bool firstTime = true;
+    for (int divisor = 1; true; divisor++) {
+        QList<PlanePair *> planePairs;
+        QList<PanelItem *> insertPanelItems;
+
+        PlanePairIndex = 0;         // reset to zero for each new list of PlanePairs
+
+        bool stillMoreThanOne = false;
+	    foreach (PanelItem * panelItem, refPanelItems) {
+            int count = (panelItem->required + divisor - 1) / divisor;
+            if (count > 1) stillMoreThanOne = true;
+		    for (int i = 0; i < count; i++) {
+			    PanelItem * copy = new PanelItem(panelItem);
+			    insertPanelItems.append(copy);
+		    }
+	    }
+
+	    planePairs << makePlanePair(panelParams, true);  
+        
+	    qSort(insertPanelItems.begin(), insertPanelItems.end(), areaGreaterThan);
+	    bestFit(refPanelItems, insertPanelItems, panelParams, planePairs, customPartsOnly);
+
+        shrinkLastPanel(planePairs, insertPanelItems, panelParams, customPartsOnly);
+
+        if (firstTime) {
+            bestCost = calcCost(panelParams, planePairs, divisor);
+            bestDivisor = 1;
+            returnPlanePairs = planePairs;
+            returnInsertPanelItems = insertPanelItems;
+            firstTime = false;
+        }
+        else {
+            double cost = calcCost(panelParams, planePairs, divisor);
+            if (cost < bestCost) {
+                bestCost = cost;
+                bestDivisor = divisor;
+                foreach (PlanePair * planePair, returnPlanePairs) {
+                    delete planePair;
+                }
+                foreach (PanelItem * panelItem, returnInsertPanelItems) {
+                    delete panelItem;
+                }
+                returnPlanePairs.clear();
+                returnInsertPanelItems.clear();
+
+                returnPlanePairs = planePairs;
+                returnInsertPanelItems = insertPanelItems;
+            }
+        }
+
+        if (customPartsOnly) break;
+        if (planePairs.count() == 1) break;
+        if (!stillMoreThanOne) break;
+    }
+
+	addOptional(optionalCount, refPanelItems, returnInsertPanelItems, panelParams, returnPlanePairs);
+    return bestDivisor;
+}
+
+double Panelizer::calcCost(PanelParams & panelParams, QList<PlanePair *> & planePairs, int divisor) {
+    double total = 0;
+    foreach (PlanePair * planePair, planePairs) {
+        foreach (PanelType * panelType, panelParams.panelTypes) {
+            if (planePair->panelWidth == panelType->width && planePair->panelHeight == panelType->height) {
+                total += panelType->c1;
+                total += panelType->c2 * (divisor - 1);
+                break;
+            }
+        }
+    }
+
+    return total;
 }
