@@ -214,7 +214,11 @@ def main():
         
     outfile = open(os.path.join(destFolder, "panelizer.xml"), "w")
     today = date.today()
-    outfile.write("<panelizer width='550mm' height='330mm' small-width='225mm' small-height='310mm' spacing='6mm' border='0mm' prefix='{0}'>\n".format(today.strftime("%Y.%m.%d")))
+    outfile.write("<panelizer spacing='6mm' border='0mm' prefix='{0}'>\n".format(today.strftime("%Y.%m.%d")))
+    outfile.write("<panels>\n");
+    outfile.write("<panel name='big' width='550mm' height='330mm' c1='345' c2='60' />\n");
+    outfile.write("<panel name='small' width='225mm' height='310mm' c1='270' c2='60' />\n");
+    outfile.write("</panels>\n");
     outfile.write("<paths>\n")
     productDir = "../../products"
     outfile.write("<path>{0}</path>\n".format(productDir))
