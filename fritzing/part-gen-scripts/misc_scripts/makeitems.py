@@ -17,9 +17,9 @@ class AuthError(Exception):
 def usage():
     print """
 usage:
-    makeitems.py -f {fzz folder} -g {item group} -d {item description}
-    creates new bom items from the set of fzz files in the fzz folder.
-    the description and group are copied to all items--default values are '042' and 'Fritzing Fab order' respectively
+    makeitems.py -f {fzz folder} -g {item group} -d {item description} -b {bom name}
+    creates new items from the set of fzz files in the fzz folder and adds them to a bom if there is a -b option
+    the description and group are copied to all items--default of -d is 'Fritzing Fab order'
     if the fzz already exists as an item, does nothing.
 """
 
@@ -80,6 +80,14 @@ def login(server, usr, pwd):
     else:
         print "login failed"
         raise AuthError
+        
+def responseOK(response, name, value):
+    try:
+        message = response.json().get("message")
+    #print name, value, type(value), "message", type(message[0].get(name))
+        return isinstance(message, list) and len(message) > 0 and message[0].get(name).lower() == value.lower()
+    except:
+        return False        
 
 def get_doc(server, doctype, name):
     ret = request(server, {
@@ -88,8 +96,6 @@ def get_doc(server, doctype, name):
         "name": name
     })
     return ret
-    
-
 
 def insert(server, doclist):
     return request(server, {
@@ -99,20 +105,26 @@ def insert(server, doclist):
 
 def main():
     parser = optparse.OptionParser()
-    parser.add_option('-g', '--group', default="042", dest="group" )
+    parser.add_option('-g', '--group', dest="group" )
     parser.add_option('-d', '--description', default="Fritzing Fab order", dest="description")
-    parser.add_option('-f', '--folder',dest="folder" )
+    parser.add_option('-f', '--folder', dest="folder" )
+    parser.add_option('-b', '--bom', dest="bom")
     (options, args) = parser.parse_args()
     
     if not options.folder:
         parser.error("folder argument not given")
-        sys.exit(1)
+        return
+        
+    if not options.group:
+        parser.error("group argument not given")
+        return
         
     destFolder = options.folder
     username = None
     password = None
     group = options.group
     description = options.description
+    bom = options.bom
     
     #print "description", description
     
@@ -121,7 +133,7 @@ def main():
     if not os.path.isfile(cfile):
         usage()
         print "Configuration file %s is missing!" % cfile
-        sys.exit(2)
+        return
         
     c = ConfigParser.ConfigParser()
     c.read(cfile)
@@ -135,7 +147,7 @@ def main():
         
     if username == None:
         usage()
-        sys.exit(2)
+        return
     
     if password == None:
         password = raw_input('Enter a password: ')
@@ -154,51 +166,94 @@ def main():
     if not(destFolder):
         usage()
         print "destination folder missing"
-        sys.exit(2)
+        return
         
     try:
         # Connect
         login(server, username, password)
     except:
         traceback.print_exc()    
-        sys.exit(1)
+        return
 
     print "connected"
+    
+    bomdoc = None
+    bomrows = None
+    if bom:
+        bomdoc = get_doc(server, "BOM", bom)
+        if responseOK(bomdoc, "name", bom):
+            print "bom", bom, "found"
+            bomrows = bomdoc.json().get("message")
+        else:
+            print "bom", bom, "not found, please create it"
+            return
     
     for filename in os.listdir(destFolder):
         if not filename.endswith(".fzz"):
             continue
             
         doc = None
+        gotItem = False
         try:
             doc = get_doc(server, "Item", filename)
-            rows = doc.json().get("message")
-            if type(rows) == list and len(rows) > 0 and rows[0].get("name") == filename:
+            if responseOK(doc, "name", filename):
                 print filename, "is already an item"
-                continue
+                gotItem = True
                     
         except:
             pass
             
-        response = insert(server, [{
-            "doctype":"Item",
-            "item_name": filename,
-            "item_code": filename,
-            "item_group": group,
-            "description": description
-            }])
-            
-        message = response.json().get("message")
-        if isinstance(message, list) and len(message) > 0 and message[0].get("item_name")==filename:
-            print filename, "item inserted"
+        if not gotItem:    
+            response = insert(server, [{
+                "doctype":"Item",
+                "item_name": filename,
+                "item_code": filename,
+                "item_group": group,
+                "description": description
+                }])
+            gotItem = responseOK(response, "name", filename)
+            if gotItem:
+                print filename, "item inserted"
+            else:
+                print filename, "insert failed"
+
+        if not gotItem:
             continue
-         
         
-        print filename, "insert failed"
-        print message
-        print
+        if not bomdoc:
+            continue
             
-        
+        already = False
+        for row in bomrows:
+            if row.get("item_code") == filename and row.get("doctype") == "BOM Item":
+                print "already got BOM Item", filename
+                already = True
+                break
+                
+        if not already:
+            response = insert(server, [{
+            "doctype":"BOM Item",
+            "item_code": filename,
+            "optional_priority":0,
+            "qty":1.0, 
+            "optional":0, 
+            "stock_uom":"Nos",
+            "count":1,
+            "amount":0.00,
+            "parenttype":"BOM",
+            "parentfield":"bom_materials",
+            "parent":bom
+            }])
+
+            if responseOK(response, "item_code", filename):
+                print "added bom item", filename
+            else:
+                print "failed to add BOM item"
+                pprint(vars(response))
+                    
+
+            
+
         
     
     
