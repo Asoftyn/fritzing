@@ -48,6 +48,14 @@ public:
 protected:
 	QString m_filename;
 	QByteArray m_loaded;
+
+public:
+    QString error;
+    ViewLayer::ViewID viewID;
+    ViewLayer::ViewLayerID viewLayerID;
+    ViewLayer::ViewLayerSpec viewLayerSpec;
+    QString subpart;
+    bool doConnectors;
 };
 
 #endif

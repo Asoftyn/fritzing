@@ -93,6 +93,7 @@ public:
     QString imageFileName(ViewLayer::ViewID, ViewLayer::ViewLayerID);
     void setImageFileName(ViewLayer::ViewID, const QString & filename);
     QString imageFileName(ViewLayer::ViewID);
+    const QStringList & subparts(ViewLayer::ViewID);
     bool anySticky(ViewLayer::ViewID);
     bool hasMultipleLayers(ViewLayer::ViewID);
     bool canFlipHorizontal(ViewLayer::ViewID);

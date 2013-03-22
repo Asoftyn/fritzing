@@ -1254,7 +1254,7 @@ void ItemBase::transformItem(const QTransform & currTransf) {
 		updateConnections();
 	}
 	QTransform t = this->transform();
-	DebugDialog::debug(QString("matrix m11:%1 m12:%2 m21:%3 m22:%4").arg(t.m11()).arg(t.m12()).arg(t.m21()).arg(t.m22()));
+	//DebugDialog::debug(QString("matrix m11:%1 m12:%2 m21:%3 m22:%4").arg(t.m11()).arg(t.m12()).arg(t.m21()).arg(t.m22()));
 	update();
 }
 
@@ -1286,7 +1286,7 @@ void ItemBase::saveLocAndTransform(QXmlStreamWriter & streamWriter)
 	GraphicsUtils::saveTransform(streamWriter, m_viewGeometry.transform());
 }
 
-FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, LayerAttributes & layerAttributes, QString & error)
+FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, LayerAttributes & layerAttributes)
 {
 #ifndef QT_NO_DEBUG
 	QTime t;
@@ -1296,7 +1296,7 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewID vie
     ModelPartShared * modelPartShared = modelPart->modelPartShared();
 
 	if (modelPartShared == NULL) {
-		error = tr("model part problem");
+		layerAttributes.error = tr("model part problem");
 		return NULL;
 	}
 
@@ -1310,7 +1310,7 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewID vie
 
 
 	//DebugDialog::debug(QString("set up image elapsed (1) %1").arg(t.elapsed()) );
-	QString filename = getSvgFilename(modelPart, modelPartShared->imageFileName(viewID, viewLayerID));
+	QString filename = getSvgFilename(modelPart, modelPartShared->imageFileName(layerAttributes.viewID, layerAttributes.viewLayerID));
 
 //#ifndef QT_NO_DEBUG
 	//DebugDialog::debug(QString("set up image elapsed (2) %1").arg(t.elapsed()) );
@@ -1318,22 +1318,22 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewID vie
 
 	if (filename.isEmpty()) {
 		//QString deleteme = modelPartShared->domDocument()->toString();
-		error = tr("file for %1 %2 not found").arg(modelPartShared->title()).arg(modelPartShared->moduleID());
+		layerAttributes.error = tr("file for %1 %2 not found").arg(modelPartShared->title()).arg(modelPartShared->moduleID());
         return NULL;
 	}
 
     LoadInfo loadInfo;
-	switch (viewID) {
+	switch (layerAttributes.viewID) {
 		case ViewLayer::PCBView:
-			loadInfo.colorElementID = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
-			switch (viewLayerID) {
+			loadInfo.colorElementID = ViewLayer::viewLayerXmlNameFromID(layerAttributes.viewLayerID);
+			switch (layerAttributes.viewLayerID) {
 				case ViewLayer::Copper0:
-					modelPartShared->connectorIDs(viewID, viewLayerID, loadInfo.connectorIDs, loadInfo.terminalIDs, loadInfo.legIDs);
+					modelPartShared->connectorIDs(layerAttributes.viewID, layerAttributes.viewLayerID, loadInfo.connectorIDs, loadInfo.terminalIDs, loadInfo.legIDs);
 					loadInfo.setColor = ViewLayer::Copper0Color;
                     loadInfo.findNonConnectors = loadInfo.parsePaths = true;
 					break;
 				case ViewLayer::Copper1:
-					modelPartShared->connectorIDs(viewID, viewLayerID, loadInfo.connectorIDs, loadInfo.terminalIDs, loadInfo.legIDs);
+					modelPartShared->connectorIDs(layerAttributes.viewID, layerAttributes.viewLayerID, loadInfo.connectorIDs, loadInfo.terminalIDs, loadInfo.legIDs);
 					loadInfo.setColor = ViewLayer::Copper1Color;
                     loadInfo.findNonConnectors = loadInfo.parsePaths = true;
 					break;
@@ -1348,7 +1348,7 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewID vie
 			}
 			break;
 		case ViewLayer::BreadboardView:
-			modelPartShared->connectorIDs(viewID, viewLayerID, loadInfo.connectorIDs, loadInfo.terminalIDs, loadInfo.legIDs);
+			modelPartShared->connectorIDs(layerAttributes.viewID, layerAttributes.viewLayerID, loadInfo.connectorIDs, loadInfo.terminalIDs, loadInfo.legIDs);
 			break;
         default:
             // don't need connectorIDs() for schematic view since these parts do not have bendable legs or connectors with drill holes
@@ -1357,22 +1357,22 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewID vie
 
 	FSvgRenderer * newRenderer = new FSvgRenderer();
 	QDomDocument flipDoc;
-	if (!getFlipDoc(modelPart, filename, viewLayerID, viewLayerSpec, flipDoc)) {
-		fixCopper1(modelPart, filename, viewLayerID, viewLayerSpec, flipDoc);
+	if (!getFlipDoc(modelPart, filename, layerAttributes.viewLayerID, layerAttributes.viewLayerSpec, flipDoc)) {
+		fixCopper1(modelPart, filename, layerAttributes.viewLayerID, layerAttributes.viewLayerSpec, flipDoc);
 	}
     QByteArray bytesToLoad;
-    if (viewLayerID == ViewLayer::Schematic) {
-        bytesToLoad = SvgFileSplitter::hideText(filename);
+    if (layerAttributes.viewLayerID == ViewLayer::Schematic) {
+        bytesToLoad = SvgFileSplitter::hideText(filename, layerAttributes.subpart);
     }
-    else if (viewLayerID == ViewLayer::SchematicText) {
+    else if (layerAttributes.viewLayerID == ViewLayer::SchematicText) {
         bool hasText = false;
-        bytesToLoad = SvgFileSplitter::showText(filename, hasText);
+        bytesToLoad = SvgFileSplitter::showText(filename, layerAttributes.subpart, hasText);
         if (!hasText) {
             return NULL;
         }
     }
-	else if ((viewID != ViewLayer::IconView) && modelPartShared->hasMultipleLayers(viewID)) {
-        QString layerName = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
+	else if ((layerAttributes.viewID != ViewLayer::IconView) && modelPartShared->hasMultipleLayers(layerAttributes.viewID)) {
+        QString layerName = ViewLayer::viewLayerXmlNameFromID(layerAttributes.viewLayerID);
 		// need to treat create "virtual" svg file for each layer
 		SvgFileSplitter svgFileSplitter;
 		bool result;
@@ -1402,10 +1402,10 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewID vie
     QByteArray resultBytes; 
     if (!bytesToLoad.isEmpty()) {
         if (makeLocalModifications(bytesToLoad, filename)) {
-            if (viewLayerID == ViewLayer::Schematic) {
+            if (layerAttributes.viewLayerID == ViewLayer::Schematic) {
                 bytesToLoad = SvgFileSplitter::hideText2(bytesToLoad);
             }
-            else if (viewLayerID == ViewLayer::SchematicText) {
+            else if (layerAttributes.viewLayerID == ViewLayer::SchematicText) {
                 bool hasText;
                 bytesToLoad = SvgFileSplitter::showText2(bytesToLoad, hasText);
             }
@@ -1423,7 +1423,7 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewID vie
 
 	if (resultBytes.isEmpty()) {
 		delete newRenderer;
-		error = tr("unable to create renderer for svg %1").arg(filename);
+		layerAttributes.error = tr("unable to create renderer for svg %1").arg(filename);
 		newRenderer = NULL;
 	}
 	//DebugDialog::debug(QString("set up image elapsed (3) %1").arg(t.elapsed()) );

@@ -55,7 +55,7 @@ public:
  	QPointF syncMoved();
 	void mousePressConnectorEvent(class ConnectorItem *, QGraphicsSceneMouseEvent *);
 	bool acceptsMousePressConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
- 	virtual bool setUpImage(ModelPart* modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, bool doConnectors, LayerAttributes &, QString & error);
+ 	virtual bool setUpImage(ModelPart* modelPart, const LayerHash & viewLayers, LayerAttributes &);
 	void connectedMoved(ConnectorItem * from, ConnectorItem * to);
 	bool collectFemaleConnectees(QSet<ItemBase *> & items);
 	void collectWireConnectees(QSet<class Wire *> & wires);
@@ -97,10 +97,7 @@ protected:
 	virtual bool freeRotationAllowed(Qt::KeyboardModifiers modifiers);
 	void checkFreeRotation(Qt::KeyboardModifiers modifiers, QPointF scenePos);
 
-	virtual LayerKinPaletteItem * newLayerKinPaletteItem(
-		PaletteItemBase * chief, ModelPart * modelPart, ViewLayer::ViewID viewID,
-		const ViewGeometry & viewGeometry, long id,ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, QMenu* itemMenu, const LayerHash & viewLayers
-	);
+	virtual LayerKinPaletteItem * newLayerKinPaletteItem(PaletteItemBase * chief, ModelPart *, const ViewGeometry &, long id, QMenu* itemMenu, const LayerHash &, LayerAttributes &);
 
 protected slots:
 	void partPropertyEntry();

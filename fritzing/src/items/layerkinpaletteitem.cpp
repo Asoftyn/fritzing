@@ -46,23 +46,21 @@ LayerKinPaletteItem::LayerKinPaletteItem(PaletteItemBase * chief, ModelPart * mo
 	: PaletteItemBase(modelPart, viewID, viewGeometry, id, itemMenu)
 
 {
+    m_sync = true;
     m_layerKinChief = chief;
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     m_modelPart->removeViewItem(this);  // we don't need to save layerkin
 }
 
-void LayerKinPaletteItem::init(ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, const LayerHash & viewLayers) {
-	m_viewLayerSpec = viewLayerSpec;
-	QString error;
-	LayerAttributes layerAttributes;
-	m_ok = setUpImage(m_modelPart, m_viewID, viewLayers, viewLayerID, m_viewLayerSpec, true, layerAttributes, error);
+void LayerKinPaletteItem::init(LayerAttributes & layerAttributes, const LayerHash & viewLayers) {
+	m_ok = setUpImage(m_modelPart, viewLayers, layerAttributes);
 	//DebugDialog::debug(QString("lk accepts hover %1 %2 %3 %4 %5").arg(title()).arg(m_viewID).arg(m_id).arg(viewLayerID).arg(this->acceptHoverEvents()));
 }
 
 QVariant LayerKinPaletteItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	//DebugDialog::debug(QString("lk item change %1 %2").arg(this->id()).arg(change));
-	if (m_layerKinChief != NULL) {
+	if (m_layerKinChief != NULL && m_sync) {
 	    if (change == ItemSelectedChange) {
 	       	bool selected = value.toBool();
 	    	if (m_blockItemSelectedChange && m_blockItemSelectedValue == selected) {
@@ -107,15 +105,20 @@ void LayerKinPaletteItem::updateConnections() {
 }
 
 void LayerKinPaletteItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-	//DebugDialog::debug("layer kin mouse press event");
-	if (m_layerKinChief->lowerConnectorLayerVisible(this)) {
-		// TODO: this code may be unnecessary
-		DebugDialog::debug("LayerKinPaletteItem::mousePressEvent isn't obsolete");
-		event->ignore();
-		return;
-	}
+    if (m_sync) {
+	    //DebugDialog::debug("layer kin mouse press event");
+	    if (m_layerKinChief->lowerConnectorLayerVisible(this)) {
+		    // TODO: this code may be unnecessary
+		    DebugDialog::debug("LayerKinPaletteItem::mousePressEvent isn't obsolete");
+		    event->ignore();
+		    return;
+	    }
 
-	m_layerKinChief->mousePressEvent(this, event);
+	    m_layerKinChief->mousePressEvent(this, event);
+        return;
+    }
+
+    ItemBase::mousePressEvent(event);
 }
 
 void LayerKinPaletteItem::setHidden(bool hide) {
@@ -211,9 +214,9 @@ SchematicTextLayerKinPaletteItem::SchematicTextLayerKinPaletteItem(PaletteItemBa
     m_flipped = false;
 }
 
-bool SchematicTextLayerKinPaletteItem::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
+bool SchematicTextLayerKinPaletteItem::setUpImage(ModelPart * modelPart, const LayerHash & viewLayers, LayerAttributes & layerAttributes)
 {
-	bool result = PaletteItemBase::setUpImage(modelPart, viewID, viewLayers, viewLayerID, viewLayerSpec, doConnectors, layerAttributes, error);
+	bool result = PaletteItemBase::setUpImage(modelPart, viewLayers, layerAttributes);
     this->setProperty("textSvg", layerAttributes.loaded());
     return result;
 }
@@ -376,4 +379,8 @@ void SchematicTextLayerKinPaletteItem::positionTexts(QDomDocument & doc, QList<Q
         text.setTagName("text");
     }
 
+}
+
+void LayerKinPaletteItem::setSync(bool sync) {
+    m_sync = sync;
 }

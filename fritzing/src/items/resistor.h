@@ -55,7 +55,7 @@ public:
 	PluralType isPlural();
 	void addedToScene(bool temporary);
 	void setProp(const QString & prop, const QString & value);
- 	bool setUpImage(ModelPart* modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, bool doConnectors, LayerAttributes &, QString & error);
+ 	bool setUpImage(ModelPart* modelPart, const LayerHash & viewLayers, LayerAttributes &);
 
 protected:
 	QString makeSvg(const QString & ohms, ViewLayer::ViewLayerID viewLayerID);

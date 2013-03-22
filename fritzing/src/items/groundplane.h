@@ -35,7 +35,7 @@ class GroundPlane : public PaletteItem
 public:
 	GroundPlane( ModelPart * modelPart, ViewLayer::ViewID,  const ViewGeometry & , long id, QMenu* itemMenu, bool doLabel); 
 
- 	bool setUpImage(ModelPart* modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, bool doConnectors, LayerAttributes &, QString & error);
+ 	bool setUpImage(ModelPart* modelPart, const LayerHash & viewLayers, LayerAttributes &);
 	void saveParams();
 	void getParams();
 	QString retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
@@ -44,7 +44,7 @@ public:
 	void setProp(const QString & prop, const QString & value);
 	QString svg();
 	bool hasPartLabel();
-	void loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec);
+	void loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec, const QStringList & subparts);
 	void addedToScene(bool temporary);
 	bool hasPartNumberProperty();
 	bool rotationAllowed();

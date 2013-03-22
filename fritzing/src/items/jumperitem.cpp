@@ -32,6 +32,7 @@ $Date$
 #include "../svg/svgfilesplitter.h"
 #include "../sketch/infographicsview.h"
 #include "../debugdialog.h"
+#include "../layerattributes.h"
 
 static QString Copper0LayerTemplate = "";
 static QString JumperWireLayerTemplate = "";
@@ -155,11 +156,11 @@ QPainterPath JumperItem::shape() const
 	return hoverShape();
 }
 
-bool JumperItem::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
+bool JumperItem::setUpImage(ModelPart * modelPart, const LayerHash & viewLayers, LayerAttributes & layerAttributes)
 {
-	bool result = PaletteItem::setUpImage(modelPart, viewID, viewLayers, viewLayerID, viewLayerSpec, doConnectors, layerAttributes, error);
+	bool result = PaletteItem::setUpImage(modelPart, viewLayers, layerAttributes);
 
-	if (doConnectors) {
+	if (layerAttributes.doConnectors) {
 		foreach (ConnectorItem * item, cachedConnectorItems()) {
 			item->setCircular(true);
 			if (item->connectorSharedName().contains('0')) {
@@ -172,7 +173,7 @@ bool JumperItem::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, con
 			}
 		}
 
-		initialResize(viewID);
+		initialResize(layerAttributes.viewID);
 	}
 
 	return result;
@@ -462,8 +463,8 @@ bool JumperItem::inDrag() {
 	return m_dragItem != NULL;
 }
 
-void JumperItem::loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec) {
-	PaletteItem::loadLayerKin(viewLayers, viewLayerSpec);
+void JumperItem::loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec, const QStringList & subparts) {
+	PaletteItem::loadLayerKin(viewLayers, viewLayerSpec, subparts);
 	resize();
 }
 

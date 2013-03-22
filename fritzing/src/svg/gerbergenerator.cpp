@@ -191,7 +191,7 @@ int GerberGenerator::doCopper(ItemBase * board, PCBSketchWidget * sketchWidget, 
 
 	svg = clipToBoard(svg, board, copperName, SVG2gerber::ForCopper, "", displayMessageBoxes, treatAsCircle);
 	if (svg.isEmpty()) {
-		displayMessage(QObject::tr("%1 layer export is empty (after clipping)").arg(copperName), displayMessageBoxes);
+		displayMessage(QObject::tr("%1 layer export is empty (case 2).").arg(copperName), displayMessageBoxes);
 		return 0;
 	}
 

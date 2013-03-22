@@ -102,10 +102,9 @@ public:
 	ResizableBoard(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~ResizableBoard();
 
-	bool setUpImage(ModelPart* modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, bool doConnectors, LayerAttributes &, QString & error);
 	virtual bool resizeMM(double w, double h, const LayerHash & viewLayers);
 	void resizePixels(double w, double h, const LayerHash & viewLayers);
- 	void loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLayerSpec);
+ 	void loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLayerSpec, const QStringList & subparts);
 	virtual void setInitialSize();
 	QString retrieveSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
 	bool collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget);

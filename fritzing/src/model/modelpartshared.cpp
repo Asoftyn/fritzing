@@ -173,13 +173,13 @@ bool ModelPartShared::setDomDocument(QDomDocument & domDocument) {
                     qulonglong sticky = (layer.attribute("sticky", "").compare("true") == 0) ? 1 : 0;
                     viewImage->layers |= (one << viewLayerID); 
                     viewImage->sticky |= (sticky << viewLayerID); 
-					layer = layer.nextSiblingElement("layer");
                     QDomElement subpart = layer.firstChildElement("subpart");
                     while (!subpart.isNull()) {
                         QString id = subpart.attribute("id");
                         if (!id.isEmpty()) viewImage->subparts << id;
                         subpart = subpart.nextSiblingElement("subpart");
                     }
+					layer = layer.nextSiblingElement("layer");
 				}
 			}
 
@@ -788,4 +788,14 @@ void ModelPartShared::addSchematicText(ViewImage * viewImage) {
 
     viewImage->canFlipHorizontal = viewImage->canFlipVertical = true;
     viewImage->layers |= (one << ViewLayer::SchematicText); 
+}
+
+const QStringList & ModelPartShared::subparts(ViewLayer::ViewID viewID) {
+    if (viewID != ViewLayer::SchematicView) return ___emptyStringList___;
+
+
+    ViewImage * viewImage = m_viewImages.value(viewID);
+    if (viewImage == NULL) return ___emptyStringList___;
+
+    return viewImage->subparts;
 }

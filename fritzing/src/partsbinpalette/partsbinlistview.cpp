@@ -383,9 +383,12 @@ void PartsBinListView::loadImage(QListWidgetItem * lwi, const QString & moduleID
 		ModelPart * modelPart = itemBase->modelPart();
 		itemBase = PartFactory::createPart(modelPart, ViewLayer::ThroughHoleThroughTop_OneLayer, ViewLayer::IconView, ViewGeometry(), ItemBase::getNextID(), NULL, NULL, false);
 		ItemBaseHash.insert(moduleID, itemBase);
-        QString error;
 		LayerAttributes layerAttributes;
-		FSvgRenderer * renderer = itemBase->setUpImage(modelPart, ViewLayer::IconView, ViewLayer::Icon, itemBase->viewLayerSpec(), layerAttributes, error);
+        layerAttributes.viewID = ViewLayer::IconView;
+        layerAttributes.viewLayerID = ViewLayer::Icon;
+        layerAttributes.viewLayerSpec = itemBase->viewLayerSpec();
+        layerAttributes.doConnectors = false;
+		FSvgRenderer * renderer = itemBase->setUpImage(modelPart, layerAttributes);
 		if (renderer != NULL) {
 			if (itemBase) {
 				itemBase->setFilename(renderer->filename());

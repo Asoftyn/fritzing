@@ -84,14 +84,14 @@ public:
 	void removeLayerKin();
 	void addLayerKin(class LayerKinPaletteItem * lkpi);
 	const QList<class ItemBase *> & layerKin();
- 	virtual void loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLayerSpec);
+ 	virtual void loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLayerSpec, const QStringList & subparts);
 	void rotateItem(double degrees);
 	void flipItem(Qt::Orientations orientation);
 	void moveItem(ViewGeometry & viewGeometry);
 	void transformItem2(const QMatrix &);
 	void setItemPos(QPointF & pos);
 
-	bool renderImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID, bool doConnectors, QString & error);
+	bool renderImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID, bool doConnectors, const QString & subpart, QString & error);
 
 	void setTransforms();
 	void syncKinMoved(QPointF offset, QPointF loc);
@@ -152,6 +152,7 @@ protected:
     QString appendHoleSize(const QString & moduleID, const QString & holeSize, const QString & ringThickness);
     void generateSwap(const QString & text, GenModuleID, GenFzp, GenSvg makeBreadboardSvg, GenSvg makeSchematicSvg, GenSvg makePcbSvg);
     bool makeLocalModifications(QByteArray & svg, const QString & filename);
+    void makeOneKin(qint64 & id, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, const QString & subpart, ViewGeometry &, const LayerHash &);
 
 protected:
     void setUpHoleSizes(const QString & type, HoleClassThing &);

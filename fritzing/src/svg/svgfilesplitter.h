@@ -82,8 +82,8 @@ public:
 	static void changeColors(QDomElement & element, QString & toColor, QStringList & exceptions);
 	static void fixStyleAttributeRecurse(QDomElement & element);
 	static void fixColorRecurse(QDomElement & element, const QString & newColor, const QStringList & exceptions);
-    static QByteArray hideText(const QString & filename);
-    static QByteArray showText(const QString & filename, bool & hasText);
+    static QByteArray hideText(const QString & filename, const QString & subpart);
+    static QByteArray showText(const QString & filename, const QString & subpart, bool & hasText);
     static QByteArray hideText2(const QByteArray & svg);
     static QByteArray showText2(const QByteArray & svg, bool & hasText);
     static QString hideText3(const QString & svg);
@@ -106,6 +106,7 @@ protected:
 	static void setStrokeOrFill(QDomElement & element, bool doIt, const QString & color, bool force);
     static void hideTextAux(QDomElement & parent, bool hideChildren);
     static void showTextAux(QDomElement & parent, bool & hasText, bool root);
+    static void showSubpart(QDomElement & root, const QString & subpart);
 
 protected slots:
 	void normalizeCommandSlot(QChar command, bool relative, QList<double> & args, void * userData);

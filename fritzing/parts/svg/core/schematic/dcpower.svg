@@ -5,10 +5,10 @@
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="54.337px"
 	 height="90.131px" viewBox="0 0 54.337 90.131" enable-background="new 0 0 54.337 90.131" xml:space="preserve">
 <g id="schematic">
-	<rect id="connector0pin" x="26.677" y="80.131" fill="none" width="2" height="10"/>
-	<rect id="connector1pin" x="26.677" y="0.231" fill="none" width="2" height="10"/>
-	<rect id="connector0terminal" x="26.677" y="88.131" fill="none" width="2" height="2"/>
-	<rect id="connector1terminal" x="26.677" y="0.231" fill="none" width="2" height="2"/>
+	<rect id="connector1pin" x="26.677" y="80.131" fill="none" width="2" height="10"/>
+	<rect id="connector0pin" x="26.677" y="0.231" fill="none" width="2" height="10"/>
+	<rect id="connector1terminal" x="26.677" y="88.131" fill="none" width="2" height="2"/>
+	<rect id="connector0terminal" x="26.677" y="0.231" fill="none" width="2" height="2"/>
 	<g id="text">
 		<g>
 			<path d="M31.788,66.542v-1.113h5.544v1.113H31.788z"/>

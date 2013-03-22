@@ -1251,17 +1251,21 @@ void MainWindow::exportSpiceNetlist() {
 	QList< QList<ConnectorItem *>* > netList;
 	this->m_schematicGraphicsView->collectAllNets(indexer, netList, true, false);
 
+
+    //DebugDialog::debug("_______________");
     QSet<ItemBase *> itemBases;
     QList<ConnectorItem *> * ground = NULL;
 	foreach (QList<ConnectorItem *> * net, netList) {
         if (net->count() < 2) continue;
 
         foreach (ConnectorItem * ci, *net) {
+            //ci->debugInfo("net");
             if (ci->isGrounded()) {
                 ground = net;
             }
             itemBases.insert(ci->attachedTo());
         }
+        //DebugDialog::debug("_______________");
     }
 
     if (ground) {
@@ -1269,6 +1273,23 @@ void MainWindow::exportSpiceNetlist() {
         netList.removeOne(ground);
         netList.prepend(ground);
     }
+
+    //DebugDialog::debug("_______________");
+    //DebugDialog::debug("_______________");
+    DebugDialog::debug("_______________");
+
+	foreach (QList<ConnectorItem *> * net, netList) {
+        if (net->count() < 2) continue;
+
+        foreach (ConnectorItem * ci, *net) {
+            ci->debugInfo("net");
+        }
+
+        DebugDialog::debug("_______________");
+    }
+
+    //DebugDialog::debug("_______________");
+    //DebugDialog::debug("_______________");
 
     foreach (ItemBase * itemBase, itemBases) {
         QString spice = itemBase->spice();
@@ -1334,8 +1355,8 @@ void MainWindow::exportSpiceNetlist() {
 	}
 
     //DebugDialog::debug(fileExt + " selected to export");
-    if(!alreadyHasExtension(fileName, netlistActionType)) {
-		fileName += netlistActionType;
+    if(!alreadyHasExtension(fileName, spiceNetlistActionType)) {
+		fileName += spiceNetlistActionType;
     }
 
     TextUtils::writeUtf8(fileName, output);

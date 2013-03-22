@@ -379,19 +379,19 @@ void PaletteItemBase::collectWireConnectees(QSet<Wire *> & wires) {
 	}
 }
 
-bool PaletteItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
+bool PaletteItemBase::setUpImage(ModelPart * modelPart, const LayerHash & viewLayers, LayerAttributes & layerAttributes)
 {
-	FSvgRenderer * renderer = ItemBase::setUpImage(modelPart, viewID, viewLayerID, viewLayerSpec, layerAttributes, error);
+	FSvgRenderer * renderer = ItemBase::setUpImage(modelPart, layerAttributes);
 	if (renderer == NULL) {
 		return false;
 	}
 
-	m_canFlipVertical = modelPart->canFlipVertical(viewID);
-	m_canFlipHorizontal = modelPart->canFlipHorizontal(viewID);
+	m_canFlipVertical = modelPart->canFlipVertical(layerAttributes.viewID);
+	m_canFlipHorizontal = modelPart->canFlipHorizontal(layerAttributes.viewID);
 	m_filename = layerAttributes.filename();
 	//DebugDialog::debug(QString("filename %1").arg(m_filename) );
-	setSticky(modelPart->anySticky(viewID));
-	QString elementID = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
+	setSticky(modelPart->anySticky(layerAttributes.viewID));
+	QString elementID = ViewLayer::viewLayerXmlNameFromID(layerAttributes.viewLayerID);
 	setViewLayerID(elementID, viewLayers);
 
 	//DebugDialog::debug(QString("setting layer %1 view:%2 z:%3").arg(modelPart->title()).arg(viewID).arg(this->z()) );
@@ -400,7 +400,7 @@ bool PaletteItemBase::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID
 
 	m_svg = true;
 
-	if (doConnectors) {
+	if (layerAttributes.doConnectors) {
 		setUpConnectors(renderer, modelPart->ignoreTerminalPoints());
 	}
 
@@ -588,20 +588,17 @@ void PaletteItemBase::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
 
 
 LayerKinPaletteItem *PaletteItemBase::newLayerKinPaletteItem(PaletteItemBase * chief, ModelPart * modelPart, 
-															 ViewLayer::ViewID viewID,
 															 const ViewGeometry & viewGeometry, long id,
-															 ViewLayer::ViewLayerID viewLayerID, 
-															 ViewLayer::ViewLayerSpec viewLayerSpec, 
-															 QMenu* itemMenu, const LayerHash & viewLayers)
+															 QMenu* itemMenu, const LayerHash & viewLayers, LayerAttributes & layerAttributes)
 {
 	LayerKinPaletteItem *lk = NULL;
-    if (viewLayerID == ViewLayer::SchematicText) {
-        lk = new SchematicTextLayerKinPaletteItem(chief, modelPart, viewID, viewGeometry, id, itemMenu);
+    if (layerAttributes.viewLayerID == ViewLayer::SchematicText) {
+        lk = new SchematicTextLayerKinPaletteItem(chief, modelPart, layerAttributes.viewID, viewGeometry, id, itemMenu);
     }
     else {
-        lk = new LayerKinPaletteItem(chief, modelPart, viewID, viewGeometry, id, itemMenu);
+        lk = new LayerKinPaletteItem(chief, modelPart, layerAttributes.viewID, viewGeometry, id, itemMenu);
     }
-	lk->init(viewLayerID, viewLayerSpec, viewLayers);
+	lk->init(layerAttributes, viewLayers);
 	return lk;
 }
 

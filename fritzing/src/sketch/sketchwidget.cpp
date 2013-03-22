@@ -865,63 +865,67 @@ PaletteItem* SketchWidget::addPartItem(ModelPart * modelPart, ViewLayer::ViewLay
 	ok = false;
 	ViewLayer::ViewLayerID viewLayerID = getViewLayerID(modelPart, viewID, viewLayerSpec);
 
-	// render it, only if the layer is defined in the fzp file
-	// if the view is not defined in the part file, without this condition
-	// fritzing crashes
-	if(viewLayerID != ViewLayer::UnknownLayer) {
-		QString error;
-		bool result = paletteItem->renderImage(modelPart, viewID, m_viewLayers, viewLayerID, doConnectors, error);
-		if (!result) {
-			bool retry = false;
-			switch (viewLayerID) {
-				case ViewLayer::Copper0:
-					viewLayerID = ViewLayer::Copper1;
-					retry = true;
-					break;
-				case ViewLayer::Copper1:
-					viewLayerID = ViewLayer::Copper0;
-					retry = true;
-					break;
-				default:
-					break;
-			}
-			if (retry) {
-				result = paletteItem->renderImage(modelPart, viewID, m_viewLayers, viewLayerID, doConnectors, error);
-			}
+    QString subpart;
+    QStringList subparts;
+    // disable this for now
+    //QStringList subparts = modelPart->subparts(viewID);
+    //if (subparts.length() > 0) subpart = subparts.at(0);  
+	if (viewLayerID == ViewLayer::UnknownLayer) {
+	    // render it only if the layer is defined in the fzp file
+	    // if the view is not defined in the part file, without this condition
+	    // fritzing crashes
+        return paletteItem;
+    }
+
+	QString error;
+	bool result = paletteItem->renderImage(modelPart, viewID, m_viewLayers, viewLayerID, doConnectors, subpart, error);
+	if (!result) {
+		bool retry = false;
+		switch (viewLayerID) {
+			case ViewLayer::Copper0:
+				viewLayerID = ViewLayer::Copper1;
+				retry = true;
+				break;
+			case ViewLayer::Copper1:
+				viewLayerID = ViewLayer::Copper0;
+				retry = true;
+				break;
+			default:
+				break;
 		}
-		if (result) {
-			//DebugDialog::debug(QString("addPartItem %1").arg(viewID));
-			addToScene(paletteItem, paletteItem->viewLayerID());
-			paletteItem->loadLayerKin(m_viewLayers, viewLayerSpec);
-			foreach (ItemBase * lkpi, paletteItem->layerKin()) {
-				this->scene()->addItem(lkpi);
-				lkpi->setHidden(!layerIsVisible(lkpi->viewLayerID()));
-				lkpi->setInactive(!layerIsActive(lkpi->viewLayerID()));
-			}
-			//DebugDialog::debug(QString("after layerkin %1").arg(viewID));
-			ok = true;
+		if (retry) {
+			result = paletteItem->renderImage(modelPart, viewID, m_viewLayers, viewLayerID, doConnectors, subpart, error);
 		}
-		else {
-			// nobody falls through to here now?
-
-			QMessageBox::information(NULL, QObject::tr("Fritzing"),
-				QObject::tr("Error reading file %1: %2.").arg(modelPart->path()).arg(error) );
-
-
-			DebugDialog::debug(QString("addPartItem renderImage failed %1").arg(modelPart->moduleID()) );
-
-			//paletteItem->modelPart()->removeViewItem(paletteItem);
-			//delete paletteItem;
-			//return NULL;
-			scene()->addItem(paletteItem);
-			//paletteItem->setVisible(false);
-		}
-		paletteItem->addedToScene(temporary);
-		return paletteItem;
-
-	} else {
-		return paletteItem;
 	}
+	if (result) {
+		//DebugDialog::debug(QString("addPartItem %1").arg(viewID));
+		addToScene(paletteItem, paletteItem->viewLayerID());
+		paletteItem->loadLayerKin(m_viewLayers, viewLayerSpec, subparts);
+		foreach (ItemBase * lkpi, paletteItem->layerKin()) {
+			this->scene()->addItem(lkpi);
+			lkpi->setHidden(!layerIsVisible(lkpi->viewLayerID()));
+			lkpi->setInactive(!layerIsActive(lkpi->viewLayerID()));
+		}
+		//DebugDialog::debug(QString("after layerkin %1").arg(viewID));
+		ok = true;
+	}
+	else {
+		// nobody falls through to here now?
+
+		QMessageBox::information(NULL, QObject::tr("Fritzing"),
+			QObject::tr("Error reading file %1: %2.").arg(modelPart->path()).arg(error) );
+
+
+		DebugDialog::debug(QString("addPartItem renderImage failed %1").arg(modelPart->moduleID()) );
+
+		//paletteItem->modelPart()->removeViewItem(paletteItem);
+		//delete paletteItem;
+		//return NULL;
+		scene()->addItem(paletteItem);
+		//paletteItem->setVisible(false);
+	}
+	paletteItem->addedToScene(temporary);
+	return paletteItem;
 }
 
 void SketchWidget::addToScene(ItemBase * item, ViewLayer::ViewLayerID viewLayerID) {

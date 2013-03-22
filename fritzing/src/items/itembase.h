@@ -215,7 +215,7 @@ public:
 	bool resetRenderer(const QString & svg);
 	bool resetRenderer(const QString & svg, QString & newSvg);
     void getPixmaps(QPixmap * &, QPixmap * &, QPixmap * &, bool swappingEnabled, QSize);
-    class FSvgRenderer * setUpImage(class ModelPart * modelPart, ViewLayer::ViewID, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, class LayerAttributes &, QString & error);
+    class FSvgRenderer * setUpImage(class ModelPart * modelPart, class LayerAttributes &);
 	void showConnectors(const QStringList &);
 	void setItemIsSelectable(bool selectable);
 	virtual bool inRotation();

@@ -163,13 +163,13 @@ QString LED::getColorSVG(const QString & color, ViewLayer::ViewLayerID viewLayer
 	return domDocument.toString();
 }
 
-bool LED::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
+bool LED::setUpImage(ModelPart * modelPart, const LayerHash & viewLayers, LayerAttributes & layerAttributes)
 {
-	bool result = Capacitor::setUpImage(modelPart, viewID, viewLayers, viewLayerID, viewLayerSpec, doConnectors, layerAttributes, error);
-	if (viewLayerID == ViewLayer::Breadboard && BreadboardSvg.value(m_filename).isEmpty() && result) {
+	bool result = Capacitor::setUpImage(modelPart, viewLayers, layerAttributes);
+	if (layerAttributes.viewLayerID == ViewLayer::Breadboard && BreadboardSvg.value(m_filename).isEmpty() && result) {
 		BreadboardSvg.insert(m_filename, QString(layerAttributes.loaded()));
 	}
-	else if (viewLayerID == ViewLayer::Icon && IconSvg.value(m_filename).isEmpty() && result) {
+	else if (layerAttributes.viewLayerID == ViewLayer::Icon && IconSvg.value(m_filename).isEmpty() && result) {
 		IconSvg.insert(m_filename, QString(layerAttributes.loaded()));
 	}
 	return result;

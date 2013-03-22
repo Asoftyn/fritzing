@@ -32,6 +32,7 @@ $Date$
 #include "../svg/svgfilesplitter.h"
 #include "../svg/groundplanegenerator.h"
 #include "../sketch/infographicsview.h"
+#include "../layerattributes.h"
 
 #include <QPainterPathStroker>
 
@@ -71,11 +72,11 @@ GroundPlane::GroundPlane( ModelPart * modelPart, ViewLayer::ViewID viewID,  cons
 	m_connector0 = NULL;
 }
 
-bool GroundPlane::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
+bool GroundPlane::setUpImage(ModelPart * modelPart, const LayerHash & viewLayers, LayerAttributes & layerAttributes)
 {
-	bool result = PaletteItem::setUpImage(modelPart, viewID, viewLayers, viewLayerID, viewLayerSpec, doConnectors, layerAttributes, error);
+	bool result = PaletteItem::setUpImage(modelPart, viewLayers, layerAttributes);
 
-	if (doConnectors) {
+	if (layerAttributes.doConnectors) {
 		foreach (ConnectorItem * item, cachedConnectorItems()) {
 			// there is only one
 			m_connector0 = item;
@@ -184,9 +185,10 @@ bool GroundPlane::hasPartLabel() {
 	return false;
 }
 
-void GroundPlane::loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec) {
+void GroundPlane::loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec, const QStringList & subparts) {
 	Q_UNUSED(viewLayers);
 	Q_UNUSED(viewLayerSpec);
+	Q_UNUSED(subparts);
 	// GroundPlane is only on one side or another, not both
 }
 

@@ -196,10 +196,14 @@ void SvgIconWidget::setItemBase(ItemBase * itemBase, bool plural)
 
 void SvgIconWidget::setupImage(bool plural, ViewLayer::ViewID viewID)
 {
-	QString error;
+
 	LayerAttributes layerAttributes;
+    layerAttributes.viewID = viewID;
+    layerAttributes.viewLayerID = ViewLayer::Icon;
+    layerAttributes.viewLayerSpec = ViewLayer::ThroughHoleThroughTop_OneLayer;
+    layerAttributes.doConnectors = false;
 	ModelPart * modelPart = m_itemBase->modelPart();
-	FSvgRenderer * renderer = m_itemBase->setUpImage(modelPart, viewID, ViewLayer::Icon, ViewLayer::ThroughHoleThroughTop_OneLayer, layerAttributes, error);
+	FSvgRenderer * renderer = m_itemBase->setUpImage(modelPart, layerAttributes);
     if (renderer == NULL) {
         DebugDialog::debug(QString("missing renderer for icon %1").arg(modelPart->moduleID()));
     }

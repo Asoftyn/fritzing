@@ -937,9 +937,12 @@ FSvgRenderer * Wire::setUpConnectors(ModelPart * modelPart, ViewLayer::ViewID vi
 {
 	clearConnectorItemCache();
 
-	QString error;
 	LayerAttributes layerAttributes;
-	FSvgRenderer * renderer = ItemBase::setUpImage(modelPart, viewID, m_viewLayerID, m_viewLayerSpec, layerAttributes, error);
+    layerAttributes.viewID = viewID;
+    layerAttributes.viewLayerID = m_viewLayerID;
+    layerAttributes.viewLayerSpec = m_viewLayerSpec;
+    layerAttributes.doConnectors = false;
+	FSvgRenderer * renderer = ItemBase::setUpImage(modelPart, layerAttributes);
 	if (renderer == NULL) {
 		return NULL;
 	}

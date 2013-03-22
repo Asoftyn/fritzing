@@ -275,7 +275,8 @@ bool Resistor::collectExtraInfo(QWidget * parent, const QString & family, const 
 		focusOutComboBox->setValidator(validator);
 		connect(focusOutComboBox, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(resistanceEntry(const QString &)));
 
-		focusOutComboBox->setObjectName("infoViewComboBox");		
+		focusOutComboBox->setObjectName("infoViewComboBox");
+        focusOutComboBox->setToolTip(tr("You can either type in a resistance value, or select one from the drop down. Format nnn.dP where P is one of 'umkMG'"));
 
 		returnValue = current;			
 		returnWidget = focusOutComboBox;	
@@ -391,13 +392,13 @@ void Resistor::setProp(const QString & prop, const QString & value)
 	}
 }
 
-bool Resistor::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
+bool Resistor::setUpImage(ModelPart * modelPart, const LayerHash & viewLayers, LayerAttributes & layerAttributes)
 {
-	bool result = Capacitor::setUpImage(modelPart, viewID, viewLayers, viewLayerID, viewLayerSpec, doConnectors, layerAttributes, error);
-	if (viewLayerID == ViewLayer::Breadboard) {
+	bool result = Capacitor::setUpImage(modelPart, viewLayers, layerAttributes);
+	if (layerAttributes.viewLayerID == ViewLayer::Breadboard) {
 		if (result && m_breadboardSvgFile.isEmpty()) m_breadboardSvgFile = layerAttributes.filename();
 	}
-	else if (viewLayerID == ViewLayer::Icon) {
+	else if (layerAttributes.viewLayerID == ViewLayer::Icon) {
 		if (result && m_iconSvgFile.isEmpty()) m_iconSvgFile = layerAttributes.filename();
 	}
 	return result;

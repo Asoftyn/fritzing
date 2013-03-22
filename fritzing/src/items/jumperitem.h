@@ -39,7 +39,7 @@ public:
 
     QPainterPath shape() const;
     QPainterPath hoverShape() const;
- 	bool setUpImage(ModelPart* modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, bool doConnectors, LayerAttributes &, QString & error);
+ 	bool setUpImage(ModelPart* modelPart, const LayerHash & viewLayers, LayerAttributes &);
 	void saveParams();
 	void getParams(QPointF & pos, QPointF & c0, QPointF & c1);
 	void resize(QPointF pos, QPointF c0, QPointF c1);
@@ -52,7 +52,7 @@ public:
 	class ConnectorItem * connector1();
 	bool hasCustomSVG();
 	bool inDrag();
-	void loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec);
+	void loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec, const QStringList & subparts);
 	PluralType isPlural();
 	void addedToScene(bool temporary);
 	void rotateItem(double degrees);

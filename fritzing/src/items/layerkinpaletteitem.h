@@ -43,7 +43,7 @@ public:
 	void setInactive(bool inactivate);
 	void clearModelPart();
 	ItemBase * lowerConnectorLayerVisible(ItemBase *);
-	void init(ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, const LayerHash &viewLayers);
+	void init(LayerAttributes &, const LayerHash &viewLayers);
 	bool isSticky();
 	bool isBaseSticky();
 	void setSticky(bool);
@@ -58,6 +58,7 @@ public:
     void setSwappable(bool);
 	bool inRotation();
 	void setInRotation(bool);
+    void setSync(bool);
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
@@ -70,6 +71,7 @@ protected:
 protected:
 	QPointer<PaletteItemBase> m_layerKinChief;
 	bool m_ok;
+    bool m_sync;
 };
 
 class SchematicTextLayerKinPaletteItem : public LayerKinPaletteItem
@@ -80,7 +82,7 @@ public:
 	SchematicTextLayerKinPaletteItem(PaletteItemBase * chief, ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu);
 
     void transformItem(const QTransform &);
- 	bool setUpImage(ModelPart* modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID, ViewLayer::ViewLayerSpec, bool doConnectors, LayerAttributes &, QString & error);
+ 	bool setUpImage(ModelPart* modelPart, const LayerHash & viewLayers, LayerAttributes &);
 
 protected:
     bool makeFlipTextSvg();

@@ -761,13 +761,6 @@ void ResizableBoard::mouseReleaseEvent(QGraphicsSceneMouseEvent * event) {
 	}
 }
 
-bool ResizableBoard::setUpImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, bool doConnectors, LayerAttributes & layerAttributes, QString & error)
-{
-	bool result = Board::setUpImage(modelPart, viewID, viewLayers, viewLayerID, viewLayerSpec, doConnectors, layerAttributes, error);
-
-	return result;
-}
-
 ViewLayer::ViewID ResizableBoard::theViewID() {
 	return ViewLayer::PCBView;
 }
@@ -778,9 +771,12 @@ void ResizableBoard::resizePixels(double w, double h, const LayerHash & viewLaye
 
 bool ResizableBoard::resizeMM(double mmW, double mmH, const LayerHash & viewLayers) {
 	if (mmW == 0 || mmH == 0) {
-		QString error;
 		LayerAttributes layerAttributes;
-		setUpImage(modelPart(), m_viewID, viewLayers, m_viewLayerID, m_viewLayerSpec, true, layerAttributes, error);
+        layerAttributes.viewID = m_viewID;
+        layerAttributes.viewLayerID = m_viewLayerID;
+        layerAttributes.viewLayerSpec = m_viewLayerSpec;
+        layerAttributes.doConnectors = true;
+		setUpImage(modelPart(), viewLayers, layerAttributes);
 		modelPart()->setLocalProp("height", QVariant());
 		modelPart()->setLocalProp("width", QVariant());
 		// do the layerkin
@@ -831,10 +827,10 @@ void ResizableBoard::resizeMMAux(double mmW, double mmH)
 
 }
 
-void ResizableBoard::loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec) {
+void ResizableBoard::loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec, const QStringList & subparts) {
 
 	loadTemplates();				
-	Board::loadLayerKin(viewLayers, viewLayerSpec);
+	Board::loadLayerKin(viewLayers, viewLayerSpec, subparts);
 	double w =  m_modelPart->localProp("width").toDouble();
 	if (w != 0) {
 		resizeMM(w, m_modelPart->localProp("height").toDouble(), viewLayers);

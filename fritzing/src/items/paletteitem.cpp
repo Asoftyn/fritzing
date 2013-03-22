@@ -136,15 +136,21 @@ PaletteItem::~PaletteItem() {
 	}
 }
 
-bool PaletteItem::renderImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, bool doConnectors, QString & error) {
+bool PaletteItem::renderImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, bool doConnectors, const QString & subpart, QString & error) {
 	LayerAttributes layerAttributes; 
-	bool result = setUpImage(modelPart, viewID, viewLayers, viewLayerID, this->viewLayerSpec(), doConnectors, layerAttributes, error);
+    layerAttributes.viewID = viewID;
+    layerAttributes.viewLayerID = viewLayerID;
+    layerAttributes.viewLayerSpec = viewLayerSpec();
+    layerAttributes.doConnectors = doConnectors;
+    layerAttributes.subpart = subpart;
+	bool result = setUpImage(modelPart, viewLayers, layerAttributes);
+    error = layerAttributes.error;
 
 	m_syncMoved = this->pos();
 	return result;
 }
 
-void PaletteItem::loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec) {
+void PaletteItem::loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec, const QStringList & subparts) {
 
 	if (m_modelPart == NULL) return;
 
@@ -200,23 +206,53 @@ void PaletteItem::loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLaye
 			break;
 	}
 
-	foreach (ViewLayer::ViewLayerID viewLayerID, viewLayers.keys()) {
-		if (viewLayerID == m_viewLayerID) continue;
-		if (notLayers.contains(viewLayerID)) continue;
-		if (!m_modelPart->hasViewFor(m_viewID, viewLayerID)) continue;
+    QStringList sb2;
+    if (subparts.length() > 1) {
+        for (int ix = 1; ix < subparts.length(); ix++) {
+            makeOneKin(id, m_viewLayerID, viewLayerSpec, subparts.at(ix), viewGeometry, viewLayers);
+        }
+        sb2 = subparts;
+    }
+    else {
+        sb2.append("");
+    }
+    sb2.append("");
+    foreach (QString subpart, sb2) {
+	    foreach (ViewLayer::ViewLayerID viewLayerID, viewLayers.keys()) {
+		    if (viewLayerID == m_viewLayerID) continue;
+		    if (notLayers.contains(viewLayerID)) continue;
+		    if (!m_modelPart->hasViewFor(m_viewID, viewLayerID)) continue;
 
-		LayerKinPaletteItem * lkpi = newLayerKinPaletteItem(this, m_modelPart, m_viewID, viewGeometry, id, viewLayerID, viewLayerSpec, m_itemMenu, viewLayers);
-		if (lkpi->ok()) {
-			//DebugDialog::debug(QString("adding layer kin %1 %2 %3").arg(id).arg(m_viewID).arg(viewLayerID) );
-			lkpi->setViewLayerSpec(viewLayerSpec);
-			addLayerKin(lkpi);
-			id++;
-		}
-		else {
-			delete lkpi;
-		}
+            makeOneKin(id, viewLayerID, viewLayerSpec, subpart, viewGeometry, viewLayers);
+	    }
+    }
+}
+
+void PaletteItem::makeOneKin(qint64 & id, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, const QString & subpart, ViewGeometry & viewGeometry, const LayerHash & viewLayers) {
+    LayerAttributes layerAttributes;
+    layerAttributes.viewID = m_viewID;
+    layerAttributes.viewLayerID = viewLayerID;
+    layerAttributes.viewLayerSpec = viewLayerSpec;
+    layerAttributes.subpart = subpart;
+    layerAttributes.doConnectors = true;
+    LayerKinPaletteItem * lkpi = newLayerKinPaletteItem(this, m_modelPart, viewGeometry, id, m_itemMenu, viewLayers, layerAttributes);
+	if (lkpi->ok()) {
+        if (!subpart.isEmpty()) {
+            lkpi->setSync(false);
+        }
+		DebugDialog::debug(QString("adding layer kin %1 %2 %3 %4 %5")
+            .arg(id).arg(m_viewID).arg(viewLayerID) 
+            .arg(subpart).arg((long) lkpi, 0, 16)
+        );
+		lkpi->setViewLayerSpec(viewLayerSpec);
+		addLayerKin(lkpi);
+		id++;
+	}
+	else {
+		delete lkpi;
 	}
 }
+
 
 void PaletteItem::addLayerKin(LayerKinPaletteItem * lkpi) {
 	m_layerKin.append(lkpi);
@@ -506,9 +542,12 @@ void PaletteItem::resetImage(InfoGraphicsView * infoGraphicsView) {
 		connector->unprocess(this->viewID(), this->viewLayerID());
 	}
 
-	QString error;
 	LayerAttributes layerAttributes;
-	this->setUpImage(modelPart(), this->viewID(), infoGraphicsView->viewLayers(), this->viewLayerID(), this->viewLayerSpec(), true, layerAttributes, error);
+    layerAttributes.viewID = viewID();
+    layerAttributes.viewLayerID = viewLayerID();
+    layerAttributes.viewLayerSpec = viewLayerSpec();
+    layerAttributes.doConnectors = true;
+	this->setUpImage(modelPart(), infoGraphicsView->viewLayers(),layerAttributes);
 	
 	foreach (ItemBase * layerKin, m_layerKin) {
 		resetKinImage(layerKin, infoGraphicsView);
@@ -520,9 +559,12 @@ void PaletteItem::resetKinImage(ItemBase * layerKin, InfoGraphicsView * infoGrap
 	foreach (Connector * connector, modelPart()->connectors()) {
 		connector->unprocess(layerKin->viewID(), layerKin->viewLayerID());
 	}
-	QString error;
 	LayerAttributes layerAttributes;
-	qobject_cast<PaletteItemBase *>(layerKin)->setUpImage(modelPart(), layerKin->viewID(), infoGraphicsView->viewLayers(), layerKin->viewLayerID(), layerKin->viewLayerSpec(), true, layerAttributes, error);
+    layerAttributes.viewID = layerKin->viewID();
+    layerAttributes.viewLayerID = layerKin->viewLayerID();
+    layerAttributes.viewLayerSpec = layerKin->viewLayerSpec();
+    layerAttributes.doConnectors = true;
+	qobject_cast<PaletteItemBase *>(layerKin)->setUpImage(modelPart(), infoGraphicsView->viewLayers(), layerAttributes);
 }
 
 QString PaletteItem::genFZP(const QString & moduleid, const QString & templateName, int minPins, int maxPins, int steps, bool smd)

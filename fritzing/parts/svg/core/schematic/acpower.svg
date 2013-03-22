@@ -6,9 +6,9 @@
 	 viewBox="0 0 50.65 89.9" enable-background="new 0 0 50.65 89.9" xml:space="preserve">
 <g>
 	<g id="schematic">
-		<rect id="connector0pin" x="24.22" fill="none" width="2" height="10"/>
+		<rect id="connector0pin" x="24.22" y="0" fill="none" width="2" height="10"/>
 		<rect id="connector1pin" x="24.22" y="79.9" fill="none" width="2" height="10"/>
-		<rect id="connector0terminal" x="24.22" fill="none" width="2" height="2"/>
+		<rect id="connector0terminal" x="24.22" y="0" fill="none" width="2" height="2"/>
 		<rect id="connector1terminal" x="24.22" y="87.9" fill="none" width="2" height="2"/>
 		<g id="diagram">
 			
