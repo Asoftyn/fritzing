@@ -58,7 +58,6 @@ public:
     void setSwappable(bool);
 	bool inRotation();
 	void setInRotation(bool);
-    void setSync(bool);
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
@@ -71,7 +70,6 @@ protected:
 protected:
 	QPointer<PaletteItemBase> m_layerKinChief;
 	bool m_ok;
-    bool m_sync;
 };
 
 class SchematicTextLayerKinPaletteItem : public LayerKinPaletteItem

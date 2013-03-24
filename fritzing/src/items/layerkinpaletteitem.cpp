@@ -46,7 +46,6 @@ LayerKinPaletteItem::LayerKinPaletteItem(PaletteItemBase * chief, ModelPart * mo
 	: PaletteItemBase(modelPart, viewID, viewGeometry, id, itemMenu)
 
 {
-    m_sync = true;
     m_layerKinChief = chief;
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     m_modelPart->removeViewItem(this);  // we don't need to save layerkin
@@ -60,7 +59,7 @@ void LayerKinPaletteItem::init(LayerAttributes & layerAttributes, const LayerHas
 QVariant LayerKinPaletteItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	//DebugDialog::debug(QString("lk item change %1 %2").arg(this->id()).arg(change));
-	if (m_layerKinChief != NULL && m_sync) {
+	if (m_layerKinChief != NULL) {
 	    if (change == ItemSelectedChange) {
 	       	bool selected = value.toBool();
 	    	if (m_blockItemSelectedChange && m_blockItemSelectedValue == selected) {
@@ -105,18 +104,18 @@ void LayerKinPaletteItem::updateConnections() {
 }
 
 void LayerKinPaletteItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    if (m_sync) {
-	    //DebugDialog::debug("layer kin mouse press event");
-	    if (m_layerKinChief->lowerConnectorLayerVisible(this)) {
-		    // TODO: this code may be unnecessary
-		    DebugDialog::debug("LayerKinPaletteItem::mousePressEvent isn't obsolete");
-		    event->ignore();
-		    return;
-	    }
 
-	    m_layerKinChief->mousePressEvent(this, event);
-        return;
-    }
+	//DebugDialog::debug("layer kin mouse press event");
+	if (m_layerKinChief->lowerConnectorLayerVisible(this)) {
+		// TODO: this code may be unnecessary
+		DebugDialog::debug("LayerKinPaletteItem::mousePressEvent isn't obsolete");
+		event->ignore();
+		return;
+	}
+
+	m_layerKinChief->mousePressEvent(this, event);
+    return;
+
 
     ItemBase::mousePressEvent(event);
 }
@@ -379,8 +378,4 @@ void SchematicTextLayerKinPaletteItem::positionTexts(QDomDocument & doc, QList<Q
         text.setTagName("text");
     }
 
-}
-
-void LayerKinPaletteItem::setSync(bool sync) {
-    m_sync = sync;
 }

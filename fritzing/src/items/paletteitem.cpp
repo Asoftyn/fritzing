@@ -206,26 +206,14 @@ void PaletteItem::loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLaye
 			break;
 	}
 
-    QStringList sb2;
-    if (subparts.length() > 1) {
-        for (int ix = 1; ix < subparts.length(); ix++) {
-            makeOneKin(id, m_viewLayerID, viewLayerSpec, subparts.at(ix), viewGeometry, viewLayers);
-        }
-        sb2 = subparts;
-    }
-    else {
-        sb2.append("");
-    }
-    sb2.append("");
-    foreach (QString subpart, sb2) {
-	    foreach (ViewLayer::ViewLayerID viewLayerID, viewLayers.keys()) {
-		    if (viewLayerID == m_viewLayerID) continue;
-		    if (notLayers.contains(viewLayerID)) continue;
-		    if (!m_modelPart->hasViewFor(m_viewID, viewLayerID)) continue;
+	foreach (ViewLayer::ViewLayerID viewLayerID, viewLayers.keys()) {
+		if (viewLayerID == m_viewLayerID) continue;
+		if (notLayers.contains(viewLayerID)) continue;
+		if (!m_modelPart->hasViewFor(m_viewID, viewLayerID)) continue;
 
-            makeOneKin(id, viewLayerID, viewLayerSpec, subpart, viewGeometry, viewLayers);
-	    }
-    }
+        makeOneKin(id, viewLayerID, viewLayerSpec, "", viewGeometry, viewLayers);
+	}
+
 }
 
 void PaletteItem::makeOneKin(qint64 & id, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, const QString & subpart, ViewGeometry & viewGeometry, const LayerHash & viewLayers) {
@@ -237,9 +225,6 @@ void PaletteItem::makeOneKin(qint64 & id, ViewLayer::ViewLayerID viewLayerID, Vi
     layerAttributes.doConnectors = true;
     LayerKinPaletteItem * lkpi = newLayerKinPaletteItem(this, m_modelPart, viewGeometry, id, m_itemMenu, viewLayers, layerAttributes);
 	if (lkpi->ok()) {
-        if (!subpart.isEmpty()) {
-            lkpi->setSync(false);
-        }
 		DebugDialog::debug(QString("adding layer kin %1 %2 %3 %4 %5")
             .arg(id).arg(m_viewID).arg(viewLayerID) 
             .arg(subpart).arg((long) lkpi, 0, 16)
