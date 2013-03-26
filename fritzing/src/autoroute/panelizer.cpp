@@ -350,10 +350,10 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 
 	QList<PlanePair *> planePairs;
     QList<PanelItem *> insertPanelItems;
-    int duplicates = bestFitLoop(refPanelItems, panelParams, customPartsOnly, planePairs, insertPanelItems);
+    int duplicates = bestFitLoop(refPanelItems, panelParams, customPartsOnly, planePairs, insertPanelItems, svgDir);
 
 	foreach (PlanePair * planePair, planePairs) {
-		planePair->layoutSVG += "</svg>";
+		//planePair->layoutSVG += "</svg>";   // handled in bestFitLoop
 		QString fname = svgDir.absoluteFilePath(QString("%1.panel_%2.layout.svg").arg(panelParams.prefix).arg(planePair->index));
         TextUtils::writeUtf8(fname, planePair->layoutSVG);
 	}
@@ -1715,12 +1715,16 @@ void Panelizer::incProduced(const QString & path, long boardID, QList<PanelItem 
 }
 
 
-int Panelizer::bestFitLoop(QList<PanelItem *> & refPanelItems, PanelParams & panelParams, bool customPartsOnly, QList<PlanePair *> & returnPlanePairs, QList<PanelItem *> & returnInsertPanelItems) 
+int Panelizer::bestFitLoop(QList<PanelItem *> & refPanelItems, PanelParams & panelParams, bool customPartsOnly, QList<PlanePair *> & returnPlanePairs, QList<PanelItem *> & returnInsertPanelItems, const QDir & svgDir) 
 {
 	int optionalCount = 0;
 	foreach (PanelItem * panelItem, refPanelItems) {
 		optionalCount += panelItem->maxOptional;
 	}
+
+    QDir intermediates(svgDir);
+    intermediates.mkdir("intermediates");
+    intermediates.cd("intermediates");
 
     double bestCost = 0;
     double bestDivisor = 1;
@@ -1748,15 +1752,28 @@ int Panelizer::bestFitLoop(QList<PanelItem *> & refPanelItems, PanelParams & pan
 
         shrinkLastPanel(planePairs, insertPanelItems, panelParams, customPartsOnly);
 
+
+        double cost = calcCost(panelParams, planePairs, divisor);
+        foreach (PlanePair * planePair, planePairs) {
+		    planePair->layoutSVG += "</svg>";
+		    QString fname = intermediates.absoluteFilePath(QString("%3.divisor_%4.cost_%1.panel_%2.layout_.svg")
+                .arg(panelParams.prefix).arg(planePair->index).arg(divisor).arg(cost)
+            );
+            TextUtils::writeUtf8(fname, planePair->layoutSVG);
+	    }
+
+
+        DebugDialog::debug("");
+        DebugDialog::debug(QString("%1 panels, %2 additional copies of each: cost %3").arg(planePairs.count()).arg(divisor - 1).arg(cost));
+        DebugDialog::debug("");
         if (firstTime) {
-            bestCost = calcCost(panelParams, planePairs, divisor);
+            bestCost = cost;
             bestDivisor = 1;
             returnPlanePairs = planePairs;
             returnInsertPanelItems = insertPanelItems;
             firstTime = false;
         }
         else {
-            double cost = calcCost(panelParams, planePairs, divisor);
             if (cost < bestCost) {
                 bestCost = cost;
                 bestDivisor = divisor;
