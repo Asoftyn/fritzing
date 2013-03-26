@@ -207,7 +207,7 @@ bool SqliteReferenceModel::loadFromDB(QSqlDatabase & keep_db, QSqlDatabase & db)
     QVector<ModelPart *> parts(count + 1, NULL);
     QVector<qulonglong > oldToNew(count + 1, 0);
 
-    query = db.exec("SELECT path, moduleID, id, family, version, fritzingversion, author, title, label, date, description, spice, taxonomy, itemtype FROM parts");
+    query = db.exec("SELECT path, moduleID, id, family, version, fritzingversion, author, title, label, date, description, spice, spicemodel, taxonomy, itemtype FROM parts");
     debugError(query.isActive(), query);
     if (!query.isActive()) return false;
 
@@ -257,6 +257,7 @@ bool SqliteReferenceModel::loadFromDB(QSqlDatabase & keep_db, QSqlDatabase & db)
         modelPartShared->setDate(query.value(ix++).toString());
         modelPartShared->setDescription(query.value(ix++).toString());
         modelPartShared->setSpice(query.value(ix++).toString());
+        modelPartShared->setSpiceModel(query.value(ix++).toString());
         modelPartShared->setTaxonomy(query.value(ix++).toString());
         modelPart->setItemType((ModelPart::ItemType) query.value(ix++).toInt());
         modelPartShared->setPath(path);
@@ -817,8 +818,8 @@ bool SqliteReferenceModel::insertPart(ModelPart * modelPart, bool fullLoad) {
     QString fields;
     QString values;
     if (fullLoad) {
-        fields =  " version,  fritzingversion,  author,  title,  label,  date,  description,  spice,  taxonomy,  itemtype,  path";
-        values = " :version, :fritzingversion, :author, :title, :label, :date, :description, :spice, :taxonomy, :itemtype, :path";
+        fields =  " version,  fritzingversion,  author,  title,  label,  date,  description,  spice,  spicemodel,  taxonomy,  itemtype,  path";
+        values = " :version, :fritzingversion, :author, :title, :label, :date, :description, :spice, :spicemodel, :taxonomy, :itemtype, :path";
     }
     else {
         fields =  " core";
@@ -855,6 +856,7 @@ bool SqliteReferenceModel::insertPart(ModelPart * modelPart, bool fullLoad) {
 	    query.bindValue(":date", modelPart->date());
 	    query.bindValue(":description", modelPart->description());
 	    query.bindValue(":spice", modelPart->spice());
+	    query.bindValue(":spicemodel", modelPart->spiceModel());
 	    query.bindValue(":taxonomy", modelPart->taxonomy());
 	    query.bindValue(":itemtype", (int) modelPart->itemType());
         
@@ -1230,6 +1232,7 @@ bool SqliteReferenceModel::createParts(QSqlDatabase & db, bool fullLoad)
 			"date TEXT,\n"
 			"description TEXT,\n"
 			"spice TEXT,\n"
+			"spicemodel TEXT,\n"
 			"taxonomy TEXT,\n"
 			"itemtype INTEGER NOT NULL,\n"
 			"path TEXT\n"

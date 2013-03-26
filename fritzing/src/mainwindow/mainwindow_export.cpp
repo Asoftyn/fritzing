@@ -1338,11 +1338,27 @@ void MainWindow::exportSpiceNetlist() {
             DebugDialog::debug("spice " + spice);
         }
 
-        output += spice;
-        output += "\n";    
+        output += spice;  
     }
 
-    output += ".end\n";
+    output += "\n";
+
+    // remove redundant models
+    QStringList models;
+    foreach (ItemBase * itemBase, itemBases) {
+        QString spiceModel = itemBase->spiceModel();
+        if (spiceModel.isEmpty()) continue;
+        if (models.contains(spiceModel, Qt::CaseInsensitive)) continue;
+
+        models.append(spiceModel);
+    }
+
+    foreach (QString model, models) {
+        output += model;
+        output += "\n";
+    }
+
+    output += ".END\n";
 
 	foreach (QList<ConnectorItem *> * net, netList) {
 		delete net;

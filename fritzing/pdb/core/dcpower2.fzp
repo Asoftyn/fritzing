@@ -18,7 +18,7 @@
  </properties>
  <taxonomy>discreteParts.power.power.dcpower</taxonomy>
  <description>A generic dc power symbol</description>
- <spice>v{instanceTitle} {net connector0} {net connector1} dc {voltage}</spice>
+ <spice><line>V{instanceTitle} {net connector0} {net connector1} DC {voltage}</line></spice>
  <views>
   <defaultUnits>cmil</defaultUnits>
   <iconView>

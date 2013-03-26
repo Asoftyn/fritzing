@@ -221,6 +221,7 @@ public:
 	virtual bool inRotation();
 	virtual void setInRotation(bool);
 	const QString & spice() const;
+	const QString & spiceModel() const;
 
 public:
 	virtual void getConnectedColor(ConnectorItem *, QBrush * &, QPen * &, double & opacity, double & negativePenWidth, bool & negativeOffsetRect);

@@ -17,7 +17,7 @@
 </properties>
  <taxonomy>discreteParts.capacitor.ceramic</taxonomy>
  <description>1 uF multilayered Ceramic Capacitor</description>
- <spice>c{instanceTitle} {net connector0} {net connector1} {capacitance} ic=0</spice>
+ <spice><line>C{instanceTitle} {net connector0} {net connector1} {capacitance} IC=0</line></spice>
  <views>
   <iconView>
    <layers image="icon/capacitor_tantalum.svg">

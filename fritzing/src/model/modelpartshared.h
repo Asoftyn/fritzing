@@ -74,6 +74,8 @@ public:
 	void setDescription(QString);
 	const QString & spice();
 	void setSpice(QString);
+	const QString & spiceModel();
+	void setSpiceModel(QString);
 	const QString & url();
 	void setUrl(QString);
 	const QString & title();
@@ -178,6 +180,7 @@ protected:
 	QString m_label;
 	QString m_description;
     QString m_spice;
+    QString m_spiceModel;
 	QString m_url;
 	QString m_date;
 	QString m_replacedby;

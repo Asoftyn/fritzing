@@ -18,7 +18,21 @@
         <property name="part number">1N4732A</property>
     <property name="package">Melf DO-213 AB [SMD]</property></properties>
     <description>A standard zener diode</description>
-    <views>
+<spice>
+ <line>D{instanceTitle} {net connector0} {net connector1} DI_1N4732A</line>
+ <model>*SRC=1N4732A;DI_1N4732A;Diodes;Zener &lt;=10V; 4.70V  1.00W   Diodes Inc.</model>
+ <model>*SYM=HZEN</model>
+ <model>.SUBCKT DI_1N4732A  1 2</model>
+ <model>*        Terminals    A   K</model>
+ <model>D1 1 2 DF</model>
+ <model>DZ 3 1 DR</model>
+ <model>VZ 2 3 2.99</model>
+ <model>.MODEL DF D ( IS=87.7p RS=0.620 N=1.10</model>
+ <model>+ CJO=214p VJ=0.750 M=0.330 TT=50.1n )</model>
+ <model>.MODEL DR D ( IS=17.5f RS=0.333 N=2.28 )</model>
+ <model>.ENDS</model>
+</spice>
+<views>
         <iconView>
             <layers image="icon/basic-diode.svg">
                 <layer layerId="icon"/>

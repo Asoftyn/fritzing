@@ -673,6 +673,12 @@ const QString & ItemBase::spice() const {
 	return m_modelPart->spice();
 }
 
+const QString & ItemBase::spiceModel() const {
+	if (m_modelPart == NULL) return ___emptyString___;
+
+	return m_modelPart->spiceModel();
+}
+
 bool ItemBase::getRatsnest() {
 	return m_viewGeometry.getRatsnest();
 }

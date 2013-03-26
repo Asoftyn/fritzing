@@ -16,7 +16,7 @@
    <property name="voltage" showInLabel="yes"></property>
  </properties>
     <description>Tantalum capacitor.  Plus lead is usually marked and is usually the longer lead.</description>
- <spice>c{instanceTitle} {net connector0} {net connector1} {capacitance} ic=0</spice>
+ <spice><line>C{instanceTitle} {net connector0} {net connector1} {capacitance} IC=0</line></spice>
     <views>
         <iconView>
             <layers image="icon/capacitor_tantalum.svg">

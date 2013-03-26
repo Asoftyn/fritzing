@@ -139,7 +139,6 @@ bool ModelPartShared::setDomDocument(QDomDocument & domDocument) {
 	loadTagText(root, "version", m_version);
 	loadTagText(root, "author", m_author);
 	loadTagText(root, "description", m_description);
-	loadTagText(root, "spice", m_spice);
 	loadTagText(root, "url", m_url);
 	loadTagText(root, "taxonomy", m_taxonomy);
 	loadTagText(root, "date", m_date);
@@ -147,6 +146,20 @@ bool ModelPartShared::setDomDocument(QDomDocument & domDocument) {
 	if (!version.isNull()) {
 		m_replacedby = version.attribute("replacedby");
 	}
+
+    QDomElement spice = root.firstChildElement("spice");
+    QDomElement line = spice.firstChildElement("line");
+    while (!line.isNull()) {
+        m_spice += line.text();
+        m_spice += "\n";
+        line = line.nextSiblingElement("line");
+    }
+    QDomElement model = spice.firstChildElement("model");
+    while (!model.isNull()) {
+        m_spiceModel += model.text();
+        m_spiceModel += "\n";
+        model = model.nextSiblingElement("model");
+    }
 
 	populateTags(root, m_tags);
 	populateProperties(root, m_properties, m_displayKeys);
@@ -274,12 +287,20 @@ const QString & ModelPartShared::spice() {
 	return m_spice;
 }
 
+const QString & ModelPartShared::spiceModel() {
+	return m_spiceModel;
+}
+
 void ModelPartShared::setDescription(QString description) {
 	m_description = description;
 }
 
 void ModelPartShared::setSpice(QString spice) {
 	m_spice = spice;
+}
+
+void ModelPartShared::setSpiceModel(QString model) {
+	m_spiceModel = model;
 }
 
 void ModelPartShared::setUrl(QString url) {
@@ -435,6 +456,7 @@ void ModelPartShared::copy(ModelPartShared* other) {
 	setLabel(other->label());
 	setDescription(other->description());
 	setSpice(other->spice());
+	setSpiceModel(other->spiceModel());
 	setUrl(other->url());
 	setFamily(other->family());
 	setProperties(other->properties());

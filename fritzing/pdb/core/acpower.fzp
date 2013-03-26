@@ -19,7 +19,7 @@
  </properties>
  <taxonomy>discreteParts.power.power.acpower</taxonomy>
  <description>A generic ac power symbol</description>
- <spice>v{instanceTitle} {net connector0} {net connector1} ac 1 sin(0 {voltage} {frequency} 0 0)</spice>
+ <spice><line>V{instanceTitle} {net connector0} {net connector1} AC 1 SIN(0 {voltage} {frequency} 0 0)</line></spice>
  <views>
   <defaultUnits>cmil</defaultUnits>
   <iconView>

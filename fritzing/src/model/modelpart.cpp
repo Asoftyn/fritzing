@@ -354,6 +354,25 @@ void ModelPart::saveAsPart(QXmlStreamWriter & streamWriter, bool startDocument) 
 
     	writeTag(streamWriter,"taxonomy",m_modelPartShared->taxonomy());
     	writeTag(streamWriter,"description",m_modelPartShared->description());
+
+        QString spice = m_modelPartShared->spice();
+        if (!spice.isEmpty()) {
+            streamWriter.writeStartElement("spice");
+            QStringList lines = spice.split("\r",QString::SkipEmptyParts);
+            foreach (QString line, lines) {
+                writeTag(streamWriter, "line", line);
+            }
+            QString spiceModel = m_modelPartShared->spiceModel();
+            if (!spiceModel.isEmpty()) {
+                lines = spiceModel.split("\r",QString::SkipEmptyParts);
+                foreach (QString line, lines) {
+                    writeTag(streamWriter, "model", line);
+                }
+            }
+            streamWriter.writeEndElement();
+        }
+
+
     	writeTag(streamWriter,"spice",m_modelPartShared->spice());
     	writeTag(streamWriter,"url",m_modelPartShared->url());
 	}
@@ -528,6 +547,12 @@ const QString & ModelPart::description() {
 
 const QString & ModelPart::spice() {
 	if (m_modelPartShared != NULL) return m_modelPartShared->spice();
+
+	return ___emptyString___;
+}
+
+const QString & ModelPart::spiceModel() {
+	if (m_modelPartShared != NULL) return m_modelPartShared->spiceModel();
 
 	return ___emptyString___;
 }
