@@ -119,6 +119,8 @@ public:
 	static void panelize(class FApplication *, const QString & panelFilename, bool customPartsOnly);
 	static void inscribe(class FApplication *, const QString & panelFilename, bool drc);
 	static int placeBestFit(Tile * tile, UserData userData);
+    static int checkDonuts(MainWindow *, bool displayMessage);
+    static int checkText(MainWindow *, bool displayMessage);
 
 protected:
 	static bool initPanelParams(QDomElement & root, PanelParams &);
@@ -133,8 +135,6 @@ protected:
     static void doOnePanelItem(PlanePair * planePair, QList<LayerThing> & layerThingList, PanelItem * panelItem, QDir & svgDir);
     static void makeSVGs(MainWindow *, ItemBase *, const QString & boardName, QList<LayerThing> & layerThingList, QDir & saveDir, QFileInfo & copyInfo);
     static void shrinkLastPanel( QList<PlanePair *> & planePairs, QList<PanelItem *> & insertPanelItems, PanelParams &, bool customPartsOnly);
-    static int checkDonuts(MainWindow *, bool displayMessage);
-    static int checkText(MainWindow *, bool displayMessage);
     static void incProduced(const QString & path, long boardID, QList<PanelItem *> & refPanelItems);
     static int bestFitLoop(QList<PanelItem *> & refPanelItems, PanelParams &, bool customPartsOnly, QList<PlanePair *> & returnPlanePairs, QList<PanelItem *> & returnInsertPanelItems);
     static double calcCost(PanelParams &, QList<PlanePair *> &, int divisor);

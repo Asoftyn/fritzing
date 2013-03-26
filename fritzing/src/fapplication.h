@@ -133,6 +133,7 @@ protected:
 	void clearModels();
     bool notify(QObject *receiver, QEvent *e);
     void initService();
+	void runDRCService();
 	void runGedaService();
 	void runDatabaseService();
 	void runKicadFootprintService();
@@ -168,6 +169,7 @@ protected:
         DatabaseService,
         SvgService,
         PortService,
+        DRCService,
 		NoService
 	};
 

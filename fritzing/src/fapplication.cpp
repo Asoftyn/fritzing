@@ -65,6 +65,7 @@ $Date$
 #include "processeventblocker.h"
 #include "autoroute/panelizer.h"
 #include "sketch/sketchwidget.h"
+#include "sketch/pcbsketchwidget.h"
 
 // dependency injection :P
 #include "referencemodel/sqlitereferencemodel.h"
@@ -343,6 +344,13 @@ bool FApplication::init() {
 		if ((m_arguments[i].compare("-geda", Qt::CaseInsensitive) == 0) ||
 			(m_arguments[i].compare("--geda", Qt::CaseInsensitive) == 0)) {
 			m_serviceType = GedaService;
+			m_outputFolder = m_arguments[i + 1];
+			toRemove << i << i + 1;
+		}
+
+		if ((m_arguments[i].compare("-drc", Qt::CaseInsensitive) == 0) ||
+			(m_arguments[i].compare("--drc", Qt::CaseInsensitive) == 0)) {
+			m_serviceType = DRCService;
 			m_outputFolder = m_arguments[i + 1];
 			toRemove << i << i + 1;
 		}
@@ -717,6 +725,10 @@ int FApplication::serviceStartup() {
 			runGedaService();
 			return 0;
 	
+		case DRCService:
+			runDRCService();
+			return 0;
+	
 		case DatabaseService:
 			runDatabaseService();
 			return 0;
@@ -867,6 +879,62 @@ void FApplication::runGedaService() {
 			GedaElement2Svg geda;
 			QString svg = geda.convert(filepath, false);
             TextUtils::writeUtf8(newfilepath, svg);
+		}
+	}
+	catch (const QString & msg) {
+		DebugDialog::debug(msg);
+	}
+	catch (...) {
+		DebugDialog::debug("who knows");
+	}
+}
+
+
+void FApplication::runDRCService() {
+    m_started = true;
+    initService();
+    DebugDialog::setEnabled(true);
+
+    try {
+		QDir dir(m_outputFolder);
+		QStringList filters;
+		filters << "*.fzz";
+		QStringList filenames = dir.entryList(filters, QDir::Files);
+		foreach (QString filename, filenames) {
+			QString filepath = dir.absoluteFilePath(filename);
+	        MainWindow * mainWindow = openWindowForService(false);
+            if (mainWindow == NULL) continue;
+
+            mainWindow->setCloseSilently(true);
+
+	        if (!mainWindow->loadWhich(filepath, false, false, "")) {
+		        DebugDialog::debug(QString("failed to load '%1'").arg(filepath));
+		        mainWindow->close();
+                delete mainWindow;
+                continue;
+	        }
+
+	        mainWindow->showPCBView();
+
+            int moved = mainWindow->pcbView()->checkLoadedTraces();
+            if (moved > 0) {
+                QMessageBox::warning(NULL, QObject::tr("Fritzing"), QObject::tr("%1 wires moved from their saved position in %2.").arg(moved).arg(filepath));
+                DebugDialog::debug(QString("\ncheckloadedtraces %1\n").arg(filepath)); 
+            }
+	
+
+            Panelizer::checkDonuts(mainWindow, true);
+            Panelizer::checkText(mainWindow, true);
+
+            QList<ItemBase *> boards = mainWindow->pcbView()->findBoard();	
+	        foreach (ItemBase * boardItem, boards) {
+                mainWindow->pcbView()->selectAllItems(false, false);
+                boardItem->setSelected(true);
+                mainWindow->newDesignRulesCheck(false);
+            }
+
+            mainWindow->close();
+            delete mainWindow;
 		}
 	}
 	catch (const QString & msg) {
