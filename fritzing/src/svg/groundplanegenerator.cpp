@@ -62,7 +62,6 @@ QString GroundPlaneGenerator::ConnectorName = "connector0pad";
 
 GroundPlaneGenerator::GroundPlaneGenerator()
 {
-	m_blurBy = 0;
 	m_strokeWidthIncrement = 0;
 	m_minRiseSize = m_minRunSize = 1;
 }
@@ -393,29 +392,6 @@ QImage * GroundPlaneGenerator::generateGroundPlaneAux(GPGParams & params, double
 	QRectF bounds(0, 0, params.res * params.copperImageSize.width() / GraphicsUtils::SVGDPI, params.res * params.copperImageSize.height() / GraphicsUtils::SVGDPI);
 	DebugDialog::debug("copperbounds", bounds);
 	renderer2.render(&painter, bounds);
-
-    /*
-	// "blur" the image a little
-	if (m_blurBy != 0) {
-		bounds.moveTo(m_blurBy, 0);
-		renderer2.render(&painter, bounds);
-		bounds.moveTo(-m_blurBy, 0);
-		renderer2.render(&painter, bounds);
-		bounds.moveTo(0, m_blurBy);
-		renderer2.render(&painter, bounds);
-		bounds.moveTo(0, -m_blurBy);
-		renderer2.render(&painter, bounds);
-		bounds.moveTo(m_blurBy, m_blurBy);
-		renderer2.render(&painter, bounds);
-		bounds.moveTo(-m_blurBy, -m_blurBy);
-		renderer2.render(&painter, bounds);
-		bounds.moveTo(-m_blurBy, m_blurBy);
-		renderer2.render(&painter, bounds);
-		bounds.moveTo(m_blurBy, -m_blurBy);
-		renderer2.render(&painter, bounds);
-	}
-    */
-
 	painter.end();
 
 #ifndef QT_NO_DEBUG
@@ -1234,10 +1210,6 @@ bool GroundPlaneGenerator::tryNextPoint(int x, int y, QImage & image, QList<QPoi
 	}
 
 	return false;
-}
-
-void GroundPlaneGenerator::setBlurBy(double blurBy) {
-	m_blurBy = blurBy;
 }
 
 void GroundPlaneGenerator::setStrokeWidthIncrement(double swi) {

@@ -68,7 +68,6 @@ public:
 	bool getBoardRects(const QByteArray & boardByteArray, QGraphicsItem * board, double res, double keepoutSpace, QList<QRect> & rects);
 	const QStringList & newSVGs();
 	const QList<QPointF> & newOffsets();
-	void setBlurBy(double);
 	void setStrokeWidthIncrement(double);
 	void setLayerName(const QString &);
 	const QString & layerName();

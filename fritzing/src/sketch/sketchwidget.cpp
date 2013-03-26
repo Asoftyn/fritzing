@@ -7166,7 +7166,6 @@ QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QRectF & 
 								  bool renderBlocker, QList<QGraphicsItem *> & itemsAndLabels, QRectF itemsBoundingRect,
 								  bool & empty)
 {
-    Q_UNUSED(renderBlocker);
 	empty = true;
 
 	double width = itemsBoundingRect.width();
@@ -7208,6 +7207,26 @@ QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QRectF & 
 		if (itemBase->itemType() != ModelPart::Wire) {
 			QString itemSvg = itemBase->retrieveSvg(itemBase->viewLayerID(), svgHash, blackOnly, dpi);
 			if (itemSvg.isEmpty()) continue;
+
+
+            if (renderBlocker) {
+                Pad * pad = qobject_cast<Pad *>(itemBase);
+                if (pad && pad->copperBlocker()) {
+                    QDomDocument doc;
+                    QString errorStr;
+	                int errorLine;
+	                int errorColumn;
+                    if (doc.setContent(itemSvg, &errorStr, &errorLine, &errorColumn)) {
+                        QDomNodeList nodeList = doc.documentElement().elementsByTagName("rect");
+                        for (int n = 0; n < nodeList.count(); n++) {
+                            QDomElement element = nodeList.at(n).toElement();
+                            element.setAttribute("fill-opacity", 1);
+                        }
+
+                        itemSvg = doc.toString(0);
+                    }
+                }
+            }
 
             TextUtils::fixMuch(itemSvg, false);
 

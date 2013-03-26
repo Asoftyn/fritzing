@@ -73,7 +73,6 @@ $Date$
 /////////////////////////////////////////////////////
 
 static const int MAX_INT = std::numeric_limits<int>::max();
-static const double BlurBy = 3.5;
 static const double StrokeWidthIncrement = 50;
 
 static QString PCBTraceColor1 = "trace1";
@@ -1624,7 +1623,6 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 
 	GroundPlaneGenerator gpg0;
     if (!svg0.isEmpty()) {
-	    gpg0.setBlurBy(BlurBy);
 	    gpg0.setLayerName("groundplane");
 	    gpg0.setStrokeWidthIncrement(StrokeWidthIncrement);
 	    gpg0.setMinRunSize(10, 10);
@@ -1644,7 +1642,6 @@ bool PCBSketchWidget::groundFill(bool fillGroundTraces, ViewLayer::ViewLayerID v
 
 	GroundPlaneGenerator gpg1;
 	if (boardLayers() > 1 && !svg1.isEmpty()) {
-		gpg1.setBlurBy(BlurBy);
 		gpg1.setLayerName("groundplane1");
 		gpg1.setStrokeWidthIncrement(StrokeWidthIncrement);
 		gpg1.setMinRunSize(10, 10);
@@ -1746,7 +1743,6 @@ QString PCBSketchWidget::generateCopperFillUnit(ItemBase * itemBase, QPointF whe
 	exceptions << "none" << "" << background().name();    // the color of holes in the board
 
 	GroundPlaneGenerator gpg;
-	gpg.setBlurBy(BlurBy);
 	gpg.setStrokeWidthIncrement(StrokeWidthIncrement);
 	gpg.setLayerName(gpLayerName);
 	gpg.setMinRunSize(10, 10);
