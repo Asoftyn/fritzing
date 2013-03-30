@@ -2722,6 +2722,12 @@ void PEMainWindow::connectorCountChanged(int newCount) {
             int candidate = IntegerFinder.cap(0).toInt();
             if (candidate > id) id = candidate;
         }
+        // sometimes id = 0 but name = 1, and we are now using name = id
+        ix = IntegerFinder.indexIn(connector.attribute("name"));
+        if (ix >= 0) {
+            int candidate = IntegerFinder.cap(0).toInt();
+            if (candidate > id) id = candidate;
+        }    
     }
 
     QString originalPath = saveFzp();
