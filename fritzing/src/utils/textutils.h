@@ -97,8 +97,8 @@ public:
 	static QString makePolySVG(const QPolygonF & poly, QPointF offset, double width, QString colorString, double dpi, double printerScale, bool blackOnly);
 	static QPolygonF polygonFromElement(QDomElement & element);
 	static QString pointToSvgString(QPointF p, QPointF offset, double dpi, double printerScale);
-	static void replaceChildText(QDomDocument & doc, QDomNode & node, const QString & text);
-	static void replaceElementChildText(QDomDocument & doc, QDomElement & root, const QString & elementName, const QString & text);
+	static void replaceChildText(QDomNode & node, const QString & text);
+	static void replaceElementChildText(QDomElement & root, const QString & elementName, const QString & text);
 	static QString removeSVGHeader(QString & string);
 	static QString getMacAddress();
 	static QString expandAndFill(const QString & svg, const QString & color, double expandBy);

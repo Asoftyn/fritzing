@@ -718,14 +718,14 @@ bool PEMainWindow::setInitialItem(PaletteItem * paletteItem)
         fzpRoot.appendChild(author);
     }
     if (author.text().isEmpty()) {
-        TextUtils::replaceChildText(m_fzpDocument, author, QString(getenvUser()));
+        TextUtils::replaceChildText(author, QString(getenvUser()));
     }
     QDomElement date = fzpRoot.firstChildElement("date");
     if (date.isNull()) {
         date = m_fzpDocument.createElement("date");
         fzpRoot.appendChild(date);
     }
-    TextUtils::replaceChildText(m_fzpDocument, date, QDate::currentDate().toString());
+    TextUtils::replaceChildText(date, QDate::currentDate().toString());
 
 	QDomElement properties = fzpRoot.firstChildElement("properties");
 	if (properties.isNull()) {
@@ -779,7 +779,7 @@ bool PEMainWindow::setInitialItem(PaletteItem * paletteItem)
 	// for now kill the editable pin labels property, otherwise the saved part will try to use the labels that are only found in the sketch
 	QDomElement epl = TextUtils::findElementWithAttribute(properties, "name", "editable pin labels");
 	if (!epl.isNull()) {
-		TextUtils::replaceChildText(m_fzpDocument, epl, "false");
+		TextUtils::replaceChildText(epl, "false");
 	}
 
 	QDomElement family = TextUtils::findElementWithAttribute(properties, "name", "family");
@@ -1069,7 +1069,7 @@ void PEMainWindow::changeMetadata(const QString & name, const QString & value, b
 {
     // called from command object
     QDomElement root = m_fzpDocument.documentElement();
-    TextUtils::replaceElementChildText(m_fzpDocument, root, name, value);
+    TextUtils::replaceElementChildText(root, name, value);
 
     //QString test = m_fzpDocument.toString();
 
@@ -1111,7 +1111,7 @@ void PEMainWindow::changeTags(const QStringList & newTags, bool updateDisplay)
     foreach (QString newTag, newTags) {
         QDomElement tag = m_fzpDocument.createElement("tag");
         tags.appendChild(tag);
-        TextUtils::replaceChildText(m_fzpDocument, tag, newTag);
+        TextUtils::replaceChildText(tag, newTag);
     }
 
     if (updateDisplay) {
@@ -1168,7 +1168,7 @@ void PEMainWindow::changeProperties(const QHash<QString, QString> & newPropertie
         QDomElement prop = m_fzpDocument.createElement("property");
         properties.appendChild(prop);
         prop.setAttribute("name", name);
-        TextUtils::replaceChildText(m_fzpDocument, prop, newProperties.value(name));
+        TextUtils::replaceChildText(prop, newProperties.value(name));
     }
 
     if (updateDisplay) {
@@ -1247,7 +1247,7 @@ void PEMainWindow::changeConnectorElement(QDomElement & connector, ConnectorMeta
     connector.setAttribute("name", cmd->connectorName);
     connector.setAttribute("id", cmd->connectorID);
     connector.setAttribute("type", Connector::connectorNameFromType(cmd->connectorType));
-    TextUtils::replaceElementChildText(m_fzpDocument, connector, "description", cmd->connectorDescription);
+    TextUtils::replaceElementChildText(connector, "description", cmd->connectorDescription);
 
 #ifndef QT_NO_DEBUG
     QDomElement description = connector.firstChildElement("description");
@@ -2612,6 +2612,10 @@ void PEMainWindow::removedConnectorsAux(QList<QDomElement> & connectors)
     QString originalPath = saveFzp();
 
     foreach (QDomElement connector, connectors) {
+        if (m_removedConnector.isEmpty()) {
+            QTextStream stream(&m_removedConnector);
+            connector.save(stream, 0);
+        }
         connector.parentNode().removeChild(connector);
     }
 
@@ -2680,7 +2684,7 @@ bool PEMainWindow::loadFzp(const QString & path) {
 	int errorColumn;
 	bool result = m_fzpDocument.setContent(&file, &errorStr, &errorLine, &errorColumn);
 	if (!result) {
-        QMessageBox::critical(NULL, tr("Parts Editor"), QString("Unable to load fzp from %1").arg(path));
+        QMessageBox::critical(NULL, tr("Parts Editor"), tr("Unable to load fzp from %1").arg(path));
 		return false;
 	}
 
@@ -2722,13 +2726,23 @@ void PEMainWindow::connectorCountChanged(int newCount) {
 
     QString originalPath = saveFzp();
 
-	// assume you cannot start from zero
-	QDomElement connectorModel = connectorList.at(0);
+	QDomElement connectorModel;
+    QDomDocument tempDoc;
+    if (connectorList.count() > 0) connectorModel = connectorList.at(0);
+    else {
+        tempDoc.setContent(m_removedConnector);
+        connectorModel = tempDoc.documentElement();
+        if (connectorModel.isNull()) {
+            QMessageBox::critical(NULL, tr("Parts Editor"), tr("Unable to create new connector--you may have to start over."));
+		    return;
+        }
+    }
     for (int i = connectorList.count(); i < newCount; i++) {
         id++;
-        QDomElement element = connectorModel.cloneNode(true).toElement();
+        QDomElement element = connectorModel.cloneNode(true).toElement();         
         connectors.appendChild(element);
-        element.setAttribute("name", QString("pin %1").arg(id));
+        QString newName = QString("pin %1").arg(id);
+        element.setAttribute("name", newName);
 		QString cid = QString("connector%1").arg(id);
         element.setAttribute("id", cid);
 		QString svgid = cid + "pin";
@@ -2739,7 +2753,12 @@ void PEMainWindow::connectorCountChanged(int newCount) {
 			p.removeAttribute("legId");
 			p.setAttribute("svgId", svgid);
 		}
-
+        QDomElement description = element.firstChildElement("description");
+        if (description.isNull()) {
+            description = m_fzpDocument.createElement("description");
+            element.appendChild(description);
+        }
+        TextUtils::replaceChildText(description, newName);
     }
 
     QString newPath = saveFzp();
@@ -3086,7 +3105,7 @@ void PEMainWindow::replaceProperty(const QString & key, const QString & value, Q
     while (!prop.isNull()) {
         QString name = prop.attribute("name");
         if (name.compare(key, Qt::CaseInsensitive) == 0) {
-            TextUtils::replaceChildText(m_fzpDocument, prop, value);
+            TextUtils::replaceChildText(prop, value);
             return;
         }
 
@@ -3096,7 +3115,7 @@ void PEMainWindow::replaceProperty(const QString & key, const QString & value, Q
 	prop = m_fzpDocument.createElement("property");
     properties.appendChild(prop);
     prop.setAttribute("name", key);
-    TextUtils::replaceChildText(m_fzpDocument, prop, value);
+    TextUtils::replaceChildText(prop, value);
 }
 
 QWidget * PEMainWindow::createTabWidget() {

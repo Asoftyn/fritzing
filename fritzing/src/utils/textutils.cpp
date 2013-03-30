@@ -285,7 +285,7 @@ QString TextUtils::replaceTextElement(const QString & svg, const QString & id, c
 
 		if (node.attribute("id").compare(id) != 0) continue;
 
-		replaceChildText(doc, node, newValue);
+		replaceChildText(node, newValue);
 		return doc.toString();
 	}
 		
@@ -307,7 +307,7 @@ QByteArray TextUtils::replaceTextElement(const QByteArray & svg, const QString &
 
 		if (node.attribute("id").compare(id) != 0) continue;
 
-		replaceChildText(doc, node, newValue);
+		replaceChildText(node, newValue);
 		return doc.toByteArray();
 	}
 		
@@ -330,7 +330,7 @@ QString TextUtils::replaceTextElements(const QString & svg, const QHash<QString,
 		foreach (QString id, hash.keys()) {
 			if (node.attribute("id").compare(id) != 0) continue;
 
-			replaceChildText(doc, node, hash.value(id));
+			replaceChildText(node, hash.value(id));
 			changed = true;
 			break;
 		}
@@ -342,17 +342,18 @@ QString TextUtils::replaceTextElements(const QString & svg, const QHash<QString,
 }
 
 
-void TextUtils::replaceElementChildText(QDomDocument & doc, QDomElement & root, const QString & elementName, const QString & text) {
+void TextUtils::replaceElementChildText(QDomElement & root, const QString & elementName, const QString & text) {
 	QDomElement element = root.firstChildElement(elementName);
 	if (element.isNull()) {
-		element = doc.createElement(elementName);
+		element = root.ownerDocument().createElement(elementName);
 		root.appendChild(element);
 	}
-	replaceChildText(doc, element, text);
+	replaceChildText(element, text);
 }
 
-void TextUtils::replaceChildText(QDomDocument & doc, QDomNode & node, const QString & text) {
+void TextUtils::replaceChildText(QDomNode & node, const QString & text) {
 	node.normalize();
+
 
 	QDomNodeList childList = node.childNodes();
 	for (int j = 0; j < childList.count(); j++) {
@@ -363,7 +364,7 @@ void TextUtils::replaceChildText(QDomDocument & doc, QDomNode & node, const QStr
 		}
 	}
 
-	QDomText t = doc.createTextNode(text);
+	QDomText t = node.ownerDocument().createTextNode(text);
 	node.appendChild(t);
 }
 

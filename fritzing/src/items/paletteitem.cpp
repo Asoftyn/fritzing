@@ -1258,7 +1258,7 @@ QString PaletteItem::hackFzpHoleSize(QDomDocument & document, const QString & ne
         QString name = prop.attribute("name");
         if (name.compare("hole size", Qt::CaseInsensitive) == 0) {
             gotProp = true;
-            TextUtils::replaceChildText(document, prop, newSize);
+            TextUtils::replaceChildText(prop, newSize);
             break;
         }
 
