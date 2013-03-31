@@ -1075,6 +1075,7 @@ void BinManager::importPartToMineBin(const QString & filename) {
         PartsBinPaletteWidget * bin = getOrOpenBin(MyPartsBinLocation, MyPartsBinTemplateLocation);
         if (bin == NULL) return;
 
+        setAsCurrentTab(bin);
         importPart(filename, bin);
     }
 }
