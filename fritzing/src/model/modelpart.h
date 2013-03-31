@@ -172,7 +172,8 @@ public:
 	void setLocalProp(const char * name, const QVariant & value);
 	QVariant localProp(const char * name) const;
     void setTag(const QString &tag);
-	void setProperty(const QString & key, const QString & value);
+	void setProperty(const QString & key, const QString & value, bool showInLabel);
+    bool showInLabel(const QString & key);
     
 	const QString & replacedby();
 	bool isObsolete();

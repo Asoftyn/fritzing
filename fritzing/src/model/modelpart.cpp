@@ -986,9 +986,15 @@ void ModelPart::setTag(const QString & tag)
     if (m_modelPartShared) m_modelPartShared->setTag(tag);
 }
 
-void ModelPart::setProperty(const QString & name, const QString &value)
+void ModelPart::setProperty(const QString & name, const QString &value, bool showInLabel)
 {
-    if (m_modelPartShared) m_modelPartShared->setProperty(name, value);
+    if (m_modelPartShared) m_modelPartShared->setProperty(name, value, showInLabel);
+}
+
+bool ModelPart::showInLabel(const QString & propertyName) {
+    if (m_modelPartShared) return m_modelPartShared->showInLabel(propertyName);
+
+    return false;
 }
 
 void ModelPart::addConnector(Connector * connector) {

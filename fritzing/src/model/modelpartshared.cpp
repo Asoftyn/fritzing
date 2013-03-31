@@ -163,6 +163,9 @@ bool ModelPartShared::setDomDocument(QDomDocument & domDocument) {
 
 	populateTags(root, m_tags);
 	populateProperties(root, m_properties, m_displayKeys);
+    //foreach (QString key, m_displayKeys) {
+    //    DebugDialog::debug("set display " + m_moduleID + " " + key);
+    //}
 	ensurePartNumberProperty();
 
 	m_moduleID = root.attribute("moduleId", "");
@@ -478,8 +481,11 @@ void ModelPartShared::copy(ModelPartShared* other) {
 	}
 }
 
-void ModelPartShared::setProperty(const QString & key, const QString & value) {
+void ModelPartShared::setProperty(const QString & key, const QString & value, bool showInLabel) {
 	m_properties.insert(key, value);
+    if (showInLabel) {
+        m_displayKeys.append(key);
+    }
 }
 
 const QString & ModelPartShared::replacedby() {
@@ -594,10 +600,6 @@ QString ModelPartShared::hasBaseNameFor(ViewLayer::ViewID viewID) {
 
 const QStringList & ModelPartShared::displayKeys() {
 	return m_displayKeys;
-}
-
-void ModelPartShared::setDisplayKeys(const QStringList & displayKeys) {
-	m_displayKeys = displayKeys;
 }
 
 void ModelPartShared::ensurePartNumberProperty() {
@@ -820,4 +822,11 @@ const QStringList & ModelPartShared::subparts(ViewLayer::ViewID viewID) {
     if (viewImage == NULL) return ___emptyStringList___;
 
     return viewImage->subparts;
+}
+
+bool ModelPartShared::showInLabel(const QString & propertyName) {
+    //foreach (QString key, m_displayKeys) {
+    //    DebugDialog::debug("check display " + m_moduleID + " " + key);
+    //}
+    return m_displayKeys.contains(propertyName, Qt::CaseInsensitive);
 }

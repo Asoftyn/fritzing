@@ -313,12 +313,12 @@ bool SqliteReferenceModel::loadFromDB(QSqlDatabase & keep_db, QSqlDatabase & db)
         }
     }
 
-    query = db.exec("SELECT name, value, part_id FROM properties");
+    query = db.exec("SELECT name, value, part_id, show_in_label FROM properties");
     debugError(query.isActive(), query);
     if (!query.isActive()) return false;
 
     QSqlQuery q3(keep_db);
-	result = q3.prepare("INSERT INTO properties(name, value, part_id) VALUES (:name, :value, :part_id)");
+	result = q3.prepare("INSERT INTO properties(name, value, part_id, show_in_label) VALUES (:name, :value, :part_id, :show_in_label)");
     debugError(result, q3);
 
     while (query.next()) {
@@ -326,12 +326,14 @@ bool SqliteReferenceModel::loadFromDB(QSqlDatabase & keep_db, QSqlDatabase & db)
         QString name = query.value(ix++).toString();
         QString value = query.value(ix++).toString();
         qulonglong dbid = query.value(ix++).toULongLong();
+        int showInLabel = query.value(ix++).toInt();
         ModelPart * modelPart = parts.at(dbid);
         if (modelPart) {
-            parts.at(dbid)->setProperty(name, value);
+            parts.at(dbid)->setProperty(name, value, showInLabel);
 	        q3.bindValue(":name", name.toLower().trimmed());
 	        q3.bindValue(":value", value);
 	        q3.bindValue(":part_id", oldToNew[dbid]);
+	        q3.bindValue(":show_in_label", showInLabel);
             bool result = q3.exec();
             if (!result) debugExec("unable to add property to memory", q3);
         }
@@ -873,7 +875,7 @@ bool SqliteReferenceModel::insertPart(ModelPart * modelPart, bool fullLoad) {
         foreach (QString prop, properties.keys()) {
             if (prop == "family") continue;
 
-			bool result = insertProperty(prop, properties.value(prop), id);
+			bool result = insertProperty(prop, properties.value(prop), id, modelPart->showInLabel(prop));
             if (fullLoad && !result) {
                 m_swappingEnabled = false;
             }
@@ -910,12 +912,13 @@ bool SqliteReferenceModel::insertPart(ModelPart * modelPart, bool fullLoad) {
 	return true;
 }
 
-bool SqliteReferenceModel::insertProperty(const QString & name, const QString & value, qulonglong id) {
+bool SqliteReferenceModel::insertProperty(const QString & name, const QString & value, qulonglong id, bool showInLabel) {
 	QSqlQuery query;
-	query.prepare("INSERT INTO properties(name, value, part_id) VALUES (:name, :value, :part_id)");
+	query.prepare("INSERT INTO properties(name, value, part_id, show_in_label) VALUES (:name, :value, :part_id, :show_in_label)");
 	query.bindValue(":name", name.toLower().trimmed());
 	query.bindValue(":value", value);
 	query.bindValue(":part_id", id);
+	query.bindValue(":show_in_label", showInLabel ? 1 : 0);
 	if(!query.exec()) {
         debugExec("couldn't insert property", query);
 		return false;
@@ -1210,6 +1213,7 @@ bool SqliteReferenceModel::createProperties(QSqlDatabase & db) {
 			"id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,\n"
 			"name TEXT NOT NULL,\n"
 			"value TEXT NOT NULL,\n"
+			"show_in_label INTEGER NOT NULL,\n"
 			"part_id INTEGER NOT NULL"
 		")");
     debugError(query.isActive(), query);

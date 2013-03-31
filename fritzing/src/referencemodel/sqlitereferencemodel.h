@@ -78,7 +78,7 @@ class SqliteReferenceModel : public ReferenceModel {
 		bool createConnection(const QString & databaseName, bool fullLoad);
 		void deleteConnection();
 		bool insertPart(ModelPart *, bool fullLoad);
-		bool insertProperty(const QString & name, const QString & value, qulonglong id);
+		bool insertProperty(const QString & name, const QString & value, qulonglong id, bool showInLabel);
 		bool insertTag(const QString & tag, qulonglong id);
 		bool insertViewImage(const struct ViewImage *, qulonglong id);
         bool insertConnector(const class Connector *, qulonglong id);

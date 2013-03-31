@@ -122,7 +122,6 @@ public:
 
 	QHash<QString,QString> & properties();
 	void setProperties(const QHash<QString,QString> &properties);
-	void setDisplayKeys(const QStringList &displayKeys);
 	const QStringList & displayKeys();
 
 
@@ -131,7 +130,8 @@ public:
 	ConnectorShared * getConnectorShared(const QString & id);
 	bool ignoreTerminalPoints();
 
-	void setProperty(const QString & key, const QString & value);
+	void setProperty(const QString & key, const QString & value, bool showInLabel);
+    bool showInLabel(const QString & key);
 	const QString & replacedby();
 	void setReplacedby(const QString & replacedby);
 

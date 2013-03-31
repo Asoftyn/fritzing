@@ -80,7 +80,7 @@ Board::Board( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometr
         }
         if (itemType() == ModelPart::Board && !modelPart->properties().keys().contains("filename")) {
             // deal with old style custom boards
-            modelPart->modelPartShared()->setProperty("filename", "");
+            modelPart->modelPartShared()->setProperty("filename", "", false);
         }
     }
 
