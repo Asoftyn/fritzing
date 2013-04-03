@@ -572,6 +572,28 @@ Als je aangepaste vorm uitsnedes zou moet hebben, maar je krijgt niet het verwac
     </message>
 </context>
 <context>
+    <name>BreadboardLogoItem</name>
+    <message>
+        <source>color</source>
+        <translation type="unfinished">kleur</translation>
+    </message>
+    <message>
+        <source>Set text color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select text color</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Capacitor</name>
+    <message>
+        <source>Select from the dropdown, or type in a %1 value</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ConnectorItem</name>
     <message>
         <source>Add bendpoint</source>
@@ -3851,6 +3873,14 @@ Doorgaan en opslaan?</translation>
         <source>Inspector</source>
         <translation>Inspector</translation>
     </message>
+    <message>
+        <source>Unable to load fzp from %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create new connector--you may have to start over.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PEMetadataView</name>
@@ -5528,10 +5558,6 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 layer export is empty (after clipping)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>silk layer export is empty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5557,6 +5583,14 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
     </message>
     <message>
         <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Panelizer finished: %1 panel(s), with %2 additional copy(ies) for each panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 layer export is empty (case 2).</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5653,6 +5687,10 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
     <message>
         <source>Resistor</source>
         <translation>Weestand</translation>
+    </message>
+    <message>
+        <source>You can either type in a resistance value, or select one from the drop down. Format nnn.dP where P is one of &apos;umkMG&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
