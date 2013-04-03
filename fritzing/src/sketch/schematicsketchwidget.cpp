@@ -248,7 +248,7 @@ void SchematicSketchWidget::setInstanceTitle(long itemID, const QString & oldTex
 
     if (isUndoable) {
 	    SymbolPaletteItem * sitem = qobject_cast<SymbolPaletteItem *>(findItem(itemID));
-	    if (sitem && sitem->isNetLabel()) {
+	    if (sitem && sitem->isOnlyNetLabel()) {
             setProp(sitem, "label", ItemBase::TranslatedPropertyNames.value("label"), oldText, newText, true);
             return;
         }
@@ -261,7 +261,7 @@ void SchematicSketchWidget::setProp(ItemBase * itemBase, const QString & prop, c
 {
     if (prop =="label") {
         SymbolPaletteItem * sitem = qobject_cast<SymbolPaletteItem *>(itemBase);
-        if (sitem != NULL && sitem->isNetLabel()) {
+        if (sitem != NULL && sitem->isOnlyNetLabel()) {
             if (sitem->getLabel() == newValue) {
                 return;
             }

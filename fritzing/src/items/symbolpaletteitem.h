@@ -73,7 +73,7 @@ public:
 	PluralType isPlural();
 	void addedToScene(bool temporary);
 	bool hasPartNumberProperty();
-	bool isNetLabel();
+	bool isOnlyNetLabel();
 	bool hasPartLabel();
 	bool getAutoroutable();
 	void setAutoroutable(bool);

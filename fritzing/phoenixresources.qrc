@@ -177,6 +177,7 @@
 	<file>resources/parts/core/blocker0.fzp</file>
         <file>resources/parts/core/dcpower.fzp</file>
         <file>resources/parts/core/power.fzp</file>
+        <file>resources/parts/core/power_label.fzp</file>
         <file>resources/parts/core/jumper.fzp</file>
         <file>resources/parts/core/groundplane.fzp</file>
         <file>resources/parts/core/hole.fzp</file>

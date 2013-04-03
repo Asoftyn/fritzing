@@ -113,7 +113,7 @@ SymbolPaletteItem::SymbolPaletteItem( ModelPart * modelPart, ViewLayer::ViewID v
 		}
 	}
 	else {
-		m_isNetLabel = false;
+		m_isNetLabel = modelPart->moduleID().endsWith(ModuleIDNames::PowerLabelModuleIDName);
 
 		bool ok;
 		double temp = modelPart->localProp("voltage").toDouble(&ok);
@@ -297,17 +297,24 @@ void SymbolPaletteItem::setVoltage(double v) {
 		Voltages.append(v);
 	}
 
-	foreach (ConnectorItem * connectorItem, cachedConnectorItems()) {
-		if (connectorItem->isGrounded()) {
-			LocalGrounds.append(connectorItem);
-			//connectorItem->debugInfo("ground insert");
+    if (m_isNetLabel) {
+	    foreach (ConnectorItem * connectorItem, cachedConnectorItems()) {
+		    LocalNetLabels.insert(QString::number(m_voltage), connectorItem);
+	    }
+    }
+    else {
+	    foreach (ConnectorItem * connectorItem, cachedConnectorItems()) {
+		    if (connectorItem->isGrounded()) {
+			    LocalGrounds.append(connectorItem);
+			    //connectorItem->debugInfo("ground insert");
 
-		}
-		else {
-			LocalVoltages.insert(FROMVOLTAGE(v), connectorItem);
-			//connectorItem->debugInfo(QString("voltage insert %1").arg(useVoltage(connectorItem)));
-		}
-	}
+		    }
+		    else {
+			    LocalVoltages.insert(FROMVOLTAGE(v), connectorItem);
+			    //connectorItem->debugInfo(QString("voltage insert %1").arg(useVoltage(connectorItem)));
+		    }
+	    }
+    }
 
 	if (!m_voltageReference && !m_isNetLabel) return;
 
@@ -318,7 +325,7 @@ void SymbolPaletteItem::setVoltage(double v) {
 }
 
 QString SymbolPaletteItem::makeSvg() {
-    if (m_isNetLabel) {
+    if (m_isNetLabel && !m_voltageReference) {
         return makeNetLabelSvg();
     }
 
@@ -362,7 +369,7 @@ ConnectorItem * SymbolPaletteItem::connector1() {
 void SymbolPaletteItem::addedToScene(bool temporary)
 {
 	if (this->scene()) {
-		if (m_isNetLabel) {
+		if (m_isNetLabel && !m_voltageReference) {
 			setLabel(getLabel());
 		}
 		else {
@@ -443,7 +450,7 @@ QString SymbolPaletteItem::retrieveNetLabelSvg(ViewLayer::ViewLayerID viewLayerI
 
 QString SymbolPaletteItem::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
 {
-    if (m_isNetLabel) {
+    if (m_isNetLabel && !m_voltageReference) {
         return retrieveNetLabelSvg(viewLayerID, svgHash, blackOnly, dpi);
     }
 
@@ -536,7 +543,7 @@ void SymbolPaletteItem::labelEntry() {
 }
 
 ItemBase::PluralType SymbolPaletteItem::isPlural() {
-    if (m_isNetLabel) return Plural;
+    if (m_isNetLabel && !m_voltageReference) return Plural;
 
 	return Singular;
 }
@@ -559,11 +566,14 @@ bool SymbolPaletteItem::hasPartLabel() {
 	return !m_isNetLabel;
 }
 
-bool SymbolPaletteItem::isNetLabel() {
-	return m_isNetLabel;
+bool SymbolPaletteItem::isOnlyNetLabel() {
+	return m_isNetLabel && !m_voltageReference;
 }
 
 QString SymbolPaletteItem::getLabel() {
+    if (m_voltageReference) {
+        return QString::number(m_voltage);
+    }
     return  modelPart()->localProp("label").toString();
 }
 

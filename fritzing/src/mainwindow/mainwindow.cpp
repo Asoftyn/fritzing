@@ -2324,7 +2324,7 @@ void MainWindow::autosaveNeeded(int index) {
  * delete the backup file when the undostack is clean.
  */
 void MainWindow::undoStackCleanChanged(bool isClean) {
-    DebugDialog::debug(QString("Clean status changed to %1").arg(isClean));
+    // DebugDialog::debug(QString("Clean status changed to %1").arg(isClean));
     if (isClean) {
         QFile::remove(m_backupFileNameAndPath);
     }

@@ -420,7 +420,7 @@ void Wire::initDragEnd(ConnectorItem * connectorItem, QPointF scenePos) {
 	saveGeometry();
 	QLineF line = this->line();
 	m_drag0 = (connectorItem == m_connector0);
-    debugInfo("setting drag end to true");
+    //debugInfo("setting drag end to true");
 	m_dragEnd = true;
 	m_dragCurve = false;
 	if (m_drag0) {
@@ -637,7 +637,7 @@ void Wire::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 		return;
 	}
 
-    debugInfo("wire release drag");
+    //debugInfo("wire release drag");
 	if (releaseDrag()) return;
 
 	ItemBase::mouseReleaseEvent(event);
@@ -657,7 +657,7 @@ bool Wire::releaseDrag() {
 		return true;
 	}
 
-    debugInfo("clearing drag end");
+    //debugInfo("clearing drag end");
 	m_dragEnd = false;
 
 	ConnectorItem * from = (m_drag0) ? m_connector0 : m_connector1;

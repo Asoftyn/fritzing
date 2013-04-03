@@ -285,6 +285,8 @@ ModelPart * PaletteModel::loadPart(const QString & path, bool update) {
 	QDomElement t = root.firstChildElement("title");
 	TextUtils::findText(t, title);
 
+    //DebugDialog::debug("module ID " + moduleID);
+
 	// FIXME: properties is nested right now
 	if (moduleID.compare(ModuleIDNames::WireModuleIDName) == 0) {
 		type = ModelPart::Wire;
@@ -314,6 +316,9 @@ ModelPart * PaletteModel::loadPart(const QString & path, bool update) {
 		type = ModelPart::Symbol;
 	}
 	else if (moduleID.endsWith(ModuleIDNames::NetLabelModuleIDName)) {
+		type = ModelPart::Symbol;
+	}
+	else if (moduleID.compare(ModuleIDNames::PowerLabelModuleIDName) == 0) {
 		type = ModelPart::Symbol;
 	}
 	else if (moduleID.compare(ModuleIDNames::RulerModuleIDName) == 0) {

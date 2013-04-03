@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <module moduleId="JustPowerModuleID" >
- <version>4</version>
+ <version replacedby="PowerLabelModuleID" >4</version>
  <author>Brendan Howell</author>
  <title>Power</title>
  <date>2008-07-28</date>

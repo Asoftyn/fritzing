@@ -2869,7 +2869,7 @@ void SketchWidget::prepDragBendpoint(Wire * wire, QPoint eventPos, bool dragCurv
 
 	m_connectorDragWire->initDragEnd(m_connectorDragWire->connector0(), newPos);
 	m_connectorDragWire->grabMouse();
-    m_connectorDragWire->debugInfo("grabbing mouse");
+    //m_connectorDragWire->debugInfo("grabbing mouse");
 }
 
 bool SketchWidget::collectFemaleConnectees(ItemBase * itemBase, QSet<ItemBase *> & items) {
@@ -3094,7 +3094,7 @@ void SketchWidget::findConnectorsUnder(ItemBase * item) {
 void SketchWidget::mouseReleaseEvent(QMouseEvent *event) {
 	//setRenderHint(QPainter::Antialiasing, true);
 
-    DebugDialog::debug("sketch mouse release event");
+    //DebugDialog::debug("sketch mouse release event");
 
 	m_draggingBendpoint = false;
 	if (m_movingByArrow) return;
@@ -3178,7 +3178,7 @@ void SketchWidget::mouseReleaseEvent(QMouseEvent *event) {
 			if (m_holdingSelectItemCommand->updated()) {
 				SelectItemCommand* tempCommand = m_holdingSelectItemCommand;
 				m_holdingSelectItemCommand = NULL;
-				DebugDialog::debug(QString("scene changed push select %1").arg(scene()->selectedItems().count()));
+				//DebugDialog::debug(QString("scene changed push select %1").arg(scene()->selectedItems().count()));
 				m_undoStack->push(tempCommand);
 			}
 			else {
@@ -4464,7 +4464,7 @@ void SketchWidget::mousePressConnectorEvent(ConnectorItem * connectorItem, QGrap
 	// give connector item the mouse, so wire doesn't get mouse moved events
 	m_connectorDragWire->setVisible(true);
 	m_connectorDragWire->grabMouse();
-	m_connectorDragWire->debugInfo("grabbing mouse 2");
+	//m_connectorDragWire->debugInfo("grabbing mouse 2");
 	m_connectorDragWire->initDragEnd(m_connectorDragWire->connector0(), event->scenePos());
 	m_connectorDragConnector->tempConnectTo(m_connectorDragWire->connector1(), false);
 	m_connectorDragWire->connector1()->tempConnectTo(m_connectorDragConnector, false);
@@ -9264,7 +9264,7 @@ void SketchWidget::removeDragWire() {
 	if (scene()->mouseGrabberItem() == m_connectorDragWire) {
 		// probably already ungrabbed by the wire, but just in case
 		m_connectorDragWire->ungrabMouse();
-		m_connectorDragWire->debugInfo("ungrabbing mouse 2");
+		//m_connectorDragWire->debugInfo("ungrabbing mouse 2");
 	}
 
 	this->scene()->removeItem(m_connectorDragWire);

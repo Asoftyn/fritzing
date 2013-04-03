@@ -195,7 +195,7 @@ void Autorouter::initUndo(QUndoCommand * parentCommand)
 		foreach (QGraphicsItem * item, collidingItems) {
 			SymbolPaletteItem * netLabel = dynamic_cast<SymbolPaletteItem *>(item);
 			if (netLabel == NULL) continue;
-            if (!netLabel->isNetLabel()) continue;
+            if (!netLabel->isOnlyNetLabel()) continue;
 
 			if (netLabel->getAutoroutable()) {
 				addUndoConnection(false, netLabel, parentCommand);
@@ -320,7 +320,7 @@ void Autorouter::clearTracesAndJumpers() {
 		}
         else {
 			SymbolPaletteItem * netLabel = dynamic_cast<SymbolPaletteItem *>(item);
-			if (netLabel != NULL && netLabel->isNetLabel()) {
+			if (netLabel != NULL && netLabel->isOnlyNetLabel()) {
 				if (netLabel->getAutoroutable()) {
 					toDelete.append(netLabel);
 				}
@@ -401,7 +401,7 @@ void Autorouter::addToUndo(QUndoCommand * parentCommand)
 		}
         else {
 			SymbolPaletteItem * netLabel = dynamic_cast<SymbolPaletteItem *>(item);	
-			if (netLabel != NULL && netLabel->isNetLabel()) {
+			if (netLabel != NULL && netLabel->isOnlyNetLabel()) {
 				netLabels.append(netLabel);
 				if (!netLabel->getAutoroutable()) {
 					continue;

@@ -2739,7 +2739,7 @@ SymbolPaletteItem * MazeRouter::makeNetLabel(GridPoint & center, SymbolPaletteIt
         m_netLabelIndex = 0;
         foreach (QGraphicsItem * item, m_sketchWidget->scene()->items()) {
             SymbolPaletteItem * netLabel = dynamic_cast<SymbolPaletteItem *>(item);
-            if (netLabel == NULL || !netLabel->isNetLabel()) continue;
+            if (netLabel == NULL || !netLabel->isOnlyNetLabel()) continue;
 
             bool ok;
             int ix = netLabel->getLabel().toInt(&ok);
@@ -2943,7 +2943,7 @@ void MazeRouter::removeOffBoardAnd(bool isPCBType, bool removeSingletons, bool b
 			}
 			else if (connectorItem->attachedToItemType() == ModelPart::Symbol) {
 				SymbolPaletteItem * netLabel = qobject_cast<SymbolPaletteItem *>(connectorItem->attachedTo()->layerKinChief());
-				doRemove = netLabel->getAutoroutable() && netLabel->isNetLabel();
+				doRemove = netLabel->getAutoroutable() && netLabel->isOnlyNetLabel();
 			}
             if (!bothSides && connectorItem->attachedToViewLayerID() == ViewLayer::Copper1) doRemove = true;
             if (!doRemove && isPCBType) {
