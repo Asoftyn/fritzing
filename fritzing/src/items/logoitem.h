@@ -133,9 +133,18 @@ public:
 	BreadboardLogoItem(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~BreadboardLogoItem();
 
+    bool collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget);
+	void setProp(const QString & prop, const QString & value);
+
+public slots:
+    void changeTextColor();
+
 protected:
 	ViewLayer::ViewLayerID layer();
 	QString colorString();
+
+protected:
+    QString m_color;
 };
 
 class BoardLogoItem : public LogoItem

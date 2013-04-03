@@ -48,6 +48,8 @@ $Date$
 #include <QImage>
 #include <QLineEdit>
 #include <QApplication>
+#include <QColor>
+#include <QColorDialog>
 
 static QStringList LogoImageNames;
 static QStringList NewLogoImageNames;
@@ -581,6 +583,11 @@ QString LogoItem::hackSvg(const QString & svg, const QString & logo)
 	coords[2] = QString::number(logo.length() * 10);
 	root.setAttribute("viewBox", coords.join(" "));
 
+    QStringList exceptions;
+	exceptions << "none" << "";
+	QString toColor(colorString());
+	SvgFileSplitter::changeColors(root, toColor, exceptions);
+
 	QDomNodeList domNodeList = root.elementsByTagName("text");
 	for (int i = 0; i < domNodeList.count(); i++) {
 		QDomElement node = domNodeList.item(i).toElement();
@@ -747,6 +754,14 @@ QString SchematicLogoItem::colorString() {
 BreadboardLogoItem::BreadboardLogoItem( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
 	: LogoItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
+    m_color = "#787878";
+	QString color = modelPart->localProp("color").toString();
+    if (color.isEmpty()) {
+	    color = modelPart->properties().value("color");
+        if (color.isEmpty()) color = m_color;
+		modelPart->setLocalProp("color", color);
+	}
+    m_color = color;
 }
 
 BreadboardLogoItem::~BreadboardLogoItem() {
@@ -757,7 +772,49 @@ ViewLayer::ViewLayerID BreadboardLogoItem::layer() {
 }
 
 QString BreadboardLogoItem::colorString() {
-    return "#787878";
+    return m_color;
+}
+
+bool BreadboardLogoItem::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget) 
+{
+	if (m_hasLogo) {
+		if (prop.compare("color", Qt::CaseInsensitive) == 0) {
+			returnProp = tr("color");
+			returnValue = m_color;
+
+		    QPushButton * button = new QPushButton(tr("Set text color"));
+		    button->setObjectName("infoViewButton");
+		    connect(button, SIGNAL(pressed()), this, SLOT(changeTextColor()));
+
+			returnWidget = button;
+			return true;
+		}
+	}
+
+	return LogoItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+}
+
+void BreadboardLogoItem::changeTextColor() {
+    QColor color(m_color);
+    QColor newColor = QColorDialog::getColor(color, NULL, tr("Select text color"));
+    if (!newColor.isValid()) return;
+    if (newColor.name().compare(m_color, Qt::CaseInsensitive) == 0) return;
+
+    InfoGraphicsView * infoGraphicsView = InfoGraphicsView::getInfoGraphicsView(this);
+	if (infoGraphicsView != NULL) {
+		infoGraphicsView->setProp(this, "color", tr("color"), m_color, newColor.name(), true);
+	}
+}
+
+void BreadboardLogoItem::setProp(const QString & prop, const QString & value) {
+	if (m_hasLogo && prop.compare("color", Qt::CaseInsensitive) == 0) {
+        m_color = value;
+        modelPart()->setLocalProp("color", m_color);
+		setLogo(m_logo, true);
+		return;
+	}
+
+	LogoItem::setProp(prop, value);
 }
 
 ///////////////////////////////////////////////////////////////////////
