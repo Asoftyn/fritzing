@@ -207,7 +207,7 @@ bool SqliteReferenceModel::loadFromDB(QSqlDatabase & keep_db, QSqlDatabase & db)
     QVector<ModelPart *> parts(count + 1, NULL);
     QVector<qulonglong > oldToNew(count + 1, 0);
 
-    query = db.exec("SELECT path, moduleID, id, family, version, fritzingversion, author, title, label, date, description, spice, spicemodel, taxonomy, itemtype FROM parts");
+    query = db.exec("SELECT path, moduleID, id, family, version, replacedby, fritzingversion, author, title, label, date, description, spice, spicemodel, taxonomy, itemtype FROM parts");
     debugError(query.isActive(), query);
     if (!query.isActive()) return false;
 
@@ -250,6 +250,7 @@ bool SqliteReferenceModel::loadFromDB(QSqlDatabase & keep_db, QSqlDatabase & db)
         QString family = query.value(ix++).toString();
         modelPartShared->setFamily(family);
         modelPartShared->setVersion(query.value(ix++).toString());
+        modelPartShared->setReplacedby(query.value(ix++).toString());
         modelPartShared->setFritzingVersion(query.value(ix++).toString());
         modelPartShared->setAuthor(query.value(ix++).toString());
         modelPartShared->setTitle(query.value(ix++).toString());
@@ -820,8 +821,8 @@ bool SqliteReferenceModel::insertPart(ModelPart * modelPart, bool fullLoad) {
     QString fields;
     QString values;
     if (fullLoad) {
-        fields =  " version,  fritzingversion,  author,  title,  label,  date,  description,  spice,  spicemodel,  taxonomy,  itemtype,  path";
-        values = " :version, :fritzingversion, :author, :title, :label, :date, :description, :spice, :spicemodel, :taxonomy, :itemtype, :path";
+        fields =  " version,  replacedby,  fritzingversion,  author,  title,  label,  date,  description,  spice,  spicemodel,  taxonomy,  itemtype,  path";
+        values = " :version, :replacedby, :fritzingversion, :author, :title, :label, :date, :description, :spice, :spicemodel, :taxonomy, :itemtype, :path";
     }
     else {
         fields =  " core";
@@ -851,6 +852,7 @@ bool SqliteReferenceModel::insertPart(ModelPart * modelPart, bool fullLoad) {
 
 
         query.bindValue(":version", modelPart->version());
+        query.bindValue(":replacedby", modelPart->replacedby());
 	    query.bindValue(":fritzingversion", modelPart->fritzingVersion());
 	    query.bindValue(":author", modelPart->author());
 	    query.bindValue(":title", modelPart->title());
@@ -1229,6 +1231,7 @@ bool SqliteReferenceModel::createParts(QSqlDatabase & db, bool fullLoad)
     QString extra;
     if (fullLoad) {
         extra = "version TEXT,\n"
+            "replacedby TEXT,\n"
 	        "fritzingversion TEXT,\n"
             "author TEXT,\n"
 			"title TEXT,\n"
