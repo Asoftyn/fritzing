@@ -185,10 +185,9 @@ bool GroundPlane::hasPartLabel() {
 	return false;
 }
 
-void GroundPlane::loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec, const QStringList & subparts) {
+void GroundPlane::loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec) {
 	Q_UNUSED(viewLayers);
 	Q_UNUSED(viewLayerSpec);
-	Q_UNUSED(subparts);
 	// GroundPlane is only on one side or another, not both
 }
 

@@ -1306,7 +1306,7 @@ void SvgFileSplitter::gReplace(const QString & id)
 	element.setTagName("g");
 }
 
-QByteArray SvgFileSplitter::hideText(const QString & filename, const QString & subpart) {
+QByteArray SvgFileSplitter::hideText(const QString & filename) {
     QString errorStr;
 	int errorLine;
 	int errorColumn;
@@ -1319,7 +1319,6 @@ QByteArray SvgFileSplitter::hideText(const QString & filename, const QString & s
 
     QDomElement root = doc.documentElement();
     hideTextAux(root, false);
-    showSubpart(root, subpart);
 
     return TextUtils::removeXMLEntities(doc.toString()).toUtf8();
 }
@@ -1370,7 +1369,7 @@ void SvgFileSplitter::hideTextAux(QDomElement & parent, bool hideChildren) {
     }
 }
 
-QByteArray SvgFileSplitter::showText(const QString & filename, const QString & subpart, bool & hasText) {
+QByteArray SvgFileSplitter::showText(const QString & filename, bool & hasText) {
     QString errorStr;
 	int errorLine;
 	int errorColumn;
@@ -1386,8 +1385,6 @@ QByteArray SvgFileSplitter::showText(const QString & filename, const QString & s
     if (!hasText) {
         return QByteArray();
     }
-
-    showSubpart(root, subpart);
 
     return TextUtils::removeXMLEntities(doc.toString()).toUtf8();
 }

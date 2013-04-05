@@ -54,7 +54,6 @@ public:
     ViewLayer::ViewID viewID;
     ViewLayer::ViewLayerID viewLayerID;
     ViewLayer::ViewLayerSpec viewLayerSpec;
-    QString subpart;
     bool doConnectors;
 };
 

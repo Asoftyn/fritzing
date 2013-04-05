@@ -120,6 +120,7 @@ bool BreadboardSketchWidget::canDropModelPart(ModelPart * modelPart) {
 		case ModelPart::Logo:
              if (modelPart->moduleID().contains("breadboard", Qt::CaseInsensitive)) return true;
 		case ModelPart::Symbol:
+		case ModelPart::SchematicSubpart:
 		case ModelPart::Jumper:
 		case ModelPart::CopperFill:
 		case ModelPart::Hole:
@@ -166,6 +167,7 @@ void BreadboardSketchWidget::getLabelFont(QFont & font, QColor & color, ViewLaye
 void BreadboardSketchWidget::setNewPartVisible(ItemBase * itemBase) {
 	switch (itemBase->itemType()) {
 		case ModelPart::Symbol:
+		case ModelPart::SchematicSubpart:
 		case ModelPart::Jumper:
 		case ModelPart::CopperFill:
 		case ModelPart::Logo:

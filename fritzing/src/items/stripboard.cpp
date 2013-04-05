@@ -578,7 +578,7 @@ void Stripboard::reinitBuses(bool triggerUndo)
 
 		connectorItem->restoreColor(true, 0, true);
 		if (connectorItem->bus()) {
-			this->busConnectorItems(connectorItem->bus(), visited);
+			this->busConnectorItems(connectorItem->bus(), connectorItem, visited);
 		}
 	}
 }

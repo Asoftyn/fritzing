@@ -827,10 +827,10 @@ void ResizableBoard::resizeMMAux(double mmW, double mmH)
 
 }
 
-void ResizableBoard::loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec, const QStringList & subparts) {
+void ResizableBoard::loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec) {
 
 	loadTemplates();				
-	Board::loadLayerKin(viewLayers, viewLayerSpec, subparts);
+	Board::loadLayerKin(viewLayers, viewLayerSpec);
 	double w =  m_modelPart->localProp("width").toDouble();
 	if (w != 0) {
 		resizeMM(w, m_modelPart->localProp("height").toDouble(), viewLayers);

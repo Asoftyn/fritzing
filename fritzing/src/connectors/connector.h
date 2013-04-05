@@ -61,7 +61,8 @@ public:
 	void disconnectFrom(Connector *);
 	void saveAsPart(QXmlStreamWriter & writer);
 	const QList<Connector *> & toConnectors();
-	ConnectorItem * connectorItemByViewLayerID(ViewLayer::ViewID viewID, ViewLayer::ViewLayerID);
+	ConnectorItem * connectorItemByViewLayerID(ViewLayer::ViewID, ViewLayer::ViewLayerID);
+	ConnectorItem * connectorItem(ViewLayer::ViewID);
 	bool connectionIsAllowed(Connector* that);
 	const QString & connectorSharedID() const;
 	const QString & connectorSharedName() const;	

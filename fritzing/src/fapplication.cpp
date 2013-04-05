@@ -1069,6 +1069,8 @@ int FApplication::startup()
 
 	cleanFzzs();
 
+    createUserDataStoreFolderStructure();
+
 	loadReferenceModel("", false);
 
 	QString prevVersion;
@@ -1099,7 +1101,7 @@ int FApplication::startup()
 
 	if (m_progressIndex >= 0) splash.showProgress(m_progressIndex, LoadProgressEnd);
 
-	createUserDataStoreFolderStructure();
+
 
 	//DebugDialog::debug("after createUserDataStoreFolderStructure");
 

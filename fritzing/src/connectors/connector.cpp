@@ -174,6 +174,14 @@ ConnectorItem * Connector::connectorItemByViewLayerID(ViewLayer::ViewID viewID, 
 	return m_connectorItems.value(QuickHash(viewID, viewLayerID), NULL);
 }
 
+ConnectorItem * Connector::connectorItem(ViewLayer::ViewID viewID) {
+	foreach (ConnectorItem * connectorItem, m_connectorItems.values()) {
+        if (connectorItem->attachedToViewID() == viewID) return connectorItem;
+    }
+
+    return NULL;
+}
+
 bool Connector::connectionIsAllowed(Connector* that)
 {
 	Connector::ConnectorType thisConnectorType = connectorType();

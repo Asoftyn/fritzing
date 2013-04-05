@@ -31,6 +31,7 @@ $Date$
 #include <QPointF>
 #include <QSize>
 #include <QHash>
+#include <QList>
 #include <QGraphicsSceneHoverEvent>
 #include <QGraphicsSvgItem>
 #include <QPointer>
@@ -95,7 +96,7 @@ public:
 
 	void collectConnectors(ConnectorPairHash & connectorHash, SkipCheckFunction);
 
-	virtual void busConnectorItems(class Bus * bus, QList<ConnectorItem *> & items);
+	virtual void busConnectorItems(class Bus * bus, ConnectorItem *, QList<ConnectorItem *> & items);
 	virtual void setHidden(bool hidden);
 	virtual void setLayerHidden(bool hidden);
 	bool hidden();
@@ -103,6 +104,7 @@ public:
 	virtual void setInactive(bool inactivate);
 	bool inactive();
 	ConnectorItem * findConnectorItemWithSharedID(const QString & connectorID, ViewLayer::ViewLayerSpec);
+	ConnectorItem * findConnectorItemWithSharedID(const QString & connectorID);
 	void updateConnections(ConnectorItem *);
 	virtual void updateConnections();
 	virtual const QString & title() const;
@@ -222,6 +224,10 @@ public:
 	virtual void setInRotation(bool);
 	const QString & spice() const;
 	const QString & spiceModel() const;
+    void addSubpart(ItemBase *);
+    void setSuperpart(ItemBase *);
+    ItemBase * superpart();
+    ItemBase * findSubpart(const QString & connectorID, ViewLayer::ViewLayerSpec);
 
 public:
 	virtual void getConnectedColor(ConnectorItem *, QBrush * &, QPen * &, double & opacity, double & negativePenWidth, bool & negativeOffsetRect);
@@ -358,6 +364,8 @@ protected:
 	bool m_acceptsMousePressLegEvent;
     bool m_swappable;
  	bool m_inRotation;
+    QPointer<ItemBase> m_superpart;
+    QList< QPointer<ItemBase> > m_subparts;
       
  protected:
 	static long nextID;

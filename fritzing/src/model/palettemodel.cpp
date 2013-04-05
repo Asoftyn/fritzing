@@ -38,6 +38,7 @@ $Date$
 #include "../utils/folderutils.h"
 #include "../utils/textutils.h"
 #include "../items/moduleidnames.h"
+#include "../items/partfactory.h"
 
 bool PaletteModel::CreateTempPartsBinFile = true;
 
@@ -361,6 +362,14 @@ ModelPart * PaletteModel::loadPart(const QString & path, bool update) {
 
 	modelPart->setContrib(m_loadingContrib);
 
+    QDomElement subparts = root.firstChildElement("schematic-subparts");
+    QDomElement subpart = subparts.firstChildElement("subpart");
+    while (!subpart.isNull()) {
+        ModelPart * subModelPart = makeSubpart(modelPart, subpart);
+        m_partHash.insert(subModelPart->moduleID(), subModelPart);
+        subpart = subpart.nextSiblingElement("subpart");
+    }
+
 	if (m_partHash.value(moduleID, NULL)) {
 		if(!update) {
 			QMessageBox::warning(NULL, QObject::tr("Fritzing"),
@@ -385,7 +394,6 @@ ModelPart * PaletteModel::loadPart(const QString & path, bool update) {
 
     return modelPart;
 }
-
 
 bool PaletteModel::loadFromFile(const QString & fileName, ModelBase * referenceModel, bool checkViews) {
 	QList<ModelPart *> modelParts;
@@ -568,3 +576,92 @@ QList<ModelPart *> PaletteModel::findContribNoBin() {
     }
     return modelParts;
 }
+
+ModelPart * PaletteModel::makeSubpart(ModelPart * originalModelPart, const QDomElement & originalSubpart) {
+    QString newLabel = originalSubpart.attribute("label");
+    QString newID = originalSubpart.attribute("id");
+    QDomElement originalRoot = originalSubpart.ownerDocument().documentElement();
+    QString moduleID = originalRoot.attribute("moduleId") + "_" + newID;
+    ModelPart * modelPart = retrieveModelPart(moduleID);
+    if (modelPart) {
+        return modelPart;
+    }
+
+    QDomDocument subdoc = originalSubpart.ownerDocument().cloneNode(true).toDocument();
+    QDomElement root = subdoc.documentElement();
+    QDomElement subparts = root.firstChildElement("schematic-subparts");
+    root.removeChild(subparts);
+    root.setAttribute("moduleId", moduleID);
+    QDomElement label = root.firstChildElement("label");
+    if (!label.isNull()) {
+        QString text;
+        TextUtils::findText(label, text);
+        TextUtils::replaceChildText(label, text + "_" + newLabel);
+    }
+    QDomElement views = root.firstChildElement("views");
+    QDomElement schematicView = views.firstChildElement(ViewLayer::viewIDXmlName(ViewLayer::SchematicView));
+    QDomElement schematicLayers = schematicView.firstChildElement("layers");
+    QString image = schematicLayers.attribute("image");
+    image.replace(".svg", "_" + newID + ".svg");
+    schematicLayers.setAttribute("image", image);
+    views.removeChild(schematicView);
+    QDomElement view = views.firstChildElement();
+    while (!view.isNull()) {
+        QDomElement layers = view.firstChildElement("layers");
+        view.removeChild(layers);
+        layers = schematicLayers.cloneNode(true).toElement();
+        view.appendChild(layers);
+        view = view.nextSiblingElement();
+    }
+    views.appendChild(schematicView);
+
+    QDomElement connectors = root.firstChildElement("connectors");
+    QDomElement connector = connectors.firstChildElement("connector");
+    QHash<QString, QDomElement> connectorHash;
+    while (!connector.isNull()) {
+        QDomElement next = connector.nextSiblingElement("connector");
+        connectors.removeChild(connector);
+        connectorHash.insert(connector.attribute("id"), connector);
+        connector = next;
+    }
+    QDomElement originalConnectors = originalSubpart.firstChildElement("connectors");
+    QDomElement originalConnector = originalConnectors.firstChildElement("connector");
+    QString schematicLayerName = ViewLayer::viewLayerXmlNameFromID(ViewLayer::Schematic);
+    while (!originalConnector.isNull()) {
+        QString id = originalConnector.attribute("id");
+        QDomElement connector = connectorHash.value(id);
+        connectors.appendChild(connector);
+        QDomElement cviews = connector.firstChildElement("views");
+        QDomElement view = cviews.firstChildElement();
+        while (!view.isNull()) {
+            QDomElement p = view.firstChildElement("p");
+            bool firstTime = true;
+            while (!p.isNull()) {
+                QDomElement next = p.nextSiblingElement("p");
+                if (firstTime) {
+                    p.setAttribute("layer", schematicLayerName);
+                    firstTime = false;
+                }
+                else {
+                    view.removeChild(p);
+                }
+                p = next;
+            }
+            view = view.nextSiblingElement();
+        }
+
+        originalConnector = originalConnector.nextSiblingElement("connector");
+    }
+
+    QString path = PartFactory::fzpPath() + moduleID + ".fzp";
+    QString fzp = subdoc.toString(4);
+    TextUtils::writeUtf8(path, fzp);
+
+    modelPart = new ModelPart(subdoc, path, ModelPart::SchematicSubpart);
+    modelPart->setSubpartID(newID);
+    originalModelPart->modelPartShared()->addSubpart(modelPart->modelPartShared());
+    m_partHash.insert(moduleID, modelPart);
+    return modelPart;
+}
+
+

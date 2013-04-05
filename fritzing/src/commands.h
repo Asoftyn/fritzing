@@ -1141,4 +1141,23 @@ protected:
     bool m_enabled;
 };
 
+/////////////////////////////////////////////
+
+class AddSubpartCommand : public BaseCommand
+{
+public:
+    AddSubpartCommand(class SketchWidget *sketchWidget, CrossViewType crossView, long id, long subpartID, QUndoCommand *parent);
+    void undo();
+    void redo();
+
+protected:
+	QString getParamString() const;
+
+protected:
+    long m_itemID;
+    long m_subpartItemID;
+};
+
+/////////////////////////////////////////////
+
 #endif // COMMANDS_H

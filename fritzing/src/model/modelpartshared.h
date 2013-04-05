@@ -42,7 +42,6 @@ struct ViewImage {
     qulonglong layers;
     qulonglong sticky;
     qulonglong flipped;
-    QStringList subparts;
     QString image;
     bool canFlipHorizontal;
     bool canFlipVertical;
@@ -95,7 +94,11 @@ public:
     QString imageFileName(ViewLayer::ViewID, ViewLayer::ViewLayerID);
     void setImageFileName(ViewLayer::ViewID, const QString & filename);
     QString imageFileName(ViewLayer::ViewID);
-    const QStringList & subparts(ViewLayer::ViewID);
+    const QList< QPointer<ModelPartShared> > & subparts();
+    void addSubpart(ModelPartShared * subpart);
+    bool hasSubparts();
+    void setSubpartID(const QString &);
+    const QString & subpartID();
     bool anySticky(ViewLayer::ViewID);
     bool hasMultipleLayers(ViewLayer::ViewID);
     bool canFlipHorizontal(ViewLayer::ViewID);
@@ -204,6 +207,8 @@ protected:
     qulonglong m_dbid;
     bool m_hasZeroConnector;
     int m_ownerCount;
+    QList< QPointer<ModelPartShared> > m_subparts;
+    QString m_subpartID;
 };
 
 class ModelPartSharedRoot : public ModelPartShared

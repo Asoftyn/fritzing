@@ -2166,8 +2166,38 @@ QString HidePartLayerCommand::getParamString() const {
 		;
 }
 
-////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+AddSubpartCommand::AddSubpartCommand(SketchWidget *sketchWidget,  CrossViewType crossView, long id, long subpartID, QUndoCommand *parent)
+    : BaseCommand(crossView, sketchWidget, parent)
+{
+    m_itemID = id;
+    m_subpartItemID = subpartID;
+
+}
+
+void AddSubpartCommand::undo()
+{
+    // this only operates when a part is first created
+    BaseCommand::undo();
+}
+
+void AddSubpartCommand::redo()
+{
+    m_sketchWidget->addSubpart(m_itemID, m_subpartItemID, true);
+    BaseCommand::redo();
+}
+
+QString AddSubpartCommand::getParamString() const {
+	return QString("AddSubpartCommand ") 
+		+ BaseCommand::getParamString() + 
+		QString(" id:%1 subpart id:%2")
+		.arg(m_itemID)
+		.arg(m_subpartItemID)	
+		;
+}
+
+////////////////////////////////////
 
 TemporaryCommand::TemporaryCommand(const QString & text) : QUndoCommand(text) {
     m_enabled = true;

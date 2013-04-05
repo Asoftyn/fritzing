@@ -463,8 +463,8 @@ bool JumperItem::inDrag() {
 	return m_dragItem != NULL;
 }
 
-void JumperItem::loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec, const QStringList & subparts) {
-	PaletteItem::loadLayerKin(viewLayers, viewLayerSpec, subparts);
+void JumperItem::loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec) {
+	PaletteItem::loadLayerKin(viewLayers, viewLayerSpec);
 	resize();
 }
 

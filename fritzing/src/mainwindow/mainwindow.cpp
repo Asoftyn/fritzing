@@ -680,6 +680,8 @@ void MainWindow::connectPair(SketchWidget * signaller, SketchWidget * slotter)
 									 slotter, SLOT(swapStart(SwapThing &, bool)),
 									 Qt::DirectConnection);
 
+	succeeded = succeeded && connect(signaller, SIGNAL(addSubpartSignal(long, long, bool)), slotter, SLOT(addSubpart(long, long, bool)));
+
 	if (!succeeded) {
 		DebugDialog::debug("connectPair failed");
 	}

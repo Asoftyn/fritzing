@@ -63,6 +63,7 @@ public:
 		 Hole,
 		 Via,
 		 Ruler,
+         SchematicSubpart,
 		 Space,
 		 Unknown
 	};
@@ -183,7 +184,6 @@ public:
 	bool hasViewFor(ViewLayer::ViewID);
 	bool hasViewFor(ViewLayer::ViewID, ViewLayer::ViewLayerID);
 	QString hasBaseNameFor(ViewLayer::ViewID);
-    const QStringList & subparts(ViewLayer::ViewID);
 	void initBuses();
 	void clearBuses();
 	void setConnectorLocalName(const QString & id, const QString & name);
@@ -194,6 +194,8 @@ public:
     void flipSMDAnd();
     void lookForZeroConnector();
     bool hasZeroConnector();
+    bool hasSubparts();
+    void setSubpartID(const QString &);
 
 public:
 	static long nextIndex();

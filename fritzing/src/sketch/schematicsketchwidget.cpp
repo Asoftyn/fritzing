@@ -170,6 +170,7 @@ void SchematicSketchWidget::setNewPartVisible(ItemBase * itemBase) {
 				itemBase->setEverVisible(false);
 				return;
 			}
+
 			break;
 	}
 }
@@ -189,6 +190,7 @@ bool SchematicSketchWidget::canDropModelPart(ModelPart * modelPart) {
 		case ModelPart::Hole:
 			return false;
 		case ModelPart::Symbol:
+		case ModelPart::SchematicSubpart:
 			return true;
 		default:
 			break;

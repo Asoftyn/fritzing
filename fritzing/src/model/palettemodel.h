@@ -78,6 +78,7 @@ protected:
 	void loadParts(bool dbExists);
 	void loadPartsAux(QDir & dir, QStringList & nameFilters, int & loadedPart, int totalParts);
 	void countParts(QDir & dir, QStringList & nameFilters, int & partCount);
+    ModelPart * makeSubpart(ModelPart * originalModelPart, const QDomElement & originalSubparth);
 
 protected:
 	static bool CreateContribPartsBinFile;

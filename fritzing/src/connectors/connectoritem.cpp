@@ -551,7 +551,7 @@ void ConnectorItem::restoreColor(bool doBuses, int busConnectionCount, bool doCr
 		Bus * b = bus();
 		if (b != NULL) {
 			QList<ConnectorItem *> busConnectedItems;
-			attachedTo()->busConnectorItems(b, busConnectedItems);
+			attachedTo()->busConnectorItems(b, this, busConnectedItems);
 			busConnectedItems.removeOne(this);
 			foreach (ConnectorItem * busConnectorItem, busConnectedItems) {
 				busConnectorItem->restoreColor(false, connectedToCount, true);
@@ -1254,7 +1254,7 @@ bool ConnectorItem::isConnectedToPart() {
 	QList<ConnectorItem *> busConnectedItems;
 	Bus * b = bus();
 	if (b != NULL) {
-		attachedTo()->busConnectorItems(b, busConnectedItems);
+		attachedTo()->busConnectorItems(b, this, busConnectedItems);
 	}
 
 	for (int i = 0; i < tempItems.count(); i++) {
@@ -1266,6 +1266,7 @@ bool ConnectorItem::isConnectedToPart() {
 		{
 			switch (connectorItem->attachedToItemType()) {
 				case ModelPart::Symbol:
+				case ModelPart::SchematicSubpart:
 				case ModelPart::Jumper:
 				case ModelPart::Part:
 				case ModelPart::CopperFill:
@@ -1298,7 +1299,7 @@ bool ConnectorItem::isConnectedToPart() {
 		Bus * bus = connectorItem->bus();
 		if (bus != NULL) {
 			QList<ConnectorItem *> busConnectedItems;
-			connectorItem->attachedTo()->busConnectorItems(bus, busConnectedItems);
+			connectorItem->attachedTo()->busConnectorItems(bus, connectorItem, busConnectedItems);
 			foreach (ConnectorItem * busConnectedItem, busConnectedItems) {
 				if (!tempItems.contains(busConnectedItem)) {
 					tempItems.append(busConnectedItem);
@@ -1343,6 +1344,7 @@ void ConnectorItem::collectEqualPotential(QList<ConnectorItem *> & connectorItem
 
 		// this one's a keeper
 		connectorItems.append(connectorItem);
+        //connectorItem->debugInfo("collect");
 
 		foreach (ConnectorItem * cto, connectorItem->connectedToItems()) {
 			if (tempItems.contains(cto)) continue;
@@ -1358,7 +1360,7 @@ void ConnectorItem::collectEqualPotential(QList<ConnectorItem *> & connectorItem
 		Bus * bus = connectorItem->bus();
 		if (bus != NULL) {
 			QList<ConnectorItem *> busConnectedItems;
-			connectorItem->attachedTo()->busConnectorItems(bus, busConnectedItems);
+			connectorItem->attachedTo()->busConnectorItems(bus, connectorItem, busConnectedItems);
 #ifndef QT_NO_DEBUG
 			if (connectorItem->attachedToItemType() == ModelPart::Wire && busConnectedItems.count() != 2) {
 				connectorItem->debugInfo("bus is missing");
@@ -1399,6 +1401,7 @@ void ConnectorItem::collectParts(QList<ConnectorItem *> & connectorItems, QList<
 		ItemBase * candidate = connectorItem->attachedTo();
 		switch (candidate->itemType()) {
 			case ModelPart::Symbol:
+			case ModelPart::SchematicSubpart:
 				if (!includeSymbols) break;
 			case ModelPart::Jumper:
 			case ModelPart::Part:

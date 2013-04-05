@@ -46,10 +46,12 @@ public:
 	void addConnector(class Connector *);
 	class ModelPart * modelPart();
 	const QList<Connector *> & connectors() const;
+	Connector * subConnector() const;
+    void addSubConnector(Connector *);
 	
 protected:
-
 	QList<class Connector *> m_connectors;
+	class Connector * m_subConnector;
 	BusShared * m_busShared;
 	QPointer<class ModelPart> m_modelPart;
 };

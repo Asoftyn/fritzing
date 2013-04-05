@@ -217,10 +217,10 @@ ConnectorItem* SymbolPaletteItem::newConnectorItem(Connector *connector)
 	return connectorItem;
 }
 
-void SymbolPaletteItem::busConnectorItems(Bus * bus, QList<class ConnectorItem *> & items) {
+void SymbolPaletteItem::busConnectorItems(Bus * bus, ConnectorItem * fromConnectorItem, QList<class ConnectorItem *> & items) {
 	if (bus == NULL) return;
 
-	PaletteItem::busConnectorItems(bus, items);
+	PaletteItem::busConnectorItems(bus, fromConnectorItem, items);
 
 	//foreach (ConnectorItem * bc, items) {
 		//bc->debugInfo(QString("bc %1").arg(bus->id()));

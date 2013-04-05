@@ -18,47 +18,21 @@ along with Fritzing.  If not, see <http://www.gnu.org/licenses/>.
 
 ********************************************************************
 
-$Revision$:
-$Author$:
-$Date$
+$Revision: 6912 $:
+$Author: irascibl@gmail.com $:
+$Date: 2013-03-09 08:18:59 +0100 (Sa, 09 Mrz 2013) $
 
 ********************************************************************/
 
-#include "bus.h"
-#include "busshared.h"
-#include "../debugdialog.h"
-#include "connectoritem.h"
-#include "../model/modelpart.h"
+#include "schematicsubpart.h"
 
-Bus::Bus(BusShared * busShared, ModelPart * modelPart) : QObject()
+
+SchematicSubpart::SchematicSubpart( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
+	: PaletteItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
-	m_busShared = busShared;
-	m_modelPart = modelPart;
+    m_super = NULL;
 }
 
-const QString & Bus::id() const {
-	if (m_busShared == NULL) return ___emptyString___;
-
-	return m_busShared->id();
+SchematicSubpart::~SchematicSubpart() {
 }
 
-const QList<Connector *> & Bus::connectors() const {
-	return m_connectors;
-}
-
-void Bus::addConnector(Connector * connector) {
-	// the list of connectors which make up the bus
-	m_connectors.append(connector);
-}
-
-ModelPart * Bus::modelPart() {
-	return m_modelPart;
-}
-
-void Bus::addSubConnector(Connector * subConnector) {
-    m_subConnector = subConnector;
-}
-
-Connector * Bus::subConnector() const {
-	return m_subConnector;
-}

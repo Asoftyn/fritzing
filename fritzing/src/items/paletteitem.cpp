@@ -136,13 +136,12 @@ PaletteItem::~PaletteItem() {
 	}
 }
 
-bool PaletteItem::renderImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, bool doConnectors, const QString & subpart, QString & error) {
+bool PaletteItem::renderImage(ModelPart * modelPart, ViewLayer::ViewID viewID, const LayerHash & viewLayers, ViewLayer::ViewLayerID viewLayerID, bool doConnectors, QString & error) {
 	LayerAttributes layerAttributes; 
     layerAttributes.viewID = viewID;
     layerAttributes.viewLayerID = viewLayerID;
     layerAttributes.viewLayerSpec = viewLayerSpec();
     layerAttributes.doConnectors = doConnectors;
-    layerAttributes.subpart = subpart;
 	bool result = setUpImage(modelPart, viewLayers, layerAttributes);
     error = layerAttributes.error;
 
@@ -150,7 +149,7 @@ bool PaletteItem::renderImage(ModelPart * modelPart, ViewLayer::ViewID viewID, c
 	return result;
 }
 
-void PaletteItem::loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec, const QStringList & subparts) {
+void PaletteItem::loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLayerSpec viewLayerSpec) {
 
 	if (m_modelPart == NULL) return;
 
@@ -211,23 +210,22 @@ void PaletteItem::loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLaye
 		if (notLayers.contains(viewLayerID)) continue;
 		if (!m_modelPart->hasViewFor(m_viewID, viewLayerID)) continue;
 
-        makeOneKin(id, viewLayerID, viewLayerSpec, "", viewGeometry, viewLayers);
+        makeOneKin(id, viewLayerID, viewLayerSpec, viewGeometry, viewLayers);
 	}
 
 }
 
-void PaletteItem::makeOneKin(qint64 & id, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, const QString & subpart, ViewGeometry & viewGeometry, const LayerHash & viewLayers) {
+void PaletteItem::makeOneKin(qint64 & id, ViewLayer::ViewLayerID viewLayerID, ViewLayer::ViewLayerSpec viewLayerSpec, ViewGeometry & viewGeometry, const LayerHash & viewLayers) {
     LayerAttributes layerAttributes;
     layerAttributes.viewID = m_viewID;
     layerAttributes.viewLayerID = viewLayerID;
     layerAttributes.viewLayerSpec = viewLayerSpec;
-    layerAttributes.subpart = subpart;
     layerAttributes.doConnectors = true;
     LayerKinPaletteItem * lkpi = newLayerKinPaletteItem(this, m_modelPart, viewGeometry, id, m_itemMenu, viewLayers, layerAttributes);
 	if (lkpi->ok()) {
-		DebugDialog::debug(QString("adding layer kin %1 %2 %3 %4 %5")
+		DebugDialog::debug(QString("adding layer kin %1 %2 %3 %4")
             .arg(id).arg(m_viewID).arg(viewLayerID) 
-            .arg(subpart).arg((long) lkpi, 0, 16)
+            .arg((long) lkpi, 0, 16)
         );
 		lkpi->setViewLayerSpec(viewLayerSpec);
 		addLayerKin(lkpi);

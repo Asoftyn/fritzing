@@ -144,7 +144,7 @@ ItemBase::ItemBase( ModelPart* modelPart, ViewLayer::ViewID viewID, const ViewGe
 	: QGraphicsSvgItem()
 {
     m_fsvgRenderer = NULL;
-
+    m_superpart = NULL;
 	m_acceptsMousePressLegEvent = true;
 
     //DebugDialog::debug(QString("itembase %1 %2").arg(id).arg((long) static_cast<QGraphicsItem *>(this), 0, 16));
@@ -610,11 +610,19 @@ void ItemBase::collectConnectors(ConnectorPairHash & connectorHash, SkipCheckFun
 	}
 }
 
+ConnectorItem * ItemBase::findConnectorItemWithSharedID(const QString & connectorID)  {
+    Connector * connector = modelPart()->getConnector(connectorID);
+    if (connector) {
+        return connector->connectorItem(m_viewID);
+	}
+
+	return NULL;
+}
+
 ConnectorItem * ItemBase::findConnectorItemWithSharedID(const QString & connectorID, ViewLayer::ViewLayerSpec viewLayerSpec)  {
-	foreach (ConnectorItem * connectorItem, cachedConnectorItems()) {
-		if (connectorID.compare(connectorItem->connectorSharedID()) == 0) {
-			return connectorItem->chooseFromSpec(viewLayerSpec);
-		}
+    ConnectorItem * connectorItem = findConnectorItemWithSharedID(connectorID);
+	if (connectorItem) {
+		return connectorItem->chooseFromSpec(viewLayerSpec);
 	}
 
 	return NULL;
@@ -694,24 +702,43 @@ QList<Bus *> ItemBase::buses() {
 	return busList;
 }
 
-void ItemBase::busConnectorItems(class Bus * bus, QList<class ConnectorItem *> & items) {
+void ItemBase::busConnectorItems(class Bus * bus, ConnectorItem * fromConnectorItem, QList<class ConnectorItem *> & items) {
 	if (bus == NULL) return;
 
 	foreach (Connector * connector, bus->connectors()) {
-		QList< QPointer<ConnectorItem> > allConnectorItems = connector->viewItems();
-		foreach (ConnectorItem * connectorItem, allConnectorItems) {
+		foreach (ConnectorItem * connectorItem, connector->viewItems()) {
 			if (connectorItem != NULL) {
 				//connectorItem->debugInfo(QString("on the bus %1").arg((long) connector, 0, 16));
 				if (connectorItem->attachedTo() == this) {
 					items.append(connectorItem);
 				}
 			}
-			//else {
-				//DebugDialog::debug(QString("off the bus %1").arg((long) connector, 0, 16));
-			//}
 		}
 	}
 
+    if (m_superpart || m_subparts.count() > 0) {
+	    Connector * connector = bus->subConnector();
+        if (connector) {
+		    foreach (ConnectorItem * connectorItem, connector->viewItems()) {
+			    if (connectorItem != NULL) {
+				    //connectorItem->debugInfo(QString("on the bus %1").arg((long) connector, 0, 16));
+				    if (connectorItem->attachedToViewID() == m_viewID) {
+					    items.append(connectorItem);
+				    }
+			    }
+		    }
+        }  
+    }
+
+
+    /*
+    if (items.count() > 0) {
+        fromConnectorItem->debugInfo("bus");
+        foreach (ConnectorItem * ci, items) {
+            ci->debugInfo("\t");
+        }
+    }
+    */
 }
 
 int ItemBase::itemType() const
@@ -1368,11 +1395,11 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, LayerAttributes & lay
 	}
     QByteArray bytesToLoad;
     if (layerAttributes.viewLayerID == ViewLayer::Schematic) {
-        bytesToLoad = SvgFileSplitter::hideText(filename, layerAttributes.subpart);
+        bytesToLoad = SvgFileSplitter::hideText(filename);
     }
     else if (layerAttributes.viewLayerID == ViewLayer::SchematicText) {
         bool hasText = false;
-        bytesToLoad = SvgFileSplitter::showText(filename, layerAttributes.subpart, hasText);
+        bytesToLoad = SvgFileSplitter::showText(filename, hasText);
         if (!hasText) {
             return NULL;
         }
@@ -2215,3 +2242,54 @@ bool ItemBase::inRotation() {
 void ItemBase::setInRotation(bool val) {
 	m_inRotation = val;
 }
+
+void ItemBase::addSubpart(ItemBase * sub)
+{
+    this->debugInfo("super");
+    sub->debugInfo("\t");
+    m_subparts.append(sub);
+    sub->setSuperpart(this);
+    foreach (ConnectorItem * connectorItem, sub->cachedConnectorItems()) {
+        Bus * subbus = connectorItem->bus();
+        Connector * subconnector = NULL;
+        if (subbus == NULL) {
+            subconnector = connectorItem->connector();
+            if (subconnector) {
+                subbus = new Bus(NULL, NULL);
+                subconnector->setBus(subbus);
+            }
+        }
+
+        Connector * connector = modelPart()->getConnector(connectorItem->connectorSharedID());
+        if (connector) {
+            if (subbus) subbus->addSubConnector(connector);
+            if (subconnector) {
+                Bus * bus = connector->bus();
+                if (bus == NULL) {
+                    bus = new Bus(NULL, NULL);
+                    bus->addConnector(connector);
+                }
+
+                bus->addSubConnector(subconnector);
+            }
+        }
+    }
+}
+
+void ItemBase::setSuperpart(ItemBase * super) {
+    m_superpart = super;
+}
+
+ItemBase * ItemBase::superpart() {
+    return m_superpart;
+}
+
+ItemBase * ItemBase::findSubpart(const QString & connectorID, ViewLayer::ViewLayerSpec spec) {
+    foreach (ItemBase * itemBase, m_subparts) {
+        ConnectorItem * connectorItem = itemBase->findConnectorItemWithSharedID(connectorID, spec);
+        if (connectorItem) return itemBase;
+    }
+
+    return NULL;
+}
+

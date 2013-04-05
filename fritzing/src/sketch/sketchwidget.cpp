@@ -397,7 +397,7 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
 					viewGeometry.setLoc(QPointF(dx, dy));
 				}
 			}
-			newAddItemCommand(crossViewType, mp->moduleID(), viewLayerSpec, viewGeometry, newID, false, mp->modelIndex(), parentCommand);
+			newAddItemCommand(crossViewType, mp, mp->moduleID(), viewLayerSpec, viewGeometry, newID, false, mp->modelIndex(), parentCommand);
 			
 			// TODO: all this part specific stuff should be in the PartFactory
 			
@@ -864,12 +864,6 @@ PaletteItem* SketchWidget::addPartItem(ModelPart * modelPart, ViewLayer::ViewLay
 
 	ok = false;
 	ViewLayer::ViewLayerID viewLayerID = getViewLayerID(modelPart, viewID, viewLayerSpec);
-
-    QString subpart;
-    QStringList subparts;
-    // disable this for now
-    //QStringList subparts = modelPart->subparts(viewID);
-    //if (subparts.length() > 0) subpart = subparts.at(0);  
 	if (viewLayerID == ViewLayer::UnknownLayer) {
 	    // render it only if the layer is defined in the fzp file
 	    // if the view is not defined in the part file, without this condition
@@ -878,7 +872,7 @@ PaletteItem* SketchWidget::addPartItem(ModelPart * modelPart, ViewLayer::ViewLay
     }
 
 	QString error;
-	bool result = paletteItem->renderImage(modelPart, viewID, m_viewLayers, viewLayerID, doConnectors, subpart, error);
+	bool result = paletteItem->renderImage(modelPart, viewID, m_viewLayers, viewLayerID, doConnectors, error);
 	if (!result) {
 		bool retry = false;
 		switch (viewLayerID) {
@@ -894,17 +888,27 @@ PaletteItem* SketchWidget::addPartItem(ModelPart * modelPart, ViewLayer::ViewLay
 				break;
 		}
 		if (retry) {
-			result = paletteItem->renderImage(modelPart, viewID, m_viewLayers, viewLayerID, doConnectors, subpart, error);
+			result = paletteItem->renderImage(modelPart, viewID, m_viewLayers, viewLayerID, doConnectors, error);
 		}
 	}
+
+    bool hideSuper = modelPart->hasSubparts() && !temporary && viewID == ViewLayer::SchematicView;
 	if (result) {
 		//DebugDialog::debug(QString("addPartItem %1").arg(viewID));
 		addToScene(paletteItem, paletteItem->viewLayerID());
-		paletteItem->loadLayerKin(m_viewLayers, viewLayerSpec, subparts);
+        if (hideSuper) {
+            paletteItem->setEverVisible(false);
+            paletteItem->setVisible(false);
+        }
+		paletteItem->loadLayerKin(m_viewLayers, viewLayerSpec);
 		foreach (ItemBase * lkpi, paletteItem->layerKin()) {
 			this->scene()->addItem(lkpi);
 			lkpi->setHidden(!layerIsVisible(lkpi->viewLayerID()));
 			lkpi->setInactive(!layerIsActive(lkpi->viewLayerID()));
+            if (hideSuper) {
+                lkpi->setEverVisible(false);
+                lkpi->setVisible(false);
+            }
 		}
 		//DebugDialog::debug(QString("after layerkin %1").arg(viewID));
 		ok = true;
@@ -2002,7 +2006,7 @@ void SketchWidget::dropItemEvent(QDropEvent *event) {
     if (modelPart->flippedSMD() && boardLayers() == 2 && !layerIsActive(ViewLayer::Copper1)) {
         viewLayerSpec = ViewLayer::ThroughHoleThroughTop_OneLayer;
     }
-	AddItemCommand * addItemCommand = newAddItemCommand(crossViewType, modelPart->moduleID(), viewLayerSpec, viewGeometry, fromID, true, -1, parentCommand);
+	AddItemCommand * addItemCommand = newAddItemCommand(crossViewType, modelPart, modelPart->moduleID(), viewLayerSpec, viewGeometry, fromID, true, -1, parentCommand);
 	addItemCommand->setDropOrigin(this);
 
 	new SetDropOffsetCommand(this, fromID, m_droppingOffset, parentCommand);
@@ -4916,23 +4920,23 @@ void SketchWidget::changeConnectionAux(long fromID, const QString & fromConnecto
 		return;
 	}
 
-	ConnectorItem * fromConnectorItem = findConnectorItem(fromItem, fromConnectorID, viewLayerSpec);
-	if (fromConnectorItem == NULL) {
-		// shouldn't be here
-		DebugDialog::debug(QString("change connection exit 2 %1 %2").arg(fromID).arg(fromConnectorID));
+	ItemBase * toItem = findItem(toID);
+	if (toItem == NULL) {
+		DebugDialog::debug(QString("change connection exit 2 %1").arg(toID));
 		return;
 	}
 
-	ItemBase * toItem = findItem(toID);
-	if (toItem == NULL) {
-		DebugDialog::debug(QString("change connection exit 3 %1").arg(toID));
+	ConnectorItem * fromConnectorItem = findConnectorItem(fromItem, fromConnectorID, viewLayerSpec);
+	if (fromConnectorItem == NULL) {
+		// shouldn't be here
+		DebugDialog::debug(QString("change connection exit 3 %1 %2").arg(fromItem->id()).arg(fromConnectorID));
 		return;
 	}
 
 	ConnectorItem * toConnectorItem = findConnectorItem(toItem, toConnectorID, viewLayerSpec);
 	if (toConnectorItem == NULL) {
 		// shouldn't be here
-		DebugDialog::debug(QString("change connection exit 4 %1 %2").arg(toID).arg(toConnectorID));
+		DebugDialog::debug(QString("change connection exit 4 %1 %2").arg(toItem->id()).arg(toConnectorID));
 		return;
 	}
 
@@ -6583,6 +6587,9 @@ void SketchWidget::updateRoutingStatus(RoutingStatus & routingStatus, bool manua
 	//	.arg(m_ratsnestUpdateConnect.count())
 	//	.arg(m_ratsnestUpdateDisconnect.count())
 	//	);
+    if (m_viewID == ViewLayer::SchematicView) {
+        DebugDialog::debug("schematic");
+    }
 
 	// TODO: think about ways to optimize this...
 
@@ -6625,6 +6632,13 @@ void SketchWidget::updateRoutingStatus(RoutingStatus & routingStatus, bool manua
 		if (partConnectorItems.count() < 1) continue;
 		if (!doRatsnest && partConnectorItems.count() <= 1) continue;
 
+	    //if (this->viewID() == ViewLayer::SchematicView) {
+		//    DebugDialog::debug("________________________");
+        //    foreach (ConnectorItem * pci, partConnectorItems) {
+		//		pci->debugInfo("pc 1");
+		//	}
+        //}
+
 		for (int i = partConnectorItems.count() - 1; i >= 0; i--) {
 			ConnectorItem * ci = partConnectorItems[i];
 			
@@ -6641,10 +6655,10 @@ void SketchWidget::updateRoutingStatus(RoutingStatus & routingStatus, bool manua
 
 		if (partConnectorItems.count() <= 1) continue;
 
-	    //if (this->viewID() == ViewLayer::PCBView) {
+	    //if (this->viewID() == ViewLayer::SchematicView) {
 		//    DebugDialog::debug("________________________");
         //    foreach (ConnectorItem * pci, partConnectorItems) {
-		//		pci->debugInfo("pc");
+		//		pci->debugInfo("pc 2");
 		//	}
         //}
 
@@ -6656,6 +6670,13 @@ void SketchWidget::updateRoutingStatus(RoutingStatus & routingStatus, bool manua
 	// can't do this in the above loop since VirtualWires and ConnectorItems are added and deleted
 	foreach (QList<ConnectorItem *> partConnectorItems, ratnestsToUpdate) {
 		//partConnectorItems.at(0)->debugInfo("display ratsnest");
+	    //if (this->viewID() == ViewLayer::SchematicView) {
+		//    DebugDialog::debug("________________________");
+        //    foreach (ConnectorItem * pci, partConnectorItems) {
+		//		pci->debugInfo("pc 3");
+		//	}
+        //}
+
 		partConnectorItems.at(0)->displayRatsnest(partConnectorItems, this->getTraceFlag());
 	}
 
@@ -8116,9 +8137,49 @@ int SketchWidget::selectAllItems(QSet<ItemBase *> & itemBases, const QString & m
 	return itemBases.count();
 }
 
-AddItemCommand * SketchWidget::newAddItemCommand(BaseCommand::CrossViewType crossViewType, QString moduleID, ViewLayer::ViewLayerSpec viewLayerSpec, ViewGeometry & viewGeometry, qint64 id, bool updateInfoView, long modelIndex, QUndoCommand *parent)
+AddItemCommand * SketchWidget::newAddItemCommand(BaseCommand::CrossViewType crossViewType, ModelPart * newModelPart, QString moduleID, ViewLayer::ViewLayerSpec viewLayerSpec, ViewGeometry & viewGeometry, qint64 id, bool updateInfoView, long modelIndex, QUndoCommand *parent)
 {
-	return new AddItemCommand(this, crossViewType, moduleID, viewLayerSpec, viewGeometry, id, updateInfoView, modelIndex, parent);
+	AddItemCommand * aic = new AddItemCommand(this, crossViewType, moduleID, viewLayerSpec, viewGeometry, id, updateInfoView, modelIndex, parent);
+    if (newModelPart == NULL) {
+        newModelPart = m_referenceModel->retrieveModelPart(moduleID);
+    }
+    if (!newModelPart->hasSubparts()) return aic;
+
+    ModelPartShared * modelPartShared = newModelPart->modelPartShared();        
+    if (modelPartShared == NULL) return aic;
+
+    QString baseName = modelPartShared->imageFileName(ViewLayer::SchematicView);
+    QString basePath = ItemBase::getSvgFilename(newModelPart, baseName);
+    foreach (ModelPartShared * mps, modelPartShared->subparts()) {
+        QString filename = mps->imageFileName(ViewLayer::SchematicView);
+        if (filename.isEmpty()) continue;
+
+        QString path = PartFactory::partPath() + filename;
+        QFileInfo info(path);
+        if (info.exists()) continue;
+
+        QFile file(basePath);
+	    QString errorStr;
+	    int errorLine;
+	    int errorColumn;
+	    QDomDocument doc;
+	    if (!doc.setContent(&file, &errorStr, &errorLine, &errorColumn)) {
+            DebugDialog::debug(QString("xml failure %1 %2 %3").arg(errorStr).arg(errorLine).arg(errorColumn));
+            continue;
+        }
+
+        QDomElement root = doc.documentElement();
+        SvgFileSplitter::showSubpart(root, mps->subpartID());
+        TextUtils::writeUtf8(path, doc.toString(4));
+    }
+
+    foreach (ModelPartShared * mps, modelPartShared->subparts()) {
+        long subID = ItemBase::getNextID();
+        new AddItemCommand(this, crossViewType, mps->moduleID(), viewLayerSpec, viewGeometry, subID, updateInfoView, -1, parent);
+        new AddSubpartCommand(this, crossViewType, id, subID, parent);
+    }
+
+    return aic;
 }
 
 bool SketchWidget::partLabelsVisible() {
@@ -9191,7 +9252,7 @@ long SketchWidget::swapStart(SwapThing & swapThing, bool master) {
 	new MoveItemCommand(this, itemBase->id(), vg, vg, false, swapThing.parentCommand);
 
 	// command created for each view
-	newAddItemCommand(BaseCommand::SingleView, swapThing.newModuleID, swapThing.viewLayerSpec, vg, newID, true, swapThing.newModelIndex, swapThing.parentCommand);
+	newAddItemCommand(BaseCommand::SingleView, NULL, swapThing.newModuleID, swapThing.viewLayerSpec, vg, newID, true, swapThing.newModelIndex, swapThing.parentCommand);
 
 	if (needsTransform) {
 		QMatrix m;
@@ -9426,5 +9487,19 @@ void SketchWidget::cleanupRatsnests(QList< QPointer<ConnectorItem> > & connector
 	foreach (ConnectorItem * connectorItem, cis2) {
 		ratsnestConnect(connectorItem, connect);
 	}
+}
+
+void SketchWidget::addSubpart(long id, long subpartID, bool doEmit) {
+    ItemBase * super = findItem(id);
+    if (super == NULL) return;
+
+    ItemBase * sub = findItem(subpartID);
+    if (sub == NULL) return;
+
+    super->addSubpart(sub);
+
+    if (doEmit) {
+        emit addSubpartSignal(id, subpartID, false);
+    }
 }
 

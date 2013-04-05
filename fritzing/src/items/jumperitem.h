@@ -52,7 +52,7 @@ public:
 	class ConnectorItem * connector1();
 	bool hasCustomSVG();
 	bool inDrag();
-	void loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec, const QStringList & subparts);
+	void loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec);
 	PluralType isPlural();
 	void addedToScene(bool temporary);
 	void rotateItem(double degrees);

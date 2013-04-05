@@ -364,7 +364,6 @@ protected:
 						  ViewLayer::ViewLayerSpec,
 						  bool connect, bool updateConnections);
 
-
 	void cutDeleteAux(QString undoStackMessage, bool plus, Wire * wire);
 	void deleteAux(QSet<ItemBase *> & deletedItems, QUndoCommand * parentCommand, bool doPush);
 
@@ -434,7 +433,7 @@ protected:
 	void initBackgroundColor();
 	QPointF calcNewLoc(ItemBase * moveBase, ItemBase * detachFrom);
 	long findPartOrWire(long itemID);
-	virtual AddItemCommand * newAddItemCommand(BaseCommand::CrossViewType crossViewType, 
+	AddItemCommand * newAddItemCommand(BaseCommand::CrossViewType crossViewType, ModelPart *,
 											   QString moduleID, ViewLayer::ViewLayerSpec, ViewGeometry & viewGeometry, qint64 id, 
 											   bool updateInfoView, long modelIndex, QUndoCommand *parent);
 	int selectAllItems(QSet<ItemBase *> & itemBases, const QString & msg);
@@ -550,6 +549,7 @@ signals:
     void clickedItemCandidateSignal(QGraphicsItem *, bool & ok);
     void resizedSignal(ItemBase *);
     void cleanupRatsnestsSignal(bool doEmit);
+    void addSubpartSignal(long id, long subpartID, bool doEmit);
 
 protected slots:
 	void itemAddedSlot(ModelPart *, ItemBase *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, SketchWidget * dropOrigin);
@@ -616,6 +616,7 @@ public slots:
 	void updateConnectors();
 	void ratsnestConnect(long id, const QString & connectorID, bool connect, bool doEmit);
     void cleanupRatsnests(bool doEmit);
+    void addSubpart(long id, long subpartid, bool doEmit);
 
 protected:
 	enum StatusConnectStatus {

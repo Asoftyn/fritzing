@@ -532,6 +532,7 @@ bool PCBSketchWidget::canChainMultiple() {
 void PCBSketchWidget::setNewPartVisible(ItemBase * itemBase) {
 	if (itemBase->itemType() == ModelPart::Breadboard  || 
 		itemBase->itemType() == ModelPart::Symbol || 
+		itemBase->itemType() == ModelPart::SchematicSubpart || 
 		itemBase->moduleID().endsWith(ModuleIDNames::SchematicFrameModuleIDName)) 
 	{
 		// don't need to see the breadboard in the other views
@@ -559,6 +560,7 @@ bool PCBSketchWidget::canDropModelPart(ModelPart * modelPart) {
 		case ModelPart::Wire:
 		case ModelPart::Breadboard:
 		case ModelPart::Symbol:
+		case ModelPart::SchematicSubpart:
 			// can't drag and drop these parts in this view
 			return false;
 		default:

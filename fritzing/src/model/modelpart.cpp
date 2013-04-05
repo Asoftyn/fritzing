@@ -1029,8 +1029,12 @@ void ModelPart::killViewItems() {
     m_viewItems.clear();
 }
 
-const QStringList & ModelPart::subparts(ViewLayer::ViewID viewID) {
-    if (m_modelPartShared) return m_modelPartShared->subparts(viewID);
+bool ModelPart::hasSubparts() {
+    if (m_modelPartShared) return m_modelPartShared->hasSubparts();
 
-    return ___emptyStringList___;
+    return false;
+}
+
+void ModelPart::setSubpartID(const QString & id) {
+    if (m_modelPartShared) m_modelPartShared->setSubpartID(id);
 }

@@ -27,11 +27,7 @@
         </breadboardView>
         <schematicView>
             <layers image="schematic/lm358_schematic.svg">
-                <layer layerId="schematic">
-		<subpart id="subpart1" />
-		<subpart id="subpart2" />
-		<subpart id="subpart3" />
-                </layer>
+                <layer layerId="schematic" />
             </layers>
         </schematicView>
         <pcbView>
@@ -39,8 +35,6 @@
                 <layer layerId="copper0"/>
                 <layer layerId="soldermask"/>
                 <layer layerId="silkscreen"/>
-                <layer layerId="outline"/>
-                <layer layerId="keepout"/>
             <layer layerId="copper1"/></layers>
         </pcbView>
     </views>
@@ -56,7 +50,8 @@
                 </schematicView>
                 <pcbView>
                     <p layer="copper0" svgId="connector3pin"/>
-                <p layer="copper1" svgId="connector3pin"/></pcbView>
+		<p layer="copper1" svgId="connector3pin"/>
+	      </pcbView>
             </views>
         </connector>
         <connector id="connector4" name="Pin 5" type="male">
@@ -158,4 +153,28 @@
             </views>
         </connector>
     </connectors>
+    <schematic-subparts>
+	<subpart id="subpart1" label="1">
+		<connectors>
+			<connector id="connector3"/>
+			<connector id="connector7"/>
+		</connectors>
+	</subpart>
+	<subpart id="subpart2"  label="2">
+		<connectors>
+			<connector id="connector0"/>
+			<connector id="connector1"/>
+			<connector id="connector2"/>
+		</connectors>
+	</subpart>
+	<subpart id="subpart3"  label="3">
+		<connectors>
+			<connector id="connector4"/>
+			<connector id="connector5"/>
+			<connector id="connector6"/>
+		</connectors>
+	</subpart>
+
+    </schematic-subparts>
+    
 </module>

@@ -189,12 +189,6 @@ bool ModelPartShared::setDomDocument(QDomDocument & domDocument) {
                     qulonglong sticky = (layer.attribute("sticky", "").compare("true") == 0) ? 1 : 0;
                     viewImage->layers |= (one << viewLayerID); 
                     viewImage->sticky |= (sticky << viewLayerID); 
-                    QDomElement subpart = layer.firstChildElement("subpart");
-                    while (!subpart.isNull()) {
-                        QString id = subpart.attribute("id");
-                        if (!id.isEmpty()) viewImage->subparts << id;
-                        subpart = subpart.nextSiblingElement("subpart");
-                    }
 					layer = layer.nextSiblingElement("layer");
 				}
 			}
@@ -814,19 +808,29 @@ void ModelPartShared::addSchematicText(ViewImage * viewImage) {
     viewImage->layers |= (one << ViewLayer::SchematicText); 
 }
 
-const QStringList & ModelPartShared::subparts(ViewLayer::ViewID viewID) {
-    if (viewID != ViewLayer::SchematicView) return ___emptyStringList___;
-
-
-    ViewImage * viewImage = m_viewImages.value(viewID);
-    if (viewImage == NULL) return ___emptyStringList___;
-
-    return viewImage->subparts;
-}
-
 bool ModelPartShared::showInLabel(const QString & propertyName) {
     //foreach (QString key, m_displayKeys) {
     //    DebugDialog::debug("check display " + m_moduleID + " " + key);
     //}
     return m_displayKeys.contains(propertyName, Qt::CaseInsensitive);
+}
+
+const QList< QPointer<ModelPartShared> > & ModelPartShared::subparts() {
+    return m_subparts;
+}
+
+void ModelPartShared::addSubpart(ModelPartShared * subpart) {
+    m_subparts.append(subpart);
+}
+
+bool ModelPartShared::hasSubparts() {
+    return m_subparts.count() > 0;
+}
+
+void ModelPartShared::setSubpartID(const QString & id) {
+    m_subpartID = id;
+}
+
+const QString & ModelPartShared::subpartID() {
+    return m_subpartID ;
 }
