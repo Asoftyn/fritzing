@@ -73,6 +73,8 @@ protected:
     static bool dealWithMultipleContours(QDomElement & root, bool displayMessageBoxes);
     static void exportPickAndPlace(const QString & prefix, const QString & exportDir, ItemBase * board, PCBSketchWidget * sketchWidget, bool displayMessageBoxes);
     static void handleDonuts(QDomElement & root1, QMultiHash<long, ConnectorItem *> & treatAsCircle);
+    static QString renderTo(const LayerList &, ItemBase * board, PCBSketchWidget * sketchWidget, bool & empty);
+
 };
 
 #endif // GERBERGENERATOR_H

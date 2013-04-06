@@ -206,7 +206,7 @@ protected:
     bool routeOne(bool makeJumper, Score & currentScore, int netIndex, RouteThing &, QList<NetOrdering> & allOrderings);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, Nearest &);
     void findNearestPair(QList< QList<ConnectorItem *> > & subnets, int i, QList<ConnectorItem *> & inet, Nearest &);
-    QList<QPoint> renderSource(QDomDocument * masterDoc, int z, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, GridValue value, bool clearElements, const QRectF & r);
+    QList<QPoint> renderSource(QDomDocument * masterDoc, int z, ViewLayer::ViewLayerSpec, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, GridValue value, bool clearElements, const QRectF & r);
     QList<GridPoint> route(RouteThing &, int & viaCount);
     void expand(GridPoint &, RouteThing &);
     void expandOne(GridPoint &, RouteThing &, int dx, int dy, int dz, bool crossLayer);
@@ -217,7 +217,7 @@ protected:
     void updateDisplay(Grid *, int iz);
     void updateDisplay(GridPoint &);
     void clearExpansion(Grid * grid);
-    void prepSourceAndTarget(QDomDocument * masterdoc, RouteThing &, QList< QList<ConnectorItem *> > & subnets, int z); 
+    void prepSourceAndTarget(QDomDocument * masterdoc, RouteThing &, QList< QList<ConnectorItem *> > & subnets, int z, ViewLayer::ViewLayerSpec); 
     bool moveBack(Score & currentScore, int index, QList<NetOrdering> & allOrderings);
     void displayTrace(Trace &);
     void initTraceDisplay();

@@ -143,7 +143,7 @@ QString Pad::makeLayerSvg(ViewLayer::ViewLayerID viewLayerID, double mmW, double
 
     }
     else {
-        svg += QString("<rect  id='%12terminal' x='%1' y='%2' fill='none' stroke='none' stroke-width='0' width='%3' height='%4'/>\n")
+        svg += QString("<rect  id='connector0terminal' x='%1' y='%2' fill='none' stroke='none' stroke-width='0' width='%3' height='%4'/>\n")
 					.arg(terminal.left())
 					.arg(terminal.top())
 					.arg(terminal.width())

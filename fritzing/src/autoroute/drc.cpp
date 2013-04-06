@@ -395,9 +395,12 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
 	    LayerList viewLayerIDs = ViewLayer::copperLayers(viewLayerSpec);
         viewLayerIDs.removeOne(ViewLayer::GroundPlane0);
         viewLayerIDs.removeOne(ViewLayer::GroundPlane1);
-        QRectF masterImageRect;
-        bool empty;
-	    QString master = m_sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, masterImageRect, m_board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
+        RenderThing renderThing;
+        renderThing.printerScale = GraphicsUtils::SVGDPI;
+        renderThing.blackOnly = true;
+        renderThing.dpi = GraphicsUtils::StandardFritzingDPI;
+        renderThing.hideTerminalPoints = renderThing.selectedItems = renderThing.renderBlocker = false;
+	    QString master = m_sketchWidget->renderToSVG(renderThing, m_board, viewLayerIDs);
         if (master.isEmpty()) {
             if (++emptyMasterCount == layerSpecs.count()) {
                 message = tr("No traces or connectors to check");
@@ -620,9 +623,12 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
 bool DRC::makeBoard(QImage * image, QRectF & sourceRes) {
 	LayerList viewLayerIDs;
 	viewLayerIDs << ViewLayer::Board;
-	QRectF boardImageRect;
-	bool empty;
-	QString boardSvg = m_sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, boardImageRect, m_board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
+    RenderThing renderThing;
+    renderThing.printerScale = GraphicsUtils::SVGDPI;
+    renderThing.blackOnly = true;
+    renderThing.dpi = GraphicsUtils::StandardFritzingDPI;
+    renderThing.hideTerminalPoints = renderThing.selectedItems = renderThing.renderBlocker = false;
+	QString boardSvg = m_sketchWidget->renderToSVG(renderThing, m_board, viewLayerIDs);
 	if (boardSvg.isEmpty()) {
 		return false;
 	}
@@ -850,9 +856,11 @@ void DRC::splitSubs(QDomDocument * doc, QDomElement & root, const QString & part
         if (!svgID.isEmpty()) {
             if (svgIDs.contains(svgID)) {
                 if (bothIDs.value(partID + svgID).isEmpty()) {
+                    // no terminal point
                     markSubs(element, markers.inSvgID);
                 }
                 else {
+                    // privilege the terminal point over the pin/pad
                     markSubs(element, markers.inSvgAndID);
                 }
                 netElements << element;         // save these for intersection checks

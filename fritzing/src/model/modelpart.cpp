@@ -1038,3 +1038,4 @@ bool ModelPart::hasSubparts() {
 void ModelPart::setSubpartID(const QString & id) {
     if (m_modelPartShared) m_modelPartShared->setSubpartID(id);
 }
+

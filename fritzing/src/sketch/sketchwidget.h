@@ -76,6 +76,20 @@ struct SwapThing {
     SketchWidget * bbView;
 };
 
+struct RenderThing {
+    bool selectedItems;
+    double printerScale;
+    bool blackOnly;
+    QRectF imageRect;
+    QRectF offsetRect;
+    double dpi;
+	bool renderBlocker;
+    QRectF itemsBoundingRect;
+    QGraphicsItem * board;
+	bool empty;
+    bool hideTerminalPoints;
+};
+
 class SizeItem : public QObject, public QGraphicsLineItem
 {
 	Q_OBJECT
@@ -224,15 +238,7 @@ public:
 	void noteSizeChanged(ItemBase * itemBase, const QSizeF & oldSize, const QSizeF & newSize);
 	void resizeNote(long itemID, const QSizeF & );
 	class SelectItemCommand* stackSelectionState(bool pushIt, QUndoCommand * parentCommand);
-	QString renderToSVG(double printerScale, const LayerList &, 
-						bool blackOnly, QRectF & imageRect, QGraphicsItem * board, double dpi, 
-						bool selectedItems, bool renderBlocker, bool & empty);
-	QString renderToSVG(double printerScale, const LayerList &, 
-						bool blackOnly, QRectF & imageRect, QGraphicsItem * board, QRectF & offsetRect, double dpi, 
-						bool selectedItems, bool renderBlocker, bool & empty);
-	QString renderToSVG(double printerScale, bool blackOnly, QRectF & imageRect, QRectF & offsetRect, double dpi, 
-								  bool renderBlocker, 
-								  QList<QGraphicsItem *> & itemsAndLabels, QRectF itemsBoundingRect, bool & empty);
+	QString renderToSVG(RenderThing &, QGraphicsItem * board, const LayerList &);
 
 	bool spaceBarIsPressed();
 	virtual long setUpSwap(SwapThing &, bool master);
@@ -496,6 +502,9 @@ protected:
     QGraphicsItem * getClickedItem(QList<QGraphicsItem *> & items);
     void cleanupRatsnests(QList< QPointer<ConnectorItem> > & connectorItems, bool connect);
     void rotateWire(Wire *, QTransform & rotation, QPointF center, bool undoOnly, QUndoCommand * parentCommand);
+	QString renderToSVG(RenderThing &, const LayerList &);
+	QString renderToSVG(RenderThing &, QList<QGraphicsItem *> & itemsAndLabels);
+
 
 protected:
 	static bool lessThan(int a, int b);

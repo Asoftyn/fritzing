@@ -7113,41 +7113,37 @@ void SketchWidget::resizeNote(long itemID, const QSizeF & size)
 	note->setSize(size);
 }
 
-QString SketchWidget::renderToSVG(double printerScale, const LayerList & layers, 
-								  bool blackOnly, QRectF & imageRect, QGraphicsItem * board, double dpi, 
-								  bool selectedItems, bool renderBlocker, bool & empty)
+QString SketchWidget::renderToSVG(RenderThing & renderThing, QGraphicsItem * board, const LayerList & layers)
 {
-	QRectF offsetRect;
+    renderThing.board = board;
 	if (board) {
-		offsetRect = board->sceneBoundingRect();
+		renderThing.offsetRect = board->sceneBoundingRect();
 	}
-	return renderToSVG(printerScale, layers, blackOnly, imageRect, board, offsetRect, dpi, selectedItems, renderBlocker, empty);
+	return renderToSVG(renderThing, layers);
 }
 
 
-QString SketchWidget::renderToSVG(double printerScale, const LayerList & layers, 
-								  bool blackOnly, QRectF & imageRect, QGraphicsItem * board, QRectF & offsetRect, double dpi, 
-								  bool selectedItems, bool renderBlocker, bool & empty)
+QString SketchWidget::renderToSVG(RenderThing & renderThing, const LayerList & layers)
 {
 
 	QList<QGraphicsItem *> itemsAndLabels;
 	QRectF itemsBoundingRect;
     QList<QGraphicsItem *> items;
-    if (selectedItems) {
+    if (renderThing.selectedItems) {
         items = scene()->selectedItems();
     }
-    else if (board == NULL) {
+    else if (renderThing.board == NULL) {
         items = scene()->items();
     }
     else {
-        items = scene()->collidingItems(board);
-        items << board;
+        items = scene()->collidingItems(renderThing.board);
+        items << renderThing.board;
     }
 	foreach (QGraphicsItem * item, items) {
 		ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
 		if (itemBase == NULL) continue;
 		if (itemBase->hidden() || itemBase->layerHidden()) continue;
-        if (!renderBlocker) {
+        if (!renderThing.renderBlocker) {
             Pad * pad = qobject_cast<Pad *>(itemBase);
             if (pad != NULL && pad->copperBlocker()) {
                 continue;
@@ -7168,7 +7164,8 @@ QString SketchWidget::renderToSVG(double printerScale, const LayerList & layers,
 		itemsBoundingRect |= item->sceneBoundingRect();
 	}
 
-	return renderToSVG(printerScale, blackOnly, imageRect, offsetRect, dpi, renderBlocker, itemsAndLabels, itemsBoundingRect, empty);
+    renderThing.itemsBoundingRect = itemsBoundingRect;
+	return renderToSVG(renderThing, itemsAndLabels);
 }
 
 QString translateSVG(QString & svg, QPointF loc, double dpi, double printerScale) {
@@ -7183,24 +7180,22 @@ QString translateSVG(QString & svg, QPointF loc, double dpi, double printerScale
 	return svg;
 }
 
-QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QRectF & imageRect, QRectF & offsetRect, double dpi,
-								  bool renderBlocker, QList<QGraphicsItem *> & itemsAndLabels, QRectF itemsBoundingRect,
-								  bool & empty)
+QString SketchWidget::renderToSVG(RenderThing & renderThing, QList<QGraphicsItem *> & itemsAndLabels)
 {
-	empty = true;
+	renderThing.empty = true;
 
-	double width = itemsBoundingRect.width();
-	double height = itemsBoundingRect.height();
-	QPointF offset = itemsBoundingRect.topLeft();
+	double width = renderThing.itemsBoundingRect.width();
+	double height = renderThing.itemsBoundingRect.height();
+	QPointF offset = renderThing.itemsBoundingRect.topLeft();
 
-	if (!offsetRect.isEmpty()) {
-		offset = offsetRect.topLeft();
-		width = offsetRect.width();
-		height = offsetRect.height();
+	if (!renderThing.offsetRect.isEmpty()) {
+		offset = renderThing.offsetRect.topLeft();
+		width = renderThing.offsetRect.width();
+		height = renderThing.offsetRect.height();
 	}
 
-	imageRect.setRect(offset.x(), offset.y(), width, height);
-	QString outputSVG = TextUtils::makeSVGHeader(printerScale, dpi, width, height);
+	renderThing.imageRect.setRect(offset.x(), offset.y(), width, height);
+	QString outputSVG = TextUtils::makeSVGHeader(renderThing.printerScale, renderThing.dpi, width, height);
 
 	QHash<QString, QString> svgHash;
 
@@ -7214,23 +7209,23 @@ QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QRectF & 
 			PartLabel * partLabel = dynamic_cast<PartLabel *>(item);
 			if (partLabel == NULL) continue;
 
-			QString labelSvg = partLabel->owner()->makePartLabelSvg(blackOnly, dpi, printerScale);
+			QString labelSvg = partLabel->owner()->makePartLabelSvg(renderThing.blackOnly, renderThing.dpi, renderThing.printerScale);
 			if (labelSvg.isEmpty()) continue;
 
-            labelSvg = translateSVG(labelSvg, partLabel->owner()->partLabelScenePos() - offset, dpi, printerScale);
+            labelSvg = translateSVG(labelSvg, partLabel->owner()->partLabelScenePos() - offset, renderThing.dpi, renderThing.printerScale);
             labelSvg = QString("<g partID='%1' id='partLabel'>%2</g>").arg(partLabel->owner()->id()).arg(labelSvg);
 
-			empty = false;
+			renderThing.empty = false;
 			outputSVG.append(labelSvg);
 			continue;
 		}
 			
 		if (itemBase->itemType() != ModelPart::Wire) {
-			QString itemSvg = itemBase->retrieveSvg(itemBase->viewLayerID(), svgHash, blackOnly, dpi);
+			QString itemSvg = itemBase->retrieveSvg(itemBase->viewLayerID(), svgHash, renderThing.blackOnly, renderThing.dpi);
 			if (itemSvg.isEmpty()) continue;
 
 
-            if (renderBlocker) {
+            if (renderThing.renderBlocker) {
                 Pad * pad = qobject_cast<Pad *>(itemBase);
                 if (pad && pad->copperBlocker()) {
                     QDomDocument doc;
@@ -7253,7 +7248,7 @@ QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QRectF & 
 
 			foreach (ConnectorItem * ci, itemBase->cachedConnectorItems()) {
                 SvgIdLayer * svgIdLayer = ci->connector()->fullPinInfo(itemBase->viewID(), itemBase->viewLayerID());
-                if (!svgIdLayer->m_terminalId.isEmpty()) {
+                if (renderThing.hideTerminalPoints && !svgIdLayer->m_terminalId.isEmpty()) {
                     // these tend to be degenerate shapes and can cause trouble at gerber export time
                     hideTerminalID(itemSvg, svgIdLayer->m_terminalId);
                 }
@@ -7261,15 +7256,15 @@ QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QRectF & 
 				if (!ci->hasRubberBandLeg()) continue;
 
                 // at the moment, the legs don't get a partID, but since there are no legs in PCB view, we don't care
-				outputSVG.append(ci->makeLegSvg(offset, dpi, printerScale, blackOnly));
+				outputSVG.append(ci->makeLegSvg(offset, renderThing.dpi, renderThing.printerScale, renderThing.blackOnly));
 			}
 
             QTransform t = itemBase->transform();
             itemSvg = TextUtils::svgTransform(itemSvg, t, false, QString());
-            itemSvg = translateSVG(itemSvg, itemBase->scenePos() - offset, dpi, printerScale);
+            itemSvg = translateSVG(itemSvg, itemBase->scenePos() - offset, renderThing.dpi, renderThing.printerScale);
             itemSvg =  QString("<g partID='%1'>%2</g>").arg(itemBase->id()).arg(itemSvg);
 			outputSVG.append(itemSvg);
-			empty = false;
+			renderThing.empty = false;
 
 			/*
 			// TODO:  deal with rotations and flips
@@ -7293,18 +7288,17 @@ QString SketchWidget::renderToSVG(double printerScale, bool blackOnly, QRectF & 
 			//		);
 			//}
 
-            QString wireSvg = makeWireSVG(wire, offset, dpi, printerScale, blackOnly);
+            QString wireSvg = makeWireSVG(wire, offset, renderThing.dpi, renderThing.printerScale, renderThing.blackOnly);
             wireSvg = QString("<g partID='%1'>%2</g>").arg(wire->id()).arg(wireSvg);
 			outputSVG.append(wireSvg);
-			empty = false;
+			renderThing.empty = false;
 		}
-		extraRenderSvgStep(itemBase, offset, dpi, printerScale, outputSVG);
+		extraRenderSvgStep(itemBase, offset, renderThing.dpi, renderThing.printerScale, outputSVG);
 	}
 
 	outputSVG += "</svg>";
 
 	return outputSVG;
-
 }
 
 void SketchWidget::extraRenderSvgStep(ItemBase * itemBase, QPointF offset, double dpi, double printerScale, QString & outputSvg)

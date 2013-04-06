@@ -131,10 +131,9 @@ void GerberGenerator::exportToGerber(const QString & prefix, const QString & exp
 
     // now do it for the outline/contour
     LayerList outlineLayerIDs = ViewLayer::outlineLayers();
-	QRectF imageRect;
-	bool empty;
-	QString svgOutline = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, outlineLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
-    if (svgOutline.isEmpty()) {
+    bool empty;
+    QString svgOutline = renderTo(outlineLayerIDs, board, sketchWidget, empty);
+    if (empty || svgOutline.isEmpty()) {
         displayMessage(QObject::tr("outline is empty"), displayMessageBoxes);
         return;
     }
@@ -169,10 +168,9 @@ void GerberGenerator::exportToGerber(const QString & prefix, const QString & exp
 
 int GerberGenerator::doCopper(ItemBase * board, PCBSketchWidget * sketchWidget, LayerList & viewLayerIDs, const QString & copperName, const QString & copperSuffix, const QString & filename, const QString & exportDir, bool displayMessageBoxes) 
 {
-	QRectF imageRect;
-	bool empty;
-	QString svg = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
-	if (svg.isEmpty()) {
+    bool empty;
+	QString svg = renderTo(viewLayerIDs, board, sketchWidget, empty);
+	if (empty || svg.isEmpty()) {
 		displayMessage(QObject::tr("%1 layer export is empty.").arg(copperName), displayMessageBoxes);
 		return 0;
 	}
@@ -201,18 +199,13 @@ int GerberGenerator::doCopper(ItemBase * board, PCBSketchWidget * sketchWidget, 
 
 int GerberGenerator::doSilk(LayerList silkLayerIDs, const QString & silkName, const QString & gerberSuffix, ItemBase * board, PCBSketchWidget * sketchWidget, const QString & filename, const QString & exportDir, bool displayMessageBoxes, const QString & clipString) 
 {
-	QRectF imageRect;
+
 	bool empty;
-	QString svgSilk = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, silkLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
-    if (svgSilk.isEmpty()) {
-		displayMessage(QObject::tr("silk layer export is empty"), displayMessageBoxes);
+	QString svgSilk = renderTo(silkLayerIDs, board, sketchWidget, empty);
+    if (empty || svgSilk.isEmpty()) {
+		displayMessage(QObject::tr("silk layer %1 export is empty").arg(silkName), displayMessageBoxes);
         return 0;
     }
-
-	if (empty) {
-		// don't bother with file
-		return 0;
-	}
 
 	//QFile f(silkName + "original.svg");
 	//f.open(QFile::WriteOnly);
@@ -244,18 +237,12 @@ int GerberGenerator::doDrill(ItemBase * board, PCBSketchWidget * sketchWidget, c
     LayerList drillLayerIDs;
     drillLayerIDs << ViewLayer::drillLayers();
 
-	QRectF imageRect;
 	bool empty;
-	QString svgDrill = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, drillLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
-    if (svgDrill.isEmpty()) {
+	QString svgDrill = renderTo(drillLayerIDs, board, sketchWidget, empty);
+    if (empty || svgDrill.isEmpty()) {
 		displayMessage(QObject::tr("exported drill file is empty"), displayMessageBoxes);
         return 0;
     }
-
-	if (empty) {
-		// don't bother with file
-		return 0;
-	}
 
 	QSizeF svgSize = TextUtils::parseForWidthAndHeight(svgDrill);
     QMultiHash<long, ConnectorItem *> treatAsCircle;
@@ -283,20 +270,14 @@ int GerberGenerator::doMask(LayerList maskLayerIDs, const QString &maskName, con
 	QList<ItemBase *> copperLogoItems;
 	sketchWidget->hideCopperLogoItems(copperLogoItems);
 
-	QRectF imageRect;
 	bool empty;
-	QString svgMask = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, maskLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
-    if (svgMask.isEmpty()) {
+	QString svgMask = renderTo(maskLayerIDs, board, sketchWidget, empty);
+	sketchWidget->restoreCopperLogoItems(copperLogoItems);
+
+    if (empty || svgMask.isEmpty()) {
 		displayMessage(QObject::tr("exported mask layer %1 is empty").arg(maskName), displayMessageBoxes);
         return 0;
     }
-
-	sketchWidget->restoreCopperLogoItems(copperLogoItems);
-
-	if (empty) {
-		// don't bother with file
-		return 0;
-	}
 
 	svgMask = TextUtils::expandAndFill(svgMask, "black", MaskClearanceMils * 2);
 	if (svgMask.isEmpty()) {
@@ -325,21 +306,15 @@ int GerberGenerator::doPasteMask(LayerList maskLayerIDs, const QString &maskName
 	QList<ItemBase *> holes;
 	sketchWidget->hideHoles(holes);
 
-	QRectF imageRect;
 	bool empty;
-	QString svgMask = sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, maskLayerIDs, true, imageRect, board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
-    if (svgMask.isEmpty()) {
-		displayMessage(QObject::tr("exported paste mask layer is empty"), displayMessageBoxes);
-        return 0;
-    }
-
+	QString svgMask = renderTo(maskLayerIDs, board, sketchWidget, empty);
 	sketchWidget->restoreCopperLogoItems(copperLogoItems);
 	sketchWidget->restoreCopperLogoItems(holes);
 
-	if (empty) {
-		// don't bother with file
-		return 0;
-	}
+    if (empty || svgMask.isEmpty()) {
+		displayMessage(QObject::tr("exported paste mask layer is empty"), displayMessageBoxes);
+        return 0;
+    }
 
     svgMask = sketchWidget->makePasteMask(svgMask, board, GraphicsUtils::StandardFritzingDPI, maskLayerIDs);
     if (svgMask.isEmpty()) return 0;
@@ -1062,4 +1037,16 @@ void GerberGenerator::handleDonuts(QDomElement & root1, QMultiHash<long, Connect
 
         }
     }
+}
+
+QString GerberGenerator::renderTo(const LayerList & layers, ItemBase * board, PCBSketchWidget * sketchWidget, bool & empty) {
+    RenderThing renderThing;
+    renderThing.printerScale = GraphicsUtils::SVGDPI;
+    renderThing.blackOnly = true;
+    renderThing.dpi = GraphicsUtils::StandardFritzingDPI;
+    renderThing.hideTerminalPoints = true;
+    renderThing.selectedItems = renderThing.renderBlocker = false;
+	QString svg = sketchWidget->renderToSVG(renderThing, board, layers);
+    empty = renderThing.empty;
+    return svg;
 }

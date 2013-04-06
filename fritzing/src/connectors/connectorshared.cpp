@@ -85,7 +85,7 @@ ConnectorShared::~ConnectorShared() {
 }
 
 
-const QString & ConnectorShared::id() {
+const QString & ConnectorShared::id() const {
 	return m_id;
 }
 

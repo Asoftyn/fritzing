@@ -308,6 +308,14 @@ bool schematicJumperWillFit(GridPoint & gridPoint, const Grid * grid, int halfSi
     return false;
 }
 
+void initMarkers(Markers & markers, bool pcbType) {
+    markers.outID = DRC::NotNet;
+    markers.inTerminalID = pcbType ? DRC::AlsoNet : DRC::Net;
+    markers.inSvgID = DRC::Net;
+    markers.inSvgAndID = pcbType ? DRC::Net : DRC::AlsoNet;
+    markers.inNoID = DRC::Net;
+}
+
 ////////////////////////////////////////////////////////////////////
 
 bool GridPoint::operator<(const GridPoint& other) const {
@@ -904,9 +912,13 @@ int MazeRouter::findPinsWithin(QList<ConnectorItem *> * net) {
 bool MazeRouter::makeBoard(QImage * boardImage, double keepoutGrid, const QRectF & renderRect) {
 	LayerList viewLayerIDs;
 	viewLayerIDs << ViewLayer::Board;
-	QRectF boardImageRect;
-	bool empty;
-	QString boardSvg = m_sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, boardImageRect, m_board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
+	RenderThing renderThing;
+    renderThing.printerScale = GraphicsUtils::SVGDPI;
+    renderThing.blackOnly = true;
+    renderThing.dpi = GraphicsUtils::StandardFritzingDPI;
+    renderThing.hideTerminalPoints = true;
+    renderThing.selectedItems = renderThing.renderBlocker = false;
+	QString boardSvg = m_sketchWidget->renderToSVG(renderThing, m_board, viewLayerIDs);
 	if (boardSvg.isEmpty()) {
 		return false;
 	}
@@ -949,9 +961,12 @@ bool MazeRouter::makeMasters(QString & message) {
 
     foreach (ViewLayer::ViewLayerSpec viewLayerSpec, layerSpecs) {  
 	    LayerList viewLayerIDs = m_sketchWidget->routingLayers(viewLayerSpec);
-        QRectF masterImageRect;
-        bool empty;
-	    QString master = m_sketchWidget->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, masterImageRect, m_board, GraphicsUtils::StandardFritzingDPI, false, false, empty);
+	    RenderThing renderThing;
+        renderThing.printerScale = GraphicsUtils::SVGDPI;
+        renderThing.blackOnly = true;
+        renderThing.dpi = GraphicsUtils::StandardFritzingDPI;
+        renderThing.hideTerminalPoints = renderThing.selectedItems = renderThing.renderBlocker = false;
+	    QString master = m_sketchWidget->renderToSVG(renderThing, m_board, viewLayerIDs);
         if (master.isEmpty()) {
             continue;
 	    }
@@ -1077,11 +1092,7 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
             //QString before = masterDoc->toString();
 
             Markers markers;
-            markers.outID = DRC::NotNet;
-            markers.inTerminalID = DRC::Net;
-            markers.inSvgID = DRC::Net;
-            markers.inSvgAndID = DRC::AlsoNet;
-            markers.inNoID = DRC::Net;
+            initMarkers(markers, m_pcbType);
             DRC::splitNetPrep(masterDoc, *(net->net), markers, routeThing.netElements[z].net, routeThing.netElements[z].alsoNet, routeThing.netElements[z].notNet, true);
             foreach (QDomElement element, routeThing.netElements[z].net) {
                 element.setTagName("g");
@@ -1101,7 +1112,7 @@ bool MazeRouter::routeNets(NetList & netList, bool makeJumper, Score & currentSc
             m_grid->init4(0, 0, z, m_grid->x, m_grid->y, m_spareImage, GridPartObstacle, false);
             //DebugDialog::debug("obstacles from board done");
 
-            prepSourceAndTarget(masterDoc, routeThing, subnets, z);
+            prepSourceAndTarget(masterDoc, routeThing, subnets, z, viewLayerSpec);
         }
 
         //updateDisplay(m_grid, 0);
@@ -1249,7 +1260,7 @@ bool MazeRouter::routeNext(bool makeJumper, RouteThing & routeThing, QList< QLis
     foreach (ViewLayer::ViewLayerSpec viewLayerSpec, routeThing.layerSpecs) {  
         int z = viewLayerSpec == ViewLayer::Bottom ? 0 : 1;
         QDomDocument * masterDoc = m_masterDocs.value(viewLayerSpec);
-        prepSourceAndTarget(masterDoc, routeThing, subnets, z);
+        prepSourceAndTarget(masterDoc, routeThing, subnets, z, viewLayerSpec);
     }
 
     // redraw traces from this net
@@ -1327,7 +1338,7 @@ bool MazeRouter::moveBack(Score & currentScore, int index, QList<NetOrdering> & 
     return false;
 }
 
-void MazeRouter::prepSourceAndTarget(QDomDocument * masterDoc, RouteThing & routeThing, QList< QList<ConnectorItem *> > & subnets, int z) 
+void MazeRouter::prepSourceAndTarget(QDomDocument * masterDoc, RouteThing & routeThing, QList< QList<ConnectorItem *> > & subnets, int z, ViewLayer::ViewLayerSpec viewLayerSpec) 
 {
     foreach (QDomElement element, routeThing.netElements[z].notNet) {
         element.setTagName("g");
@@ -1336,12 +1347,18 @@ void MazeRouter::prepSourceAndTarget(QDomDocument * masterDoc, RouteThing & rout
         element.setTagName("g");
     }
 
+    //QString debug = masterDoc->toString(4);
+
     foreach (QDomElement element, routeThing.netElements[z].net) {
+       // QString str;
+       // QTextStream stream(&str);
+       // element.save(stream, 0);
+       // DebugDialog::debug(str);
         SvgFileSplitter::forceStrokeWidth(element, -2 * m_keepoutMils, "#000000", false, false);
     }
 
     QList<ConnectorItem *> li = subnets.at(routeThing.nearest.i);
-    QList<QPoint> sourcePoints = renderSource(masterDoc, z, m_grid, routeThing.netElements[z].net, li, GridSource, true, routeThing.r4);
+    QList<QPoint> sourcePoints = renderSource(masterDoc, z, viewLayerSpec, m_grid, routeThing.netElements[z].net, li, GridSource, true, routeThing.r4);
 
     foreach (QPoint p, sourcePoints) {
         GridPoint gridPoint(p, z);
@@ -1351,7 +1368,7 @@ void MazeRouter::prepSourceAndTarget(QDomDocument * masterDoc, RouteThing & rout
     }
 
     QList<ConnectorItem *> lj = subnets.at(routeThing.nearest.j);
-    QList<QPoint> targetPoints = renderSource(masterDoc, z, m_grid, routeThing.netElements[z].net, lj, GridTarget, true, routeThing.r4);
+    QList<QPoint> targetPoints = renderSource(masterDoc, z, viewLayerSpec, m_grid, routeThing.netElements[z].net, lj, GridTarget, true, routeThing.r4);
     foreach (QPoint p, targetPoints) {
         GridPoint gridPoint(p, z);
         gridPoint.qCost = gridPoint.baseCost = /* initialCost(p, routeThing.gridTarget) + */ 0;
@@ -1428,7 +1445,7 @@ void MazeRouter::findNearestPair(QList< QList<ConnectorItem *> > & subnets, int 
     }
 }
 
-QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, GridValue value, bool clearElements, const QRectF & renderRect) {
+QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, ViewLayer::ViewLayerSpec viewLayerSpec, Grid * grid, QList<QDomElement> & netElements, QList<ConnectorItem *> & subnet, GridValue value, bool clearElements, const QRectF & renderRect) {
     if (clearElements) {
         foreach (QDomElement element, netElements) {
             element.setTagName("g");
@@ -1466,13 +1483,19 @@ QList<QPoint> MazeRouter::renderSource(QDomDocument * masterDoc, int z, Grid * g
 
     DRC::renderOne(masterDoc, m_spareImage, renderRect);
 #ifndef QT_NO_DEBUG
-    //static int rsi = 0;
-	//m_spareImage->save(FolderUtils::getUserDataStorePath("") + QString("/rendersource%1_%2.png").arg(rsi++,3,10,QChar('0')).arg(z));
+    static int rsi = 0;
+	m_spareImage->save(FolderUtils::getUserDataStorePath("") + QString("/rendersource%1_%2.png").arg(rsi++,3,10,QChar('0')).arg(z));
 #endif
     QList<QPoint> points = grid->init4(x1, y1, z, x2 - x1, y2 - y1, m_spareImage, value, true);
 
+
+
     // terminal point hack (mostly for schematic view)
     foreach (ConnectorItem * connectorItem, terminalPoints) {
+        if (ViewLayer::specFromID(connectorItem->attachedTo()->viewLayerID()) != viewLayerSpec) {
+            continue;
+        }
+
         QPointF p = connectorItem->sceneAdjustedTerminalPoint(NULL);
         QRectF r = connectorItem->attachedTo()->sceneBoundingRect().adjusted(-m_keepoutPixels, -m_keepoutPixels, m_keepoutPixels, m_keepoutPixels);
         QPointF closest(p.x(), r.top());
@@ -2289,6 +2312,17 @@ void MazeRouter::createTrace(Trace & trace, QList<GridPoint> & gridPoints, Trace
             
     ConnectorItem * destConnectorItem = findAnchor(gridPoints.last(), traceThing, net, traceAnchorD, onTraceD, sourceConnectorItem);
     if (destConnectorItem == NULL) {
+
+        //GridPoint gp = gridPoints.last();
+        //for (int x = gp.x - 5; x < gp.x + 5; x++) {
+        //    m_displayImage[gp.z]->setPixel(x, gp.y, 0xff000000);
+        //}
+        //for (int y = gp.y - 5; y < gp.y + 5; y++) {
+        //    m_displayImage[gp.z]->setPixel(gp.x, y, 0xff000000);
+        //}
+        //updateDisplay(gp.z);
+
+
         DebugDialog::debug("missing dest connector");
         return;
     }
@@ -2475,6 +2509,8 @@ ConnectorItem * MazeRouter::findAnchor(GridPoint gp, const QRectF & gridRect, Tr
                 }
             }
 
+            //connectorItem->debugInfo("candidate");
+
             bool isCandidate = 
                 (gp.z == 0 && m_sketchWidget->attachedToBottomLayer(connectorItem)) ||
                 (gp.z == 1 && m_sketchWidget->attachedToTopLayer(connectorItem))
@@ -2531,6 +2567,7 @@ ConnectorItem * MazeRouter::findAnchor(GridPoint gp, const QRectF & gridRect, Tr
     }
 
     foreach (TraceWire * traceWire, traceWires) {
+        //traceWire->debugInfo("trace candidate");
         bool isCandidate = (gp.z == 0 && m_sketchWidget->attachedToBottomLayer(traceWire->connector0()))
                         || (gp.z == 1 && m_sketchWidget->attachedToTopLayer(traceWire->connector0()));
         if (!isCandidate) continue;
@@ -2986,11 +3023,7 @@ void MazeRouter::optimizeTraces(QList<int> & order, QMultiHash<int, QList< QPoin
             QDomDocument * masterDoc = m_masterDocs.value(layerSpec);
             //QString before = masterDoc->toString();
             Markers markers;
-            markers.outID = DRC::NotNet;
-            markers.inTerminalID = DRC::Net;
-            markers.inSvgID = DRC::Net;
-            markers.inSvgAndID = DRC::AlsoNet;
-            markers.inNoID = DRC::Net;
+            initMarkers(markers, m_pcbType);
             NetElements netElements;
             DRC::splitNetPrep(masterDoc, *(net->net), markers, netElements.net, netElements.alsoNet, netElements.notNet, true);
             foreach (QDomElement element, netElements.net) {
@@ -3074,7 +3107,7 @@ void MazeRouter::optimizeTraces(QList<int> & order, QMultiHash<int, QList< QPoin
             painter.end();
 
             #ifndef QT_NO_DEBUG
-	            m_spareImage->save(FolderUtils::getUserDataStorePath("") + QString("/optimizeObstacles%1_%2.png").arg(netIndex, 2, 10, QChar('0')).arg(layerSpec));
+	            //m_spareImage->save(FolderUtils::getUserDataStorePath("") + QString("/optimizeObstacles%1_%2.png").arg(netIndex, 2, 10, QChar('0')).arg(layerSpec));
             #endif            
 
             // finally test all combinations of each bundle
@@ -3148,7 +3181,7 @@ void MazeRouter::reducePoints(QList<QPointF> & points, QPointF topLeft, QList<Tr
     Q_UNUSED(netIndex);
     Q_UNUSED(layerSpec);
 #ifndef QT_NO_DEBUG
-    int inc = 0;
+    //int inc = 0;
 #endif
     double width = bundle.at(0)->width() * OptimizeFactor;
     for (int separation = endIndex - startIndex; separation > 1; separation--) {
@@ -3191,7 +3224,7 @@ void MazeRouter::reducePoints(QList<QPointF> & points, QPointF topLeft, QList<Tr
                 }
                 painter.end();
                 #ifndef QT_NO_DEBUG
-	                m_spareImage2->save(FolderUtils::getUserDataStorePath("") + QString("/optimizeTrace%1_%2_%3.png").arg(netIndex,2,10,QChar('0')).arg(layerSpec).arg(inc++,3,10,QChar('0')));
+	                //m_spareImage2->save(FolderUtils::getUserDataStorePath("") + QString("/optimizeTrace%1_%2_%3.png").arg(netIndex,2,10,QChar('0')).arg(layerSpec).arg(inc++,3,10,QChar('0')));
                 #endif            
 
                 bool overlaps = false;

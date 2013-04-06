@@ -459,6 +459,25 @@ bool SqliteReferenceModel::loadFromDB(QSqlDatabase & keep_db, QSqlDatabase & db)
         }
     }
 
+    query = db.exec("SELECT subpart_id, part_id FROM schematic_subparts");
+    debugError(query.isActive(), query);
+    if (query.isActive()) {
+        while (query.next()) {
+            int ix = 0;
+            QString subpartID = query.value(ix++).toString();
+            qulonglong dbid = query.value(ix++).toULongLong();
+            ModelPart * modelPart = parts.at(dbid);
+            if (modelPart) {
+                QString subModuleID = modelPart->moduleID() + "_" + subpartID;
+                ModelPart * subModelPart = m_partHash.value(subModuleID);
+                if (subModelPart) {
+                    subModelPart->setSubpartID(subpartID);
+                    modelPart->modelPartShared()->addSubpart(subModelPart->modelPartShared());
+                }
+            }
+        }
+    }
+
     if (m_root == NULL) {
         m_root = new ModelPart();
     }
@@ -556,6 +575,25 @@ bool SqliteReferenceModel::createConnection(const QString & databaseName, bool f
 		")");
         debugError(result, query);
 		result = query.exec("CREATE INDEX idx_busmember_bus_id ON busmembers (bus_id ASC)");
+        debugError(result, query);
+
+        result = query.exec("CREATE TABLE schematic_subparts (\n"
+			"id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n"
+			"label TEXT NOT NULL,\n"
+			"subpart_id TEXT NOT NULL,\n"
+            "part_id INTEGER NOT NULL"
+		")");
+        debugError(result, query);
+		result = query.exec("CREATE INDEX idx_schematic_subpart_part_id ON schematic_subparts (part_id ASC)");
+        debugError(result, query);
+
+        result = query.exec("CREATE TABLE schematic_subpart_connectors (\n"
+			"id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n"
+			"connectorid TEXT NOT NULL,\n"
+            "subpart_id INTEGER NOT NULL"
+		")");
+        debugError(result, query);
+		result = query.exec("CREATE INDEX idx_schematic_subpart_connector_subpart_id ON schematic_subpart_connectors (subpart_id ASC)");
         debugError(result, query);
 
         // TODO: create a dictionary table so redundant tags, property names, and property values aren't stored multiple times
@@ -846,8 +884,18 @@ bool SqliteReferenceModel::insertPart(ModelPart * modelPart, bool fullLoad) {
             path = path.mid(prefix.count() + 1);  // + 1 to remove the beginning "/"
         }
         else {
-            DebugDialog::debug(QString("part path not in parts:%1").arg(path));
-            return true;
+            bool bail = true;
+            if (modelPart->itemType() == ModelPart::SchematicSubpart) {
+                ModelPartShared * mps = modelPart->modelPartShared();
+                if (mps && mps->superpart() && mps->superpart()->path().startsWith(prefix)) {
+                    bail = false;
+                }
+            }
+
+            if (bail) {
+                DebugDialog::debug(QString("part path not in parts:%1").arg(path));
+                return true;
+            }
         }
 
 
@@ -902,6 +950,13 @@ bool SqliteReferenceModel::insertPart(ModelPart * modelPart, bool fullLoad) {
 
             foreach (Bus * bus, modelPart->buses().values()) {
                 insertBus(bus, id);
+            }
+
+            ModelPartShared * mps = modelPart->modelPartShared();
+            if (mps) {
+                foreach (ModelPartShared * sub, mps->subparts()) {
+                    insertSubpart(sub, id);
+                }
             }
         }
 	} else {
@@ -981,9 +1036,9 @@ bool SqliteReferenceModel::insertBus(const Bus * bus, qulonglong id)
         debugExec("couldn't insert bus", query);
 		m_swappingEnabled = false;
 	} else {
-		qulonglong id = query.lastInsertId().toULongLong();
+		qulonglong bid = query.lastInsertId().toULongLong();
         foreach (Connector * connector, bus->connectors()) {
-            insertBusMember(connector, id);
+            insertBusMember(connector, bid);
         }
 	}
 
@@ -1005,7 +1060,6 @@ bool SqliteReferenceModel::insertBusMember(const Connector * connector, qulonglo
 
 	return true;
 }
-
 
 bool SqliteReferenceModel::insertConnector(const Connector * connector, qulonglong id) 
 {
@@ -1274,5 +1328,41 @@ bool SqliteReferenceModel::createParts(QSqlDatabase & db, bool fullLoad)
     query = db.exec("CREATE INDEX idx_part_family ON parts (family ASC)");
     debugError(query.isActive(), query);
     return query.isActive();
+}
+
+bool SqliteReferenceModel::insertSubpart(ModelPartShared * mps, qulonglong id) 
+{
+	QSqlQuery query;
+	query.prepare("INSERT INTO schematic_subparts(label, subpart_id, part_id) VALUES (:label, :subpart_id, :part_id)");
+	query.bindValue(":label", mps->label());
+	query.bindValue(":subpart_id", mps->subpartID());
+	query.bindValue(":part_id", id);
+	if(!query.exec()) {
+        debugExec("couldn't insert bus", query);
+		m_swappingEnabled = false;
+	} else {
+		qulonglong sid = query.lastInsertId().toULongLong();
+	    foreach (ConnectorShared * connectorShared, mps->connectorsShared()) {
+            insertSubpartConnector(connectorShared, sid);
+        }
+	}
+
+	return true;
+}
+
+bool SqliteReferenceModel::insertSubpartConnector(const ConnectorShared * cs, qulonglong id) 
+{
+	QSqlQuery query;
+	query.prepare("INSERT INTO schematic_subpart_connectors(connectorid, subpart_id) VALUES (:connectorid, :subpart_id)");
+	query.bindValue(":connectorid", cs->id());
+	query.bindValue(":subpart_id", id);
+	if(!query.exec()) {
+        debugExec("couldn't insert subpart connector", query);
+		m_swappingEnabled = false;
+	} else {
+		//qulonglong id = query.lastInsertId().toULongLong();
+	}
+
+	return true;
 }
 

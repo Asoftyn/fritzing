@@ -262,9 +262,13 @@ void MainWindow::exportEtchable(bool wantPDF, bool wantSVG)
 		}
 
 		if (wantSVG) {
-			bool empty;
-		    QRectF imageRect;
-			QString svg = m_pcbGraphicsView->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, imageRect, board, GraphicsUtils::IllustratorDPI, false, false, empty);
+			RenderThing renderThing;
+            renderThing.printerScale = GraphicsUtils::SVGDPI;
+            renderThing.blackOnly = true;
+            renderThing.dpi = GraphicsUtils::IllustratorDPI;
+            renderThing.hideTerminalPoints = true;
+            renderThing.selectedItems = renderThing.renderBlocker = false;
+			QString svg = m_pcbGraphicsView->renderToSVG(renderThing, board, viewLayerIDs);
 			massageOutput(svg, doMask, doSilk, doPaste, maskTop, maskBottom, fileName, board, GraphicsUtils::IllustratorDPI, viewLayerIDs);		
 			QString merged = mergeBoardSvg(svg, board, GraphicsUtils::IllustratorDPI, false, viewLayerIDs);
             TextUtils::writeUtf8(fileName.arg(""), merged);
@@ -283,9 +287,13 @@ void MainWindow::exportEtchable(bool wantPDF, bool wantSVG)
 			    int res = printer.resolution();
 
                 if (svg.isEmpty()) {
-			        bool empty;
-                    QRectF imageRect;
-			        svg = m_pcbGraphicsView->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, imageRect, board, res, false, false, empty);
+			        RenderThing renderThing;
+                    renderThing.printerScale = GraphicsUtils::SVGDPI;
+                    renderThing.blackOnly = true;
+                    renderThing.dpi = res;
+                    renderThing.hideTerminalPoints = true;
+                    renderThing.selectedItems = renderThing.renderBlocker = false;
+			        svg = m_pcbGraphicsView->renderToSVG(renderThing, board, viewLayerIDs);
 			        massageOutput(svg, doMask, doSilk, doPaste, maskTop, maskBottom, fileName, board, res, viewLayerIDs);
                 }
 			
@@ -395,10 +403,13 @@ QString MainWindow::mergeBoardSvg(QString & svg, ItemBase * board, int res, bool
 	QString boardSvg = getBoardSvg(board, res, viewLayerIDs);
 
     LayerList outlineLayerIDs = ViewLayer::outlineLayers();
-	QRectF imageRect;
-	bool empty;
-
-	QString outlineSvg = m_pcbGraphicsView->renderToSVG(GraphicsUtils::SVGDPI, outlineLayerIDs, true, imageRect, board, res, false, false, empty);
+	RenderThing renderThing;
+    renderThing.printerScale = GraphicsUtils::SVGDPI;
+    renderThing.blackOnly = true;
+    renderThing.dpi = res;
+    renderThing.hideTerminalPoints = true;
+    renderThing.selectedItems = renderThing.renderBlocker = false;
+	QString outlineSvg = m_pcbGraphicsView->renderToSVG(renderThing, board, outlineLayerIDs);
 	outlineSvg = GerberGenerator::cleanOutline(outlineSvg);
     outlineSvg = TextUtils::slamStrokeAndFill(outlineSvg, "black", "0.5", "none");
 
@@ -440,9 +451,13 @@ QString MainWindow::getBoardSvg(ItemBase * board, int res,  LayerList & viewLaye
 	}
 	board->setSelected(true);
 
-	bool empty;
-    QRectF imageRect;
-	QString svg = m_pcbGraphicsView->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, true, imageRect, board, res, true, false, empty);
+	RenderThing renderThing;
+    renderThing.printerScale = GraphicsUtils::SVGDPI;
+    renderThing.blackOnly = true;
+    renderThing.dpi = res;
+    renderThing.selectedItems = renderThing.hideTerminalPoints = true;
+    renderThing.renderBlocker = false;
+	QString svg = m_pcbGraphicsView->renderToSVG(renderThing, board, viewLayerIDs);
 	board->setSelected(false);
 	foreach (QGraphicsItem * item, items) {
 		item->setSelected(true);
@@ -1071,9 +1086,14 @@ void MainWindow::exportSvg(double res, bool selectedItems, bool flatten, const Q
 		viewLayerIDs << viewLayer->viewLayerID();
 	}
 
-	QRectF imageRect;
-	bool empty;
-	QString svg = m_currentGraphicsView->renderToSVG(GraphicsUtils::SVGDPI, viewLayerIDs, false, imageRect, NULL, res, selectedItems, false, empty);
+	RenderThing renderThing;
+    renderThing.printerScale = GraphicsUtils::SVGDPI;
+    renderThing.blackOnly = false;
+    renderThing.dpi = res;
+    renderThing.selectedItems = selectedItems;
+    renderThing.hideTerminalPoints = true;
+    renderThing.renderBlocker = false;
+	QString svg = m_currentGraphicsView->renderToSVG(renderThing, NULL, viewLayerIDs);
 	if (svg.isEmpty()) {
 		// tell the user something reasonable
 		return;

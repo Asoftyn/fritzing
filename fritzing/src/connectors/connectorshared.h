@@ -44,7 +44,7 @@ public:
 	ConnectorShared(const QDomElement & domElement);
 	~ConnectorShared();
 
-	const QString & id();
+	const QString & id() const;
 	void setId(QString id);
 	const QString & description();
 	void setDescription(QString description);

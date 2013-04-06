@@ -703,6 +703,8 @@ QList<Bus *> ItemBase::buses() {
 }
 
 void ItemBase::busConnectorItems(class Bus * bus, ConnectorItem * fromConnectorItem, QList<class ConnectorItem *> & items) {
+    Q_UNUSED(fromConnectorItem)
+
 	if (bus == NULL) return;
 
 	foreach (Connector * connector, bus->connectors()) {

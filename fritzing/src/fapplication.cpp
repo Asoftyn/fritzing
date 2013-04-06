@@ -841,6 +841,8 @@ void FApplication::runSvgServiceAux()
 
 void FApplication::runDatabaseService()
 {
+	createUserDataStoreFolderStructure();
+
     DebugDialog::setEnabled(true);
     QDir * parent = FolderUtils::getApplicationSubFolder("pdb");
     QFileInfoList dirs = parent->entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);

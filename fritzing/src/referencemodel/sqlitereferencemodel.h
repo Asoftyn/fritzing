@@ -83,14 +83,16 @@ class SqliteReferenceModel : public ReferenceModel {
 		bool insertViewImage(const struct ViewImage *, qulonglong id);
         bool insertConnector(const class Connector *, qulonglong id);
         bool insertConnectorLayer(const struct SvgIdLayer *, qulonglong id);  // connector db id
-        bool insertBus(const Bus * bus, qulonglong id);
-        bool insertBusMember(const Connector * connector, qulonglong id);
+        bool insertBus(const Bus *, qulonglong id);
+        bool insertBusMember(const Connector *, qulonglong id);
 		qulonglong partId(QString moduleID);
 		bool removePart(qulonglong partId);
 		bool removeProperties(qulonglong partId);
         bool loadFromDB(QSqlDatabase & keep_db, QSqlDatabase & db);
         bool createProperties(QSqlDatabase & db);
         bool createParts(QSqlDatabase & db, bool fullLoad);
+        bool insertSubpart(ModelPartShared *, qulonglong id);
+        bool insertSubpartConnector(const ConnectorShared * cs, qulonglong id);
 
 protected:
 		volatile bool m_swappingEnabled;

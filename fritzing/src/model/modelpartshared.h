@@ -79,7 +79,7 @@ public:
 	void setUrl(QString);
 	const QString & title();
 	void setTitle(QString);
-	const QString & label();
+	const QString & label() const;
 	void setLabel(QString);
 	const QDate & date();
 	void setDate(QDate);
@@ -98,7 +98,9 @@ public:
     void addSubpart(ModelPartShared * subpart);
     bool hasSubparts();
     void setSubpartID(const QString &);
-    const QString & subpartID();
+    const QString & subpartID() const;
+    ModelPartShared * superpart();
+    void setSuperpart(ModelPartShared *);
     bool anySticky(ViewLayer::ViewID);
     bool hasMultipleLayers(ViewLayer::ViewID);
     bool canFlipHorizontal(ViewLayer::ViewID);
@@ -208,6 +210,7 @@ protected:
     bool m_hasZeroConnector;
     int m_ownerCount;
     QList< QPointer<ModelPartShared> > m_subparts;
+    QPointer<ModelPartShared> m_superpart;
     QString m_subpartID;
 };
 

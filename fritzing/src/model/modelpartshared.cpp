@@ -101,6 +101,7 @@ void ModelPartShared::commonInit() {
     m_dbid = 0;
     m_ownerCount = 0;
 	m_hasZeroConnector = m_flippedSMD = m_connectorsInitialized = m_ignoreTerminalPoints = m_needsCopper1 = false;
+    m_superpart = NULL;
 }
 
 ModelPartShared::~ModelPartShared() {
@@ -240,7 +241,7 @@ void ModelPartShared::setTitle(QString title) {
 	m_title = title;
 }
 
-const QString & ModelPartShared::label() {
+const QString & ModelPartShared::label() const {
 	return m_label;
 }
 
@@ -462,6 +463,7 @@ void ModelPartShared::copy(ModelPartShared* other) {
 	setTitle(other->title());
 	setUri(other->uri());
 	setVersion(other->version());
+    setSuperpart(other->superpart());
 
 	foreach (ViewLayer::ViewID viewID, other->m_viewImages.keys()) {
         ViewImage * otherViewImage = other->m_viewImages.value(viewID);
@@ -820,7 +822,18 @@ const QList< QPointer<ModelPartShared> > & ModelPartShared::subparts() {
 }
 
 void ModelPartShared::addSubpart(ModelPartShared * subpart) {
+    if (subpart == NULL) return;
+
     m_subparts.append(subpart);
+    subpart->setSuperpart(this);
+}
+
+ModelPartShared * ModelPartShared::superpart() {
+    return m_superpart;
+}
+
+void ModelPartShared::setSuperpart(ModelPartShared * sup) {
+    m_superpart = sup;
 }
 
 bool ModelPartShared::hasSubparts() {
@@ -831,6 +844,6 @@ void ModelPartShared::setSubpartID(const QString & id) {
     m_subpartID = id;
 }
 
-const QString & ModelPartShared::subpartID() {
-    return m_subpartID ;
+const QString & ModelPartShared::subpartID() const {
+    return m_subpartID;
 }
