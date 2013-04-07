@@ -96,7 +96,7 @@ public:
 	void setTransforms();
 	void syncKinMoved(QPointF offset, QPointF loc);
 
-	void setInstanceTitle(const QString&);
+	void setInstanceTitle(const QString&, bool initial);
 
 	bool swap(ModelPart* newModelPart, const LayerHash &layerHash, bool reinit, class SwapCommand *);
 	void setHidden(bool hidden);

@@ -277,7 +277,7 @@ bool ModelBase::loadInstances(QDomDocument & domDocument, QDomElement & instance
    		// TODO Mariano: i think this is not the way
    		QString instanceTitle = instance.firstChildElement("title").text();
    		if(!instanceTitle.isNull() && !instanceTitle.isEmpty()) {
-   			modelPart->setInstanceTitle(instanceTitle);
+   			modelPart->setInstanceTitle(instanceTitle, false);
    		}
 
 		QDomElement localConnectors = instance.firstChildElement("localConnectors");

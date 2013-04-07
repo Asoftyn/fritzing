@@ -163,7 +163,7 @@ public:
 
 	const QString & instanceTitle() const;
 	const QString & instanceText();
-	void setInstanceTitle(QString);
+	void setInstanceTitle(QString, bool initial);
 	void setInstanceText(QString);
 	QString getNextTitle(const QString & candidate);
 
@@ -215,6 +215,7 @@ protected:
 	void saveInstance(QXmlStreamWriter & streamWriter);
 	QList< QPointer<ModelPart> > * ensureInstanceTitleIncrements(const QString & prefix);
 	void clearOldInstanceTitle(const QString & title);
+    bool setSubpartInstanceTitle();
 
 protected:
 	QList< QPointer<class ItemBase> > m_viewItems;

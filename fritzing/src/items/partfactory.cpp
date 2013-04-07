@@ -54,6 +54,7 @@ $Date$
 #include "breadboard.h"
 #include "stripboard.h"
 #include "led.h"
+#include "schematicsubpart.h"
 #include "../utils/folderutils.h"
 #include "../utils/lockmanager.h"
 #include "../utils/textutils.h"
@@ -120,6 +121,8 @@ ItemBase * PartFactory::createPartAux( ModelPart * modelPart, ViewLayer::ViewID 
 			return new Via(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 		case ModelPart::Hole:
 			return new Hole(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
+        case ModelPart::SchematicSubpart:
+            return new SchematicSubpart(modelPart, viewID, viewGeometry, id, itemMenu, doLabel);
 		default:
 			{
 				QString moduleID = modelPart->moduleID();

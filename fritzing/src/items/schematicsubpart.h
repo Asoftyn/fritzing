@@ -38,10 +38,12 @@ public:
 	SchematicSubpart(ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel);
 	~SchematicSubpart();
 
-protected:
-    QList<SchematicSubpart> m_siblings;
-    ItemBase * m_super;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent * event );
+	void hoverLeaveEvent( QGraphicsSceneHoverEvent * event );
 
+protected:
+    void simpleHoverEnterEvent(QGraphicsSceneHoverEvent * event );
+	void simpleHoverLeaveEvent( QGraphicsSceneHoverEvent * event );
 
 };
 

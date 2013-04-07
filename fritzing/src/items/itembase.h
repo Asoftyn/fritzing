@@ -228,6 +228,7 @@ public:
     void setSuperpart(ItemBase *);
     ItemBase * superpart();
     ItemBase * findSubpart(const QString & connectorID, ViewLayer::ViewLayerSpec);
+    const QList< QPointer<ItemBase> > & subparts();
 
 public:
 	virtual void getConnectedColor(ConnectorItem *, QBrush * &, QPen * &, double & opacity, double & negativePenWidth, bool & negativeOffsetRect);
@@ -288,7 +289,7 @@ public:
 	virtual ConnectorItem* newConnectorItem(class Connector *connector);
 	virtual ConnectorItem* newConnectorItem(ItemBase * layerkin, Connector *connector);
 
-	virtual void setInstanceTitle(const QString &title);
+	virtual void setInstanceTitle(const QString &title, bool initial);
 	void updatePartLabelInstanceTitle();
 
 public slots:
@@ -317,7 +318,7 @@ protected:
 
 	void setInstanceTitleTooltip(const QString& text);
 	virtual void setDefaultTooltip();
-	void setInstanceTitleAux(const QString & title);
+	void setInstanceTitleAux(const QString & title, bool initial);
 	void saveLocAndTransform(QXmlStreamWriter & streamWriter);
     QPixmap * getPixmap(ViewLayer::ViewID, bool swappingEnabled, QSize size);
     virtual ViewLayer::ViewID useViewIDForPixmap(ViewLayer::ViewID, bool swappingEnabled);

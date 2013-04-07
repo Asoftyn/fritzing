@@ -101,7 +101,7 @@ SymbolPaletteItem::SymbolPaletteItem( ModelPart * modelPart, ViewLayer::ViewID v
 			}
 			modelPart->setLocalProp("label", label);
 		}
-        setInstanceTitle(label);
+        setInstanceTitle(label, true);
 
 		QString direction = getDirection();
 		if (direction.isEmpty()) {

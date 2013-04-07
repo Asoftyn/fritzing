@@ -174,7 +174,5 @@
 			<connector id="connector6"/>
 		</connectors>
 	</subpart>
-
     </schematic-subparts>
-    
 </module>

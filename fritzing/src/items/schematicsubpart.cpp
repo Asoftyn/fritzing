@@ -30,9 +30,44 @@ $Date: 2013-03-09 08:18:59 +0100 (Sa, 09 Mrz 2013) $
 SchematicSubpart::SchematicSubpart( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, bool doLabel)
 	: PaletteItem(modelPart, viewID, viewGeometry, id, itemMenu, doLabel)
 {
-    m_super = NULL;
 }
 
 SchematicSubpart::~SchematicSubpart() {
+}
+
+void SchematicSubpart::hoverEnterEvent (QGraphicsSceneHoverEvent * event)
+{
+	PaletteItem::hoverEnterEvent(event);
+    if (m_superpart) {
+        foreach (ItemBase * itemBase, m_superpart->subparts()) {
+            if (itemBase != this) {
+                SchematicSubpart * subpart = qobject_cast<SchematicSubpart *>(itemBase);
+                if (subpart) subpart->simpleHoverEnterEvent(event);
+            }
+        }
+    }
+}
+
+void SchematicSubpart::hoverLeaveEvent (QGraphicsSceneHoverEvent * event)
+{
+	PaletteItem::hoverLeaveEvent(event);
+    if (m_superpart) {
+        foreach (ItemBase * itemBase, m_superpart->subparts()) {
+            if (itemBase != this) {
+                SchematicSubpart * subpart = qobject_cast<SchematicSubpart *>(itemBase);
+                if (subpart) subpart->simpleHoverLeaveEvent(event);
+            }
+        }
+    }
+}
+
+void SchematicSubpart::simpleHoverEnterEvent (QGraphicsSceneHoverEvent * event)
+{
+    PaletteItem::hoverEnterEvent(event);
+}
+
+void SchematicSubpart::simpleHoverLeaveEvent (QGraphicsSceneHoverEvent * event)
+{
+    PaletteItem::hoverLeaveEvent(event);
 }
 

@@ -780,8 +780,12 @@ ModelPartList * ModelPart::ensureInstanceTitleIncrements(const QString & prefix)
 	return modelParts;
 }
 
-void ModelPart::setInstanceTitle(QString title) {
-	if (title.compare(m_instanceTitle) == 0) return;
+void ModelPart::setInstanceTitle(QString title, bool initial) {
+    if (initial) {
+        if (setSubpartInstanceTitle()) return;
+    }
+
+    if (title.compare(m_instanceTitle) == 0) return;
 
 	clearOldInstanceTitle(m_instanceTitle);
 
@@ -795,6 +799,38 @@ void ModelPart::setInstanceTitle(QString title) {
 		modelParts->append(this);
 	}
 	//DebugDialog::debug(QString("adding title:%1 ix:%2 c:%3").arg(title).arg(modelIndex()).arg(modelParts->count()));
+
+    if (m_modelPartShared && m_modelPartShared->hasSubparts()) {
+        if (m_viewItems.count() > 0) {
+            ItemBase * itemBase = m_viewItems.last();
+            if (itemBase) {
+                foreach (ItemBase * subpart, itemBase->subparts()) {
+                    subpart->setInstanceTitle("", true);   // will end up calling setSubpartInstanceTitle()
+                }
+            }
+        }
+    }
+}
+
+bool ModelPart::setSubpartInstanceTitle() {
+    if (m_modelPartShared == NULL) return false;
+    if (m_modelPartShared->superpart() == NULL) return false;
+    if (m_viewItems.count() <= 0) return false;
+                
+    ItemBase * itemBase = m_viewItems.last();
+    if (itemBase == NULL) return false;
+
+    itemBase = itemBase->superpart();
+    if (itemBase == NULL) return false;
+
+    QString superTitle = itemBase->instanceTitle();
+    if (superTitle.isEmpty()) return false;
+
+    QString label = m_modelPartShared->label();
+    if (label.isEmpty()) return false;
+
+    m_instanceTitle = superTitle + "_" + label;
+    return true;
 }
 
 QString ModelPart::getNextTitle(const QString & title) {

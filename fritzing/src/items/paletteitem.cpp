@@ -417,10 +417,10 @@ void PaletteItem::syncKinMoved(QPointF offset, QPointF newPos) {
 	//}
 }
 
-void PaletteItem::setInstanceTitle(const QString& title) {
-	ItemBase::setInstanceTitle(title);
+void PaletteItem::setInstanceTitle(const QString& title, bool initial) {
+	ItemBase::setInstanceTitle(title, initial);
 	foreach (ItemBase * lkpi, m_layerKin) {
-		lkpi->setInstanceTitle(title);
+		lkpi->setInstanceTitle(title, initial);
 	}
 }
 

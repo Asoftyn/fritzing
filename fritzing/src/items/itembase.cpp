@@ -982,8 +982,8 @@ const QString & ItemBase::instanceTitle() const {
 	return ___emptyString___;
 }
 
-void ItemBase::setInstanceTitle(const QString &title) {
-	setInstanceTitleAux(title);
+void ItemBase::setInstanceTitle(const QString &title, bool initial) {
+	setInstanceTitleAux(title, initial);
 	if (m_partLabel) {
 		m_partLabel->setPlainText(title);
 	}
@@ -995,10 +995,10 @@ void ItemBase::updatePartLabelInstanceTitle() {
 	}
 }
 
-void ItemBase::setInstanceTitleAux(const QString &title)
+void ItemBase::setInstanceTitleAux(const QString &title, bool initial)
 {
 	if (m_modelPart) {
-		m_modelPart->setInstanceTitle(title);
+		m_modelPart->setInstanceTitle(title, initial);
 	}
 	setInstanceTitleTooltip(title);
 
@@ -1148,7 +1148,7 @@ void ItemBase::partLabelChanged(const QString & newText) {
 	// sent from part label after inline edit
 	InfoGraphicsView *infographics = InfoGraphicsView::getInfoGraphicsView(this);
 	QString oldText = modelPart()->instanceTitle();
-	setInstanceTitleAux(newText);
+	setInstanceTitleAux(newText, false);
 	if (infographics != NULL) {
 		infographics->partLabelChanged(this, oldText, newText);
 	}
@@ -1221,7 +1221,7 @@ void ItemBase::setSwappable(bool swappable) {
 
 void ItemBase::ensureUniqueTitle(const QString & title, bool force) {
 	if (force || instanceTitle().isEmpty() || instanceTitle().isNull()) {
-		setInstanceTitle(modelPart()->getNextTitle(title));
+		setInstanceTitle(modelPart()->getNextTitle(title), true);
 	}
 }
 
@@ -2295,3 +2295,7 @@ ItemBase * ItemBase::findSubpart(const QString & connectorID, ViewLayer::ViewLay
     return NULL;
 }
 
+const QList< QPointer<ItemBase> > & ItemBase::subparts()
+{
+    return m_subparts;
+}

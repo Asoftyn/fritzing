@@ -587,15 +587,6 @@ bool SqliteReferenceModel::createConnection(const QString & databaseName, bool f
 		result = query.exec("CREATE INDEX idx_schematic_subpart_part_id ON schematic_subparts (part_id ASC)");
         debugError(result, query);
 
-        result = query.exec("CREATE TABLE schematic_subpart_connectors (\n"
-			"id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n"
-			"connectorid TEXT NOT NULL,\n"
-            "subpart_id INTEGER NOT NULL"
-		")");
-        debugError(result, query);
-		result = query.exec("CREATE INDEX idx_schematic_subpart_connector_subpart_id ON schematic_subpart_connectors (subpart_id ASC)");
-        debugError(result, query);
-
         // TODO: create a dictionary table so redundant tags, property names, and property values aren't stored multiple times
 
 		result = query.exec("CREATE TABLE tags (\n"
@@ -1340,28 +1331,10 @@ bool SqliteReferenceModel::insertSubpart(ModelPartShared * mps, qulonglong id)
 	if(!query.exec()) {
         debugExec("couldn't insert bus", query);
 		m_swappingEnabled = false;
-	} else {
-		qulonglong sid = query.lastInsertId().toULongLong();
-	    foreach (ConnectorShared * connectorShared, mps->connectorsShared()) {
-            insertSubpartConnector(connectorShared, sid);
-        }
-	}
-
-	return true;
-}
-
-bool SqliteReferenceModel::insertSubpartConnector(const ConnectorShared * cs, qulonglong id) 
-{
-	QSqlQuery query;
-	query.prepare("INSERT INTO schematic_subpart_connectors(connectorid, subpart_id) VALUES (:connectorid, :subpart_id)");
-	query.bindValue(":connectorid", cs->id());
-	query.bindValue(":subpart_id", id);
-	if(!query.exec()) {
-        debugExec("couldn't insert subpart connector", query);
-		m_swappingEnabled = false;
-	} else {
-		//qulonglong id = query.lastInsertId().toULongLong();
-	}
+	} 
+    //else {
+	//	qulonglong sid = query.lastInsertId().toULongLong();
+	//}
 
 	return true;
 }

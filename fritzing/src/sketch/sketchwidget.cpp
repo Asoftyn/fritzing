@@ -6983,7 +6983,7 @@ void SketchWidget::setInstanceTitle(long itemID, const QString & oldText, const 
 	if (itemBase == NULL) return;
 
 	if (!isUndoable) {
-		itemBase->setInstanceTitle(newText);
+		itemBase->setInstanceTitle(newText, false);
 		if (doEmit && currentlyInfoviewed(itemBase))  {
 			// TODO: just change the affected item in the info view
 			viewItemInfo(itemBase);
@@ -9491,6 +9491,8 @@ void SketchWidget::addSubpart(long id, long subpartID, bool doEmit) {
     if (sub == NULL) return;
 
     super->addSubpart(sub);
+
+    sub->setInstanceTitle("", true);
 
     if (doEmit) {
         emit addSubpartSignal(id, subpartID, false);

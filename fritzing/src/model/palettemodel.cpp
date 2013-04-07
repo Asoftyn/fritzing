@@ -594,9 +594,7 @@ ModelPart * PaletteModel::makeSubpart(ModelPart * originalModelPart, const QDomE
     root.setAttribute("moduleId", moduleID);
     QDomElement label = root.firstChildElement("label");
     if (!label.isNull()) {
-        QString text;
-        TextUtils::findText(label, text);
-        TextUtils::replaceChildText(label, text + "_" + newLabel);
+        TextUtils::replaceChildText(label, newLabel);
     }
     QDomElement views = root.firstChildElement("views");
     QDomElement schematicView = views.firstChildElement(ViewLayer::viewIDXmlName(ViewLayer::SchematicView));
