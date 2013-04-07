@@ -293,6 +293,7 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
 		sceneCorner.setY(sceneCenter.y() - (boundingRect->height() / 2));
 	}
 
+    QHash<ItemBase *, long> superparts;
     QList<ModelPart *> zeroLength;
 	// make parts
 	foreach (ModelPart * mp, modelParts) {
@@ -306,6 +307,8 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
 		if (view.isNull()) continue;
 
 		bool locked = view.attribute("locked", "").compare("true") == 0;
+        bool superpartOK;
+        long superpartID = view.attribute("superpart", "").toLong(&superpartOK);
 
 		QDomElement geometry = view.firstChildElement("geometry");
 		if (geometry.isNull()) continue;
@@ -338,6 +341,10 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
 				if (locked) {
 					itemBase->setMoveLock(true);
 				}
+
+                if (superpartOK) {
+                    superparts.insert(itemBase, superpartID);
+                }
 
                 while (!layerHidden.isNull()) {
                     hidePartLayer(itemBase, ViewLayer::viewLayerIDFromXmlString(layerHidden.attribute("layer")), true);
@@ -472,6 +479,13 @@ void SketchWidget::loadFromModelParts(QList<ModelPart *> & modelParts, BaseComma
         mp->killViewItems();
         m_sketchModel->removeModelPart(mp);
         delete mp;
+    }
+
+    foreach (ItemBase * sub, superparts.keys()) {
+        ItemBase * super = findItem(superparts.value(sub));
+        if (super) {
+            super->addSubpart(sub);
+        }
     }
 
     if (parentCommand) {

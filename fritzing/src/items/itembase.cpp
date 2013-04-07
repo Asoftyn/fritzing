@@ -336,6 +336,9 @@ void ItemBase::saveInstance(QXmlStreamWriter & streamWriter) {
 	if (m_moveLock) {
 		streamWriter.writeAttribute("locked", "true");
 	}
+    if (m_superpart) {
+        streamWriter.writeAttribute("superpart", QString::number(m_superpart->id()));
+    }
 
 	this->saveGeometry();
 	writeGeometry(streamWriter);
