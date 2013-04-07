@@ -1444,20 +1444,3 @@ void SvgFileSplitter::showTextAux(QDomElement & parent, bool & hasText, bool roo
     }
 }
 
-void SvgFileSplitter::showSubpart(QDomElement & root, const QString & subpart)
-{    
-    if (subpart.isEmpty()) return;
-
-    QString id = root.attribute("id");
-    if (id == subpart) return;
-
-    QDomElement child = root.firstChildElement();
-    while (!child.isNull()) {
-        showSubpart(child, subpart);
-        child = child.nextSiblingElement();
-    }
-
-    if (root.tagName() != "g" && root.tagName() != "svg") {
-        root.setTagName("g");
-    }
-}

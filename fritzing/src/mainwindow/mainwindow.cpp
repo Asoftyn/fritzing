@@ -1560,7 +1560,7 @@ QStringList MainWindow::saveBundledAux(ModelPart *mp, const QDir &destFolder) {
 		QString basename = mp->hasBaseNameFor(viewID);
 		if (basename.isEmpty()) continue;
 
-		QString filename = ItemBase::getSvgFilename(mp, basename);
+		QString filename = PartFactory::getSvgFilename(mp, basename, true, true);
 		if (filename.isEmpty()) continue;
 
 		QFile file(filename);

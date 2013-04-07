@@ -110,7 +110,6 @@ QPointer<ReferenceModel> ItemBase::TheReferenceModel = NULL;
 
 QString ItemBase::partInstanceDefaultTitle;
 QList<ItemBase *> ItemBase::emptyList;
-QString ItemBase::SvgFilesDir = "svg";
 
 const QColor ItemBase::hoverColor(0,0,0);
 const double ItemBase::hoverOpacity = .20;
@@ -1348,7 +1347,7 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, LayerAttributes & lay
 
 
 	//DebugDialog::debug(QString("set up image elapsed (1) %1").arg(t.elapsed()) );
-	QString filename = getSvgFilename(modelPart, modelPartShared->imageFileName(layerAttributes.viewID, layerAttributes.viewLayerID));
+	QString filename = PartFactory::getSvgFilename(modelPart, modelPartShared->imageFileName(layerAttributes.viewID, layerAttributes.viewLayerID), true, true);
 
 //#ifndef QT_NO_DEBUG
 	//DebugDialog::debug(QString("set up image elapsed (2) %1").arg(t.elapsed()) );
@@ -1471,57 +1470,6 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, LayerAttributes & lay
 	}
 
 	return newRenderer;
-}
-
-QString ItemBase::getSvgFilename(ModelPart * modelPart, const QString & baseName) 
-{
-	QStringList tempPaths;
-	QString postfix = "/"+ ItemBase::SvgFilesDir +"/%1/"+ baseName;
-    QString userStore = FolderUtils::getUserDataStorePath("parts")+postfix;
-    QString pfPath = PartFactory::folderPath() + postfix;
-	if(!modelPart->path().isEmpty()) {
-		QDir dir(modelPart->path());			// is a path to a filename
-		dir.cdUp();									// lop off the filename
-		dir.cdUp();									// parts root
-		tempPaths << dir.absolutePath() + postfix;
-		tempPaths << FolderUtils::getApplicationSubFolderPath("parts")+postfix;    // some svgs may still be in the fritzing parts folder, though the other svgs are in the user folder
-        if (tempPaths.at(0).compare(userStore) != 0) {
-            tempPaths << userStore;
-        }
-        if (tempPaths.at(0).compare(pfPath) != 0) {
-            tempPaths << pfPath;
-        }
-        //DebugDialog::debug("temp path");
-        //foreach (QString tempPath, tempPaths) {
-        //    DebugDialog::debug(tempPath);
-        //}
-    } 
-	else {
-        DebugDialog::debug("modelPart with no path--this shouldn't happen");
-		tempPaths << FolderUtils::getApplicationSubFolderPath("parts")+postfix;
-		tempPaths << userStore;
-	}
-	tempPaths << ":resources/parts/svg/%1/" + baseName;
-
-		//DebugDialog::debug(QString("got tempPath %1").arg(tempPath));
-
-	QString filename;
-	foreach (QString tempPath, tempPaths) {
-		foreach (QString possibleFolder, ModelPart::possibleFolders()) {
-			filename = tempPath.arg(possibleFolder);
-			if (QFileInfo(filename).exists()) {
-				if (possibleFolder == "obsolete") {
-					DebugDialog::debug(QString("module %1:%2 obsolete svg %3").arg(modelPart->title()).arg(modelPart->moduleID()).arg(filename));
-				}
-				return filename;
-			} 
-		}
-	}
-
-	filename = PartFactory::getSvgFilename(modelPart, baseName);
-    if (!filename.isEmpty()) return filename;
-
-    return "";
 }
 
 void ItemBase::updateConnectionsAux() {
@@ -2189,7 +2137,7 @@ QPixmap * ItemBase::getPixmap(ViewLayer::ViewID vid, bool swappingEnabled, QSize
 	QString baseName = modelPart()->hasBaseNameFor(vid);
 	if (baseName.isEmpty()) return NULL;
 
-	QString filename = ItemBase::getSvgFilename(modelPart(), baseName);
+	QString filename = PartFactory::getSvgFilename(modelPart(), baseName, true, true);
 	if (filename.isEmpty()) {
 		return NULL;
 	}

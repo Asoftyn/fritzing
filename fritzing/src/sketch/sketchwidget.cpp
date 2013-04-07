@@ -8156,31 +8156,6 @@ AddItemCommand * SketchWidget::newAddItemCommand(BaseCommand::CrossViewType cros
     ModelPartShared * modelPartShared = newModelPart->modelPartShared();        
     if (modelPartShared == NULL) return aic;
 
-    QString baseName = modelPartShared->imageFileName(ViewLayer::SchematicView);
-    QString basePath = ItemBase::getSvgFilename(newModelPart, baseName);
-    foreach (ModelPartShared * mps, modelPartShared->subparts()) {
-        QString filename = mps->imageFileName(ViewLayer::SchematicView);
-        if (filename.isEmpty()) continue;
-
-        QString path = PartFactory::partPath() + filename;
-        QFileInfo info(path);
-        if (info.exists()) continue;
-
-        QFile file(basePath);
-	    QString errorStr;
-	    int errorLine;
-	    int errorColumn;
-	    QDomDocument doc;
-	    if (!doc.setContent(&file, &errorStr, &errorLine, &errorColumn)) {
-            DebugDialog::debug(QString("xml failure %1 %2 %3").arg(errorStr).arg(errorLine).arg(errorColumn));
-            continue;
-        }
-
-        QDomElement root = doc.documentElement();
-        SvgFileSplitter::showSubpart(root, mps->subpartID());
-        TextUtils::writeUtf8(path, doc.toString(4));
-    }
-
     foreach (ModelPartShared * mps, modelPartShared->subparts()) {
         long subID = ItemBase::getNextID();
         new AddItemCommand(this, crossViewType, mps->moduleID(), viewLayerSpec, viewGeometry, subID, updateInfoView, -1, parent);

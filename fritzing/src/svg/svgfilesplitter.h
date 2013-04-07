@@ -88,7 +88,6 @@ public:
     static QByteArray showText2(const QByteArray & svg, bool & hasText);
     static QString hideText3(const QString & svg);
     static QString showText3(const QString & svg, bool & hasText);
-    static void showSubpart(QDomElement & root, const QString & subpart);
 
 protected:
 	void normalizeChild(QDomElement & childElement, 

@@ -302,7 +302,6 @@ public:
 	static bool zLessThan(ItemBase * & p1, ItemBase * & p2);
 	static qint64 getNextID();
 	static qint64 getNextID(qint64 fromIndex);
-	static QString getSvgFilename(ModelPart *, const QString & baseName); 
 
 protected:
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -376,7 +375,6 @@ public:
 	static const QString ITEMBASE_FONT_PREFIX;
 	static const QString ITEMBASE_FONT_SUFFIX;
 	static QHash<QString, QString> TranslatedPropertyNames;
-	static QString SvgFilesDir;
 	const static QColor hoverColor;
 	const static double hoverOpacity;
 	const static QColor connectorHoverColor;

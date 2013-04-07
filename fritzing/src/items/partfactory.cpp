@@ -25,6 +25,7 @@ $Date$
 ********************************************************************/
 
 #include "partfactory.h"
+#include "../debugdialog.h"
 #include "../viewgeometry.h"
 #include "../model/modelpart.h"
 #include "../model/modelbase.h"
@@ -61,6 +62,7 @@ $Date$
 
 static QString PartFactoryFolderPath;
 static QHash<QString, LockedFile *> LockedFiles;
+static QString SvgFilesDir = "svg";
 
 ItemBase * PartFactory::createPart( ModelPart * modelPart, ViewLayer::ViewLayerSpec viewLayerSpec, ViewLayer::ViewID viewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu, QMenu * wireMenu, bool doLabel)
 {
@@ -200,8 +202,92 @@ ItemBase * PartFactory::createPartAux( ModelPart * modelPart, ViewLayer::ViewID 
 	}
 }
 
-QString PartFactory::getSvgFilename(ModelPart * modelPart, const QString & expectedFileName) {
+QString PartFactory::getSvgFilename(ModelPart * modelPart, const QString & baseName, bool generate, bool handleSubparts) 
+{
+	QStringList tempPaths;
+	QString postfix = "/"+ SvgFilesDir +"/%1/"+ baseName;
+    QString userStore = FolderUtils::getUserDataStorePath("parts")+postfix;
+    QString pfPath = PartFactory::folderPath() + postfix;
+	if(!modelPart->path().isEmpty()) {
+		QDir dir(modelPart->path());			// is a path to a filename
+		dir.cdUp();									// lop off the filename
+		dir.cdUp();									// parts root
+		tempPaths << dir.absolutePath() + postfix;
+		tempPaths << FolderUtils::getApplicationSubFolderPath("parts")+postfix;    // some svgs may still be in the fritzing parts folder, though the other svgs are in the user folder
+        if (tempPaths.at(0).compare(userStore) != 0) {
+            tempPaths << userStore;
+        }
+        if (tempPaths.at(0).compare(pfPath) != 0) {
+            tempPaths << pfPath;
+        }
+        //DebugDialog::debug("temp path");
+        //foreach (QString tempPath, tempPaths) {
+        //    DebugDialog::debug(tempPath);
+        //}
+    } 
+	else {
+        DebugDialog::debug("modelPart with no path--this shouldn't happen");
+		tempPaths << FolderUtils::getApplicationSubFolderPath("parts")+postfix;
+		tempPaths << userStore;
+	}
+	tempPaths << ":resources/parts/svg/%1/" + baseName;
 
+		//DebugDialog::debug(QString("got tempPath %1").arg(tempPath));
+
+	QString filename;
+    bool exists = false;
+	foreach (QString tempPath, tempPaths) {
+		foreach (QString possibleFolder, ModelPart::possibleFolders()) {
+			filename = tempPath.arg(possibleFolder);
+			if (QFileInfo(filename).exists()) {
+                exists = true;
+				if (possibleFolder == "obsolete") {
+					DebugDialog::debug(QString("module %1:%2 obsolete svg %3").arg(modelPart->title()).arg(modelPart->moduleID()).arg(filename));
+				}
+				break;
+			} 
+		}
+        if (exists) break;
+	}
+
+    if (!exists && generate) {
+	    filename = PartFactory::getSvgFilename(modelPart, baseName);
+    }
+
+    if (handleSubparts && exists && modelPart->modelPartShared() && modelPart->modelPartShared()->hasSubparts()) 
+    {
+        ModelPartShared * superpart = modelPart->modelPartShared();
+        QString schematicName = superpart->imageFileName(ViewLayer::SchematicView);
+        QString originalPath = getSvgFilename(modelPart, schematicName, true, false);
+        foreach (ModelPartShared * mps, superpart->subparts()) {
+            QString schematicFileName = mps->imageFileName(ViewLayer::SchematicView);
+            if (schematicFileName.isEmpty()) continue;
+
+            QString path = partPath() + schematicFileName;
+            QFileInfo info(path);
+            if (info.exists()) continue;
+
+            QFile file(originalPath);
+	        QString errorStr;
+	        int errorLine;
+	        int errorColumn;
+	        QDomDocument doc;
+	        if (!doc.setContent(&file, &errorStr, &errorLine, &errorColumn)) {
+                DebugDialog::debug(QString("xml failure %1 %2 %3").arg(errorStr).arg(errorLine).arg(errorColumn));
+                continue;
+            }
+
+            QDomElement root = doc.documentElement();
+            showSubpart(root, mps->subpartID());
+            TextUtils::writeUtf8(path, doc.toString(4));
+        }
+    }
+
+    return filename;
+}
+
+QString PartFactory::getSvgFilename(ModelPart * modelPart, const QString & expectedFileName) 
+{
 	if (expectedFileName.startsWith("pcb/dip_", Qt::CaseInsensitive)) {
 		return getSvgFilenameAux(expectedFileName, modelPart, &MysteryPart::makePcbDipSvg);
 	}
@@ -307,7 +393,7 @@ QString PartFactory::getSvgFilename(ModelPart * modelPart, const QString & expec
 }
 
 bool PartFactory::svgFileExists(const QString & expectedFileName, QString & path) {
-	QString p = FolderUtils::getApplicationSubFolderPath("parts") + "/"+ ItemBase::SvgFilesDir + "/core/";
+	QString p = FolderUtils::getApplicationSubFolderPath("parts") + "/"+ SvgFilesDir + "/core/";
 	if (QFileInfo(p + expectedFileName).exists()) {
         path = expectedFileName;
         return true;
@@ -471,3 +557,20 @@ QString PartFactory::makeSchematicSipOrDipOr(const QStringList & labels, bool ha
 	return Dip::makeSchematicSvg(labels);
 }
 
+void PartFactory::showSubpart(QDomElement & root, const QString & subpart)
+{    
+    if (subpart.isEmpty()) return;
+
+    QString id = root.attribute("id");
+    if (id == subpart) return;
+
+    QDomElement child = root.firstChildElement();
+    while (!child.isNull()) {
+        showSubpart(child, subpart);
+        child = child.nextSiblingElement();
+    }
+
+    if (root.tagName() != "g" && root.tagName() != "svg") {
+        root.setTagName("g");
+    }
+}
