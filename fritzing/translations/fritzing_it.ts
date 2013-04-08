@@ -5515,10 +5515,6 @@ is already there, we won&apos;t add it again, right?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>silk layer export is empty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>exported drill file is empty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5548,6 +5544,10 @@ is already there, we won&apos;t add it again, right?</source>
     </message>
     <message>
         <source>%1 layer export is empty (case 2).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>silk layer %1 export is empty</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

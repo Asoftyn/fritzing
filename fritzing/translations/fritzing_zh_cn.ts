@@ -5553,10 +5553,6 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>silk layer export is empty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>exported drill file is empty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5586,6 +5582,10 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
     </message>
     <message>
         <source>%1 layer export is empty (case 2).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>silk layer %1 export is empty</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
