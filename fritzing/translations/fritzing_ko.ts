@@ -1595,13 +1595,13 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow.cpp" line="1506"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="832"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="834"/>
         <source>Specify a file name</source>
         <translation>파일이름을 지정하세요</translation>
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow.cpp" line="2397"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="832"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="834"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="273"/>
         <source>Fritzing (*%1)</source>
         <translation>Fritzing (*%1)</translation>
@@ -1617,14 +1617,14 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <location filename="../src/mainwindow/mainwindow.cpp" line="2119"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="169"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="174"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="611"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="662"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="749"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="901"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1012"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1230"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1554"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1559"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="613"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="664"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="751"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="903"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1014"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1232"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1556"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1561"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="183"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="194"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="248"/>
@@ -1648,7 +1648,7 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation>Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="902"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="904"/>
         <source>Unable to export %1 as shareable</source>
         <translation>%1 를 공유하기위해 내보낼 수 없습니다</translation>
     </message>
@@ -1878,7 +1878,7 @@ We&apos;re working to avoid this message, and only let you choose between proper
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="204"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1564"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1566"/>
         <source>Choose a folder for exporting</source>
         <translation>내보낼 폴더 선택</translation>
     </message>
@@ -1899,240 +1899,240 @@ We&apos;re working to avoid this message, and only let you choose between proper
         <translation>내보내기...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="611"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="613"/>
         <source>Unable to save %1</source>
         <translation>%1을 저장할 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="662"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="664"/>
         <source>Cannot print to %1</source>
         <translation>%1을 프린트 할 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="750"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="752"/>
         <source>Cannot write file %1:
 %2.</source>
         <translation>파일을 쓸 수 없습니다 %1:
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="765"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="767"/>
         <source>Saved &apos;%1&apos;</source>
         <translation>저장 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="914"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="916"/>
         <source>&amp;Save</source>
         <translation>&amp;저장</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="915"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="917"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="916"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="921"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="918"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="923"/>
         <source>Save the current sketch</source>
         <translation>현재 스케치 저장</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="919"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="921"/>
         <source>&amp;Save As...</source>
         <translation>&amp;다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="920"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="922"/>
         <source>Shift+Ctrl+S</source>
         <translation>Shift+Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="924"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="926"/>
         <source>Share online...</source>
         <translation>온라인에 공유...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="925"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="927"/>
         <source>Post a project to the Fritzing website</source>
         <translation>Fritzing 웹사이트에 프로젝트 포스팅</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="928"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="930"/>
         <source>JPG...</source>
         <translation>JPG...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="930"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="932"/>
         <source>Export the visible area of the current sketch as a JPG image</source>
         <translation>현재 스케치의 보여지는 부분을 JPG 이미지로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="933"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="935"/>
         <source>PNG...</source>
         <translation>PNG...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="935"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="937"/>
         <source>Export the visible area of the current sketch as a PNG image</source>
         <translation>현재 스케치의 보여지는 부분을 PNG 이미지로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="938"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="940"/>
         <source>PostScript...</source>
         <translation>포스트스크립...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="940"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="942"/>
         <source>Export the visible area of the current sketch as a PostScript image</source>
         <translation>현재 스케치의 보여지는 부분을 포스트스크립 이미지로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="943"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="945"/>
         <source>PDF...</source>
         <translation>PDF...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="945"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="947"/>
         <source>Export the visible area of the current sketch as a PDF image</source>
         <translation>현재 스케치의 보여지는 부분을 PDF 이미지로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="948"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="950"/>
         <source>SVG...</source>
         <translation>SVG...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="950"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="952"/>
         <source>Export the current sketch as an SVG image</source>
         <translation>현재 스케치를 SVG 이미지로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="953"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="955"/>
         <source>List of parts (&amp;Bill of Materials)...</source>
         <translation>부품 리스트 (&amp;Bill of Materials)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="955"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="957"/>
         <source>Save a Bill of Materials (BoM)/Shopping List as text</source>
         <translation>BOM/쇼핑리스트를 텍스트로 저장</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="958"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="960"/>
         <source>XML Netlist...</source>
         <translation>XML 네트리스트...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="960"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="962"/>
         <source>Save a netlist in XML format</source>
         <translation>네트리스트를 XML 포멧으로 저장</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="963"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="965"/>
         <source>SPICE Netlist...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="965"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="967"/>
         <source>Save a netlist in SPICE format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="968"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="970"/>
         <source>Eagle...</source>
         <translation>Eagle...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="970"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="972"/>
         <source>Export the current sketch to Eagle CAD</source>
         <translation>현재 스케치를 Eagle CAD로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="973"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="975"/>
         <source>Extended Gerber (RS-274X)...</source>
         <translation>Extended Gerber (RS-274X)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="975"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="977"/>
         <source>Export the current sketch to Extended Gerber format (RS-274X) for professional PCB production</source>
         <translation>현재 스케치를 프로페서널 PCB 생산을 위해 Extended Gerber 포맷 (RS-274X)으로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="978"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="980"/>
         <source>Etchable (PDF)...</source>
         <translation>Etchable (PDF)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="979"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="981"/>
         <source>Export the current sketch to PDF for DIY PCB production (photoresist)</source>
         <translation>현재 스케치를 DIY PCB 생산(photoresist)을 위해 PDF로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="983"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="985"/>
         <source>Etchable (SVG)...</source>
         <translation>Etchable (SVG)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="984"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="986"/>
         <source>Export the current sketch to SVG for DIY PCB production (photoresist)</source>
         <translation>현재 스케치를 DIY PCB 생산(photoresist)을 위해 SVG로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="993"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="995"/>
         <source>&amp;Print...</source>
         <translation>&amp;프린트...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="994"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="996"/>
         <source>Ctrl+P</source>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="995"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="997"/>
         <source>Print the current view</source>
         <translation>현재 뷰를 프린트</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1003"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1005"/>
         <source>This will soon provide an export of your Fritzing sketch to the EAGLE layout software. If you&apos;d like to have more exports to your favourite EDA tool, please let us know, or contribute.</source>
         <translation>Fritzing 스케치가 EAGEL layout 소프트웨어로 변환됩니다. 다른 EDA 툴로의 변환을 원하시면 알려주시거나 기여하시기 바랍니다.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1067"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1069"/>
         <source>Export SVG...</source>
         <translation>SVG 내보내기...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1213"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1215"/>
         <source>Export Bill of Materials (BoM)...</source>
         <translation>BOM 내보내기...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1230"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1232"/>
         <source>Unable to save BOM file, but the text is on the clipboard.</source>
         <translation>BOM파일을 저장할 수 없지만 텍스트는 클립보드에 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1254"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1256"/>
         <source>Export SPICE Netlist...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1479"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1481"/>
         <source>Export Netlist...</source>
         <translation>네트리스트 내보내기...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1555"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1557"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to export to Gerber.</source>
         <translation>스케치에 보드가 아직 없습니다! 거버를 만들기 위해 PCB를 추가하세요.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1560"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1562"/>
         <source>Gerber export can only handle one board at a time--please select the board you want to export.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1585"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1587"/>
         <source>Sketch exported to Gerber</source>
         <translation>스케치를 거버로 내보내기</translation>
     </message>
@@ -5164,59 +5164,59 @@ Go ahead and save?</source>
 <context>
     <name>PaletteItem</name>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="604"/>
+        <location filename="../src/items/paletteitem.cpp" line="605"/>
         <source>Edit Pin Labels</source>
         <translation>핀 라벨 편집</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="644"/>
-        <location filename="../src/items/paletteitem.cpp" line="655"/>
-        <location filename="../src/items/paletteitem.cpp" line="679"/>
+        <location filename="../src/items/paletteitem.cpp" line="645"/>
+        <location filename="../src/items/paletteitem.cpp" line="656"/>
+        <location filename="../src/items/paletteitem.cpp" line="680"/>
         <source>Fritzing</source>
         <translation>Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="645"/>
+        <location filename="../src/items/paletteitem.cpp" line="646"/>
         <source>Unable to proceed; unable to find top level view.</source>
         <translation>진행할 수 없습니다; 최상위 수준 보기(top level view)를 찾을 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="656"/>
+        <location filename="../src/items/paletteitem.cpp" line="657"/>
         <source>Unable to proceed; part connectors do no have standard IDs.</source>
         <translation>진행할 수 없습니다; 부품 컨넥터가 표준 ID를 가지고 있지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="680"/>
+        <location filename="../src/items/paletteitem.cpp" line="681"/>
         <source>Label mismatch.  Nothing was saved.</source>
         <translation>라벨이 맞지 않습니다. 아무것도 저장되지 않았습니다.</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="834"/>
+        <location filename="../src/items/paletteitem.cpp" line="835"/>
         <source>hole size</source>
         <translation type="unfinished">홀 사이즈</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="974"/>
+        <location filename="../src/items/paletteitem.cpp" line="975"/>
         <source>advanced settings</source>
         <translation type="unfinished">고급 설정</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="985"/>
+        <location filename="../src/items/paletteitem.cpp" line="986"/>
         <source>in</source>
         <translation type="unfinished">in</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="989"/>
+        <location filename="../src/items/paletteitem.cpp" line="990"/>
         <source>mm</source>
         <translation type="unfinished">mm</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="1007"/>
+        <location filename="../src/items/paletteitem.cpp" line="1008"/>
         <source>Hole Diameter</source>
         <translation type="unfinished">홀 직경</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="1020"/>
+        <location filename="../src/items/paletteitem.cpp" line="1021"/>
         <source>Ring Thickness</source>
         <translation type="unfinished">링 두께</translation>
     </message>
@@ -6956,12 +6956,12 @@ Fritzing은 여전히 ​​작동하지만 부품 속성을 변경할 수 없�
         <translation>알 수 없는 레이어</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="63"/>
+        <location filename="../src/items/paletteitem.cpp" line="64"/>
         <source>mm</source>
         <translation type="unfinished">mm</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="64"/>
+        <location filename="../src/items/paletteitem.cpp" line="65"/>
         <source>in</source>
         <translation type="unfinished">in</translation>
     </message>
@@ -7797,27 +7797,27 @@ Note: you can also trigger this display by mousing down on the routing status te
 <context>
     <name>SymbolPaletteItem</name>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="100"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="102"/>
         <source>net label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="498"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="514"/>
         <source>voltage</source>
         <translation>전원</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="513"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="529"/>
         <source>label</source>
         <translation type="unfinished">라벨</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="535"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="551"/>
         <source>Net labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="535"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="551"/>
         <source>Net labels cannot be blank</source>
         <translation type="unfinished"></translation>
     </message>

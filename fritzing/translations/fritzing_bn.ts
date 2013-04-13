@@ -1695,14 +1695,14 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <location filename="../src/mainwindow/mainwindow.cpp" line="2119"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="169"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="174"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="611"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="662"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="749"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="901"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1012"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1230"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1554"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1559"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="613"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="664"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="751"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="903"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1014"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1232"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1556"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1561"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="183"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="194"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="248"/>
@@ -1753,7 +1753,7 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow.cpp" line="1506"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="832"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="834"/>
         <source>Specify a file name</source>
         <translatorcomment>একটি নিদৃষ্ট ফাইলের নাম </translatorcomment>
         <translation>নির্দেশিত একটি ফাইলের নাম</translation>
@@ -1902,7 +1902,7 @@ We&apos;re working to avoid this message, and only let you choose between proper
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow.cpp" line="2397"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="832"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="834"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="273"/>
         <source>Fritzing (*%1)</source>
         <translation>ফ্রিটজিং(*%1)</translation>
@@ -2051,7 +2051,7 @@ We&apos;re working to avoid this message, and only let you choose between proper
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="204"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1564"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1566"/>
         <source>Choose a folder for exporting</source>
         <translatorcomment>রপ্তানির জন্য  একটি ফোল্ডার নির্বাচন করুন </translatorcomment>
         <translation>পরীক্ষণের জন্য একটি ফোল্ডার নির্বাচন করুন </translation>
@@ -2075,254 +2075,254 @@ We&apos;re working to avoid this message, and only let you choose between proper
         <translation>রপ্তানি  হচ্ছে...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="611"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="613"/>
         <source>Unable to save %1</source>
         <translation>সঞ্চয় সম্ভব নয়  %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="662"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="664"/>
         <source>Cannot print to %1</source>
         <translatorcomment>মদ্রনে করতেঅক্ষম %1</translatorcomment>
         <translation>প্রিন্ট করতে অক্ষম %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="750"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="752"/>
         <source>Cannot write file %1:
 %2.</source>
         <translation>ফাইলটি লিখা অসম্ভব%1:
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="765"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="767"/>
         <source>Saved &apos;%1&apos;</source>
         <translatorcomment>সঞ্চয় %1</translatorcomment>
         <translation>সংরক্ষণ%1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="902"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="904"/>
         <source>Unable to export %1 as shareable</source>
         <translation>বিনিময় করে%1পাঠানো সম্ভব নয়</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="914"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="916"/>
         <source>&amp;Save</source>
         <translation>সংরক্ষণ </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="915"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="917"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="916"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="921"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="918"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="923"/>
         <source>Save the current sketch</source>
         <translatorcomment>বর্তমান নকশা সঞ্চয়</translatorcomment>
         <translation>এই নকশা সংরক্ষন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="919"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="921"/>
         <source>&amp;Save As...</source>
         <translatorcomment>এবং সেমতে সঞ্চয়...</translatorcomment>
         <translation>সেমতে সংরক্ষণ...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="920"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="922"/>
         <source>Shift+Ctrl+S</source>
         <translation>Shift+Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="924"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="926"/>
         <source>Share online...</source>
         <translation>অন লাইনে শেয়ার করুন...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="925"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="927"/>
         <source>Post a project to the Fritzing website</source>
         <translatorcomment>ফ্রিটজিংওয়েব সাইটে এই প্রোজেক্ট পোষ্ট করা</translatorcomment>
         <translation>ফ্রিটজিং ওয়েব সাইটে উক্ত প্রোজেক্ট পাঠান</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="928"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="930"/>
         <source>JPG...</source>
         <translatorcomment>জে পি জি...</translatorcomment>
         <translation>JPG...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="930"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="932"/>
         <source>Export the visible area of the current sketch as a JPG image</source>
         <translation>JPG ইমেজ হিসাবে বর্তমান নকশায় দৃশ্যমান এরিয়া সাথে এক্সপোর্ট </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="933"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="935"/>
         <source>PNG...</source>
         <translatorcomment>পিএনজি...</translatorcomment>
         <translation>PNG...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="935"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="937"/>
         <source>Export the visible area of the current sketch as a PNG image</source>
         <translation>PNG ইমেজ হিসাবে বর্তমান নকশায় দৃশ্যমান এরিয়া সাথেএক্সপোর্ট </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="938"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="940"/>
         <source>PostScript...</source>
         <translation>স্ক্রিপ্ট পোষ্ট...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="940"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="942"/>
         <source>Export the visible area of the current sketch as a PostScript image</source>
         <translation>স্ক্রিপ্ট পোষ্ট ইমেজ হিসাবে বর্তমান নকশায় দৃশ্যমান এরিয়া সাথেএক্সপোর্ট</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="943"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="945"/>
         <source>PDF...</source>
         <translation>পি ডি এফ...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="945"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="947"/>
         <source>Export the visible area of the current sketch as a PDF image</source>
         <translation>PDFইমেজ হিসাবে বর্তমান নকশায় দৃশ্যমান এরিয়ার সাথে এক্সপোর্ট </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="948"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="950"/>
         <source>SVG...</source>
         <translation>SVG...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="950"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="952"/>
         <source>Export the current sketch as an SVG image</source>
         <translation>SVG চিত্র হিসাবে বর্তমান নকশা এক্সপোর্ট </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="953"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="955"/>
         <source>List of parts (&amp;Bill of Materials)...</source>
         <translation>তালিকার অংশ (এবং উপকরন বিল)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="955"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="957"/>
         <source>Save a Bill of Materials (BoM)/Shopping List as text</source>
         <translation>সপিং তালিকায় একটি উপাদান বিল টেক্সট হিসাবে সংরক্ষণ </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="958"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="960"/>
         <source>XML Netlist...</source>
         <translation>XML Netlist...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="960"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="962"/>
         <source>Save a netlist in XML format</source>
         <translation>XML ফর্মেটে একটি netlistসংরক্ষণ করুন </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="963"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="965"/>
         <source>SPICE Netlist...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="965"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="967"/>
         <source>Save a netlist in SPICE format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="968"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="970"/>
         <source>Eagle...</source>
         <translatorcomment>ঈগল...</translatorcomment>
         <translation>Eagle...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="970"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="972"/>
         <source>Export the current sketch to Eagle CAD</source>
         <translation>বর্তমানস্কেচ ঈগলCADএ রপ্তানি করুন </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="973"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="975"/>
         <source>Extended Gerber (RS-274X)...</source>
         <translation>Gerber সম্প্রসারণ (RS-247x)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="975"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="977"/>
         <source>Export the current sketch to Extended Gerber format (RS-274X) for professional PCB production</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="978"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="980"/>
         <source>Etchable (PDF)...</source>
         <translatorcomment>Etchable (PDF)...</translatorcomment>
         <translation>একত্রিত(PDF)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="979"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="981"/>
         <source>Export the current sketch to PDF for DIY PCB production (photoresist)</source>
         <translation>পিডিএফ DIY PCB উত্পাদনের (photoresist) জন্য বর্তমান স্কেচ রপ্তানি করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="983"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="985"/>
         <source>Etchable (SVG)...</source>
         <translation>একত্রিত (SVG)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="984"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="986"/>
         <source>Export the current sketch to SVG for DIY PCB production (photoresist)</source>
         <translation>SVG তে DIY PCB উত্পাদনের (photoresist) জন্য বর্তমান স্কেচ রপ্তানি করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="993"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="995"/>
         <source>&amp;Print...</source>
         <translation>প্রিন্ট...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="994"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="996"/>
         <source>Ctrl+P</source>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="995"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="997"/>
         <source>Print the current view</source>
         <translation>প্রিন্ট বর্তমান ভিউ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1003"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1005"/>
         <source>This will soon provide an export of your Fritzing sketch to the EAGLE layout software. If you&apos;d like to have more exports to your favourite EDA tool, please let us know, or contribute.</source>
         <translation>এই শীঘ্রই EAGLE লেআউট সফ্টওয়্যার আপনার Fritzing স্কেচ টি রপ্তানি করবে. যদি আপনার প্রিয় EDA টুল আমাদের আরো রপ্তানি করে,যা  অবদান রাখতেপারে। </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1067"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1069"/>
         <source>Export SVG...</source>
         <translation>SVG রপ্তানি...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1213"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1215"/>
         <source>Export Bill of Materials (BoM)...</source>
         <translation>উপাদােনর বিল রপ্তানি (BoM)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1230"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1232"/>
         <source>Unable to save BOM file, but the text is on the clipboard.</source>
         <translation> BOM ফাইলটি সংরক্ষণ করতে ব্যর্থ কিন্তু টেক্সট ক্লিপবোের্ড হবে.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1254"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1256"/>
         <source>Export SPICE Netlist...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1479"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1481"/>
         <source>Export Netlist...</source>
         <translation>সর্বশেষ লিস্ট রপ্তানি </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1555"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1557"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to export to Gerber.</source>
         <translation>আপনার স্কেচ এখনো এর কোন বোর্ডটি হইনি!  PCB যুক্তএকটি GERBER এক্সপোর্ট করুন.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1560"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1562"/>
         <source>Gerber export can only handle one board at a time--please select the board you want to export.</source>
         <translation>GERBER রপ্তানি শুধুমাত্র একটি সময়ে এক বোর্ডের ব্যাবহার করতে পারে - আপনি বোর্ডের নির্বাচন করতে এবং রপ্তানি করতে চান.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1585"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1587"/>
         <source>Sketch exported to Gerber</source>
         <translation>GERBER এবং স্কেচ এক্সপোর্ট</translation>
     </message>
@@ -5335,65 +5335,65 @@ Go ahead and save?</source>
 <context>
     <name>PaletteItem</name>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="604"/>
+        <location filename="../src/items/paletteitem.cpp" line="605"/>
         <source>Edit Pin Labels</source>
         <translatorcomment>পিন লেবেল  সপ্পাদনা  করুন  </translatorcomment>
         <translation>পিন লেভেল নির্ধারণ</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="644"/>
-        <location filename="../src/items/paletteitem.cpp" line="655"/>
-        <location filename="../src/items/paletteitem.cpp" line="679"/>
+        <location filename="../src/items/paletteitem.cpp" line="645"/>
+        <location filename="../src/items/paletteitem.cpp" line="656"/>
+        <location filename="../src/items/paletteitem.cpp" line="680"/>
         <source>Fritzing</source>
         <translatorcomment>Fritzing</translatorcomment>
         <translation>ফ্রিটজিং</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="645"/>
+        <location filename="../src/items/paletteitem.cpp" line="646"/>
         <source>Unable to proceed; unable to find top level view.</source>
         <translation>এগিেয় যেতে অক্ষম,উপরে স্তর দৃশ্য খুজে পেতে অসমর্থ</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="656"/>
+        <location filename="../src/items/paletteitem.cpp" line="657"/>
         <source>Unable to proceed; part connectors do no have standard IDs.</source>
         <translation>এগিেয় যেতে অক্ষম ,সংযোগকারী অংশ কোন আই ডি এস</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="680"/>
+        <location filename="../src/items/paletteitem.cpp" line="681"/>
         <source>Label mismatch.  Nothing was saved.</source>
         <translation>লেবেল মিলেনি কিছু সঞ্চিত ছিল না </translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="834"/>
+        <location filename="../src/items/paletteitem.cpp" line="835"/>
         <source>hole size</source>
         <translatorcomment>গর্ত আকার </translatorcomment>
         <translation>ছিদ্র আকার</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="974"/>
+        <location filename="../src/items/paletteitem.cpp" line="975"/>
         <source>advanced settings</source>
         <translatorcomment>উচ্চ পরজায়ার সেটিংস্‌ </translatorcomment>
         <translation>আগ্রিম সংযুক্তি </translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="985"/>
+        <location filename="../src/items/paletteitem.cpp" line="986"/>
         <source>in</source>
         <translatorcomment>মধ্যে </translatorcomment>
         <translation>ইন</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="989"/>
+        <location filename="../src/items/paletteitem.cpp" line="990"/>
         <source>mm</source>
         <translatorcomment>এম এম </translatorcomment>
         <translation>মি মি</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="1007"/>
+        <location filename="../src/items/paletteitem.cpp" line="1008"/>
         <source>Hole Diameter</source>
         <translation>গর্ত ব্যাস </translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="1020"/>
+        <location filename="../src/items/paletteitem.cpp" line="1021"/>
         <source>Ring Thickness</source>
         <translation>রিং এর ঘনত্ব</translation>
     </message>
@@ -6370,12 +6370,12 @@ shift key swaps scroll axis</source>
         <translation>লিংক সম্পাদন</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="63"/>
+        <location filename="../src/items/paletteitem.cpp" line="64"/>
         <source>mm</source>
         <translation>মিমি</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="64"/>
+        <location filename="../src/items/paletteitem.cpp" line="65"/>
         <source>in</source>
         <translation>ইন</translation>
     </message>
@@ -8002,27 +8002,27 @@ Note: you can also trigger this display by mousing down on the routing status te
 <context>
     <name>SymbolPaletteItem</name>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="100"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="102"/>
         <source>net label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="498"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="514"/>
         <source>voltage</source>
         <translation>ভোল্টেজ </translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="513"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="529"/>
         <source>label</source>
         <translation type="unfinished"> স্তর </translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="535"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="551"/>
         <source>Net labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="535"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="551"/>
         <source>Net labels cannot be blank</source>
         <translation type="unfinished"></translation>
     </message>

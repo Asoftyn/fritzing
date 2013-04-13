@@ -1526,7 +1526,7 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow.cpp" line="1506"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="832"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="834"/>
         <source>Specify a file name</source>
         <translation>Zadajte názov súboru</translation>
     </message>
@@ -1537,7 +1537,7 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow.cpp" line="2397"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="832"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="834"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="273"/>
         <source>Fritzing (*%1)</source>
         <translation>Fritzing (*%1)</translation>
@@ -1553,14 +1553,14 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <location filename="../src/mainwindow/mainwindow.cpp" line="2119"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="169"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="174"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="611"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="662"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="749"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="901"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1012"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1230"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1554"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1559"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="613"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="664"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="751"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="903"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1014"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1232"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1556"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1561"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="183"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="194"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="248"/>
@@ -1584,7 +1584,7 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation>Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="902"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="904"/>
         <source>Unable to export %1 as shareable</source>
         <translation>Nejde exportovať %1 ako zdieľaný</translation>
     </message>
@@ -1807,13 +1807,13 @@ Pracujeme na vyhnutí sa tejto správe a práve Vám neostáva iné než zvoliť
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1555"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1557"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to export to Gerber.</source>
         <translation>Váš návrh dosiaľ neobsahuje dosku! Pre úspešný export do Gerber pridajte PCB.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="204"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1564"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1566"/>
         <source>Choose a folder for exporting</source>
         <translation>Vybrať zložku pre export</translation>
     </message>
@@ -1896,24 +1896,24 @@ Pracujeme na vyhnutí sa tejto správe a práve Vám neostáva iné než zvoliť
         <translation>Exportovanie...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="611"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="613"/>
         <source>Unable to save %1</source>
         <translation>Nejde uložiť %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="662"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="664"/>
         <source>Cannot print to %1</source>
         <translation>Nejde tlačiť na %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="750"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="752"/>
         <source>Cannot write file %1:
 %2.</source>
         <translation>Nejde zapísať súbor %1:
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="765"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="767"/>
         <source>Saved &apos;%1&apos;</source>
         <translation>Uložiť &apos;%1&apos;</translation>
     </message>
@@ -1991,158 +1991,158 @@ Pracujeme na vyhnutí sa tejto správe a práve Vám neostáva iné než zvoliť
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="914"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="916"/>
         <source>&amp;Save</source>
         <translation>&amp;Uložiť</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="915"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="917"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="916"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="921"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="918"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="923"/>
         <source>Save the current sketch</source>
         <translation>Uloží aktuálny návrh</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="919"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="921"/>
         <source>&amp;Save As...</source>
         <translation>&amp;Uložiť ako...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="920"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="922"/>
         <source>Shift+Ctrl+S</source>
         <translation>Shift+Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="924"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="926"/>
         <source>Share online...</source>
         <translation>Zdieľať online...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="925"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="927"/>
         <source>Post a project to the Fritzing website</source>
         <translation>Pošle projekt na webové stránky Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="928"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="930"/>
         <source>JPG...</source>
         <translation>JPG...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="930"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="932"/>
         <source>Export the visible area of the current sketch as a JPG image</source>
         <translation>Exportuje viditeľnú oblasť aktuálneho návrhu ako JPG obrázok</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="933"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="935"/>
         <source>PNG...</source>
         <translation>PNG...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="935"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="937"/>
         <source>Export the visible area of the current sketch as a PNG image</source>
         <translation>Exportuje viditeľnú oblasť aktuálneho návrhu ako PNG obrázok</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="938"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="940"/>
         <source>PostScript...</source>
         <translation>PostScript...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="940"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="942"/>
         <source>Export the visible area of the current sketch as a PostScript image</source>
         <translation>Exportuje viditeľnú oblasť aktuálneho návrhu ako PostScript obrázok</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="943"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="945"/>
         <source>PDF...</source>
         <translation>PDF...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="945"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="947"/>
         <source>Export the visible area of the current sketch as a PDF image</source>
         <translation>Exportuje viditeľnú oblasť aktuálneho návrhu ako PDF obrázok</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="948"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="950"/>
         <source>SVG...</source>
         <translation>SVG...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="950"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="952"/>
         <source>Export the current sketch as an SVG image</source>
         <translation>Exportuje aktuálny návrh ako SVG obrázok</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="953"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="955"/>
         <source>List of parts (&amp;Bill of Materials)...</source>
         <translation>Zoznam súčiastok (&amp;Súpiska materiálu)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="955"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="957"/>
         <source>Save a Bill of Materials (BoM)/Shopping List as text</source>
         <translation>Uloží súpis materiálov (BoM)/Nákupný zoznam ako text</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="958"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="960"/>
         <source>XML Netlist...</source>
         <translation>XML Netlist...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="960"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="962"/>
         <source>Save a netlist in XML format</source>
         <translation>Uloží netlist v XML formáte</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="963"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="965"/>
         <source>SPICE Netlist...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="965"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="967"/>
         <source>Save a netlist in SPICE format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="968"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="970"/>
         <source>Eagle...</source>
         <translation>Eagle...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="970"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="972"/>
         <source>Export the current sketch to Eagle CAD</source>
         <translation>Exportuje aktuálny návrh do Eagle CAD</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="978"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="980"/>
         <source>Etchable (PDF)...</source>
         <translation>Leptateľné (PDF)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="979"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="981"/>
         <source>Export the current sketch to PDF for DIY PCB production (photoresist)</source>
         <translation>Exportuje aktuálny návrh do PDF pre DIY výrobu PCB (fotocesta)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1254"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1256"/>
         <source>Export SPICE Netlist...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1560"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1562"/>
         <source>Gerber export can only handle one board at a time--please select the board you want to export.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="984"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="986"/>
         <source>Export the current sketch to SVG for DIY PCB production (photoresist)</source>
         <translation>Exportuje aktuálny návrh do SVG pre DIY výrobu PCB (fotocesta)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1585"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1587"/>
         <source>Sketch exported to Gerber</source>
         <translation>Návrh exportovaný do Gerber</translation>
     </message>
@@ -2152,32 +2152,32 @@ Pracujeme na vyhnutí sa tejto správe a práve Vám neostáva iné než zvoliť
         <translation>Textový súbor BoM (*.html)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="973"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="975"/>
         <source>Extended Gerber (RS-274X)...</source>
         <translation>Extended Gerber (RS-274X)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="975"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="977"/>
         <source>Export the current sketch to Extended Gerber format (RS-274X) for professional PCB production</source>
         <translation>Exportuje aktuálny návrh do Extended Gerber formátu (RS-274X) pre profesionálnú výrobu PCB</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="983"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="985"/>
         <source>Etchable (SVG)...</source>
         <translation>Leptateľné (SVG)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="993"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="995"/>
         <source>&amp;Print...</source>
         <translation>&amp;Tlač...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="994"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="996"/>
         <source>Ctrl+P</source>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="995"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="997"/>
         <source>Print the current view</source>
         <translation>Vytlačí aktuálny pohľad</translation>
     </message>
@@ -3584,27 +3584,27 @@ Go ahead and revert?</source>
         <translation>Prepáčte, funkcia %1 nebola doposiaľ implementovaná</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1003"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1005"/>
         <source>This will soon provide an export of your Fritzing sketch to the EAGLE layout software. If you&apos;d like to have more exports to your favourite EDA tool, please let us know, or contribute.</source>
         <translation>Táto funkcia čoskoro poskytne export návrhu Fritzing do EAGLE PCB software. Pokiaľ by ste chceli mať viac exportov do svojich obľúbených nástrojov EDA, prosím dajte nám vedieť alebo nám prispejte.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1067"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1069"/>
         <source>Export SVG...</source>
         <translation>Exportovať SVG...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1213"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1215"/>
         <source>Export Bill of Materials (BoM)...</source>
         <translation>Export súpisky materiálu (BoM)...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1230"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1232"/>
         <source>Unable to save BOM file, but the text is on the clipboard.</source>
         <translation>Nejde uložiť súbor BOM, ale text je uložený v schránke.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1479"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1481"/>
         <source>Export Netlist...</source>
         <translation>Export netlistu...</translation>
     </message>
@@ -5178,59 +5178,59 @@ Go ahead and save?</source>
 <context>
     <name>PaletteItem</name>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="604"/>
+        <location filename="../src/items/paletteitem.cpp" line="605"/>
         <source>Edit Pin Labels</source>
         <translation>Upraviť popis pinu</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="644"/>
-        <location filename="../src/items/paletteitem.cpp" line="655"/>
-        <location filename="../src/items/paletteitem.cpp" line="679"/>
+        <location filename="../src/items/paletteitem.cpp" line="645"/>
+        <location filename="../src/items/paletteitem.cpp" line="656"/>
+        <location filename="../src/items/paletteitem.cpp" line="680"/>
         <source>Fritzing</source>
         <translation>Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="645"/>
+        <location filename="../src/items/paletteitem.cpp" line="646"/>
         <source>Unable to proceed; unable to find top level view.</source>
         <translation>Nejde pokračovať, nejde nájsť najvyššiu úroveň zobrazení.</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="656"/>
+        <location filename="../src/items/paletteitem.cpp" line="657"/>
         <source>Unable to proceed; part connectors do no have standard IDs.</source>
         <translation>Njdze pokračovať, piny súčiastky nemajú štandardné ID.</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="680"/>
+        <location filename="../src/items/paletteitem.cpp" line="681"/>
         <source>Label mismatch.  Nothing was saved.</source>
         <translation>Popis nesúhlasí. Nič nebolo uložené.</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="834"/>
+        <location filename="../src/items/paletteitem.cpp" line="835"/>
         <source>hole size</source>
         <translation type="unfinished">veľkosť otvoru</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="974"/>
+        <location filename="../src/items/paletteitem.cpp" line="975"/>
         <source>advanced settings</source>
         <translation type="unfinished">rozšírené nastavenia</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="985"/>
+        <location filename="../src/items/paletteitem.cpp" line="986"/>
         <source>in</source>
         <translation type="unfinished">palce</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="989"/>
+        <location filename="../src/items/paletteitem.cpp" line="990"/>
         <source>mm</source>
         <translation type="unfinished">mm</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="1007"/>
+        <location filename="../src/items/paletteitem.cpp" line="1008"/>
         <source>Hole Diameter</source>
         <translation type="unfinished">Priemer otvoru</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="1020"/>
+        <location filename="../src/items/paletteitem.cpp" line="1021"/>
         <source>Ring Thickness</source>
         <translation type="unfinished">Tučnota kruhu</translation>
     </message>
@@ -6970,12 +6970,12 @@ Fritzing stále funguje, ale nebudete môcť zmeniť vlastnosti súčiastok.</tr
         <translation>Editor popisov pinov</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="63"/>
+        <location filename="../src/items/paletteitem.cpp" line="64"/>
         <source>mm</source>
         <translation type="unfinished">mm</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="64"/>
+        <location filename="../src/items/paletteitem.cpp" line="65"/>
         <source>in</source>
         <translation type="unfinished">palce</translation>
     </message>
@@ -7819,27 +7819,27 @@ Note: you can also trigger this display by mousing down on the routing status te
 <context>
     <name>SymbolPaletteItem</name>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="100"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="102"/>
         <source>net label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="498"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="514"/>
         <source>voltage</source>
         <translation>napätie</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="513"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="529"/>
         <source>label</source>
         <translation type="unfinished">popisok</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="535"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="551"/>
         <source>Net labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="535"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="551"/>
         <source>Net labels cannot be blank</source>
         <translation type="unfinished"></translation>
     </message>
