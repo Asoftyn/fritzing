@@ -14,7 +14,7 @@
  <properties>
    <property name="family">voltage source</property>
    <property name="type">dc power supply</property>
-   <property name="voltage">5</property>
+   <property name="voltage" showInLabel="yes">5</property>
  </properties>
  <taxonomy>discreteParts.power.power.dcpower</taxonomy>
  <description>A generic dc power symbol</description>

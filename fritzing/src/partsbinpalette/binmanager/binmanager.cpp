@@ -895,7 +895,9 @@ void BinManager::search(const QString & searchText) {
     searchBin->removeParts();
     foreach (ModelPart * modelPart, modelParts) {
         //DebugDialog::debug(modelPart->title());
-        this->addPartTo(searchBin, modelPart, false);
+        if (modelPart->itemType() != ModelPart::SchematicSubpart) {
+            this->addPartTo(searchBin, modelPart, false);
+        }
         progress.incValue();
     }
  

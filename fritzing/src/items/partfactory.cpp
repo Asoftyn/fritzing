@@ -254,7 +254,7 @@ QString PartFactory::getSvgFilename(ModelPart * modelPart, const QString & baseN
 	    filename = PartFactory::getSvgFilename(modelPart, baseName);
     }
 
-    if (handleSubparts && exists && modelPart->modelPartShared() && modelPart->modelPartShared()->hasSubparts()) 
+    if (handleSubparts && modelPart->modelPartShared() && modelPart->modelPartShared()->hasSubparts())
     {
         ModelPartShared * superpart = modelPart->modelPartShared();
         QString schematicName = superpart->imageFileName(ViewLayer::SchematicView);

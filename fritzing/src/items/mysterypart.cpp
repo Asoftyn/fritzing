@@ -91,31 +91,22 @@ void MysteryPart::setChipLabel(QString chipLabel, bool force) {
 	switch (this->m_viewID) {
 		case ViewLayer::BreadboardView:
 			svg = makeSvg(chipLabel, true);
-			break;
+            if (!svg.isEmpty()) {
+	            resetRenderer(svg);
+            }			
+            break;
 		case ViewLayer::SchematicView:
 			svg = makeSvg(chipLabel, false);
 			svg = retrieveSchematicSvg(svg);
-            if (m_viewLayerID == ViewLayer::Schematic) {
-                svg = SvgFileSplitter::hideText3(svg);
-            }
-            else if (m_viewLayerID == ViewLayer::SchematicText) {
-                bool hasText;
-                svg = SvgFileSplitter::showText3(svg, hasText);
-            }
-
+            resetLayerKin(svg);
 			break;
 		default:
 			break;
 	}
 
-    if (!svg.isEmpty()) {
-	    resetRenderer(svg);
-    }
-
 	modelPart()->setLocalProp("chip label", chipLabel);
 
     if (m_partLabel) m_partLabel->displayTextsIf();
-
 }
 
 QString MysteryPart::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
@@ -559,7 +550,7 @@ bool MysteryPart::changePinLabels(bool singleRow, bool sip) {
 	if (labels.count() == 0) return true;
 
 	QString svg = MysteryPart::makeSchematicSvg(labels, sip);
-	resetRenderer(svg);
+    resetLayerKin(svg);
 
 	return true;
 }

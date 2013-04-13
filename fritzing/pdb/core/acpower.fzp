@@ -14,7 +14,7 @@
  <properties>
    <property name="family">voltage source</property>
    <property name="type">ac power supply</property>
-   <property name="voltage">5</property>
+   <property name="voltage" showInLabel="yes">5</property>
    <property name="frequency">60</property>
  </properties>
  <taxonomy>discreteParts.power.power.acpower</taxonomy>

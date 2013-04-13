@@ -42,6 +42,7 @@ $Date$
 #include "../utils/textutils.h"
 #include "../utils/graphicsutils.h"
 #include "../utils/familypropertycombobox.h"
+#include "../svg/svgfilesplitter.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QSvgRenderer>
@@ -1563,3 +1564,17 @@ QStringList PaletteItem::sipOrDipOrLabels(bool & hasLayout, bool & sip) {
     return labels;
 }
 
+void PaletteItem::resetLayerKin(const QString & svg) {
+    QString svgNoText = SvgFileSplitter::hideText3(svg);
+	resetRenderer(svgNoText);
+
+    foreach (ItemBase * lkpi, layerKin()) {
+        if (lkpi->viewLayerID() == ViewLayer::SchematicText) {
+            bool hasText;
+	        QString svgText = SvgFileSplitter::showText3(svg, hasText);
+	        lkpi->resetRenderer(svgText);
+            lkpi->setProperty("textSvg", svgText);
+            break;
+        }
+    }
+}

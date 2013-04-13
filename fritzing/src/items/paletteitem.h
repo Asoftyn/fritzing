@@ -119,6 +119,7 @@ public:
 	void resetConnectors(ItemBase * otherLayer, FSvgRenderer * otherLayerRenderer);
 	void resetConnector(ItemBase * itemBase, SvgIdLayer * svgIdLayer);
     QStringList sipOrDipOrLabels(bool & hasLayout, bool & sip);
+    void resetLayerKin(const QString & svg);
 
 public:
 	static QString genFZP(const QString & moduleid, const QString & templateName, int minPins, int maxPins, int steps, bool smd);

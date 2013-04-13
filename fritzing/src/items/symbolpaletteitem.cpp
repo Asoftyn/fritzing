@@ -35,6 +35,8 @@ $Date$
 #include "../utils/graphicsutils.h"
 #include "../sketch/infographicsview.h"
 #include "partlabel.h"
+#include "layerkinpaletteitem.h"
+#include "../svg/svgfilesplitter.h"
 
 #include <QLineEdit>
 #include <QMultiHash>
@@ -269,9 +271,10 @@ void SymbolPaletteItem::setProp(const QString & prop, const QString & value) {
 
 void SymbolPaletteItem::setDirection(const QString & value) {
 	m_modelPart->setLocalProp("direction", value);
-	QString svg = makeSvg();
+	QString svg = makeSvg(this->viewLayerID());
 	resetRenderer(svg);
     resetConnectors(NULL, NULL);
+    resetLayerKin();
 }
 
 void SymbolPaletteItem::setLabel(const QString & label) {
@@ -283,9 +286,11 @@ void SymbolPaletteItem::setLabel(const QString & label) {
 		LocalNetLabels.insert(label, connectorItem);
 	}
 
-	QString svg = makeSvg();
+	QString svg = makeSvg(this->viewLayerID());
 	resetRenderer(svg);
     resetConnectors(NULL, NULL);
+
+    resetLayerKin();
 }
 
 void SymbolPaletteItem::setVoltage(double v) {
@@ -318,15 +323,17 @@ void SymbolPaletteItem::setVoltage(double v) {
 
 	if (!m_voltageReference && !m_isNetLabel) return;
 
-	QString svg = makeSvg();
+	QString svg = makeSvg(viewLayerID());
 	reloadRenderer(svg, false);
+
+    resetLayerKin();
 
     if (m_partLabel) m_partLabel->displayTextsIf();
 }
 
-QString SymbolPaletteItem::makeSvg() {
+QString SymbolPaletteItem::makeSvg(ViewLayer::ViewLayerID viewLayerID) {
     if (m_isNetLabel && !m_voltageReference) {
-        return makeNetLabelSvg();
+        return makeNetLabelSvg(viewLayerID);
     }
 
 	QString path = filename();
@@ -335,7 +342,14 @@ QString SymbolPaletteItem::makeSvg() {
 	if (file.open(QFile::ReadOnly)) {
 		svg = file.readAll();
 		file.close();
-		return replaceTextElement(svg);
+		svg = replaceTextElement(svg);
+        if (viewLayerID == ViewLayer::SchematicText) {
+            bool hasText;
+            return SvgFileSplitter::showText3(svg, hasText);
+        }
+        else {
+            return SvgFileSplitter::hideText3(svg);
+        }
 	}
 
 	return "";
@@ -380,7 +394,7 @@ void SymbolPaletteItem::addedToScene(bool temporary)
     return PaletteItem::addedToScene(temporary);
 }
 
-QString SymbolPaletteItem::makeNetLabelSvg() {
+QString SymbolPaletteItem::makeNetLabelSvg(ViewLayer::ViewLayerID viewLayerID) {
     static const double labelFontSize = 200;
     static const double totalHeight = 300;
     static const double arrowWidth = totalHeight / 2;
@@ -405,37 +419,39 @@ QString SymbolPaletteItem::makeNetLabelSvg() {
 
     QString svg = header.arg(totalWidth / 1000).arg(totalHeight / 1000).arg(totalWidth).arg(totalHeight);
 
-    QString pin = QString("<rect id='connector0pin' x='%1' y='%2' width='%3' height='%4' fill='none' stroke='none' stroke-width='0' />\n");
-    QString terminal = QString("<rect id='connector0terminal' x='%1' y='%2' width='0.1' height='0.1' fill='none' stroke='none' stroke-width='0' />\n");
-
-    QString points = QString("%1,%2 %3,%4 %5,%4 %5,%6 %3,%6");
-    if (goLeft) {
-        points = points.arg(halfStrokeWidth).arg(totalHeight / 2)
-                        .arg(arrowWidth).arg(halfStrokeWidth)
-                        .arg(totalWidth - halfStrokeWidth).arg(totalHeight - halfStrokeWidth);
-        terminal = terminal.arg(0).arg(totalHeight / 2);
-        pin = pin.arg(0).arg(0).arg(arrowWidth).arg(totalHeight);
+    if (viewLayerID == ViewLayer::SchematicText) {
+        svg += QString("<text id='label' x='%1' y='%2' fill='#000000' font-family='DroidSans' font-size='%3'>%4</text>\n")
+                .arg(labelOffset + offset)
+                .arg(labelBaseLine)
+                .arg(labelFontSize)
+                .arg(getLabel());
     }
     else {
-        points = points.arg(totalWidth - halfStrokeWidth).arg(totalHeight / 2)
-                        .arg(totalWidth - arrowWidth).arg(halfStrokeWidth)
-                        .arg(halfStrokeWidth).arg(totalHeight - halfStrokeWidth);
-        terminal = terminal.arg(totalWidth).arg(totalHeight / 2);
-        pin = pin.arg(totalWidth - arrowWidth - 0.1).arg(0).arg(arrowWidth).arg(totalHeight);
+        QString pin = QString("<rect id='connector0pin' x='%1' y='%2' width='%3' height='%4' fill='none' stroke='none' stroke-width='0' />\n");
+        QString terminal = QString("<rect id='connector0terminal' x='%1' y='%2' width='0.1' height='0.1' fill='none' stroke='none' stroke-width='0' />\n");
+
+        QString points = QString("%1,%2 %3,%4 %5,%4 %5,%6 %3,%6");
+        if (goLeft) {
+            points = points.arg(halfStrokeWidth).arg(totalHeight / 2)
+                            .arg(arrowWidth).arg(halfStrokeWidth)
+                            .arg(totalWidth - halfStrokeWidth).arg(totalHeight - halfStrokeWidth);
+            terminal = terminal.arg(0).arg(totalHeight / 2);
+            pin = pin.arg(0).arg(0).arg(arrowWidth).arg(totalHeight);
+        }
+        else {
+            points = points.arg(totalWidth - halfStrokeWidth).arg(totalHeight / 2)
+                            .arg(totalWidth - arrowWidth).arg(halfStrokeWidth)
+                            .arg(halfStrokeWidth).arg(totalHeight - halfStrokeWidth);
+            terminal = terminal.arg(totalWidth).arg(totalHeight / 2);
+            pin = pin.arg(totalWidth - arrowWidth - 0.1).arg(0).arg(arrowWidth).arg(totalHeight);
+        }
+
+        svg += pin;
+        svg += terminal;
+        svg += QString("<polygon fill='white' stroke='#000000' stroke-width='%1' points='%2' />\n")
+                        .arg(strokeWidth)
+                        .arg(points);
     }
-
-    svg += pin;
-    svg += terminal;
-    svg += QString("<polygon fill='white' stroke='#000000' stroke-width='%1' points='%2' />\n")
-                    .arg(strokeWidth)
-                    .arg(points);
-
-    svg += QString("<text id='label' x='%1' y='%2' fill='#000000' font-family='DroidSans' font-size='%3'>%4</text>\n")
-            .arg(labelOffset + offset)
-            .arg(labelBaseLine)
-            .arg(labelFontSize)
-            .arg(getLabel());
-
 
     svg += "</g>\n</svg>\n";
  
@@ -444,7 +460,7 @@ QString SymbolPaletteItem::makeNetLabelSvg() {
 
 QString SymbolPaletteItem::retrieveNetLabelSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) {
     Q_UNUSED(svgHash);
-    QString svg = makeNetLabelSvg();
+    QString svg = makeNetLabelSvg(viewLayerID);
     return PaletteItemBase::normalizeSvg(svg, viewLayerID, blackOnly, dpi);
 }
 
@@ -587,4 +603,15 @@ void SymbolPaletteItem::setAutoroutable(bool ar) {
 
 bool SymbolPaletteItem::getAutoroutable() {
 	return m_viewGeometry.getAutoroutable();
+}
+
+void SymbolPaletteItem::resetLayerKin() {
+    foreach (ItemBase * lkpi, layerKin()) {
+        if (lkpi->viewLayerID() == ViewLayer::SchematicText) {
+	        QString svg = makeSvg(lkpi->viewLayerID());
+	        lkpi->resetRenderer(svg);
+            lkpi->setProperty("textSvg", svg);
+            break;
+        }
+    }
 }

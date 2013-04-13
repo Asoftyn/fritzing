@@ -92,11 +92,12 @@ public slots:
 protected:
 	void removeMeFromBus(double voltage);
 	double useVoltage(ConnectorItem * connectorItem);
-	QString makeSvg();
-	QString makeNetLabelSvg();
+	QString makeSvg(ViewLayer::ViewLayerID);
+	QString makeNetLabelSvg(ViewLayer::ViewLayerID);
 	QString replaceTextElement(QString svg);
     ViewLayer::ViewID useViewIDForPixmap(ViewLayer::ViewID, bool swappingEnabled);
     QString retrieveNetLabelSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
+    void resetLayerKin();
 
 protected:
 	double m_voltage;

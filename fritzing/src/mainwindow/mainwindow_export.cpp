@@ -593,6 +593,8 @@ void MainWindow::exportAux(QString fileName, QImage::Format format, int quality,
 	m_currentGraphicsView->scene()->render(&painter, target, source, Qt::KeepAspectRatio);
 	painter.end();
 
+    //image.save(FolderUtils::getUserDataStorePath("") + "/export.png");
+
 	if (removeBackground) {
 		m_currentGraphicsView->setBackground(color);
 	}

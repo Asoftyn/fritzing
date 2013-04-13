@@ -1125,7 +1125,18 @@ void SketchWidget::cutDeleteAux(QString undoStackMessage, bool plus, Wire * wire
 		    if (!canDeleteItem(sitem, sitems.count())) continue;
 
 		    // canDeleteItem insures dynamic_cast<ItemBase *>(sitem)->layerKinChief() won't break
-		    deletedItems.insert(dynamic_cast<ItemBase *>(sitem)->layerKinChief());
+            ItemBase * itemBase = dynamic_cast<ItemBase *>(sitem)->layerKinChief();
+            if (itemBase->superpart()) {
+                deletedItems.insert(itemBase->superpart());
+                foreach (ItemBase * sub, itemBase->superpart()->subparts()) deletedItems.insert(sub);
+            }
+            else if (itemBase->subparts().count() > 0) {
+                deletedItems.insert(itemBase);
+                foreach (ItemBase * sub, itemBase->subparts()) deletedItems.insert(sub);
+            }
+            else {
+		        deletedItems.insert(itemBase);
+            }
 	    }
     }
 
@@ -8973,7 +8984,7 @@ void SketchWidget::changePinLabelsSlot(ItemBase * itemBase, bool singleRow)
         if (labels.count() == 0) return;
 
         QString svg = PartFactory::makeSchematicSipOrDipOr(labels, hasLayout, sip);
-		paletteItem->resetRenderer(svg);
+		paletteItem->resetLayerKin(svg);
 		if (!hasLayout && !sip) {
 			paletteItem->resetConnectors();
 		}

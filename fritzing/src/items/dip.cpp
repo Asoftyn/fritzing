@@ -381,7 +381,7 @@ bool Dip::changePinLabels(bool singleRow, bool sip) {
 		svg = Dip::makeSchematicSvg(labels);
 	}
 
-	resetRenderer(svg);
+	resetLayerKin(svg);
 
 	return true;
 }
