@@ -272,8 +272,8 @@ bool SchematicTextLayerKinPaletteItem::makeFlipTextSvg() {
 
     positionTexts(doc, texts);
 
-    QSvgRenderer renderer;
-    renderer.load(doc.toByteArray());
+    //QSvgRenderer renderer;
+    //renderer.load(doc.toByteArray());
     ix = 0;
     foreach (QDomElement text, texts) {
         QString id = IDString.arg(ix++);
@@ -366,8 +366,18 @@ void SchematicTextLayerKinPaletteItem::positionTexts(QDomDocument & doc, QList<Q
             }
         }
 
+        // TODO: assumes left-to-right text orientation
+        QString anchor = TextUtils::findAnchor(text);
+        int useX = maxX;
+        if (anchor == "middle") {
+            useX = (maxX + minX) / 2;
+        }
+        else if (anchor == "end") {
+            useX = minX;
+        }
+
         QMatrix inv = matrix.inverted();
-        QPointF rp((image.width() - maxX) * viewBox.width() / image.width(), (image.height() - maxY) * viewBox.height() / image.height());
+        QPointF rp((image.width() - useX) * viewBox.width() / image.width(), (image.height() - maxY) * viewBox.height() / image.height());
         QPointF rq = inv.map(rp);
         // how do we know which corner of the minX to maxX, minY to maxY to use)
         this->setProperty(id.toUtf8().constData(), rq.x());

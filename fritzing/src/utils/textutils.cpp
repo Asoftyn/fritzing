@@ -1816,3 +1816,14 @@ bool TextUtils::ensureViewBox(QDomDocument doc, double dpi, QRectF & rect) {
     rect.setRect(coords.at(0).toDouble(), coords.at(1).toDouble(), coords.at(2).toDouble(), coords.at(3).toDouble());
     return true;
 }
+
+QString TextUtils::findAnchor(const QDomElement & text) {
+    if (text.isNull()) return "start";
+
+    QString anchor = text.attribute("text-anchor");
+    if (!anchor.isEmpty()) return anchor;
+
+    return findAnchor(text.parentNode().toElement());
+}
+
+

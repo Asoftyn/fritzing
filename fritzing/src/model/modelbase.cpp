@@ -252,7 +252,7 @@ bool ModelBase::loadInstances(QDomDocument & domDocument, QDomElement & instance
 
 
    		modelPart = m_referenceModel->retrieveModelPart(moduleIDRef);
-   		if (modelPart == NULL) {
+        if (modelPart == NULL) {
 			DebugDialog::debug(QString("module id %1 not found in database").arg(moduleIDRef));
 			modelPart = fixObsoleteModuleID(domDocument, instance, moduleIDRef);
 			if (modelPart == NULL) {

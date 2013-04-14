@@ -118,6 +118,7 @@ public:
     static QString parseForModuleID(const QString & fzp);
 	static QString getRandText();
     static bool ensureViewBox(QDomDocument doc, double dpi, QRectF & rect);
+    static QString findAnchor(const QDomElement & text);
 
 public:
 	static const QRegExp FindWhitespace;

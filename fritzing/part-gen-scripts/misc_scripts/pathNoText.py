@@ -9,15 +9,13 @@ import getopt, sys, os, re
 def usage():
     print """
 usage:
-    copperNoSilkscreen.py -d [directory]
+    pathNoText.py -d [directory]
     
-    directory is a folder containing .fzp files.  
+    directory is a folder containing .svg files.  
     In each fzp file in the directory or its subfolders,
-    look for "copper" and "silkscreen".
+    look for "<path>" and no "<text>".
     """
     
-    
-       
 def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hd:", ["help", "directory"])
@@ -25,7 +23,7 @@ def main():
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
         usage()
-        sys.exit(2)
+        return
     outputDir = None
     
     for o, a in opts:
@@ -35,31 +33,28 @@ def main():
             outputDir = a
         elif o in ("-h", "--help"):
             usage()
-            sys.exit(2)
+            return
         else:
             assert False, "unhandled option"
     
-    if(not(outputDir)):
+    if not(outputDir) :
         usage()
-        sys.exit(2)
+        return
         
     
     for root, dirs, files in os.walk(outputDir, topdown=False):
         for filename in files:
-            if (filename.endswith(".fzp")):  
+            if filename.endswith(".svg"):  
                 infile = open(os.path.join(root, filename), "r")
-                fzp = infile.read();
-                infile.close();
-                copperMatch = re.search('copper', fzp)
-                silkscreenMatch = re.search('silkscreen', fzp)
+                svg = infile.read()
+                infile.close()
+                textMatch = '<text' in svg
+                pathMatch = '<path' in svg
                 
-                if (copperMatch == None):
-                    print "{0} {1}".format(os.path.join(root, filename), "no copper")
-                elif (silkscreenMatch == None):
-                    print "{0} {1}".format(os.path.join(root, filename), "no silkscreen")
+                if not(textMatch) and pathMatch:
+                    print "{0} {1}".format(os.path.join(root, filename), "path no text")
 
                 
-  
     
 if __name__ == "__main__":
     main()
