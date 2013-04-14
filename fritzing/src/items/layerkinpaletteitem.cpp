@@ -379,7 +379,6 @@ void SchematicTextLayerKinPaletteItem::positionTexts(QDomDocument & doc, QList<Q
         QMatrix inv = matrix.inverted();
         QPointF rp((image.width() - useX) * viewBox.width() / image.width(), (image.height() - maxY) * viewBox.height() / image.height());
         QPointF rq = inv.map(rp);
-        // how do we know which corner of the minX to maxX, minY to maxY to use)
         this->setProperty(id.toUtf8().constData(), rq.x());
         text.setTagName("g");
     }

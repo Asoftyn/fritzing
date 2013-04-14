@@ -390,11 +390,7 @@ void Dip::addedToScene(bool temporary)
 {
     MysteryPart::addedToScene(temporary);
 	if (this->isDIP()) {
-		bool hasLocal = false;
-		QStringList labels = getPinLabels(hasLocal);
-		if (hasLocal) {
-			resetConnectors();
-		}
+		resetConnectors();
 	}
 }
 
