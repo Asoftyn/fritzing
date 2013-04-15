@@ -161,7 +161,7 @@
     <message>
         <location filename="../src/help/aboutbox.cpp" line="166"/>
         <source>to Lionel Michel and Yvan Kloster for the French translation, </source>
-        <translation type="unfinished"></translation>
+        <translation>à Lionnel Michel et Yvan Kloster pour la traduction Française,</translation>
     </message>
     <message>
         <location filename="../src/help/aboutbox.cpp" line="167"/>
