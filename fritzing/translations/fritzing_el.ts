@@ -159,52 +159,57 @@
         <translation>Καλτσά Αλέξανδρο για την μετάφραση στα Ελληνικά,</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="167"/>
+        <location filename="../src/help/aboutbox.cpp" line="166"/>
+        <source>to Lionel Michel and Yvan Kloster for the French translation, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/help/aboutbox.cpp" line="168"/>
         <source>and to Arthur Zanona, Nuno Pessanha Santos, and Leandro Nunes for the Portuguese (Brazilian) translation. </source>
         <translation>και στους Arthur Zanona, Nuno Pessanha Santos, και Leandro Nunes για την μετάφραση στα Πορτογαλικά (Βραζιλία) .</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="171"/>
+        <location filename="../src/help/aboutbox.cpp" line="172"/>
         <source>Fritzing is made possible with funding from the </source>
         <translation>Το Fritzing είναι πραγματικότητα με χρηματοδότηση από τους </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="172"/>
+        <location filename="../src/help/aboutbox.cpp" line="173"/>
         <source>MWFK Brandenburg, the sponsorship of the Design </source>
         <translation>MWFK Brandenburg, για την χορηγία του Σχεδίου </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="173"/>
+        <location filename="../src/help/aboutbox.cpp" line="174"/>
         <source>Department of Bauhaus-University Weimar, </source>
         <translation>Τμήμα του πανεπιστημίου Bauhaus Weimar,  </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="174"/>
+        <location filename="../src/help/aboutbox.cpp" line="175"/>
         <source>IxDS, an anonymous donor, Parallax, Picaxe, Sparkfun, </source>
         <translation>IxDS, έναν ανώνυμο χορηγό, Parallax, Picaxe, Sparkfun, </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="175"/>
+        <location filename="../src/help/aboutbox.cpp" line="176"/>
         <source>and from each purchase of a Fritzing Starter Kit.</source>
         <translation>και από τις αγορές των πακέτων εκμάθησης του Fritzing.</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="179"/>
+        <location filename="../src/help/aboutbox.cpp" line="180"/>
         <source>Special thanks goes out as well to all the students </source>
         <translation>Ειδικές ευχαριστίες σε όλους τους σπουδαστές </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="180"/>
+        <location filename="../src/help/aboutbox.cpp" line="181"/>
         <source>and alpha testers who were brave enough to give </source>
         <translation>και στους δοκιμαστές των alpha εκδόσεων που ήταν αρκετά γενναίοι </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="181"/>
+        <location filename="../src/help/aboutbox.cpp" line="182"/>
         <source>Fritzing a test spin. </source>
         <translation>να δοκιμάσουν το Fritzing. </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="184"/>
+        <location filename="../src/help/aboutbox.cpp" line="185"/>
         <source>&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;</source>
         <translation>&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;</translation>
     </message>
@@ -3997,12 +4002,12 @@ Reason: %2 (errcode %3)</source>
 <context>
     <name>MysteryPart</name>
     <message>
-        <location filename="../src/items/mysterypart.cpp" line="219"/>
+        <location filename="../src/items/mysterypart.cpp" line="210"/>
         <source>label</source>
         <translation>ετικέτα</translation>
     </message>
     <message>
-        <location filename="../src/items/mysterypart.cpp" line="286"/>
+        <location filename="../src/items/mysterypart.cpp" line="277"/>
         <source>chip label</source>
         <translation>ετικέτα chip</translation>
     </message>
@@ -4018,80 +4023,80 @@ Reason: %2 (errcode %3)</source>
 <context>
     <name>PCBSketchWidget</name>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="270"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="271"/>
         <source>Create Trace from Ratsnest</source>
         <translation>Δημιουργία Ίχνους από Ratsnest</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="369"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="370"/>
         <source>Click this connector to drag out a new trace.</source>
         <translation>Κλικ σε αυτόν τον συνδετήρα για να εξάγετε έναν νέο ίχνος.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1161"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1162"/>
         <source>Change trace layer</source>
         <translation>Αλλαγή επιπέδου ίχνους</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="324"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="329"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1555"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1560"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1595"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1612"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1627"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1650"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1668"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1707"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1712"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1719"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1736"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1758"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1775"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2288"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2293"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2316"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2321"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2492"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2760"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="325"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="330"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1556"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1561"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1596"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1613"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1628"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1651"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1669"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1708"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1713"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1720"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1737"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1759"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1776"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2289"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2294"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2317"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2322"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2493"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2761"/>
         <source>Fritzing</source>
         <translation>Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="325"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="326"/>
         <source>Your sketch does not have a board yet! Please add a PCB in order to use this selection operation.</source>
         <translation>Το σχέδιο σας δεν έχει κάποια πλακέτα ακόμη!  Παρακαλώ προσθέστε κάποια πλακέτα (PCB) για να χρησιμοποιήσετε αυτή την λειτουργία επιλογής.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="330"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2294"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2322"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="331"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2295"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2323"/>
         <source>Please click on a PCB first--this selection operation only works for one board at a time.</source>
         <translation>Παρακαλώ κάντε &quot;κλικ&quot; σε μία πλακέτα (PCB) πρώτα--αυτή η λειτουργία επιλογής λειτουργεί με μία πλακέτα την φορά.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1556"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1708"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1557"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1709"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use copper fill.</source>
         <translation>Το σχέδιο σας δεν έχει κάποια πλακέτα ακόμη!  Παρακαλώ προσθέστε κάποιο PCB για να χρησιμοποιήσετε γέμισμα χαλκού.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1561"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1562"/>
         <source>%1 Fill: please select the board you want to apply fill to.</source>
         <translation>%1 Γέμισμα: παρακαλώ επιλέξτε την πλακέτα που θέλετε να εφαρμόσετε το γέμισμα.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1561"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1562"/>
         <source>Ground</source>
         <translation>Γείωση</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1561"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1562"/>
         <source>Copper</source>
         <translation>Χαλκός</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1571"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1572"/>
         <source>Please designate one or more ground fill seeds before doing a ground fill.
 
 </source>
@@ -4100,76 +4105,76 @@ Reason: %2 (errcode %3)</source>
 </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1595"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1736"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1596"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1737"/>
         <source>Fritzing error: unable to render board svg (1).</source>
         <translation>Σφάλμα Fritzing: Αδυναμία απόδοσης του board.svg(1).</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1612"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1627"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1758"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1613"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1628"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1759"/>
         <source>Fritzing error: unable to render copper svg (1).</source>
         <translation>Σφάλμα Fritzing: Αδυναμία απόδοσης του copper.svg(1).</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1650"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1651"/>
         <source>Fritzing error: unable to write copper fill (1).</source>
         <translation>Σφάλμα Fritzing: Αδυναμία εγγραφής του γεμίσματος χαλκού(1).</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1668"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1669"/>
         <source>Fritzing error: unable to write copper fill (2).</source>
         <translation>Σφάλμα Fritzing: Αδυναμία εγγραφής του γεμίσματος χαλκού(2).</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1713"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1714"/>
         <source>Copper fill: please select only the board you want to fill.</source>
         <translation>Γέμισμα χαλκού: παρακαλώ επιλέξτε μόνο την πλακέτα που θέλετε να γεμίσετε.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1719"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1720"/>
         <source>Unable to create copper fill--probably the part wasn&apos;t dropped onto the PCB.</source>
         <translation>Αδυναμία γεμίσματος χαλκού. Πιθανότατα το εξάρτημα δεν τοποθετήθηκε πάνω στο τυπωμένο (PCB).</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1775"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1776"/>
         <source>Unable to create copper fill--possibly the part was dropped onto another part or wire rather than the actual PCB.</source>
         <translation>Αδυναμία γεμίσματος χαλκού. Πιθανότατα το εξάρτημα τοποθετήθηκε πάνω κάποιο άλλο εξάρτημα, καλώδιο και όχι στο τυπωμένο (PCB).</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2150"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2151"/>
         <source>Clear ground fill seeds</source>
         <translation>Καθαρισμός φυτρών γεμίσματος χαλκού</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2289"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2317"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2290"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2318"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use this selection operation.</source>
         <translation>Το σχέδιο σας δεν έχει κάποια πλακέτα ακόμη!  Παρακαλώ προσθέστε κάποια πλακέτα (PCB) για να χρησιμοποιήσετε αυτή την λειτουργία επιλογής.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2493"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2494"/>
         <source>Unable to convert this via to a bendpoint because it is connected to a part that is only on the bottom layer and another part that is only on the top layer.</source>
         <translation>Αδυναμία μετατροπής της οπής σε σημείο καμπής διότι είναι συνδεδεμένη σε κάποιο εξάρτημα που είναι μόνο στο κάτω επίπεδο και σε ένα άλλο που είναι μόνο στο πάνω επίπεδο.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2747"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2748"/>
         <source>Show part silkscreen</source>
         <translation>Εμφάνιση μεταξοτυπίας εξαρτήματος</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2747"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2748"/>
         <source>Hide part silkscreen</source>
         <translation>Απόκρυψη μεταξοτυπίας εξαρτήματος</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2761"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2762"/>
         <source>Your sketch does not have a board yet. You cannot fabricate this sketch without a PCB part.</source>
         <translation>Το σχέδιο σας δεν έχει πλακέτα ακόμη. Δεν μπορείτε να κατασκευάσετε αυτό το σχέδιο χωρίς τυπωμένο (PCB).</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2783"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2784"/>
         <source>%n copies of this sketch will cost %1 Euros.</source>
         <translation>
             <numerusform>%n αντίγραφα του σχεδίου αυτού θα στοιχίσουν %1 Ευρώ.</numerusform>
@@ -4177,12 +4182,12 @@ Reason: %2 (errcode %3)</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2900"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2905"/>
         <source>Enter Keepout</source>
         <translation>Εισαγωγή Ορίου Ασφαλείας</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2901"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2906"/>
         <source>Keepout is in mils (.001 inches).
 
 </source>
@@ -4191,13 +4196,13 @@ Reason: %2 (errcode %3)</source>
 </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2902"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2907"/>
         <source>Note that due to aliasing, distances may be too short by up to 2 mils
 </source>
         <translation>Σημείωστε πως λόγο της ομαλοποίησης (aliasing), οι αποστάσεις μπορεί να είναι μικρότερες μέχρι και 2 mils</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2903"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2908"/>
         <source>so you may want to increase the keepout value by that much.
 
 </source>
@@ -4206,7 +4211,7 @@ Reason: %2 (errcode %3)</source>
 </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2904"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2909"/>
         <source>10 mils is a good default choice.
 
 </source>
@@ -4215,7 +4220,7 @@ Reason: %2 (errcode %3)</source>
 </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2905"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2910"/>
         <source>Enter keepout value:</source>
         <translation>Εισάγετε την τιμή του ορίου ασφαλείας:</translation>
     </message>
@@ -6111,9 +6116,9 @@ shift key swaps scroll axis</source>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="622"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="665"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="734"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="456"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="1339"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="1356"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="462"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1343"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1360"/>
         <location filename="../src/fapplication.cpp" line="923"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="50"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="143"/>
@@ -6348,7 +6353,7 @@ shift key swaps scroll axis</source>
     </message>
     <message>
         <location filename="../src/partsbinpalette/partsbinview.cpp" line="52"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="194"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="195"/>
         <source>PCB View</source>
         <translation>Προβολή Τυπωμένου (PCB)</translation>
     </message>
@@ -6429,27 +6434,27 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
         <translation>bb</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="195"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="196"/>
         <source>pcb</source>
         <translation>pcb</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="308"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="309"/>
         <source>Select all &apos;Don&apos;t autoroute&apos; traces</source>
         <translation>Επιλογή Όλων &quot;Μην Αυτοδρομολογείς&quot; τα Ίχνη</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="313"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="314"/>
         <source>Select all autorouteable traces</source>
         <translation>Επιλογή Όλων των Αυτοδρομολογούμενων Ιχνών</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2369"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2370"/>
         <source>Convert to Via</source>
         <translation>Μετατροπή σε Οπή</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2500"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2501"/>
         <source>Convert Via to Bendpoint</source>
         <translation>Μετατροπή Οπής σε Σημείο Καμπής</translation>
     </message>
@@ -6520,7 +6525,7 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
         <translation>Καλώδια Ratsnest</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2307"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2308"/>
         <location filename="../src/sketch/sketchwidget.cpp" line="7838"/>
         <source>Select all %1</source>
         <translation>Επιλογή Όλων των %1</translation>
@@ -7028,17 +7033,17 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
         <translation>Επεξεργαστής φυτρών Γεμίσματος Γείωσης</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="457"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="463"/>
         <source>Panelizer finished: %1 panel(s), with %2 additional copy(ies) for each panel</source>
         <translation>Η &apos;πανελοποίηση&apos; τελείωσε: %1 πάνελ, με %2 επιπλέον αντίγραφα για κάθε πάνελ</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="1339"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1343"/>
         <source>unable to copy file &apos;%1&apos; to &apos;%2&apos;.</source>
         <translation>αδυναμία αντιγραφής αρχείου &apos;%1&apos; στο &apos;%2&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="1356"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1360"/>
         <location filename="../src/fapplication.cpp" line="923"/>
         <source>%1 wires moved from their saved position in %2.</source>
         <translation>%1 καλώδια μετακινήθηκαν από την αποθηκευμένη θέση τους στη %2.</translation>
