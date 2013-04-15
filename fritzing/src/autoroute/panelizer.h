@@ -58,6 +58,7 @@ struct PanelItem {
     int produced;
 	QSizeF boardSizeInches;
     long boardID;
+    PanelItem * refPanelItem;
 
 	// per instance
 	double x, y;
@@ -128,14 +129,13 @@ protected:
 	static void collectFiles(const QDir & outputDir, QDomElement & path, QHash<QString, QString> & fzzFilePaths);
 	static bool checkBoards(QDomElement & board, QHash<QString, QString> & fzzFilePaths);
 	static bool openWindows(QDomElement & board, QHash<QString, QString> & fzzFilePaths, class FApplication *, PanelParams &, QDir & fzDir, QDir & svgDir, QList<PanelItem *> & refPanelItems, QList<LayerThing> & layerThingList, bool customPartsOnly, QDir & copyDir);
-	static void bestFit(QList<PanelItem *> & refPanelItems, QList<PanelItem *> & insertPanelItems, PanelParams &, QList<PlanePair *> &, bool customPartsOnly);
+	static void bestFit(QList<PanelItem *> & insertPanelItems, PanelParams &, QList<PlanePair *> &, bool customPartsOnly);
 	static bool bestFitOne(PanelItem * panelItem, PanelParams & panelParams, QList<PlanePair *> & planePairs, bool createNew, bool customPartsOnly);
 	static void addOptional(int optionalCount, QList<PanelItem *> & refPanelItems, QList<PanelItem *> & insertPanelItems, PanelParams &, QList<PlanePair *> &);
 	static class MainWindow * inscribeBoard(QDomElement & board, QHash<QString, QString> & fzzFilePaths, FApplication * app, QDir & fzDir, bool drc, QDir & copyDir);
     static void doOnePanelItem(PlanePair * planePair, QList<LayerThing> & layerThingList, PanelItem * panelItem, QDir & svgDir);
     static void makeSVGs(MainWindow *, ItemBase *, const QString & boardName, QList<LayerThing> & layerThingList, QDir & saveDir, QFileInfo & copyInfo);
     static void shrinkLastPanel( QList<PlanePair *> & planePairs, QList<PanelItem *> & insertPanelItems, PanelParams &, bool customPartsOnly);
-    static void incProduced(const QString & path, long boardID, QList<PanelItem *> & refPanelItems);
     static int bestFitLoop(QList<PanelItem *> & refPanelItems, PanelParams &, bool customPartsOnly, QList<PlanePair *> & returnPlanePairs, QList<PanelItem *> & returnInsertPanelItems, const QDir & svgDir);
     static double calcCost(PanelParams &, QList<PlanePair *> &, int divisor);
 

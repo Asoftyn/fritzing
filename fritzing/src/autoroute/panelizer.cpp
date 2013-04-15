@@ -207,6 +207,7 @@ BestPlace::BestPlace() {
 PanelItem::PanelItem() {
     produced = 0;
     boardID = 0;
+    refPanelItem = NULL;
 }
 
 PanelItem::PanelItem(PanelItem * from) {
@@ -218,6 +219,7 @@ PanelItem::PanelItem(PanelItem * from) {
 	this->optionalPriority = from->optionalPriority;
 	this->boardSizeInches = from->boardSizeInches;
 	this->boardID = from->boardID;
+    this->refPanelItem = from;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -346,14 +348,18 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 	board = boards.firstChildElement("board");
 	if (!openWindows(board, fzzFilePaths, app, panelParams, fzDir, svgDir, refPanelItems, layerThingList, customPartsOnly, copyDir)) return;
 
-    
-
 	QList<PlanePair *> planePairs;
     QList<PanelItem *> insertPanelItems;
     int duplicates = bestFitLoop(refPanelItems, panelParams, customPartsOnly, planePairs, insertPanelItems, svgDir);
 
+    foreach (PanelItem * panelItem, insertPanelItems) {
+        if (panelItem->refPanelItem) {
+            panelItem->refPanelItem->produced += duplicates;
+        }
+    }
+
 	foreach (PlanePair * planePair, planePairs) {
-		//planePair->layoutSVG += "</svg>";   // handled in bestFitLoop
+		planePair->layoutSVG += "</svg>"; 
 		QString fname = svgDir.absoluteFilePath(QString("%1.panel_%2.layout.svg").arg(panelParams.prefix).arg(planePair->index));
         TextUtils::writeUtf8(fname, planePair->layoutSVG);
 	}
@@ -397,13 +403,28 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 		merger.replace("black", "#90f0a0");
 		merger.replace("#000000", "#90f0a0");
 		merger.replace("fill-opacity=\"0.5\"", "fill-opacity=\"1\"");
+
+        //DebugDialog::debug("outline identification");
+        //DebugDialog::debug(merger);
+        //DebugDialog::debug("");
+
 		TextUtils::mergeSvg(doc, merger, "");
 		merger = planePair->svgs.at(SilkTopLayer);			
 		merger.replace("black", "#909090");
 		merger.replace("#000000", "#909090");
+
+        //DebugDialog::debug("silk identification");
+        //DebugDialog::debug(merger);
+        //DebugDialog::debug("");
+
 		TextUtils::mergeSvg(doc, merger, "");		
 		merger = planePair->layoutSVG;				// layout
 		merger.replace("'red'", "'none'");		// hide background rect
+
+        //DebugDialog::debug("layout identification");
+        //DebugDialog::debug(merger);
+        //DebugDialog::debug("");
+
 		TextUtils::mergeSvg(doc, merger, "");
 		merger = TextUtils::mergeSvgFinish(doc);
 		QString fname = svgDir.absoluteFilePath(QString("%1.%2.svg").arg(prefix).arg("identification"));
@@ -460,11 +481,10 @@ void Panelizer::panelize(FApplication * app, const QString & panelFilename, bool
 }
 
 
-void Panelizer::bestFit(QList<PanelItem *> & refPanelItems, QList<PanelItem *> & insertPanelItems, PanelParams & panelParams, QList<PlanePair *> & planePairs, bool customPartsOnly)
+void Panelizer::bestFit(QList<PanelItem *> & insertPanelItems, PanelParams & panelParams, QList<PlanePair *> & planePairs, bool customPartsOnly)
 {
 	foreach (PanelItem * panelItem, insertPanelItems) {
 		bestFitOne(panelItem, panelParams, planePairs, true, customPartsOnly);
-        incProduced(panelItem->path, panelItem->boardID, refPanelItems);
 	}
 }
 
@@ -1201,7 +1221,6 @@ void Panelizer::addOptional(int optionalCount, QList<PanelItem *> & refPanelItem
 					panelItem->maxOptional--;
 					optionalCount--;
 					insertPanelItems.append(copy);
-                    incProduced(copy->path, copy->boardID, refPanelItems);
 				}
 				else {
 					// don't bother trying this one again
@@ -1709,16 +1728,6 @@ int Panelizer::checkDonuts(MainWindow * mainWindow, bool displayMessage) {
     return donuts.count() / 2;
 }
 
-void Panelizer::incProduced(const QString & path, long boardID, QList<PanelItem *> & refPanelItems) {
-    foreach (PanelItem * panelItem, refPanelItems) {
-        if (path == panelItem->path && boardID == panelItem->boardID) {
-            panelItem->produced++;
-            break;
-        }
-    }
-}
-
-
 int Panelizer::bestFitLoop(QList<PanelItem *> & refPanelItems, PanelParams & panelParams, bool customPartsOnly, QList<PlanePair *> & returnPlanePairs, QList<PanelItem *> & returnInsertPanelItems, const QDir & svgDir) 
 {
 	int optionalCount = 0;
@@ -1752,10 +1761,9 @@ int Panelizer::bestFitLoop(QList<PanelItem *> & refPanelItems, PanelParams & pan
 	    planePairs << makePlanePair(panelParams, true);  
         
 	    qSort(insertPanelItems.begin(), insertPanelItems.end(), areaGreaterThan);
-	    bestFit(refPanelItems, insertPanelItems, panelParams, planePairs, customPartsOnly);
+	    bestFit(insertPanelItems, panelParams, planePairs, customPartsOnly);
 
         shrinkLastPanel(planePairs, insertPanelItems, panelParams, customPartsOnly);
-
 
         double cost = calcCost(panelParams, planePairs, divisor);
         foreach (PlanePair * planePair, planePairs) {
@@ -1764,6 +1772,9 @@ int Panelizer::bestFitLoop(QList<PanelItem *> & refPanelItems, PanelParams & pan
                 .arg(panelParams.prefix).arg(planePair->index).arg(divisor).arg(cost)
             );
             TextUtils::writeUtf8(fname, planePair->layoutSVG);
+
+            // make sure to leave layoutSVG without a trailing </svg> since optionals are added later
+		    planePair->layoutSVG.chop(6);
 	    }
 
 
