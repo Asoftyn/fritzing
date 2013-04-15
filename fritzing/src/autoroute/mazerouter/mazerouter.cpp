@@ -88,7 +88,7 @@ $Date$
 
 static const int OptimizeFactor = 2;
 
-static int routeNumber = 0;
+//static int routeNumber = 0;
 
 static QString CancelledMessage;
 
@@ -461,7 +461,7 @@ void Score::setOrdering(const NetOrdering & _ordering) {
 
 static const long IDs[] = { 1452191, 9781580, 9781600, 9781620, 9781640, 9781660, 9781680, 9781700 };
 static inline bool hasID(ConnectorItem * s) {
-    for (int i = 0; i < sizeof(IDs) / sizeof(long); i++) {
+    for (unsigned int i = 0; i < sizeof(IDs) / sizeof(long); i++) {
         if (s->attachedToID() == IDs[i]) return true;
     }
 
