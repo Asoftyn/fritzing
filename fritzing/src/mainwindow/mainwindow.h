@@ -877,7 +877,7 @@ protected:
 	QString m_oldTopDockStyle;
 	QString m_oldBottomDockStyle;
 	bool m_dontKeepMargins;
-    QDialog * m_quoteDialog;
+    QPointer<QDialog> m_rolloverQuoteDialog;
 
 public:
 	static int AutosaveTimeoutMinutes;

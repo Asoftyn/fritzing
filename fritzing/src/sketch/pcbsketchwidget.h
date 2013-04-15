@@ -231,6 +231,7 @@ protected:
 	QList<ConnectorItem *> * m_groundFillSeeds;
     QHash<QString, QString> m_autorouterSettings;
     QPointer<class QuoteDialog> m_quoteDialog;
+    QPointer<class QuoteDialog> m_rolloverQuoteDialog;
     QString  m_quoteMessage[QuoteDialog::MessageCount];
     QTimer m_requestQuoteTimer;
 

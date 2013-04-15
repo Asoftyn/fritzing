@@ -186,6 +186,7 @@ const char * PCBSketchWidget::FakeTraceProperty = "FakeTrace";
 PCBSketchWidget::PCBSketchWidget(ViewLayer::ViewID viewID, QWidget *parent)
     : SketchWidget(viewID, parent)
 {
+    m_rolloverQuoteDialog = NULL;
     m_requestQuoteTimer.setSingleShot(true);
     m_requestQuoteTimer.setInterval(100);
     connect(&m_requestQuoteTimer, SIGNAL(timeout()), this, SLOT(requestQuoteNow()));
@@ -2869,9 +2870,13 @@ ItemBase * PCBSketchWidget::resizeBoard(long itemID, double mmW, double mmH) {
 QDialog * PCBSketchWidget::quoteDialog(QWidget * parent) {
     int boardCount = 0;
     double area = calcBoardArea(boardCount);
-    QuoteDialog * quoteDialog = new QuoteDialog(area, boardCount, false, parent);
-    quoteDialog->setMessage(0, m_quoteMessage[0]);
-    return quoteDialog;
+    if (m_rolloverQuoteDialog == NULL) {
+        m_rolloverQuoteDialog = new QuoteDialog(area, boardCount, false, parent);
+    }
+    else {
+    }
+    m_rolloverQuoteDialog->setMessage(0, m_quoteMessage[0]);
+    return m_rolloverQuoteDialog;
 }
 
 

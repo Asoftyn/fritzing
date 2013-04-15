@@ -168,7 +168,7 @@ static QRegExp GuidMatcher("[A-Fa-f0-9]{32}");
 MainWindow::MainWindow(ReferenceModel *referenceModel, QWidget * parent) :
     FritzingWindow(untitledFileName(), untitledFileCount(), fileExtension(), parent)
 {
-    m_quoteDialog = NULL;
+    m_rolloverQuoteDialog = NULL;
 	setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 	setDockOptions(QMainWindow::AnimatedDocks);
 	m_sizeGrip = new FSizeGrip(this);
@@ -2747,36 +2747,34 @@ void MainWindow::initProgrammingWidget() {
 }
 
 void MainWindow::orderFabHoverEnter() {
-    if (m_quoteDialog) return;
+    if (m_rolloverQuoteDialog && m_rolloverQuoteDialog->isVisible()) return;
 
     QTimer::singleShot(1, this, SLOT(fireQuote()));
 }
 
 void MainWindow::fireQuote() {
-    m_quoteDialog = m_pcbGraphicsView->quoteDialog(this);
-    if (m_quoteDialog == NULL) return;
+    m_rolloverQuoteDialog = m_pcbGraphicsView->quoteDialog(this);
+    if (m_rolloverQuoteDialog == NULL) return;
 
     //DebugDialog::debug("enter fab button");
     QWidget * toolbar = m_pcbWidget->toolbar();
     QRect r = toolbar->geometry();
     QPointF p = toolbar->parentWidget()->mapToGlobal(r.topLeft());
 
-	Qt::WindowFlags flags = m_quoteDialog->windowFlags();
+	Qt::WindowFlags flags = m_rolloverQuoteDialog->windowFlags();
     flags = Qt::Window | Qt::Dialog | Qt::FramelessWindowHint;
-	m_quoteDialog->setWindowFlags(flags);
+	m_rolloverQuoteDialog->setWindowFlags(flags);
 
-    QRect q = m_quoteDialog->geometry();
+    QRect q = m_rolloverQuoteDialog->geometry();
     q.moveTo(p.x() + (r.width() / 2), p.y() - 80);
-    m_quoteDialog->setGeometry(q);
-    m_quoteDialog->show();
+    m_rolloverQuoteDialog->setGeometry(q);
+    m_rolloverQuoteDialog->show();
 }
 
 void MainWindow::orderFabHoverLeave() {
     //DebugDialog::debug("leave fab button");
-    if (m_quoteDialog) {
-        m_quoteDialog->hide();
-        delete m_quoteDialog;
-        m_quoteDialog = NULL;
+    if (m_rolloverQuoteDialog) {
+        m_rolloverQuoteDialog->hide();
     }
 }
 
