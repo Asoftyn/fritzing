@@ -161,56 +161,61 @@
     <message>
         <location filename="../src/help/aboutbox.cpp" line="166"/>
         <source>to Lionel Michel and Yvan Kloster for the French translation, </source>
+        <translation>Lionel Michel ve Yvan Kloster&apos;e Fransızca tercüme katkıları için, </translation>
+    </message>
+    <message>
+        <location filename="../src/help/aboutbox.cpp" line="167"/>
+        <source>to Cihan Mete Bahad&amp;#x0131;r for the Turkish translation, </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="168"/>
+        <location filename="../src/help/aboutbox.cpp" line="169"/>
         <source>and to Arthur Zanona, Nuno Pessanha Santos, and Leandro Nunes for the Portuguese (Brazilian) translation. </source>
         <translatorcomment>Thank you part generally at the end of Turkish sentences(Teşekkürler).</translatorcomment>
         <translation>ve Arthur Zanona Nuno Pessanha ve Leandro Nunes&apos;e Portekizce(Brezilya) tercüme katkıları için teşekkürler. </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="172"/>
+        <location filename="../src/help/aboutbox.cpp" line="173"/>
         <source>Fritzing is made possible with funding from the </source>
         <translation>Fritzing aşağıdaki finansmanlar sayesinde hayat bulabilmiştir </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="173"/>
+        <location filename="../src/help/aboutbox.cpp" line="174"/>
         <source>MWFK Brandenburg, the sponsorship of the Design </source>
         <translation>MWFK Brandenburg, Bauhaus Tasarım Departmanı sponsorluğu </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="174"/>
+        <location filename="../src/help/aboutbox.cpp" line="175"/>
         <source>Department of Bauhaus-University Weimar, </source>
         <translation>Weimar Üniversitesi, </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="175"/>
+        <location filename="../src/help/aboutbox.cpp" line="176"/>
         <source>IxDS, an anonymous donor, Parallax, Picaxe, Sparkfun, </source>
         <translation>IxDS, bir anonim bağışçı, Parallax, Picaxe, Sparkfun, </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="176"/>
+        <location filename="../src/help/aboutbox.cpp" line="177"/>
         <source>and from each purchase of a Fritzing Starter Kit.</source>
         <translation>ve Fritzing Başlangıç Kitlerinden elde edilen kazançlar.</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="180"/>
+        <location filename="../src/help/aboutbox.cpp" line="181"/>
         <source>Special thanks goes out as well to all the students </source>
         <translation>Fritznig&apos;e test turu atma imkanı sağlayan tüm öğrencilere </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="181"/>
+        <location filename="../src/help/aboutbox.cpp" line="182"/>
         <source>and alpha testers who were brave enough to give </source>
         <translation>ve cesur alfa testçilerine </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="182"/>
+        <location filename="../src/help/aboutbox.cpp" line="183"/>
         <source>Fritzing a test spin. </source>
         <translation>ayrıca teşekkürler. </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="185"/>
+        <location filename="../src/help/aboutbox.cpp" line="186"/>
         <source>&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;</source>
         <translation></translation>
     </message>
@@ -6155,9 +6160,9 @@ shift tuşu ilerleme eksenini değiştirir</translation>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="622"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="665"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="734"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="462"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="1343"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="1360"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="477"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1358"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1375"/>
         <location filename="../src/fapplication.cpp" line="923"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="50"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="143"/>
@@ -6973,7 +6978,7 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
     <message>
         <location filename="../src/svg/gerbergenerator.cpp" line="206"/>
         <source>silk layer %1 export is empty</source>
-        <translation type="unfinished"></translation>
+        <translation>serigraf katmanı %1 &apos;in dışa aktarımı boş</translation>
     </message>
     <message>
         <location filename="../src/svg/gerbergenerator.cpp" line="260"/>
@@ -7032,17 +7037,17 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
         <translation>Toprak Dolgu Tane Düzenleyici</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="463"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="478"/>
         <source>Panelizer finished: %1 panel(s), with %2 additional copy(ies) for each panel</source>
         <translation>Panolaştırma bitti: %1 pano, her pano için %2 ek kopya ile</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="1343"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1358"/>
         <source>unable to copy file &apos;%1&apos; to &apos;%2&apos;.</source>
         <translation>&apos;%1&apos; &apos;%2&apos;&apos;ye kopyalanamıyor.</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="1360"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1375"/>
         <location filename="../src/fapplication.cpp" line="923"/>
         <source>%1 wires moved from their saved position in %2.</source>
         <translation>%1 kablo kaydedilmiş %2 yerlerinden hareket ettirildi.</translation>

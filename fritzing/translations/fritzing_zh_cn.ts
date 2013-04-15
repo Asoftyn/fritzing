@@ -171,6 +171,10 @@
         <source>to Lionel Michel and Yvan Kloster for the French translation, </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>to Cihan Mete Bahad&amp;#x0131;r for the Turkish translation, </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AutorouteProgressDialog</name>

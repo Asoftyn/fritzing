@@ -164,56 +164,61 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="168"/>
+        <location filename="../src/help/aboutbox.cpp" line="167"/>
+        <source>to Cihan Mete Bahad&amp;#x0131;r for the Turkish translation, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/help/aboutbox.cpp" line="169"/>
         <source>and to Arthur Zanona, Nuno Pessanha Santos, and Leandro Nunes for the Portuguese (Brazilian) translation. </source>
         <translation>এবংArthurZanona,Nuna Pessanha Santos,ও Leandro Nunes কে ধন্যবাদ পরতুগিজ  (ব্রাজ্রিলিয়ান)ভাষায় আনুবাদের জন্য,।</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="172"/>
+        <location filename="../src/help/aboutbox.cpp" line="173"/>
         <source>Fritzing is made possible with funding from the </source>
         <translatorcomment>Fritzing থেকে অর্থায়ন সঙ্গে তৈরি সম্ভব</translatorcomment>
         <translation>ফ্রিটজিংগ এর আনুদানে ইহা সম্ভব </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="173"/>
+        <location filename="../src/help/aboutbox.cpp" line="174"/>
         <source>MWFK Brandenburg, the sponsorship of the Design </source>
         <translation>MWFK Brandenburg,এর উদ্যোক্তা বা ডিজাইনার </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="174"/>
+        <location filename="../src/help/aboutbox.cpp" line="175"/>
         <source>Department of Bauhaus-University Weimar, </source>
         <translatorcomment>Buhaus বিশ্ববিদ্যাল এর weimer ডিপার্টমেন্ট,&gt;বিভাগ</translatorcomment>
         <translation>Buhaus বিশ্ববিদ্যালয় weimer ডিপার্টমেন্ট,</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="175"/>
+        <location filename="../src/help/aboutbox.cpp" line="176"/>
         <source>IxDS, an anonymous donor, Parallax, Picaxe, Sparkfun, </source>
         <translatorcomment> লম্বন</translatorcomment>
         <translation>IxDS, বেনামী দাতা,parallax,Picaxe, Sperkfun,</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="176"/>
+        <location filename="../src/help/aboutbox.cpp" line="177"/>
         <source>and from each purchase of a Fritzing Starter Kit.</source>
         <translation>এবং প্রত্যেকটি Fritzing স্টার্টার কিট কেনার,জন্য</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="180"/>
+        <location filename="../src/help/aboutbox.cpp" line="181"/>
         <source>Special thanks goes out as well to all the students </source>
         <translation>সকল ছাত্র ছাত্রিদের বিশেষ ধন্যবাদ দেয়াহল </translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="181"/>
+        <location filename="../src/help/aboutbox.cpp" line="182"/>
         <source>and alpha testers who were brave enough to give </source>
         <translation>এবং পরীক্ষক গনকে যারা পর্যাপ্ত অভিমত প্রদান করেছেন</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="182"/>
+        <location filename="../src/help/aboutbox.cpp" line="183"/>
         <source>Fritzing a test spin. </source>
         <translatorcomment>Fritzing  পর্যবেক্ষণ</translatorcomment>
         <translation>ফ্রিটজিংগ পরীক্ষন</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="185"/>
+        <location filename="../src/help/aboutbox.cpp" line="186"/>
         <source>&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;</source>
         <translation>&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
@@ -6244,9 +6249,9 @@ shift key swaps scroll axis</source>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="622"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="665"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="734"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="462"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="1343"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="1360"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="477"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1358"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1375"/>
         <location filename="../src/fapplication.cpp" line="923"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="50"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="143"/>
@@ -6287,17 +6292,17 @@ shift key swaps scroll axis</source>
         <translation>সংযোগ রাস্তা নেই.</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="463"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="478"/>
         <source>Panelizer finished: %1 panel(s), with %2 additional copy(ies) for each panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="1343"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1358"/>
         <source>unable to copy file &apos;%1&apos; to &apos;%2&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="1360"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1375"/>
         <location filename="../src/fapplication.cpp" line="923"/>
         <source>%1 wires moved from their saved position in %2.</source>
         <translation>% 1% 2 তারগুলিকে তাদের মধ্যে সংরক্ষিত স্থান থেকে সরানো হয়েছে.</translation>

@@ -164,52 +164,57 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="168"/>
+        <location filename="../src/help/aboutbox.cpp" line="167"/>
+        <source>to Cihan Mete Bahad&amp;#x0131;r for the Turkish translation, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/help/aboutbox.cpp" line="169"/>
         <source>and to Arthur Zanona, Nuno Pessanha Santos, and Leandro Nunes for the Portuguese (Brazilian) translation. </source>
         <translation>et Arthur Zanona, Nuno Santos Pessanha, et Leandro Nunes pour la traduction portugaise (brésilien).</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="172"/>
+        <location filename="../src/help/aboutbox.cpp" line="173"/>
         <source>Fritzing is made possible with funding from the </source>
         <translation>Fritzing a été rendu possible grâce au financement du</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="173"/>
+        <location filename="../src/help/aboutbox.cpp" line="174"/>
         <source>MWFK Brandenburg, the sponsorship of the Design </source>
         <translation>MWFK Brandenburg, le parrainage de la conception</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="174"/>
+        <location filename="../src/help/aboutbox.cpp" line="175"/>
         <source>Department of Bauhaus-University Weimar, </source>
         <translation>Le département de Bauhaus-University Weimar,</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="175"/>
+        <location filename="../src/help/aboutbox.cpp" line="176"/>
         <source>IxDS, an anonymous donor, Parallax, Picaxe, Sparkfun, </source>
         <translation>IxDS, ainsi que les donneurs anonymes, Parallax, Picaxe, Sparkfun,</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="176"/>
+        <location filename="../src/help/aboutbox.cpp" line="177"/>
         <source>and from each purchase of a Fritzing Starter Kit.</source>
         <translation>et pour chaque achat d&apos;un kit de démarrage Fritzing.</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="180"/>
+        <location filename="../src/help/aboutbox.cpp" line="181"/>
         <source>Special thanks goes out as well to all the students </source>
         <translation>Un merci tout spécial aussi bien sur à tous les étudiants</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="181"/>
+        <location filename="../src/help/aboutbox.cpp" line="182"/>
         <source>and alpha testers who were brave enough to give </source>
         <translation>et les testeurs alpha qui étaient assez courageux pour faire un don</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="182"/>
+        <location filename="../src/help/aboutbox.cpp" line="183"/>
         <source>Fritzing a test spin. </source>
         <translation>Fritzing un tour dl&apos;essai.</translation>
     </message>
     <message>
-        <location filename="../src/help/aboutbox.cpp" line="185"/>
+        <location filename="../src/help/aboutbox.cpp" line="186"/>
         <source>&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;</source>
         <translation>&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;</translation>
     </message>
@@ -6141,9 +6146,9 @@ touche shift défilement dans l&apos;axe</translation>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="622"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="665"/>
         <location filename="../src/autoroute/mazerouter/mazerouter.cpp" line="734"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="462"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="1343"/>
-        <location filename="../src/autoroute/panelizer.cpp" line="1360"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="477"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1358"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1375"/>
         <location filename="../src/fapplication.cpp" line="923"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="50"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="143"/>
@@ -7022,17 +7027,17 @@ is already there, we won&apos;t add it again, right?</source>
         <translation>Éditeur de remplissage des points de masse</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="463"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="478"/>
         <source>Panelizer finished: %1 panel(s), with %2 additional copy(ies) for each panel</source>
         <translation>Panelisation terminéi: %1 panneau(s), avec %2 copie supplémentaire(s) pour chaque panneau</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="1343"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1358"/>
         <source>unable to copy file &apos;%1&apos; to &apos;%2&apos;.</source>
         <translation>Impossible de copier le fichier &apos;%1&apos; dans &apos;%2&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/autoroute/panelizer.cpp" line="1360"/>
+        <location filename="../src/autoroute/panelizer.cpp" line="1375"/>
         <location filename="../src/fapplication.cpp" line="923"/>
         <source>%1 wires moved from their saved position in %2.</source>
         <translation>%1 fils déplacés de leur position enregistrée dans %2.</translation>
