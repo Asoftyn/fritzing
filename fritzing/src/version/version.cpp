@@ -35,7 +35,7 @@ $Date$
 #include "../utils/textutils.h"                
 #include "../lib/qtsysteminfo/QtSystemInfo.h"
 
-QString Version::m_majorVersion("0");
+QString Version::m_majorVersion("0");       
 QString Version::m_minorVersion("7");
 QString Version::m_minorSubVersion("13");
 QString Version::m_modifier("b");

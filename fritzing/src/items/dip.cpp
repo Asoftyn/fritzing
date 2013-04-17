@@ -381,7 +381,12 @@ bool Dip::changePinLabels(bool singleRow, bool sip) {
 		svg = Dip::makeSchematicSvg(labels);
 	}
 
+    QTransform  transform = untransform();
+
 	resetLayerKin(svg);
+    resetConnectors();
+
+    retransform(transform);
 
 	return true;
 }

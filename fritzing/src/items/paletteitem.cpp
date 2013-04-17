@@ -1566,15 +1566,43 @@ QStringList PaletteItem::sipOrDipOrLabels(bool & hasLayout, bool & sip) {
 
 void PaletteItem::resetLayerKin(const QString & svg) {
     QString svgNoText = SvgFileSplitter::hideText3(svg);
+
 	resetRenderer(svgNoText);
 
+    ItemBase * textItem = NULL;
     foreach (ItemBase * lkpi, layerKin()) {
         if (lkpi->viewLayerID() == ViewLayer::SchematicText) {
             bool hasText;
 	        QString svgText = SvgFileSplitter::showText3(svg, hasText);
 	        lkpi->resetRenderer(svgText);
             lkpi->setProperty("textSvg", svgText);
+            textItem =lkpi;
             break;
+        }
+    }
+
+}
+
+QTransform PaletteItem::untransform() {
+    QTransform chiefTransform = this->transform();
+    chiefTransform.setMatrix(chiefTransform.m11(), chiefTransform.m12(), chiefTransform.m13(), chiefTransform.m21(), chiefTransform.m22(), chiefTransform.m23(), 0, 0, chiefTransform.m33()); 
+    bool identity = chiefTransform.isIdentity();
+    if (!identity) {    
+        QTransform invert = chiefTransform.inverted();
+        transformItem(invert);
+        foreach (ItemBase * lkpi, layerKin()) {    
+            lkpi->transformItem(invert);
+        }
+    }
+
+    return chiefTransform;
+}
+
+void PaletteItem::retransform(const QTransform & chiefTransform) {
+    if (!chiefTransform.isIdentity()) {
+        transformItem(chiefTransform);
+        foreach (ItemBase * lkpi, layerKin()) {    
+            lkpi->transformItem(chiefTransform);
         }
     }
 }

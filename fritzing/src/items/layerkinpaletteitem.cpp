@@ -297,10 +297,11 @@ bool SchematicTextLayerKinPaletteItem::makeFlipTextSvg() {
 
 void SchematicTextLayerKinPaletteItem::positionTexts(QDomDocument & doc, QList<QDomElement> & texts) {
     QString id = IDString.arg(0);
-    if (this->property(id.toUtf8().constData()).isValid()) {
-        // calculated this already
-        return;
-    }
+    // TODO: reuse these values unless the pin labels have changed
+    //if (this->property(id.toUtf8().constData()).isValid()) {
+    //    // calculated this already
+    //    return;
+    //}
 
     foreach (QDomElement text, texts) {
         text.setTagName("g");
@@ -308,6 +309,8 @@ void SchematicTextLayerKinPaletteItem::positionTexts(QDomDocument & doc, QList<Q
 
     QRectF br = boundingRect();
     QImage image(qCeil(br.width()), qCeil(br.height()), QImage::Format_Mono);
+
+    //bool hack = false;
 
     int ix = 0;
     foreach (QDomElement text, texts) {
@@ -333,6 +336,22 @@ void SchematicTextLayerKinPaletteItem::positionTexts(QDomDocument & doc, QList<Q
         QMatrix matrix = renderer.matrixForElement(id);
         QPointF q = matrix.map(p);
         QPoint iq((int) q.x(), (int) q.y());
+
+        /*
+        if (!hack) {
+            hack = true;
+            QDomElement rect = doc.createElement("rect");
+            doc.documentElement().appendChild(rect);
+            rect.setAttribute("x", 0);
+            rect.setAttribute("y", 0);
+            rect.setAttribute("width", viewBox.width());
+            rect.setAttribute("height", viewBox.height());
+            rect.setAttribute("stroke", "none");
+            rect.setAttribute("stroke-width", "0");
+            rect.setAttribute("fill", "red");
+            rect.setAttribute("fill-opacity", 0.5);
+        }
+        */
 
         int minX = image.width() + 1;
         int maxX = -1;

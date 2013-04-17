@@ -120,6 +120,8 @@ public:
 	void resetConnector(ItemBase * itemBase, SvgIdLayer * svgIdLayer);
     QStringList sipOrDipOrLabels(bool & hasLayout, bool & sip);
     void resetLayerKin(const QString & svg);
+    QTransform untransform();
+    void retransform(const QTransform &);
 
 public:
 	static QString genFZP(const QString & moduleid, const QString & templateName, int minPins, int maxPins, int steps, bool smd);

@@ -96,9 +96,13 @@ void MysteryPart::setChipLabel(QString chipLabel, bool force) {
             }			
             break;
 		case ViewLayer::SchematicView:
-			svg = makeSvg(chipLabel, false);
-			svg = retrieveSchematicSvg(svg);
-            resetLayerKin(svg);
+            {
+                QTransform  transform = untransform();
+			    svg = makeSvg(chipLabel, false);
+			    svg = retrieveSchematicSvg(svg);
+                resetLayerKin(svg);
+                retransform(transform);
+            }
 			break;
 		default:
 			break;
@@ -549,8 +553,12 @@ bool MysteryPart::changePinLabels(bool singleRow, bool sip) {
 	QStringList labels = getPinLabels(hasLocal);
 	if (labels.count() == 0) return true;
 
+    QTransform  transform = untransform();
+
 	QString svg = MysteryPart::makeSchematicSvg(labels, sip);
     resetLayerKin(svg);
+
+    retransform(transform);
 
 	return true;
 }

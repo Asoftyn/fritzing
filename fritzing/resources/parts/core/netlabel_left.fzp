@@ -11,8 +11,7 @@
    <tag>fritzing core</tag>
  </tags>
  <properties>
-   <property name="family">net label</property>
-   <property name="direction">left</property>
+   <property name="family">obsolete net label</property>
    <property name="label"></property>
  </properties>
  <description>A net label for schematic view will be connected to any other net label with the same name.</description>

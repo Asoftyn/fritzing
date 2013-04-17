@@ -105,6 +105,7 @@ SymbolPaletteItem::SymbolPaletteItem( ModelPart * modelPart, ViewLayer::ViewID v
 		}
         setInstanceTitle(label, true);
 
+        // direction is now obsolete, new netlabels use flip
 		QString direction = getDirection();
 		if (direction.isEmpty()) {
 			direction = modelPart->properties().value("direction");
@@ -261,20 +262,8 @@ void SymbolPaletteItem::setProp(const QString & prop, const QString & value) {
 		setLabel(value);
 		return;
 	}
-	if (prop.compare("direction", Qt::CaseInsensitive) == 0 && m_isNetLabel) {
-        setDirection(value);
-		return;
-	}
 
 	PaletteItem::setProp(prop, value);
-}
-
-void SymbolPaletteItem::setDirection(const QString & value) {
-	m_modelPart->setLocalProp("direction", value);
-	QString svg = makeSvg(this->viewLayerID());
-	resetRenderer(svg);
-    resetConnectors(NULL, NULL);
-    resetLayerKin();
 }
 
 void SymbolPaletteItem::setLabel(const QString & label) {
@@ -286,11 +275,15 @@ void SymbolPaletteItem::setLabel(const QString & label) {
 		LocalNetLabels.insert(label, connectorItem);
 	}
 
+    QTransform  transform = untransform();
+
 	QString svg = makeSvg(this->viewLayerID());
 	resetRenderer(svg);
     resetConnectors(NULL, NULL);
 
     resetLayerKin();
+
+    retransform(transform);
 }
 
 void SymbolPaletteItem::setVoltage(double v) {
@@ -323,10 +316,13 @@ void SymbolPaletteItem::setVoltage(double v) {
 
 	if (!m_voltageReference && !m_isNetLabel) return;
 
+    QTransform transform = untransform();
 	QString svg = makeSvg(viewLayerID());
 	reloadRenderer(svg, false);
 
     resetLayerKin();
+
+    retransform(transform);
 
     if (m_partLabel) m_partLabel->displayTextsIf();
 }
@@ -414,7 +410,7 @@ QString SymbolPaletteItem::makeNetLabelSvg(ViewLayer::ViewLayerID viewLayerID) {
 					"<g id='schematic' >\n"
                     );
 
-    bool goLeft = (getDirection() == "left");
+    bool goLeft = (getDirection() == "left");  // direction is now obsolete; this is left over from 0.7.12 and earlier
     double offset = goLeft ? arrowWidth : 0;
 
     QString svg = header.arg(totalWidth / 1000).arg(totalHeight / 1000).arg(totalWidth).arg(totalHeight);
@@ -606,6 +602,7 @@ bool SymbolPaletteItem::getAutoroutable() {
 }
 
 void SymbolPaletteItem::resetLayerKin() {
+
     foreach (ItemBase * lkpi, layerKin()) {
         if (lkpi->viewLayerID() == ViewLayer::SchematicText) {
 	        QString svg = makeSvg(lkpi->viewLayerID());

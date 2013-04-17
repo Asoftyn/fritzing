@@ -78,7 +78,6 @@ public:
 	bool getAutoroutable();
 	void setAutoroutable(bool);
     void setLabel(const QString &);
-    void setDirection(const QString &);
     QString getLabel();
     QString getDirection();
 
