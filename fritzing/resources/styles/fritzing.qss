@@ -691,3 +691,18 @@ SearchLineEdit {
 	font-family: "Lucida Grande", LucidaSans, Tahoma, Arial, sans-serif;
     border: 1px solid rgb(140,140,140);
 }
+
+
+/**************** Fab Quote ****************/
+
+#quoteOrder {
+	font-size: 14px;
+	color: rgb(126,54,77);
+	margin: 0px 0px 0px 14px;
+}
+
+#quoteOrder {
+	font-size: 10px;
+	color: #000000;
+	margin: 0px 0px 0px 10px;
+}

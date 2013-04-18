@@ -35,20 +35,35 @@ $Date$
 
 ///////////////////////////////////////////////
 
+struct CountCost {
+    int count;
+    double cost;
+};
+
 class QuoteDialog : public QDialog {
 Q_OBJECT
 
 public:
-	QuoteDialog(double area, int boardCount, bool full, QWidget *parent = 0);
+	QuoteDialog(bool full, QWidget *parent = 0);
 	~QuoteDialog();
 
-    void setMessage(int index, const QString & message);
+    void setText();
+
+public:
+    static void setArea(double area, int boardCount);
+    static void setCountCost(int index, int count, double cost);
 
 public:
     static const int MessageCount = 4;
 
 protected:
-    QLabel * m_labels[MessageCount];
+    static CountCost TheCountCost[MessageCount];
+    static double TheArea;
+    static int TheBoardCount;
+
+protected:
+    QLabel * m_messageLabel;
+    QLabel * m_tableLabel;
 };
 
 ///////////////////////////////////////////////
@@ -197,8 +212,7 @@ protected:
     bool canConnect(Wire * from, ItemBase * to);
 	void collectThroughHole(QList<ConnectorItem *> & th, QList<ConnectorItem *> & pads, const LayerList &);
 	ViewLayer::ViewLayerSpec getViewLayerSpec(ModelPart * modelPart, QDomElement & instance, QDomElement & view, ViewGeometry &);
-    void setQuoteMessage(int index, const QString &);
-    void requestQuote(double area);
+    void requestQuote();
     double calcBoardArea(int & boardCount);
     PaletteItem* addPartItem(ModelPart * modelPart, ViewLayer::ViewLayerSpec, PaletteItem * paletteItem, bool doConnectors, bool & ok, ViewLayer::ViewID, bool temporary);
     void requestQuoteSoon();
@@ -232,7 +246,6 @@ protected:
     QHash<QString, QString> m_autorouterSettings;
     QPointer<class QuoteDialog> m_quoteDialog;
     QPointer<class QuoteDialog> m_rolloverQuoteDialog;
-    QString  m_quoteMessage[QuoteDialog::MessageCount];
     QTimer m_requestQuoteTimer;
 
 protected:

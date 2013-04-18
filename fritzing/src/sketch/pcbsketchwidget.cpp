@@ -72,6 +72,11 @@ $Date$
 
 /////////////////////////////////////////////////////
 
+double hundredths(double d) {
+    double h = (int) (d * 100);
+    return h / ((double) 100);
+}
+
 static const int MAX_INT = std::numeric_limits<int>::max();
 static const double StrokeWidthIncrement = 50;
 
@@ -118,37 +123,35 @@ bool distanceLessThan(ConnectorItem * end0, ConnectorItem * end1) {
 
 //////////////////////////////////////////////////////
 
-QuoteDialog::QuoteDialog(double area, int boardCount, bool full, QWidget *parent) : QDialog(parent) 
+CountCost QuoteDialog::TheCountCost[QuoteDialog::MessageCount];
+double QuoteDialog::TheArea;
+int QuoteDialog::TheBoardCount;
+
+QuoteDialog::QuoteDialog(bool full, QWidget *parent) : QDialog(parent) 
 {
 	setWindowTitle(tr("Fab Quote"));
 
 	QVBoxLayout * vLayout = new QVBoxLayout(this);
 
+    QLabel * label = new QLabel(tr("Order your PCB from Fritzing Fab"));
+    label->setObjectName("quoteOrder");
+    vLayout->addWidget(label);
 
-    QString msg = tr("The total area of the %n boards in this sketch is %1 cm2 (%2 in2).", "", boardCount)
-        .arg(area)
-        .arg(area / (2.54 * 2.54));
+	m_messageLabel = new QLabel("");
+    m_messageLabel->setObjectName("quoteMessage");
+	vLayout->addWidget(m_messageLabel);
 
-	QLabel * label = new QLabel(msg);
-	vLayout->addWidget(label);
-
-    if (!full) label->setVisible(false);
-
-    vLayout->addSpacing(10);
-
-    for (int i = 0; i < MessageCount; i++) {
-        m_labels[i] = new QLabel("");
-	    vLayout->addWidget(m_labels[i]);
-        if (i > 0 && !full) m_labels[i]->setVisible(false);
-    }
-
-    vLayout->addSpacing(10);
+    m_tableLabel = new QLabel("");
+    m_tableLabel->setObjectName("quoteTable");
+	vLayout->addWidget(m_tableLabel);
 
     label = new QLabel(tr("Please note, price does not include shipping, possible additional taxes, or the checking fee."));
+    label->setObjectName("quoteAdditional");
 	vLayout->addWidget(label);
     if (!full) label->setVisible(false);
 
     label = new QLabel(tr("For more information on pricing see <a href='http://fab.fritzing.org/pricing'>http://fab.fritzing.org/pricing</a>."));
+    label->setObjectName("quoteAdditional");
 	vLayout->addWidget(label);
     label->setOpenExternalLinks(true);
     if (!full) label->setVisible(false);
@@ -157,8 +160,6 @@ QuoteDialog::QuoteDialog(double area, int boardCount, bool full, QWidget *parent
 	vLayout->addWidget(label);
     label->setOpenExternalLinks(true);
     if (!full) label->setVisible(false);
-
-    vLayout->addSpacing(10);
 
     QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
 	buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -172,11 +173,72 @@ QuoteDialog::QuoteDialog(double area, int boardCount, bool full, QWidget *parent
 QuoteDialog::~QuoteDialog() {
 }
 
-void QuoteDialog::setMessage(int index, const QString & message) {
+void QuoteDialog::setCountCost(int index, int count, double cost) {
     if (index < 0) return;
     if (index >= MessageCount) return;
 
-    m_labels[index]->setText(message);
+    TheCountCost[index].count = count;
+    TheCountCost[index].cost = cost;
+}
+
+void QuoteDialog::setArea(double area, int boardCount) {
+    TheBoardCount = boardCount;
+    TheArea = area;
+}
+
+void QuoteDialog::setText() {
+    QString msg = tr("The total area of the %n boards in this sketch is %1 cm%3 (%2 in%3).\n", "", TheBoardCount)
+        .arg(hundredths(TheArea))
+        .arg(hundredths(TheArea / (2.54 * 2.54)))
+        .arg(QChar(178))
+        ;
+    msg += tr("Use Fritzing Fab to produce a PCB from your sketch and take advantage of the quantity discount we offer.");
+    m_messageLabel->setText(msg);
+
+    QString table;
+    table += "<table cellspacing='15'>";
+    table += "<tr>";
+    table += "<td>Copies</td>";
+
+    for (int i = 0; i < MessageCount; i++) {
+        int count = TheCountCost[i].count;
+        double cost = TheCountCost[i].cost;
+        if (count == 0) continue;
+        if (cost == 0) continue;
+
+        table += QString("<td align='center'>%1</td>").arg(TheCountCost[i].count);
+    }
+    table += "</tr>";
+    table += "<tr>";
+    table += "<td>Price per board</td>";
+
+    for (int i = 0; i < MessageCount; i++) {
+        int count = TheCountCost[i].count;
+        double cost = TheCountCost[i].cost;
+        if (count == 0) continue;
+        if (cost == 0) continue;
+
+        table += QString("<td align='right'>%1</td>").arg(hundredths(cost/count), 0, 'F', 2);
+    }
+    table += "</tr>";
+
+
+    table += "<tr>";
+    table += "<td>Price</td>";
+
+    for (int i = 0; i < MessageCount; i++) {
+        int count = TheCountCost[i].count;
+        double cost = TheCountCost[i].cost;
+        if (count == 0) continue;
+        if (cost == 0) continue;
+
+        table += QString("<td align='right'>%1</td>").arg(hundredths(cost), 0, 'F', 2);
+    }
+    table += "</tr>";
+
+    table += "</table>";
+
+    m_tableLabel->setText(table);
 }
 
 //////////////////////////////////////////////////////
@@ -2757,14 +2819,15 @@ void PCBSketchWidget::hidePartSilkscreen() {
 void PCBSketchWidget::fabQuote() {
     int boardCount = 0;
     double area = calcBoardArea(boardCount);
+    QuoteDialog::setArea(area, boardCount);
     if (boardCount == 0) {
         QMessageBox::information(this, tr("Fritzing"),
                    tr("Your sketch does not have a board yet. You cannot fabricate this sketch without a PCB part."));
         return;
     }
 
-    m_quoteDialog = new QuoteDialog(area, boardCount, true, this);
-    requestQuote(area);
+    m_quoteDialog = new QuoteDialog(true, this);
+    requestQuote();
 
     m_quoteDialog->exec();
     delete m_quoteDialog;
@@ -2773,20 +2836,29 @@ void PCBSketchWidget::fabQuote() {
 
 void PCBSketchWidget::gotFabQuote(QNetworkReply * networkReply) {
     QNetworkAccessManager * manager = networkReply->manager();
-    int index = manager->property("index").toInt();
-    int count = manager->property("count").toInt();
+    QString count = manager->property("count").toString();
+    QStringList countArgs = count.split(",");
 	int responseCode = networkReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	if (responseCode == 200) {
-        QByteArray data = networkReply->readAll();
-        bool ok;
-        double cost = data.toDouble(&ok);
-        if (ok) {
-            QString msg = tr("%n copies of this sketch will cost %1 Euros.", "", count).arg(cost, 0, 'f', 2);
-            if (m_quoteDialog) {
-                m_quoteDialog->setMessage(index, msg);
+        QString data(networkReply->readAll());
+        QStringList values = data.split(",");
+        if (values.count() == countArgs.count()) {
+            for (int ix = 0; ix < countArgs.count(); ix++) {
+                QString value = values.at(ix);
+                QString c = countArgs.at(ix);
+                bool ok;
+                int count = c.toInt(&ok);
+                if (!ok) continue;
+
+                double cost = value.toDouble(&ok);
+                if (!ok) continue;
+
+               QuoteDialog::setCountCost(ix, count, cost);
+
             }
-            setQuoteMessage(index, msg);
         }
+
+        if (m_quoteDialog) m_quoteDialog->setText();
 	}
     else {
     }
@@ -2795,35 +2867,29 @@ void PCBSketchWidget::gotFabQuote(QNetworkReply * networkReply) {
     networkReply->deleteLater();
 }
 
-
-void PCBSketchWidget::setQuoteMessage(int index, const QString & message) {
-    if (index < 0) return;
-    if (index >= QuoteDialog::MessageCount) return;
-
-    m_quoteMessage[index] = message;
-    //DebugDialog::debug(QString("request quote %1 %2").arg(index).arg(message));
-}
-
-void PCBSketchWidget::requestQuote(double area) {
-    if (area <= 0) {
-        for (int i = 0; i < QuoteDialog::MessageCount; i++) setQuoteMessage(i, "");
-    }
+void PCBSketchWidget::requestQuote() {
+    int boardCount;
+    double area = calcBoardArea(boardCount);
+    QuoteDialog::setArea(area, boardCount);
 
     QString paramString = Version::makeRequestParamsString();
+    QNetworkAccessManager * manager = new QNetworkAccessManager(this);
+
     QList<int> counts;
     counts << 1 << 2 << 5 << 10;
-    int ix = 0;
-    foreach (int count, counts) {
-        QNetworkAccessManager * manager = new QNetworkAccessManager(this);
-        manager->setProperty("count", count);
-        manager->setProperty("index", ix++);
-	    connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(gotFabQuote(QNetworkReply *)));
-        QString string = QString("http://fab.fritzing.org/fritzing-fab/quote%1&area=%2")
-                    .arg(paramString)
-                    .arg(area * count)
-                    ;
-	    manager->get(QNetworkRequest(QUrl(string)));
+    QString countArgs;
+    foreach (int c, counts) {
+        countArgs += QString::number(c) + ",";
     }
+    countArgs.chop(1);
+    manager->setProperty("count", countArgs);
+	connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(gotFabQuote(QNetworkReply *)));
+    QString string = QString("http://fab.fritzing.org/fritzing-fab/quote%1&area=%2&count=%3")
+                .arg(paramString)
+                .arg(area)
+                .arg(countArgs)
+                ;
+	manager->get(QNetworkRequest(QUrl(string)));
 }
 
 double PCBSketchWidget::calcBoardArea(int & boardCount) {
@@ -2857,8 +2923,7 @@ void PCBSketchWidget::requestQuoteSoon() {
 
 void PCBSketchWidget::requestQuoteNow() {
     m_requestQuoteTimer.stop();
-    int boardCount;
-    requestQuote(calcBoardArea(boardCount));
+    requestQuote();
 }
 
 ItemBase * PCBSketchWidget::resizeBoard(long itemID, double mmW, double mmH) {
@@ -2868,17 +2933,12 @@ ItemBase * PCBSketchWidget::resizeBoard(long itemID, double mmW, double mmH) {
 }
 
 QDialog * PCBSketchWidget::quoteDialog(QWidget * parent) {
-    int boardCount = 0;
-    double area = calcBoardArea(boardCount);
     if (m_rolloverQuoteDialog == NULL) {
-        m_rolloverQuoteDialog = new QuoteDialog(area, boardCount, false, parent);
+        m_rolloverQuoteDialog = new QuoteDialog(false, parent);
     }
-    else {
-    }
-    m_rolloverQuoteDialog->setMessage(0, m_quoteMessage[0]);
+    m_rolloverQuoteDialog->setText();
     return m_rolloverQuoteDialog;
 }
-
 
 double PCBSketchWidget::getKeepoutMils() {
     QSettings settings;
