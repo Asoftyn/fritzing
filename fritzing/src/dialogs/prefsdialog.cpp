@@ -447,7 +447,7 @@ QWidget* PrefsDialog::createCurvyForm(ViewInfoThing * viewInfoThing)
 
     layout->addSpacing(10);
 
-	QCheckBox * checkbox = new QCheckBox("Curvy wires and legs");
+	QCheckBox * checkbox = new QCheckBox(tr("Curvy wires and legs"));
 	checkbox->setProperty("index", viewInfoThing->index);
 	checkbox->setChecked(viewInfoThing->curvy);
 	connect(checkbox, SIGNAL(clicked()), this, SLOT(curvyChanged()));

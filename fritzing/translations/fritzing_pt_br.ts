@@ -4529,6 +4529,10 @@ tecla shift troca o eixo de scroll</translation>
         <source>This checkbox sets the default behavior. You can switch back to the non-default behavior by holding down the Control key (Mac: Command key) when you drag.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Curvy wires and legs</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProgramTab</name>

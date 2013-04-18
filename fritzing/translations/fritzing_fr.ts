@@ -3999,12 +3999,12 @@ Reason: %2 (errcode %3)</source>
 <context>
     <name>MysteryPart</name>
     <message>
-        <location filename="../src/items/mysterypart.cpp" line="210"/>
+        <location filename="../src/items/mysterypart.cpp" line="214"/>
         <source>label</source>
         <translation>label</translation>
     </message>
     <message>
-        <location filename="../src/items/mysterypart.cpp" line="277"/>
+        <location filename="../src/items/mysterypart.cpp" line="281"/>
         <source>chip label</source>
         <translation>étiquette de la puce</translation>
     </message>
@@ -5766,6 +5766,11 @@ touche shift défilement dans l&apos;axe</translation>
         <source>This checkbox sets the default behavior. You can switch back to the non-default behavior by holding down the Control key (Mac: Command key) when you drag.</source>
         <translation>Cette case définit le comportement par défaut. Vous pouvez revenir au comportement non défini par défaut en maintenant enfoncée la touche Ctrl (Mac: touche Commande) lorsque vous faites glisser.</translation>
     </message>
+    <message>
+        <location filename="../src/dialogs/prefsdialog.cpp" line="450"/>
+        <source>Curvy wires and legs</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProgramTab</name>
@@ -7509,13 +7514,13 @@ is already there, we won&apos;t add it again, right?</source>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="3426"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9389"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9392"/>
         <source>Select %1</source>
         <translation>Sélectionner %1</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="3429"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9392"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9395"/>
         <source>Select %1 items</source>
         <translation>Sélectionner %1 élements</translation>
     </message>
@@ -7695,40 +7700,40 @@ is already there, we won&apos;t add it again, right?</source>
         <translation>Effectuer la rotation de %1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9004"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9007"/>
         <source>change pin labels</source>
         <translation>modifier le label de la broche</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9295"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9298"/>
         <source>Unrouted connections are highlighted in yellow.</source>
         <translation>Les connections non routées sont en jaune.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9296"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9299"/>
         <source>There are no unrouted connections</source>
         <translatorcomment>Remarque: vous pouvez également déclencher cet affichage en déplaçant la souris vers le bas sur le texte d&apos;état du routage dans la barre d&apos;état.</translatorcomment>
         <translation>Il n&apos;y a aucune connexion non routés</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9297"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9300"/>
         <source>Unrouted connections</source>
         <translation>Connections non routées</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9298"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9301"/>
         <source>%1
 
 Note: you can also trigger this display by mousing down on the routing status text in the status bar.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9344"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9347"/>
         <source>Part &apos;%1&apos; not found in sketch</source>
         <translation>Le composant &apos;%1&apos; n&apos;a pas été trouvé dans ce croquis</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9386"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9389"/>
         <source>Deselect all</source>
         <translation>Tous déselectionner</translation>
     </message>
@@ -7861,22 +7866,22 @@ Note: you can also trigger this display by mousing down on the routing status te
         <translation>label de réseau</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="514"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="510"/>
         <source>voltage</source>
         <translation>voltage</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="529"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="525"/>
         <source>label</source>
         <translation>label</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="551"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="547"/>
         <source>Net labels</source>
         <translation>Labels de réseau</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="551"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="547"/>
         <source>Net labels cannot be blank</source>
         <translation>Un label de réseau ne peut pas être vide</translation>
     </message>

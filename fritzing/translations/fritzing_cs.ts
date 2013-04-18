@@ -3995,12 +3995,12 @@ Důvod: %2 (chyb.kód %3)</translation>
 <context>
     <name>MysteryPart</name>
     <message>
-        <location filename="../src/items/mysterypart.cpp" line="210"/>
+        <location filename="../src/items/mysterypart.cpp" line="214"/>
         <source>label</source>
         <translation>popisek</translation>
     </message>
     <message>
-        <location filename="../src/items/mysterypart.cpp" line="277"/>
+        <location filename="../src/items/mysterypart.cpp" line="281"/>
         <source>chip label</source>
         <translation>popisek čipu</translation>
     </message>
@@ -5756,6 +5756,11 @@ Klávesa Alt nebo klávesa %1 = posunout</translation>
         <source>This checkbox sets the default behavior. You can switch back to the non-default behavior by holding down the Control key (Mac: Command key) when you drag.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/dialogs/prefsdialog.cpp" line="450"/>
+        <source>Curvy wires and legs</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProgramTab</name>
@@ -7503,13 +7508,13 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="3426"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9389"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9392"/>
         <source>Select %1</source>
         <translation>Vybrat %1</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="3429"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9392"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9395"/>
         <source>Select %1 items</source>
         <translation>Vybrat %1 položek</translation>
     </message>
@@ -7742,39 +7747,39 @@ Fritzing stále funguje, ale nebudete moci změnit vlastnosti Součástek.</tran
         <translation>Otočit %1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9004"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9007"/>
         <source>change pin labels</source>
         <translation>změnit popisky pinů</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9295"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9298"/>
         <source>Unrouted connections are highlighted in yellow.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9296"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9299"/>
         <source>There are no unrouted connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9297"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9300"/>
         <source>Unrouted connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9298"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9301"/>
         <source>%1
 
 Note: you can also trigger this display by mousing down on the routing status text in the status bar.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9344"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9347"/>
         <source>Part &apos;%1&apos; not found in sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9386"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9389"/>
         <source>Deselect all</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7850,22 +7855,22 @@ Note: you can also trigger this display by mousing down on the routing status te
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="514"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="510"/>
         <source>voltage</source>
         <translation>napětí</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="529"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="525"/>
         <source>label</source>
         <translation type="unfinished">popisek</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="551"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="547"/>
         <source>Net labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="551"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="547"/>
         <source>Net labels cannot be blank</source>
         <translation type="unfinished"></translation>
     </message>

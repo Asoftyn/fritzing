@@ -4006,12 +4006,12 @@ Neden: &apos;%2&apos; (hatakodu %3)</translation>
 <context>
     <name>MysteryPart</name>
     <message>
-        <location filename="../src/items/mysterypart.cpp" line="210"/>
+        <location filename="../src/items/mysterypart.cpp" line="214"/>
         <source>label</source>
         <translation>etiket</translation>
     </message>
     <message>
-        <location filename="../src/items/mysterypart.cpp" line="277"/>
+        <location filename="../src/items/mysterypart.cpp" line="281"/>
         <source>chip label</source>
         <translation>çip etiketi</translation>
     </message>
@@ -5777,6 +5777,11 @@ shift tuşu ilerleme eksenini değiştirir</translation>
         <source>This checkbox sets the default behavior. You can switch back to the non-default behavior by holding down the Control key (Mac: Command key) when you drag.</source>
         <translation>Bu kontrol kutusu varsayılan davranışı ayarlar. Sürüklerken kontrol(Ctrl) tuşuna basılı tutarak (Maclerde:Kommut tuşu(Command)) normal ayarlarınıza dönüş yapabilirsiniz.</translation>
     </message>
+    <message>
+        <location filename="../src/dialogs/prefsdialog.cpp" line="450"/>
+        <source>Curvy wires and legs</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProgramTab</name>
@@ -7526,13 +7531,13 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="3426"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9389"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9392"/>
         <source>Select %1</source>
         <translation>%1&apos;i seç</translation>
     </message>
     <message>
         <location filename="../src/sketch/sketchwidget.cpp" line="3429"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9392"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9395"/>
         <source>Select %1 items</source>
         <translation>%1 öğelerini seç</translation>
     </message>
@@ -7762,27 +7767,27 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
         <translation>%1&apos;i döndür</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9004"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9007"/>
         <source>change pin labels</source>
         <translation>pin etiketlerini değiştir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9295"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9298"/>
         <source>Unrouted connections are highlighted in yellow.</source>
         <translation>Yönlendirilmemiş bağlantılar sarı ile vurgulanmıştır.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9296"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9299"/>
         <source>There are no unrouted connections</source>
         <translation>Yönlendirilmemiş bağlantı yok</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9297"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9300"/>
         <source>Unrouted connections</source>
         <translation>Yönlendirilmemiş bağlantılar</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9298"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9301"/>
         <source>%1
 
 Note: you can also trigger this display by mousing down on the routing status text in the status bar.</source>
@@ -7791,12 +7796,12 @@ Note: you can also trigger this display by mousing down on the routing status te
 Not:Bu görüntüyü fareyi durum çubuğundaki yönlendirme durumu metni üzerinde aşağı kaydırarak da tetikleyebilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9344"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9347"/>
         <source>Part &apos;%1&apos; not found in sketch</source>
         <translation>&apos;%1&apos; elemanı çizimde bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9386"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9389"/>
         <source>Deselect all</source>
         <translation>Tümünü seçmeyi bırak</translation>
     </message>
@@ -7872,22 +7877,22 @@ Not:Bu görüntüyü fareyi durum çubuğundaki yönlendirme durumu metni üzeri
         <translation>ağ etiketi</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="514"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="510"/>
         <source>voltage</source>
         <translation>gerilim</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="529"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="525"/>
         <source>label</source>
         <translation>etiket</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="551"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="547"/>
         <source>Net labels</source>
         <translation>Ağ etiketleri</translation>
     </message>
     <message>
-        <location filename="../src/items/symbolpaletteitem.cpp" line="551"/>
+        <location filename="../src/items/symbolpaletteitem.cpp" line="547"/>
         <source>Net labels cannot be blank</source>
         <translation>Ağ etiketleri boş bırakılamaz</translation>
     </message>
