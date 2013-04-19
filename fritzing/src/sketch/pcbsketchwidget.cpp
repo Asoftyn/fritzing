@@ -70,12 +70,8 @@ $Date$
 #include <QNetworkAccessManager>
 #include <QInputDialog>
 
-/////////////////////////////////////////////////////
 
-double hundredths(double d) {
-    double h = (int) (d * 100);
-    return h / ((double) 100);
-}
+/////////////////////////////////////////////////////
 
 static const int MAX_INT = std::numeric_limits<int>::max();
 static const double StrokeWidthIncrement = 50;
@@ -119,126 +115,6 @@ bool distanceLessThan(ConnectorItem * end0, ConnectorItem * end1) {
 	}
 
 	return true;
-}
-
-//////////////////////////////////////////////////////
-
-CountCost QuoteDialog::TheCountCost[QuoteDialog::MessageCount];
-double QuoteDialog::TheArea;
-int QuoteDialog::TheBoardCount;
-
-QuoteDialog::QuoteDialog(bool full, QWidget *parent) : QDialog(parent) 
-{
-	setWindowTitle(tr("Fab Quote"));
-
-	QVBoxLayout * vLayout = new QVBoxLayout(this);
-
-    QLabel * label = new QLabel(tr("Order your PCB from Fritzing Fab"));
-    label->setObjectName("quoteOrder");
-    vLayout->addWidget(label);
-
-	m_messageLabel = new QLabel("");
-    m_messageLabel->setObjectName("quoteMessage");
-	vLayout->addWidget(m_messageLabel);
-
-    m_tableLabel = new QLabel("");
-    m_tableLabel->setObjectName("quoteTable");
-	vLayout->addWidget(m_tableLabel);
-
-    label = new QLabel(tr("Please note, price does not include shipping, possible additional taxes, or the checking fee."));
-    label->setObjectName("quoteAdditional");
-	vLayout->addWidget(label);
-    if (!full) label->setVisible(false);
-
-    label = new QLabel(tr("For more information on pricing see <a href='http://fab.fritzing.org/pricing'>http://fab.fritzing.org/pricing</a>."));
-    label->setObjectName("quoteAdditional");
-	vLayout->addWidget(label);
-    label->setOpenExternalLinks(true);
-    if (!full) label->setVisible(false);
-
-    label = new QLabel(tr("To order go to <a href='http://fab.fritzing.org/fritzing-fab'>http://fab.fritzing.org/fritzing-fab</a> and click 'Order Now'."));
-	vLayout->addWidget(label);
-    label->setOpenExternalLinks(true);
-    if (!full) label->setVisible(false);
-
-    QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
-	buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-	vLayout->addWidget(buttonBox);
-    if (!full) buttonBox->setVisible(false);
-
-    this->setLayout(vLayout);
-}
-
-QuoteDialog::~QuoteDialog() {
-}
-
-void QuoteDialog::setCountCost(int index, int count, double cost) {
-    if (index < 0) return;
-    if (index >= MessageCount) return;
-
-    TheCountCost[index].count = count;
-    TheCountCost[index].cost = cost;
-}
-
-void QuoteDialog::setArea(double area, int boardCount) {
-    TheBoardCount = boardCount;
-    TheArea = area;
-}
-
-void QuoteDialog::setText() {
-    QString msg = tr("The total area of the %n boards in this sketch is %1 cm%3 (%2 in%3).\n", "", TheBoardCount)
-        .arg(hundredths(TheArea))
-        .arg(hundredths(TheArea / (2.54 * 2.54)))
-        .arg(QChar(178))
-        ;
-    msg += tr("Use Fritzing Fab to produce a PCB from your sketch and take advantage of the quantity discount we offer.");
-    m_messageLabel->setText(msg);
-
-    QString table;
-    table += "<table cellspacing='15'>";
-    table += "<tr>";
-    table += "<td>Copies</td>";
-
-    for (int i = 0; i < MessageCount; i++) {
-        int count = TheCountCost[i].count;
-        double cost = TheCountCost[i].cost;
-        if (count == 0) continue;
-        if (cost == 0) continue;
-
-        table += QString("<td align='center'>%1</td>").arg(TheCountCost[i].count);
-    }
-    table += "</tr>";
-    table += "<tr>";
-    table += "<td>Price per board</td>";
-
-    for (int i = 0; i < MessageCount; i++) {
-        int count = TheCountCost[i].count;
-        double cost = TheCountCost[i].cost;
-        if (count == 0) continue;
-        if (cost == 0) continue;
-
-        table += QString("<td align='right'>%1</td>").arg(hundredths(cost/count), 0, 'F', 2);
-    }
-    table += "</tr>";
-
-
-    table += "<tr>";
-    table += "<td>Price</td>";
-
-    for (int i = 0; i < MessageCount; i++) {
-        int count = TheCountCost[i].count;
-        double cost = TheCountCost[i].cost;
-        if (count == 0) continue;
-        if (cost == 0) continue;
-
-        table += QString("<td align='right'>%1</td>").arg(hundredths(cost), 0, 'F', 2);
-    }
-    table += "</tr>";
-
-    table += "</table>";
-
-    m_tableLabel->setText(table);
 }
 
 //////////////////////////////////////////////////////
@@ -2859,6 +2735,7 @@ void PCBSketchWidget::gotFabQuote(QNetworkReply * networkReply) {
         }
 
         if (m_quoteDialog) m_quoteDialog->setText();
+        if (m_rolloverQuoteDialog) m_rolloverQuoteDialog->setText();
 	}
     else {
     }
@@ -2875,13 +2752,7 @@ void PCBSketchWidget::requestQuote() {
     QString paramString = Version::makeRequestParamsString();
     QNetworkAccessManager * manager = new QNetworkAccessManager(this);
 
-    QList<int> counts;
-    counts << 1 << 2 << 5 << 10;
-    QString countArgs;
-    foreach (int c, counts) {
-        countArgs += QString::number(c) + ",";
-    }
-    countArgs.chop(1);
+    QString countArgs = QuoteDialog::countArgs();
     manager->setProperty("count", countArgs);
 	connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(gotFabQuote(QNetworkReply *)));
     QString string = QString("http://fab.fritzing.org/fritzing-fab/quote%1&area=%2&count=%3")
@@ -2935,6 +2806,7 @@ ItemBase * PCBSketchWidget::resizeBoard(long itemID, double mmW, double mmH) {
 QDialog * PCBSketchWidget::quoteDialog(QWidget * parent) {
     if (m_rolloverQuoteDialog == NULL) {
         m_rolloverQuoteDialog = new QuoteDialog(false, parent);
+        requestQuote();
     }
     m_rolloverQuoteDialog->setText();
     return m_rolloverQuoteDialog;

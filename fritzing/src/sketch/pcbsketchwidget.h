@@ -28,43 +28,10 @@ $Date$
 #define PCBSKETCHWIDGET_H
 
 #include "sketchwidget.h"
+#include "../dialogs/quotedialog.h"
 #include <QVector>
 #include <QNetworkReply>
 #include <QDialog>
-#include <QLabel>
-
-///////////////////////////////////////////////
-
-struct CountCost {
-    int count;
-    double cost;
-};
-
-class QuoteDialog : public QDialog {
-Q_OBJECT
-
-public:
-	QuoteDialog(bool full, QWidget *parent = 0);
-	~QuoteDialog();
-
-    void setText();
-
-public:
-    static void setArea(double area, int boardCount);
-    static void setCountCost(int index, int count, double cost);
-
-public:
-    static const int MessageCount = 4;
-
-protected:
-    static CountCost TheCountCost[MessageCount];
-    static double TheArea;
-    static int TheBoardCount;
-
-protected:
-    QLabel * m_messageLabel;
-    QLabel * m_tableLabel;
-};
 
 ///////////////////////////////////////////////
 

@@ -2757,17 +2757,17 @@ void MainWindow::fireQuote() {
     if (m_rolloverQuoteDialog == NULL) return;
 
     //DebugDialog::debug("enter fab button");
-    QWidget * toolbar = m_pcbWidget->toolbar();
-    QRect r = toolbar->geometry();
-    QPointF p = toolbar->parentWidget()->mapToGlobal(r.topLeft());
+    //QWidget * toolbar = m_pcbWidget->toolbar();
+    //QRect r = toolbar->geometry();
+    //QPointF p = toolbar->parentWidget()->mapToGlobal(r.topLeft());
 
 	Qt::WindowFlags flags = m_rolloverQuoteDialog->windowFlags();
     flags = Qt::Window | Qt::Dialog | Qt::FramelessWindowHint;
 	m_rolloverQuoteDialog->setWindowFlags(flags);
 
-    QRect q = m_rolloverQuoteDialog->geometry();
-    q.moveTo(p.x() + (r.width() / 2), p.y() - 80);
-    m_rolloverQuoteDialog->setGeometry(q);
+    //QRect q = m_rolloverQuoteDialog->geometry();
+    //q.moveTo(p.x() + (r.width() / 2), p.y() - 80);
+    //m_rolloverQuoteDialog->setGeometry(q);
     m_rolloverQuoteDialog->show();
 }
 

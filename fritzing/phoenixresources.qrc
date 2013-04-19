@@ -145,6 +145,7 @@
         <file>resources/images/icons/partsEditorZoomOutVerButton.png</file>
         <file>resources/images/icons/partsEditorZoomInHorButton.png</file>
         <file>resources/images/icons/partsEditorZoomOutHorButton.png</file>
+        <file>resources/images/icons/visitFritzingFab.png</file>
 	
         <file>resources/parts/core/wire.fzp</file>
         <file>resources/parts/core/cmRuler.fzp</file>

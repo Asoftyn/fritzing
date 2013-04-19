@@ -567,6 +567,7 @@ bool FApplication::spaceBarIsPressed() {
 bool FApplication::eventFilter(QObject *obj, QEvent *event)
 {
 	// check whether the space bar is down.
+    //qDebug() << "event" << event->type();
 
 	Q_UNUSED(obj);
 

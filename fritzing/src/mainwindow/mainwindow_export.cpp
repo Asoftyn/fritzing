@@ -1247,6 +1247,11 @@ void MainWindow::exportBOM() {
 void MainWindow::exportSpiceNetlist() {
     if (m_schematicGraphicsView == NULL) return;
 
+    // examples: 
+    // http://www.allaboutcircuits.com/vol_5/chpt_7/8.html
+    // http://cutler.eecs.berkeley.edu/classes/icbook/spice/UserGuide/elements_fr.html
+    // http://www.csd.uoc.gr/~hy422/2011s/datasheets/ngspice-user-manual.pdf
+
     QString path = defaultSaveFolder();
     QString fileExt;
     QString extFmt = fileExtFormats.value(spiceNetlistActionType);

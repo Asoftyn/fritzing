@@ -689,20 +689,58 @@ SearchLineEdit {
 	color: #000000;
 	font-size: 11px;
 	font-family: "Lucida Grande", LucidaSans, Tahoma, Arial, sans-serif;
-    border: 1px solid rgb(140,140,140);
+	border: 1px solid rgb(140,140,140);
 }
 
 
 /**************** Fab Quote ****************/
 
 #quoteOrder {
-	font-size: 14px;
+	font-size: 16px;
+	font-weight: bold;
 	color: rgb(126,54,77);
 	margin: 0px 0px 0px 14px;
+	text-align: left;
 }
 
-#quoteOrder {
+#quoteMessage {
 	font-size: 10px;
 	color: #000000;
 	margin: 0px 0px 0px 10px;
+	text-align: left;
+}
+
+#quoteAdditional {
+	font-size: 10px;
+	color: #000000;
+	margin: 0px 0px 0px 10px;
+	text-align: left;
+}
+
+#quoteTable {
+	background-color: transparent;
+	border: 0px solid transparent;
+	margin: 0px 0px 0px 10px;
+}
+
+#quoteTable QHeaderView {
+	background-color: transparent;
+	color: #000000;
+	border: 0px solid transparent;
+}
+
+#quoteTable::item::disabled {
+	margin-right: 10px;
+}
+
+#quoteTable::item::disabled {
+	color: #000000;
+}
+
+#quoteVisitButton {
+	color: #ffffff;
+	font-size: 16px;
+	background-image: url(:/resources/images/icons/visitFritzingFab.png);
+	background-repeat: no-repeat;
+	background-position: center center;
 }
