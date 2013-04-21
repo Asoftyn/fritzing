@@ -795,18 +795,18 @@ Use the file?</source>
 <context>
     <name>ConnectorItem</name>
     <message>
-        <location filename="../src/connectors/connectoritem.cpp" line="2564"/>
+        <location filename="../src/connectors/connectoritem.cpp" line="2565"/>
         <source>Add bendpoint</source>
         <translation>বিন পয়েন্ট যোগ করুন</translation>
     </message>
     <message>
-        <location filename="../src/connectors/connectoritem.cpp" line="2568"/>
+        <location filename="../src/connectors/connectoritem.cpp" line="2569"/>
         <source>Straighten curve</source>
         <translatorcomment>প্রাথমিক পর্যবেক্ষণ</translatorcomment>
         <translation>বক্র সোজা </translation>
     </message>
     <message>
-        <location filename="../src/connectors/connectoritem.cpp" line="2590"/>
+        <location filename="../src/connectors/connectoritem.cpp" line="2591"/>
         <source>Remove bendpoint</source>
         <translation>বিন পয়েন্ট সরিয়ে ফেলুন</translation>
     </message>
@@ -939,37 +939,37 @@ Use the file?</source>
 <context>
     <name>FApplication</name>
     <message>
-        <location filename="../src/fapplication.cpp" line="1516"/>
-        <location filename="../src/fapplication.cpp" line="1520"/>
+        <location filename="../src/fapplication.cpp" line="1517"/>
+        <location filename="../src/fapplication.cpp" line="1521"/>
         <source>Fritzing failure</source>
         <translation>ফ্রিটজিং ব্যর্থ</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1516"/>
+        <location filename="../src/fapplication.cpp" line="1517"/>
         <source>Fritzing caught an exception %1 from %2 in event %3</source>
         <translation>ফ্রিটজিং গ্রহন %1হইতে %2 নির্ধারণ %3</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1520"/>
+        <location filename="../src/fapplication.cpp" line="1521"/>
         <source>Fritzing caught an exception from %1 in event %2</source>
         <translatorcomment>%1 থেকে ইভেন্ট %2 এর মধ্যে একটি ঘটনা</translatorcomment>
         <translation>পছন্দের ফ্রিটজিং গ্রহন%1 নির্ধারণ%2</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1623"/>
+        <location filename="../src/fapplication.cpp" line="1624"/>
         <source>Import files from previous version?</source>
         <translatorcomment>আগের সংস্করন থেকে ফাইল আমদানি </translatorcomment>
         <translation>পূর্বের মত ফাইল সগ্রহ</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1624"/>
+        <location filename="../src/fapplication.cpp" line="1625"/>
         <source>Do you want to import parts and bins that you have created with earlier versions of Fritzing?
 </source>
         <translatorcomment>আপনি কি পার্টস এবং বিন্স  আমদানি করতে চান যা আপনি ফ্রিতযিং earlier version থেকে পাবেন</translatorcomment>
         <translation>আপনি কি  পার্টস এবং বক্স গ্রহন করতে চান ? তাহলে ফ্রিনটজিং  ইয়ারলেয়ারের সাহাজ্য নিন</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1625"/>
+        <location filename="../src/fapplication.cpp" line="1626"/>
         <source>
 Note: You can import them later using the &quot;Help&quot; &gt; &quot;Import parts and bins from old version...&quot; menu action.</source>
         <translatorcomment>&apos;
@@ -978,23 +978,23 @@ Note: You can import them later using the &quot;Help&quot; &gt; &quot;Import par
 নোটঃ পরবর্তী ব্যবহারের জন্য&quot;হেল্প&quot; &gt; &quot;পুরাতন পার্টস বিন পেতে &quot;মেনু অ্যাকশন&quot;।</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1631"/>
+        <location filename="../src/fapplication.cpp" line="1632"/>
         <source>Import</source>
         <translatorcomment>আমদানি</translatorcomment>
         <translation>সংগ্রহ</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1632"/>
+        <location filename="../src/fapplication.cpp" line="1633"/>
         <source>Do not import now</source>
         <translation>এখন সগ্রহন করা যাবেনা</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1666"/>
+        <location filename="../src/fapplication.cpp" line="1667"/>
         <source>Please specify an .fzz file name to save to (cancel will delete the backup)</source>
         <translation>আনুগ্রহ করে নির্ধারিত.fzz সঞ্চয় ফাইলে (বাতিল মুছুন ফিরেযান)</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1666"/>
+        <location filename="../src/fapplication.cpp" line="1667"/>
         <source>Fritzing (*%1)</source>
         <translation>ফ্রিটজিং (*%1)</translation>
     </message>
@@ -1454,18 +1454,18 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation> পার্টস </translation>
     </message>
     <message>
-        <location filename="../src/items/itembase.cpp" line="1336"/>
+        <location filename="../src/items/itembase.cpp" line="1338"/>
         <source>model part problem</source>
         <translatorcomment>সমস্যার অংস গুলি</translatorcomment>
         <translation>পার্ট নমুনায় সমস্যা</translation>
     </message>
     <message>
-        <location filename="../src/items/itembase.cpp" line="1358"/>
+        <location filename="../src/items/itembase.cpp" line="1360"/>
         <source>file for %1 %2 not found</source>
         <translation>ফাইল খুজে না পেলে%1%2</translation>
     </message>
     <message>
-        <location filename="../src/items/itembase.cpp" line="1463"/>
+        <location filename="../src/items/itembase.cpp" line="1465"/>
         <source>unable to create renderer for svg %1</source>
         <translation>svg %1এর জন্য renderer তৈরি করতে অক্ষম</translation>
     </message>
@@ -1627,82 +1627,82 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <translation>Shift+Ctrl+Tab</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="750"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="760"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1252"/>
         <source>Rotate</source>
         <translation>ঘুরােনা</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="758"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="768"/>
         <source>Share</source>
         <translatorcomment>ভাগাভাগি</translatorcomment>
         <translation>বিনিময়</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="767"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="777"/>
         <source>Flip</source>
         <translation>উল্টানো</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="775"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2405"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="785"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2406"/>
         <source>Autoroute</source>
         <translation>স্বয়ংক্রিয় রুট</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="782"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="793"/>
         <source>Order PCB</source>
         <translatorcomment>পিসিবি আনতে </translatorcomment>
         <translation>চাহিদার পি সি বি</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="798"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="809"/>
         <source>Both Layers</source>
         <translatorcomment>উভই স্তর </translatorcomment>
         <translation>সম্ভাব্য স্তর সমুহ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="803"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="814"/>
         <source>Bottom Layer</source>
         <translation>নিচের স্তর</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="808"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="819"/>
         <source>Top Layer</source>
         <translation>উপরের স্তর</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="816"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="851"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="804"/>
         <source>Add a note</source>
         <translatorcomment>চিহ্ন যুক্ত </translatorcomment>
         <translation>নোট সংযুক্তী</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="826"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="861"/>
         <source>Export for PCB</source>
         <translation>পি সি বি তে পাঠানোর জন্য</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="908"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="944"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="149"/>
         <source>Ready</source>
         <translation>প্রস্তুত</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1082"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1118"/>
         <source>Save %1</source>
         <translation>সঞ্চয় %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1165"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1183"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1408"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1451"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1466"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1476"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1541"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2119"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1201"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1219"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1444"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1487"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1502"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1512"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1577"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2155"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="169"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="174"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="613"/>
@@ -1711,104 +1711,114 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="903"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="1014"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="1232"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1556"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="1561"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1566"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="183"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="194"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="248"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2221"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2364"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2610"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2615"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2931"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2936"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2965"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2970"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3440"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3563"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3783"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3788"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3916"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3921"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3933"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3938"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2222"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2365"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2626"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2631"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2947"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2952"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2981"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2986"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3464"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3587"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3807"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3812"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3940"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3945"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3957"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3962"/>
         <source>Fritzing</source>
         <translation>ফ্রিটজিং</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1184"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1220"/>
         <source>No Sketch found in &apos;%1&apos;</source>
         <translatorcomment>ভিতরে নকশা  নাই %1</translatorcomment>
         <translation>কোন স্কেচ পায়নাই %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1166"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1202"/>
         <source>Unable to open &apos;%1&apos;: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1409"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="835"/>
+        <source>View from Above</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="842"/>
+        <source>View from Below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1445"/>
         <source>Unable to open shareable &apos;%1&apos;: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1452"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1488"/>
         <source>Unable to open shareable part &apos;%1&apos;: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1477"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1513"/>
         <source>Unable to load part from &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1506"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1542"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="834"/>
         <source>Specify a file name</source>
         <translatorcomment>একটি নিদৃষ্ট ফাইলের নাম </translatorcomment>
         <translation>নির্দেশিত একটি ফাইলের নাম</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1508"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1544"/>
         <source>Fritzing Part (*%1)</source>
         <translation>ফ্রিটজিং অংশ t(*%1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1542"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1578"/>
         <source>Unable to export %1 to shareable sketch</source>
         <translatorcomment> নকশারঅংশ বিশেষ রপ্তানিতে করতেঅপারগ</translatorcomment>
         <translation>%1বিনিময় স্কেচপাটাতে অক্ষম</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1581"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1617"/>
         <source>MainWindow::moveToPartsFolder mainwindow missing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1596"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1632"/>
         <source>There is already a part with id &apos;%1&apos; loaded into Fritzing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1655"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1691"/>
         <source>Do you want to keep the imported parts?</source>
         <translatorcomment>তুমি কি চাও আমদানি  করা যন্ত্রাংশ রাখতে?</translatorcomment>
         <translation>সংগ্রিিহত অংশ ধরে রাখতে চান?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1719"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1755"/>
         <source>No connections to route</source>
         <translatorcomment>ঘুরিয়ে সংযোগ নেই/ রাস্তার সাথে কোন সংযুক্তি নাই</translatorcomment>
         <translation>সংযোগ রাস্তা নেই</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1722"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1758"/>
         <source>Routing completed</source>
         <translatorcomment>রাস্তা তৈরি  সম্পন্ন  </translatorcomment>
         <translation>রাউটিং সমপণ্য</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1725"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1761"/>
         <source>Routing completed using %n jumper part(s)</source>
         <translation>
             <numerusform>সম্পূর্ণ রাউটিং ব্যবহারে %n জাম্পার অংস(S)</numerusform>
@@ -1816,7 +1826,7 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1728"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1764"/>
         <source>%1 of %2 nets routed - %n connector(s) still to be routed</source>
         <translation>
             <numerusform>%1এবং%2নিপিষ্ট জাল সংযোগ%n(s)কে স্থাপন</numerusform>
@@ -1824,29 +1834,29 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1764"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1800"/>
         <source>%1 - [%2]</source>
         <translation>%1 - [%2]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1895"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1931"/>
         <source>No copper top layer</source>
         <translatorcomment>উপরের স্তর এ কোন তামা নাই </translatorcomment>
         <translation>উপরে লেয়ারে কোণ কপার নাই</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1896"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1932"/>
         <source>The copper top (copper 1) layer is not available on a one-sided board.  Please switch the board to double-sided or choose the copper bottom (copper 0) layer.</source>
         <translation>উপলুব্ধ একতরফা তামা (copper1)বোর্ড টি হয়নি অনুগ্রহ করে দুই পাস  তামার বোর্ড আনতে(copper0)নির্বাচন করুন।</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1957"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3501"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1993"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3525"/>
         <source>Sorry!</source>
         <translation>দুঃখিত?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1958"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1994"/>
         <source>No part with those characteristics.
 We&apos;re working to avoid this message, and only let you choose between properties that do exist</source>
         <translation>ঐসব কোনো পার্টসে  নাই।  
@@ -1854,88 +1864,88 @@ We&apos;re working to avoid this message, and only let you choose between proper
     আমরা এই বার্তা বাদ দেবার চেষ্টা করছি এবং শুধু যেসব ধর্ম যোগ করা আছে  সেইগুলাই পছন্দ করতে দিব।</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1970"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2006"/>
         <source>No exactly matching part found; Fritzing chose the closest match.</source>
         <translation>যথাযথভাবে কোন অংশ মেলানোর জন্য পাওয়া যায় নি; কাছাকাছি মিল fritzing.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2007"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2043"/>
         <source>Change to single layer pcb</source>
         <translatorcomment>একক স্তর পি সি বি পরিবর্তন </translatorcomment>
         <translation>এক স্তর পি সি বি পরিবর্তন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2007"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2043"/>
         <source>Change to two layer pcb</source>
         <translatorcomment>দুই স্তর পি সি বি বদল</translatorcomment>
         <translation>দুই স্তরপি সি বি পরিবর্তন </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2040"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2076"/>
         <source>Swapped %1 with module %2</source>
         <translatorcomment>%1 সঙ্গে %2মডিউল বদল করতে</translatorcomment>
         <translation>মডিউল আনতে%1 পাঠাতে%2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2062"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2098"/>
         <source>Change image to %2</source>
         <translatorcomment>ইমেজ বদল করতে%2</translatorcomment>
         <translation>ইমেজ বদলে%2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2120"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2156"/>
         <source>Svg %1 is missing a &apos;%2&apos; layer. For more information on how to create a custom board shape, see the tutorial at &lt;a href=&apos;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&apos;&gt;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2157"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2193"/>
         <source>loading %1</source>
         <translatorcomment>বোঝাই করতে%1</translatorcomment>
         <translation>লোডিং %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2166"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2202"/>
         <source>Loading...</source>
         <translatorcomment>বোঝাই...</translatorcomment>
         <translation>লোডিং...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2172"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2208"/>
         <source>new sketch</source>
         <translatorcomment>নতুন  চাকতি</translatorcomment>
         <translation>নতুন স্কেচ </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2302"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2351"/>
         <source>Backing up &apos;%1&apos;</source>
         <translation>ফিরে আসতে %1 </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2397"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2446"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="834"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="273"/>
         <source>Fritzing (*%1)</source>
         <translation>ফ্রিটজিং(*%1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2452"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2501"/>
         <source>Unrouted connections</source>
         <translatorcomment>অসংযুক্ত রাস্তা</translatorcomment>
         <translation>অসংযুক্ত সংযোগ </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2453"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2502"/>
         <source>There are no unrouted connections in this view.</source>
         <translatorcomment>এখানে অসংযুক্ত রাস্তার চিত্র দেখা</translatorcomment>
         <translation>অসংযুক্ত রাস্তার চিত্র দেখতে </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2492"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2541"/>
         <source>%1 %2 %3</source>
         <translation>%1%2%3</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2746"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2795"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2055,13 +2065,13 @@ We&apos;re working to avoid this message, and only let you choose between proper
     <message>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="188"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="265"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3602"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3626"/>
         <source>Cancel</source>
         <translation>বাতিল</translation>
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="204"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1566"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1571"/>
         <source>Choose a folder for exporting</source>
         <translatorcomment>রপ্তানির জন্য  একটি ফোল্ডার নির্বাচন করুন </translatorcomment>
         <translation>পরীক্ষণের জন্য একটি ফোল্ডার নির্বাচন করুন </translation>
@@ -2312,27 +2322,27 @@ We&apos;re working to avoid this message, and only let you choose between proper
         <translation> BOM ফাইলটি সংরক্ষণ করতে ব্যর্থ কিন্তু টেক্সট ক্লিপবোের্ড হবে.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1256"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1261"/>
         <source>Export SPICE Netlist...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1481"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1486"/>
         <source>Export Netlist...</source>
         <translation>সর্বশেষ লিস্ট রপ্তানি </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1557"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1562"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to export to Gerber.</source>
         <translation>আপনার স্কেচ এখনো এর কোন বোর্ডটি হইনি!  PCB যুক্তএকটি GERBER এক্সপোর্ট করুন.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1562"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1567"/>
         <source>Gerber export can only handle one board at a time--please select the board you want to export.</source>
         <translation>GERBER রপ্তানি শুধুমাত্র একটি সময়ে এক বোর্ডের ব্যাবহার করতে পারে - আপনি বোর্ডের নির্বাচন করতে এবং রপ্তানি করতে চান.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1587"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1592"/>
         <source>Sketch exported to Gerber</source>
         <translation>GERBER এবং স্কেচ এক্সপোর্ট</translation>
     </message>
@@ -2374,7 +2384,7 @@ Go ahead and revert?</source>
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="248"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2364"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2365"/>
         <source>File &apos;%1&apos; not found</source>
         <translation>ফাইল %1 খুজে পায়না</translation>
     </message>
@@ -2678,7 +2688,7 @@ Would you like to convert &apos;%1&apos; to the .fzz format now or open it read-
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="803"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2748"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2764"/>
         <source>Add Note</source>
         <translation>নোট সংযুক্ত</translation>
     </message>
@@ -2926,7 +2936,7 @@ Would you like to convert &apos;%1&apos; to the .fzz format now or open it read-
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="953"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1709"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1710"/>
         <source>Hide part silkscreen</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2971,47 +2981,69 @@ Would you like to convert &apos;%1&apos; to the .fzz format now or open it read-
         <translation>সব লুকান স্তর দেখুন বর্তমান ভিউ </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2498"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2499"/>
         <source>Set Ground Fill Keepout...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2499"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2500"/>
         <source>Set the minimum distance between ground fill and traces or connectors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2517"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2518"/>
         <source>Fritzing Fab Quote...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2518"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2519"/>
         <source>How much would it could to produce a PCB from this sketch with Fritzing Fab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2859"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2526"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2532"/>
+        <source>View from below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2527"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2533"/>
+        <source>View the PCB from the bottom layers upwards</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2536"/>
+        <source>View from above</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2537"/>
+        <source>View the PCB from the top layers downwards</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2875"/>
         <source>The folder &quot;%1&quot; isn&apos;t a Fritzing installation folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4039"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4063"/>
         <source>Enter Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4040"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4064"/>
         <source>Text will match part label, description, title, etc. Enter text to search for:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4078"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4102"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4078"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4102"/>
         <source>No parts matched search term &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3032,7 +3064,7 @@ Would you like to convert &apos;%1&apos; to the .fzz format now or open it read-
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="921"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2800"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2816"/>
         <source>Add Bendpoint</source>
         <translation>Bendpoint যোগ করুন</translation>
     </message>
@@ -3467,489 +3499,489 @@ Would you like to convert &apos;%1&apos; to the .fzz format now or open it read-
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1328"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1365"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1378"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1366"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1379"/>
         <source>&amp;Routing</source>
         <translation>রাউটিং</translation>
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1334"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2473"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2944"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2474"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2960"/>
         <source>Ground Fill</source>
         <translation>গ্রাউনড ফিল</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1392"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1393"/>
         <source>&amp;Help</source>
         <translation>সহায়তা</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1601"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1602"/>
         <source>Delete Ratsnest Line</source>
         <translation>Ratsnest লাইন মুছে দিন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1604"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1605"/>
         <source>Delete Wire</source>
         <translation>তার মুছেফেলা</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1641"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1642"/>
         <source>Hide part label</source>
         <translation type="unfinished">হাইড পার্ট লেভেল </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1641"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1642"/>
         <source>Show part label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1709"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1710"/>
         <source>Show part silkscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1840"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1841"/>
         <source>Delete</source>
         <translation> মুছুন </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1995"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1996"/>
         <source>Actual Size</source>
         <translation>আসল  সাইজ </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1996"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1997"/>
         <source>It doesn&apos;t seem to be possible to automatically determine the actual physical size of the monitor, so &apos;actual size&apos; as currently implemented is only a guess. Your best bet would be to drag out a ruler part, then place a real (physical) ruler on top and zoom until they match up.</source>
         <translation> মনিটর এর প্রকৃত মাপ সয়ংক্রিয় ভাবে বের করা মনে হয় সম্ভব না এই জন্য প্রকৃত মাপ আনুমানিক ধরে নেওয়া হয়েছে। ভালো বুদ্ধি হচ্ছে একটা রুলার ধরে বসান এবং তারপর একটা আসল রুলার এর সাথে মিলাতে থাকুন (লম্বায় টেনে টেনে) যতক্ষণ পর্যন্ত না মিলে।</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2217"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2218"/>
         <source>Page Setup</source>
         <translation>পৃষ্ঠা সেটআপ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2222"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2223"/>
         <source>Sorry, &quot;%1&quot; has not been implemented yet</source>
         <translation>দুঃখিত, &quot;% 1&quot; এখনো বাস্তবায়িত হয়নি</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2407"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2408"/>
         <source>Shift+Ctrl+A</source>
         <translation>Shift+Ctrl+A</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2504"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2505"/>
         <source>Design Rules Check (DRC)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2505"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2506"/>
         <source>Highlights any parts that are too close together for safe board production</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2510"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2511"/>
         <source>Select any traces where the screen location doesn&apos;t match the actual location. Only needed for sketches autorouted with version 0.7.10 or earlier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2513"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2514"/>
         <source>Autorouter/DRC settings...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2514"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2515"/>
         <source>Set autorouting parameters including keepout...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2524"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2525"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2540"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2541"/>
         <source>Set both copper layers clickable</source>
         <translation>ক্লিকযোগ্য উভয় তামার স্তর নির্ধারণ করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2526"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2542"/>
         <source>Shift+Ctrl+3</source>
         <translation>Shift+Ctrl+A</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2529"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2530"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2545"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2546"/>
         <source>Set copper top layer clickable</source>
         <translation>উপরের স্তরে তামার ক্লিকযোগ্য নির্ধারণ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2531"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2547"/>
         <source>Shift+Ctrl+2</source>
         <translation>Shift+Ctrl+2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2534"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2535"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2550"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2551"/>
         <source>Set copper bottom layer clickable</source>
         <translation>নিচের স্তরে তামার ক্লিকযোগ্য নির্ধারণ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2536"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2552"/>
         <source>Shift+Ctrl+1</source>
         <translation>Shift+Ctrl+1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2413"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2414"/>
         <source>&amp;Create trace from ratsnest</source>
         <translation>&amp; Ratsnest থেকে ট্রেস তৈরি করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2406"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2407"/>
         <source>Autoroute connections...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2414"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2415"/>
         <source>Create a trace from the ratsnest line</source>
         <translation>Ratsnest লাইন থেকে একটি ট্রেস তৈরি করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2417"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2418"/>
         <source>&amp;Create wire from ratsnest</source>
         <translation>Ratsnest থেকে তার তৈরি করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2418"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2419"/>
         <source>Create a wire from the ratsnest line</source>
         <translation>Ratsnest লাইন থেকে একটি তার তৈরি করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2422"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2423"/>
         <source>Do not autoroute</source>
         <translation>স্বয়ংক্রিয় রুট হবে  না </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2423"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2424"/>
         <source>When autorouting, do not rip up this trace wire, via, or jumper item</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2429"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2430"/>
         <source>Move to other side of the board</source>
         <translation>বোর্ডেটি  অন্য দিকে সরান</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2430"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2431"/>
         <source>Move selected traces to the other side of the board (note: the &apos;first&apos; trace will be moved and the rest will follow to the same side)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2433"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2434"/>
         <source>Show unrouted</source>
         <translation>আন রাউটেড প্রদর্শন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2434"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2435"/>
         <source>Highlight all unrouted connectors</source>
         <translation>সব আন রাউটেড সংযোগ গুলিকে হাইলাইট</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2437"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2438"/>
         <source>Select All Traces</source>
         <translation>সব ট্রেস নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2438"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2439"/>
         <source>Select all trace wires</source>
         <translation>সব তারের চিহ্ন  নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2441"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2442"/>
         <source>Select All Wires</source>
         <translation>সমস্ত তার নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2442"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2443"/>
         <source>Select all wires</source>
         <translation>সব তারের নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2445"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2446"/>
         <source>Select All CopperFill</source>
         <translation>সমস্ত কপার ফিল নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2446"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2447"/>
         <source>Select all copper fill items</source>
         <translation>সব তামা ভরাট করা আইটেম নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2449"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2450"/>
         <source>Force Update Routing Status and Ratsnests</source>
         <translation>ফোর্স আপডেট রাউটিং অবস্থা এবং Ratsnests</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2450"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2451"/>
         <source>Recalculate routing status and ratsnest wires (in case the auto-update isn&apos;t working correctly)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2453"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2454"/>
         <source>Select All &quot;Don&apos;t Autoroute&quot; Traces</source>
         <translation>সমস্ত &quot; Autoroute করবেন না&quot; ট্রেস নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2454"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2455"/>
         <source>Select all trace wires excluded from autorouting</source>
         <translation>সব ট্রেস থেকে autorouting বাদ তারগুলিকে নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2457"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2458"/>
         <source>Select All Autoroutable Traces</source>
         <translation>সমস্ত Autoroutable ট্রেস নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2458"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2459"/>
         <source>Select all trace wires that can be changed during autorouting</source>
         <translation>সব ট্রেস নির্বাচন তারগুলিকে যে autoroutingএর  সময় পরিবর্তন করা যেতে পারে </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2461"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2462"/>
         <source>Select All Jumpers</source>
         <translation>সমস্ত Jumpers নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2462"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2463"/>
         <source>Select all jumper item parts</source>
         <translation>সমস্ত Jumpers আইটেম যন্ত্রাংশ নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2465"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2466"/>
         <source>Select All Vias</source>
         <translation>সমস্ত Vias নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2466"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2467"/>
         <source>Select all via parts</source>
         <translation>সমস্ত ভায়া যন্ত্রাংশ নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2469"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2470"/>
         <source>Tidy Wires</source>
         <translation>পরিপাটি তারগুলি </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2470"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2471"/>
         <source>Tidy selected wires</source>
         <translation>পরিপাটি নির্বাচিত তারগুলি</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2474"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2475"/>
         <source>Fill empty regions of the copper layer--fill will include all traces connected to a GROUND</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2477"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2944"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2478"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2960"/>
         <source>Copper Fill</source>
         <translation>কপার ফিল</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2478"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2479"/>
         <source>Fill empty regions of the copper layer--not including traces connected to a GROUND</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2481"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2482"/>
         <source>Remove Copper Fill</source>
         <translation>কপার ফিল সরাতে </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2482"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2483"/>
         <source>Remove the copper fill</source>
         <translation>এই কপার ফিল সরাতে </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2485"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2486"/>
         <source>Choose Ground Fill Seed(s)...</source>
         <translation>গ্রাউনড ফিল সীড গুলো পছন্দ করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2486"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2487"/>
         <source>Fill empty regions of the copper layer--fill will include all traces connected to the seeds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2489"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2490"/>
         <source>Set Ground Fill Seed</source>
         <translation>গ্রাউন্ড ফিল সীড সেট করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2490"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2491"/>
         <source>Treat this connector and its connections as a &apos;ground&apos; during ground fill.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2494"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2495"/>
         <source>Clear Ground Fill Seeds</source>
         <translation>গ্রাউন্ড ফিল সীড গুলো পরিষ্কার</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2495"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2496"/>
         <source>Clear ground fill seeds--enable copper fill only.</source>
         <translatorcomment>সাফ ভূমি ভরাট বীজ - পূরণ করুন.সক্ষম</translatorcomment>
         <translation>গ্রাউন্ড ফিল  সীড গুলো পরিষ্কার--শুধু তামার ফিল সক্রিয় </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2506"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2507"/>
         <source>Shift+Ctrl+D</source>
         <translation>Shift+Ctrl+D</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2509"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2510"/>
         <source>Check Loaded Traces</source>
         <translation>লোড ট্রেস চেক করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2546"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2562"/>
         <source>Copper Top and Copper Bottom layers are both active</source>
         <translation>উপরের তামা এবং নীচের  তামাস্তর উভয় সক্রিয় </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2556"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2572"/>
         <source>Copper Top layer is active</source>
         <translation>উপরের তামার স্তর সক্রিয়</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2566"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2582"/>
         <source>Copper Bottom layer is active</source>
         <translation>নিচের তামার লেয়ার সক্রিয়</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2595"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2611"/>
         <source>Order a PCB...</source>
         <translation>একটি PCB অর্ডার ...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2596"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2612"/>
         <source>Order a PCB created from your sketch--from fabulous Fritzing Fab</source>
         <translation>আপনার স্কেচ তৈরির একটি PCB  অর্ডার করুন -- কল্পিত Fritzing  Fab থেকে </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2611"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2627"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use the autorouter.</source>
         <translation>আপনার স্কেচ এখনো এর কোন বোর্ড  হইনি! অটোরুট ব্যাবহার করতে একটি  পি সি বি সংযুক্ত করুন </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2616"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2632"/>
         <source>Please select the board you want to autoroute. The autorouter can only handle one board at a time.</source>
         <translation>আনুগ্রহ করে অটোরুট করতে বোর্ড নির্বাচন করুন   অটোরুট একই সময়ে একটি বোর্ড পরিচালনা করতে পারবে </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2621"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2637"/>
         <source>Autorouting...</source>
         <translation>স্বয়ংক্রিয় রাউটিং ... </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2626"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2642"/>
         <source>Autorouting Progress...</source>
         <translation>Autorouting অগ্রগতি...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2710"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2726"/>
         <source>jumpers</source>
         <translation>জাম্পারস </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2714"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2730"/>
         <source>copperfill</source>
         <translation>কপার ফিল</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2718"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2734"/>
         <source>vias</source>
         <translation>vias</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2792"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2808"/>
         <source>Remove Bendpoint</source>
         <translation>বিন পয়েন্ট সরিয়ে ফেলুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2852"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2868"/>
         <source>Please choose the previous Fritzing folder...</source>
         <translation>আগে ফ্রিটজিং ফোল্ডার বাছাই করুন ...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2893"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2909"/>
         <source>You will have to restart Fritzing in order to use the imported parts</source>
         <translation>আপনি Fritzing করার জন্য আমদানিকৃত পার্টস  ব্যবহার করে পুনরায় আরম্ভ করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2932"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2948"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use ground or copper fill.</source>
         <translatorcomment>তমার বরদে কন স্কেছ নাই প সি বি  করার অন্ন দয়া করে আক্তি তামা জুক্ত গ্রুন্দ ফিল্ল বেবহার ক্রুরুন </translatorcomment>
         <translation>আপনার বোর্ডে কোনো স্কেচ  নাই !পি সি বি  করার জন্য  দয়া করে একটি তামার যুক্ত গ্রাউনড ফিল ব্যবহার করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2937"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2953"/>
         <source>Please select a PCB--copper fill only works for one board at a time.</source>
         <translation>নির্বাচিত পি সি বি -- একটি বোর্ডের জন্য কপার ফিল একই সাথে কাজ করবে </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2942"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2958"/>
         <source>Generating %1 fill...</source>
         <translation>ফিল জেনারেট করুন %1...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2942"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2958"/>
         <source>ground</source>
         <translation>গ্রাউন্ড </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2942"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2958"/>
         <source>copper</source>
         <translation>কপার</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2966"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2982"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to remove copper fill.</source>
         <translation>আপনার তৈরি নকশা করা বোর্ডটিএখনো হয়নি? দয়া করে কপার ফাইলে নতুন একটি পি সি বি স্তাপন করুন </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2971"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2987"/>
         <source>Please select a PCB--ground fill operations only work on a one board at a time.</source>
         <translation> দয়া করে একটা PCB নির্বাচন করুন -- ground fil কাজকর্ম শুধু এক বোর্ডে একই সাথে. কাজ করবে .</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2994"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3010"/>
         <source>Remove copper fill</source>
         <translation>কপার ফিল সরাতে </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3056"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3113"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3072"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3129"/>
         <source>&amp;Wire Color</source>
         <translation>এবং তারের রং </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3359"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3383"/>
         <source>Launch %1...</source>
         <translation>আরম্ভ করুন %1...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3440"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3464"/>
         <source>No outdated parts found.
 All your parts are up-to-date.</source>
         <translation>কোন মেয়াদোত্তীর্ণ পার্টস খুঁজে পাওয়া যায়নি.
 আপনার সমস্ত পার্টস আপ টু ডেট.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3445"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3469"/>
         <source>Outdated parts</source>
         <translation>মেয়াদ উত্তীর্ণ যন্ত্রাংশ</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3446"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3470"/>
         <source>Found %n outdated parts. Do you want to update them now?</source>
         <translation>
             <numerusform>মেয়াদোত্তীর্ণ পার্টস খুঁজে পাওয়া গেছে.%n  আপনি কি এখন তাদের আপডেট করতে চান?</numerusform>
@@ -3957,84 +3989,84 @@ All your parts are up-to-date.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3502"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3526"/>
         <source>unable to find replacement for %1.
 </source>
         <translation>খুঁজে পেতে অসমর্থ হলে বদল করার জন্য খোজ করুন </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3558"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3582"/>
         <source>Update %1 part(s)</source>
         <translation>যন্ত্রাংশ (গুলি) আপডেট%1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3563"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3587"/>
         <source>Successfully updated %1 part(s).
 Please check all views for potential side-effects.</source>
         <translation>যন্ত্রাংশ (গুলি)সফলভাবে আপডেট %1.
 সম্ভাব্য পার্শ্ব প্রতিক্রিয়া জন্য সব মতামত দয়া করে চেক করুন.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3603"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3627"/>
         <source>OK</source>
         <translation>ঠিক</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3625"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3649"/>
         <source>Set the grid size for %1.</source>
         <translation>% 1 গ্রিডের মাপ নির্ধারণ করার জন্য </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3632"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3656"/>
         <source>Grid Size:</source>
         <translation>গ্রিডের আকারঃ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3646"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3670"/>
         <source>in</source>
         <translatorcomment>প্রবেশ</translatorcomment>
         <translation>ইন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3649"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3673"/>
         <source>mm</source>
         <translation>মি মি</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3658"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3682"/>
         <source>Restore Default</source>
         <translation>ডিফল্ট পুনঃ স্থাপন </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3784"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3808"/>
         <source>Your sketch does not have a board yet! DRC only works with a PCB.</source>
         <translation>আপনার তৈরি নকশা করা বোর্ডটিএখনো হয়নি? দয়া করে পাথানর জন্য একটিPCB যোগ করতে পারেন </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3789"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3813"/>
         <source>Please select a PCB. DRC only works on one board at a time.</source>
         <translation>কাজের করতে একটি পি সি বি ও কপার ফাইল নির্বাচন করুনএই বোর্ডের জন্য </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3797"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3821"/>
         <source>DRC Progress...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3917"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3934"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3941"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3958"/>
         <source>Your sketch does not have a board yet! Please add a PCB in order to use copper fill operations.</source>
         <translation>আপনার তৈরি নকশা করা বোর্ডটিএখনো হয়নি? দয়া করে পাথানর জন্য একটিPCB যোগ করতে পারেন </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3922"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3939"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3946"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3963"/>
         <source>Please select a PCB. Copper fill operations only work on one board at a time.</source>
         <translatorcomment>একটি পি সি বি   করুন।তামা ভরাট অপারেশান কেবল একটি বোর্ড  এ একটি সমায় এর কাজ </translatorcomment>
         <translation>এই বোর্ডে কাজ করতে একটি পি সি বি ও কপার ফাইল নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4006"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4030"/>
         <source>%1 background Color</source>
         <translation>%1পটভূমির রং</translation>
     </message>
@@ -4159,197 +4191,189 @@ Reason: %2 (errcode %3)</source>
 <context>
     <name>PCBSketchWidget</name>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="271"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="240"/>
         <source>Create Trace from Ratsnest</source>
         <translation>Ratsnest থেকে ট্রেস তৈরি</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="325"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="330"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1556"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1561"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1596"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1613"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1628"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1651"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1669"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1708"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1713"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1720"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1737"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1759"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1776"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2289"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2294"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2317"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2322"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2493"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2761"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="294"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="299"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1525"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1530"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1565"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1582"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1597"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1620"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1638"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1677"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1682"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1689"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1706"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1728"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1745"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2258"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2263"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2286"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2291"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2462"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2731"/>
         <source>Fritzing</source>
         <translatorcomment>Fritzing</translatorcomment>
         <translation>ফ্রিটজিং</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="326"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="295"/>
         <source>Your sketch does not have a board yet! Please add a PCB in order to use this selection operation.</source>
         <translation>আপনার তৈরি নকশা করা বোর্ডটিএখনো হয়নি? দয়া করে পাথানর জন্য একটিPCB যোগ করতে পারেন </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="331"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2295"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2323"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="300"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2264"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2292"/>
         <source>Please click on a PCB first--this selection operation only works for one board at a time.</source>
         <translation>কাজের করতে একটি পি সি বি ও কপার ফাইল নির্বাচন করুনএই বোর্ডের জন্য </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="370"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="339"/>
         <source>Click this connector to drag out a new trace.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1162"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1131"/>
         <source>Change trace layer</source>
         <translation>ট্রেস স্তর পি সি বি পরিবর্তন </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1557"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1709"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1526"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1678"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use copper fill.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1562"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1531"/>
         <source>%1 Fill: please select the board you want to apply fill to.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1562"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1531"/>
         <source>Ground</source>
         <translation>গ্রাউন্ড </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1562"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1531"/>
         <source>Copper</source>
         <translation>কপার</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1572"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1541"/>
         <source>Please designate one or more ground fill seeds before doing a ground fill.
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1596"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1737"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1565"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1706"/>
         <source>Fritzing error: unable to render board svg (1).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1613"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1628"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1759"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1582"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1597"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1728"/>
         <source>Fritzing error: unable to render copper svg (1).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1651"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1620"/>
         <source>Fritzing error: unable to write copper fill (1).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1669"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1638"/>
         <source>Fritzing error: unable to write copper fill (2).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1714"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1683"/>
         <source>Copper fill: please select only the board you want to fill.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1720"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1689"/>
         <source>Unable to create copper fill--probably the part wasn&apos;t dropped onto the PCB.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1776"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1745"/>
         <source>Unable to create copper fill--possibly the part was dropped onto another part or wire rather than the actual PCB.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2151"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2120"/>
         <source>Clear ground fill seeds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2290"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2318"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2259"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2287"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use this selection operation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2494"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2463"/>
         <source>Unable to convert this via to a bendpoint because it is connected to a part that is only on the bottom layer and another part that is only on the top layer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2748"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2717"/>
         <source>Show part silkscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2748"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2717"/>
         <source>Hide part silkscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2762"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2732"/>
         <source>Your sketch does not have a board yet. You cannot fabricate this sketch without a PCB part.</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2784"/>
-        <source>%n copies of this sketch will cost %1 Euros.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2905"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2868"/>
         <source>Enter Keepout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2906"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2869"/>
         <source>Keepout is in mils (.001 inches).
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2907"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2870"/>
         <source>Note that due to aliasing, distances may be too short by up to 2 mils
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2908"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2871"/>
         <source>so you may want to increase the keepout value by that much.
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2909"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2872"/>
         <source>10 mils is a good default choice.
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2910"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2873"/>
         <source>Enter keepout value:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4382,552 +4406,552 @@ Reason: %2 (errcode %3)</source>
 <context>
     <name>PEMainWindow</name>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="502"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="503"/>
         <source>SVG</source>
         <translation>SVG</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="459"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="498"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="460"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="499"/>
         <source>Connectors</source>
         <translation>কানেক্টরস</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="546"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="547"/>
         <source>Show in Folder</source>
         <translation>ফোল্ডার দেখতে</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="547"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="548"/>
         <source>On the desktop, open the folder containing the current svg file.</source>
         <translation>ডেক্সটপ অন করুন,বর্তমান ফোল্ডার svgফাইল সংযোগ করুন </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="768"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="804"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="814"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="880"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="887"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2687"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2742"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2946"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3349"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3703"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="769"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="805"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="815"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="881"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="888"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2688"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2743"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2947"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3350"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3704"/>
         <source>Parts Editor</source>
         <translation>পার্টস এডিটর </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="814"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="880"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="815"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="881"/>
         <source>Unable to write svg to  %1</source>
         <translation>svg হতে লেখা বন্ধ  %1</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="887"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="888"/>
         <source>Unable to parse fzp file  %1</source>
         <translation>fzpফাইল হতে প্রিন্ট  বন্ধ  %1</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="930"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="931"/>
         <source>Icon View</source>
         <translation>আইকন ভিউ</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="931"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="932"/>
         <source>Metadata View</source>
         <translation>মেটাডেটা ভিউ</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="932"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="933"/>
         <source>Connectors View</source>
         <translation>কানেক্টরস ভিউ</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="940"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="941"/>
         <source>Show Icon</source>
         <translation>আইকন দেখুন </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="941"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="942"/>
         <source>Ctrl+4</source>
         <translation>Ctrl+4</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="942"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="943"/>
         <source>Show the icon view</source>
         <translation>আইকন ভিউ দেখুন </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="946"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="947"/>
         <source>Ctrl+5</source>
         <translation>Ctrl+5</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="947"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="948"/>
         <source>Show the metadata view</source>
         <translation>মেটাডেটা ভিউ দেখুন</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="950"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="951"/>
         <source>Show Connectors</source>
         <translation>কানেক্টরস দেখুন</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="951"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="952"/>
         <source>Ctrl+6</source>
         <translation>Ctrl+6</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1053"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1054"/>
         <source>Change description</source>
         <translation>বর্ণনা পরিবর্তন%1</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1053"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1054"/>
         <source>Change %1 to &apos;%2&apos;</source>
         <translation>পরিবর্তন করতে %1to%2</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1095"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1096"/>
         <source>Change tags</source>
         <translation>ট্যাগ পরিবর্তন</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1141"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1142"/>
         <source>Change properties</source>
         <translation>জায়গা পরিবর্তন</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1205"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1206"/>
         <source>Change connector %1</source>
         <translation>কানেক্টরস পরিবর্তন করতে%1</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1462"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1463"/>
         <source>Image &amp; Footprint Files (%1 %2 %3 %4 %5);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3);;gEDA Footprint Files (%4);;Kicad Module Files (%5)</source>
         <translation>ইমেজ এবং ফটোপ্রিন্ট ফাইল (%1 %2 %3 %4 %5);;SVG ফাইল (%1);;JPEG ফাইল (%2);;PNG ফাইল (%3);;gEDA ফটোপ্রিন্ট ফাইল (%4);;Kicad মডিউল ফাইল (%5)</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1467"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1468"/>
         <source>Image Files (%1 %2 %3);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3)%4%5</source>
         <translation>ইমেজ ফাইল (%1 %2 %3);;SVG  ফাইল(%1);;JPEG ফাইল (%2);;PNG ফাইল (%3)%4%5</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1484"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1485"/>
         <source>Open Image</source>
         <translation>ইমেজ খুলুন </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1587"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1588"/>
         <source>Copy problem</source>
         <translation>কপিতে সমস্যা </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1587"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1588"/>
         <source>Unable to make a local copy of: &apos;%1&apos;</source>
         <translation>লোকাল কপি  করা অসম্ভব  &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1531"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1532"/>
         <source>You may use a PNG or JPG image to construct your part, but it is better to use an SVG. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1532"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1533"/>
         <source>PNG and JPG images retain their nature as bitmaps and do not look good when scaled--</source>
         <translation>JPGএবং PNG বিটম্যাপ ইমেজ চরিত্র বজায় রাখে,যখন কমে আসবে  তখন ভাল দেখাবে না --</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1533"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1534"/>
         <source>so for Fritzing parts it is best to use PNG and JPG only as placeholders.</source>
         <translation>Fritzing পার্টস স্থানধারক হিসাবে আমাদের  জন্য শ্রেষ্ঠ শুধুমাত্র JPGএবং PNG  ব্যবহার.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1536"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1537"/>
         <source>Use of PNG and JPG discouraged</source>
         <translation>JPG, PNG এবং ব্যবহার বাঞ্ছনীয়</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1499"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1506"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1544"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1550"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1500"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1507"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1545"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1551"/>
         <source>Conversion problem</source>
         <translation>সমস্যার পরিবর্তন </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1283"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1560"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1577"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1284"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1561"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1578"/>
         <source>SVG problem</source>
         <translation>SVG সমস্যা</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1560"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1561"/>
         <source>Unable to parse &apos;%1&apos;: %2 line:%3 column:%4</source>
         <translation>প্রেস করা অসম্ভবঃ&apos;%1&apos;: %2 লাইনঃ%3 কলামঃ%4 </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1571"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1572"/>
         <source>There are no copper layers defined in: %1. </source>
         <translation>এতে কোন কপার লেয়ার পাওয়া যায়নাই  %1. </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1572"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1573"/>
         <source>See &lt;a href=&quot;http://fritzing.org/learning/tutorials/creating-custom-parts/providing-part-graphics/&quot;&gt;this explanation&lt;/a&gt;.</source>
         <translation>এখানে দেখুন &lt;a href=&quot;http://fritzing.org/learning/tutorials/creating-custom-parts/providing-part-graphics/&quot;&gt;বিস্তারিত আছে &lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1573"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1574"/>
         <source>&lt;br/&gt;&lt;br/&gt;This will not be a problem in the next release of the Parts Editor, </source>
         <translation>&lt;br/&gt;&lt;br/&gt;এতে সমস্যা নাই পরবর্তী রিলিজে এডিটর সমস্যার সৃষ্টি হতে পারে,&apos; </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1574"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1575"/>
         <source>but for now please modify the file according to the instructions in the link.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1609"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1610"/>
         <source>no schematics found in %1</source>
         <translation>এতে স্কেমেটিক&apos;স পাচ্ছে না %1</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1614"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1615"/>
         <source>schematic part</source>
         <translation>স্কেমেটিক অংশ </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1635"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1636"/>
         <source>no footprints found in %1</source>
         <translation>এতে ফটোপ্রিন্ট পাচ্ছে না %1</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1959"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1960"/>
         <source>Relocate connector %1</source>
         <translation> সংযোগ পুনরায় দেখতে %1</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="572"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="573"/>
         <source>&amp;File</source>
         <translation>ফাইল</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="341"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="342"/>
         <source>There is one last edit still pending.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="347"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="348"/>
         <source>The &apos;family&apos; property can not be blank.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="353"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="354"/>
         <source>A duplicate &apos;family&apos; property is not allowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="357"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="358"/>
         <source>A duplicate &apos;variant&apos; property is not allowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="363"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="364"/>
         <source>Close without saving?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="365"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="366"/>
         <source>This part can not be saved as-is:
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="372"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="373"/>
         <source>Do you want to keep working or close without saving?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="379"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="380"/>
         <source>Close without saving</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="380"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="381"/>
         <source>Keep working</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="415"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="416"/>
         <source>Icon</source>
         <translation type="unfinished">আইকন</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="452"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="453"/>
         <source>Metadata</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="511"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="512"/>
         <source>Inspector</source>
         <translation type="unfinished">পরিদর্শক</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="514"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="515"/>
         <source>Layers</source>
         <translation type="unfinished">স্তর সমূহ</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="524"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="525"/>
         <source>Reuse breadboard image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="525"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="526"/>
         <source>Reuse the breadboard image in this view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="528"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="529"/>
         <source>Reuse schematic image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="529"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="530"/>
         <source>Reuse the schematic image in this view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="532"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="533"/>
         <source>Reuse PCB image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="533"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="534"/>
         <source>Reuse the PCB image in this view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="541"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="542"/>
         <source>Load image for view...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="542"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="543"/>
         <source>Open a file to use as the image for this view of the part.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="552"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="553"/>
         <source>Remove Internal Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="584"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="585"/>
         <source>Save as new part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="585"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="586"/>
         <source>Make a copy of the part and save it in the &apos;My Parts&apos; Bin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="588"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="589"/>
         <source>&amp;Export</source>
         <translation type="unfinished">রপ্তানি করুন</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="603"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="604"/>
         <source>&amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="769"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="770"/>
         <source>This part has bendable legs. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="770"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="771"/>
         <source>This version of the Parts Editor does not yet support editing bendable legs, and the legs may not be displayed correctly in breadboard view . </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="771"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="772"/>
         <source>If you make changes to breadboard view, or change connector metadata, the legs may no longer work. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="772"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="773"/>
         <source>You can safely make changes to Schematic or PCB view.
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="773"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="774"/>
         <source>This warning will not be repeated in this session of Fritzing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="804"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="805"/>
         <source>Unable to load &apos;%1&apos;. Please close the parts editor without saving and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="925"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2849"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="926"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2850"/>
         <source>Fritzing (New) Parts Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="945"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="946"/>
         <source>Show Metadata</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="952"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="953"/>
         <source>Show the connector metadata in a list view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="955"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="956"/>
         <source>Make only this view visible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="956"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="957"/>
         <source>The part will only be visible in this view and icon view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1008"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1009"/>
         <source>Blank not allowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1008"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1009"/>
         <source>The value of &apos;%1&apos; can not be blank.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1021"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1022"/>
         <source>Change %1 to %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1045"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1046"/>
         <source>Must be unique</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1045"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1046"/>
         <source>Variant &apos;%1&apos; is in use. The variant name must be unique.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1128"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1133"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1129"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1134"/>
         <source>Duplicate problem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1128"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1129"/>
         <source>Duplicate &apos;family&apos; property not allowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1133"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1134"/>
         <source>Duplicate &apos;variant&apos; property not allowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1284"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1285"/>
         <source>This version of the new Parts Editor can not deal with separate copper0 and copper1 layers in &apos;%1&apos;. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1285"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1286"/>
         <source>So editing may produce an invalid PCB view image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1499"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1500"/>
         <source>Unable to load &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1507"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1508"/>
         <source>The SVG file &apos;%1&apos; appears to have been exported from CorelDRAW without the &apos;presentation attributes&apos; setting. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1508"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1509"/>
         <source>Please re-export the SVG file using that setting, and try loading again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1523"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1524"/>
         <source>Fonts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1524"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1525"/>
         <source>Fritzing currently only supports OCRA and Droid fonts--these have been substituted in for the fonts in &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1544"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1545"/>
         <source>Unable to load image file &apos;%1&apos;: 
 
 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1550"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1551"/>
         <source>Unable to load image file &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2069"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2070"/>
         <source>Sketch Change Warning</source>
         <translation>স্কেচ পরিবর্তন সংকেত </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2072"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2073"/>
         <source>The open sketch &apos;%1&apos; uses the part you are editing. </source>
         <translatorcomment>খুলুন স্কেচ &apos;% 1&apos; অংশ হয় তাহলে সম্পাদিত ব্যবহার করা. &apos;</translatorcomment>
         <translation>সম্পাদিত যন্ত্রাংশ   ব্যবহার করে একটি স্কেচ খুলুন &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2073"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2074"/>
         <source>Saving this part will make a change to the sketch that cannot be undone.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2076"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2077"/>
         <source>The open sketches </source>
         <translation>এই নকশাগুলি খুলতে </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2078"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2079"/>
         <source>&apos;%1&apos;, </source>
         <translation>&apos;%1&apos;,</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2080"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2081"/>
         <source>and &apos;%1&apos; </source>
         <translation>এবং &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2081"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2082"/>
         <source>Saving this part will make a change to these sketches that cannot be undone.</source>
         <translation>এই অংশ সংরক্ষণ করুন স্কেস পরিবর্তনের পর তা পূর্বাবস্তায় আনা যাবে না </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2084"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2085"/>
         <source>
 
 Go ahead and save?</source>
@@ -4936,107 +4960,107 @@ Go ahead and save?</source>
 এগিয়ে জান সঞ্চয়</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2091"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2092"/>
         <source>Save</source>
         <translation>সঞ্চয়</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2092"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2093"/>
         <source>Cancel</source>
         <translation>বাতিল </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2338"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2339"/>
         <source>Move terminal point</source>
         <translation>মুল পয়েন্ট সরাতে</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2627"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2628"/>
         <source>Remove connector</source>
         <translation>কানেক্টরস সরিয়ে ফেলা</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2630"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2631"/>
         <source>Remove %1 connectors</source>
         <translation>কানেক্টরস সরিয়ে ফেলতে %1 </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2648"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2649"/>
         <source>Save &quot;%1&quot;</source>
         <translation>সঞ্চয় %1</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2649"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2650"/>
         <source>Do you want to save the changes you made in the part &quot;%1&quot;?</source>
         <translation>আপনি কি পরিবর্তিত আবস্তায় তৈরি অংশ  সঞ্চয় করতে চান&quot;%1&quot;?</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2650"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2651"/>
         <source>Your changes will be lost if you don&apos;t save them.</source>
         <translation>আপনার পরিবর্তিত অংশ মুছে গেছে সঞ্চয় সম্ভব নয় </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2654"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2655"/>
         <source>untitled part</source>
         <translation>বেনামী যন্ত্র </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2687"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2688"/>
         <source>Unable to load fzp from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2742"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2743"/>
         <source>Unable to create new connector--you may have to start over.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2775"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2776"/>
         <source>Add connector</source>
         <translation>কানেক্টর যুক্ত</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2778"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2779"/>
         <source>Add %1 connectors</source>
         <translation>কানেক্টরস যুক্ত করতে%1</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2946"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2947"/>
         <source>Internal connections are very messed up.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2965"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2966"/>
         <source>Remove internal connection from &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3011"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3012"/>
         <source>Add internal connection from &apos;%1&apos; to &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3306"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3307"/>
         <source>Change all connectors to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3349"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3350"/>
         <source>Unable to parse &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3400"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3401"/>
         <source>Change to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3641"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3642"/>
         <source>Make only %1 view visible</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3704"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3705"/>
         <source>This part has %n unassigned connectors </source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -5044,7 +5068,7 @@ Go ahead and save?</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3705"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3706"/>
         <source>across %n views. </source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -5052,12 +5076,12 @@ Go ahead and save?</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3706"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3707"/>
         <source>Until all connectors are assigned to SVG elements, the part will not work correctly. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3707"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3708"/>
         <source>Exiting the Parts Editor now is fine, as long as you remember to finish the assignments later.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5345,65 +5369,65 @@ Go ahead and save?</source>
 <context>
     <name>PaletteItem</name>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="605"/>
+        <location filename="../src/items/paletteitem.cpp" line="612"/>
         <source>Edit Pin Labels</source>
         <translatorcomment>পিন লেবেল  সপ্পাদনা  করুন  </translatorcomment>
         <translation>পিন লেভেল নির্ধারণ</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="645"/>
-        <location filename="../src/items/paletteitem.cpp" line="656"/>
-        <location filename="../src/items/paletteitem.cpp" line="680"/>
+        <location filename="../src/items/paletteitem.cpp" line="652"/>
+        <location filename="../src/items/paletteitem.cpp" line="663"/>
+        <location filename="../src/items/paletteitem.cpp" line="687"/>
         <source>Fritzing</source>
         <translatorcomment>Fritzing</translatorcomment>
         <translation>ফ্রিটজিং</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="646"/>
+        <location filename="../src/items/paletteitem.cpp" line="653"/>
         <source>Unable to proceed; unable to find top level view.</source>
         <translation>এগিেয় যেতে অক্ষম,উপরে স্তর দৃশ্য খুজে পেতে অসমর্থ</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="657"/>
+        <location filename="../src/items/paletteitem.cpp" line="664"/>
         <source>Unable to proceed; part connectors do no have standard IDs.</source>
         <translation>এগিেয় যেতে অক্ষম ,সংযোগকারী অংশ কোন আই ডি এস</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="681"/>
+        <location filename="../src/items/paletteitem.cpp" line="688"/>
         <source>Label mismatch.  Nothing was saved.</source>
         <translation>লেবেল মিলেনি কিছু সঞ্চিত ছিল না </translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="835"/>
+        <location filename="../src/items/paletteitem.cpp" line="842"/>
         <source>hole size</source>
         <translatorcomment>গর্ত আকার </translatorcomment>
         <translation>ছিদ্র আকার</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="975"/>
+        <location filename="../src/items/paletteitem.cpp" line="982"/>
         <source>advanced settings</source>
         <translatorcomment>উচ্চ পরজায়ার সেটিংস্‌ </translatorcomment>
         <translation>আগ্রিম সংযুক্তি </translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="986"/>
+        <location filename="../src/items/paletteitem.cpp" line="993"/>
         <source>in</source>
         <translatorcomment>মধ্যে </translatorcomment>
         <translation>ইন</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="990"/>
+        <location filename="../src/items/paletteitem.cpp" line="997"/>
         <source>mm</source>
         <translatorcomment>এম এম </translatorcomment>
         <translation>মি মি</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="1008"/>
+        <location filename="../src/items/paletteitem.cpp" line="1015"/>
         <source>Hole Diameter</source>
         <translation>গর্ত ব্যাস </translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="1021"/>
+        <location filename="../src/items/paletteitem.cpp" line="1028"/>
         <source>Ring Thickness</source>
         <translation>রিং এর ঘনত্ব</translation>
     </message>
@@ -6257,11 +6281,11 @@ shift key swaps scroll axis</source>
         <location filename="../src/autoroute/panelizer.cpp" line="477"/>
         <location filename="../src/autoroute/panelizer.cpp" line="1358"/>
         <location filename="../src/autoroute/panelizer.cpp" line="1375"/>
-        <location filename="../src/fapplication.cpp" line="923"/>
+        <location filename="../src/fapplication.cpp" line="924"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="50"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="143"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2858"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2892"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2874"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2908"/>
         <location filename="../src/model/modelbase.cpp" line="77"/>
         <location filename="../src/model/modelbase.cpp" line="90"/>
         <location filename="../src/model/modelbase.cpp" line="101"/>
@@ -6277,7 +6301,7 @@ shift key swaps scroll axis</source>
         <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="510"/>
         <location filename="../src/program/programtab.cpp" line="597"/>
         <location filename="../src/sketch/sketchwidget.cpp" line="933"/>
-        <location filename="../src/svg/gerbergenerator.cpp" line="366"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="368"/>
         <source>Fritzing</source>
         <translation>ফ্রিটজিং</translation>
     </message>
@@ -6308,7 +6332,7 @@ shift key swaps scroll axis</source>
     </message>
     <message>
         <location filename="../src/autoroute/panelizer.cpp" line="1375"/>
-        <location filename="../src/fapplication.cpp" line="923"/>
+        <location filename="../src/fapplication.cpp" line="924"/>
         <source>%1 wires moved from their saved position in %2.</source>
         <translation>% 1% 2 তারগুলিকে তাদের মধ্যে সংরক্ষিত স্থান থেকে সরানো হয়েছে.</translation>
     </message>
@@ -6370,12 +6394,12 @@ shift key swaps scroll axis</source>
         <translation>সেটিংস পরিষ্কার </translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1269"/>
+        <location filename="../src/fapplication.cpp" line="1270"/>
         <source>&lt;font face=&apos;Lucida Grande, Tahoma, Sans Serif&apos; size=&apos;2&apos; color=&apos;#eaf4ed&apos;&gt;&amp;#169; 2007-%1 Fachhochschule Potsdam&lt;/font&gt;</source>
         <translation type="unfinished">&lt;font face=&apos;Lucida Grande, Tahoma, Sans Serif&apos; size=&apos;2&apos; color=&apos;#eaf4ed&apos;&gt;&amp;#169; 2007-%1 Fachhochschule Potsdam&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1283"/>
+        <location filename="../src/fapplication.cpp" line="1284"/>
         <source>&lt;font face=&apos;Lucida Grande, Tahoma, Sans Serif&apos; size=&apos;2&apos; color=&apos;#eaf4ed&apos;&gt;Version %1.%2.%3 (%4%5)%6&lt;/font&gt;</source>
         <translation type="unfinished">&lt;font face=&apos;Lucida Grande, Tahoma, Sans Serif&apos; size=&apos;2&apos; color=&apos;#eaf4ed&apos;&gt;Version %1.%2.%3 (%4%5)%6&lt;/font&gt;</translation>
     </message>
@@ -6400,21 +6424,21 @@ shift key swaps scroll axis</source>
         <translation>ফাইল &apos;% 1&apos; হল শুধুমাত্র পাঠযোগ্য; একটি ভিন্ন ফাইলের ব্যবহার করুন.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3026"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3032"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3040"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3042"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3048"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3056"/>
         <source>Part</source>
         <translation>যন্ত্র</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3053"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3085"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3110"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3069"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3101"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3126"/>
         <source>Wire</source>
         <translation>তার</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3595"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3619"/>
         <source>Set Grid Size</source>
         <translation>গ্রিডের আকার সেট </translation>
     </message>
@@ -6534,7 +6558,7 @@ shift key swaps scroll axis</source>
     </message>
     <message>
         <location filename="../src/partsbinpalette/partsbinview.cpp" line="52"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="195"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="133"/>
         <source>PCB View</source>
         <translation>পি সি বি ভিউ দেখুন</translation>
     </message>
@@ -6600,7 +6624,7 @@ is already there, we won&apos;t add it again, right?</source>
         <translation>আইকন ভিউ</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="659"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="660"/>
         <source>Internal Connections</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6659,33 +6683,33 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
         <translation>ব্রেড বোর্ড </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="196"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="134"/>
         <source>pcb</source>
         <translation>পি সি বি </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="309"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="278"/>
         <source>Select all &apos;Don&apos;t autoroute&apos; traces</source>
         <translation>&apos;অটো রাওউট হবে না&apos; সকল ট্রেস নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="314"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="283"/>
         <source>Select all autorouteable traces</source>
         <translation>সকল &apos;autoroute&apos; ট্রেস নির্বাচন করুন</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2308"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7838"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2277"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7797"/>
         <source>Select all %1</source>
         <translation>সব নির্বাচন করুন </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2370"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2339"/>
         <source>Convert to Via</source>
         <translation>এর মাধ্যমে রূপান্তর</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2501"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2470"/>
         <source>Convert Via to Bendpoint</source>
         <translation>বিন পয়েন্ট এর মধইয় রূপান্তর</translation>
     </message>
@@ -6700,68 +6724,68 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
         <translation>ত্রুটি ফাইলটি পড়া %1: %2.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3529"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3527"/>
         <source>%1 %2,%3 %4</source>
         <translation>%1 %2,%3 %4</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3558"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3556"/>
         <source>Change leg of %1,%2</source>
         <translation>লোগো পরিবর্তনে %1,%2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3715"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3713"/>
         <source>%1 %2 %3</source>
         <translation>%1 %2 %3</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3977"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3975"/>
         <source>%1 Layer</source>
         <translation>%1 স্তর</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4201"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4218"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4199"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4216"/>
         <source>Bring forward</source>
         <translation>এক ধাপ সামনে </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4210"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4208"/>
         <source>Send backward</source>
         <translation>পিছনে ফিরতে </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4227"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4225"/>
         <source>Bring to front</source>
         <translation>সম্মুখে আনুন</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5506"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5508"/>
         <source>Split Wire</source>
         <translation>বিভক্ত তার </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5564"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5566"/>
         <source>Join Wire</source>
         <translation>সংযোগ তার </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7833"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7792"/>
         <source>Trace wires</source>
         <translation>তারের ট্রেস</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7836"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7795"/>
         <source>Ratsnest wires</source>
         <translation>Ratsnest তার গুলি </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8121"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8080"/>
         <source>Select outdated parts</source>
         <translation>মেয়াদোত্তীর্ণ যন্ত্রাংশ নির্বাচন</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8135"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8094"/>
         <source>Select locked parts</source>
         <translation>লক যন্ত্রাংশ  নির্বাচন করুন</translation>
     </message>
@@ -6843,32 +6867,32 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="243"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="245"/>
         <source>exported drill file is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="278"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="280"/>
         <source>exported mask layer %1 is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="315"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="317"/>
         <source>exported paste mask layer is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="351"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="353"/>
         <source>%1 layer: unable to save to &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="912"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="914"/>
         <source>Unable to save pick and place file: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="221"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="223"/>
         <source>silk export failure</source>
         <translation>সিল্ক রপ্তানি ব্যর্থ</translation>
     </message>
@@ -6878,38 +6902,38 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="206"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="207"/>
         <source>silk layer %1 export is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="260"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="262"/>
         <source>drill export failure</source>
         <translation>ড্রিল রপ্তানি ব্যর্থ </translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="284"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="286"/>
         <source>%1 mask export failure (2)</source>
         <translation>%1 মাস্ক রপ্তানি ব্যর্থ (2)</translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="292"/>
-        <location filename="../src/svg/gerbergenerator.cpp" line="326"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="294"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="328"/>
         <source>mask export failure</source>
         <translation>মাস্ক রপ্তানি ব্যর্থ </translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="858"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="860"/>
         <source>Fritzing is unable to process the cutouts in this custom PCB shape. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="859"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="861"/>
         <source>You may need to reload the shape SVG. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="860"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="862"/>
         <source>Fritzing requires that you make cutouts using a shape &apos;subtraction&apos; or &apos;difference&apos; operation in your vector graphics editor.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7089,146 +7113,146 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
         <translation>আপডেটের জন্য চেক করুন </translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="121"/>
+        <location filename="../src/viewlayer.cpp" line="123"/>
         <source>Icon</source>
         <translation>আইকন</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="122"/>
+        <location filename="../src/viewlayer.cpp" line="124"/>
         <source>Breadboard</source>
         <translation>ব্রেডবোর্ড</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="123"/>
-        <location filename="../src/viewlayer.cpp" line="131"/>
+        <location filename="../src/viewlayer.cpp" line="125"/>
+        <location filename="../src/viewlayer.cpp" line="133"/>
         <source>Parts</source>
         <translation> যন্ত্রাংশ </translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="124"/>
-        <location filename="../src/viewlayer.cpp" line="134"/>
+        <location filename="../src/viewlayer.cpp" line="126"/>
+        <location filename="../src/viewlayer.cpp" line="136"/>
         <source>Wires</source>
         <translation> তার সমূহ </translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="125"/>
-        <location filename="../src/viewlayer.cpp" line="135"/>
+        <location filename="../src/viewlayer.cpp" line="127"/>
+        <location filename="../src/viewlayer.cpp" line="137"/>
         <source>Part Labels</source>
         <translation>পার্ট স্তর </translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="126"/>
-        <location filename="../src/viewlayer.cpp" line="133"/>
-        <location filename="../src/viewlayer.cpp" line="148"/>
+        <location filename="../src/viewlayer.cpp" line="128"/>
+        <location filename="../src/viewlayer.cpp" line="135"/>
+        <location filename="../src/viewlayer.cpp" line="150"/>
         <source>Ratsnest</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="127"/>
-        <location filename="../src/viewlayer.cpp" line="136"/>
-        <location filename="../src/viewlayer.cpp" line="155"/>
+        <location filename="../src/viewlayer.cpp" line="129"/>
+        <location filename="../src/viewlayer.cpp" line="138"/>
+        <location filename="../src/viewlayer.cpp" line="157"/>
         <source>Notes</source>
         <translation>নোটস্</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="128"/>
-        <location filename="../src/viewlayer.cpp" line="137"/>
-        <location filename="../src/viewlayer.cpp" line="156"/>
+        <location filename="../src/viewlayer.cpp" line="130"/>
+        <location filename="../src/viewlayer.cpp" line="139"/>
+        <location filename="../src/viewlayer.cpp" line="158"/>
         <source>Rulers</source>
         <translation>রুলারস </translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="130"/>
+        <location filename="../src/viewlayer.cpp" line="132"/>
         <source>Frame</source>
         <translation>ফার্ম </translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="132"/>
+        <location filename="../src/viewlayer.cpp" line="134"/>
         <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="139"/>
+        <location filename="../src/viewlayer.cpp" line="141"/>
         <source>Board</source>
         <translation>বোর্ড</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="140"/>
+        <location filename="../src/viewlayer.cpp" line="142"/>
         <source>Silkscreen Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="141"/>
+        <location filename="../src/viewlayer.cpp" line="143"/>
         <source>Silkscreen Top (Part Labels)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="142"/>
+        <location filename="../src/viewlayer.cpp" line="144"/>
         <source>Copper Fill Bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="143"/>
+        <location filename="../src/viewlayer.cpp" line="145"/>
         <source>Copper Bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="144"/>
+        <location filename="../src/viewlayer.cpp" line="146"/>
         <source>Copper Bottom Trace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="145"/>
+        <location filename="../src/viewlayer.cpp" line="147"/>
         <source>Copper Fill Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="146"/>
+        <location filename="../src/viewlayer.cpp" line="148"/>
         <source>Copper Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="147"/>
+        <location filename="../src/viewlayer.cpp" line="149"/>
         <source>Copper Top Trace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="149"/>
+        <location filename="../src/viewlayer.cpp" line="151"/>
         <source>Silkscreen Bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="150"/>
+        <location filename="../src/viewlayer.cpp" line="152"/>
         <source>Silkscreen Bottom (Part Labels)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="154"/>
+        <location filename="../src/viewlayer.cpp" line="156"/>
         <source>Part Image</source>
         <translation>ইমেজ অংশ </translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="162"/>
+        <location filename="../src/viewlayer.cpp" line="164"/>
         <source>Unknown Layer</source>
         <translation>নামহিন লেয়ার </translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="179"/>
+        <location filename="../src/viewlayer.cpp" line="181"/>
         <source>icon view</source>
         <translation>আইকন ভিউ</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="180"/>
+        <location filename="../src/viewlayer.cpp" line="182"/>
         <source>breadboard view</source>
         <translation>ব্রেডবোর্ড ভিউ </translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="181"/>
+        <location filename="../src/viewlayer.cpp" line="183"/>
         <source>schematic view</source>
         <translation>স্কেমেটিক ভিউ দেখুন </translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="182"/>
+        <location filename="../src/viewlayer.cpp" line="184"/>
         <source>pcb view</source>
         <translation>পি সি বি ভিউ দেখুন</translation>
     </message>
@@ -7289,37 +7313,63 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
 <context>
     <name>QuoteDialog</name>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="123"/>
+        <location filename="../src/dialogs/quotedialog.cpp" line="111"/>
         <source>Fab Quote</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/dialogs/quotedialog.cpp" line="115"/>
+        <source>Order your PCB from Fritzing Fab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quotedialog.cpp" line="137"/>
+        <source>Copies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quotedialog.cpp" line="148"/>
+        <source>Please note that prices do not include shipping, possible additional taxes, or the checking fee.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quotedialog.cpp" line="164"/>
+        <source>Visit Fritzing Fab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quotedialog.cpp" line="219"/>
+        <source>Use Fritzing Fab to produce a PCB from your sketch. Take advantage of our quantity discount:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quotedialog.cpp" line="153"/>
+        <source>For more information on pricing see &lt;a href=&apos;http://fab.fritzing.org/pricing&apos;&gt;http://fab.fritzing.org/pricing&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quotedialog.cpp" line="186"/>
+        <source>OK</source>
+        <translation type="unfinished">ঠিক</translation>
+    </message>
     <message numerus="yes">
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="128"/>
-        <source>The total area of the %n boards in this sketch is %1 cm2 (%2 in2).</source>
+        <location filename="../src/dialogs/quotedialog.cpp" line="214"/>
+        <source>The total area of the %n boards in this sketch is %1 cm%3 (%2 in%3).
+</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="147"/>
-        <source>Please note, price does not include shipping, possible additional taxes, or the checking fee.</source>
+        <location filename="../src/dialogs/quotedialog.cpp" line="137"/>
+        <source>Price per board</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="151"/>
-        <source>For more information on pricing see &lt;a href=&apos;http://fab.fritzing.org/pricing&apos;&gt;http://fab.fritzing.org/pricing&lt;/a&gt;.</source>
+        <location filename="../src/dialogs/quotedialog.cpp" line="137"/>
+        <source>Price</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="156"/>
-        <source>To order go to &lt;a href=&apos;http://fab.fritzing.org/fritzing-fab&apos;&gt;http://fab.fritzing.org/fritzing-fab&lt;/a&gt; and click &apos;Order Now&apos;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="164"/>
-        <source>OK</source>
-        <translation type="unfinished">ঠিক</translation>
     </message>
 </context>
 <context>
@@ -7546,12 +7596,12 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
 <context>
     <name>SchematicSketchWidget</name>
     <message>
-        <location filename="../src/sketch/schematicsketchwidget.cpp" line="272"/>
+        <location filename="../src/sketch/schematicsketchwidget.cpp" line="273"/>
         <source>Change label from %1 to %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/schematicsketchwidget.cpp" line="317"/>
+        <location filename="../src/sketch/schematicsketchwidget.cpp" line="318"/>
         <source>Change voltage from %1 to %2</source>
         <translation>ভোল্টেজ পরিবর্তন আন্তে %1 টু %2</translation>
     </message>
@@ -7657,195 +7707,195 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
         <translation>যোগ করুন %1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="2113"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="2111"/>
         <source>Selection</source>
         <translatorcomment>নির্বাচন</translatorcomment>
         <translation>বাছাই </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3245"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3243"/>
         <source>Move %2 (%1)</source>
         <translation>স্থানান্তর করা %2(%1)</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3248"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3246"/>
         <source>Move %2 items (%1)</source>
         <translation>স্থানান্তর করা%2 items(%1)</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3426"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9392"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3424"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9351"/>
         <source>Select %1</source>
         <translation>নির্বাচন করুন %1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3429"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9395"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3427"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9354"/>
         <source>Select %1 items</source>
         <translation>নির্বাচন করুন%1 items</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3517"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3699"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3515"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3697"/>
         <source>Disconnect</source>
         <translation>সংযোগ বিচসিন্ন করা </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3518"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3516"/>
         <source>from %1</source>
         <translatorcomment>হইতে%1</translatorcomment>
         <translation>হতে%1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3521"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3519"/>
         <source>Move leg of</source>
         <translation>লেগ সরাতে</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3525"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3711"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3523"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3709"/>
         <source>Connect</source>
         <translatorcomment>যুক্ত করা </translatorcomment>
         <translation>সংযোগ</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3526"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3712"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3524"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3710"/>
         <source>to %1</source>
         <translatorcomment>to%1</translatorcomment>
         <translation>কর %1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3581"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3579"/>
         <source>Change leg curvature for %1.</source>
         <translation>লেগ বক্রতা পরিবর্তনের জন্য%1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3607"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3605"/>
         <source>Change leg bendpoint for %1.</source>
         <translation>লেগ পরিবর্তন জন্য বিন পয়েন্ট%1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3707"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3705"/>
         <source>Change</source>
         <translation>পরিবর্তন</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3765"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3763"/>
         <source>Create and connect wire</source>
         <translation>এবং তারের সাথেসংযোগ তৈরি করতে </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3887"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3885"/>
         <source>Fritzing</source>
         <translation>ফ্রিটজিং</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3887"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3885"/>
         <source>This seems like an attempt to create a trace across layers. This circumstance should not arise: please contact the developers.</source>
         <translation>মনে হয় layeerজুড়ে ট্রেসতৈরি করতে এই circulamstanceআবশ্যক।কোন developper সাথে যোগাযোগ করুন.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3892"/>
         <source>Create and connect %1</source>
         <translatorcomment>সাথেসংযোগ তৈরি করতে</translatorcomment>
         <translation>এবং সংযোগ তৈরি করতে %1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3892"/>
         <source>wire</source>
         <translatorcomment>তার</translatorcomment>
         <translation>wire</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3892"/>
         <source>trace</source>
         <translatorcomment>গমনপথ </translatorcomment>
         <translation>ট্রেস</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4527"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4529"/>
         <source>Rotate %2 (%1)</source>
         <translation>আবর্তিত%2 (%1)</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4713"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4715"/>
         <source>Flip %2 (%1)</source>
         <translation>Flip%2(%1)</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5664"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5666"/>
         <source>Double-click</source>
         <translation>দুইবার ক্লিক করুন</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5664"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5666"/>
         <source>Drag or double-click</source>
         <translation>টানুন  বা দুইবার ক্লিক করুন</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5665"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5667"/>
         <source>or alt-drag to move the segment</source>
         <translation>বা বিকল্প সেগমেন্ট টি সরানোর জন্য</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5730"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5732"/>
         <source>Double-click to delete this bend point</source>
         <translation>এই বিন পয়েন্ট মুছতে দুইবার ক্লিক করুন</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5792"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5794"/>
         <source>Note text change</source>
         <translation>টেক্সট পরিবর্তনতি নোট করুন</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5818"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5820"/>
         <source>Change %1 label to &apos;%2&apos;</source>
         <translation>লেভেল পরিবর্তন করতে%1%2 </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6317"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6319"/>
         <source>Change %1 color from %2 to %3</source>
         <translation>%1 রঙ পরিবর্তনের জন্য %2 থেকে %3</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6323"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6325"/>
         <source>Change color of %1 wires to %2</source>
         <translation>%1 তারের  রঙ পরিবর্তনের জন্য%2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6369"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6371"/>
         <source>Change %1 width from %2 to %3</source>
         <translation>%1 প্রস্থ পরিবর্তনের জন্য %2 থেকে %3</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6375"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6377"/>
         <source>Change width of %1 wires to %2</source>
         <translation>তারের প্রস্থ পরিবর্তনের জন্য %1থেকে%2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7069"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7028"/>
         <source>Move label &apos;%1&apos;</source>
         <translation>লেভেলটি সরাতে %1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7076"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7035"/>
         <source>%1 label &apos;%2&apos;</source>
         <translation>%1লেভেলটি%2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7076"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7035"/>
         <source>Rotate</source>
         <translation>চক্রাকার</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7076"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7035"/>
         <source>Flip</source>
         <translatorcomment>ফ্লীপ</translatorcomment>
         <translation>টোকা</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="7111"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7070"/>
         <source>show %n part label(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -7853,7 +7903,7 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="7114"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7073"/>
         <source>hide %n part label(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -7861,90 +7911,90 @@ Fritzing এখনও কাজ করছে, কিন্তু আপনি �
         </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7650"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7609"/>
         <source>Resize ruler to %1 %2</source>
         <translation type="unfinished">এবং মাপকাঠি পুনরায় আকার দিন %1 %2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7673"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8553"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7632"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8512"/>
         <source>Resize board to %1 %2</source>
         <translation type="unfinished">বোর্ড পুনরায় আকার দিন %1%2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9347"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9306"/>
         <source>Part &apos;%1&apos; not found in sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9389"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9348"/>
         <source>Deselect all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7128"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7087"/>
         <source>Resize Note</source>
         <translation>নোট পুনঃমাপ</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7519"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7478"/>
         <source>Change Resistance from %1 to %2</source>
         <translation>রেজিস্টেনস পরিবর্তন করতে %1থেকে%2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7543"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7552"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7502"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7511"/>
         <source>Change %1 from %2 to %3</source>
         <translation>%1পরিবর্তনের জন্য %2 থেকে %3</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7730"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7689"/>
         <source>Create wire from Ratsnest</source>
         <translation>তারের Ratsnest তৈরি করতে </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7935"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7894"/>
         <source>Disconnect all wires from %1</source>
         <translation>সকল তারের সংযোগ বিচসিন্ন করতে%1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7938"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7897"/>
         <source>Disconnect all wires from %1 items</source>
         <translation>সকল তারের সংযোগ বিচসিন্ন করতে%1 আইটেম</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8212"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8171"/>
         <source>Change image from %1 to %2</source>
         <translation>ইমেজ পরিবর্তনের জন্য%1থেকে%2</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8938"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8897"/>
         <source>Rotate %1</source>
         <translation>আবর্তিত%1</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9007"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8966"/>
         <source>change pin labels</source>
         <translation>পিন লেবেল পরিবর্তন</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9298"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9257"/>
         <source>Unrouted connections are highlighted in yellow.</source>
         <translatorcomment>Unrouted connections are highlighted in yellow.</translatorcomment>
         <translation>Unrouted সংযোগটি উজ্জল হলুদ করা থাকে।</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9299"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9258"/>
         <source>There are no unrouted connections</source>
         <translation>এখানে কোন unrouted সংযোগ নাই </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9300"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9259"/>
         <source>Unrouted connections</source>
         <translation>Unrouted সংযোগটি</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9301"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9260"/>
         <source>%1
 
 Note: you can also trigger this display by mousing down on the routing status text in the status bar.</source>

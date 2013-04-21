@@ -742,17 +742,17 @@ Dosya kullanılsın mı?</translation>
 <context>
     <name>ConnectorItem</name>
     <message>
-        <location filename="../src/connectors/connectoritem.cpp" line="2564"/>
+        <location filename="../src/connectors/connectoritem.cpp" line="2565"/>
         <source>Add bendpoint</source>
         <translation>Esnetme noktası ekle</translation>
     </message>
     <message>
-        <location filename="../src/connectors/connectoritem.cpp" line="2568"/>
+        <location filename="../src/connectors/connectoritem.cpp" line="2569"/>
         <source>Straighten curve</source>
         <translation>Eğriyi düzelt</translation>
     </message>
     <message>
-        <location filename="../src/connectors/connectoritem.cpp" line="2590"/>
+        <location filename="../src/connectors/connectoritem.cpp" line="2591"/>
         <source>Remove bendpoint</source>
         <translation>Esnetme noktasını kaldır</translation>
     </message>
@@ -882,56 +882,56 @@ Dosya kullanılsın mı?</translation>
 <context>
     <name>FApplication</name>
     <message>
-        <location filename="../src/fapplication.cpp" line="1516"/>
-        <location filename="../src/fapplication.cpp" line="1520"/>
+        <location filename="../src/fapplication.cpp" line="1517"/>
+        <location filename="../src/fapplication.cpp" line="1521"/>
         <source>Fritzing failure</source>
         <translation>Fritzing hatası</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1516"/>
+        <location filename="../src/fapplication.cpp" line="1517"/>
         <source>Fritzing caught an exception %1 from %2 in event %3</source>
         <translation>Fritzing %3&apos;de %2&apos;den %1 bir istisna yakaladı</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1520"/>
+        <location filename="../src/fapplication.cpp" line="1521"/>
         <source>Fritzing caught an exception from %1 in event %2</source>
         <translation>Fritzing %2&apos;de %1&apos;den bir istisna yakaladı</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1623"/>
+        <location filename="../src/fapplication.cpp" line="1624"/>
         <source>Import files from previous version?</source>
         <translation>Dosyaları bir önceki sürümden içe aktar?</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1624"/>
+        <location filename="../src/fapplication.cpp" line="1625"/>
         <source>Do you want to import parts and bins that you have created with earlier versions of Fritzing?
 </source>
         <translation>Fritizing&apos;in daha önceki sürümlerinde oluşturduğunuz elemanları ve bin dosyalarını içer aktarmak ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1625"/>
+        <location filename="../src/fapplication.cpp" line="1626"/>
         <source>
 Note: You can import them later using the &quot;Help&quot; &gt; &quot;Import parts and bins from old version...&quot; menu action.</source>
         <translation>
 Not:Onları daha sonra menüdeki &quot;Yardım&quot; &gt; &quot;Eski sürümdeki elemanları ve bin dosyalarını içe aktar...&quot;&apos;ı kullanarak aktarabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1631"/>
+        <location filename="../src/fapplication.cpp" line="1632"/>
         <source>Import</source>
         <translation>İçe aktar</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1632"/>
+        <location filename="../src/fapplication.cpp" line="1633"/>
         <source>Do not import now</source>
         <translation>Şimdi içe aktarma</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1666"/>
+        <location filename="../src/fapplication.cpp" line="1667"/>
         <source>Please specify an .fzz file name to save to (cancel will delete the backup)</source>
         <translation>Lütfen kaydetmek için bir .fzz dosyası belirtin (iptal etmek yedeklen veriyi silecektir)</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1666"/>
+        <location filename="../src/fapplication.cpp" line="1667"/>
         <source>Fritzing (*%1)</source>
         <translation>Fritzing(*%1)</translation>
     </message>
@@ -1369,17 +1369,17 @@ Ayrıca konnektör üzerine sağ tıklanarak &apos;Ayarla Toprak Dolgu Tanecik&a
         <translation>Eleman</translation>
     </message>
     <message>
-        <location filename="../src/items/itembase.cpp" line="1336"/>
+        <location filename="../src/items/itembase.cpp" line="1338"/>
         <source>model part problem</source>
         <translation>model eleman problemi</translation>
     </message>
     <message>
-        <location filename="../src/items/itembase.cpp" line="1358"/>
+        <location filename="../src/items/itembase.cpp" line="1360"/>
         <source>file for %1 %2 not found</source>
         <translation>%1 %2 için olan dosya bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/items/itembase.cpp" line="1463"/>
+        <location filename="../src/items/itembase.cpp" line="1465"/>
         <source>unable to create renderer for svg %1</source>
         <translation>svg %1 için modelleyici oluşturulamıyor</translation>
     </message>
@@ -1490,60 +1490,60 @@ Ayrıca konnektör üzerine sağ tıklanarak &apos;Ayarla Toprak Dolgu Tanecik&a
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="750"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="760"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1252"/>
         <source>Rotate</source>
         <translation>Döndür</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="758"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="768"/>
         <source>Share</source>
         <translation>Paylaş</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="767"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="777"/>
         <source>Flip</source>
         <translation>Çevir</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="775"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2405"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="785"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2406"/>
         <source>Autoroute</source>
         <translation>Oto-Yönlendir</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="782"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="793"/>
         <source>Order PCB</source>
         <translation>Baskı Devre&apos;yi sipariş et</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="798"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="809"/>
         <source>Both Layers</source>
         <translation>Her İki Katman</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="803"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="814"/>
         <source>Bottom Layer</source>
         <translation>Alt Katman</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="808"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="819"/>
         <source>Top Layer</source>
         <translation>Üst Katman</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="816"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="851"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="804"/>
         <source>Add a note</source>
         <translation>Not ekle</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="826"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="861"/>
         <source>Export for PCB</source>
         <translation>Baskı Devre için dışa aktar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="908"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="944"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="149"/>
         <source>Ready</source>
         <translation>Hazır</translation>
@@ -1598,52 +1598,62 @@ Ayrıca konnektör üzerine sağ tıklanarak &apos;Ayarla Toprak Dolgu Tanecik&a
         <translation>Shift+Ctrl+Tab</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1082"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="835"/>
+        <source>View from Above</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="842"/>
+        <source>View from Below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1118"/>
         <source>Save %1</source>
         <translation>%1&apos;i Kaydet</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1166"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1202"/>
         <source>Unable to open &apos;%1&apos;: %2</source>
         <translation>&apos;%1&apos; açılamıyor: %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1409"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1445"/>
         <source>Unable to open shareable &apos;%1&apos;: %2</source>
         <translation>Paylaşılabilir &apos;%1&apos; açılamıyor: %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1452"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1488"/>
         <source>Unable to open shareable part &apos;%1&apos;: %2</source>
         <translation>Paylaşılabilir eleman &apos;%1&apos; açılamıyor: %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1477"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1513"/>
         <source>Unable to load part from &apos;%1&apos;</source>
         <translation>ELeman &apos;%1&apos;&apos;den yüklenemiyor</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1506"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1542"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="834"/>
         <source>Specify a file name</source>
         <translation>Bir dosya adı belirtin</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2397"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2446"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="834"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="273"/>
         <source>Fritzing (*%1)</source>
         <translation>Fritzing (*%1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1165"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1183"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1408"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1451"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1466"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1476"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1541"/>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2119"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1201"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1219"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1444"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1487"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1502"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1512"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1577"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2155"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="169"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="174"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="613"/>
@@ -1652,27 +1662,27 @@ Ayrıca konnektör üzerine sağ tıklanarak &apos;Ayarla Toprak Dolgu Tanecik&a
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="903"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="1014"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="1232"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1556"/>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="1561"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1566"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="183"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="194"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="248"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2221"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2364"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2610"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2615"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2931"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2936"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2965"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2970"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3440"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3563"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3783"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3788"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3916"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3921"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3933"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3938"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2222"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2365"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2626"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2631"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2947"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2952"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2981"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2986"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3464"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3587"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3807"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3812"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3940"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3945"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3957"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3962"/>
         <source>Fritzing</source>
         <translation>Fritzing</translation>
     </message>
@@ -1682,165 +1692,165 @@ Ayrıca konnektör üzerine sağ tıklanarak &apos;Ayarla Toprak Dolgu Tanecik&a
         <translation>%1 dışa paylaşılabilir olarak aktarılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1184"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1220"/>
         <source>No Sketch found in &apos;%1&apos;</source>
         <translation>&apos;%1&apos; herhangi bir Çizime rastlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1508"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1544"/>
         <source>Fritzing Part (*%1)</source>
         <translation>Fritzing Elemanı (*%1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1542"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1578"/>
         <source>Unable to export %1 to shareable sketch</source>
         <translation>&apos;%1&apos; paylaşılabilir çizime aktarılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1581"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1617"/>
         <source>MainWindow::moveToPartsFolder mainwindow missing</source>
         <translation>AnaPencere::ElemanlarDosyasınataşı anapencere yok</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1596"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1632"/>
         <source>There is already a part with id &apos;%1&apos; loaded into Fritzing.</source>
         <translation>Hali hazırda &apos;%1&apos; isimli eleman Fritzing&apos;e yüklenmiş durumda.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1655"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1691"/>
         <source>Do you want to keep the imported parts?</source>
         <translation>İçe aktarılmış elemanları saklamak istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1719"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1755"/>
         <source>No connections to route</source>
         <translation>Yönlendirme için bağlantı yok</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1722"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1758"/>
         <source>Routing completed</source>
         <translation>Yönlendirme tamamlandı</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1725"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1761"/>
         <source>Routing completed using %n jumper part(s)</source>
         <translation>
             <numerusform>Yönlendirme %n jumper eleman(lar)ı kullanılarak tamamlandı</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1728"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1764"/>
         <source>%1 of %2 nets routed - %n connector(s) still to be routed</source>
         <translation>
             <numerusform>%1 bağlantıdan %2&apos;si yönlendirildi %n konnektör halen yönlendirilmeyi bekliyor</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1764"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1800"/>
         <source>%1 - [%2]</source>
         <translation>%1 - [%2]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1895"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1931"/>
         <source>No copper top layer</source>
         <translation>Bakır üst katman yok</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1896"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1932"/>
         <source>The copper top (copper 1) layer is not available on a one-sided board.  Please switch the board to double-sided or choose the copper bottom (copper 0) layer.</source>
         <translation>Bakır üst (bakır 1) katmanı tek taraflı board&apos;da mevcut değil. Lütfen board&apos;u çift taraflı olarak değiştirin ya da bakır alt (bakır 0) katmanını seçin.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1957"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3501"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1993"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3525"/>
         <source>Sorry!</source>
         <translation>Özür Dileriz!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1958"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="1994"/>
         <source>No part with those characteristics.
 We&apos;re working to avoid this message, and only let you choose between properties that do exist</source>
         <translation>Bu özellikte bir eleman yok.
  Bu mesajı engellemek için çalışıyoruz ve size varolan özelliklerden birini seçme imkanı sunuyoruz</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="1970"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2006"/>
         <source>No exactly matching part found; Fritzing chose the closest match.</source>
         <translation>Tam olarak eşleşen bir eleman bulunamadı;Fritzing en yakın eşleşmeyi seçti.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2007"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2043"/>
         <source>Change to single layer pcb</source>
         <translation>Tek katmanlıı baskı devre&apos;ye çevir</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2007"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2043"/>
         <source>Change to two layer pcb</source>
         <translation>Çift katmanlı baskı devreye çevir</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2040"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2076"/>
         <source>Swapped %1 with module %2</source>
         <translation>%2 %1 modülü ile yer değiştirdi</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2062"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2098"/>
         <source>Change image to %2</source>
         <translation>Resmi %2&apos;ye çevir</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2120"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2156"/>
         <source>Svg %1 is missing a &apos;%2&apos; layer. For more information on how to create a custom board shape, see the tutorial at &lt;a href=&apos;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&apos;&gt;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&lt;/a&gt;.</source>
         <translation>Svg %1&apos;de bir %2 katmanı bulunmuyor.Özel bir board oluşturmanın nasıl yapılacağına dair bilgi için linkte bulunan öğretici notlara bakabilirsiniz &lt;a href=&apos;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&apos;&gt;http://fritzing.org/learning/tutorials/designing-pcb/pcb-custom-shape/&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2157"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2193"/>
         <source>loading %1</source>
         <translation>%1 yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2166"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2202"/>
         <source>Loading...</source>
         <translation>Yükleniyor...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2172"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2208"/>
         <source>new sketch</source>
         <translation>yeni çizim</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2302"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2351"/>
         <source>Backing up &apos;%1&apos;</source>
         <translation>&apos;%1&apos; yedekleniyor</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2452"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2501"/>
         <source>Unrouted connections</source>
         <translation>Yönlendirilmemiş bağlantılar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2453"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2502"/>
         <source>There are no unrouted connections in this view.</source>
         <translation>Bu görünümde yönlendirilmemiş bir bağlantı yok.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2492"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2541"/>
         <source>%1 %2 %3</source>
         <translation>%1 %2 %3</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow.cpp" line="2746"/>
+        <location filename="../src/mainwindow/mainwindow.cpp" line="2795"/>
         <source>Code</source>
         <translation>Kod</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1557"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1562"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to export to Gerber.</source>
         <translation>Çiziminizin henüz bir board&apos;u yok! Lütfen Gerber&apos;e aktarmak için bir Baskı Devre ekleyin.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="204"/>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1566"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1571"/>
         <source>Choose a folder for exporting</source>
         <translation>Dışa aktarmak için bir dosya seçin</translation>
     </message>
@@ -1892,7 +1902,7 @@ We&apos;re working to avoid this message, and only let you choose between proper
     <message>
         <location filename="../src/mainwindow/mainwindow_export.cpp" line="188"/>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="265"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3602"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3626"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
@@ -1953,7 +1963,7 @@ We&apos;re working to avoid this message, and only let you choose between proper
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="248"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2364"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2365"/>
         <source>File &apos;%1&apos; not found</source>
         <translation>&apos;%1&apos; dosyası bulunamadı</translation>
     </message>
@@ -2159,17 +2169,17 @@ We&apos;re working to avoid this message, and only let you choose between proper
         <translation>Mevcutr çizimi profesyonel Baskı Devre üretimi için Genişletilmiş Gerber (RS-274X) biçimine aktar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1256"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1261"/>
         <source>Export SPICE Netlist...</source>
         <translation>SPICE Netlist olarak dışa aktar...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1562"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1567"/>
         <source>Gerber export can only handle one board at a time--please select the board you want to export.</source>
         <translation>Gerber dışa aktarımı aynı anda sadece bir board için uygulanabilir--lütfen aktarmak istediğiniz tek bir board&apos;u seçin.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1587"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1592"/>
         <source>Sketch exported to Gerber</source>
         <translation>Çizim Gerber&apos;e aktarıldı</translation>
     </message>
@@ -2382,7 +2392,7 @@ We&apos;re working to avoid this message, and only let you choose between proper
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="803"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2748"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2764"/>
         <source>Add Note</source>
         <translation>Not Ekle</translation>
     </message>
@@ -2648,7 +2658,7 @@ Would you like to convert &apos;%1&apos; to the .fzz format now or open it read-
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="921"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2800"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2816"/>
         <source>Add Bendpoint</source>
         <translation>Esnetme noktası ekle</translation>
     </message>
@@ -2806,83 +2816,83 @@ Would you like to convert &apos;%1&apos; to the .fzz format now or open it read-
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1328"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1365"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1378"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1366"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1379"/>
         <source>&amp;Routing</source>
         <translation>&amp;Yönlendirme</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2413"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2414"/>
         <source>&amp;Create trace from ratsnest</source>
         <translation>&amp;Yumaktan hat oluştur</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2414"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2415"/>
         <source>Create a trace from the ratsnest line</source>
         <translation>Çizgi yumaklarından hat oluştur</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2417"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2418"/>
         <source>&amp;Create wire from ratsnest</source>
         <translation>&amp;Yumaktan kablo oluştur</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2418"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2419"/>
         <source>Create a wire from the ratsnest line</source>
         <translation>Çizgi yumağından kablo oluştur</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2441"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2442"/>
         <source>Select All Wires</source>
         <translation>Tüm Kabloları Seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2442"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2443"/>
         <source>Select all wires</source>
         <translation>Tüm kabloları seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2478"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2479"/>
         <source>Fill empty regions of the copper layer--not including traces connected to a GROUND</source>
         <translation>TOPRAĞA bağlı hatları içermeyecek şekilde bakır katmanın boş bölgelerini doldur</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2486"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2487"/>
         <source>Fill empty regions of the copper layer--fill will include all traces connected to the seeds</source>
         <translation>Tanelere(Tohumlara) bağlı hatlar da dahil olmak üzere bakır katmanın boş olan bölgelerini doldur</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2510"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2511"/>
         <source>Select any traces where the screen location doesn&apos;t match the actual location. Only needed for sketches autorouted with version 0.7.10 or earlier</source>
         <translation>Ekran konumu gerçek konumuyla eşleşmeyen tüm hatları seç .Sadece sürüm 0.7.10 ve daha öncesinde Oto-Yönlendirilimiş çizimler için gereklidir</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2513"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2514"/>
         <source>Autorouter/DRC settings...</source>
         <translation>Oto-Yönlendirme/DRC(Tasarım Kuralları kontrolü) ayarları...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2514"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2515"/>
         <source>Set autorouting parameters including keepout...</source>
         <translation>Uzak tutma dahil Oto-Yönlendir ayarlarını değiştir...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2710"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2726"/>
         <source>jumpers</source>
         <translation>Atlayıcı(Jumper)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2714"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2730"/>
         <source>copperfill</source>
         <translation>bakır dolgu</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2718"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2734"/>
         <source>vias</source>
         <translation>geçitler</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3502"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3526"/>
         <source>unable to find replacement for %1.
 </source>
         <translation>%1&apos;in yerine geçebilecek birşey bulunamıyor.
@@ -3014,7 +3024,7 @@ Devam et ve geri döndür?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="953"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1709"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1710"/>
         <source>Hide part silkscreen</source>
         <translation>Elemanın serigrafisini gizle</translation>
     </message>
@@ -3307,305 +3317,327 @@ Devam et ve geri döndür?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1334"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2473"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2944"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2474"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2960"/>
         <source>Ground Fill</source>
         <translation>Toprak Dolgusu</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1392"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1393"/>
         <source>&amp;Help</source>
         <translation>&amp;Yardım</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1601"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1602"/>
         <source>Delete Ratsnest Line</source>
         <translation>Yumaklanmış Hattı Sil</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1604"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1605"/>
         <source>Delete Wire</source>
         <translation>Kabloyu Sil</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1641"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1642"/>
         <source>Hide part label</source>
         <translation>Eleman etiketini Gizle</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1641"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1642"/>
         <source>Show part label</source>
         <translation>Eleman etiketini Göster</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1709"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1710"/>
         <source>Show part silkscreen</source>
         <translation>Elemanın serigrafisini göster</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1840"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1841"/>
         <source>Delete</source>
         <translation>Sil</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1995"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1996"/>
         <source>Actual Size</source>
         <translation>Gerçek Boyut</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1996"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="1997"/>
         <source>It doesn&apos;t seem to be possible to automatically determine the actual physical size of the monitor, so &apos;actual size&apos; as currently implemented is only a guess. Your best bet would be to drag out a ruler part, then place a real (physical) ruler on top and zoom until they match up.</source>
         <translation>Monitor&apos;un fiziksel boyutunu otomatik olarak belirlemek olası görünmüyor bu nedenle hali hazırda uygulanmış olan &apos;gerçek boyut&apos; görünümü sadece bir tahmin.Yapabileceğiniz en iyi eylem cetvel kısmından bir cetvel seçip sürüklemek ve gerçek (fiziksel) bir cetvelinizi bu cetvelle tam olarak eşleşinceye kadar yakınlaştırmak.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2217"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2218"/>
         <source>Page Setup</source>
         <translation>Sayfa Ayarları</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2222"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2223"/>
         <source>Sorry, &quot;%1&quot; has not been implemented yet</source>
         <translation>Üzgünüz, &apos;%1&apos; henüz uygulanmamış</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2406"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2407"/>
         <source>Autoroute connections...</source>
         <translation>Bağlantıları Oto-Yönlendir...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2407"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2408"/>
         <source>Shift+Ctrl+A</source>
         <translation>Shift+Ctrl+A</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2498"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2499"/>
         <source>Set Ground Fill Keepout...</source>
         <translation>Toprak Dolgusu Uzak Tutma Mesafesini Ayarla...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2499"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2500"/>
         <source>Set the minimum distance between ground fill and traces or connectors</source>
         <translation>Toprak dolgusu ve hatlar ya da konnektörler arasında en kısa mesafeyi ayarla</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2504"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2505"/>
         <source>Design Rules Check (DRC)</source>
         <translation>Tasarım Kuralları Kontrolü (DRC)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2505"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2506"/>
         <source>Highlights any parts that are too close together for safe board production</source>
         <translation>Güvenli bir board üretimi için birbirine çok yakın olan elemanları vurgular</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2517"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2518"/>
         <source>Fritzing Fab Quote...</source>
         <translation>Fritzing Fab&apos;tan Alıntı...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2518"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2519"/>
         <source>How much would it could to produce a PCB from this sketch with Fritzing Fab</source>
         <translation>Baskı devreyi bu çizimden Fritzing Fab&apos;ta üretmek ne kadara mal olabilir ki</translation>
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2526"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2532"/>
+        <source>View from below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2527"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2533"/>
+        <source>View the PCB from the bottom layers upwards</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2536"/>
+        <source>View from above</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2537"/>
+        <source>View the PCB from the top layers downwards</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2542"/>
         <source>Shift+Ctrl+3</source>
         <translation>Shift+Ctrl+3</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2531"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2547"/>
         <source>Shift+Ctrl+2</source>
         <translation>Shift+Ctrl+2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2536"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2552"/>
         <source>Shift+Ctrl+1</source>
         <translation>Shift Ctrl+1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4039"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4063"/>
         <source>Enter Text</source>
         <translation>Yazı yaz</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4040"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4064"/>
         <source>Text will match part label, description, title, etc. Enter text to search for:</source>
         <translation>Yazı eleman etiketi, açıklaması, başlığı, vb. eşleştirecek Aramak için birşey yazın:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4078"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4102"/>
         <source>Search</source>
         <translation>Ara</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4078"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4102"/>
         <source>No parts matched search term &apos;%1&apos;.</source>
         <translation>&apos;%1&apos; ile ilgili hiçbir sonuç bulunamadı.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2422"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2423"/>
         <source>Do not autoroute</source>
         <translation>Oto-Yönlendirme Yapma</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2423"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2424"/>
         <source>When autorouting, do not rip up this trace wire, via, or jumper item</source>
         <translation>Oto-Yönlendirme yaparken, bu hat kablosunu, geçiti, ya da atlayıcıyı(jumper) yırtma</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2429"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2430"/>
         <source>Move to other side of the board</source>
         <translation>Board diğer tarafına geç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2433"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2434"/>
         <source>Show unrouted</source>
         <translation>Yönlendirilmemişleri Göster</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2434"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2435"/>
         <source>Highlight all unrouted connectors</source>
         <translation>Yönlendirilmemiş tüm konnektörleri vurgula</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2445"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2446"/>
         <source>Select All CopperFill</source>
         <translation>Tüm Bakır Dolguyu Seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2446"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2447"/>
         <source>Select all copper fill items</source>
         <translation>Tüm bakır dolgu nesnelerini seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2453"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2454"/>
         <source>Select All &quot;Don&apos;t Autoroute&quot; Traces</source>
         <translation>Tüm &quot;Oto-Yönlendirme Yapma&quot; Hatlarını Seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2457"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2458"/>
         <source>Select All Autoroutable Traces</source>
         <translation>Tüm Oto-Yönledirilebilir Hatları Seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2458"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2459"/>
         <source>Select all trace wires that can be changed during autorouting</source>
         <translation>Oto-Yönlendirme sırasında değişebilecek tüm hat kablolarını seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2462"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2463"/>
         <source>Select all jumper item parts</source>
         <translation>Tüm atlayıcı(jumper) nesneleri seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2465"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2466"/>
         <source>Select All Vias</source>
         <translation>Tüm Geçitleri Seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2466"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2467"/>
         <source>Select all via parts</source>
         <translation>Tüm geçit elemanlarını seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2509"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2510"/>
         <source>Check Loaded Traces</source>
         <translation>Yüklenmiş Hatları Kontrol Et</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2611"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2627"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use the autorouter.</source>
         <translation>Çiziminiz henüz bir board içermiyor!  Lütfen Oto-Yönlendiriciyi kullanabilmek için bir Baskı Devre ekleyin.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2616"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2632"/>
         <source>Please select the board you want to autoroute. The autorouter can only handle one board at a time.</source>
         <translation>Lütfen Oto-Yönlendirmek istediğiniz board&apos;u seçiniz. Oto-Yönlendirici aynı anda yalnızca bir boar&apos;u yönlendirebilir.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2859"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2875"/>
         <source>The folder &quot;%1&quot; isn&apos;t a Fritzing installation folder</source>
         <translation>&quot;%1&quot; klasörü bir Fritzing yükleme klasörü değil</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2932"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2948"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use ground or copper fill.</source>
         <translation>Çiziminiz henüz bir board içermiyor!  Lütfen toprak dolgulama ya da bakır dolgulamayı kullanabilmek için bir Baskı Devre ekleyin.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2937"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2953"/>
         <source>Please select a PCB--copper fill only works for one board at a time.</source>
         <translation>Lütfen tek bir Baskı Devre seçiniz--bakır dolgulama aynı anda yalnızca bir board için yapılabilmekte.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2966"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2982"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to remove copper fill.</source>
         <translation>Çiziminiz henüz bir board içermiyor!  Lütfen bakır dolguyu çıkarmak için bir Baskı Devre ekleyin.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2971"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2987"/>
         <source>Please select a PCB--ground fill operations only work on a one board at a time.</source>
         <translation>Lütfen tek bir Baskı Devre seçin--toprak dolgulama işlemi tek seferde yalnızca bir board için yapılabilir.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3603"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3627"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3625"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3649"/>
         <source>Set the grid size for %1.</source>
         <translation>Izagara aralığını %1&apos;e göre ayarla.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3632"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3656"/>
         <source>Grid Size:</source>
         <translation>Izagara Aralığı:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3646"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3670"/>
         <source>in</source>
         <translation>inç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3649"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3673"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3658"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3682"/>
         <source>Restore Default</source>
         <translation>Varsayılana Dön</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3784"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3808"/>
         <source>Your sketch does not have a board yet! DRC only works with a PCB.</source>
         <translation>Çiziminiz henüz bir board içermiyor!  Tasarım kuralları kontrolü(DRC) sadece bir Baskı Devre ile yapılabilir.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3789"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3813"/>
         <source>Please select a PCB. DRC only works on one board at a time.</source>
         <translation>Lütfen tek bir Baskı Devre seçin. DRC tek eferde yalnızca bir board ile çalışabilmekte.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3797"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3821"/>
         <source>DRC Progress...</source>
         <translation>Tasarım Kural Kontrolü(DRC) İlerliyor...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3917"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3934"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3941"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3958"/>
         <source>Your sketch does not have a board yet! Please add a PCB in order to use copper fill operations.</source>
         <translation>Çiziminiz henüz bir board içermiyor! Lütfen bakır dolgu işlemleri yapabilmek için bir Baskı Devre ekleyin.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3922"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3939"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3946"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3963"/>
         <source>Please select a PCB. Copper fill operations only work on one board at a time.</source>
         <translation>Lütfen tek bir Baskı Devre seçin. Bakır dolgu işlemleri tek seferde yalnızca bir board için yapılabilir.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4006"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="4030"/>
         <source>%1 background Color</source>
         <translation>Arka Plan Rengi %1</translation>
     </message>
@@ -3630,233 +3662,233 @@ Devam et ve geri döndür?</translation>
         <translation>BOM dosyası kaydedilemiyor, ancak ilgili yazı panoya aktarıldı.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1481"/>
+        <location filename="../src/mainwindow/mainwindow_export.cpp" line="1486"/>
         <source>Export Netlist...</source>
         <translation>Netlist&apos;i Dışa Aktar...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2524"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2525"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2540"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2541"/>
         <source>Set both copper layers clickable</source>
         <translation>Her iki bakır katmanı da tıklanabilir yap</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2529"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2530"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2545"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2546"/>
         <source>Set copper top layer clickable</source>
         <translation>Üst bakır katmanı tıklanabilir yap</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2534"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2535"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2550"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2551"/>
         <source>Set copper bottom layer clickable</source>
         <translation>Alt bakır katmanı tıklanabilir yap</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2430"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2431"/>
         <source>Move selected traces to the other side of the board (note: the &apos;first&apos; trace will be moved and the rest will follow to the same side)</source>
         <translation>Seçili hatları board&apos;un diğer tarafına aktar (not: &apos;ilk&apos; hat aktarılacak geriye kalanlari aynı tarafı takip edecek)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2437"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2438"/>
         <source>Select All Traces</source>
         <translation>Tüm Hatları Seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2438"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2439"/>
         <source>Select all trace wires</source>
         <translation>Tüm hat kablolarını seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2449"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2450"/>
         <source>Force Update Routing Status and Ratsnests</source>
         <translation>Yönlendirme Durumlarını ve Yumakları Zorla Güncelle</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2450"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2451"/>
         <source>Recalculate routing status and ratsnest wires (in case the auto-update isn&apos;t working correctly)</source>
         <translation>Yönlendirme durumunu ve yumak kabloları tekrar hesapla (oto-güncelleme doğru çalışmadığı durumlarda)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2454"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2455"/>
         <source>Select all trace wires excluded from autorouting</source>
         <translation>Oto-Yönlendirme yapılmamış tüm hat kablolarını seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2461"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2462"/>
         <source>Select All Jumpers</source>
         <translation>Tüm Atlayıcıları(Jumper) Seç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2469"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2470"/>
         <source>Tidy Wires</source>
         <translation>Kabloları Düzle</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2470"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2471"/>
         <source>Tidy selected wires</source>
         <translation>Seçili kabloları düzle</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2474"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2475"/>
         <source>Fill empty regions of the copper layer--fill will include all traces connected to a GROUND</source>
         <translation>Bakır katmanın boş bölgelerini doldur--doldurma işlemi TOPRAĞA bağlı tğm hatları içerecektir</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2477"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2944"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2478"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2960"/>
         <source>Copper Fill</source>
         <translation>Bakır Dolgu</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2481"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2482"/>
         <source>Remove Copper Fill</source>
         <translation>Bakır Dolguyu Çıkart</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2482"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2483"/>
         <source>Remove the copper fill</source>
         <translation>Bakır dolguyu çıkar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2485"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2486"/>
         <source>Choose Ground Fill Seed(s)...</source>
         <translation>Toprak Dolgu Tanelerini Seç...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2489"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2490"/>
         <source>Set Ground Fill Seed</source>
         <translation>Toprak Dolgu Tanesi Ayarla</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2490"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2491"/>
         <source>Treat this connector and its connections as a &apos;ground&apos; during ground fill.</source>
         <translation>Bu konnektörü ve bağlantıları toprak dolgulama işlemi sırasında &apos;toprak&apos; olarak algıla.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2494"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2495"/>
         <source>Clear Ground Fill Seeds</source>
         <translation>Toprak Dolgu Tanelerini Temizle</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2495"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2496"/>
         <source>Clear ground fill seeds--enable copper fill only.</source>
         <translation>Toprak dolgu tanelerini temizle--sadece bakır dolguyu etkinleştir.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2506"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2507"/>
         <source>Shift+Ctrl+D</source>
         <translation>Shift+Ctrl+D</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2546"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2562"/>
         <source>Copper Top and Copper Bottom layers are both active</source>
         <translation>Bakır Üst ve Bakır Alt katmanlarının her ikisi de aktif</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2595"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2611"/>
         <source>Order a PCB...</source>
         <translation>Bir Baskı Devre Sipariş Et...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2596"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2612"/>
         <source>Order a PCB created from your sketch--from fabulous Fritzing Fab</source>
         <translation>Çiziminizden oluşturulmuş bir Baskı Devre&apos;yi --müthiş Fritzing Fab&apos;ten sipraiş et</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2556"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2572"/>
         <source>Copper Top layer is active</source>
         <translation>Bakır Üst katman aktif</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2566"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2582"/>
         <source>Copper Bottom layer is active</source>
         <translation>Bakır Alt katman aktif</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2621"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2637"/>
         <source>Autorouting...</source>
         <translation>Oto-Yönlendiriliyor...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2626"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2642"/>
         <source>Autorouting Progress...</source>
         <translation>Oto-Yönlendirme İlerliyor...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2792"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2808"/>
         <source>Remove Bendpoint</source>
         <translation>Esnetme Noktasını çıkar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2852"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2868"/>
         <source>Please choose the previous Fritzing folder...</source>
         <translation>Lütfen bir önceki Fritzing klasörünü seçin...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2893"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2909"/>
         <source>You will have to restart Fritzing in order to use the imported parts</source>
         <translation>İçe aktarılmış elemanları kullanabilmek için Fritzing&apos;i yeniden başlatmanız gerekecek</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2942"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2958"/>
         <source>Generating %1 fill...</source>
         <translation>%1 dolgusu oluşturuluyor...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2942"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2958"/>
         <source>ground</source>
         <translation>toprak</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2942"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2958"/>
         <source>copper</source>
         <translation>bakır</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2994"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3010"/>
         <source>Remove copper fill</source>
         <translation>Bakıt dolguyu çıkar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3056"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3113"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3072"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3129"/>
         <source>&amp;Wire Color</source>
         <translation>&amp;Kablo Rengi</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3359"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3383"/>
         <source>Launch %1...</source>
         <translation>%1&apos;i Çalıştır...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3440"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3464"/>
         <source>No outdated parts found.
 All your parts are up-to-date.</source>
         <translation>Süresi geçmiş herhangi bir eleman bulunamadı.
 Tüm elemanlarınız güncel.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3445"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3469"/>
         <source>Outdated parts</source>
         <translation>Süresi Geçmiş elemanlar</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3446"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3470"/>
         <source>Found %n outdated parts. Do you want to update them now?</source>
         <translation>
             <numerusform>%n tane süresi geçmiş eleman bulundu.Bunları şimdi güncellemek ister misiniz?</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3563"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3587"/>
         <source>Successfully updated %1 part(s).
 Please check all views for potential side-effects.</source>
         <translation>%1 elemanın güncellemesi başarılı.
 Tüm görünümleri olası yan etkiler için kontrol edin.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3558"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3582"/>
         <source>Update %1 part(s)</source>
         <translation>%1 elemanı güncelle</translation>
     </message>
@@ -4027,73 +4059,73 @@ Neden: &apos;%2&apos; (hatakodu %3)</translation>
 <context>
     <name>PCBSketchWidget</name>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="271"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="240"/>
         <source>Create Trace from Ratsnest</source>
         <translation>Yumaktan Hat Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="370"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="339"/>
         <source>Click this connector to drag out a new trace.</source>
         <translation>Konnektörden yeni bir hat çıkarmak için üzerine tıklayın.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1162"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1131"/>
         <source>Change trace layer</source>
         <translation>Hat katmanını değiştirin</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="325"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="330"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1556"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1561"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1596"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1613"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1628"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1651"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1669"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1708"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1713"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1720"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1737"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1759"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1776"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2289"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2294"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2317"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2322"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2493"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2761"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="294"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="299"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1525"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1530"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1565"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1582"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1597"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1620"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1638"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1677"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1682"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1689"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1706"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1728"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1745"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2258"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2263"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2286"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2291"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2462"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2731"/>
         <source>Fritzing</source>
         <translation>Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1557"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1709"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1526"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1678"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use copper fill.</source>
         <translation>Çiziminizin henüz bir board&apos;u yok!  Lütfen bakır dolguyu kullanabilmek için bir Baskı Devre ekleyin.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1562"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1531"/>
         <source>%1 Fill: please select the board you want to apply fill to.</source>
         <translation>%1 Dolgu:Lütfen dolguyu uygulamak istediğiniz board&apos;u seçin.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1562"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1531"/>
         <source>Ground</source>
         <translation>Toprak</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1562"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1531"/>
         <source>Copper</source>
         <translation>Bakır</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1714"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1683"/>
         <source>Copper fill: please select only the board you want to fill.</source>
         <translation>Bakır dolgu:lütfen yalnızca dolgulamak istediğiniz board&apos;u seçin.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1572"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1541"/>
         <source>Please designate one or more ground fill seeds before doing a ground fill.
 
 </source>
@@ -4102,95 +4134,88 @@ Neden: &apos;%2&apos; (hatakodu %3)</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="326"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="295"/>
         <source>Your sketch does not have a board yet! Please add a PCB in order to use this selection operation.</source>
         <translation>Çiziminizin henüz bir borad&apos;u yok! Lütfen seçilen bu işlemi kullanabilmek için bir Baskı Devre ekleyin.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="331"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2295"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2323"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="300"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2264"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2292"/>
         <source>Please click on a PCB first--this selection operation only works for one board at a time.</source>
         <translation>Önce lütfen bir Baskı Devrenin üzerine tıklayın--bu işlem aynı anda yalnızca bir board için uygulanabilir.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1596"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1737"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1565"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1706"/>
         <source>Fritzing error: unable to render board svg (1).</source>
         <translation>Fritzing hatası: board svg işlenemiyor (1).</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1613"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1628"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1759"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1582"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1597"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1728"/>
         <source>Fritzing error: unable to render copper svg (1).</source>
         <translation>Fritzing hatası: bakır svg işlenemiyor (1).</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1651"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1620"/>
         <source>Fritzing error: unable to write copper fill (1).</source>
         <translation>Fritzing hatası: bakır dolgu yazılamıyor (1).</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1669"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1638"/>
         <source>Fritzing error: unable to write copper fill (2).</source>
         <translation>Fritzing hatası: bakır dolgu yazılamıyor (2).</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1720"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1689"/>
         <source>Unable to create copper fill--probably the part wasn&apos;t dropped onto the PCB.</source>
         <translation>Bakır dolgu oluşturulamıyor--büyük bir olasılıkla eleman Baskı Devre üzerine yerleştirilmemiş.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1776"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="1745"/>
         <source>Unable to create copper fill--possibly the part was dropped onto another part or wire rather than the actual PCB.</source>
         <translation>Bakır dolgu oluşturulamıyor--büyük bir olaslıkla eleman Baskı Devrenin üzerine yerleştirilmesi gerekirken başka bir elemanın ya da kablonun üzerine yerleştirilmiş.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2151"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2120"/>
         <source>Clear ground fill seeds</source>
         <translation>Toprak dolgu tanelerini temizle</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2290"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2318"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2259"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2287"/>
         <source>Your sketch does not have a board yet!  Please add a PCB in order to use this selection operation.</source>
         <translation>Çiziminizin henüz bir borad&apos;u yok!  Seçimi kullanabilmek için lütfen bir Baskı Devre ekleyin.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2494"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2463"/>
         <source>Unable to convert this via to a bendpoint because it is connected to a part that is only on the bottom layer and another part that is only on the top layer.</source>
         <translation>Bu geçit bir esnetme noktasına çevrilemedi çünkü bir ucu sadece üst katmandaki bir elemana bağlı iken diğer ucu sadece alt katmandaki bir elemana bağlı.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2748"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2717"/>
         <source>Show part silkscreen</source>
         <translation>Elemana ait serigrafiyi göster</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2748"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2717"/>
         <source>Hide part silkscreen</source>
         <translation>Parçaya ait serigrafiyi gizle</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2762"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2732"/>
         <source>Your sketch does not have a board yet. You cannot fabricate this sketch without a PCB part.</source>
         <translation>Çiziminizin henüz bir board&apos;u yok. Bu çizimi Baskı Devre kısmı olmadan üretemezsiniz.</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2784"/>
-        <source>%n copies of this sketch will cost %1 Euros.</source>
-        <translation>
-            <numerusform>Bu çizimin %n kopyası %1 Euro&apos;ya mal olacak.</numerusform>
-        </translation>
-    </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2905"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2868"/>
         <source>Enter Keepout</source>
         <translation>Aralık Tanımla</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2906"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2869"/>
         <source>Keepout is in mils (.001 inches).
 
 </source>
@@ -4199,14 +4224,14 @@ Neden: &apos;%2&apos; (hatakodu %3)</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2907"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2870"/>
         <source>Note that due to aliasing, distances may be too short by up to 2 mils
 </source>
         <translation>Üstüste gelme probleminden dolayı , 2 mils&apos;e (yaklaşık 50 mikron) kadar olan mesafeler çok yakın olarak tanımlanır
 </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2908"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2871"/>
         <source>so you may want to increase the keepout value by that much.
 
 </source>
@@ -4215,7 +4240,7 @@ Neden: &apos;%2&apos; (hatakodu %3)</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2909"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2872"/>
         <source>10 mils is a good default choice.
 
 </source>
@@ -4224,7 +4249,7 @@ Neden: &apos;%2&apos; (hatakodu %3)</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2910"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2873"/>
         <source>Enter keepout value:</source>
         <translation>Aralık değeri girin:</translation>
     </message>
@@ -4255,303 +4280,303 @@ Neden: &apos;%2&apos; (hatakodu %3)</translation>
 <context>
     <name>PEMainWindow</name>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="768"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="804"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="814"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="880"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="887"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2687"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2742"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2946"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3349"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3703"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="769"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="805"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="815"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="881"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="888"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2688"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2743"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2947"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3350"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3704"/>
         <source>Parts Editor</source>
         <translation>Eleman Düzenleyici</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="502"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="503"/>
         <source>SVG</source>
         <translation>SVG</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="341"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="342"/>
         <source>There is one last edit still pending.</source>
         <translation>Hala askıda olan son bir düzenleme var.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1128"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1129"/>
         <source>Duplicate &apos;family&apos; property not allowed</source>
         <translation>&apos;Aile&apos;yi çoğaltma izni yok</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1133"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1134"/>
         <source>Duplicate &apos;variant&apos; property not allowed</source>
         <translation>&apos;Türev&apos; çoğaltma izni yok</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="363"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="364"/>
         <source>Close without saving?</source>
         <translation>Kaydetmeden çık?</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="379"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="380"/>
         <source>Close without saving</source>
         <translation>Kaydetmeden çık</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="380"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="381"/>
         <source>Keep working</source>
         <translation>Çalışmaya devam et</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3707"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3708"/>
         <source>Exiting the Parts Editor now is fine, as long as you remember to finish the assignments later.</source>
         <translation>Atamaları daha sonra bitirmeye hatırlarsanız, şimdi Eleman Düzenleyici&apos;den çıkabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="415"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="416"/>
         <source>Icon</source>
         <translation>Küçük Resim</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="452"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="453"/>
         <source>Metadata</source>
         <translation>Üstveri</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="459"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="498"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="460"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="499"/>
         <source>Connectors</source>
         <translation>Konnektörler</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="546"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="547"/>
         <source>Show in Folder</source>
         <translation>Klasörde Göster</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="547"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="548"/>
         <source>On the desktop, open the folder containing the current svg file.</source>
         <translation>Masaüstünde, mevcut svg dosyasını içeren klasörü aç.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="552"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="553"/>
         <source>Remove Internal Connection</source>
         <translation>İç Bağlantıyı İptal Et</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="814"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="880"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="815"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="881"/>
         <source>Unable to write svg to  %1</source>
         <translation>Svg  %1&apos;e yazılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="887"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="888"/>
         <source>Unable to parse fzp file  %1</source>
         <translation>%1 fzp dosyası ayrıştırılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="930"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="931"/>
         <source>Icon View</source>
         <translation>Küçür Resim Görünümü</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="931"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="932"/>
         <source>Metadata View</source>
         <translation>Üstveri Görünümü</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="932"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="933"/>
         <source>Connectors View</source>
         <translation>Konnektörler Görünümü</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="940"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="941"/>
         <source>Show Icon</source>
         <translation>Küçük Resmi Göster</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="941"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="942"/>
         <source>Ctrl+4</source>
         <translation>Ctrl+4</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="942"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="943"/>
         <source>Show the icon view</source>
         <translation>Küçük resim görünümünü göster</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="946"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="947"/>
         <source>Ctrl+5</source>
         <translation>Ctrl+5</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="947"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="948"/>
         <source>Show the metadata view</source>
         <translation>Üstveri görünümünü göster</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="950"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="951"/>
         <source>Show Connectors</source>
         <translation>Konnektörleri Göster</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="951"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="952"/>
         <source>Ctrl+6</source>
         <translation>Ctrl+6</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1053"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1054"/>
         <source>Change %1 to &apos;%2&apos;</source>
         <translation>%1 %2&apos;ye değiştir</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1053"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1054"/>
         <source>Change description</source>
         <translation>Açıklamayı değiştir</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1095"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1096"/>
         <source>Change tags</source>
         <translation>Etiketleri değiştir</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1141"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1142"/>
         <source>Change properties</source>
         <translation>Özellikleri değiştir</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1205"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1206"/>
         <source>Change connector %1</source>
         <translation>%1 konnektörünü değiştir</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1462"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1463"/>
         <source>Image &amp; Footprint Files (%1 %2 %3 %4 %5);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3);;gEDA Footprint Files (%4);;Kicad Module Files (%5)</source>
         <translation>Resim &amp; Ayakizi Dosyaları (%1 %2 %3 %4 %5);;SVG Dosyaları (%1);;JPEG Dosyaları (%2);;PNG Dosyaları(%3);;gEDA Ayakizi Dosyaları (%4);;Kicad Modül Dosyaları (%5)</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1467"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1468"/>
         <source>Image Files (%1 %2 %3);;SVG Files (%1);;JPEG Files (%2);;PNG Files (%3)%4%5</source>
         <translation>Resim Dosyaları (%1 %2 %3);;SVG Dosyaları (%1);;JPEG Dosyaları (%2);;PNG Dosyaları(%3)%4%5</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1484"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1485"/>
         <source>Open Image</source>
         <translation>Resmi Aç</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1587"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1588"/>
         <source>Copy problem</source>
         <translation>Kopyalama problemi</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1587"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1588"/>
         <source>Unable to make a local copy of: &apos;%1&apos;</source>
         <translation>&apos;%1&apos;&apos;in yerel bir kopyası yapılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1531"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1532"/>
         <source>You may use a PNG or JPG image to construct your part, but it is better to use an SVG. </source>
         <translation>Elemanınızı inşa etmek için PNG ve JPG resimlerini kullanabilirsiniz ancak bir SVG kullanmak daha iyi olacaktır. </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1532"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1533"/>
         <source>PNG and JPG images retain their nature as bitmaps and do not look good when scaled--</source>
         <translation>PNG ve JPG dosyaları bitmap  olan doğalarını kaybetmiyorlar ve ölçeklendirildiklerinde güzel görünmüyorlar--</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1533"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1534"/>
         <source>so for Fritzing parts it is best to use PNG and JPG only as placeholders.</source>
         <translation>bu nedenle Fritzing elemanları için PNG ve JPG&apos;yi yalnızca tutucu olarak kullanmak en iyisi olacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1536"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1537"/>
         <source>Use of PNG and JPG discouraged</source>
         <translation>PNG ve JPG kullanımı önerilmez</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1499"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1506"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1544"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1550"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1500"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1507"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1545"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1551"/>
         <source>Conversion problem</source>
         <translation>Dönüştürme problemi</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="925"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2849"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="926"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2850"/>
         <source>Fritzing (New) Parts Editor</source>
         <translation>Fritzin (Yeni) Eleman Düzenleyici</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="945"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="946"/>
         <source>Show Metadata</source>
         <translation>Üstveriyi Göster</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="952"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="953"/>
         <source>Show the connector metadata in a list view</source>
         <translation>Konnektör üstverisini liste görünümünde göster</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1008"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1009"/>
         <source>Blank not allowed</source>
         <translation>Boşluk bırakılamaz</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1008"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1009"/>
         <source>The value of &apos;%1&apos; can not be blank.</source>
         <translation>%1&apos;in değeri boş bırakılamaz.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1021"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1022"/>
         <source>Change %1 to %2</source>
         <translation>%1&apos;i %2&apos;ye çevir</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1045"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1046"/>
         <source>Must be unique</source>
         <translation>Özgün olmalı</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1045"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1046"/>
         <source>Variant &apos;%1&apos; is in use. The variant name must be unique.</source>
         <translation>Türev &apos;%1&apos; kullanımda. Türev&apos;in ismi özgün olmalı.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1128"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1133"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1129"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1134"/>
         <source>Duplicate problem</source>
         <translation>Çoğaltma problemi</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1499"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1500"/>
         <source>Unable to load &apos;%1&apos;</source>
         <translation>&apos;%1&apos; yüklenemiyor</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1507"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1508"/>
         <source>The SVG file &apos;%1&apos; appears to have been exported from CorelDRAW without the &apos;presentation attributes&apos; setting. </source>
         <translation>&apos;%1&apos; SVG dosyası CorelDRAW&apos;dan &apos;tanıtım ayarları&apos; ayarlanmadan aktarılmış görünüyor.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1508"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1509"/>
         <source>Please re-export the SVG file using that setting, and try loading again.</source>
         <translation>Lütfen SVG dosyasını ilgili ayarı kullanarak tekrar dışa aktarın ve daha sonra tekrar yüklemeyi deneyin.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1523"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1524"/>
         <source>Fonts</source>
         <translation>Yazım Karakterleri</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1524"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1525"/>
         <source>Fritzing currently only supports OCRA and Droid fonts--these have been substituted in for the fonts in &apos;%1&apos;</source>
         <translation>Fritzing şu anda yalnızca OCRA ve Droid yazı karakterlerini destekliyor--&apos;%1&apos;.içindeki yazı karakterleri yerine bunlar kullanılmıştır</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1544"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1545"/>
         <source>Unable to load image file &apos;%1&apos;: 
 
 %2</source>
@@ -4560,29 +4585,29 @@ Neden: &apos;%2&apos; (hatakodu %3)</translation>
 %2</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1283"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1560"/>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1577"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1284"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1561"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1578"/>
         <source>SVG problem</source>
         <translation>SVG problemi</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="347"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="348"/>
         <source>The &apos;family&apos; property can not be blank.</source>
         <translation>&apos;Aile&apos; özelliği boş bırakılamaz.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="353"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="354"/>
         <source>A duplicate &apos;family&apos; property is not allowed</source>
         <translation>&apos;Aile&apos;yi çoğalt özelliğine izin yok</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="357"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="358"/>
         <source>A duplicate &apos;variant&apos; property is not allowed</source>
         <translation>&apos;Türev&apos;&apos;i çoğalt özelliğine izin yok</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="365"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="366"/>
         <source>This part can not be saved as-is:
 
 </source>
@@ -4591,186 +4616,186 @@ Neden: &apos;%2&apos; (hatakodu %3)</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="372"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="373"/>
         <source>Do you want to keep working or close without saving?</source>
         <translation>Çalışmaya devam etmek istiyor musunuz yoksa kaydetmeden çıkacak mısınız?</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3704"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3705"/>
         <source>This part has %n unassigned connectors </source>
         <translation>
             <numerusform>Bu elemanın %n atanmamış konnektörü var </numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3705"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3706"/>
         <source>across %n views. </source>
         <translation>
             <numerusform>%n görünüm genelinde. </numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3706"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3707"/>
         <source>Until all connectors are assigned to SVG elements, the part will not work correctly. </source>
         <translation>Tüm bağlantılar SVG nesnesine atanana kadar eleman doğru olarak çalışmayacak. </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="514"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="515"/>
         <source>Layers</source>
         <translation>Katmanlar</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="524"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="525"/>
         <source>Reuse breadboard image</source>
         <translation>Breadboard resmini tekrar kullan</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="525"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="526"/>
         <source>Reuse the breadboard image in this view</source>
         <translation>Breadboard resmini bu görünümde tekrar kullan</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="528"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="529"/>
         <source>Reuse schematic image</source>
         <translation>Şematik resmi tekrar kullan</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="529"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="530"/>
         <source>Reuse the schematic image in this view</source>
         <translation>Şematik resmi bu görünümde tekrar kullan</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="532"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="533"/>
         <source>Reuse PCB image</source>
         <translation>Baskı Devre resmini tekrar kullan</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="533"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="534"/>
         <source>Reuse the PCB image in this view</source>
         <translation>Baskı Devre resmini bu görünümde tekrar kullan</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="955"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="956"/>
         <source>Make only this view visible</source>
         <translation>Sadece bu görünümü görünebilir yap</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="956"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="957"/>
         <source>The part will only be visible in this view and icon view</source>
         <translation>Eleman yalnızca bu görünümde simge olarak görülebilecek</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1284"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1285"/>
         <source>This version of the new Parts Editor can not deal with separate copper0 and copper1 layers in &apos;%1&apos;. </source>
         <translation>Eleman Düzenleyicinin bu sürümü &apos;%1&apos;&apos;deki ayrık bakır0 ve bakır1 katmanlarını desteklemiyor. </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1285"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1286"/>
         <source>So editing may produce an invalid PCB view image</source>
         <translation>Bu nedenle düzenleme uygun olmayan bir Baskı Devre resminin oluşmasına neden olabilir</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1560"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1561"/>
         <source>Unable to parse &apos;%1&apos;: %2 line:%3 column:%4</source>
         <translation>&apos;%1&apos;çözümlenemiyor:%2 satır:%3 sütun:%4</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1571"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1572"/>
         <source>There are no copper layers defined in: %1. </source>
         <translation>%1&apos;de tanımlı bir bakır katman yok. </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1572"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1573"/>
         <source>See &lt;a href=&quot;http://fritzing.org/learning/tutorials/creating-custom-parts/providing-part-graphics/&quot;&gt;this explanation&lt;/a&gt;.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1573"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1574"/>
         <source>&lt;br/&gt;&lt;br/&gt;This will not be a problem in the next release of the Parts Editor, </source>
         <translation>&lt;br/&gt;&lt;br/&gt;Bu, eleman düzenleyicinin diğer sürümünde bir probleme neden olmayacaktır, </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1574"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1575"/>
         <source>but for now please modify the file according to the instructions in the link.</source>
         <translation>ancak şimdi lütfen dosyayı linkteki yönergeleri kullanarak modifiye edin.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1609"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1610"/>
         <source>no schematics found in %1</source>
         <translation>%1&apos;de bir herhangi şematik bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1614"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1615"/>
         <source>schematic part</source>
         <translation>şematik elemanı</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1635"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1636"/>
         <source>no footprints found in %1</source>
         <translation>%1&apos;de bir herhangi bir ayakizi bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1959"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1960"/>
         <source>Relocate connector %1</source>
         <translation>%1 konnektörünü tekrar yerleştir</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="572"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="573"/>
         <source>&amp;File</source>
         <translation>&amp;Dosya</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="511"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="512"/>
         <source>Inspector</source>
         <translation>Denetleyici</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="541"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="542"/>
         <source>Load image for view...</source>
         <translation>Görünüm için resmi yükle...</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="542"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="543"/>
         <source>Open a file to use as the image for this view of the part.</source>
         <translation>Elemanın bu görünümdeki resmi olarak kullanmak için bir dosya açın.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="584"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="585"/>
         <source>Save as new part</source>
         <translation>Yeni eleman olarak kaydet</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="585"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="586"/>
         <source>Make a copy of the part and save it in the &apos;My Parts&apos; Bin</source>
         <translation>Elemanın bir kopyasını yap ve onu &apos;Benim Elemanlarım&apos; bin dosyasının içine kaydet</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="588"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="589"/>
         <source>&amp;Export</source>
         <translation>&amp;Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="603"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="604"/>
         <source>&amp;Edit</source>
         <translation>&amp;Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="769"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="770"/>
         <source>This part has bendable legs. </source>
         <translation>Bu elemanın esnek ayakları var. </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="770"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="771"/>
         <source>This version of the Parts Editor does not yet support editing bendable legs, and the legs may not be displayed correctly in breadboard view . </source>
         <translation>Eleman Düzenleyecinin bu sürümü henüz esnek ayakları desteklemiyor ve ayaklar breadboard görünümünde doğru olarak gösterilemeyebilir . </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="771"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="772"/>
         <source>If you make changes to breadboard view, or change connector metadata, the legs may no longer work. </source>
         <translation>Eğer breadboard görünümünde ya da konnektör üstverisinde herhangi bir değişiklik yaparsanız, ayaklar bir daha çalışmayabilir. </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="772"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="773"/>
         <source>You can safely make changes to Schematic or PCB view.
 
 </source>
@@ -4779,57 +4804,57 @@ Neden: &apos;%2&apos; (hatakodu %3)</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="773"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="774"/>
         <source>This warning will not be repeated in this session of Fritzing</source>
         <translation>Bu uyarı Fritzing&apos;in bu bölümünde tekrarlanmayacak</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="804"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="805"/>
         <source>Unable to load &apos;%1&apos;. Please close the parts editor without saving and try again.</source>
         <translation>&apos;%1&apos; yüklenemiyor.Lütfen eleman düzenleyiciyi kaydetmeden kapatıp tekrar deneyin.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="1550"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="1551"/>
         <source>Unable to load image file &apos;%1&apos;</source>
         <translation>Resim dosyası &apos;%1&apos; yüklenemiyor</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2069"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2070"/>
         <source>Sketch Change Warning</source>
         <translation>Çizim Değişikliği Uyarısı</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2072"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2073"/>
         <source>The open sketch &apos;%1&apos; uses the part you are editing. </source>
         <translation>Açık olan çizim &apos;%1&apos; şu an da düzenlemekte olduğunuz elemanı içermekte. </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2073"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2074"/>
         <source>Saving this part will make a change to the sketch that cannot be undone.</source>
         <translation>Bu elemanı kaydetmek çizimde telafi edilemeyecek bir değişikliğe yol açacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2076"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2077"/>
         <source>The open sketches </source>
         <translation>Açık çizimler </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2078"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2079"/>
         <source>&apos;%1&apos;, </source>
         <translation>&apos;%1&apos;, </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2080"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2081"/>
         <source>and &apos;%1&apos; </source>
         <translation>ve &apos;%1&apos; </translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2081"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2082"/>
         <source>Saving this part will make a change to these sketches that cannot be undone.</source>
         <translation>Bu elemanı kaydetmek bu çizimlerde telafisi olmayan değişikliklere yol açacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2084"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2085"/>
         <source>
 
 Go ahead and save?</source>
@@ -4838,102 +4863,102 @@ Go ahead and save?</source>
 Devam et ve kaydet?</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2091"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2092"/>
         <source>Save</source>
         <translation>Kaydet</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2092"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2093"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2338"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2339"/>
         <source>Move terminal point</source>
         <translation>Uç noktasını hareket ettir</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2627"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2628"/>
         <source>Remove connector</source>
         <translation>Konnektörü çıkart</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2630"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2631"/>
         <source>Remove %1 connectors</source>
         <translation>%1 konnektörlerini çıkar</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2648"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2649"/>
         <source>Save &quot;%1&quot;</source>
         <translation>&apos;%1&apos;&apos;i Kaydet</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2649"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2650"/>
         <source>Do you want to save the changes you made in the part &quot;%1&quot;?</source>
         <translation>&quot;%1&quot;&apos;de yaptığınız değişiklikleri kaydetmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2650"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2651"/>
         <source>Your changes will be lost if you don&apos;t save them.</source>
         <translation>Değişiklikleriniz onları kaydetmezseniz kaybolacak.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2654"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2655"/>
         <source>untitled part</source>
         <translation>isimsiz eleman</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2687"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2688"/>
         <source>Unable to load fzp from %1</source>
         <translation>fzp %1&apos;den yüklenemiyor</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2742"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2743"/>
         <source>Unable to create new connector--you may have to start over.</source>
         <translation>Yeni bir konnektör oluşturulamıyor--yeniden başlamanız gerekebilir.</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2775"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2776"/>
         <source>Add connector</source>
         <translation>Konnektör ekle</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2778"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2779"/>
         <source>Add %1 connectors</source>
         <translation>%1 konnektör ekle</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2965"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2966"/>
         <source>Remove internal connection from &apos;%1&apos;</source>
         <translation>&apos;%1&apos; den iç bağlantıyı çıkar</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3306"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3307"/>
         <source>Change all connectors to %1</source>
         <translation>Tüm konnektör %1&apos;e çevir</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3349"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3350"/>
         <source>Unable to parse &apos;%1&apos;</source>
         <translation>&apos;%1&apos; çözümlenemiyor</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3400"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3401"/>
         <source>Change to %1</source>
         <translation>%1&apos;e değiştir</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3641"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3642"/>
         <source>Make only %1 view visible</source>
         <translation>Sadece %1&apos;i görünür yap</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="2946"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="2947"/>
         <source>Internal connections are very messed up.</source>
         <translation>İç bağlantılar oldukça berbat (karışık).</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="3011"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="3012"/>
         <source>Add internal connection from &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>&apos;%1&apos;&apos;den &apos;%2&apos;&apos;ye bir iç bağlantı ekle</translation>
     </message>
@@ -5220,59 +5245,59 @@ Devam et ve kaydet?</translation>
 <context>
     <name>PaletteItem</name>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="605"/>
+        <location filename="../src/items/paletteitem.cpp" line="612"/>
         <source>Edit Pin Labels</source>
         <translation>Pin Etiketlerini Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="645"/>
-        <location filename="../src/items/paletteitem.cpp" line="656"/>
-        <location filename="../src/items/paletteitem.cpp" line="680"/>
+        <location filename="../src/items/paletteitem.cpp" line="652"/>
+        <location filename="../src/items/paletteitem.cpp" line="663"/>
+        <location filename="../src/items/paletteitem.cpp" line="687"/>
         <source>Fritzing</source>
         <translation>Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="646"/>
+        <location filename="../src/items/paletteitem.cpp" line="653"/>
         <source>Unable to proceed; unable to find top level view.</source>
         <translation>Devam edilemiyor; Üstten görünüm bulunamıyor.</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="657"/>
+        <location filename="../src/items/paletteitem.cpp" line="664"/>
         <source>Unable to proceed; part connectors do no have standard IDs.</source>
         <translation>Devam edilemiyor;konnektörlerin standard kimlikleri yok.</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="681"/>
+        <location filename="../src/items/paletteitem.cpp" line="688"/>
         <source>Label mismatch.  Nothing was saved.</source>
         <translation>Etiket uyumsuzluğu.  Kaydedilen hiçbir şey yok.</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="835"/>
+        <location filename="../src/items/paletteitem.cpp" line="842"/>
         <source>hole size</source>
         <translation>delik boyutu</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="975"/>
+        <location filename="../src/items/paletteitem.cpp" line="982"/>
         <source>advanced settings</source>
         <translation>gelişmiş ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="986"/>
+        <location filename="../src/items/paletteitem.cpp" line="993"/>
         <source>in</source>
         <translation>inç</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="990"/>
+        <location filename="../src/items/paletteitem.cpp" line="997"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="1008"/>
+        <location filename="../src/items/paletteitem.cpp" line="1015"/>
         <source>Hole Diameter</source>
         <translation>Delik Çapı</translation>
     </message>
     <message>
-        <location filename="../src/items/paletteitem.cpp" line="1021"/>
+        <location filename="../src/items/paletteitem.cpp" line="1028"/>
         <source>Ring Thickness</source>
         <translation>Yüzük Kalınlığı</translation>
     </message>
@@ -6168,11 +6193,11 @@ shift tuşu ilerleme eksenini değiştirir</translation>
         <location filename="../src/autoroute/panelizer.cpp" line="477"/>
         <location filename="../src/autoroute/panelizer.cpp" line="1358"/>
         <location filename="../src/autoroute/panelizer.cpp" line="1375"/>
-        <location filename="../src/fapplication.cpp" line="923"/>
+        <location filename="../src/fapplication.cpp" line="924"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="50"/>
         <location filename="../src/mainwindow/fritzingwindow.cpp" line="143"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2858"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2892"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2874"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="2908"/>
         <location filename="../src/model/modelbase.cpp" line="77"/>
         <location filename="../src/model/modelbase.cpp" line="90"/>
         <location filename="../src/model/modelbase.cpp" line="101"/>
@@ -6188,7 +6213,7 @@ shift tuşu ilerleme eksenini değiştirir</translation>
         <location filename="../src/partsbinpalette/partsbinpalettewidget.cpp" line="510"/>
         <location filename="../src/program/programtab.cpp" line="597"/>
         <location filename="../src/sketch/sketchwidget.cpp" line="933"/>
-        <location filename="../src/svg/gerbergenerator.cpp" line="366"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="368"/>
         <source>Fritzing</source>
         <translation>Fritzing</translation>
     </message>
@@ -6208,12 +6233,12 @@ shift tuşu ilerleme eksenini değiştirir</translation>
         <translation>Yönlendirmek için bağlantı yok.</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1269"/>
+        <location filename="../src/fapplication.cpp" line="1270"/>
         <source>&lt;font face=&apos;Lucida Grande, Tahoma, Sans Serif&apos; size=&apos;2&apos; color=&apos;#eaf4ed&apos;&gt;&amp;#169; 2007-%1 Fachhochschule Potsdam&lt;/font&gt;</source>
         <translation>&lt;font yüz=&apos;Lucida Grande, Tahoma, Sans Serif&apos; boyut=&apos;2&apos; renk=&apos;#eaf4ed&apos;&gt;&amp;#169; 2007-%1 Potsdam Yüksekokulu&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/fapplication.cpp" line="1283"/>
+        <location filename="../src/fapplication.cpp" line="1284"/>
         <source>&lt;font face=&apos;Lucida Grande, Tahoma, Sans Serif&apos; size=&apos;2&apos; color=&apos;#eaf4ed&apos;&gt;Version %1.%2.%3 (%4%5)%6&lt;/font&gt;</source>
         <translation>&lt;font yüz=&apos;Lucida Grande, Tahoma, Sans Serif&apos; boyut=&apos;2&apos; renk=&apos;#eaf4ed&apos;&gt;Sürüm %1.%2.%3.(%4%5)%6 &lt;/font&gt;</translation>
     </message>
@@ -6228,21 +6253,21 @@ shift tuşu ilerleme eksenini değiştirir</translation>
         <translation>Link&apos;i düzenle</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3026"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3032"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3040"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3042"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3048"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3056"/>
         <source>Part</source>
         <translation>Eleman</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3053"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3085"/>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3110"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3069"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3101"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3126"/>
         <source>Wire</source>
         <translation>Kablo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3595"/>
+        <location filename="../src/mainwindow/mainwindow_menu.cpp" line="3619"/>
         <source>Set Grid Size</source>
         <translation>Izgaranın Sıklığını Ayarla</translation>
     </message>
@@ -6432,32 +6457,32 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
     </message>
     <message>
         <location filename="../src/partsbinpalette/partsbinview.cpp" line="52"/>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="195"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="133"/>
         <source>PCB View</source>
         <translation>Baskı Devre Görünümü</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="196"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="134"/>
         <source>pcb</source>
         <translation>baskı devre</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="309"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="278"/>
         <source>Select all &apos;Don&apos;t autoroute&apos; traces</source>
         <translation>Tüm &quot;Oto-Yönlendirme Yapma&quot; Hatlarını Seç</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="314"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="283"/>
         <source>Select all autorouteable traces</source>
         <translation>Tüm Oto-Yönledirilebilir Hatları Seç</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2370"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2339"/>
         <source>Convert to Via</source>
         <translation>Geçite çevir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2501"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2470"/>
         <source>Convert Via to Bendpoint</source>
         <translation>Geçiti Esnetme Noktasına çevir</translation>
     </message>
@@ -6478,74 +6503,74 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
         <translation>%1: %2 dosyasını okuma hatası.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3529"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3527"/>
         <source>%1 %2,%3 %4</source>
         <translation>%1 %2,%3 %4</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3558"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3556"/>
         <source>Change leg of %1,%2</source>
         <translation>%1,%2&apos;nin ayaklarını değiştir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3715"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3713"/>
         <source>%1 %2 %3</source>
         <translation>%1 %2 %3</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3977"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3975"/>
         <source>%1 Layer</source>
         <translation>%1 Katmanı</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4201"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4218"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4199"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4216"/>
         <source>Bring forward</source>
         <translation>İlerlet</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4210"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4208"/>
         <source>Send backward</source>
         <translation>Gerilet</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4227"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4225"/>
         <source>Bring to front</source>
         <translation>Öne Çıkar</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5506"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5508"/>
         <source>Split Wire</source>
         <translation>Kabloyu Böl</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5564"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5566"/>
         <source>Join Wire</source>
         <translation>Kabloları Birleştir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7833"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7792"/>
         <source>Trace wires</source>
         <translation>Hat kablolar</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7836"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7795"/>
         <source>Ratsnest wires</source>
         <translation>Yumak kablolar</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2308"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7838"/>
+        <location filename="../src/sketch/pcbsketchwidget.cpp" line="2277"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7797"/>
         <source>Select all %1</source>
         <translation>Tüm %1&apos;i seç</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8121"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8080"/>
         <source>Select outdated parts</source>
         <translation>Zamanı geçmiş elemanları seç</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8135"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8094"/>
         <source>Select locked parts</source>
         <translation>Kilitli parçaları seç</translation>
     </message>
@@ -6762,146 +6787,146 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
         <translation>Güncellemeri kontrol et</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="179"/>
+        <location filename="../src/viewlayer.cpp" line="181"/>
         <source>icon view</source>
         <translation>simge görünümü</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="180"/>
+        <location filename="../src/viewlayer.cpp" line="182"/>
         <source>breadboard view</source>
         <translation>breadboard görünümü</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="181"/>
+        <location filename="../src/viewlayer.cpp" line="183"/>
         <source>schematic view</source>
         <translation>şematik görünümü</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="182"/>
+        <location filename="../src/viewlayer.cpp" line="184"/>
         <source>pcb view</source>
         <translation>baskı devre görünümü</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="121"/>
+        <location filename="../src/viewlayer.cpp" line="123"/>
         <source>Icon</source>
         <translation>Simge</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="122"/>
+        <location filename="../src/viewlayer.cpp" line="124"/>
         <source>Breadboard</source>
         <translation>Breadboard</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="123"/>
-        <location filename="../src/viewlayer.cpp" line="131"/>
+        <location filename="../src/viewlayer.cpp" line="125"/>
+        <location filename="../src/viewlayer.cpp" line="133"/>
         <source>Parts</source>
         <translation>Elemanlar</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="124"/>
-        <location filename="../src/viewlayer.cpp" line="134"/>
+        <location filename="../src/viewlayer.cpp" line="126"/>
+        <location filename="../src/viewlayer.cpp" line="136"/>
         <source>Wires</source>
         <translation>Kablolar</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="125"/>
-        <location filename="../src/viewlayer.cpp" line="135"/>
+        <location filename="../src/viewlayer.cpp" line="127"/>
+        <location filename="../src/viewlayer.cpp" line="137"/>
         <source>Part Labels</source>
         <translation>Eleman Etiketleri</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="126"/>
-        <location filename="../src/viewlayer.cpp" line="133"/>
-        <location filename="../src/viewlayer.cpp" line="148"/>
+        <location filename="../src/viewlayer.cpp" line="128"/>
+        <location filename="../src/viewlayer.cpp" line="135"/>
+        <location filename="../src/viewlayer.cpp" line="150"/>
         <source>Ratsnest</source>
         <translation>Yumak</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="127"/>
-        <location filename="../src/viewlayer.cpp" line="136"/>
-        <location filename="../src/viewlayer.cpp" line="155"/>
+        <location filename="../src/viewlayer.cpp" line="129"/>
+        <location filename="../src/viewlayer.cpp" line="138"/>
+        <location filename="../src/viewlayer.cpp" line="157"/>
         <source>Notes</source>
         <translation>Notlar</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="128"/>
-        <location filename="../src/viewlayer.cpp" line="137"/>
-        <location filename="../src/viewlayer.cpp" line="156"/>
+        <location filename="../src/viewlayer.cpp" line="130"/>
+        <location filename="../src/viewlayer.cpp" line="139"/>
+        <location filename="../src/viewlayer.cpp" line="158"/>
         <source>Rulers</source>
         <translation>Cetveller</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="130"/>
+        <location filename="../src/viewlayer.cpp" line="132"/>
         <source>Frame</source>
         <translation>Çerçeve</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="132"/>
+        <location filename="../src/viewlayer.cpp" line="134"/>
         <source>Text</source>
         <translation>Metin</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="139"/>
+        <location filename="../src/viewlayer.cpp" line="141"/>
         <source>Board</source>
         <translation>Board</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="140"/>
+        <location filename="../src/viewlayer.cpp" line="142"/>
         <source>Silkscreen Top</source>
         <translation>Üst Serigrafi</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="141"/>
+        <location filename="../src/viewlayer.cpp" line="143"/>
         <source>Silkscreen Top (Part Labels)</source>
         <translation>Üst Serigrafi (Eleman Etiketleri)</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="142"/>
+        <location filename="../src/viewlayer.cpp" line="144"/>
         <source>Copper Fill Bottom</source>
         <translation>Alt Bakır Dolgu</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="145"/>
+        <location filename="../src/viewlayer.cpp" line="147"/>
         <source>Copper Fill Top</source>
         <translation>Üst Bakır Dolgu</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="143"/>
+        <location filename="../src/viewlayer.cpp" line="145"/>
         <source>Copper Bottom</source>
         <translation>Bakır Alt</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="144"/>
+        <location filename="../src/viewlayer.cpp" line="146"/>
         <source>Copper Bottom Trace</source>
         <translation>Alt Bakır Hat</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="146"/>
+        <location filename="../src/viewlayer.cpp" line="148"/>
         <source>Copper Top</source>
         <translation>Bakır Üst</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="147"/>
+        <location filename="../src/viewlayer.cpp" line="149"/>
         <source>Copper Top Trace</source>
         <translation>Üst Bakır Hat</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="149"/>
+        <location filename="../src/viewlayer.cpp" line="151"/>
         <source>Silkscreen Bottom</source>
         <translation>Serigrafi Alt</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="150"/>
+        <location filename="../src/viewlayer.cpp" line="152"/>
         <source>Silkscreen Bottom (Part Labels)</source>
         <translation>Serigrafi Alt (Eleman Etiketleri)</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="154"/>
+        <location filename="../src/viewlayer.cpp" line="156"/>
         <source>Part Image</source>
         <translation>Eleman Resmi</translation>
     </message>
     <message>
-        <location filename="../src/viewlayer.cpp" line="162"/>
+        <location filename="../src/viewlayer.cpp" line="164"/>
         <source>Unknown Layer</source>
         <translation>Bilinmeyen Katman</translation>
     </message>
@@ -6946,32 +6971,32 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
         <translation>%1 katman dışa aktarımı boş.</translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="243"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="245"/>
         <source>exported drill file is empty</source>
         <translation>dışa aktarılmış matkap dosyası boş</translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="278"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="280"/>
         <source>exported mask layer %1 is empty</source>
         <translation>dışa aktarılmış %1 mask katmanı boş</translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="315"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="317"/>
         <source>exported paste mask layer is empty</source>
         <translation>dışa aktarılmış yapıştırma mask katmanı boş</translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="351"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="353"/>
         <source>%1 layer: unable to save to &apos;%2&apos;</source>
         <translation>%1 katmanı: &apos;%2&apos;&apos;ye kaydedilemiyor</translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="912"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="914"/>
         <source>Unable to save pick and place file: %2</source>
         <translation> Seç ve yerleştir dosyası:%2 kaydedilemiyor</translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="221"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="223"/>
         <source>silk export failure</source>
         <translation>serigraf dışa aktarım hatası</translation>
     </message>
@@ -6981,38 +7006,38 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
         <translation>%1 katmanı dışa aktarımı boş (durum 2).</translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="206"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="207"/>
         <source>silk layer %1 export is empty</source>
         <translation>serigraf katmanı %1 &apos;in dışa aktarımı boş</translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="260"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="262"/>
         <source>drill export failure</source>
         <translation>matkap dışa aktarım hatası</translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="284"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="286"/>
         <source>%1 mask export failure (2)</source>
         <translation>%1 mask dışa aktarım hatası (2)</translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="858"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="860"/>
         <source>Fritzing is unable to process the cutouts in this custom PCB shape. </source>
         <translation>Fritzing bu özel Baskı Devre şeklindeki kesikleri işleyemez. </translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="859"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="861"/>
         <source>You may need to reload the shape SVG. </source>
         <translation>Şekil SVG &apos;sini tekrar yüklemeniz gerekebilir. </translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="860"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="862"/>
         <source>Fritzing requires that you make cutouts using a shape &apos;subtraction&apos; or &apos;difference&apos; operation in your vector graphics editor.</source>
         <translation>Fritzing kesikleri vektör grafik düzenleyicinizdeki şekil &apos;çıkarma&apos; ya da &apos;fark&apos; işlemleriyle yapmanızı gerektiriyor.</translation>
     </message>
     <message>
-        <location filename="../src/svg/gerbergenerator.cpp" line="292"/>
-        <location filename="../src/svg/gerbergenerator.cpp" line="326"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="294"/>
+        <location filename="../src/svg/gerbergenerator.cpp" line="328"/>
         <source>mask export failure</source>
         <translation>mask dışa aktarım hatası</translation>
     </message>
@@ -7053,7 +7078,7 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
     </message>
     <message>
         <location filename="../src/autoroute/panelizer.cpp" line="1375"/>
-        <location filename="../src/fapplication.cpp" line="923"/>
+        <location filename="../src/fapplication.cpp" line="924"/>
         <source>%1 wires moved from their saved position in %2.</source>
         <translation>%1 kablo kaydedilmiş %2 yerlerinden hareket ettirildi.</translation>
     </message>
@@ -7068,7 +7093,7 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
         <translation>Simge Görünümü</translation>
     </message>
     <message>
-        <location filename="../src/partseditor/pemainwindow.cpp" line="659"/>
+        <location filename="../src/partseditor/pemainwindow.cpp" line="660"/>
         <source>Internal Connections</source>
         <translation>İç Bağlantılar</translation>
     </message>
@@ -7163,36 +7188,62 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
 <context>
     <name>QuoteDialog</name>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="123"/>
+        <location filename="../src/dialogs/quotedialog.cpp" line="111"/>
         <source>Fab Quote</source>
         <translation>Fab Alıntı Yapma</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="128"/>
-        <source>The total area of the %n boards in this sketch is %1 cm2 (%2 in2).</source>
-        <translation>
-            <numerusform>Bu çizimdeki %n boardlarının toplam alanı %1 cm2 (2&apos;de %2).</numerusform>
-        </translation>
+    <message>
+        <location filename="../src/dialogs/quotedialog.cpp" line="115"/>
+        <source>Order your PCB from Fritzing Fab</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="147"/>
-        <source>Please note, price does not include shipping, possible additional taxes, or the checking fee.</source>
-        <translation>Ücretin nakliye masraflarını, olası ek vergileri ya da kontrol ücretini içermediğini hatırlatmak isteriz.</translation>
+        <location filename="../src/dialogs/quotedialog.cpp" line="137"/>
+        <source>Copies</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="151"/>
+        <location filename="../src/dialogs/quotedialog.cpp" line="148"/>
+        <source>Please note that prices do not include shipping, possible additional taxes, or the checking fee.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quotedialog.cpp" line="164"/>
+        <source>Visit Fritzing Fab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quotedialog.cpp" line="219"/>
+        <source>Use Fritzing Fab to produce a PCB from your sketch. Take advantage of our quantity discount:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quotedialog.cpp" line="153"/>
         <source>For more information on pricing see &lt;a href=&apos;http://fab.fritzing.org/pricing&apos;&gt;http://fab.fritzing.org/pricing&lt;/a&gt;.</source>
         <translation>Ücretlendirme ile ilgili daha fazla bilgi için &lt;a href=&apos;http://fab.fritzing.org/pricing&apos;&gt;http://fab.fritzing.org/pricing&lt;/a&gt; &apos;i ziyaret edin.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="156"/>
-        <source>To order go to &lt;a href=&apos;http://fab.fritzing.org/fritzing-fab&apos;&gt;http://fab.fritzing.org/fritzing-fab&lt;/a&gt; and click &apos;Order Now&apos;.</source>
-        <translation>Sipariş vermek için &lt;a href=&apos;http://fab.fritzing.org/fritzing-fab&apos;&gt;http://fab.fritzing.org/fritzing-fab&lt;/a&gt; adresine gidin ve Order Now&apos;a tıklayın.</translation>
-    </message>
-    <message>
-        <location filename="../src/sketch/pcbsketchwidget.cpp" line="164"/>
+        <location filename="../src/dialogs/quotedialog.cpp" line="186"/>
         <source>OK</source>
         <translation>TAMAM</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/dialogs/quotedialog.cpp" line="214"/>
+        <source>The total area of the %n boards in this sketch is %1 cm%3 (%2 in%3).
+</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quotedialog.cpp" line="137"/>
+        <source>Price per board</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quotedialog.cpp" line="137"/>
+        <source>Price</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -7414,12 +7465,12 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
 <context>
     <name>SchematicSketchWidget</name>
     <message>
-        <location filename="../src/sketch/schematicsketchwidget.cpp" line="272"/>
+        <location filename="../src/sketch/schematicsketchwidget.cpp" line="273"/>
         <source>Change label from %1 to %2</source>
         <translation>Etiketi %1&apos;den %2&apos;ye çevir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/schematicsketchwidget.cpp" line="317"/>
+        <location filename="../src/sketch/schematicsketchwidget.cpp" line="318"/>
         <source>Change voltage from %1 to %2</source>
         <translation>Gerilimi %1&apos;den %2&apos;ye çevir</translation>
     </message>
@@ -7515,82 +7566,82 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
         <translation>%1 Ekle</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="2113"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="2111"/>
         <source>Selection</source>
         <translation>Seçim</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3245"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3243"/>
         <source>Move %2 (%1)</source>
         <translation>%2&apos;yi taşı (%1)</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3248"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3246"/>
         <source>Move %2 items (%1)</source>
         <translation>%2 öğelerini taşı (%1)</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3426"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9392"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3424"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9351"/>
         <source>Select %1</source>
         <translation>%1&apos;i seç</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3429"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9395"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3427"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9354"/>
         <source>Select %1 items</source>
         <translation>%1 öğelerini seç</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3517"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3699"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3515"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3697"/>
         <source>Disconnect</source>
         <translation>Bağlantıyı Kes</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3707"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3705"/>
         <source>Change</source>
         <translation>Değiştir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3525"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3711"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3523"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3709"/>
         <source>Connect</source>
         <translation>Bağla</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3526"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3712"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3524"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3710"/>
         <source>to %1</source>
         <translation>%1&apos;e</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3765"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3763"/>
         <source>Create and connect wire</source>
         <translation>Kablo oluştur ve bağla</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4527"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4529"/>
         <source>Rotate %2 (%1)</source>
         <translation>%2&apos;yi Döndür (%1)</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5792"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5794"/>
         <source>Note text change</source>
         <translation>Not metni değişimi</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7076"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7035"/>
         <source>Rotate</source>
         <translation>Dödür</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7076"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7035"/>
         <source>Flip</source>
         <translation>Çevir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5664"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5666"/>
         <source>Double-click</source>
         <translation>Çift-tık</translation>
     </message>
@@ -7600,194 +7651,194 @@ Fritzing hala çalışıyor ancak elemanın özelliklerini değiştiremeyeceksin
         <translation>Yumağı sil</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3518"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3516"/>
         <source>from %1</source>
         <translation>%1&apos;den</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3521"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3519"/>
         <source>Move leg of</source>
         <translatorcomment>there is no special of word in turkish its used as suffix generally</translatorcomment>
         <translation>Ayağını taşı</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3581"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3579"/>
         <source>Change leg curvature for %1.</source>
         <translation>%1 için ayak eğikliğini değiştir.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3607"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3605"/>
         <source>Change leg bendpoint for %1.</source>
         <translation>%1 için ayak esnetme noktasını değiştir.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3887"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3885"/>
         <source>Fritzing</source>
         <translation>Fritzing</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3887"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3885"/>
         <source>This seems like an attempt to create a trace across layers. This circumstance should not arise: please contact the developers.</source>
         <translation>Bu katmanlar arası bir hat oluşturma girişimi gibi görünüyor. Bu durumlar ortaya çıkmamalı: lütfen geliştiricilerle iletişime geçin.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3892"/>
         <source>Create and connect %1</source>
         <translation>%1 oluştur ve bağla</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3892"/>
         <source>wire</source>
         <translation>kablo</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="3894"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="3892"/>
         <source>trace</source>
         <translation>hat</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="4713"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="4715"/>
         <source>Flip %2 (%1)</source>
         <translation>%2&apos;yi çevir (%1)</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5664"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5666"/>
         <source>Drag or double-click</source>
         <translation>Sürükle ya da çift-tıkla</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5665"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5667"/>
         <source>or alt-drag to move the segment</source>
         <translation>ya da parçayı sürüklemek için alt-sürükle</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5730"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5732"/>
         <source>Double-click to delete this bend point</source>
         <translation>Bu esnetme noktasını silmek için çift tıkla</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="5818"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="5820"/>
         <source>Change %1 label to &apos;%2&apos;</source>
         <translation>%1 etiketini &apos;%2&apos;&apos;ye çevir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6317"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6319"/>
         <source>Change %1 color from %2 to %3</source>
         <translation>%1 rengini %2&apos;den %3&apos;e çevir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6323"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6325"/>
         <source>Change color of %1 wires to %2</source>
         <translation>%1 kablolarının rengini %2&apos;ye çevir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6369"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6371"/>
         <source>Change %1 width from %2 to %3</source>
         <translation>%1 genişliğini %2&apos;den %3&apos;e çevir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="6375"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="6377"/>
         <source>Change width of %1 wires to %2</source>
         <translation>%1 kablolarının genişliğini %2&apos;ye çevir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7069"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7028"/>
         <source>Move label &apos;%1&apos;</source>
         <translation>&apos;%1&apos; etiketini taşı</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7076"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7035"/>
         <source>%1 label &apos;%2&apos;</source>
         <translation>%1 etiketi &apos;%2&apos;</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="7111"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7070"/>
         <source>show %n part label(s)</source>
         <translation>
             <numerusform>%n eleman etiket(ler)ini göster</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/sketch/sketchwidget.cpp" line="7114"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7073"/>
         <source>hide %n part label(s)</source>
         <translation>
             <numerusform>%n eleman etiket(ler)ini gizle</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7650"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7609"/>
         <source>Resize ruler to %1 %2</source>
         <translation>Cetveli %1&apos;e %2 tekrar ölçeklendir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7128"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7087"/>
         <source>Resize Note</source>
         <translation>Notu Tekrar Ölçeklendir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7519"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7478"/>
         <source>Change Resistance from %1 to %2</source>
         <translation>Direnç değerini %1&apos;den %2&apos;ye değiştir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7543"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7552"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7502"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7511"/>
         <source>Change %1 from %2 to %3</source>
         <translation>%1&apos;i %2&apos;den %3&apos;e değiştir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7673"/>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8553"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7632"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8512"/>
         <source>Resize board to %1 %2</source>
         <translation>Board&apos;u %1&apos;e %2 tekrardan ölçeklendir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7730"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7689"/>
         <source>Create wire from Ratsnest</source>
         <translation>Yumaktan kablo oluştur</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7935"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7894"/>
         <source>Disconnect all wires from %1</source>
         <translation>%1&apos;den tüm kablo bağlantılarını kes</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="7938"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="7897"/>
         <source>Disconnect all wires from %1 items</source>
         <translation>%1 öğelerinden tüm kablo bağlantılarını kes</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8212"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8171"/>
         <source>Change image from %1 to %2</source>
         <translation>Resmi %1&apos;den %2&apos;ye değiştir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="8938"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8897"/>
         <source>Rotate %1</source>
         <translation>%1&apos;i döndür</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9007"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="8966"/>
         <source>change pin labels</source>
         <translation>pin etiketlerini değiştir</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9298"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9257"/>
         <source>Unrouted connections are highlighted in yellow.</source>
         <translation>Yönlendirilmemiş bağlantılar sarı ile vurgulanmıştır.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9299"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9258"/>
         <source>There are no unrouted connections</source>
         <translation>Yönlendirilmemiş bağlantı yok</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9300"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9259"/>
         <source>Unrouted connections</source>
         <translation>Yönlendirilmemiş bağlantılar</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9301"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9260"/>
         <source>%1
 
 Note: you can also trigger this display by mousing down on the routing status text in the status bar.</source>
@@ -7796,12 +7847,12 @@ Note: you can also trigger this display by mousing down on the routing status te
 Not:Bu görüntüyü fareyi durum çubuğundaki yönlendirme durumu metni üzerinde aşağı kaydırarak da tetikleyebilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9347"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9306"/>
         <source>Part &apos;%1&apos; not found in sketch</source>
         <translation>&apos;%1&apos; elemanı çizimde bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/sketch/sketchwidget.cpp" line="9389"/>
+        <location filename="../src/sketch/sketchwidget.cpp" line="9348"/>
         <source>Deselect all</source>
         <translation>Tümünü seçmeyi bırak</translation>
     </message>

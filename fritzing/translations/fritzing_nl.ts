@@ -3092,6 +3092,30 @@ Doorgaan en terug naar vorige versie?</translation>
         <source>Enter Text</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>View from Above</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View from Below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View from below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View the PCB from the bottom layers upwards</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View from above</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View the PCB from the top layers downwards</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MazeRouter</name>
@@ -3290,13 +3314,6 @@ Reden : %2 (errcode %3)</translation>
     <message>
         <source>Your sketch does not have a board yet. You cannot fabricate this sketch without a PCB part.</source>
         <translation>Je sketch heeft nog geen bord! Je kunt je sketch niet fabriceren zonder een PCB onderdeel.</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n copies of this sketch will cost %1 Euros.</source>
-        <translation>
-            <numerusform>%n kopie van deze sketch kost %1 Euro.</numerusform>
-            <numerusform>%n kopieën van deze sketch kosten %1 Euro.</numerusform>
-        </translation>
     </message>
     <message>
         <source>Enter Keepout</source>
@@ -5636,27 +5653,48 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
         <translation>Fab Offerte</translation>
     </message>
     <message>
-        <source>Please note, price does not include shipping, possible additional taxes, or the checking fee.</source>
-        <translation>Let op, de prijs is exclusief verzenden, mogelijke belastingen of extra kosten van je bank.</translation>
-    </message>
-    <message>
         <source>For more information on pricing see &lt;a href=&apos;http://fab.fritzing.org/pricing&apos;&gt;http://fab.fritzing.org/pricing&lt;/a&gt;.</source>
         <translation>Voor meer informatie over beprijzing ga je naar &lt;a href=&apos;http://fab.fritzing.org/pricing&apos;&gt;http://fab.fritzing.org/pricing&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>To order go to &lt;a href=&apos;http://fab.fritzing.org/fritzing-fab&apos;&gt;http://fab.fritzing.org/fritzing-fab&lt;/a&gt; and click &apos;Order Now&apos;.</source>
-        <translation>Om te bestellen ga je naar &lt;a href=&apos;http://fab.fritzing.org/fritzing-fab&apos;&gt;http://fab.fritzing.org/fritzing-fab&lt;/a&gt; en klik op &apos;Order Now&apos;.</translation>
     </message>
     <message>
         <source>OK</source>
         <translation>OK</translation>
     </message>
+    <message>
+        <source>Order your PCB from Fritzing Fab</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <source>The total area of the %n boards in this sketch is %1 cm2 (%2 in2).</source>
-        <translation>
-            <numerusform>Het totale oppervlakte van %n bord in deze sketch is %1 cm2 (%2 in2).</numerusform>
-            <numerusform>Het totale oppervlakte van %n borden in deze sketch is %1 cm2 (%2 in2).</numerusform>
+        <source>The total area of the %n boards in this sketch is %1 cm%3 (%2 in%3).
+</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Price per board</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please note that prices do not include shipping, possible additional taxes, or the checking fee.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Fritzing Fab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Fritzing Fab to produce a PCB from your sketch. Take advantage of our quantity discount:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
