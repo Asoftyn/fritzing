@@ -17,8 +17,6 @@
      id="defs56" />
   <g
      id="copper1">
-       transform=&quot;matrix(0,1,-1,0,3856,0)&quot;
-       id=&quot;mat&quot;&gt;
       <rect
    width="157"
    height="472"
@@ -245,8 +243,9 @@
    style="fill:#ffbf00;stroke-width:0" />
 </g>
   <g
-     transform="matrix(0,1,-1,0,3856,0)"
      id="silkscreen">
+     <g  transform="matrix(0,1,-1,0,3856,0)">
+
     <line
        style="fill:none;stroke:#ffffff;stroke-width:50;stroke-linecap:round"
        id="line44"
@@ -286,5 +285,5 @@
        transform="matrix(0,-111.11112,111.11112,0,0,3856)"
        id="path3640"
        style="fill:none;stroke:#ffffff;stroke-width:0.44999999;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-  </g>
+  </g>  </g>
 </svg>
