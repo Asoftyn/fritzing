@@ -95,37 +95,28 @@ $Date$
 
 /////////////////////////////////////////////////////////////////////
 
-void hideTerminalID(QString & svg, const QString & terminalID) {
-    int ix = -1;
-    while (true) {
-        ix = svg.indexOf(terminalID, ix + 1);
-        if (ix < 0) return;
+bool hideTerminalID(QDomDocument & doc, const QString & terminalID) {
+    QDomElement root = doc.documentElement();
+    QDomElement terminal = TextUtils::findElementWithAttribute(root, "id", terminalID);
+    if (terminal.isNull()) return false;
 
-        int ltix = svg.lastIndexOf('<', ix);
-        if (ltix < 0) continue;          // weird
+    terminal.setTagName("g");
+    return true;
+}
 
-        int id = svg.lastIndexOf("id", ix);
-        if (id < 0) continue;           // weird
+bool ensureStrokeWidth(QDomDocument & doc, const QString & connectorID, double factor) {
+    QDomElement root = doc.documentElement();
+    QDomElement connector = TextUtils::findElementWithAttribute(root, "id", connectorID);
+    if (connector.isNull()) return false;
 
-        int eq = svg.lastIndexOf("=", ix);
-        if (eq < 0) continue;           // weird
+    QString stroke = connector.attribute("stroke");
+    if (stroke.isEmpty()) return false;
 
-        if (ltix >= id) continue;
-        if (ltix >= eq) continue;
-        if (id >= eq) continue;
+    QString strokeWidth = connector.attribute("stroke-width");
+    if (!strokeWidth.isEmpty()) return false;
 
-        int sp = 0;
-        for (int i = ltix + 1; i < id; i++) {
-            if (svg.at(i) == ' ') {
-                sp = i;
-                break;
-            }
-        }
-        if (sp == 0) continue;
-
-        svg.replace(ltix + 1, sp - ltix - 1, ' ');
-        svg.replace(ltix + 1, 1, 'g');
-    }
+    connector.setAttribute("stroke-width", factor);         // default stroke width is 1, multipled by factor
+    return true;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -7205,43 +7196,49 @@ QString SketchWidget::renderToSVG(RenderThing & renderThing, QList<QGraphicsItem
 		}
 			
 		if (itemBase->itemType() != ModelPart::Wire) {
-			QString itemSvg = itemBase->retrieveSvg(itemBase->viewLayerID(), svgHash, renderThing.blackOnly, renderThing.dpi);
+            double factor;
+			QString itemSvg = itemBase->retrieveSvg(itemBase->viewLayerID(), svgHash, renderThing.blackOnly, renderThing.dpi, factor);
 			if (itemSvg.isEmpty()) continue;
 
+            TextUtils::fixMuch(itemSvg, false);
 
-            if (renderThing.renderBlocker) {
-                Pad * pad = qobject_cast<Pad *>(itemBase);
-                if (pad && pad->copperBlocker()) {
-                    QDomDocument doc;
-                    QString errorStr;
-	                int errorLine;
-	                int errorColumn;
-                    if (doc.setContent(itemSvg, &errorStr, &errorLine, &errorColumn)) {
+            QDomDocument doc;
+            QString errorStr;
+	        int errorLine;
+	        int errorColumn;
+            if (doc.setContent(itemSvg, &errorStr, &errorLine, &errorColumn)) {
+                bool changed = false;
+                if (renderThing.renderBlocker) {
+                    Pad * pad = qobject_cast<Pad *>(itemBase);
+                    if (pad && pad->copperBlocker()) {
                         QDomNodeList nodeList = doc.documentElement().elementsByTagName("rect");
                         for (int n = 0; n < nodeList.count(); n++) {
                             QDomElement element = nodeList.at(n).toElement();
                             element.setAttribute("fill-opacity", 1);
+                            changed = true;
                         }
-
-                        itemSvg = doc.toString(0);
                     }
                 }
-            }
 
-            TextUtils::fixMuch(itemSvg, false);
+			    foreach (ConnectorItem * ci, itemBase->cachedConnectorItems()) {
+                    SvgIdLayer * svgIdLayer = ci->connector()->fullPinInfo(itemBase->viewID(), itemBase->viewLayerID());
+                    if (renderThing.hideTerminalPoints && !svgIdLayer->m_terminalId.isEmpty()) {
+                        // these tend to be degenerate shapes and can cause trouble at gerber export time
+                        if (hideTerminalID(doc, svgIdLayer->m_terminalId)) changed = true;
+                    }
 
-			foreach (ConnectorItem * ci, itemBase->cachedConnectorItems()) {
-                SvgIdLayer * svgIdLayer = ci->connector()->fullPinInfo(itemBase->viewID(), itemBase->viewLayerID());
-                if (renderThing.hideTerminalPoints && !svgIdLayer->m_terminalId.isEmpty()) {
-                    // these tend to be degenerate shapes and can cause trouble at gerber export time
-                    hideTerminalID(itemSvg, svgIdLayer->m_terminalId);
+                    if (ensureStrokeWidth(doc, svgIdLayer->m_svgId, factor)) changed = true;
+
+				    if (!ci->hasRubberBandLeg()) continue;
+
+                    // at the moment, the legs don't get a partID, but since there are no legs in PCB view, we don't care
+				    outputSVG.append(ci->makeLegSvg(offset, renderThing.dpi, renderThing.printerScale, renderThing.blackOnly));
+			    }
+
+                if (changed) {
+                    itemSvg = doc.toString(0);
                 }
-
-				if (!ci->hasRubberBandLeg()) continue;
-
-                // at the moment, the legs don't get a partID, but since there are no legs in PCB view, we don't care
-				outputSVG.append(ci->makeLegSvg(offset, renderThing.dpi, renderThing.printerScale, renderThing.blackOnly));
-			}
+            }
 
             QTransform t = itemBase->transform();
             itemSvg = TextUtils::svgTransform(itemSvg, t, false, QString());

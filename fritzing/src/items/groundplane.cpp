@@ -93,18 +93,18 @@ void GroundPlane::saveParams() {
 void GroundPlane::getParams() {
 }
 
-QString GroundPlane::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
+QString GroundPlane::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor) 
 {
 	QString xml = "";
 	if (viewLayerID == ViewLayer::GroundPlane0 || viewLayerID == ViewLayer::GroundPlane1) {
 		xml = prop("svg");
 
 		if (!xml.isEmpty()) {
-            return PaletteItemBase::normalizeSvg(xml, viewLayerID, blackOnly, dpi);
+            return PaletteItemBase::normalizeSvg(xml, viewLayerID, blackOnly, dpi, factor);
 		}
 	}
 
-	return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+	return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 }
 
 ConnectorItem * GroundPlane::connector0() {

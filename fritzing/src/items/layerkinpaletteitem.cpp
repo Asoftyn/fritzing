@@ -178,9 +178,9 @@ void LayerKinPaletteItem::resetID() {
 	m_id += offset;
 }
 
-QString LayerKinPaletteItem::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
+QString LayerKinPaletteItem::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor) 
 {
-	return m_layerKinChief->retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+	return m_layerKinChief->retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 }
 
 ConnectorItem* LayerKinPaletteItem::newConnectorItem(Connector *connector) 

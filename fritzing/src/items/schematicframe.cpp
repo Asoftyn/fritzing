@@ -241,9 +241,9 @@ void SchematicFrame::addedToScene(bool temporary)
 	resizeMMAux(m_modelPart->localProp("width").toDouble(), m_modelPart->localProp("height").toDouble());
 }
 
-QString SchematicFrame::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi)
+QString SchematicFrame::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor)
 {
-	return ResizableBoard::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+	return ResizableBoard::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 }
 
 bool SchematicFrame::makeLineEdit(QWidget * parent, const QString & family, const QString & propp, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget) 

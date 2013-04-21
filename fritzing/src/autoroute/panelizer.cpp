@@ -1668,7 +1668,8 @@ int Panelizer::checkText(MainWindow * mainWindow, bool displayMessage) {
         if (itemBase == NULL) continue;
         if (!itemBase->isEverVisible()) continue;
 
-        QString itemSvg = itemBase->retrieveSvg(itemBase->viewLayerID(), svgHash, false, GraphicsUtils::StandardFritzingDPI);
+        double factor;
+        QString itemSvg = itemBase->retrieveSvg(itemBase->viewLayerID(), svgHash, false, GraphicsUtils::StandardFritzingDPI, factor);
 		if (itemSvg.isEmpty()) continue;
 
         QDomDocument doc;

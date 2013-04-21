@@ -454,19 +454,19 @@ QString SymbolPaletteItem::makeNetLabelSvg(ViewLayer::ViewLayerID viewLayerID) {
     return svg;
 }
 
-QString SymbolPaletteItem::retrieveNetLabelSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) {
+QString SymbolPaletteItem::retrieveNetLabelSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor) {
     Q_UNUSED(svgHash);
     QString svg = makeNetLabelSvg(viewLayerID);
-    return PaletteItemBase::normalizeSvg(svg, viewLayerID, blackOnly, dpi);
+    return PaletteItemBase::normalizeSvg(svg, viewLayerID, blackOnly, dpi, factor);
 }
 
-QString SymbolPaletteItem::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
+QString SymbolPaletteItem::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor) 
 {
     if (m_isNetLabel && !m_voltageReference) {
-        return retrieveNetLabelSvg(viewLayerID, svgHash, blackOnly, dpi);
+        return retrieveNetLabelSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
     }
 
-	QString svg = PaletteItem::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+	QString svg = PaletteItem::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 	if (m_voltageReference) {
 		switch (viewLayerID) {
 			case ViewLayer::Schematic:

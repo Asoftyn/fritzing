@@ -65,7 +65,7 @@ public:
 	//bool isBuriedConnectorHit(QGraphicsSceneMouseEvent *event);
 	QRectF boundingRect() const;
 	QRectF boundingRectWithoutLegs() const;
-	QString retrieveSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
+	QString retrieveSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor);
 	virtual bool canEditPart();
 	QPainterPath shape() const;
 	QPainterPath hoverShape() const;
@@ -83,7 +83,7 @@ public:
 	void setPos(double x, double y);
 	*/
 protected:
-    static QString normalizeSvg(QString & svg, ViewLayer::ViewLayerID viewLayerID, bool blackOnly, double dpi);
+    static QString normalizeSvg(QString & svg, ViewLayer::ViewLayerID viewLayerID, bool blackOnly, double dpi, double & factor);
 
 protected:
     void setUpConnectors(FSvgRenderer *, bool ignoreTerminalPoints);

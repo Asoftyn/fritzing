@@ -310,9 +310,9 @@ Stripboard::Stripboard( ModelPart * modelPart, ViewLayer::ViewID viewID, const V
 Stripboard::~Stripboard() {
 }
 
-QString Stripboard::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
+QString Stripboard::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor) 
 {
-	QString svg = Perfboard::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+	QString svg = Perfboard::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 	if (svg.isEmpty()) return svg;
 	if (!svg.contains(GerberGenerator::MagicBoardOutlineID)) return svg;
 

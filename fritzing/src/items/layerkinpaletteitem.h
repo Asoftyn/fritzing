@@ -53,7 +53,7 @@ public:
 	bool alreadySticking(ItemBase * itemBase);
 	bool stickyEnabled();
 	void resetID();
-	QString retrieveSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
+	QString retrieveSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor);
 	bool isSwappable();
     void setSwappable(bool);
 	bool inRotation();

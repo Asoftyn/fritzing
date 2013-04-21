@@ -180,18 +180,18 @@ void Resistor::setResistance(QString resistance, QString pinSpacing, bool force)
     if (m_partLabel) m_partLabel->displayTextsIf();
 }
 
-QString Resistor::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
+QString Resistor::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor) 
 {
 	switch (viewLayerID) {
 		case ViewLayer::Breadboard:
 		case ViewLayer::Icon:
 			break;
 		default:
-			return Capacitor::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+			return Capacitor::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 	}
 
 	QString svg = makeSvg(m_ohms, viewLayerID);
-    return PaletteItemBase::normalizeSvg(svg, viewLayerID, blackOnly, dpi);
+    return PaletteItemBase::normalizeSvg(svg, viewLayerID, blackOnly, dpi, factor);
 }
 
 QString Resistor::makeSvg(const QString & resistance, ViewLayer::ViewLayerID viewLayerID) {

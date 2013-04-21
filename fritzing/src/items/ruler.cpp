@@ -85,7 +85,7 @@ void Ruler::resizeMM(double magnitude, double unitsFlag, const LayerHash & viewL
 
 }
 
-QString Ruler::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
+QString Ruler::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor) 
 {
 	double w = TextUtils::convertToInches(m_modelPart->localProp("width").toString());
 	if (w != 0) {
@@ -101,11 +101,11 @@ QString Ruler::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QS
 		}
 
 		if (!xml.isEmpty()) {
-			 return PaletteItemBase::normalizeSvg(xml, viewLayerID, blackOnly, dpi);
+			 return PaletteItemBase::normalizeSvg(xml, viewLayerID, blackOnly, dpi, factor);
 		}
 	}
 
-	return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+	return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 }
 
 QString Ruler::makeSvg(double inches) {

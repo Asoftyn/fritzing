@@ -821,8 +821,9 @@ bool PEMainWindow::setInitialItem(PaletteItem * paletteItem)
 
         QHash<QString, QString> svgHash;
 		QStringList svgList;
+        double factor;
 		foreach (ViewLayer * vl, viewThing->sketchWidget->viewLayers().values()) {
-			QString string = itemBase->retrieveSvg(vl->viewLayerID(), svgHash, false, GraphicsUtils::StandardFritzingDPI);
+			QString string = itemBase->retrieveSvg(vl->viewLayerID(), svgHash, false, GraphicsUtils::StandardFritzingDPI, factor);
 			if (!string.isEmpty()) {
 				svgList.append(string);
 			}
@@ -2126,7 +2127,8 @@ bool PEMainWindow::saveAs(bool overWrite)
 
                 if (itemBase->layerKinChief() == viewThing->itemBase) continue;
 
-			    QString string = itemBase->layerKinChief()->retrieveSvg(itemBase->viewLayerID(), svgHash, false, vbWidth / svgWidth);
+                double factor;
+			    QString string = itemBase->layerKinChief()->retrieveSvg(itemBase->viewLayerID(), svgHash, false, vbWidth / svgWidth, factor);
 			    if (!string.isEmpty()) {
                     QPointF d = itemBase->pos() - viewThing->itemBase->pos();
                     double dx = d.x() * (vbWidth / svgWidth) / GraphicsUtils::SVGDPI;

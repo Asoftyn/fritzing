@@ -1126,7 +1126,8 @@ void MainWindow::exportSvgWatermark(QString & svg, double res)
 	bool result = splitter.splitString(watermarkSvg, "watermark");
 	if (!result) return;
 
-	result = splitter.normalize(res, "watermark", false);
+    double factor;
+	result = splitter.normalize(res, "watermark", false, factor);
 	if (!result) return;
 
 	QString transWatermark = splitter.shift((svgSize.width() - watermarkSize.width()) * res, svgSize.height() * res, "watermark", true);

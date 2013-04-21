@@ -739,9 +739,10 @@ bool Note::rotation45Allowed() {
 	return false;
 }
 
-QString Note::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi)
+QString Note::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor)
 {
 	Q_UNUSED(svgHash);
+    factor = 1;
 
 	switch (viewLayerID) {
 		case ViewLayer::BreadboardNote:

@@ -106,7 +106,7 @@ public:
 	void resizePixels(double w, double h, const LayerHash & viewLayers);
  	void loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLayerSpec);
 	virtual void setInitialSize();
-	QString retrieveSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
+	QString retrieveSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor);
 	bool collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget);
 	void saveParams();
 	void getParams(QPointF &, QSizeF &);

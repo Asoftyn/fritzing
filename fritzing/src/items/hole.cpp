@@ -253,23 +253,23 @@ ItemBase::PluralType Hole::isPlural() {
 	return Plural;
 }
 
-QString Hole::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
+QString Hole::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor) 
 {
 	if (m_viewID != ViewLayer::PCBView || 
 		(viewLayerID != ViewLayer::Copper0 && viewLayerID != ViewLayer::Copper1)) 
 	{
-		return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+		return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 	}
 
 	QStringList holeSize = m_modelPart->localProp("hole size").toString().split(",");
 	if (holeSize.length() == 2) {
 		QString svg = makeSvg(holeSize.at(0), holeSize.at(1), viewLayerID, false);
 		if (!svg.isEmpty()) {
-            return PaletteItemBase::normalizeSvg(svg, viewLayerID, blackOnly, dpi);
+            return PaletteItemBase::normalizeSvg(svg, viewLayerID, blackOnly, dpi, factor);
 		}
 	}
 
-	return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+	return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 }
 
 bool Hole::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget) 

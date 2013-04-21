@@ -605,7 +605,7 @@ LayerKinPaletteItem *PaletteItemBase::newLayerKinPaletteItem(PaletteItemBase * c
 	return lk;
 }
 
-QString PaletteItemBase::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
+QString PaletteItemBase::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor) 
 {
 	QString xmlName = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
 	QString path = filename();
@@ -643,7 +643,7 @@ QString PaletteItemBase::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<Q
 		}
 	}
 
-	result = splitter.normalize(dpi, xmlName, blackOnly);
+	result = splitter.normalize(dpi, xmlName, blackOnly, factor);
 	if (!result) {
 		return "";
 	}
@@ -761,7 +761,7 @@ void PaletteItemBase::checkFreeRotation(Qt::KeyboardModifiers modifiers, QPointF
 	}
 }
 
-QString PaletteItemBase::normalizeSvg(QString & svg, ViewLayer::ViewLayerID viewLayerID, bool blackOnly, double dpi)
+QString PaletteItemBase::normalizeSvg(QString & svg, ViewLayer::ViewLayerID viewLayerID, bool blackOnly, double dpi, double & factor)
 {
 	QString xmlName = ViewLayer::viewLayerXmlNameFromID(viewLayerID);
 	SvgFileSplitter splitter;
@@ -769,7 +769,7 @@ QString PaletteItemBase::normalizeSvg(QString & svg, ViewLayer::ViewLayerID view
 	if (!result) {
 		return "";
 	}
-	result = splitter.normalize(dpi, xmlName, blackOnly);
+	result = splitter.normalize(dpi, xmlName, blackOnly, factor);
 	if (!result) {
 		return "";
 	}

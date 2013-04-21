@@ -47,20 +47,20 @@ LED::LED( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & 
 LED::~LED() {
 }
 
-QString LED::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
+QString LED::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor) 
 {
 	switch (viewLayerID) {
 		case ViewLayer::Breadboard:
 		case ViewLayer::Icon:
 			break;
 		default:
-			return Capacitor::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+			return Capacitor::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 	}
 
 	QString svg = getColorSVG(prop("color"), viewLayerID);
 	if (svg.isEmpty()) return "";
 
-    return PaletteItemBase::normalizeSvg(svg, viewLayerID, blackOnly, dpi);
+    return PaletteItemBase::normalizeSvg(svg, viewLayerID, blackOnly, dpi, factor);
 }
 
 void LED::addedToScene(bool temporary)

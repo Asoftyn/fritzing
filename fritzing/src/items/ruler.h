@@ -46,7 +46,7 @@ public:
 	~Ruler();
 
 	void resizeMM(double magnitude, double unitsFlag, const LayerHash & viewLayers);
-	QString retrieveSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi);
+	QString retrieveSvg(ViewLayer::ViewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor);
 	bool collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget);
 	bool hasCustomSVG();
 	bool stickyEnabled();

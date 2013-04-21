@@ -185,9 +185,9 @@ double Pad::minHeight() {
 	return 1;
 }
 
-QString Pad::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi)
+QString Pad::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor)
 {
-	return ResizableBoard::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+	return ResizableBoard::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 }
 
 bool Pad::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget) 

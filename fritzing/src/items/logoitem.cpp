@@ -137,7 +137,7 @@ QStringList & LogoItem::getNewImageNames() {
 	return NewLogoImageNames;
 }
 
-QString LogoItem::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi)
+QString LogoItem::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor)
 {
 	if (canRetrieveLayer(viewLayerID)) {
 		QString svg = prop("shape");
@@ -174,7 +174,7 @@ QString LogoItem::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString,
 				}
 			}
 
-			result = splitter.normalize(dpi, xmlName, blackOnly);
+			result = splitter.normalize(dpi, xmlName, blackOnly, factor);
 			if (!result) {
 				return "";
 			}
@@ -189,7 +189,7 @@ QString LogoItem::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString,
 		}
 	}
 
-	return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+	return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 }
 
 bool LogoItem::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget) 

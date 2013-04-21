@@ -189,12 +189,14 @@ QString SvgFileSplitter::elementString(const QString & elementID) {
 	return document.toString();
 }
 
-bool SvgFileSplitter::normalize(double dpi, const QString & elementID, bool blackOnly)
+bool SvgFileSplitter::normalize(double dpi, const QString & elementID, bool blackOnly, double & factor)
 {
 	// get the viewbox and the width and height
 	// then normalize them
 	// then normalize all the internal stuff
 	// if there are translations, we're probably ok
+
+    factor = 1;
 
 	QDomElement root = m_domDocument.documentElement();
 	if (root.isNull()) return false;
@@ -215,6 +217,8 @@ bool SvgFileSplitter::normalize(double dpi, const QString & elementID, bool blac
 
 	normalizeChild(mainElement, sWidth * dpi, sHeight * dpi, vbWidth, vbHeight, blackOnly);
 
+    factor = sWidth * dpi / vbWidth;
+
 	return true;
 }
 
@@ -224,7 +228,8 @@ QPainterPath SvgFileSplitter::painterPath(double dpi, const QString & elementID)
 
 	QPainterPath ppath;
 
-	bool result = normalize(dpi, elementID, false);
+    double factor;
+	bool result = normalize(dpi, elementID, false, factor);
 	if (!result) return ppath;
 
 	QDomElement root = m_domDocument.documentElement();

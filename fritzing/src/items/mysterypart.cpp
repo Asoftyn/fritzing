@@ -113,9 +113,9 @@ void MysteryPart::setChipLabel(QString chipLabel, bool force) {
     if (m_partLabel) m_partLabel->displayTextsIf();
 }
 
-QString MysteryPart::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
+QString MysteryPart::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor) 
 {
-	QString svg = PaletteItem::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+	QString svg = PaletteItem::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 	switch (viewLayerID) {
 		case ViewLayer::Breadboard:
 		case ViewLayer::Icon:

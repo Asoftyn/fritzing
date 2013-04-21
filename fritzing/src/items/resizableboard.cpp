@@ -847,18 +847,18 @@ void ResizableBoard::setInitialSize() {
 	}
 }
 
-QString ResizableBoard::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi)
+QString ResizableBoard::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor)
 {
 	double w = m_modelPart->localProp("width").toDouble();
 	if (w != 0) {
 		double h = m_modelPart->localProp("height").toDouble();
 		QString xml = makeLayerSvg(viewLayerID, w, h, GraphicsUtils::mm2mils(w), GraphicsUtils::mm2mils(h));
 		if (!xml.isEmpty()) {
-			return PaletteItemBase::normalizeSvg(xml, viewLayerID, blackOnly, dpi);
+			return PaletteItemBase::normalizeSvg(xml, viewLayerID, blackOnly, dpi, factor);
 		}
 	}
 
-	return Board::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+	return Board::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 }
 
 QSizeF ResizableBoard::getSizeMM() {

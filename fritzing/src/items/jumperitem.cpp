@@ -413,7 +413,7 @@ QSizeF JumperItem::footprintSize() {
 	return r0.size();
 }
 
-QString JumperItem::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi) 
+QString JumperItem::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QString> & svgHash, bool blackOnly, double dpi, double & factor) 
 {
 	QString xml = "";
 	switch (viewLayerID) {
@@ -428,10 +428,10 @@ QString JumperItem::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QStrin
 	}
 
 	if (!xml.isEmpty()) {
-        return PaletteItemBase::normalizeSvg(xml, viewLayerID, blackOnly, dpi);
+        return PaletteItemBase::normalizeSvg(xml, viewLayerID, blackOnly, dpi, factor);
 	}
 
-	return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi);
+	return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 }
 
 void JumperItem::setAutoroutable(bool ar) {

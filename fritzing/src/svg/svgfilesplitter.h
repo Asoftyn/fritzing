@@ -59,7 +59,7 @@ public:
 	bool splitString(QString & contents, const QString & elementID);
 	const QByteArray & byteArray();
 	const QDomDocument & domDocument();
-	bool normalize(double dpi, const QString & elementID, bool blackOnly);
+	bool normalize(double dpi, const QString & elementID, bool blackOnly, double & factor);
 	QString shift(double x, double y, const QString & elementID, bool shiftTransforms);
 	QString elementString(const QString & elementID);
     virtual bool parsePath(const QString & data, const char * slot, PathUserData &, QObject * slotTarget, bool convertHV);
