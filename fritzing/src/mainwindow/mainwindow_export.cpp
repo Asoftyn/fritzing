@@ -1385,6 +1385,9 @@ void MainWindow::exportSpiceNetlist() {
         output += "\n";
     }
 
+
+    output += ".TRAN 1ms 100ms\n";
+    output += "* .AC DEC 100 100 1MEG\n";
     output += ".END\n";
 
 	foreach (QList<ConnectorItem *> * net, netList) {

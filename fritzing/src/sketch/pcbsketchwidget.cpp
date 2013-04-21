@@ -2909,9 +2909,7 @@ void PCBSketchWidget::setViewFromBelow(bool viewFromBelow) {
     }
 
     // enable only with multiple layers?
-    // does find connector underneath still work?
     // active layer should be secondary mechanism?
-
 
     SketchWidget::setViewFromBelow(viewFromBelow);
 }

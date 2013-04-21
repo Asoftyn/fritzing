@@ -2081,7 +2081,7 @@ void MainWindow::swapSelectedAux(ItemBase * itemBase, const QString & moduleID, 
     if (m_pcbGraphicsView->boardLayers() == 2) {
         ModelPart * modelPart = m_referenceModel->retrieveModelPart(moduleID);
         if (modelPart->flippedSMD()) {
-            viewLayerSpec = !m_pcbGraphicsView->layerIsActive(ViewLayer::Copper1) || m_pcbGraphicsView->viewFromBelow() ? ViewLayer::ThroughHoleThroughTop_OneLayer : ViewLayer::ThroughHoleThroughTop_TwoLayers;
+            viewLayerSpec = (!m_pcbGraphicsView->layerIsActive(ViewLayer::Copper1) || m_pcbGraphicsView->viewFromBelow()) ? ViewLayer::ThroughHoleThroughTop_OneLayer : ViewLayer::ThroughHoleThroughTop_TwoLayers;
             if (useViewLayerSpec) viewLayerSpec = overrideViewLayerSpec;
         }
     }
