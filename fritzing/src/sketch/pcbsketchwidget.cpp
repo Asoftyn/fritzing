@@ -146,7 +146,38 @@ void PCBSketchWidget::setWireVisible(Wire * wire)
 }
 
 void PCBSketchWidget::addViewLayers() {
-	addPcbViewLayers();
+    setViewLayerIDs(ViewLayer::Silkscreen1, ViewLayer::Copper0Trace, ViewLayer::Copper0, ViewLayer::PcbRuler, ViewLayer::PcbNote);
+	addViewLayersAux(ViewLayer::layersForView(ViewLayer::PCBView), ViewLayer::layersForViewFromBelow(ViewLayer::PCBView));
+
+	ViewLayer * silkscreen1 = m_viewLayers.value(ViewLayer::Silkscreen1);
+	ViewLayer * silkscreen1Label = m_viewLayers.value(ViewLayer::Silkscreen1Label);
+	if (silkscreen1 && silkscreen1Label) {
+		silkscreen1Label->setParentLayer(silkscreen1);
+	}
+	ViewLayer * silkscreen0 = m_viewLayers.value(ViewLayer::Silkscreen0);
+	ViewLayer * silkscreen0Label = m_viewLayers.value(ViewLayer::Silkscreen0Label);
+	if (silkscreen0 && silkscreen0Label) {
+		silkscreen0Label->setParentLayer(silkscreen0);
+	}
+
+	ViewLayer * copper0 = m_viewLayers.value(ViewLayer::Copper0);
+	ViewLayer * copper0Trace = m_viewLayers.value(ViewLayer::Copper0Trace);
+	ViewLayer * copper1 = m_viewLayers.value(ViewLayer::Copper1);
+	ViewLayer * copper1Trace = m_viewLayers.value(ViewLayer::Copper1Trace);
+	if (copper0 && copper0Trace) {
+		copper0Trace->setParentLayer(copper0);
+	}
+	ViewLayer * groundPlane0 = m_viewLayers.value(ViewLayer::GroundPlane0);
+	if (copper0 && groundPlane0) {
+		groundPlane0->setParentLayer(copper0);
+	}
+	if (copper1 && copper1Trace) {
+		copper1Trace->setParentLayer(copper1);
+	}
+	ViewLayer * groundPlane1 = m_viewLayers.value(ViewLayer::GroundPlane1);
+	if (copper1 && groundPlane1) {
+		groundPlane1->setParentLayer(copper1);
+	}
 
 	// disable these for now
 	//viewLayer = m_viewLayers.value(ViewLayer::Keepout);
@@ -2852,3 +2883,44 @@ void PCBSketchWidget::setGroundFillKeepout() {
     settings.setValue(GroundPlaneGenerator::KeepoutSettingName, keepoutString);
 }
 
+void PCBSketchWidget::setViewFromBelow(bool viewFromBelow) {
+    if (m_viewFromBelow == viewFromBelow) return;
+
+    QSet<ItemBase *> chiefs;
+	foreach (QGraphicsItem * item, scene()->items()) {
+        ItemBase * itemBase = dynamic_cast<ItemBase *>(item);
+        if (itemBase == NULL) continue;
+
+        ViewLayer * viewLayer = m_viewLayers.value(itemBase->viewLayerID(), NULL);
+        if (viewLayer == NULL) continue;
+
+        double newZ = viewLayer->getZFromBelow(itemBase->z(), viewFromBelow);
+        itemBase->setZValue(newZ);
+        itemBase->getViewGeometry().setZ(newZ);
+        chiefs.insert(itemBase->layerKinChief());
+    }
+
+    foreach (ItemBase * chief, chiefs) {
+        chief->figureHover();
+    }
+
+    foreach (ViewLayer * viewLayer, m_viewLayers.values()) {
+        viewLayer->setFromBelow(viewFromBelow);
+    }
+
+    // enable only with multiple layers?
+    // does find connector underneath still work?
+    // active layer should be secondary mechanism?
+
+
+    SketchWidget::setViewFromBelow(viewFromBelow);
+}
+
+void PCBSketchWidget::getDroppedItemViewLayerSpec(ModelPart * modelPart, ViewLayer::ViewLayerSpec & viewLayerSpec) {
+    viewLayerSpec = defaultViewLayerSpec();
+    if (modelPart->flippedSMD() && boardLayers() == 2) {
+        if (!layerIsActive(ViewLayer::Copper1) || viewFromBelow()) {
+            viewLayerSpec = ViewLayer::ThroughHoleThroughTop_OneLayer;   // sounds funny, but puts it on the bottom layer
+        }
+    }
+}

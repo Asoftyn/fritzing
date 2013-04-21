@@ -66,7 +66,8 @@ void BreadboardSketchWidget::findConnectorsUnder(ItemBase * item) {
 }
 
 void BreadboardSketchWidget::addViewLayers() {
-	addBreadboardViewLayers();
+	setViewLayerIDs(ViewLayer::Breadboard, ViewLayer::BreadboardWire, ViewLayer::Breadboard, ViewLayer::BreadboardRuler, ViewLayer::BreadboardNote);
+	addViewLayersAux(ViewLayer::layersForView(ViewLayer::BreadboardView), ViewLayer::layersForViewFromBelow(ViewLayer::BreadboardView));
 }
 
 bool BreadboardSketchWidget::disconnectFromFemale(ItemBase * item, QHash<long, ItemBase *> & savedItems, ConnectorPairHash & connectorHash, bool doCommand, bool rubberBandLegEnabled, QUndoCommand * parentCommand)

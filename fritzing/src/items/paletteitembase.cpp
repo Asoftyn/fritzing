@@ -518,12 +518,15 @@ void PaletteItemBase::connectedMoved(ConnectorItem * from, ConnectorItem * to) {
 }
 
 void PaletteItemBase::hoverEnterEvent ( QGraphicsSceneHoverEvent * event ) {
+	// debugInfo("paletteitembase hover enter");
+    // i think lowerConnectorLayerVisible is obsolete
 	if (lowerConnectorLayerVisible(this)) {
 		DebugDialog::debug("PaletteItemBase::hoverEnterEvent isn't obsolete");
 		event->ignore();
 		return;
 	}
 
+	// debugInfo("hover enter paletteitembase 2");
 	ItemBase::hoverEnterEvent(event);
 	if (event->isAccepted()) {
 		if (hasRubberBandLeg()) {

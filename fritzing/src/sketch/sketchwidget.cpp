@@ -2027,10 +2027,8 @@ void SketchWidget::dropItemEvent(QDropEvent *event) {
 			break;				
 	}
 
-    ViewLayer::ViewLayerSpec viewLayerSpec = defaultViewLayerSpec();
-    if (modelPart->flippedSMD() && boardLayers() == 2 && !layerIsActive(ViewLayer::Copper1)) {
-        viewLayerSpec = ViewLayer::ThroughHoleThroughTop_OneLayer;
-    }
+    ViewLayer::ViewLayerSpec viewLayerSpec;
+    getDroppedItemViewLayerSpec(modelPart, viewLayerSpec);  
 	AddItemCommand * addItemCommand = newAddItemCommand(crossViewType, modelPart, modelPart->moduleID(), viewLayerSpec, viewGeometry, fromID, true, -1, parentCommand);
 	addItemCommand->setDropOrigin(this);
 
@@ -4416,7 +4414,11 @@ void SketchWidget::changeZ(QHash<long, RealPair * > triplets, double (*pairAcces
 		if (pair == NULL) continue;
 
 		double newZ = pairAccessor(pair);
-		DebugDialog::debug(QString("change z %1 %2").arg(itemBase->id()).arg(newZ));
+        ViewLayer * viewLayer = m_viewLayers.value(itemBase->viewLayerID());
+        if (viewLayer) {
+            newZ = viewLayer->getZFromBelow(newZ, this->viewFromBelow());
+        }
+		//DebugDialog::debug(QString("change z %1 %2").arg(itemBase->id()).arg(newZ));
 		items[i]->setZValue(newZ);
 
 	}
@@ -6445,64 +6447,21 @@ void SketchWidget::resizeEvent(QResizeEvent * event) {
 	emit resizeSignal();
 }
 
-void SketchWidget::addBreadboardViewLayers() {
-	setViewLayerIDs(ViewLayer::Breadboard, ViewLayer::BreadboardWire, ViewLayer::Breadboard, ViewLayer::BreadboardRuler, ViewLayer::BreadboardNote);
-	addViewLayersAux(ViewLayer::layersForView(ViewLayer::BreadboardView));
-}
-
-void SketchWidget::addIconViewLayers() {
-	setViewLayerIDs(ViewLayer::Icon, ViewLayer::Icon, ViewLayer::Icon, ViewLayer::Icon, ViewLayer::Icon);
-	addViewLayersAux(ViewLayer::layersForView(ViewLayer::IconView));
-}
-
-void SketchWidget::addSchematicViewLayers() {
-	setViewLayerIDs(ViewLayer::Schematic, ViewLayer::SchematicTrace, ViewLayer::Schematic, ViewLayer::SchematicRuler, ViewLayer::SchematicNote);
-	addViewLayersAux(ViewLayer::layersForView(ViewLayer::SchematicView));
-}
-
-void SketchWidget::addPcbViewLayers() {
-	setViewLayerIDs(ViewLayer::Silkscreen1, ViewLayer::Copper0Trace, ViewLayer::Copper0, ViewLayer::PcbRuler, ViewLayer::PcbNote);
-	addViewLayersAux(ViewLayer::layersForView(ViewLayer::PCBView));
-
-	ViewLayer * silkscreen1 = m_viewLayers.value(ViewLayer::Silkscreen1);
-	ViewLayer * silkscreen1Label = m_viewLayers.value(ViewLayer::Silkscreen1Label);
-	if (silkscreen1 && silkscreen1Label) {
-		silkscreen1Label->setParentLayer(silkscreen1);
-	}
-	ViewLayer * silkscreen0 = m_viewLayers.value(ViewLayer::Silkscreen0);
-	ViewLayer * silkscreen0Label = m_viewLayers.value(ViewLayer::Silkscreen0Label);
-	if (silkscreen0 && silkscreen0Label) {
-		silkscreen0Label->setParentLayer(silkscreen0);
-	}
-
-	ViewLayer * copper0 = m_viewLayers.value(ViewLayer::Copper0);
-	ViewLayer * copper0Trace = m_viewLayers.value(ViewLayer::Copper0Trace);
-	ViewLayer * copper1 = m_viewLayers.value(ViewLayer::Copper1);
-	ViewLayer * copper1Trace = m_viewLayers.value(ViewLayer::Copper1Trace);
-	if (copper0 && copper0Trace) {
-		copper0Trace->setParentLayer(copper0);
-	}
-	ViewLayer * groundPlane0 = m_viewLayers.value(ViewLayer::GroundPlane0);
-	if (copper0 && groundPlane0) {
-		groundPlane0->setParentLayer(copper0);
-	}
-	if (copper1 && copper1Trace) {
-		copper1Trace->setParentLayer(copper1);
-	}
-	ViewLayer * groundPlane1 = m_viewLayers.value(ViewLayer::GroundPlane1);
-	if (copper1 && groundPlane1) {
-		groundPlane1->setParentLayer(copper1);
-	}
-}
-
 void SketchWidget::addViewLayers() {
 }
 
-void SketchWidget::addViewLayersAux(const LayerList &layers, float startZ) {
+void SketchWidget::addViewLayersAux(const LayerList & layers, const LayerList & layersFromBelow, float startZ) {
 	m_z = startZ;
 	foreach(ViewLayer::ViewLayerID vlId, layers) {
 		addViewLayer(new ViewLayer(vlId, true, m_z));
 		m_z += 1;
+	}
+
+    double z = startZ;
+	foreach(ViewLayer::ViewLayerID vlId, layersFromBelow) {
+        ViewLayer * viewLayer = m_viewLayers.value(vlId, NULL);
+        if (viewLayer) viewLayer->setInitialZFromBelow(z);
+		z += 1;
 	}
 }
 
@@ -9500,5 +9459,9 @@ void SketchWidget::addSubpart(long id, long subpartID, bool doEmit) {
     if (doEmit) {
         emit addSubpartSignal(id, subpartID, false);
     }
+}
+
+void SketchWidget::getDroppedItemViewLayerSpec(ModelPart * modelPart, ViewLayer::ViewLayerSpec & viewLayerSpec) {
+    emit getDroppedItemViewLayerSpecSignal(modelPart, viewLayerSpec);
 }
 

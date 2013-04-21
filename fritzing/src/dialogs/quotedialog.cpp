@@ -216,7 +216,7 @@ void QuoteDialog::setText() {
         .arg(hundredths(TheArea / (2.54 * 2.54)))
         .arg(QChar(178))
         ;
-    msg += tr("Use Fritzing Fab to produce a PCB from your sketch and take advantage of the quantity discount we offer.");
+    msg += tr("Use Fritzing Fab to produce a PCB from your sketch. Take advantage of our quantity discount:");
     m_messageLabel->setText(msg);    
  
     for (int i = 0; i < MessageCount; i++) {

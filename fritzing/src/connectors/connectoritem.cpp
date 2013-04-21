@@ -354,6 +354,7 @@ ConnectorItem::~ConnectorItem() {
 
 void ConnectorItem::hoverEnterEvent ( QGraphicsSceneHoverEvent * event ) {
 
+    //debugInfo("connector hoverEnter");
 	/*
 	QRectF sbr = this->sceneBoundingRect();
 	QPointF p = event->scenePos();

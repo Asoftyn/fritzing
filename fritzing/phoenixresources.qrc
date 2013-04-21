@@ -89,7 +89,13 @@
         <file>resources/images/icons/toolbarActiveLayerBPressed_icon.png</file>
         <file>resources/images/icons/toolbarActiveLayerTEnabled_icon.png</file>
         <file>resources/images/icons/toolbarActiveLayerTDisabled_icon.png</file>
-        <file>resources/images/icons/toolbarActiveLayerTPressed_icon.png</file>
+        <file>resources/images/icons/toolbarActiveLayerTPressed_icon.png</file>	
+        <file>resources/images/icons/toolbarViewFromBEnabled_icon.png</file>
+        <file>resources/images/icons/toolbarViewFromBDisabled_icon.png</file>
+        <file>resources/images/icons/toolbarViewFromBPressed_icon.png</file>
+        <file>resources/images/icons/toolbarViewFromTEnabled_icon.png</file>
+        <file>resources/images/icons/toolbarViewFromTDisabled_icon.png</file>
+        <file>resources/images/icons/toolbarViewFromTPressed_icon.png</file>
         <file>resources/images/icons/toolbarDiyEnabled_icon.png</file>
         <file>resources/images/icons/toolbarDiyDisabled_icon.png</file>
         <file>resources/images/icons/toolbarDiyPressed_icon.png</file>

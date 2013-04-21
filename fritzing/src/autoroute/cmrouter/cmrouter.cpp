@@ -287,7 +287,7 @@ GridEntry::GridEntry(QRectF & r, QGraphicsItem * parent) : QGraphicsRectItem(r, 
 {
 	m_drawn = false;
 	setAcceptedMouseButtons(Qt::NoButton);
-	setAcceptsHoverEvents(false);
+	setAcceptHoverEvents(false);
 }
 
 bool GridEntry::drawn() {

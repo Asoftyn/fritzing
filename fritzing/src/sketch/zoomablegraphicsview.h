@@ -45,6 +45,8 @@ public:
  	double currentZoom();
 	void setAcceptWheelEvents(bool);
 	virtual void ensureFixedToBottomRightItems() {}
+    bool viewFromBelow();
+    virtual void setViewFromBelow(bool);
 
     static const int MaxScaleValue;
 	
@@ -71,6 +73,7 @@ protected:
 	int m_maxScaleValue;
 	int m_minScaleValue;
 	bool m_acceptWheelEvents;
+    bool m_viewFromBelow;
 
 protected:
 	static WheelMapping m_wheelMapping;

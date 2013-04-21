@@ -45,11 +45,12 @@ static LayerList CopperBottomLayers;
 static LayerList CopperTopLayers;
 static LayerList NonCopperLayers;  // just NonCopperLayers in pcb view
 
-static LayerList ii;
-static LayerList bb;
-static LayerList ss;
-static LayerList pp;
-static LayerList ee;
+static LayerList IconViewLayerList;
+static LayerList BreadboardViewLayerList;
+static LayerList SchematicViewLayerList;
+static LayerList PCBViewLayerList;
+static LayerList EmptyLayerList;
+static LayerList PCBViewFromBelowLayerList;
 
 NamePair::NamePair(QString xml, QString display)
 {
@@ -88,16 +89,17 @@ protected:
 
 //////////////////////////////////////////////
 
-ViewLayer::ViewLayer(ViewLayerID viewLayerID, bool visible, double initialZ )
+ViewLayer::ViewLayer(ViewLayerID viewLayerID, bool visible, double initialZ)
 {
+    m_fromBelow = false;
 	m_viewLayerID = viewLayerID;
 	m_visible = visible;
 	m_action = NULL;
-	m_initialZ = m_nextZ = initialZ;	
+	m_initialZFromBelow = m_initialZ = initialZ;	
+    m_nextZ = 0;
 	m_parentLayer = NULL;
 	m_active = true;
 	m_includeChildLayers = true;
-
 }
 
 ViewLayer::~ViewLayer() {
@@ -182,23 +184,34 @@ void ViewLayer::initNames() {
 		ViewIDNames.insert(ViewLayer::PCBView, new NameTriple("pcbView", QObject::tr("pcb view"), "pcb"));
 	}
 
-	if (bb.count() == 0) {
-		ii << ViewLayer::Icon;
-		bb << ViewLayer::BreadboardBreadboard << ViewLayer::Breadboard 
+	if (BreadboardViewLayerList.count() == 0) {
+		IconViewLayerList << ViewLayer::Icon;
+		BreadboardViewLayerList << ViewLayer::BreadboardBreadboard << ViewLayer::Breadboard 
 			<< ViewLayer::BreadboardWire << ViewLayer::BreadboardLabel 
 			<< ViewLayer::BreadboardRatsnest 
 			<< ViewLayer::BreadboardNote << ViewLayer::BreadboardRuler;
-		ss << ViewLayer::SchematicFrame << ViewLayer::Schematic
+		SchematicViewLayerList << ViewLayer::SchematicFrame << ViewLayer::Schematic
 			<< ViewLayer::SchematicText << ViewLayer::SchematicWire 
 			<< ViewLayer::SchematicTrace << ViewLayer::SchematicLabel 
 			<< ViewLayer::SchematicNote <<  ViewLayer::SchematicRuler;
-		pp << ViewLayer::Board << ViewLayer::GroundPlane0 
+		PCBViewLayerList << ViewLayer::Board 
+            << ViewLayer::GroundPlane0 
 			<< ViewLayer::Silkscreen0 << ViewLayer::Silkscreen0Label
-			<< ViewLayer::Copper0 
-			<< ViewLayer::Copper0Trace << ViewLayer::GroundPlane1 
+			<< ViewLayer::Copper0  << ViewLayer::Copper0Trace 
+            << ViewLayer::GroundPlane1 
 			<< ViewLayer::Copper1 << ViewLayer::Copper1Trace 
 			<< ViewLayer::PcbRatsnest 
 			<< ViewLayer::Silkscreen1 << ViewLayer::Silkscreen1Label 
+			<< ViewLayer::PartImage 
+			<< ViewLayer::PcbNote << ViewLayer::PcbRuler;
+		PCBViewFromBelowLayerList << ViewLayer::Board 
+            << ViewLayer::GroundPlane1 
+			<< ViewLayer::Silkscreen1 << ViewLayer::Silkscreen1Label 
+			<< ViewLayer::Copper1 << ViewLayer::Copper1Trace 
+            << ViewLayer::GroundPlane0 
+			<< ViewLayer::Copper0 << ViewLayer::Copper0Trace 
+			<< ViewLayer::PcbRatsnest 
+			<< ViewLayer::Silkscreen0 << ViewLayer::Silkscreen0Label
 			<< ViewLayer::PartImage 
 			<< ViewLayer::PcbNote << ViewLayer::PcbRuler;
 	}
@@ -228,7 +241,7 @@ void ViewLayer::setVisible(bool visible) {
 }
 
 double ViewLayer::nextZ() {
-	double temp = m_nextZ;
+	double temp = m_nextZ + (m_fromBelow ? m_initialZFromBelow : m_initialZ);
 	m_nextZ += zIncrement;
 	return temp;
 }
@@ -279,7 +292,11 @@ const QList<ViewLayer *> & ViewLayer::childLayers() {
 }
 
 bool ViewLayer::alreadyInLayer(double z) {
-	return (z >= m_initialZ && z <= m_nextZ);
+    if (m_fromBelow) {
+	    return (z >= m_initialZFromBelow && z <= m_initialZFromBelow + m_nextZ);
+    }
+
+	return (z >= m_initialZ && z <= m_initialZ + m_nextZ);
 }
 
 void ViewLayer::cleanup() {
@@ -295,7 +312,7 @@ void ViewLayer::cleanup() {
 }
 
 void ViewLayer::resetNextZ(double z) {
-	m_nextZ = qFloor(m_initialZ) + z - floor(z);
+	m_nextZ = z - floor(z);
 }
 
 LayerList ViewLayer::findAlternativeLayers(ViewLayer::ViewLayerID id)
@@ -446,15 +463,30 @@ ViewLayer::ViewID ViewLayer::idFromXmlName(const QString & name) {
 const LayerList & ViewLayer::layersForView(ViewLayer::ViewID viewID) {
 	switch(viewID) {
 		case IconView:
-			return ii;
+			return IconViewLayerList;
 		case BreadboardView:
-			return bb;
+			return BreadboardViewLayerList;
 		case SchematicView:
-			return ss;
+			return SchematicViewLayerList;
 		case PCBView:
-			return pp;
+			return PCBViewLayerList;
 		default:
-			return ee;
+			return EmptyLayerList;
+	}
+}
+
+const LayerList & ViewLayer::layersForViewFromBelow(ViewLayer::ViewID viewID) {
+	switch(viewID) {
+		case IconView:
+			return IconViewLayerList;
+		case BreadboardView:
+			return BreadboardViewLayerList;
+		case SchematicView:
+			return SchematicViewLayerList;
+		case PCBView:
+			return PCBViewFromBelowLayerList;
+		default:
+			return EmptyLayerList;
 	}
 }
 
@@ -485,3 +517,24 @@ bool ViewLayer::getConnectorSvgIDs(QDomElement & element, ViewLayer::ViewID view
     terminalID = p.attribute("terminalId");
     return true;
 }
+
+bool ViewLayer::fromBelow() {
+    return m_fromBelow;
+}
+
+void ViewLayer::setFromBelow(bool fromBelow) {
+    m_fromBelow = fromBelow;
+}
+
+void ViewLayer::setInitialZFromBelow(double initialZ) {
+    m_initialZFromBelow = initialZ;
+}
+
+double ViewLayer::getZFromBelow(double currentZ, bool fromBelow) {
+    double frac = currentZ - m_initialZ;
+    if (qAbs(frac) > 1) {
+        frac = currentZ - m_initialZFromBelow;
+    }
+    return frac + (fromBelow ? m_initialZFromBelow : m_initialZ);
+}
+

@@ -145,6 +145,10 @@ public:
 	bool isActive();
 	bool includeChildLayers();
 	void setIncludeChildLayers(bool);
+    void setFromBelow(bool);
+    bool fromBelow();
+    void setInitialZFromBelow(double);
+    double getZFromBelow(double currentZ, bool fromBelow);
 
 public:
 	static ViewLayerID viewLayerIDFromXmlString(const QString &);
@@ -169,12 +173,11 @@ public:
 	static QString & viewIDNaturalName(ViewLayer::ViewID);
 	static ViewID idFromXmlName(const QString & name);
 	static const QList<ViewLayer::ViewLayerID> & layersForView(ViewLayer::ViewID);
+	static const QList<ViewLayer::ViewLayerID> & layersForViewFromBelow(ViewLayer::ViewID);
 	static bool viewHasLayer(ViewID, ViewLayer::ViewLayerID);
 
     static bool getConnectorSvgIDs(QDomElement & connector, ViewLayer::ViewID, QString & id, QString & terminalID);
     static QDomElement getConnectorPElement(const QDomElement & connector, ViewLayer::ViewID);
-
-
 
 protected:
 	bool m_visible;
@@ -182,10 +185,12 @@ protected:
 	QAction* m_action;
 	double m_nextZ;
 	double m_initialZ;
+	double m_initialZFromBelow;
 	QList<ViewLayer *> m_childLayers;
 	ViewLayer * m_parentLayer;
 	bool m_active;
 	bool m_includeChildLayers;
+    bool m_fromBelow;
 
     static QHash <ViewID, class NameTriple * > ViewIDNames;
 

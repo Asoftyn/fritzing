@@ -631,7 +631,7 @@ ConnectorItem * ItemBase::findConnectorItemWithSharedID(const QString & connecto
 }
 
 void ItemBase::hoverEnterEvent ( QGraphicsSceneHoverEvent * event ) {
-	//DebugDialog::debug(QString("hover enter %1").arg(instanceTitle()));
+	// debugInfo("itembase hover enter");
 	InfoGraphicsView * infoGraphicsView = InfoGraphicsView::getInfoGraphicsView(this);
 	if (infoGraphicsView != NULL && infoGraphicsView->spaceBarIsPressed()) {
 		m_hoverEnterSpaceBarWasPressed = true;
@@ -641,6 +641,7 @@ void ItemBase::hoverEnterEvent ( QGraphicsSceneHoverEvent * event ) {
 
 	m_hoverEnterSpaceBarWasPressed = false;
 	m_hoverCount++;
+    //debugInfo(QString("inc hover %1").arg(m_hoverCount));
 	hoverUpdate();
 	if (infoGraphicsView != NULL) {
 		infoGraphicsView->hoverEnterItem(event, this);
@@ -655,6 +656,7 @@ void ItemBase::hoverLeaveEvent ( QGraphicsSceneHoverEvent * event ) {
 	}
 
 	m_hoverCount--;
+    //debugInfo(QString("dec hover %1").arg(m_hoverCount));
 	hoverUpdate();
 
 
@@ -1873,25 +1875,7 @@ void ItemBase::debugInfo(const QString & msg) const
 {
 
 #ifndef QT_NO_DEBUG
-
     debugInfo2(msg);
-	DebugDialog::debug(QString("%1 '%2' id:%3 '%4' vid:%9 vlid:%5 spec:%6 flg:%7 gi:%8")
-		.arg(msg)
-		.arg(this->title())
-		.arg(this->id())
-		.arg(this->instanceTitle())
-		.arg(this->viewLayerID())
-		.arg(this->viewLayerSpec())
-		.arg(this->wireFlags())
-		.arg((long) dynamic_cast<const QGraphicsItem *const>(this), 0, 16)
-		.arg(m_viewID)
-	);
-
-	/*
-	foreach (ConnectorItem * connectorItem, cachedConnectorItems()) {
-		if (connectorItem) connectorItem->debugInfo("\t");
-	}
-	*/
 #else
 	Q_UNUSED(msg);
 #endif
@@ -1899,7 +1883,7 @@ void ItemBase::debugInfo(const QString & msg) const
 
 void ItemBase::debugInfo2(const QString & msg) const
 {
-	DebugDialog::debug(QString("%1 '%2' id:%3 '%4' vid:%9 vlid:%5 spec:%6 flg:%7 gi:%8")
+	DebugDialog::debug(QString("%1 ti:'%2' id:%3 it:'%4' vid:%9 vlid:%5 spec:%6 z:%10 flg:%7 gi:%8")
 		.arg(msg)
 		.arg(this->title())
 		.arg(this->id())
@@ -1909,6 +1893,7 @@ void ItemBase::debugInfo2(const QString & msg) const
 		.arg(this->wireFlags())
 		.arg((long) dynamic_cast<const QGraphicsItem *const>(this), 0, 16)
 		.arg(m_viewID)
+        .arg(this->zValue())
 	);
 
 	/*

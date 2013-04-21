@@ -1342,6 +1342,7 @@ void MainWindow::createTraceMenus()
 	//m_pcbTraceMenu->addAction(m_updateRoutingStatusAct);
 	m_pcbTraceMenu->addSeparator();
 
+	m_pcbTraceMenu->addAction(m_viewFromBelowToggleAct);
 	m_pcbTraceMenu->addAction(m_activeLayerBothAct);
 	m_pcbTraceMenu->addAction(m_activeLayerBottomAct);
 	m_pcbTraceMenu->addAction(m_activeLayerTopAct);
@@ -2521,6 +2522,21 @@ void MainWindow::createTraceMenuActions() {
 }
 
 void MainWindow::createActiveLayerActions() {
+
+	m_viewFromBelowToggleAct = new QAction(tr("View from below"), this);
+	m_viewFromBelowToggleAct->setStatusTip(tr("View the PCB from the bottom layers upwards"));
+    m_viewFromBelowToggleAct->setCheckable(true);
+    m_viewFromBelowToggleAct->setChecked(false);
+	connect(m_viewFromBelowToggleAct, SIGNAL(triggered()), this, SLOT(setViewFromBelowToggle()));
+
+	m_viewFromBelowAct = new QAction(tr("View from below"), this);
+	m_viewFromBelowAct->setStatusTip(tr("View the PCB from the bottom layers upwards"));
+	connect(m_viewFromBelowAct, SIGNAL(triggered()), this, SLOT(setViewFromBelow()));
+
+	m_viewFromAboveAct = new QAction(tr("View from above"), this);
+	m_viewFromAboveAct->setStatusTip(tr("View the PCB from the top layers downwards"));
+	connect(m_viewFromAboveAct, SIGNAL(triggered()), this, SLOT(setViewFromAbove()));
+
 	m_activeLayerBothAct = new QAction(tr("Set both copper layers clickable"), this);
 	m_activeLayerBothAct->setStatusTip(tr("Set both copper layers clickable"));
 	m_activeLayerBothAct->setShortcut(tr("Shift+Ctrl+3"));
@@ -3218,6 +3234,7 @@ void MainWindow::startSaveInstancesSlot(const QString & fileName, ModelPart *, Q
 		streamWriter.writeAttribute("gridSize", sketchWidget->gridSizeText());
 		streamWriter.writeAttribute("showGrid", sketchWidget->showingGrid() ? "1" : "0");
 		streamWriter.writeAttribute("alignToGrid", sketchWidget->alignedToGrid() ? "1" : "0");
+		streamWriter.writeAttribute("viewFromBelow", sketchWidget->viewFromBelow() ? "1" : "0");
         QHash<QString, QString> autorouterSettings = sketchWidget->getAutorouterSettings();
         foreach (QString key, autorouterSettings.keys()) {
 		    streamWriter.writeAttribute(key, autorouterSettings.value(key));
@@ -3311,6 +3328,7 @@ void MainWindow::loadedViewsSlot(ModelBase *, QDomElement & views) {
             QString gridSizeText = view.attribute("gridSize", "");
             QString alignToGridText = view.attribute("alignToGrid", "");
             QString showGridText = view.attribute("showGrid", "");
+            QString viewFromBelowText = view.attribute("viewFromBelow", "");
             
             QHash<QString, QString> autorouterSettings;
             QDomNamedNodeMap map = view.attributes();
@@ -3339,6 +3357,12 @@ void MainWindow::loadedViewsSlot(ModelBase *, QDomElement & views) {
                 sketchWidget->setGridSize(gridSizeText);
                 redraw = true;
             }
+
+            if (!viewFromBelowText.isEmpty()) {
+                sketchWidget->setViewFromBelow(viewFromBelowText.compare("1") == 0);
+                redraw = 1;
+            }
+
             if (redraw) sketchWidget->invalidateScene();
         }
 
@@ -4086,3 +4110,23 @@ void MainWindow::setGroundFillKeepout() {
     if (m_pcbGraphicsView != NULL) m_pcbGraphicsView->setGroundFillKeepout();
 }
 
+void MainWindow::setViewFromBelowToggle() {
+    if (m_pcbGraphicsView != NULL) {
+        m_pcbGraphicsView->setViewFromBelow(m_viewFromBelowToggleAct->isChecked());
+        updateActiveLayerButtons();
+    }
+}
+
+void MainWindow::setViewFromBelow() {
+    if (m_pcbGraphicsView != NULL) {
+        m_pcbGraphicsView->setViewFromBelow(true);
+        updateActiveLayerButtons();
+    }
+}
+
+void MainWindow::setViewFromAbove() {
+    if (m_pcbGraphicsView != NULL) {
+        m_pcbGraphicsView->setViewFromBelow(false);
+        updateActiveLayerButtons();
+    }
+}

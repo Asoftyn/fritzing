@@ -203,7 +203,9 @@ int GerberGenerator::doSilk(LayerList silkLayerIDs, const QString & silkName, co
 	bool empty;
 	QString svgSilk = renderTo(silkLayerIDs, board, sketchWidget, empty);
     if (empty || svgSilk.isEmpty()) {
-		displayMessage(QObject::tr("silk layer %1 export is empty").arg(silkName), displayMessageBoxes);
+        if (silkLayerIDs.contains(ViewLayer::Silkscreen1)) {
+		    displayMessage(QObject::tr("silk layer %1 export is empty").arg(silkName), displayMessageBoxes);
+        }
         return 0;
     }
 

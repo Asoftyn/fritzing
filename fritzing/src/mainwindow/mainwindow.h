@@ -417,6 +417,9 @@ protected slots:
     void fabQuote();
     void findPartInSketch();
     void fireQuote();
+    void setViewFromBelowToggle();
+    void setViewFromBelow();
+    void setViewFromAbove();
 
 protected:
 	void initSketchWidget(SketchWidget *);
@@ -499,6 +502,7 @@ protected:
 	SketchToolButton *createAutorouteButton(SketchAreaWidget *parent);
 	SketchToolButton *createOrderFabButton(SketchAreaWidget *parent);
 	QWidget *createActiveLayerButton(SketchAreaWidget *parent);
+	QWidget *createViewFromButton(SketchAreaWidget *parent);
 	class ExpandingLabel * createRoutingStatusLabel(SketchAreaWidget *);
 	SketchToolButton *createExportEtchableButton(SketchAreaWidget *parent);
 	SketchToolButton *createNoteButton(SketchAreaWidget *parent);
@@ -768,6 +772,9 @@ protected:
 	QAction *m_activeLayerTopAct;
 	QAction *m_activeLayerBottomAct;
 	QAction *m_activeLayerBothAct;
+	QAction *m_viewFromBelowToggleAct;
+	QAction *m_viewFromBelowAct;
+	QAction *m_viewFromAboveAct;
 	class WireAction *m_createTraceWireAct;
 	class WireAction *m_createWireWireAct;
 	QAction *m_createJumperAct;
@@ -822,6 +829,7 @@ protected:
 	QList<SketchToolButton*> m_rotateButtons;
 	QList<SketchToolButton*> m_flipButtons;
 	QStackedWidget * m_activeLayerButtonWidget;
+	QStackedWidget * m_viewFromButtonWidget;
 
     bool m_comboboxChanged;
     bool m_restarting;

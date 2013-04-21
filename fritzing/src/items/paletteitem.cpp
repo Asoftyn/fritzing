@@ -481,26 +481,33 @@ void PaletteItem::clearModelPart() {
 	ItemBase::clearModelPart();
 }
 
-ItemBase * PaletteItem::lowerConnectorLayerVisible(ItemBase * itemBase) {
+ItemBase * PaletteItem::lowerConnectorLayerVisible(ItemBase * itemBase) {   
+    // note: see figureHover() which sets up which layerkin will accept hover events
 	if (m_layerKin.count() == 0) return NULL;
 
 	if ((itemBase != this) 
 		&& this->isVisible() 
-		&& (!this->hidden()) && (!this->inactive()) && (!this->layerHidden()) && (this->zValue() < itemBase->zValue())
+		&& (!this->hidden()) && (!this->inactive()) && (!this->layerHidden())
 		&& this->hasConnectors()) 
 	{
-		return this;
+        if (this->zValue() < itemBase->zValue()) {
+            debugInfo("lower chooses paletteItem");
+		    return this;
+        }
 	}
+
 
 	foreach (ItemBase * lkpi, m_layerKin) {
 		if (lkpi == itemBase) continue;
 
 		if (lkpi->isVisible() 
 			&& (!lkpi->hidden()) && (!lkpi->layerHidden()) && (!lkpi->inactive()) 
-			&& (lkpi->zValue() < itemBase->zValue()) 
-			&& lkpi->hasConnectors() ) 
+			&& lkpi->hasConnectors()) 
 		{
-			return lkpi;
+            if (lkpi->zValue() < itemBase->zValue()) {
+                lkpi->debugInfo("lower chooses lkpi");
+			    return lkpi;
+            }
 		}
 	}
 

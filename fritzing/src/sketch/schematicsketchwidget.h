@@ -90,6 +90,7 @@ public slots:
 
 protected slots:
 	void updateBigDots();
+    void getDroppedItemViewLayerSpec(ModelPart * modelPart, ViewLayer::ViewLayerSpec &);
 
 protected:
 	double getRatsnestOpacity();

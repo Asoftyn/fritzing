@@ -69,7 +69,8 @@ SchematicSketchWidget::SchematicSketchWidget(ViewLayer::ViewID viewID, QWidget *
 }
 
 void SchematicSketchWidget::addViewLayers() {
-	addSchematicViewLayers();
+	setViewLayerIDs(ViewLayer::Schematic, ViewLayer::SchematicTrace, ViewLayer::Schematic, ViewLayer::SchematicRuler, ViewLayer::SchematicNote);
+	addViewLayersAux(ViewLayer::layersForView(ViewLayer::SchematicView), ViewLayer::layersForViewFromBelow(ViewLayer::SchematicView));
 }
 
 ViewLayer::ViewLayerID SchematicSketchWidget::getDragWireViewLayerID(ConnectorItem *) {
@@ -519,4 +520,8 @@ QHash<QString, QString> SchematicSketchWidget::getAutorouterSettings() {
 
 void SchematicSketchWidget::setAutorouterSettings(QHash<QString, QString> & autorouterSettings) {
     SketchWidget::setAutorouterSettings(autorouterSettings);
+}
+
+void SchematicSketchWidget::getDroppedItemViewLayerSpec(ModelPart * modelPart, ViewLayer::ViewLayerSpec & viewLayerSpec) {
+    SketchWidget::getDroppedItemViewLayerSpec(modelPart, viewLayerSpec);
 }

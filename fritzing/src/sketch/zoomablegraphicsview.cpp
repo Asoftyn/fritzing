@@ -48,6 +48,7 @@ bool FirstTime = true;
 ZoomableGraphicsView::ZoomableGraphicsView( QWidget * parent )
 	: QGraphicsView(parent)
 {
+    m_viewFromBelow = false;
 	m_scaleValue = 100;
 	m_maxScaleValue = MaxScaleValue;
 	m_minScaleValue = 1;
@@ -159,7 +160,9 @@ void ZoomableGraphicsView::relativeZoom(double step, bool centerOnCursor) {
 	//QPointF r = this->mapToScene(q);
 
 	QMatrix matrix;
-	matrix.scale(tempScaleValue, tempScaleValue);
+    double multiplier = 1;
+    if (m_viewFromBelow) multiplier = -1;
+	matrix.scale(multiplier * tempScaleValue, tempScaleValue);
 	if (centerOnCursor) {
 		//this->setMatrix(QMatrix().translate(-r.x(), -r.y()) * matrix * QMatrix().translate(r.x(), r.y()));
         this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
@@ -190,5 +193,20 @@ void ZoomableGraphicsView::setWheelMapping(WheelMapping wm) {
 
 ZoomableGraphicsView::WheelMapping ZoomableGraphicsView::wheelMapping() {
 	return m_wheelMapping;
+}
+
+bool ZoomableGraphicsView::viewFromBelow() {
+    return m_viewFromBelow;
+}
+
+void ZoomableGraphicsView::setViewFromBelow(bool viewFromBelow) {
+    if (m_viewFromBelow == viewFromBelow) return;
+
+    m_viewFromBelow = viewFromBelow;
+
+    this->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+    QTransform transform;
+    transform.scale(-1, 1);
+    this->setTransform(transform, true);
 }
 

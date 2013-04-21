@@ -123,6 +123,7 @@ public:
     void fabQuote();
     QDialog * quoteDialog(QWidget * parent);
     void setGroundFillKeepout();
+    void setViewFromBelow(bool);
 
 public slots:
 	void resizeBoard(double w, double h, bool doEmit);
@@ -203,6 +204,7 @@ protected slots:
 	void postImageSlot(class GroundPlaneGenerator *, QImage * copperImage, QImage * boardImage, QGraphicsItem * board, QList<QRectF> *);
     void gotFabQuote(QNetworkReply *);
     void requestQuoteNow();
+    void getDroppedItemViewLayerSpec(ModelPart * modelPart, ViewLayer::ViewLayerSpec &);
 
 
 protected:

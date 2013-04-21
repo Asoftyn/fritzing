@@ -256,7 +256,8 @@ IconSketchWidget::IconSketchWidget(ViewLayer::ViewID viewID, QWidget *parent)
 }
 
 void IconSketchWidget::addViewLayers() {
-	addIconViewLayers();
+	setViewLayerIDs(ViewLayer::Icon, ViewLayer::Icon, ViewLayer::Icon, ViewLayer::Icon, ViewLayer::Icon);
+	addViewLayersAux(ViewLayer::layersForView(ViewLayer::IconView), ViewLayer::layersForViewFromBelow(ViewLayer::IconView));
 }
 
 ////////////////////////////////////////////////////

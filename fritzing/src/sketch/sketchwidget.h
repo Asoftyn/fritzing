@@ -200,10 +200,6 @@ public:
     bool swappingEnabled(ItemBase *);
 
 	virtual void addViewLayers();
-	void addPcbViewLayers();
-	void addSchematicViewLayers();
-	void addBreadboardViewLayers();
-	void addIconViewLayers();
 
 	void changeWireColor(long wireId, const QString& color, double opacity);
 	void changeWireWidth(long wireId, double width);
@@ -398,7 +394,7 @@ protected:
 	bool currentlyInfoviewed(ItemBase *item);
 	void resizeEvent(QResizeEvent *);
 
-	void addViewLayersAux(const LayerList &layers, float startZ = 1.5);
+	void addViewLayersAux(const LayerList &, const LayerList & layersFromBelow, float startZ = 1.5);
 	virtual bool disconnectFromFemale(ItemBase * item, QHash<long, ItemBase *> & savedItems, ConnectorPairHash &, bool doCommand, bool rubberBandLegEnabled, QUndoCommand * parentCommand);
 	void clearDragWireTempCommand();
 	bool draggingWireEnd();
@@ -559,6 +555,7 @@ signals:
     void resizedSignal(ItemBase *);
     void cleanupRatsnestsSignal(bool doEmit);
     void addSubpartSignal(long id, long subpartID, bool doEmit);
+    void getDroppedItemViewLayerSpecSignal(ModelPart * modelPart, ViewLayer::ViewLayerSpec &);
 
 protected slots:
 	void itemAddedSlot(ModelPart *, ItemBase *, ViewLayer::ViewLayerSpec, const ViewGeometry &, long id, SketchWidget * dropOrigin);
@@ -601,6 +598,7 @@ protected slots:
     void deleteTemporary();
     void canConnect(Wire * from, ItemBase * to, bool & connect);
     long swapStart(SwapThing & swapThing, bool master);
+    virtual void getDroppedItemViewLayerSpec(ModelPart * modelPart, ViewLayer::ViewLayerSpec &);
 
 public slots:
 	void changeWireColor(const QString newColor);

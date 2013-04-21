@@ -89,7 +89,7 @@ Stripbit::Stripbit(const QPainterPath & path, ConnectorItem * connectorItem, int
 	m_connectorItem = connectorItem;
 	m_inHover = m_removed = false;
 
-	setAcceptsHoverEvents(true);
+	setAcceptHoverEvents(true);
 	setAcceptedMouseButtons(Qt::LeftButton);
 	setFlag(QGraphicsItem::ItemIsMovable, true);
 	setFlag(QGraphicsItem::ItemIsSelectable, false);

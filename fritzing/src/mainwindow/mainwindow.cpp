@@ -193,7 +193,7 @@ MainWindow::MainWindow(ReferenceModel *referenceModel, QWidget * parent) :
 
 	m_closeSilently = false;
 	m_orderFabAct = NULL;
-	m_activeLayerButtonWidget = NULL;
+	m_viewFromButtonWidget = m_activeLayerButtonWidget = NULL;
 	m_programView = m_programWindow = NULL;
 	m_windowMenuSeparator = NULL;
 	m_schematicWireColorMenu = m_breadboardWireColorMenu = NULL;
@@ -583,6 +583,16 @@ void MainWindow::connectPairs() {
 	succeeded =  succeeded && connect(m_pcbGraphicsView, SIGNAL(filenameIfSignal(QString &)), this, SLOT(filenameIfSlot(QString &)), Qt::DirectConnection);
 	succeeded =  succeeded && connect(m_schematicGraphicsView, SIGNAL(filenameIfSignal(QString &)), this, SLOT(filenameIfSlot(QString &)), Qt::DirectConnection);
 	
+
+
+    succeeded =  succeeded && connect(m_breadboardGraphicsView, SIGNAL(getDroppedItemViewLayerSpecSignal(ModelPart *, ViewLayer::ViewLayerSpec &)), 
+                                        m_pcbGraphicsView, SLOT(getDroppedItemViewLayerSpec(ModelPart *, ViewLayer::ViewLayerSpec &)), 
+                                        Qt::DirectConnection);
+    succeeded =  succeeded && connect(m_schematicGraphicsView, SIGNAL(getDroppedItemViewLayerSpecSignal(ModelPart *, ViewLayer::ViewLayerSpec &)), 
+                                        m_pcbGraphicsView, SLOT(getDroppedItemViewLayerSpec(ModelPart *, ViewLayer::ViewLayerSpec &)), 
+                                        Qt::DirectConnection);
+
+
     if (!succeeded) {
 		DebugDialog::debug("connectPair failed");
 	}
@@ -773,6 +783,7 @@ SketchToolButton *MainWindow::createFlipButton(SketchAreaWidget *parent) {
 SketchToolButton *MainWindow::createAutorouteButton(SketchAreaWidget *parent) {
 	SketchToolButton *autorouteButton = new SketchToolButton("Autoroute",parent, m_newAutorouteAct);
 	autorouteButton->setText(tr("Autoroute"));
+	autorouteButton->setEnabledIcon();					// seems to need this to display button icon first time
 
 	return autorouteButton;
 }
@@ -809,6 +820,30 @@ QWidget *MainWindow::createActiveLayerButton(SketchAreaWidget *parent)
 	m_activeLayerButtonWidget->addWidget(button);
 
 	return m_activeLayerButtonWidget;
+}
+
+QWidget *MainWindow::createViewFromButton(SketchAreaWidget *parent) 
+{
+	QList<QAction *> actions;
+	actions << m_viewFromAboveAct << m_viewFromBelowAct;
+
+	m_viewFromButtonWidget = new QStackedWidget;
+	m_viewFromButtonWidget->setMaximumWidth(90);
+
+	SketchToolButton * button = new SketchToolButton("ViewFromT", parent, actions);
+	button->setDefaultAction(m_viewFromBelowAct);
+	button->setText(tr("View from Above"));
+    button->setEnabledIcon();					// seems to need this to display button icon first time
+
+	m_viewFromButtonWidget->addWidget(button);
+
+	button = new SketchToolButton("ViewFromB", parent, actions);
+	button->setDefaultAction(m_viewFromAboveAct);
+	button->setText(tr("View from Below"));
+    button->setEnabledIcon();					// seems to need this to display button icon first time
+	m_viewFromButtonWidget->addWidget(button);
+
+	return m_viewFromButtonWidget;
 }
 
 SketchToolButton *MainWindow::createNoteButton(SketchAreaWidget *parent) {
@@ -866,6 +901,7 @@ QList<QWidget*> MainWindow::getButtonsForView(ViewLayer::ViewID viewId) {
 		case ViewLayer::PCBView:
 			retval << SketchAreaWidget::separator(parent) 
 				<< createActiveLayerButton(parent) 
+                << createViewFromButton(parent)
 				<< createAutorouteButton(parent) 
 				<< createExportEtchableButton(parent);
 			if (m_orderFabEnabled) {
@@ -2045,7 +2081,7 @@ void MainWindow::swapSelectedAux(ItemBase * itemBase, const QString & moduleID, 
     if (m_pcbGraphicsView->boardLayers() == 2) {
         ModelPart * modelPart = m_referenceModel->retrieveModelPart(moduleID);
         if (modelPart->flippedSMD()) {
-            viewLayerSpec = m_pcbGraphicsView->layerIsActive(ViewLayer::Copper1) ? ViewLayer::ThroughHoleThroughTop_TwoLayers : ViewLayer::ThroughHoleThroughTop_OneLayer;
+            viewLayerSpec = !m_pcbGraphicsView->layerIsActive(ViewLayer::Copper1) || m_pcbGraphicsView->viewFromBelow() ? ViewLayer::ThroughHoleThroughTop_OneLayer : ViewLayer::ThroughHoleThroughTop_TwoLayers;
             if (useViewLayerSpec) viewLayerSpec = overrideViewLayerSpec;
         }
     }
@@ -2239,23 +2275,36 @@ void MainWindow::changeBoardLayers(int layers, bool doEmit) {
 }
 
 void MainWindow::updateActiveLayerButtons() {
-    if (m_activeLayerButtonWidget == NULL) return;
+    if (m_activeLayerButtonWidget != NULL) {
+	    int index = activeLayerIndex();
+	    bool enabled = index >= 0;
 
-	int index = activeLayerIndex();
-	bool enabled = index >= 0;
+	    m_activeLayerButtonWidget->setCurrentIndex(index);
+	    m_activeLayerButtonWidget->setVisible(enabled);
 
-	m_activeLayerButtonWidget->setCurrentIndex(index);
-	m_activeLayerButtonWidget->setVisible(enabled);
+	    m_activeLayerBothAct->setEnabled(enabled);
+	    m_activeLayerBottomAct->setEnabled(enabled);
+	    m_activeLayerTopAct->setEnabled(enabled);
 
-	m_activeLayerBothAct->setEnabled(enabled);
-	m_activeLayerBottomAct->setEnabled(enabled);
-	m_activeLayerTopAct->setEnabled(enabled);
+	    QList<QAction *> actions;
+	    actions << m_activeLayerBothAct << m_activeLayerBottomAct << m_activeLayerTopAct;
+	    setActionsIcons(index, actions);
+    }
 
-	QList<QAction *> actions;
-	actions << m_activeLayerBothAct << m_activeLayerBottomAct << m_activeLayerTopAct;
-	setActionsIcons(index, actions);
+    if (m_viewFromButtonWidget != NULL) {
+        if (m_pcbGraphicsView) {
+            bool viewFromBelow = m_pcbGraphicsView->viewFromBelow();
+            int index = (viewFromBelow ? 1 : 0);
+	        m_viewFromButtonWidget->setCurrentIndex(index);
+	        m_viewFromButtonWidget->setVisible(true);
+            m_viewFromBelowToggleAct->setChecked(viewFromBelow);
+
+	        m_viewFromBelowToggleAct->setEnabled(true);
+	        m_viewFromBelowAct->setEnabled(true);
+	        m_viewFromAboveAct->setEnabled(true);
+        }
+    }
 }
-
 
 int MainWindow::activeLayerIndex() 
 {

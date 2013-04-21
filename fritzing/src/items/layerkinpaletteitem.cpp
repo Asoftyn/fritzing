@@ -135,6 +135,7 @@ void LayerKinPaletteItem::clearModelPart() {
 }
 
 ItemBase * LayerKinPaletteItem::lowerConnectorLayerVisible(ItemBase * itemBase) {
+    //debugInfo("layerkin lowerconnector");
 	return m_layerKinChief->lowerConnectorLayerVisible(itemBase);
 }
 
