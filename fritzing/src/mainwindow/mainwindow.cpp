@@ -900,8 +900,8 @@ QList<QWidget*> MainWindow::getButtonsForView(ViewLayer::ViewID viewId) {
 			break;
 		case ViewLayer::PCBView:
 			retval << SketchAreaWidget::separator(parent) 
-				<< createActiveLayerButton(parent) 
                 << createViewFromButton(parent)
+				<< createActiveLayerButton(parent) 
 				<< createAutorouteButton(parent) 
 				<< createExportEtchableButton(parent);
 			if (m_orderFabEnabled) {
