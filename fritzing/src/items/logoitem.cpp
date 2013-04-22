@@ -192,7 +192,7 @@ QString LogoItem::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString,
 	return PaletteItemBase::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 }
 
-bool LogoItem::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget) 
+bool LogoItem::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide) 
 {
 	if (m_hasLogo) {
 		if (prop.compare("logo", Qt::CaseInsensitive) == 0) {
@@ -224,7 +224,7 @@ bool LogoItem::collectExtraInfo(QWidget * parent, const QString & family, const 
 		return true;
 	}
 
-	return PaletteItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+	return PaletteItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 }
 
 bool LogoItem::checkImage(const QString & filename) {
@@ -775,7 +775,7 @@ QString BreadboardLogoItem::colorString() {
     return m_color;
 }
 
-bool BreadboardLogoItem::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget) 
+bool BreadboardLogoItem::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide) 
 {
 	if (m_hasLogo) {
 		if (prop.compare("color", Qt::CaseInsensitive) == 0) {
@@ -791,7 +791,7 @@ bool BreadboardLogoItem::collectExtraInfo(QWidget * parent, const QString & fami
 		}
 	}
 
-	return LogoItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+	return LogoItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 }
 
 void BreadboardLogoItem::changeTextColor() {
@@ -983,10 +983,10 @@ bool BoardLogoItem::checkImage(const QString & filename) {
     return ResizableBoard::checkImage(filename);
 }
 
-bool BoardLogoItem::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget) 
+bool BoardLogoItem::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide) 
 {
 	if (prop.compare("shape", Qt::CaseInsensitive) == 0) {
-        Board::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+        Board::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 		returnWidget = setUpDimEntry(true, true, false, returnWidget);  
         returnWidget->setEnabled(swappingEnabled);
 
@@ -998,6 +998,6 @@ bool BoardLogoItem::collectExtraInfo(QWidget * parent, const QString & family, c
 		return true;
 	}
 
-    return LogoItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+    return LogoItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 }
 

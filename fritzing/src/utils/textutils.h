@@ -91,8 +91,8 @@ public:
 	static QString incCopyPinFunction(int pin, const QString & argString, void * userData);
 	static QString negIncCopyPinFunction(int pin, const QString & argString, void * userData);
 	static double getViewBoxCoord(const QString & svg, int coord);
-	static QString makeLineSVG(QPointF p1, QPointF p2, double width, QString colorString, double dpi, double printerScale, bool blackOnly);
-	static QString makeCubicBezierSVG(const QPolygonF & controlPoints, double width, QString colorString, double dpi, double printerScale, bool blackOnly);
+	static QString makeLineSVG(QPointF p1, QPointF p2, double width, QString colorString, double dpi, double printerScale, bool blackOnly, bool dashed, const QVector<qreal> &);
+	static QString makeCubicBezierSVG(const QPolygonF & controlPoints, double width, QString colorString, double dpi, double printerScale, bool blackOnly, bool dashed, const QVector<qreal> &);
 	static QString makeRectSVG(QRectF r, QPointF offset, double dpi, double printerscale);
 	static QString makePolySVG(const QPolygonF & poly, QPointF offset, double width, QString colorString, double dpi, double printerScale, bool blackOnly);
 	static QPolygonF polygonFromElement(QDomElement & element);

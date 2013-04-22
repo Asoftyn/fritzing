@@ -190,7 +190,7 @@ QString Pad::retrieveSvg(ViewLayer::ViewLayerID viewLayerID, QHash<QString, QStr
 	return ResizableBoard::retrieveSvg(viewLayerID, svgHash, blackOnly, dpi, factor);
 }
 
-bool Pad::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget) 
+bool Pad::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide) 
 {
 	if (prop.compare("shape", Qt::CaseInsensitive) == 0) {
 		returnWidget = setUpDimEntry(false, false, false, returnWidget);
@@ -226,7 +226,7 @@ bool Pad::collectExtraInfo(QWidget * parent, const QString & family, const QStri
 	    }
     }
 
-	return PaletteItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+	return PaletteItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 }
 
 void Pad::setProp(const QString & prop, const QString & value) 

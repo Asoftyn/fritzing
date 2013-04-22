@@ -603,7 +603,7 @@ QString PaletteItem::genFZP(const QString & moduleid, const QString & templateNa
 	return FzpTemplate.arg(count).arg(middle);
 }
 
-bool PaletteItem::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget)
+bool PaletteItem::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide)
 {
 	if (prop.compare("editable pin labels", Qt::CaseInsensitive) == 0 && value.compare("true") == 0) {
 		returnProp = "";
@@ -619,7 +619,7 @@ bool PaletteItem::collectExtraInfo(QWidget * parent, const QString & family, con
 		return true;
 	}
 
-	return PaletteItemBase::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+	return PaletteItemBase::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 }
 
 QStringList PaletteItem::collectValues(const QString & family, const QString & prop, QString & value) {

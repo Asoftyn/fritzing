@@ -49,7 +49,7 @@ ItemBase::PluralType Capacitor::isPlural() {
 	return Plural;
 }
 
-bool Capacitor::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget)
+bool Capacitor::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide)
 {
 	foreach (PropertyDef * propertyDef, m_propertyDefs.keys()) {
 		if (prop.compare(propertyDef->name, Qt::CaseInsensitive) == 0) {
@@ -123,7 +123,7 @@ bool Capacitor::collectExtraInfo(QWidget * parent, const QString & family, const
 		}
 	}
 
-	return PaletteItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+	return PaletteItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 }
 
 void Capacitor::propertyEntry(const QString & text) {

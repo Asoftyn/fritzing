@@ -148,6 +148,22 @@ bool fixUnavailableFontFamilies(QString &fileContent, const QString & destFont) 
 	return fixedFonts.size() > 0;
 }
 
+QString  makeDashString(bool dashed, const QVector<qreal> & pattern, double dpi, double printerScale)
+{
+    QString dash;
+    if (dashed && pattern.count() > 0) {
+        dash = "stroke-dasharray='";
+        foreach (qreal p, pattern) {
+            dash += QString::number(p * dpi / printerScale);
+            dash += ",";
+        }
+        dash.chop(1);
+        dash.append("'");
+    }
+
+    return dash;
+}
+
 ///////////////////////////////////////
 
 
@@ -1369,27 +1385,32 @@ double TextUtils::getViewBoxCoord(const QString & svg, int coord)
 	return c.toDouble();
 }
 
-QString TextUtils::makeLineSVG(QPointF p1, QPointF p2, double width, QString colorString, double dpi, double printerScale, bool blackOnly) 
+QString TextUtils::makeLineSVG(QPointF p1, QPointF p2, double width, QString colorString, double dpi, double printerScale, bool blackOnly, bool dashed, const QVector<qreal> & pattern) 
 {
 	p1.setX(p1.x() * dpi / printerScale);
 	p1.setY(p1.y() * dpi / printerScale);
 	p2.setX(p2.x() * dpi / printerScale);
 	p2.setY(p2.y() * dpi / printerScale);
 
+    QString dash = makeDashString(dashed, pattern, dpi, printerScale);
+
 	QString stroke = (blackOnly) ? "black" : colorString;
-	return QString("<line stroke-linecap='round' stroke='%6' x1='%1' y1='%2' x2='%3' y2='%4' stroke-width='%5' />")
+	return QString("<line stroke-linecap='round' stroke='%6' x1='%1' y1='%2' x2='%3' y2='%4' stroke-width='%5' %7/>")
 					.arg(p1.x())
 					.arg(p1.y())
 					.arg(p2.x())
 					.arg(p2.y())
 					.arg(width * dpi / printerScale)
-					.arg(stroke);
+					.arg(stroke)
+                    .arg(dash)                
+                   ;
 }
 
-QString TextUtils::makeCubicBezierSVG(const QPolygonF & poly, double width, QString colorString, double dpi, double printerScale, bool blackOnly) 
+QString TextUtils::makeCubicBezierSVG(const QPolygonF & poly, double width, QString colorString, double dpi, double printerScale, bool blackOnly, bool dashed, const QVector<qreal> & pattern) 
 {
-	QString stroke = (blackOnly) ? "black" : colorString;
-	return QString("<path stroke-linecap='round' fill='none' stroke-width='%1' stroke='%2' d='M%3,%4C%5,%6, %7,%8 %9,%10' />")
+    QString dash = makeDashString(dashed, pattern, dpi, printerScale);
+    QString stroke = (blackOnly) ? "black" : colorString;
+	return QString("<path stroke-linecap='round' fill='none' stroke-width='%1' stroke='%2' d='M%3,%4C%5,%6, %7,%8 %9,%10' %11/>")
 					.arg(width * dpi / printerScale)
 					.arg(stroke)
 					.arg(poly.at(0).x() * dpi / printerScale)
@@ -1400,6 +1421,7 @@ QString TextUtils::makeCubicBezierSVG(const QPolygonF & poly, double width, QStr
 					.arg(poly.at(2).y() * dpi / printerScale)
 					.arg(poly.at(3).x() * dpi / printerScale)
 					.arg(poly.at(3).y() * dpi / printerScale)
+                    .arg(dash)
 					;
 }
 

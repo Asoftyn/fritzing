@@ -63,6 +63,8 @@ later:
 #include <QComboBox>
 #include <QToolTip>
 #include <QApplication>
+#include <QCheckBox>
+#include <QHBoxLayout>
 
 #include "../debugdialog.h"
 #include "../sketch/infographicsview.h"
@@ -80,6 +82,10 @@ later:
 #include "../layerattributes.h"
 
 #include <stdlib.h>
+
+QVector<qreal> Wire::TheDash;
+QBrush BandedBrush(QColor(255, 255, 255));
+
 
 QHash<QString, QString> Wire::colorTrans;
 QStringList Wire::colorNames;
@@ -127,6 +133,7 @@ Wire * WireAction::wire() {
 Wire::Wire( ModelPart * modelPart, ViewLayer::ViewID viewID,  const ViewGeometry & viewGeometry, long id, QMenu* itemMenu, bool initLabel)
 	: ItemBase(modelPart, viewID, viewGeometry, id, itemMenu)
 {
+    m_banded = false;
 	m_bezier = NULL;
 	m_displayBendpointCursor = m_canHaveCurve = true;
 	m_hoverStrokeWidth = DefaultHoverStrokeWidth;
@@ -286,6 +293,23 @@ void Wire::paintBody(QPainter * painter, const QStyleOptionGraphicsItem * option
 	}
 	   
 	// DebugDialog::debug(QString("pen width %1 %2").arg(m_pen.widthF()).arg(m_viewID));
+
+    if (m_banded) {
+        QBrush brush = m_pen.brush();
+        m_pen.setStyle(Qt::SolidLine);
+        m_pen.setBrush(BandedBrush);
+        painter->setPen(m_pen);
+	    if (painterPath.isEmpty()) {
+		    painter->drawLine(getPaintLine());	
+	    }
+	    else {
+		    painter->drawPath(painterPath);
+	    }
+        m_pen.setBrush(brush);
+        m_pen.setDashPattern(TheDash);
+        m_pen.setCapStyle(Qt::FlatCap);
+    }
+
 	painter->setPen(m_pen);
 	if (painterPath.isEmpty()) {
 		painter->drawLine(getPaintLine());	
@@ -293,6 +317,11 @@ void Wire::paintBody(QPainter * painter, const QStyleOptionGraphicsItem * option
 	else {
 		painter->drawPath(painterPath);
 	}
+
+    if (m_banded) {
+        m_pen.setStyle(Qt::SolidLine);
+        m_pen.setCapStyle(Qt::RoundCap);
+    }
 }
 
 void Wire::paintHover(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) 
@@ -694,6 +723,7 @@ void Wire::writeGeometry(QXmlStreamWriter & streamWriter) {
 	streamWriter.writeAttribute("mils", QString::number(mils()));
 	streamWriter.writeAttribute("color", m_pen.brush().color().name());
 	streamWriter.writeAttribute("opacity", QString::number(m_opacity));
+	streamWriter.writeAttribute("banded", m_banded ? "1" : "0");
 	if (m_bezier) m_bezier->write(streamWriter);
 	streamWriter.writeEndElement();
 }
@@ -714,6 +744,8 @@ void Wire::setExtras(const QDomElement & element, InfoGraphicsView * infoGraphic
 			setWireWidth(wpix, infoGraphicsView, infoGraphicsView->getWireStrokeWidth(this, wpix));
 		}
 	}
+
+    m_banded = (element.attribute("banded", "") == "1");
 
 	setColorFromElement(element);
 	QDomElement bElement = element.firstChildElement("bezier");
@@ -1174,6 +1206,9 @@ QString Wire::colorString() {
 void Wire::initNames() {
 	if (colorNames.count() > 0) return;
 
+    TheDash.clear();
+    TheDash << 10 << 8;
+
 	widths << 8 << 12 << 16 << 24 << 32 << 48;
     int i = 0;
 	widthTrans.insert(widths[i++], tr("super fine (8 mil)"));
@@ -1437,7 +1472,7 @@ void Wire::setIgnoreSelectionChange(bool ignore) {
 	m_ignoreSelectionChange = ignore;
 }
 
-bool Wire::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget)
+bool Wire::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide)
 {
 	if (prop.compare("width", Qt::CaseInsensitive) == 0) {
 		// don't display width property
@@ -1467,7 +1502,25 @@ bool Wire::collectExtraInfo(QWidget * parent, const QString & family, const QStr
 			}
 
 			connect(comboBox, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(colorEntry(const QString &)));
-			returnWidget = comboBox;
+
+            if (this->hasShadow()) {
+                QCheckBox * checkBox = new QCheckBox(tr("Banded"));
+		        checkBox->setChecked(m_banded);
+		        checkBox->setObjectName("infoViewCheckBox");
+                connect(checkBox, SIGNAL(clicked(bool)), this, SLOT(setBandedProp(bool)));
+
+                QFrame * frame = new QFrame(parent);
+                QHBoxLayout * hboxLayout = new QHBoxLayout;
+                hboxLayout->addWidget(comboBox);
+                hboxLayout->addWidget(checkBox);
+                frame->setLayout(hboxLayout);
+
+                returnWidget = frame;
+            }
+            else {
+		        returnWidget = comboBox;
+            }
+	
 			returnValue = comboBox->currentText();
 			return true;
 		}
@@ -1478,7 +1531,7 @@ bool Wire::collectExtraInfo(QWidget * parent, const QString & family, const QStr
 		}
 	}
 
-	return ItemBase::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+	return ItemBase::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 }
 
 void Wire::colorEntry(const QString & text) {
@@ -1757,3 +1810,29 @@ ViewLayer::ViewID Wire::useViewIDForPixmap(ViewLayer::ViewID vid, bool)
 void Wire::setDisplayBendpointCursor(bool dbc) {
 	m_displayBendpointCursor = dbc;
 }
+
+bool Wire::banded() {
+    return m_banded;
+}
+
+void Wire::setBanded(bool banded) {
+    m_banded = banded;
+    update();
+}
+
+void Wire::setBandedProp(bool banded) {
+   	InfoGraphicsView * infoGraphicsView = InfoGraphicsView::getInfoGraphicsView(this);
+	if (infoGraphicsView != NULL) {
+		infoGraphicsView->setProp(this, "banded", ItemBase::TranslatedPropertyNames.value("banded"), m_banded ? "Yes" : "No", banded  ? "Yes" : "No", true);
+    }
+}
+
+void Wire::setProp(const QString & prop, const QString & value) {
+	if (prop.compare("banded", Qt::CaseInsensitive) == 0) {
+		setBanded(value == "Yes");
+		return;
+	}
+
+	ItemBase::setProp(prop, value);
+}
+

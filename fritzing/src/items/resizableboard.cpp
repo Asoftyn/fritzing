@@ -141,14 +141,14 @@ QStringList Board::collectValues(const QString & family, const QString & prop, Q
 
 }
 
-bool Board::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget) 
+bool Board::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide) 
 {
 	if (prop.compare("filename", Qt::CaseInsensitive) == 0 && isBoard(this)) {
         setupLoadImage(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
 		return true;
 	}
 
-	return PaletteItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+	return PaletteItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 }
 
 bool Board::rotation45Allowed() {
@@ -955,9 +955,9 @@ bool ResizableBoard::hasCustomSVG() {
 	return theViewID() == m_viewID;
 }
 
-bool ResizableBoard::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget)
+bool ResizableBoard::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide)
 {
-	bool result = Board::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+	bool result = Board::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 
 	if (prop.compare("shape", Qt::CaseInsensitive) == 0) {
 

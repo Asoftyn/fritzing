@@ -268,7 +268,7 @@ bool SchematicFrame::makeLineEdit(QWidget * parent, const QString & family, cons
 	return true;
 }
 
-bool SchematicFrame::collectExtraInfo(QWidget * parent, const QString & family, const QString & propp, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget) 
+bool SchematicFrame::collectExtraInfo(QWidget * parent, const QString & family, const QString & propp, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide) 
 {
 	if (propp.compare("shape", Qt::CaseInsensitive) == 0) {
 		returnWidget = setUpDimEntry(false, false, true, returnWidget);
@@ -348,7 +348,7 @@ bool SchematicFrame::collectExtraInfo(QWidget * parent, const QString & family, 
 		return makeLineEdit(parent, family, propp, value, swappingEnabled, returnProp, returnValue, returnWidget);
 	}
 
-	return PaletteItem::collectExtraInfo(parent, family, propp, value, swappingEnabled, returnProp, returnValue, returnWidget);
+	return PaletteItem::collectExtraInfo(parent, family, propp, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 }
 
 void SchematicFrame::setProp(const QString & prop, const QString & value) 

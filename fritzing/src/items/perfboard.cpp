@@ -186,7 +186,7 @@ QString Perfboard::genFZP(const QString & moduleid)
 	return FzpTemplate.arg(x).arg(y).arg(middle);
 }
 
-bool Perfboard::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget)
+bool Perfboard::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide)
 {
 	if (prop.compare("size", Qt::CaseInsensitive) == 0) {
 		returnProp = tr("size");
@@ -269,7 +269,7 @@ bool Perfboard::collectExtraInfo(QWidget * parent, const QString & family, const
 		return true;
 	}
 
-	return Capacitor::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+	return Capacitor::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 }
 
 

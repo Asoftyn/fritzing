@@ -306,6 +306,7 @@ void ItemBase::initNames() {
 		TranslatedPropertyNames.insert("rev", tr("rev"));
 		TranslatedPropertyNames.insert("sheet", tr("sheet"));
 		TranslatedPropertyNames.insert("project", tr("project"));
+		TranslatedPropertyNames.insert("banded", tr("banded"));
 
 		// TODO: translate more known property names from fzp files and resource xml files
 
@@ -1645,8 +1646,9 @@ bool ItemBase::isObsolete() {
 	return modelPart()->isObsolete();
 }
 
-bool ItemBase::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget)
+bool ItemBase::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide)
 {
+    Q_UNUSED(hide);                 // assume this is set by the caller (HtmlInfoView)
 	returnWidget = NULL;
 	returnProp = ItemBase::translatePropertyName(prop);
 	returnValue = value;	

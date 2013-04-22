@@ -132,7 +132,7 @@ public:
 	bool canChangeColor();
 	void collectDirectWires(QList<Wire *> & wires);
 	bool isGrounded();
-	bool collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget);
+	bool collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide);
 	bool hasPartLabel();
 	PluralType isPlural();
 	virtual bool canSwitchLayers();
@@ -160,9 +160,13 @@ public:
 	bool canChainMultiple();
 	void cursorKeyEvent(Qt::KeyboardModifiers modifiers);
 	void setDisplayBendpointCursor(bool);
+    bool banded();
+    void setBanded(bool);
+	void setProp(const QString & prop, const QString & value);
 
 protected slots:
 	void colorEntry(const QString & text);
+    void setBandedProp(bool);
 
 public:
 	static double STANDARD_TRACE_WIDTH;
@@ -172,6 +176,7 @@ public:
 public:
 	static void initNames();
 	static void cleanup();
+    static QVector<qreal> TheDash;
 
 protected:
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
@@ -216,7 +221,7 @@ protected:
 
 protected:
 	QLineF	m_line;
-	QPen	m_pen;	
+	QPen	m_pen;		
 	QPointF m_wireDragOrigin;
 	bool m_dragEnd;
 	bool m_dragCurve;
@@ -241,6 +246,7 @@ protected:
 	bool m_canHaveCurve;
 	class Bezier * m_bezier;
 	bool m_displayBendpointCursor;
+    bool m_banded;
 
 public:
 	static QStringList colorNames;

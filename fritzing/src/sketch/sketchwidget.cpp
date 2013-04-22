@@ -7294,24 +7294,32 @@ void SketchWidget::extraRenderSvgStep(ItemBase * itemBase, QPointF offset, doubl
 QString SketchWidget::makeWireSVG(Wire * wire, QPointF offset, double dpi, double printerScale, bool blackOnly) 
 {
 	QString shadow;
+    bool dashed = false;
 	if (wire->hasShadow()) {
-		shadow = makeWireSVGAux(wire, wire->shadowWidth(), wire->shadowHexString(), offset, dpi, printerScale, blackOnly);
+		shadow = makeWireSVGAux(wire, wire->shadowWidth(), wire->shadowHexString(), offset, dpi, printerScale, blackOnly, false);
+
+        if (wire->banded()) {
+            dashed = true;
+            shadow += makeWireSVGAux(wire, wire->width(), "white", offset, dpi, printerScale, blackOnly, false);
+        }
 	}
 
-	return shadow + makeWireSVGAux(wire, wire->width(), wire->hexString(), offset, dpi, printerScale, blackOnly);
+
+
+	return shadow + makeWireSVGAux(wire, wire->width(), wire->hexString(), offset, dpi, printerScale, blackOnly, dashed);
 }
 
-QString SketchWidget::makeWireSVGAux(Wire * wire, double width, const QString & color, QPointF offset, double dpi, double printerScale, bool blackOnly) 
+QString SketchWidget::makeWireSVGAux(Wire * wire, double width, const QString & color, QPointF offset, double dpi, double printerScale, bool blackOnly, bool dashed) 
 {
 	if (wire->isCurved()) {
 		QPolygonF poly = wire->sceneCurve(offset);
-		return TextUtils::makeCubicBezierSVG(poly, width, color, dpi, printerScale, blackOnly);
+		return TextUtils::makeCubicBezierSVG(poly, width, color, dpi, printerScale, blackOnly, dashed, Wire::TheDash);
 	}
 	else {
 		QLineF line = wire->getPaintLine();
 		QPointF p1 = wire->scenePos() + line.p1() - offset;
 		QPointF p2 = wire->scenePos() + line.p2() - offset;
-		return TextUtils::makeLineSVG(p1, p2, width, color, dpi, printerScale, blackOnly);
+		return TextUtils::makeLineSVG(p1, p2, width, color, dpi, printerScale, blackOnly, dashed, Wire::TheDash);
 	}
 }
 

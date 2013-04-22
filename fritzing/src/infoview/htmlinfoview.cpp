@@ -740,14 +740,15 @@ void HtmlInfoView::displayProps(ModelPart * modelPart, ItemBase * itemBase, bool
 		QString resultKey, resultValue;
 		QWidget * resultWidget = oldPlugin;
 		bool result = false;
+        bool hide = false;
 		if (itemBase != NULL) {
-			result = itemBase->collectExtraInfo(propThing->m_name->parentWidget(), family, key, value, swappingEnabled, resultKey, resultValue, resultWidget);
+			result = itemBase->collectExtraInfo(propThing->m_name->parentWidget(), family, key, value, swappingEnabled, resultKey, resultValue, resultWidget, hide);
 		}
 
 		QString newName;
 		QString newValue;
 		QWidget * newWidget = NULL;
-		if (result) {
+		if (result && !hide) {
 			newName = resultKey;
 			if (resultWidget) {
 				newWidget = resultWidget;
@@ -776,13 +777,14 @@ void HtmlInfoView::displayProps(ModelPart * modelPart, ItemBase * itemBase, bool
 		if (propThing->m_name->text().compare(newName) != 0) {
 			propThing->m_name->setText(newName);
 		}
-		propThing->m_name->setVisible(true);
-		propThing->m_frame->setVisible(true);
+
+		propThing->m_name->setVisible(!hide);
+		propThing->m_frame->setVisible(!hide);
 
 		if (newWidget == NULL && propThing->m_value->text().compare(newValue) != 0) {
 			propThing->m_value->setText(newValue);
 		}
-		propThing->m_value->setVisible(newWidget == NULL);
+		propThing->m_value->setVisible(newWidget == NULL && !hide);
 	}
 
 	for (int jx = ix; jx < m_propThings.count(); jx++) {

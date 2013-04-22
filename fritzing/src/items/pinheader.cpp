@@ -1015,7 +1015,7 @@ QString PinHeader::makePcbSMDSvg(const QString & expectedFileName)
 	return svg;
 }
 
-bool PinHeader::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget) 
+bool PinHeader::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide) 
 {
 	if (prop.compare("hole size", Qt::CaseInsensitive) == 0) {
         if (moduleID().contains("smd", Qt::CaseInsensitive)) {
@@ -1027,7 +1027,7 @@ bool PinHeader::collectExtraInfo(QWidget * parent, const QString & family, const
         }
 	}
 
-	return PaletteItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+	return PaletteItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 }
 
 void PinHeader::swapEntry(const QString & text) {

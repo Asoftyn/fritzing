@@ -47,7 +47,7 @@ public:
 	const QString & form();
 	PluralType isPlural();
 	void addedToScene(bool temporary);
-	bool collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget);
+	bool collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide);
 
 protected:
 	QStringList collectValues(const QString & family, const QString & prop, QString & value);

@@ -1542,7 +1542,8 @@ QString MainWindow::getBomProps(ItemBase * itemBase)
 		QWidget widget;
 		QWidget * resultWidget = NULL;
 		QString resultKey, resultValue;
-		itemBase->collectExtraInfo(&widget, properties.value("family"), key, value, false, resultKey, resultValue, resultWidget);
+        bool hide;
+		itemBase->collectExtraInfo(&widget, properties.value("family"), key, value, false, resultKey, resultValue, resultWidget, hide);
 		if (resultValue.isEmpty()) continue;
 
 		pString += ItemBase::translatePropertyName(resultKey) + " " + resultValue + "; ";

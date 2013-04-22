@@ -51,9 +51,9 @@ Dip::Dip( ModelPart * modelPart, ViewLayer::ViewID viewID, const ViewGeometry & 
 Dip::~Dip() {
 }
 
-bool Dip::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget)
+bool Dip::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide)
 {
-	bool result = MysteryPart::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+	bool result = MysteryPart::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 	if (prop.compare("chip label", Qt::CaseInsensitive) == 0) {
 		returnProp = tr("chip label");
 	}

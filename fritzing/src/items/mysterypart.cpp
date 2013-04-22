@@ -208,7 +208,7 @@ QStringList MysteryPart::collectValues(const QString & family, const QString & p
 	return PaletteItem::collectValues(family, prop, value);
 }
 
-bool MysteryPart::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget)
+bool MysteryPart::collectExtraInfo(QWidget * parent, const QString & family, const QString & prop, const QString & value, bool swappingEnabled, QString & returnProp, QString & returnValue, QWidget * & returnWidget, bool & hide)
 {
 	if (prop.compare("chip label", Qt::CaseInsensitive) == 0) {
 		returnProp = tr("label");
@@ -230,7 +230,7 @@ bool MysteryPart::collectExtraInfo(QWidget * parent, const QString & family, con
         return collectHoleSizeInfo(TheHoleThing.holeSizeValue, parent, swappingEnabled, returnProp, returnValue, returnWidget);
 	}
 
-	return PaletteItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget);
+	return PaletteItem::collectExtraInfo(parent, family, prop, value, swappingEnabled, returnProp, returnValue, returnWidget, hide);
 }
 
 QString MysteryPart::getProperty(const QString & key) {
