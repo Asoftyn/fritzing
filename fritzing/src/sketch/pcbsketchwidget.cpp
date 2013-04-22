@@ -2728,8 +2728,15 @@ void PCBSketchWidget::fabQuote() {
     double area = calcBoardArea(boardCount);
     QuoteDialog::setArea(area, boardCount);
     if (boardCount == 0) {
-        QMessageBox::information(this, tr("Fritzing"),
+        QMessageBox::information(this, tr("Fritzing Fab Quote"),
                    tr("Your sketch does not have a board yet. You cannot fabricate this sketch without a PCB part."));
+        return;
+    }
+
+    if (!QuoteDialog::quoteSucceeded()) {
+        QMessageBox::information(this, tr("Fritzing Fab Quote"),
+                   tr("Sorry, http://fab.fritzing.org is not responding to the quote request. Please check your network connection and/or try again later."));
+        requestQuote();
         return;
     }
 
@@ -2761,8 +2768,8 @@ void PCBSketchWidget::gotFabQuote(QNetworkReply * networkReply) {
                 if (!ok) continue;
 
                QuoteDialog::setCountCost(ix, count, cost);
-
             }
+            QuoteDialog::setQuoteSucceeded(true);
         }
 
         if (m_quoteDialog) m_quoteDialog->setText();
@@ -2791,6 +2798,7 @@ void PCBSketchWidget::requestQuote() {
                 .arg(area)
                 .arg(countArgs)
                 ;
+    QuoteDialog::setQuoteSucceeded(false);
 	manager->get(QNetworkRequest(QUrl(string)));
 }
 

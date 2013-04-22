@@ -2796,12 +2796,15 @@ void MainWindow::initProgrammingWidget() {
 }
 
 void MainWindow::orderFabHoverEnter() {
+    if (!QuoteDialog::quoteSucceeded()) return;
     if (m_rolloverQuoteDialog && m_rolloverQuoteDialog->isVisible()) return;
 
     QTimer::singleShot(1, this, SLOT(fireQuote()));
 }
 
 void MainWindow::fireQuote() {
+    if (!QuoteDialog::quoteSucceeded()) return;
+
     m_rolloverQuoteDialog = m_pcbGraphicsView->quoteDialog(this);
     if (m_rolloverQuoteDialog == NULL) return;
 

@@ -49,6 +49,11 @@ public:
     static void setArea(double area, int boardCount);
     static void setCountCost(int index, int count, double cost);
     static QString countArgs();
+    static void setQuoteSucceeded(bool);
+    static bool quoteSucceeded();
+
+protected:
+    static void initCounts();
 
 public:
     static const int MessageCount = 4;

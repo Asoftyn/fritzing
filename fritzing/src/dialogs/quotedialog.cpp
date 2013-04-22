@@ -46,6 +46,7 @@ static CountCost TheCountCost[QuoteDialog::MessageCount];
 static double TheArea;
 static int TheBoardCount;
 static QList<int> Counts;
+static bool QuoteSucceeded = false;
 
 double hundredths(double d) {
     double h = (int) (d * 100);
@@ -97,6 +98,7 @@ void CustomDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option
 
 QuoteDialog::QuoteDialog(bool full, QWidget *parent) : QDialog(parent) 
 {
+    initCounts();
     QFile styleSheet(":/resources/styles/fritzing.qss");
     if (!styleSheet.open(QIODevice::ReadOnly)) {
         DebugDialog::debug("Unable to open :/resources/styles/fritzing.qss");
@@ -104,11 +106,7 @@ QuoteDialog::QuoteDialog(bool full, QWidget *parent) : QDialog(parent)
     	this->setStyleSheet(styleSheet.readAll());
     }
 
-    if (Counts.isEmpty()) {
-        Counts << 1 << 2 << 5 << 10;
-    }
-
-	setWindowTitle(tr("Fab Quote"));
+	setWindowTitle(tr("Fritzing Fab Quote"));
 
 	QVBoxLayout * vLayout = new QVBoxLayout(this);
 
@@ -116,7 +114,7 @@ QuoteDialog::QuoteDialog(bool full, QWidget *parent) : QDialog(parent)
     label->setObjectName("quoteOrder");
     vLayout->addWidget(label);
 
-	m_messageLabel = new QLabel("");
+	m_messageLabel = new QLabel(tr(""));
     m_messageLabel->setObjectName("quoteMessage");
 	vLayout->addWidget(m_messageLabel);
 
@@ -254,10 +252,28 @@ void QuoteDialog::visitFritzingFab() {
 }
 
 QString QuoteDialog::countArgs() {
+    initCounts();
+
     QString countArgs;
     foreach (int c, Counts) {
         countArgs += QString::number(c) + ",";
     }
     countArgs.chop(1);
     return countArgs;
+}
+
+void QuoteDialog::setQuoteSucceeded(bool succeeded) {
+    DebugDialog::debug(QString("quote succeeded %1").arg(succeeded));
+    QuoteSucceeded = succeeded;
+}
+
+bool QuoteDialog::quoteSucceeded() {
+    DebugDialog::debug(QString("check quote succeeded %1").arg(QuoteSucceeded));
+    return QuoteSucceeded;
+}
+
+void QuoteDialog::initCounts() {
+    if (Counts.isEmpty()) {
+        Counts << 1 << 2 << 5 << 10;
+    }
 }
