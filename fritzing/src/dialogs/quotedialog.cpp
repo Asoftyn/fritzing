@@ -209,7 +209,8 @@ void QuoteDialog::setArea(double area, int boardCount) {
 
 void QuoteDialog::setText() {
     DebugDialog::debug("quote dialog set text");
-    QString msg = tr("The total area of the %n boards in this sketch is %1 cm%3 (%2 in%3).\n", "", TheBoardCount)
+    QString msg = tr("The total area of the %n PCB(s) in this sketch is", "", TheBoardCount);
+    msg += tr(" %1 cm%3 (%2 in%3).\n")
         .arg(hundredths(TheArea))
         .arg(hundredths(TheArea / (2.54 * 2.54)))
         .arg(QChar(178))
@@ -263,12 +264,12 @@ QString QuoteDialog::countArgs() {
 }
 
 void QuoteDialog::setQuoteSucceeded(bool succeeded) {
-    DebugDialog::debug(QString("quote succeeded %1").arg(succeeded));
+    //DebugDialog::debug(QString("quote succeeded %1").arg(succeeded));
     QuoteSucceeded = succeeded;
 }
 
 bool QuoteDialog::quoteSucceeded() {
-    DebugDialog::debug(QString("check quote succeeded %1").arg(QuoteSucceeded));
+    //DebugDialog::debug(QString("check quote succeeded %1").arg(QuoteSucceeded));
     return QuoteSucceeded;
 }
 

@@ -3305,6 +3305,14 @@ Reason: %2 (errcode %3)</source>
         <source>Enter keepout value:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Fritzing Fab Quote</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sorry, http://fab.fritzing.org is not responding to the quote request. Please check your network connection and/or try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PEConnectorsView</name>
@@ -5582,10 +5590,6 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
 <context>
     <name>QuoteDialog</name>
     <message>
-        <source>Fab Quote</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>For more information on pricing see &lt;a href=&apos;http://fab.fritzing.org/pricing&apos;&gt;http://fab.fritzing.org/pricing&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5596,13 +5600,6 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
     <message>
         <source>Order your PCB from Fritzing Fab</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <source>The total area of the %n boards in this sketch is %1 cm%3 (%2 in%3).
-</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
     </message>
     <message>
         <source>Price per board</source>
@@ -5626,6 +5623,21 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
     </message>
     <message>
         <source>Use Fritzing Fab to produce a PCB from your sketch. Take advantage of our quantity discount:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fritzing Fab Quote</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>The total area of the %n PCB(s) in this sketch is</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source> %1 cm%3 (%2 in%3).
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
