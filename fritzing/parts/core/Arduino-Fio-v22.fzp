@@ -3,10 +3,10 @@
 <version>4</version>
 <date>2013-04-11</date>
 <author>althaus</author>
-<description>The Arduino Funnel I/O (Fio) is a board designed by Shigeru Kobayashi, based on the original design from LilyPad.
-
-Funnel is a toolkit to sketch your idea physically, and consists of software libraries and hardware. By using Funnel, the user can interface to sensors and/or actuators with various programming languages such as ActionScript 3, Processing, and Ruby.
-
+<description>The Arduino Funnel I/O (Fio) is a board designed by Shigeru Kobayashi, based on the original design from LilyPad.
+
+Funnel is a toolkit to sketch your idea physically, and consists of software libraries and hardware. By using Funnel, the user can interface to sensors and/or actuators with various programming languages such as ActionScript 3, Processing, and Ruby.
+
 Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer battery and includes a charge circuit over USB. An XBee socket is available on the bottom of the board. The Fio has been designed to be wirelessly reprogrammable. Checkout our tutorial on wireless bootloading!</description>
 <title>Arduino Fio (Funnel I/O)</title>
 <url>http://arduino.cc/en/Main/ArduinoBoardFio</url>
@@ -16,8 +16,8 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <tag>microcontrollerboard</tag>
 </tags>
 <properties>
-<property name='family'>microcontroller board</property>
-<property name='kind'>Arduino Fio</property>
+<property name='family'>microcontroller board (arduino)</property>
+<property name='variant'>Arduino Fio (v22)</property>
 </properties>
 <views>
 <breadboardView>
@@ -191,7 +191,7 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector36pin' terminalId='connector36terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector36pad'/><p layer='copper1' svgId='connector36pad'/></pcbView>
+<p layer='unknown' svgId='connector36pad'/></pcbView>
 </views>
 </connector>
 <connector id='connector37' type='female' name='VBATT'>
@@ -201,7 +201,7 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector37pin' terminalId='connector37terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector37pad'/><p layer='copper1' svgId='connector37pad'/></pcbView>
+<p layer='unknown' svgId='connector37pad'/></pcbView>
 </views>
 </connector>
 <connector id='connector42' type='female' name='MISO'>
@@ -211,7 +211,9 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector42pin' terminalId='connector42terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector42pad'/><p layer='copper1' svgId='connector42pad'/></pcbView>
+<p layer='unknown' svgId='connector42pad'/>
+
+</pcbView>
 </views>
 </connector>
 <connector id='connector43' type='female' name='VCC'>
@@ -221,7 +223,7 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector43pin' terminalId='connector43terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector43pad'/><p layer='copper1' svgId='connector43pad'/></pcbView>
+<p layer='unknown' svgId='connector43pad'/></pcbView>
 </views>
 </connector>
 <connector id='connector44' type='female' name='SCK'>
@@ -231,7 +233,7 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector44pin' terminalId='connector44terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector44pad'/><p layer='copper1' svgId='connector44pad'/></pcbView>
+<p layer='unknown' svgId='connector44pad'/></pcbView>
 </views>
 </connector>
 <connector id='connector45' type='female' name='MOSI'>
@@ -241,7 +243,7 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector45pin' terminalId='connector45terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector45pad'/><p layer='copper1' svgId='connector45pad'/></pcbView>
+<p layer='unknown' svgId='connector45pad'/></pcbView>
 </views>
 </connector>
 <connector id='connector46' type='female' name='Reset'>
@@ -251,7 +253,7 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector46pin' terminalId='connector46terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector46pad'/><p layer='copper1' svgId='connector46pad'/></pcbView>
+<p layer='unknown' svgId='connector46pad'/></pcbView>
 </views>
 </connector>
 <connector id='connector47' type='female' name='GND'>
@@ -261,7 +263,7 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector47pin' terminalId='connector47terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector47pad'/><p layer='copper1' svgId='connector47pad'/></pcbView>
+<p layer='unknown' svgId='connector47pad'/></pcbView>
 </views>
 </connector>
 <connector id='connector48' type='female' name='GND'>
@@ -411,7 +413,7 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector62pin' terminalId='connector62terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector62pad'/><p layer='copper1' svgId='connector62pad'/></pcbView>
+<p layer='unknown' svgId='connector62pad'/></pcbView>
 </views>
 </connector>
 <connector id='connector63' type='female' name='USB_VIN'>
@@ -421,7 +423,7 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector63pin' terminalId='connector63terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector63pad'/><p layer='copper1' svgId='connector63pad'/></pcbView>
+<p layer='unknown' svgId='connector63pad'/></pcbView>
 </views>
 </connector>
 <connector id='connector64' type='female' name='Off'>
@@ -431,7 +433,7 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector64pin' terminalId='connector64terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector64pad'/><p layer='copper1' svgId='connector64pad'/></pcbView>
+<p layer='unknown' svgId='connector64pad'/></pcbView>
 </views>
 </connector>
 <connector id='connector65' type='female' name='On'>
@@ -441,7 +443,7 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector65pin' terminalId='connector65terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector65pad'/><p layer='copper1' svgId='connector65pad'/></pcbView>
+<p layer='unknown' svgId='connector65pad'/></pcbView>
 </views>
 </connector>
 <connector id='connector66' type='female' name='CTS'>
@@ -451,7 +453,7 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector66pin' terminalId='connector66terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector66pad'/><p layer='copper1' svgId='connector66pad'/></pcbView>
+<p layer='unknown' svgId='connector66pad'/></pcbView>
 </views>
 </connector>
 <connector id='connector67' type='female' name='SLEEP_RQ'>
@@ -461,7 +463,7 @@ Arduino Fio is compatible with Funnel. It has connections for a Lithium Polymer 
 <schematicView>
 <p layer='schematic' svgId='connector67pin' terminalId='connector67terminal'/></schematicView>
 <pcbView>
-<p layer='copper0' svgId='connector67pad'/><p layer='copper1' svgId='connector67pad'/></pcbView>
+<p layer='unknown' svgId='connector67pad'/></pcbView>
 </views>
 </connector>
 </connectors>

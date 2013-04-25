@@ -23,9 +23,9 @@ The 6-pin serial programming header is compatible with the USB Serial adapter an
   <tag>Eth-Board</tag>
  </tags>
  <properties>
-  <property name="family">Arduino Board Ethernet </property>
+  <property name="family">microcontroller board (arduino)</property>
   <property name="part number"></property>
-  <property name="variant">variant 1</property>
+  <property name="variant">Arduino Ethernet</property>
  </properties>
  <views>
   <breadboardView>
@@ -392,8 +392,7 @@ The 6-pin serial programming header is compatible with the USB Serial adapter an
      <p svgId="connector232pin" layer="schematic" terminalId="connector232terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector232pad" layer="copper0"/>
-     <p svgId="connector232pad" layer="copper1"/>
+     <p svgId="connector232pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -407,8 +406,7 @@ The 6-pin serial programming header is compatible with the USB Serial adapter an
      <p svgId="connector234pin" layer="schematic" terminalId="connector234terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector234pad" layer="copper0"/>
-     <p svgId="connector234pad" layer="copper1"/>
+     <p svgId="connector234pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -422,8 +420,7 @@ The 6-pin serial programming header is compatible with the USB Serial adapter an
      <p svgId="connector235pin" layer="schematic" terminalId="connector235terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector235pad" layer="copper0"/>
-     <p svgId="connector235pad" layer="copper1"/>
+     <p svgId="connector235pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -437,8 +434,7 @@ The 6-pin serial programming header is compatible with the USB Serial adapter an
      <p svgId="connector236pin" layer="schematic" terminalId="connector236terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector236pad" layer="copper0"/>
-     <p svgId="connector236pad" layer="copper1"/>
+     <p svgId="connector236pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -452,8 +448,7 @@ The 6-pin serial programming header is compatible with the USB Serial adapter an
      <p svgId="connector237pin" layer="schematic" terminalId="connector237terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector237pad" layer="copper0"/>
-     <p svgId="connector237pad" layer="copper1"/>
+     <p svgId="connector237pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>

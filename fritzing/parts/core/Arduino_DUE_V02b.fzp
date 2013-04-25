@@ -24,9 +24,9 @@ The Due has a dedicated forum for discussing the board.</description>
   <tag>microcontrollerboard</tag>
  </tags>
  <properties>
-  <property name="family">microcontroller board (arduino due)</property>
+  <property name="family">microcontroller board (arduino)</property>
   <property name="part number"></property>
-  <property name="variant">variant 1</property>
+  <property name="variant">Arduino Due</property>
  </properties>
  <views>
   <breadboardView>
@@ -413,141 +413,7 @@ The Due has a dedicated forum for discussing the board.</description>
     </pcbView>
    </views>
   </connector>
-  <connector type="female" id="connector221" name="JTAG_TMS">
-   <description>JTAG_TMS</description>
-   <views>
-    <breadboardView>
-     <p svgId="connector221pin" layer="breadboard"/>
-    </breadboardView>
-    <schematicView>
-     <p svgId="connector221pin" layer="schematic" terminalId="connector221terminal"/>
-    </schematicView>
-    <pcbView>
-     <p svgId="connector221pad" layer="copper0"/>
-     <p svgId="connector221pad" layer="copper1"/>
-    </pcbView>
-   </views>
-  </connector>
-  <connector type="female" id="connector222" name="GND">
-   <description>GND</description>
-   <views>
-    <breadboardView>
-     <p svgId="connector222pin" layer="breadboard"/>
-    </breadboardView>
-    <schematicView>
-     <p svgId="connector222pin" layer="schematic" terminalId="connector222terminal"/>
-    </schematicView>
-    <pcbView>
-     <p svgId="connector222pad" layer="copper0"/>
-     <p svgId="connector222pad" layer="copper1"/>
-    </pcbView>
-   </views>
-  </connector>
-  <connector type="female" id="connector223" name="JTAG_TCK">
-   <description>JTAG_TCK</description>
-   <views>
-    <breadboardView>
-     <p svgId="connector223pin" layer="breadboard"/>
-    </breadboardView>
-    <schematicView>
-     <p svgId="connector223pin" layer="schematic" terminalId="connector223terminal"/>
-    </schematicView>
-    <pcbView>
-     <p svgId="connector223pad" layer="copper0"/>
-     <p svgId="connector223pad" layer="copper1"/>
-    </pcbView>
-   </views>
-  </connector>
-  <connector type="female" id="connector224" name="GND">
-   <description>GND</description>
-   <views>
-    <breadboardView>
-     <p svgId="connector224pin" layer="breadboard"/>
-    </breadboardView>
-    <schematicView>
-     <p svgId="connector224pin" layer="schematic" terminalId="connector224terminal"/>
-    </schematicView>
-    <pcbView>
-     <p svgId="connector224pad" layer="copper0"/>
-     <p svgId="connector224pad" layer="copper1"/>
-    </pcbView>
-   </views>
-  </connector>
-  <connector type="female" id="connector225" name="JTAG_TDO">
-   <description>JTAG_TDO</description>
-   <views>
-    <breadboardView>
-     <p svgId="connector225pin" layer="breadboard"/>
-    </breadboardView>
-    <schematicView>
-     <p svgId="connector225pin" layer="schematic" terminalId="connector225terminal"/>
-    </schematicView>
-    <pcbView>
-     <p svgId="connector225pad" layer="copper0"/>
-     <p svgId="connector225pad" layer="copper1"/>
-    </pcbView>
-   </views>
-  </connector>
-  <connector type="female" id="connector226" name="JTAG">
-   <description>JTAG</description>
-   <views>
-    <breadboardView>
-     <p svgId="connector226pin" layer="breadboard"/>
-    </breadboardView>
-    <schematicView>
-     <p svgId="connector226pin" layer="schematic" terminalId="connector226terminal"/>
-    </schematicView>
-    <pcbView>
-     <p svgId="connector226pad" layer="copper0"/>
-     <p svgId="connector226pad" layer="copper1"/>
-    </pcbView>
-   </views>
-  </connector>
-  <connector type="female" id="connector227" name="JTAG_TDI">
-   <description>JTAG_TDI</description>
-   <views>
-    <breadboardView>
-     <p svgId="connector227pin" layer="breadboard"/>
-    </breadboardView>
-    <schematicView>
-     <p svgId="connector227pin" layer="schematic" terminalId="connector227terminal"/>
-    </schematicView>
-    <pcbView>
-     <p svgId="connector227pad" layer="copper0"/>
-     <p svgId="connector227pad" layer="copper1"/>
-    </pcbView>
-   </views>
-  </connector>
-  <connector type="female" id="connector228" name="GND">
-   <description>GND</description>
-   <views>
-    <breadboardView>
-     <p svgId="connector228pin" layer="breadboard"/>
-    </breadboardView>
-    <schematicView>
-     <p svgId="connector228pin" layer="schematic" terminalId="connector228terminal"/>
-    </schematicView>
-    <pcbView>
-     <p svgId="connector228pad" layer="copper0"/>
-     <p svgId="connector228pad" layer="copper1"/>
-    </pcbView>
-   </views>
-  </connector>
-  <connector type="female" id="connector229" name="JTAG_RESET">
-   <description>JTAG_RESET</description>
-   <views>
-    <breadboardView>
-     <p svgId="connector229pin" layer="breadboard"/>
-    </breadboardView>
-    <schematicView>
-     <p svgId="connector229pin" layer="schematic" terminalId="connector229terminal"/>
-    </schematicView>
-    <pcbView>
-     <p svgId="connector229pad" layer="copper0"/>
-     <p svgId="connector229pad" layer="copper1"/>
-    </pcbView>
-   </views>
-  </connector>
+ 
   <connector type="female" id="connector250" name="unused">
    <description>unused</description>
    <views>

@@ -3,17 +3,15 @@
 <version>4</version>
 <date>2013-04-03</date>
 <author>althaus</author>
-<description>The Arduino Mega 2560 is a microcontroller board based on the ATmega2560 (datasheet). It has 54 digital input/output pins (of which 14 can be used as PWM outputs), 16 analog inputs, 4 UARTs (hardware serial ports), a 16 MHz crystal oscillator, a USB connection, a power jack, an ICSP header, and a reset button. It contains everything needed to support the microcontroller; simply connect it to a computer with a USB cable or power it with a AC-to-DC adapter or battery to get started. The Mega is compatible with most shields designed for the Arduino Duemilanove or Diecimila.
-
-The Mega 2560 is an update to the Arduino Mega, which it replaces.
-
-The Mega2560 differs from all preceding boards in that it does not use the FTDI USB-to-serial driver chip. Instead, it features the ATmega16U2 programmed as a USB-to-serial converter.
-
-Revision 3 of the board has the following new features:
-
-    1.0 pinout: added SDA and SCL pins that are near to the AREF pin and two other new pins placed near to the RESET pin, the IOREF that allow the shields to adapt to the voltage provided from the board. In future, shields will be compatible both with the board that use the AVR, which operate with 5V and with the Arduino Due that operate with 3.3V. The second one is a not connected pin, that is reserved for future purposes.
-    Stronger RESET circuit.
-    Atmega 16U2 replace the 8U2.
+<description>The Arduino Mega 2560 is a microcontroller board based on the ATmega2560 (datasheet). It has 54 digital input/output pins (of which 14 can be used as PWM outputs), 16 analog inputs, 4 UARTs (hardware serial ports), a 16 MHz crystal oscillator, a USB connection, a power jack, an ICSP header, and a reset button. It contains everything needed to support the microcontroller; simply connect it to a computer with a USB cable or power it with a AC-to-DC adapter or battery to get started. The Mega is compatible with most shields designed for the Arduino Duemilanove or Diecimila.
+The Mega 2560 is an update to the Arduino Mega, which it replaces.
+The Mega2560 differs from all preceding boards in that it does not use the FTDI USB-to-serial driver chip. Instead, it features the ATmega16U2 programmed as a USB-to-serial converter.
+
+Revision 3 of the board has the following new features:
+1.0 pinout: added SDA and SCL pins that are near to the AREF pin and two other new pins placed near to the RESET pin, the IOREF that allow the shields to adapt to the voltage provided from the board. In future, shields will be compatible both with the board that use the AVR, which operate with 5V and with the Arduino Due that operate with 3.3V. The second one is a not connected pin, that is reserved for future purposes.
+    Stronger RESET circuit.
+    Atmega 16U2 replace the 8U2.
+
 </description>
 <title>Arduino Mega 2560 (Rev3)</title>
 <url>http://arduino.cc/en/Main/ArduinoBoardMega2560</url>
@@ -24,7 +22,8 @@ Revision 3 of the board has the following new features:
 <tag>REV 3</tag>
 </tags>
 <properties>
-<property name='family'>microcontroller board</property>
+<property name='family'>microcontroller board (arduino)</property>
+<property name="variant">Arduino MEGA 2560 (Rev3)</property>
 </properties>
 <views>
 <breadboardView>

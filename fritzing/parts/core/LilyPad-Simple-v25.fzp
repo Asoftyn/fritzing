@@ -3,8 +3,10 @@
 <version>4</version>
 <date>2013-04-11</date>
 <author>althaus</author>
-<description>This is the LilyPad Arduino Simple Board. It&apos;s controlled by an ATmega328 with the Arduino bootloader. It has fewer pins than the LilyPad Arduino Main Board, a built in power supply socket, and an on/off switch. Any of our LiPo batteries can be plugged right into the socket. The Simple board is designed to streamline your next sewable project by keeping things simple and giving you more room to work  and eliminating the need to sew a power supply. This revision does away with the ISP header and adds a charging circuit based on the MCP73831 IC.
-
+<description>This is the LilyPad Arduino Simple Board. It&apos;s controlled by an ATmega328 with the Arduino bootloader. It has fewer pins than the LilyPad Arduino Main Board, a built in power supply socket, and an on/off switch. Any of our LiPo batteries can be plugged right into the socket. The Simple board is designed to streamline your next sewable project by keeping things simple and giving you more room to work  and eliminating the need to sew a power supply. This revision does away with the ISP header and adds a charging circuit based on the MCP73831 IC.
+
+
+
 LilyPad is a wearable e-textile technology developed by Leah Buechley and cooperatively designed by Leah and SparkFun. Each LilyPad was creatively designed to have large connecting pads to allow them to be sewn into clothing. Various input, output, power, and sensor boards are available. They&apos;re even washable!</description>
 <title>LilyPad Arduino Simple Board</title>
 <url>https://www.sparkfun.com/products/10274</url>
@@ -14,8 +16,8 @@ LilyPad is a wearable e-textile technology developed by Leah Buechley and cooper
 <tag>microcontrollerboard</tag>
 </tags>
 <properties>
-<property name='family'>microcontroller board</property>
-<property name='kind'>LilyPad</property>
+<property name='family'>microcontroller board (lilypad)</property>
+<property name='variant'>LilyPad Simple (Rev25)</property>
 </properties>
 <views>
 <breadboardView>

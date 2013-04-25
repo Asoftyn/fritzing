@@ -504,7 +504,7 @@ The Arduino Pro was designed and manufactured by SparkFun Electronics. </descrip
      <p svgId="connector52pin" layer="schematic" terminalId="connector52terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector52pad" layer="unknown"/>/>
+     <p svgId="connector52pad" layer="unknown"/>
 
     </pcbView>
    </views>
@@ -547,8 +547,7 @@ The Arduino Pro was designed and manufactured by SparkFun Electronics. </descrip
      <p svgId="connector55pin" layer="schematic" terminalId="connector55terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector55pad" layer="copper0"/>
-     <p svgId="connector55pad" layer="copper1"/>
+     <p svgId="connector55pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>

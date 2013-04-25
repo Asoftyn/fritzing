@@ -25,7 +25,7 @@ For information on using the board with the Android OS, see Google's ADK documen
  <properties>
   <property name="family">microcontroller board (arduino)</property>
   <property name="part number"></property>
-  <property name="variant">MEGA ADK (Rev3)</property>
+  <property name="variant">Arduino MEGA ADK (Rev3)</property>
  </properties>
  <views>
   <breadboardView>
@@ -422,8 +422,7 @@ For information on using the board with the Android OS, see Google's ADK documen
      <p svgId="connector274pin" layer="schematic" terminalId="connector274terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector274pad" layer="copper0"/>
-     <p svgId="connector274pad" layer="copper1"/>
+     <p svgId="connector274pad"  layer="unkown"/>
     </pcbView>
    </views>
   </connector>
@@ -437,8 +436,7 @@ For information on using the board with the Android OS, see Google's ADK documen
      <p svgId="connector275pin" layer="schematic" terminalId="connector275terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector275pad" layer="copper0"/>
-     <p svgId="connector275pad" layer="copper1"/>
+     <p svgId="connector275pad"  layer="unkown"/>
     </pcbView>
    </views>
   </connector>
@@ -452,8 +450,8 @@ For information on using the board with the Android OS, see Google's ADK documen
      <p svgId="connector276pin" layer="schematic" terminalId="connector276terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector276pad" layer="copper0"/>
-     <p svgId="connector276pad" layer="copper1"/>
+     <p svgId="connector276pad" layer="unkown"/>
+
     </pcbView>
    </views>
   </connector>
@@ -467,8 +465,7 @@ For information on using the board with the Android OS, see Google's ADK documen
      <p svgId="connector277pin" layer="schematic" terminalId="connector277terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector277pad" layer="copper0"/>
-     <p svgId="connector277pad" layer="copper1"/>
+     <p svgId="connector277pad"  layer="unkown"/>
     </pcbView>
    </views>
   </connector>
@@ -482,8 +479,7 @@ For information on using the board with the Android OS, see Google's ADK documen
      <p svgId="connector278pin" layer="schematic" terminalId="connector278terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector278pad" layer="copper0"/>
-     <p svgId="connector278pad" layer="copper1"/>
+     <p svgId="connector278pad"  layer="unkown"/>
     </pcbView>
    </views>
   </connector>
@@ -497,8 +493,7 @@ For information on using the board with the Android OS, see Google's ADK documen
      <p svgId="connector279pin" layer="schematic" terminalId="connector279terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector279pad" layer="copper0"/>
-     <p svgId="connector279pad" layer="copper1"/>
+     <p svgId="connector279pad"  layer="unkown"/>
     </pcbView>
    </views>
   </connector>

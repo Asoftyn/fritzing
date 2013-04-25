@@ -13,10 +13,10 @@
   <tag>Shield</tag>
  </tags>
  <properties>
-  <property name="family">shield</property>
+  <property name="family">Arduino shield</property>
   <property name="chip">L298</property>
   <property name="part number"/>
-  <property name="variant">variant 2</property>
+  <property name="variant">Arduino motor shield (Rev3)</property>
  </properties>
  <views>
   <breadboardView>
@@ -53,8 +53,7 @@
      <p svgId="connector96pin" layer="schematic" terminalId="connector96terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector96pad" layer="copper0"/>
-     <p svgId="connector96pad" layer="copper1"/>
+     <p svgId="connector96pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -68,8 +67,7 @@
      <p svgId="connector97pin" layer="schematic" terminalId="connector97terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector97pad" layer="copper0"/>
-     <p svgId="connector97pad" layer="copper1"/>
+     <p svgId="connector97pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -83,8 +81,7 @@
      <p svgId="connector98pin" layer="schematic" terminalId="connector98terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector98pad" layer="copper0"/>
-     <p svgId="connector98pad" layer="copper1"/>
+     <p svgId="connector98pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -98,8 +95,7 @@
      <p svgId="connector99pin" layer="schematic" terminalId="connector99terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector99pad" layer="copper0"/>
-     <p svgId="connector99pad" layer="copper1"/>
+     <p svgId="connector99pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -113,8 +109,7 @@
      <p svgId="connector100pin" layer="schematic" terminalId="connector100terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector100pad" layer="copper0"/>
-     <p svgId="connector100pad" layer="copper1"/>
+     <p svgId="connector100pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -128,8 +123,7 @@
      <p svgId="connector101pin" layer="schematic" terminalId="connector101terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector101pad" layer="copper0"/>
-     <p svgId="connector101pad" layer="copper1"/>
+     <p svgId="connector101pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -503,8 +497,7 @@
      <p svgId="connector134pin" layer="schematic" terminalId="connector134terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector134pad" layer="copper0"/>
-     <p svgId="connector134pad" layer="copper1"/>
+     <p svgId="connector134pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -518,8 +511,7 @@
      <p svgId="connector135pin" layer="schematic" terminalId="connector135terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector135pad" layer="copper0"/>
-     <p svgId="connector135pad" layer="copper1"/>
+     <p svgId="connector135pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -533,8 +525,7 @@
      <p svgId="connector136pin" layer="schematic" terminalId="connector136terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector136pad" layer="copper0"/>
-     <p svgId="connector136pad" layer="copper1"/>
+     <p svgId="connector136pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -548,8 +539,7 @@
      <p svgId="connector137pin" layer="schematic" terminalId="connector137terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector137pad" layer="copper0"/>
-     <p svgId="connector137pad" layer="copper1"/>
+     <p svgId="connector137pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -563,8 +553,7 @@
      <p svgId="connector138pin" layer="schematic" terminalId="connector138terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector138pad" layer="copper0"/>
-     <p svgId="connector138pad" layer="copper1"/>
+     <p svgId="connector138pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -578,8 +567,7 @@
      <p svgId="connector139pin" layer="schematic" terminalId="connector139terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector139pad" layer="copper0"/>
-     <p svgId="connector139pad" layer="copper1"/>
+     <p svgId="connector139pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -593,8 +581,7 @@
      <p svgId="connector140pin" layer="schematic" terminalId="connector140terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector140pad" layer="copper0"/>
-     <p svgId="connector140pad" layer="copper1"/>
+     <p svgId="connector140pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -608,8 +595,7 @@
      <p svgId="connector141pin" layer="schematic" terminalId="connector141terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector141pad" layer="copper0"/>
-     <p svgId="connector141pad" layer="copper1"/>
+     <p svgId="connector141pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -623,8 +609,7 @@
      <p svgId="connector142pin" layer="schematic" terminalId="connector142terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector142pad" layer="copper0"/>
-     <p svgId="connector142pad" layer="copper1"/>
+     <p svgId="connector142pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -638,8 +623,7 @@
      <p svgId="connector143pin" layer="schematic" terminalId="connector143terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector143pad" layer="copper0"/>
-     <p svgId="connector143pad" layer="copper1"/>
+     <p svgId="connector143pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -653,8 +637,7 @@
      <p svgId="connector144pin" layer="schematic" terminalId="connector144terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector144pad" layer="copper0"/>
-     <p svgId="connector144pad" layer="copper1"/>
+     <p svgId="connector144pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -668,8 +651,7 @@
      <p svgId="connector145pin" layer="schematic" terminalId="connector145terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector145pad" layer="copper0"/>
-     <p svgId="connector145pad" layer="copper1"/>
+     <p svgId="connector145pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -788,8 +770,7 @@
      <p svgId="connector191pin" layer="schematic" terminalId="connector191terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector191pad" layer="copper0"/>
-     <p svgId="connector191pad" layer="copper1"/>
+     <p svgId="connector191pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -803,8 +784,7 @@
      <p svgId="connector192pin" layer="schematic" terminalId="connector192terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector192pad" layer="copper0"/>
-     <p svgId="connector192pad" layer="copper1"/>
+     <p svgId="connector192pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -818,8 +798,7 @@
      <p svgId="connector193pin" layer="schematic" terminalId="connector193terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector193pad" layer="copper0"/>
-     <p svgId="connector193pad" layer="copper1"/>
+     <p svgId="connector193pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -833,8 +812,7 @@
      <p svgId="connector194pin" layer="schematic" terminalId="connector194terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector194pad" layer="copper0"/>
-     <p svgId="connector194pad" layer="copper1"/>
+     <p svgId="connector194pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -848,8 +826,7 @@
      <p svgId="connector195pin" layer="schematic" terminalId="connector195terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector195pad" layer="copper0"/>
-     <p svgId="connector195pad" layer="copper1"/>
+     <p svgId="connector195pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -863,8 +840,7 @@
      <p svgId="connector196pin" layer="schematic" terminalId="connector196terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector196pad" layer="copper0"/>
-     <p svgId="connector196pad" layer="copper1"/>
+     <p svgId="connector196pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -878,8 +854,7 @@
      <p svgId="connector197pin" layer="schematic" terminalId="connector197terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector197pad" layer="copper0"/>
-     <p svgId="connector197pad" layer="copper1"/>
+     <p svgId="connector197pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -893,8 +868,7 @@
      <p svgId="connector198pin" layer="schematic" terminalId="connector198terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector198pad" layer="copper0"/>
-     <p svgId="connector198pad" layer="copper1"/>
+     <p svgId="connector198pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>

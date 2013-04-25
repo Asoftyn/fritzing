@@ -3,11 +3,16 @@
 <version>4</version>
 <date>2013-04-03</date>
 <author>althaus</author>
-<description>The Arduino Mini is a small microcontroller board originally based on the ATmega168, but now supplied with the 328.(datasheet), intended for use on breadboards and when space is at a premium. It has 14 digital input/output pins (of which 6 can be used as PWM outputs), 8 analog inputs, and a 16 MHz crystal oscillator. It can be programmed with the USB Serial adapter or other USB or RS232 to TTL serial adapter.
-
-The new Mini (revision 05) has a new package for the ATmega328, which enables all components to be on the top of the board. It also has an onboard reset button. The new version has the same pin configuration as revision 04.
-
-Warning: Don&apos;t power the Arduino mini with more than 9 volts, or plug the power in backwards: you&apos;ll probably kill it. 
+<description>The Arduino Mini is a small microcontroller board originally based on the ATmega168, but now supplied with the 328.(datasheet), intended for use on breadboards and when space is at a premium. It has 14 digital input/output pins (of which 6 can be used as PWM outputs), 8 analog inputs, and a 16 MHz crystal oscillator. It can be programmed with the USB Serial adapter or other USB or RS232 to TTL serial adapter.
+
+
+
+The new Mini (revision 05) has a new package for the ATmega328, which enables all components to be on the top of the board. It also has an onboard reset button. The new version has the same pin configuration as revision 04.
+
+
+
+Warning: Don&apos;t power the Arduino mini with more than 9 volts, or plug the power in backwards: you&apos;ll probably kill it. 
+
 </description>
 <title>Arduino Mini (REV5)</title>
 <url>http://arduino.cc/en/Main/ArduinoBoardMini</url>
@@ -18,6 +23,7 @@ Warning: Don&apos;t power the Arduino mini with more than 9 volts, or plug the p
 </tags>
 <properties>
 <property name='family'>microcontroller board (arduino)</property>
+<property name='variant'>Arduino Mini (Rev5)</property>
 </properties>
 <views>
 <breadboardView>

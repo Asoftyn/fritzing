@@ -3,8 +3,10 @@
 <version>4</version>
 <date>2013-04-03</date>
 <author>althaus</author>
-<description>The Arduino Leonardo is a microcontroller board based on the ATmega32u4 (datasheet). It has 20 digital input/output pins (of which 7 can be used as PWM outputs and 12 as analog inputs), a 16 MHz crystal oscillator, a micro USB connection, a power jack, an ICSP header, and a reset button. It contains everything needed to support the microcontroller; simply connect it to a computer with a USB cable or power it with a AC-to-DC adapter or battery to get started.
-
+<description>The Arduino Leonardo is a microcontroller board based on the ATmega32u4 (datasheet). It has 20 digital input/output pins (of which 7 can be used as PWM outputs and 12 as analog inputs), a 16 MHz crystal oscillator, a micro USB connection, a power jack, an ICSP header, and a reset button. It contains everything needed to support the microcontroller; simply connect it to a computer with a USB cable or power it with a AC-to-DC adapter or battery to get started.
+
+
+
 The Leonardo differs from all preceding boards in that the ATmega32u4 has built-in USB communication, eliminating the need for a secondary processor. This allows the Leonardo to appear to a connected computer as a mouse and keyboard, in addition to a virtual (CDC) serial / COM port. It also has other implications for the behavior of the board; these are detailed on the getting started page. </description>
 <title>Arduino Leonardo (Rev3b)</title>
 <url>http://arduino.cc/en/Main/ArduinoBoardLeonardo</url>
@@ -13,7 +15,8 @@ The Leonardo differs from all preceding boards in that the ATmega32u4 has built-
 <tag>ATmega32u4</tag>
 </tags>
 <properties>
-<property name='family'>microcontroller board (arduino leonardo)</property>
+<property name='family'>microcontroller board (arduino)</property>
+<property name="variant">Arduino Leonardo (Rev3)</property>
 </properties>
 <views>
 <breadboardView>

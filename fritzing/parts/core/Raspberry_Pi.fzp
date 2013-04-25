@@ -14,7 +14,7 @@
   <property name="family">CPU Board (Raspberry Pi)</property>
   <property name="processor">Broadcom SoC BCM2835 ARMv6</property>
   <property name="part number"/>
-  <property name="variant">variant 1</property>
+  <property name="variant">Raspberry Pi</property>
  </properties>
  <description>The awesome Raspberry Pi ARM Board</description>
  <views>
@@ -36,7 +36,9 @@
   <pcbView>
    <layers image="pcb/Raspberry_Pi_pcb.svg">
     <layer layerId="copper0"/>
+	
     <layer layerId="copper1"/>
+	  <layer layerId="silkscreen"/>
    </layers>
   </pcbView>
  </views>

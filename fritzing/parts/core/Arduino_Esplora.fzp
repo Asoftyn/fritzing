@@ -26,9 +26,9 @@ The Esplora has built-in USB communication; it can appear to a connected compute
   <tag>microcontrollerboard</tag>
  </tags>
  <properties>
-  <property name="family">microcontroller board</property>
+  <property name="family">microcontroller board (arduino)</property>
   <property name="part number"></property>
-  <property name="variant">variant 1</property>
+  <property name="variant">Arduino Esplora</property>
  </properties>
  <views>
   <breadboardView>
@@ -65,8 +65,7 @@ The Esplora has built-in USB communication; it can appear to a connected compute
      <p svgId="connector130pin" layer="schematic" terminalId="connector130terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector130pad" layer="copper0"/>
-     <p svgId="connector130pad" layer="copper1"/>
+     <p svgId="connector130pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -80,8 +79,7 @@ The Esplora has built-in USB communication; it can appear to a connected compute
      <p svgId="connector131pin" layer="schematic" terminalId="connector131terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector131pad" layer="copper0"/>
-     <p svgId="connector131pad" layer="copper1"/>
+     <p svgId="connector131pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -95,8 +93,7 @@ The Esplora has built-in USB communication; it can appear to a connected compute
      <p svgId="connector132pin" layer="schematic" terminalId="connector132terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector132pad" layer="copper0"/>
-     <p svgId="connector132pad" layer="copper1"/>
+     <p svgId="connector132pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -110,8 +107,7 @@ The Esplora has built-in USB communication; it can appear to a connected compute
      <p svgId="connector133pin" layer="schematic" terminalId="connector133terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector133pad" layer="copper0"/>
-     <p svgId="connector133pad" layer="copper1"/>
+     <p svgId="connector133pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -125,8 +121,7 @@ The Esplora has built-in USB communication; it can appear to a connected compute
      <p svgId="connector134pin" layer="schematic" terminalId="connector134terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector134pad" layer="copper0"/>
-     <p svgId="connector134pad" layer="copper1"/>
+     <p svgId="connector134pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -140,8 +135,7 @@ The Esplora has built-in USB communication; it can appear to a connected compute
      <p svgId="connector135pin" layer="schematic" terminalId="connector135terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector135pad" layer="copper0"/>
-     <p svgId="connector135pad" layer="copper1"/>
+     <p svgId="connector135pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -455,8 +449,7 @@ The Esplora has built-in USB communication; it can appear to a connected compute
      <p svgId="connector196pin" layer="schematic" terminalId="connector196terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector196pad" layer="copper0"/>
-     <p svgId="connector196pad" layer="copper1"/>
+     <p svgId="connector196pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -470,8 +463,7 @@ The Esplora has built-in USB communication; it can appear to a connected compute
      <p svgId="connector197pin" layer="schematic" terminalId="connector197terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector197pad" layer="copper0"/>
-     <p svgId="connector197pad" layer="copper1"/>
+     <p svgId="connector197pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -485,8 +477,7 @@ The Esplora has built-in USB communication; it can appear to a connected compute
      <p svgId="connector198pin" layer="schematic" terminalId="connector198terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector198pad" layer="copper0"/>
-     <p svgId="connector198pad" layer="copper1"/>
+     <p svgId="connector198pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -500,8 +491,7 @@ The Esplora has built-in USB communication; it can appear to a connected compute
      <p svgId="connector199pin" layer="schematic" terminalId="connector199terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector199pad" layer="copper0"/>
-     <p svgId="connector199pad" layer="copper1"/>
+     <p svgId="connector199pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -515,8 +505,7 @@ The Esplora has built-in USB communication; it can appear to a connected compute
      <p svgId="connector200pin" layer="schematic" terminalId="connector200terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector200pad" layer="copper0"/>
-     <p svgId="connector200pad" layer="copper1"/>
+     <p svgId="connector200pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
@@ -530,8 +519,7 @@ The Esplora has built-in USB communication; it can appear to a connected compute
      <p svgId="connector201pin" layer="schematic" terminalId="connector201terminal"/>
     </schematicView>
     <pcbView>
-     <p svgId="connector201pad" layer="copper0"/>
-     <p svgId="connector201pad" layer="copper1"/>
+     <p svgId="connector201pad" layer="unknown"/>
     </pcbView>
    </views>
   </connector>
