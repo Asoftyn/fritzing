@@ -470,6 +470,9 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
 
     }
 
+    // we are checking all the singletons at once
+    // but the DRC will miss it if any of them overlap each other
+
     while (singletons.count() > 0) {
         QList<ConnectorItem *> combined;
         QList<ConnectorItem *> singleton = singletons.takeFirst();
@@ -497,8 +500,6 @@ bool DRC::startAux(QString & message, QStringList & messages, QList<CollidingThi
 	    LayerList viewLayerIDs = ViewLayer::copperLayers(viewLayerSpec);
         viewLayerIDs.removeOne(ViewLayer::GroundPlane0);
         viewLayerIDs.removeOne(ViewLayer::GroundPlane1);
-
-        QList<ConnectorItem *> singletons;
 
         foreach (QList<ConnectorItem *> equi, equis) {
             bool inLayer = false;
@@ -667,16 +668,18 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
     Markers markers;
     markers.outID = AlsoNet;
     markers.inTerminalID = markers.inSvgID = markers.inSvgAndID = markers.inNoID = Net;
-    splitNetPrep(masterDoc, equi, markers, net, alsoNet, notNet, false);
+    splitNetPrep(masterDoc, equi, markers, net, alsoNet, notNet, true);
     foreach (QDomElement element, notNet) element.setTagName("g");
     foreach (QDomElement element, alsoNet) element.setTagName("g");
     foreach (QDomElement element, net) {
+        // want the normal size
         SvgFileSplitter::forceStrokeWidth(element, -2 * keepoutMils, "#000000", false, false);
     }
 
     renderOne(masterDoc, plusImage, sourceRes);
 
     foreach (QDomElement element, net) {
+        // restore to keepout size
         SvgFileSplitter::forceStrokeWidth(element, 2 * keepoutMils, "#000000", false, false);
     }
 
@@ -691,6 +694,12 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
     foreach (QDomElement element, net) {
         element.removeAttribute("net");
         element.setTagName("g");
+    }
+    foreach (QDomElement element, alsoNet) {
+        element.setTagName(element.attribute("former"));
+        element.removeAttribute("net");
+        // restore to normal size, but check in case there are overlaps within a given part
+        SvgFileSplitter::forceStrokeWidth(element, -2 * keepoutMils, "#000000", false, false);
     }
     foreach (QDomElement element, notNet) {
         element.setTagName(element.attribute("former"));
@@ -707,8 +716,8 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
         element.setTagName(element.attribute("former"));
     }
     foreach (QDomElement element, alsoNet) {
-        element.setTagName(element.attribute("former"));
-        element.removeAttribute("net");
+        // restore to keepout size
+        SvgFileSplitter::forceStrokeWidth(element, 2 * keepoutMils, "#000000", false, false);
     }
 }
 
