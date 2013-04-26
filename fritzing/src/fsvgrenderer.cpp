@@ -774,9 +774,9 @@ void FSvgRenderer::calcLeg(SvgIdLayer * svgIdLayer, const QRectF & viewBox, Conn
 	double y1 = p1.y() * defaultSizeF.height() / viewBox.height();
 	double x2 = p2.x() * defaultSizeF.width() / viewBox.width();
 	double y2 = p2.y() * defaultSizeF.height() / viewBox.height();
-	QPointF center = viewBox.center();
-	double d1 = ((x1 - center.x()) * (x1 - center.x())) + ((y1 - center.y()) * (y1 - center.y()));
-	double d2 = ((x2 - center.x()) * (x2 - center.x())) + ((y2 - center.y()) * (y1 - center.y()));
+	QPointF center(defaultSizeF.width() / 2, defaultSizeF.height() / 2);
+	double d1 = GraphicsUtils::distanceSqd(QPointF(x1, y1), center);
+	double d2 = GraphicsUtils::distanceSqd(QPointF(x2, y2), center);
 
 	// find the end which is closer to the center of the viewBox (which shouldn't include the leg)
 	if (d1 <= d2) {
