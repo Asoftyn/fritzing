@@ -5,14 +5,14 @@
 	 >
 <g id="breadboard">
 
-<g transform="translate(0, -0.1)" >
-	<rect id="connector0pin" x="1.455" y="3.59" fill="none" width="1" height="1"/>
-	<rect id="connector1pin" x="38.552" y="3.59" fill="none" width="1" height="1"/>
-  
-	<line  id="connector0leg" stroke-linecap="round" x1="1.455" y1="5.045" x2="3.91" y2="5.045" stroke="#8C8C8C" fill="none" stroke-width="2.91" />
-	<line  id="connector1leg" stroke-linecap="round" x1="41.462" y1="5.045" x2="39.007" y2="5.045" stroke="#8C8C8C" fill="none" stroke-width="2.91" />
 
-	<path fill="none" stroke="#8C8C8C" stroke-width="2.91" d="M2.91,5.045l37.107,0" />
+	<rect id="connector0pin" x="0.5" y="3.59" fill="none" width="1" height="1"/>
+	<rect id="connector1pin" x="41.417" y="3.59" fill="none" width="1" height="1"/>
+  
+	<line  id="connector0leg" stroke-linecap="round" x1="1.455" y1="5.045" x2="2.91" y2="5.045" stroke="#8C8C8C" fill="none" stroke-width="2.91" />
+	<line  id="connector1leg" stroke-linecap="round" x1="41.462" y1="5.045" x2="40.007" y2="5.045" stroke="#8C8C8C" fill="none" stroke-width="2.91" />
+
+	<path fill="none" stroke="#8C8C8C" stroke-width="2.91" d="M1.455,5.045l39.398,0" />
 	
 	<path id="body" fill="#D9B477" d="M14.233,0.688c-0.5-0.23-1.36-0.41-1.91-0.41h-2.76c-0.55,0-1,0.45-1,1v7.439c0,0.551,0.45,1,1,1
 		h2.76c0.55,0,1.41-0.189,1.91-0.41l0.1-0.049c0.5-0.23,1.36-0.41,1.91-0.41h9.98c0.551,0,1.409,0.189,1.909,0.41l0.101,0.049
@@ -36,7 +36,7 @@
 	<circle id="ReflexLeft" opacity="0.35" fill="#FFFFFF" cx="9.722" cy="1.578" r="0.6"/>
 	<rect id="Reflex_gold" x="30.582" y="0.588" opacity="0.5" fill="#FFFF33" width="0.976" height="2.25"/>
 	<rect id="Reflex_extra" x="30.582" y="1.088" opacity="0.5" fill="#FFFFFF" width="0.976" height="1.04"/>
-</g>
+
 </g>
 </svg>
 
