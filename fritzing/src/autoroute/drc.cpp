@@ -698,8 +698,6 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
     foreach (QDomElement element, alsoNet) {
         element.setTagName(element.attribute("former"));
         element.removeAttribute("net");
-        // restore to normal size, but check in case there are overlaps within a given part
-        SvgFileSplitter::forceStrokeWidth(element, -2 * keepoutMils, "#000000", false, false);
     }
     foreach (QDomElement element, notNet) {
         element.setTagName(element.attribute("former"));
@@ -715,10 +713,7 @@ void DRC::splitNet(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, QIma
     foreach (QDomElement element, net) {
         element.setTagName(element.attribute("former"));
     }
-    foreach (QDomElement element, alsoNet) {
-        // restore to keepout size
-        SvgFileSplitter::forceStrokeWidth(element, 2 * keepoutMils, "#000000", false, false);
-    }
+
 }
 
 void DRC::splitNetPrep(QDomDocument * masterDoc, QList<ConnectorItem *> & equi, const Markers & markers, QList<QDomElement> & net, QList<QDomElement> & alsoNet, QList<QDomElement> & notNet, bool checkIntersection) 
