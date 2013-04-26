@@ -877,7 +877,7 @@ bool ItemBase::isLocalSticky() {
         return layerKinChief()->isLocalSticky();
     }
     QString stickyVal = modelPart()->localProp("sticky").toString();
-	return (stickyVal.compare("false") != 0);                      
+	return (stickyVal.compare("true") == 0);                      
 }
 
 void ItemBase::setLocalSticky(bool s)
