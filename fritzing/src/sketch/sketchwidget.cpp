@@ -1104,7 +1104,7 @@ void SketchWidget::cutDeleteAux(QString undoStackMessage, bool plus, Wire * wire
         else {
 	        m_savedItems.clear();
 	        m_savedWires.clear();
-            prepMove(NULL, false);
+            prepMove(NULL, false, false);
             foreach (ItemBase * itemBase, m_savedItems) deletedItems.insert(itemBase);
             foreach (Wire * wire, m_savedWires.keys()) deletedItems.insert(wire);
             m_savedWires.clear();
@@ -2135,7 +2135,7 @@ bool SketchWidget::moveByArrow(int dx, int dy, QKeyEvent * event) {
 
 		if (!draggingWire) {
 			rubberBandLegEnabled = (event->modifiers() & altOrMetaModifier()) != 0;
-			prepMove(NULL, rubberBandLegEnabled);
+			prepMove(NULL, rubberBandLegEnabled, false);
 		}
 		if (m_savedItems.count() == 0) return false;
 
@@ -2295,7 +2295,7 @@ void SketchWidget::mousePressEvent(QMouseEvent *event)
 		return;
 	}
 
-	prepMove(itemBase ? itemBase : dynamic_cast<ItemBase *>(item->parentItem()), (event->modifiers() & altOrMetaModifier()) != 0);
+	prepMove(itemBase ? itemBase : dynamic_cast<ItemBase *>(item->parentItem()), (event->modifiers() & altOrMetaModifier()) != 0, true);
 
 	if (m_alignToGrid && (itemBase == NULL) && (event->modifiers() == Qt::NoModifier)) {
 		Wire * wire = dynamic_cast<Wire *>(item->parentItem());
@@ -2315,7 +2315,7 @@ void SketchWidget::mousePressEvent(QMouseEvent *event)
 
 }
 
-void SketchWidget::prepMove(ItemBase * originatingItem, bool rubberBandLegEnabled) {
+void SketchWidget::prepMove(ItemBase * originatingItem, bool rubberBandLegEnabled, bool includeRatsnest) {
 	m_rubberBandLegWasEnabled = rubberBandLegEnabled;
 	m_checkUnder.clear();
 	//DebugDialog::debug("prep move check under = false");
@@ -2342,6 +2342,9 @@ void SketchWidget::prepMove(ItemBase * originatingItem, bool rubberBandLegEnable
 				wires.insert(wire);
                // wire->debugInfo("adding wire");
 			}
+            else if (includeRatsnest && wire->getRatsnest()) {
+				wires.insert(wire);
+            }
 			continue;
 		}
 
@@ -2358,6 +2361,9 @@ void SketchWidget::prepMove(ItemBase * originatingItem, bool rubberBandLegEnable
                         if (wire->isTraceType(getTraceFlag())) {
 						    wires.insert(wire);
                             //wire->debugInfo("adding wire");
+                        }
+                        else if (includeRatsnest && wire->getRatsnest()) {
+				            wires.insert(wire);
                         }
 					}
 					else {
@@ -2388,6 +2394,9 @@ void SketchWidget::prepMove(ItemBase * originatingItem, bool rubberBandLegEnable
         foreach (Wire * wire, tempWires) {
             if (wire->isTraceType(getTraceFlag())) {
                 wires.insert(wire);
+            }
+            else if (includeRatsnest && wire->getRatsnest()) {
+				wires.insert(wire);
             }
         }
 	}
@@ -4500,7 +4509,7 @@ void SketchWidget::rotateX(double degrees, bool rubberBandLegEnabled)
 	clearHoldingSelectItem();
 	m_savedItems.clear();
 	m_savedWires.clear();
-	prepMove(NULL, rubberBandLegEnabled);
+	prepMove(NULL, rubberBandLegEnabled, false);
 
 	QRectF itemsBoundingRect;
 	// want the bounding rect of the original selected items, not all the items that are secondarily being rotated
@@ -4667,7 +4676,7 @@ void SketchWidget::flipX(Qt::Orientations orientation, bool rubberBandLegEnabled
 	clearHoldingSelectItem();
 	m_savedItems.clear();
 	m_savedWires.clear();
-	prepMove(NULL, rubberBandLegEnabled);
+	prepMove(NULL, rubberBandLegEnabled, false);
 
 	QList <QGraphicsItem *> items = scene()->selectedItems();
 	QList <ItemBase *> targets;

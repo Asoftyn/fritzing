@@ -431,7 +431,7 @@ protected:
 	void clickBackground(QMouseEvent *);
 	void categorizeDragWires(QSet<Wire *> & wires, QList<ItemBase *> & freeWires);
 	void categorizeDragLegs(bool rubberBandLegEnabled);
-	void prepMove(ItemBase * originatingItem, bool rubberBandLegEnabled);
+	void prepMove(ItemBase * originatingItem, bool rubberBandLegEnabled, bool includeRatsnest);
 	void initBackgroundColor();
 	QPointF calcNewLoc(ItemBase * moveBase, ItemBase * detachFrom);
 	long findPartOrWire(long itemID);
