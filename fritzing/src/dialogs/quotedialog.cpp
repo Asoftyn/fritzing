@@ -55,6 +55,65 @@ double hundredths(double d) {
 
 //////////////////////////////////////////////////////
 
+LabelThing::LabelThing(const QString & text, const QString & released, const QString & pressed, const QString & hover, QWidget * parent) : 
+            QLabel(text, parent) 
+{
+    m_state = RELEASED;
+    m_releasedImage = QPixmap(released);
+    m_pressedImage = QPixmap(pressed);
+    m_hoverImage = QPixmap(hover);
+    setMinimumSize(m_releasedImage.width(), m_releasedImage.height());
+    setMaximumSize(m_releasedImage.width(), m_releasedImage.height());
+}
+
+void LabelThing::enterEvent(QEvent * event) {
+    m_state = HOVER;
+    update();
+    QLabel::enterEvent(event);
+}
+
+void LabelThing::leaveEvent(QEvent * event) {
+    m_state = RELEASED;
+    update();
+    QLabel::enterEvent(event);
+}
+
+void LabelThing::mousePressEvent(QMouseEvent * event) {
+    m_state = PRESSED;  
+    update();
+	QLabel::mousePressEvent(event);
+}
+
+void LabelThing::mouseReleaseEvent(QMouseEvent * event) {
+    m_state = RELEASED;
+    update();
+	QLabel::mouseReleaseEvent(event);
+	emit clicked();
+}
+
+void LabelThing::paintEvent(QPaintEvent * event) {
+    QPainter painter(this);
+    switch (m_state) {
+        case PRESSED:
+            painter.drawPixmap(0, 0, m_pressedImage);
+            setContentsMargins(0, 4, 0, 0);
+            break;
+        case HOVER:
+            painter.drawPixmap(0, 0, m_hoverImage);
+            break;
+        case RELEASED:
+            painter.drawPixmap(0, 0, m_releasedImage);
+            setContentsMargins(0, 0, 0, 0);
+            break;
+    }
+
+    DebugDialog::debug(QString("paint event %1").arg(m_state));
+    QLabel::paintEvent(event);
+}
+
+
+//////////////////////////////////////////////////////
+
 // from http://qt.onyou.ch/2010/07/08/hide-vertical-grid-lines-in-qtableview/
 
 // custom item delegate to draw grid lines around cells 
@@ -143,50 +202,43 @@ QuoteDialog::QuoteDialog(bool full, QWidget *parent) : QDialog(parent)
 
 	vLayout->addWidget(m_tableWidget);
 
-    label = new QLabel(tr("Please note that prices do not include shipping, possible additional taxes, or the checking fee."));
+    QString additional = tr("Please note that prices do not include shipping,<br />");
+    additional += tr("possible additional taxes, or the checking fee.<br />");
+    additional += tr("For more information on pricing see <a href='http://fab.fritzing.org/pricing'>http://fab.fritzing.org/pricing</a>.");
+    label = new QLabel(additional);
     label->setObjectName("quoteAdditional");
 	vLayout->addWidget(label);
     if (!full) label->setVisible(false);
-
-    label = new QLabel(tr("For more information on pricing see <a href='http://fab.fritzing.org/pricing'>http://fab.fritzing.org/pricing</a>."));
-    label->setObjectName("quoteAdditional");
-	vLayout->addWidget(label);
-    label->setOpenExternalLinks(true);
-    if (!full) label->setVisible(false);
-
-    vLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
     QFrame * frame = new QFrame;
     QHBoxLayout * buttonLayout = new QHBoxLayout();
 
-    QPushButton * pushButton = new QPushButton(tr("Visit Fritzing Fab"));
-    pushButton->setObjectName("quoteVisitButton");
-    connect(pushButton, SIGNAL(clicked()), this, SLOT(visitFritzingFab()));
+    LabelThing * labelThing = new LabelThing(tr("Visit Fritzing Fab"), 
+                                ":/resources/images/icons/fabquote_button_release.png",
+                                ":/resources/images/icons/fabquote_button_press.png",
+                                ":/resources/images/icons/fabquote_button_hover.png"
+                              );
+    labelThing->setObjectName("quoteVisitButton");
+    connect(labelThing, SIGNAL(clicked()), this, SLOT(visitFritzingFab()), Qt::QueuedConnection);
 
-    QPixmap pixmap(":resources/images/icons/visitFritzingFab.png");
-    pushButton->setMaximumSize(pixmap.rect().size());
-    pushButton->setMinimumSize(pixmap.rect().size());
-
-    buttonLayout->addWidget(pushButton);
+    buttonLayout->addWidget(labelThing);
     buttonLayout->addSpacing(90);
     label = new QLabel();
-	QPixmap order(":/resources/images/icons/toolbarOrderEnabled_icon.png");
+	QPixmap order(":/resources/images/icons/Toolbar_Icon_Order.png");
 	label->setPixmap(order);
     buttonLayout->addWidget(label);
 
-    buttonLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    buttonLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Expanding));
     frame->setLayout(buttonLayout);
 
 	vLayout->addWidget(frame);
     if (!full) frame->setVisible(false);
 
-    QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
-	buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-	vLayout->addWidget(buttonBox);
-    if (!full) buttonBox->setVisible(false);
+    vLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     this->setLayout(vLayout);
+
+    this->adjustSize();
 }
 
 QuoteDialog::~QuoteDialog() {
@@ -210,12 +262,13 @@ void QuoteDialog::setArea(double area, int boardCount) {
 void QuoteDialog::setText() {
     DebugDialog::debug("quote dialog set text");
     QString msg = tr("The total area of the %n PCB(s) in this sketch is", "", TheBoardCount);
-    msg += tr(" %1 cm%3 (%2 in%3).\n")
+    msg += tr(" %1 cm%3 (%2 in%3).<br />")
         .arg(hundredths(TheArea))
         .arg(hundredths(TheArea / (2.54 * 2.54)))
         .arg(QChar(178))
         ;
-    msg += tr("Use Fritzing Fab to produce a PCB from your sketch. Take advantage of our quantity discount:");
+    msg += tr("Use Fritzing Fab to produce a PCB from your sketch.<br />");
+    msg += tr("Take advantage of our quantity discount:");
     m_messageLabel->setText(msg);    
  
     for (int i = 0; i < MessageCount; i++) {
@@ -234,6 +287,9 @@ void QuoteDialog::setText() {
         m_tableWidget->setItem(1, i + 1, item);
         item = new QTableWidgetItem(QString("%1").arg(hundredths(cost), 13, 'F', 2));   
         item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+        QFont font = item->font();
+        font.setBold(true);
+        item->setFont(font);
         item->setFlags(0);
         m_tableWidget->setItem(2, i + 1, item);
 
@@ -246,6 +302,8 @@ void QuoteDialog::setText() {
     for (int i = 0; i < m_tableWidget->rowCount(); i++) h += m_tableWidget->rowHeight(i);
     m_tableWidget->setMaximumSize(QSize(w, h));
     m_tableWidget->setMinimumSize(QSize(w, h));
+
+    this->adjustSize();
 }
 
 void QuoteDialog::visitFritzingFab() {

@@ -1105,6 +1105,10 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <source>file for %1 %2 not found</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>banded</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KicadModuleDialog</name>
@@ -5594,10 +5598,6 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Order your PCB from Fritzing Fab</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5614,15 +5614,7 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Please note that prices do not include shipping, possible additional taxes, or the checking fee.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Visit Fritzing Fab</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use Fritzing Fab to produce a PCB from your sketch. Take advantage of our quantity discount:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5636,8 +5628,23 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
         </translation>
     </message>
     <message>
-        <source> %1 cm%3 (%2 in%3).
-</source>
+        <source>Please note that prices do not include shipping,&lt;br /&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>possible additional taxes, or the checking fee.&lt;br /&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> %1 cm%3 (%2 in%3).&lt;br /&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Fritzing Fab to produce a PCB from your sketch.&lt;br /&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Take advantage of our quantity discount:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6038,10 +6045,6 @@ Fritzing still works, but you won&apos;t be able to change parts properties.</so
     </message>
     <message>
         <source>Change leg bendpoint for %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotate %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6567,6 +6570,10 @@ Note: you can also trigger this display by mousing down on the routing status te
     </message>
     <message>
         <source>extra thin (12 mil)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Banded</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

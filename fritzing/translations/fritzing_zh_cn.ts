@@ -1119,6 +1119,10 @@ It is also possible to choose a connector as a ground fill seed by right-clickin
         <source>file for %1 %2 not found</source>
         <translation>%1 %2的文件未找到</translation>
     </message>
+    <message>
+        <source>banded</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KicadModuleDialog</name>
@@ -5657,10 +5661,6 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation type="unfinished">确定</translation>
-    </message>
-    <message>
         <source>Order your PCB from Fritzing Fab</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5677,15 +5677,7 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Please note that prices do not include shipping, possible additional taxes, or the checking fee.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Visit Fritzing Fab</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use Fritzing Fab to produce a PCB from your sketch. Take advantage of our quantity discount:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5699,8 +5691,23 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
         </translation>
     </message>
     <message>
-        <source> %1 cm%3 (%2 in%3).
-</source>
+        <source>Please note that prices do not include shipping,&lt;br /&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>possible additional taxes, or the checking fee.&lt;br /&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> %1 cm%3 (%2 in%3).&lt;br /&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Fritzing Fab to produce a PCB from your sketch.&lt;br /&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Take advantage of our quantity discount:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6102,10 +6109,6 @@ Fritzing仍然在工作，但不能改变元件的属性.</translation>
     <message>
         <source>Change leg bendpoint for %1.</source>
         <translation>改变腿%1的拐点。</translation>
-    </message>
-    <message>
-        <source>Rotate %1</source>
-        <translation>旋转%1</translation>
     </message>
     <message>
         <source>change pin labels</source>
@@ -6636,6 +6639,10 @@ Note: you can also trigger this display by mousing down on the routing status te
     <message>
         <source>extra thin (12 mil)</source>
         <translation>特细（12mil）</translation>
+    </message>
+    <message>
+        <source>Banded</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

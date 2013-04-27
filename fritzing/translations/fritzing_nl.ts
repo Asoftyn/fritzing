@@ -1127,6 +1127,10 @@ Het is ook mogelijk om op een connector rechts te klikken en kies &apos;Maak gro
         <source>file for %1 %2 not found</source>
         <translation>bestand voor %1 %2 niet gevonden</translation>
     </message>
+    <message>
+        <source>banded</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KicadModuleDialog</name>
@@ -5661,10 +5665,6 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
         <translation>Voor meer informatie over beprijzing ga je naar &lt;a href=&apos;http://fab.fritzing.org/pricing&apos;&gt;http://fab.fritzing.org/pricing&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
         <source>Order your PCB from Fritzing Fab</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5681,15 +5681,7 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Please note that prices do not include shipping, possible additional taxes, or the checking fee.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Visit Fritzing Fab</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use Fritzing Fab to produce a PCB from your sketch. Take advantage of our quantity discount:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5704,8 +5696,23 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
         </translation>
     </message>
     <message>
-        <source> %1 cm%3 (%2 in%3).
-</source>
+        <source>Please note that prices do not include shipping,&lt;br /&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>possible additional taxes, or the checking fee.&lt;br /&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> %1 cm%3 (%2 in%3).&lt;br /&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Fritzing Fab to produce a PCB from your sketch.&lt;br /&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Take advantage of our quantity discount:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6107,10 +6114,6 @@ Fritzing werkt nog steeds, maar je kunt geen eigenschappen van de onderdelen wij
     <message>
         <source>Change leg bendpoint for %1.</source>
         <translation>Wijzig poot buigpunt voor %1.</translation>
-    </message>
-    <message>
-        <source>Rotate %1</source>
-        <translation>Roteer %1</translation>
     </message>
     <message>
         <source>change pin labels</source>
@@ -6644,6 +6647,10 @@ Noot:Je kunt dit venster ook oproepen door op de tekst van de routing status te 
     <message>
         <source>extra thin (12 mil)</source>
         <translation>extra dun (12 mil)</translation>
+    </message>
+    <message>
+        <source>Banded</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

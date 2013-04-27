@@ -2805,7 +2805,7 @@ void MainWindow::orderFabHoverEnter() {
 void MainWindow::fireQuote() {
     if (!QuoteDialog::quoteSucceeded()) return;
 
-    m_rolloverQuoteDialog = m_pcbGraphicsView->quoteDialog(this);
+    m_rolloverQuoteDialog = m_pcbGraphicsView->quoteDialog(m_pcbWidget);
     if (m_rolloverQuoteDialog == NULL) return;
 
     //DebugDialog::debug("enter fab button");
@@ -2816,11 +2816,17 @@ void MainWindow::fireQuote() {
 	Qt::WindowFlags flags = m_rolloverQuoteDialog->windowFlags();
     flags = Qt::Window | Qt::Dialog | Qt::FramelessWindowHint;
 	m_rolloverQuoteDialog->setWindowFlags(flags);
-
-    //QRect q = m_rolloverQuoteDialog->geometry();
-    //q.moveTo(p.x() + (r.width() / 2), p.y() - 80);
-    //m_rolloverQuoteDialog->setGeometry(q);
     m_rolloverQuoteDialog->show();
+
+    // seems to require setting position after show()
+
+    QRect t = m_pcbWidget->toolbar()->geometry();
+    QPoint gt = m_pcbWidget->toolbar()->parentWidget()->mapToGlobal(t.topLeft());
+    QRect q = m_rolloverQuoteDialog->geometry();
+
+    // I don't understand why--perhaps due to the windowFlags--but q is already in global coordinates
+    q.moveBottom(gt.y() - 20);   
+    m_rolloverQuoteDialog->setGeometry(q);
 }
 
 void MainWindow::orderFabHoverLeave() {

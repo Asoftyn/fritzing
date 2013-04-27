@@ -36,6 +36,36 @@ struct CountCost {
     double cost;
 };
 
+class LabelThing : public QLabel
+{
+Q_OBJECT
+
+public:
+    LabelThing(const QString & text, const QString & released, const QString & pressed, const QString & hover, QWidget * parent = NULL);
+
+	void enterEvent(QEvent * event);
+	void leaveEvent(QEvent * event);
+	void mousePressEvent(QMouseEvent * event);
+	void mouseReleaseEvent(QMouseEvent * event);
+    void paintEvent(QPaintEvent * event);
+
+public:
+    enum State {
+        RELEASED,
+        PRESSED,
+        HOVER
+    };
+
+signals:
+	void clicked();
+
+protected:
+	QPixmap m_releasedImage;
+	QPixmap m_pressedImage;
+	QPixmap m_hoverImage;
+    State m_state;
+};
+
 class QuoteDialog : public QDialog {
 Q_OBJECT
 

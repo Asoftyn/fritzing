@@ -67,6 +67,7 @@
         <file>resources/images/cursor/scale.bmp</file>
         <file>resources/images/cursor/scale_mask.bmp</file>
 	
+        <file>resources/images/icons/Toolbar_Icon_Order.png</file>
         <file>resources/images/icons/check.png</file>
         <file>resources/images/icons/nocheck.png</file>
         <file>resources/images/icons/toolbarExport_gbr_icon.png</file>
@@ -151,7 +152,9 @@
         <file>resources/images/icons/partsEditorZoomOutVerButton.png</file>
         <file>resources/images/icons/partsEditorZoomInHorButton.png</file>
         <file>resources/images/icons/partsEditorZoomOutHorButton.png</file>
-        <file>resources/images/icons/visitFritzingFab.png</file>
+        <file>resources/images/icons/fabquote_button_hover.png</file>
+        <file>resources/images/icons/fabquote_button_press.png</file>
+        <file>resources/images/icons/fabquote_button_release.png</file>
 	
         <file>resources/parts/core/wire.fzp</file>
         <file>resources/parts/core/cmRuler.fzp</file>
