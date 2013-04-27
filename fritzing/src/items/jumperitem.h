@@ -55,7 +55,7 @@ public:
 	void loadLayerKin( const LayerHash & viewLayers, ViewLayer::ViewLayerSpec);
 	PluralType isPlural();
 	void addedToScene(bool temporary);
-	void rotateItem(double degrees);
+	void rotateItem(double degrees, bool includeRatsnest);
 	void calcRotation(QTransform & rotation, QPointF center, ViewGeometry &);
 	QPointF dragOffset();
 	void saveInstanceLocation(QXmlStreamWriter & streamWriter);

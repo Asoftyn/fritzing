@@ -489,7 +489,8 @@ void JumperItem::addedToScene(bool temporary) {
 	PaletteItem::addedToScene(temporary);
 }
 
-void JumperItem::rotateItem(double degrees) {
+void JumperItem::rotateItem(double degrees, bool updateRatsnest) {
+    Q_UNUSED(updateRatsnest);
 	QPointF tc0, tc1;
 	QTransform rotation;
 	rotation.rotate(degrees);

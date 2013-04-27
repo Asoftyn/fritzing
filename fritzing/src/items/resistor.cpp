@@ -161,7 +161,7 @@ void Resistor::setResistance(QString resistance, QString pinSpacing, bool force)
 					m_changingPinSpacing = false;
                     modelPart()->setImageFileName(m_viewID, original);
 
-					updateConnections();
+					updateConnections(false);
 				}
 
 			}

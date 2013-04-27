@@ -85,7 +85,7 @@ public:
 	void addLayerKin(class LayerKinPaletteItem * lkpi);
 	const QList<class ItemBase *> & layerKin();
  	virtual void loadLayerKin(const LayerHash & viewLayers, ViewLayer::ViewLayerSpec);
-	void rotateItem(double degrees);
+	void rotateItem(double degrees, bool includeRatsnest);
 	void flipItem(Qt::Orientations orientation);
 	void moveItem(ViewGeometry & viewGeometry);
 	void transformItem2(const QMatrix &);
@@ -145,7 +145,7 @@ protected slots:
 protected:
 	void syncKinSelection(bool selected, PaletteItemBase * originator);
  	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-	void updateConnections();
+	void updateConnections(bool includeRatsnest);
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	void figureHover();
 	bool isSingleRow(const QList<ConnectorItem *> & connectorItems);

@@ -94,9 +94,9 @@ bool LayerKinPaletteItem::ok() {
 	return m_ok;
 }
 
-void LayerKinPaletteItem::updateConnections() {
+void LayerKinPaletteItem::updateConnections(bool includeRatsnest) {
     if (m_layerKinChief) {
-	    m_layerKinChief->updateConnections();
+	    m_layerKinChief->updateConnections(includeRatsnest);
     }
     else {
         DebugDialog::debug("chief deleted before layerkin");
@@ -222,8 +222,10 @@ bool SchematicTextLayerKinPaletteItem::setUpImage(ModelPart * modelPart, const L
 }
 
 
-void SchematicTextLayerKinPaletteItem::transformItem(const QTransform & currTransf) {
+void SchematicTextLayerKinPaletteItem::transformItem(const QTransform & currTransf, bool includeRatsnest) {
     Q_UNUSED(currTransf);
+    Q_UNUSED(includeRatsnest);
+
     double rotation;
     QTransform chiefTransform = layerKinChief()->transform();      // assume chief already has rotation
     bool isFlipped = GraphicsUtils::isFlipped(chiefTransform.toAffine(), rotation);

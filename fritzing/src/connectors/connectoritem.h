@@ -64,7 +64,7 @@ public:
 	void clearConnectorHover();
 	void connectTo(ConnectorItem *);
 	int connectionsCount();
-	void attachedMoved();
+	void attachedMoved(bool includeRatsnest);
 	ConnectorItem * removeConnection(ItemBase *);
 	void removeConnection(ConnectorItem *, bool emitChange);
 	ConnectorItem * firstConnectedToIsh();

@@ -308,10 +308,10 @@ const QList<class ItemBase *> & PaletteItem::layerKin()
 	return m_layerKin;
 }
 
-void PaletteItem::rotateItem(double degrees) {
-	PaletteItemBase::rotateItem(degrees);
+void PaletteItem::rotateItem(double degrees, bool includeRatsnest) {
+	PaletteItemBase::rotateItem(degrees, includeRatsnest);
 	for (int i = 0; i < m_layerKin.count(); i++) {
-		m_layerKin[i]->rotateItem(degrees);
+		m_layerKin[i]->rotateItem(degrees, includeRatsnest);
 	}
 }
 
@@ -350,10 +350,10 @@ void PaletteItem::setItemPos(QPointF & loc) {
 	}
 }
 
-void PaletteItem::updateConnections() {
-	updateConnectionsAux();
+void PaletteItem::updateConnections(bool includeRatsnest) {
+	updateConnectionsAux(includeRatsnest);
 	foreach (ItemBase * lkpi, m_layerKin) {
-		lkpi->updateConnectionsAux();
+		lkpi->updateConnectionsAux(includeRatsnest);
 	}
 }
 
@@ -832,7 +832,7 @@ void PaletteItem::resetConnector(ItemBase * itemBase, SvgIdLayer * svgIdLayer)
 		connectorItem->setTerminalPoint(svgIdLayer->m_point);
 		connectorItem->setRadius(svgIdLayer->m_radius, svgIdLayer->m_strokeWidth);
         connectorItem->setIsPath(svgIdLayer->m_path);
-		connectorItem->attachedMoved();
+		connectorItem->attachedMoved(false);
 		break;
 	}
 }
@@ -1596,9 +1596,9 @@ QTransform PaletteItem::untransform() {
     bool identity = chiefTransform.isIdentity();
     if (!identity) {    
         QTransform invert = chiefTransform.inverted();
-        transformItem(invert);
+        transformItem(invert, false);
         foreach (ItemBase * lkpi, layerKin()) {    
-            lkpi->transformItem(invert);
+            lkpi->transformItem(invert, false);
         }
     }
 
@@ -1607,9 +1607,9 @@ QTransform PaletteItem::untransform() {
 
 void PaletteItem::retransform(const QTransform & chiefTransform) {
     if (!chiefTransform.isIdentity()) {
-        transformItem(chiefTransform);
+        transformItem(chiefTransform, false);
         foreach (ItemBase * lkpi, layerKin()) {    
-            lkpi->transformItem(chiefTransform);
+            lkpi->transformItem(chiefTransform, false);
         }
     }
 }

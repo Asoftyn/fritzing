@@ -141,7 +141,7 @@ bool PaletteItemBase::itemMoved() {
 
 void PaletteItemBase::moveItem(ViewGeometry & viewGeometry) {
 	this->setPos(viewGeometry.loc());
-	updateConnections();
+	updateConnections(false);
 }
 
 void PaletteItemBase::saveInstanceLocation(QXmlStreamWriter & streamWriter)
@@ -303,7 +303,7 @@ void PaletteItemBase::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	//DebugDialog::debug(QString("rotating item %1 da:%2 oa:%3 %4").arg(QTime::currentTime().toString("HH:mm:ss.zzz")).arg(deltaAngle).arg(originalAngle).arg((long) this, 0, 16));
-	chief->rotateItem(deltaAngle);
+	chief->rotateItem(deltaAngle, true);
 }
 
 void PaletteItemBase::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -320,7 +320,7 @@ void PaletteItemBase::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		// see: http://www.gamedev.net/topic/441695-transform-matrix-decomposition/
 		double originalAngle = atan2(OriginalTransform.m12(), OriginalTransform.m11()) * 180 / M_PI;
 		double currentAngle = atan2(transform().m12(), transform().m11()) * 180 / M_PI;
-		this->layerKinChief()->rotateItem(originalAngle - currentAngle);		// put it back; undo command will redo it
+		this->layerKinChief()->rotateItem(originalAngle - currentAngle, true);		// put it back; undo command will redo it
 		saveGeometry();
 		infoGraphicsView->triggerRotate(this->layerKinChief(), currentAngle - originalAngle);
 	}
@@ -514,7 +514,7 @@ void PaletteItemBase::connectedMoved(ConnectorItem * from, ConnectorItem * to) {
 	if (fromTerminalPoint == toTerminalPoint) return;
 
 	this->setPos(this->pos() + fromTerminalPoint - toTerminalPoint);
-	updateConnections();
+	updateConnections(false);
 }
 
 void PaletteItemBase::hoverEnterEvent ( QGraphicsSceneHoverEvent * event ) {

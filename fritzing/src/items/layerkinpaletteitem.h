@@ -61,7 +61,7 @@ public:
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-	void updateConnections();
+	void updateConnections(bool includeRatsnest);
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	//void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	//void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -79,7 +79,7 @@ Q_OBJECT
 public:       
 	SchematicTextLayerKinPaletteItem(PaletteItemBase * chief, ModelPart *, ViewLayer::ViewID, const ViewGeometry & viewGeometry, long id, QMenu * itemMenu);
 
-    void transformItem(const QTransform &);
+    void transformItem(const QTransform &, bool includeRatsnest);
  	bool setUpImage(ModelPart* modelPart, const LayerHash & viewLayers, LayerAttributes &);
 
 protected:

@@ -1402,7 +1402,7 @@ void SketchWidget::rotateItem(long id, double degrees) {
 
 	ItemBase * itemBase = findItem(id);
 	if (itemBase != NULL) {
-		itemBase->rotateItem(degrees);
+		itemBase->rotateItem(degrees, false);
 	}
 
 }
@@ -2135,7 +2135,7 @@ bool SketchWidget::moveByArrow(int dx, int dy, QKeyEvent * event) {
 
 		if (!draggingWire) {
 			rubberBandLegEnabled = (event->modifiers() & altOrMetaModifier()) != 0;
-			prepMove(NULL, rubberBandLegEnabled, false);
+			prepMove(NULL, rubberBandLegEnabled, true);
 		}
 		if (m_savedItems.count() == 0) return false;
 
@@ -8907,9 +8907,15 @@ void SketchWidget::setMoveLock(long id, bool lock)
 
 void SketchWidget::triggerRotate(ItemBase * itemBase, double degrees)
 {
-	RotateItemCommand * ric = new RotateItemCommand(this, itemBase->id(), degrees, NULL);
-	ric->setText(tr("Rotate %1").arg(itemBase->instanceTitle()));
-	m_undoStack->push(ric);
+    QList<QGraphicsItem *> selectedItems = scene()->selectedItems();
+    setIgnoreSelectionChangeEvents(true);
+    this->clearSelection();
+    itemBase->setSelected(true);
+    rotateX(degrees, false);
+    foreach (QGraphicsItem * item, selectedItems) {
+        item->setSelected(true);
+    }
+    setIgnoreSelectionChangeEvents(false);
 }
 
 void SketchWidget::makeWiresChangeConnectionCommands(const QList<Wire *> & wires, QUndoCommand * parentCommand)

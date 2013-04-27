@@ -1418,7 +1418,7 @@ ItemBase * PCBSketchWidget::placePartDroppedInOtherView(ModelPart * modelPart, V
 		    chief->setPos(r.topLeft());
 		    DebugDialog::debug(QString("placing part with rotation:%1").arg(bestPlace.rotate90), r);
 		    if (bestPlace.rotate90) {
-			    chief->rotateItem(90);
+			    chief->rotateItem(90, false);
 		    }
 		    alignOneToGrid(newItem);
 	    }

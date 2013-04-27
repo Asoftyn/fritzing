@@ -82,9 +82,9 @@ public:
 	virtual void writeGeometry(QXmlStreamWriter &);
 	virtual void moveItem(ViewGeometry &) = 0;
 	virtual void setItemPos(QPointF & pos);
-	virtual void rotateItem(double degrees);
+	virtual void rotateItem(double degrees, bool includeRatsnest);
 	virtual void flipItem(Qt::Orientations orientation);
-	virtual void transformItem(const QTransform &);
+	virtual void transformItem(const QTransform &, bool includeRatsnest);
 	virtual void transformItem2(const QMatrix &);
 	virtual void removeLayerKin();
 	ViewLayer::ViewID viewID();
@@ -105,8 +105,8 @@ public:
 	bool inactive();
 	ConnectorItem * findConnectorItemWithSharedID(const QString & connectorID, ViewLayer::ViewLayerSpec);
 	ConnectorItem * findConnectorItemWithSharedID(const QString & connectorID);
-	void updateConnections(ConnectorItem *);
-	virtual void updateConnections();
+	void updateConnections(ConnectorItem *, bool includeRatsnest);
+	virtual void updateConnections(bool includeRatsnest);
 	virtual const QString & title() const;
 	bool getRatsnest();
 	QList<class Bus *> buses();
@@ -156,7 +156,7 @@ public:
 	virtual bool collectFemaleConnectees(QSet<ItemBase *> & items);
 	void prepareGeometryChange();
 	virtual void resetID();
-	void updateConnectionsAux();
+	void updateConnectionsAux(bool includeRatsnest);
 	virtual ItemBase * lowerConnectorLayerVisible(ItemBase *);
 	void hoverEnterEvent( QGraphicsSceneHoverEvent * event );
 	void hoverLeaveEvent( QGraphicsSceneHoverEvent * event );

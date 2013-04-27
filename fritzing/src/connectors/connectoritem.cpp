@@ -860,7 +860,7 @@ int ConnectorItem::connectionsCount() {
 	return m_connectedTo.count();
 }
 
-void ConnectorItem::attachedMoved() {
+void ConnectorItem::attachedMoved(bool includeRatsnest) {
 	//DebugDialog::debug("attached moved");
     if (!this->isVisible()) return;
 
@@ -881,7 +881,7 @@ void ConnectorItem::attachedMoved() {
 			//itemBase->debugInfo("    ");
 			continue;
 		}
-        if (itemBase->getRatsnest()) {
+        if (itemBase->getRatsnest() && !includeRatsnest) {
             continue;
         }
 

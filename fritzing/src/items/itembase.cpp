@@ -667,11 +667,12 @@ void ItemBase::hoverLeaveEvent ( QGraphicsSceneHoverEvent * event ) {
 	}
 }
 
-void ItemBase::updateConnections() {
+void ItemBase::updateConnections(bool includeRatsnest) {
+    Q_UNUSED(includeRatsnest);
 }
 
-void ItemBase::updateConnections(ConnectorItem * connectorItem) {
-	connectorItem->attachedMoved();
+void ItemBase::updateConnections(ConnectorItem * connectorItem, bool includeRatsnest) {
+	connectorItem->attachedMoved(includeRatsnest);
 }
 
 const QString & ItemBase::title() const {
@@ -877,7 +878,8 @@ bool ItemBase::isLocalSticky() {
         return layerKinChief()->isLocalSticky();
     }
     QString stickyVal = modelPart()->localProp("sticky").toString();
-	return (stickyVal.compare("true") == 0);                      
+	// return (stickyVal.compare("false") != 0);       // defaults to true               
+	return (stickyVal.compare("true") == 0);           // defaults to false                  
 }
 
 void ItemBase::setLocalSticky(bool s)
@@ -1257,9 +1259,9 @@ ItemBase * ItemBase::layerKinChief() {
 	return this;
 }
 
-void ItemBase::rotateItem(double degrees) {
+void ItemBase::rotateItem(double degrees, bool includeRatsnest) {
 	//this->debugInfo(QString("\trotating item %1").arg(degrees));
-	transformItem(QTransform().rotate(degrees));
+	transformItem(QTransform().rotate(degrees), includeRatsnest);
 }
 
 void ItemBase::flipItem(Qt::Orientations orientation) {
@@ -1275,10 +1277,10 @@ void ItemBase::flipItem(Qt::Orientations orientation) {
 		return;
 	}
 
-	transformItem(QTransform().scale(xScale,yScale));
+	transformItem(QTransform().scale(xScale,yScale), false);
 }
 
-void ItemBase::transformItem(const QTransform & currTransf) {
+void ItemBase::transformItem(const QTransform & currTransf, bool includeRatsnest) {
 	//DebugDialog::debug(QString("\ttransform item %1").arg((long) this, 0, 16));
 
 	if (m_hasRubberBandLeg) {
@@ -1291,7 +1293,7 @@ void ItemBase::transformItem(const QTransform & currTransf) {
 	getViewGeometry().setTransform(getViewGeometry().transform()*transf);
 	this->setTransform(getViewGeometry().transform());
 	if (!m_hasRubberBandLeg) {
-		updateConnections();
+		updateConnections(includeRatsnest);
 	}
 	//QTransform t = this->transform();
 	//DebugDialog::debug(QString("matrix m11:%1 m12:%2 m21:%3 m22:%4").arg(t.m11()).arg(t.m12()).arg(t.m21()).arg(t.m22()));
@@ -1300,7 +1302,7 @@ void ItemBase::transformItem(const QTransform & currTransf) {
 
 void ItemBase::transformItem2(const QMatrix & matrix) {
 	QTransform transform(matrix);
-	transformItem(transform);
+	transformItem(transform, false);
 }
 
 void ItemBase::collectWireConnectees(QSet<class Wire *> & wires) {
@@ -1475,10 +1477,10 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, LayerAttributes & lay
 	return newRenderer;
 }
 
-void ItemBase::updateConnectionsAux() {
+void ItemBase::updateConnectionsAux(bool includeRatsnest) {
 	//DebugDialog::debug("update connections");
 	foreach (ConnectorItem * connectorItem, cachedConnectorItems()) {
-		updateConnections(connectorItem);
+		updateConnections(connectorItem, includeRatsnest);
 	}
 }
 
