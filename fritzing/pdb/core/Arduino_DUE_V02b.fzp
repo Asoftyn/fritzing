@@ -1347,9 +1347,6 @@ The Due has a dedicated forum for discussing the board.</description>
  </connectors>
  <buses>
   <bus id="gnd">
-   <nodeMember connectorId="connector222"/>
-   <nodeMember connectorId="connector224"/>
-   <nodeMember connectorId="connector228"/>
    <nodeMember connectorId="connector255"/>
    <nodeMember connectorId="connector256"/>
    <nodeMember connectorId="connector264"/>
