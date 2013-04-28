@@ -477,7 +477,7 @@ void MainWindow::doDelete() {
 	}
 }
 
-void MainWindow::doDeletePlus() {
+void MainWindow::doDeleteMinus() {
 	if (m_currentGraphicsView != NULL) {
 		m_currentGraphicsView->deleteSelected(retrieveWire(), true);
 	}
@@ -779,17 +779,17 @@ void MainWindow::createEditMenuActions() {
 		m_deleteAct->setShortcut(QKeySequence::Delete);
 	#endif
 
-    m_deletePlusAct = new QAction(tr("Delete Plus"), this);
-	m_deletePlusAct->setStatusTip(tr("Delete selection + attached wires"));
-	connect(m_deletePlusAct, SIGNAL(triggered()), this, SLOT(doDeletePlus()));
+    m_deleteMinusAct = new QAction(tr("Delete Minus"), this);
+	m_deleteMinusAct->setStatusTip(tr("Delete selection without attached wires"));
+	connect(m_deleteMinusAct, SIGNAL(triggered()), this, SLOT(doDeleteMinus()));
 
 	m_deleteWireAct = new WireAction(m_deleteAct);
 	m_deleteWireAct->setText(tr("&Delete Wire"));
 	connect(m_deleteWireAct, SIGNAL(triggered()), this, SLOT(doDelete()));
 
-	m_deleteWirePlusAct = new WireAction(m_deletePlusAct);
-	m_deleteWirePlusAct->setText(tr("Delete Wire (up to bendpoints)"));
-	connect(m_deleteWirePlusAct, SIGNAL(triggered()), this, SLOT(doDeletePlus()));
+	m_deleteWireMinusAct = new WireAction(m_deleteMinusAct);
+	m_deleteWireMinusAct->setText(tr("Delete Wire up to bendpoints"));
+	connect(m_deleteWireMinusAct, SIGNAL(triggered()), this, SLOT(doDeleteMinus()));
 
 	m_selectAllAct = new QAction(tr("&Select All"), this);
 	m_selectAllAct->setShortcut(tr("Ctrl+A"));
@@ -1225,7 +1225,7 @@ void MainWindow::createEditMenu()
     m_editMenu->addAction(m_pasteInPlaceAct);
     m_editMenu->addAction(m_duplicateAct);
     m_editMenu->addAction(m_deleteAct);
-    m_editMenu->addAction(m_deletePlusAct);
+    m_editMenu->addAction(m_deleteMinusAct);
     m_editMenu->addSeparator();
     m_editMenu->addAction(m_selectAllAct);
     m_editMenu->addAction(m_deselectAct);
@@ -1583,7 +1583,7 @@ void MainWindow::updateWireMenu() {
 	m_createTraceWireAct->setWire(wire);
 	m_createWireWireAct->setWire(wire);
 	m_deleteWireAct->setWire(wire);
-	m_deleteWirePlusAct->setWire(wire);
+	m_deleteWireMinusAct->setWire(wire);
 	m_excludeFromAutorouteWireAct->setWire(wire);
 
 	m_bringToFrontWireAct->setEnabled(enableZOK);
@@ -1593,7 +1593,7 @@ void MainWindow::updateWireMenu() {
 	m_createTraceWireAct->setEnabled(enableAll && createTraceOK);
 	m_createWireWireAct->setEnabled(enableAll && createTraceOK);
 	m_deleteWireAct->setEnabled(enableAll && deleteOK);
-	m_deleteWirePlusAct->setEnabled(enableAll && deleteOK && !gotRat);
+	m_deleteWireMinusAct->setEnabled(enableAll && deleteOK && !gotRat);
 	m_excludeFromAutorouteWireAct->setEnabled(enableAll && excludeOK);
 
 	m_changeTraceLayerAct->setEnabled(ctlOK);
@@ -1837,7 +1837,7 @@ void MainWindow::updateEditMenu() {
 
 		//DebugDialog::debug(QString("enable cut/copy/duplicate/delete %1 %2 %3").arg(copyActsEnabled).arg(deleteActsEnabled).arg(m_currentWidget->viewID()) );
 		m_deleteAct->setEnabled(deleteActsEnabled);
-		m_deletePlusAct->setEnabled(deleteActsEnabled);
+		m_deleteMinusAct->setEnabled(deleteActsEnabled);
 		m_deleteAct->setText(tr("Delete"));
 		m_cutAct->setEnabled(deleteActsEnabled && copyActsEnabled);
 		m_copyAct->setEnabled(copyActsEnabled);
@@ -3082,7 +3082,7 @@ QMenu *MainWindow::breadboardWireMenu() {
 	menu->addAction(m_createWireWireAct);
 	menu->addSeparator();
 	menu->addAction(m_deleteWireAct);
-	menu->addAction(m_deleteWirePlusAct);
+	menu->addAction(m_deleteWireMinusAct);
 	menu->addSeparator();
 	menu->addAction(m_addBendpointAct);
 	menu->addAction(m_flattenCurveAct);
@@ -3106,7 +3106,7 @@ QMenu *MainWindow::pcbWireMenu() {
 	menu->addAction(m_excludeFromAutorouteWireAct);
 	menu->addSeparator();
 	menu->addAction(m_deleteWireAct);
-	menu->addAction(m_deleteWirePlusAct);
+	menu->addAction(m_deleteWireMinusAct);
 	menu->addSeparator();
 	menu->addAction(m_addBendpointAct);
 	menu->addAction(m_convertToViaAct);
@@ -3140,7 +3140,7 @@ QMenu *MainWindow::schematicWireMenu() {
 	menu->addAction(m_excludeFromAutorouteWireAct);
 	menu->addSeparator();
 	menu->addAction(m_deleteWireAct);
-	menu->addAction(m_deleteWirePlusAct);
+	menu->addAction(m_deleteWireMinusAct);
 	menu->addSeparator();
 	menu->addAction(m_addBendpointAct);
 #ifndef QT_NO_DEBUG
@@ -3161,7 +3161,7 @@ QMenu *MainWindow::viewItemMenuAux(QMenu* menu) {
 	menu->addAction(m_copyAct);
 	menu->addAction(m_duplicateAct);
 	menu->addAction(m_deleteAct);
-	menu->addAction(m_deletePlusAct);
+	menu->addAction(m_deleteMinusAct);
 #ifndef QT_NO_DEBUG
 	menu->addSeparator();
 	menu->addAction(m_disconnectAllAct);

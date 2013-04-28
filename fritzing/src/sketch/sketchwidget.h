@@ -150,7 +150,7 @@ public:
 	void addBendpoint(ItemBase * lastHoverEnterItem, ConnectorItem * lastHoverEnterConnectorItem, QPointF lastLocation);
 	void flattenCurve(ItemBase * lastHoverEnterItem, ConnectorItem * lastHoverEnterConnectorItem, QPointF lastLocation);
 
-	void deleteSelected(Wire *, bool plus);
+	void deleteSelected(Wire *, bool minus);
 	PaletteItem *getSelectedPart();
 
     void addViewLayer(ViewLayer *);
@@ -366,7 +366,7 @@ protected:
 						  ViewLayer::ViewLayerSpec,
 						  bool connect, bool updateConnections);
 
-	void cutDeleteAux(QString undoStackMessage, bool plus, Wire * wire);
+	void cutDeleteAux(QString undoStackMessage, bool minus, Wire * wire);
 	void deleteAux(QSet<ItemBase *> & deletedItems, QUndoCommand * parentCommand, bool doPush);
 
 	ChangeConnectionCommand * extendChangeConnectionCommand(BaseCommand::CrossViewType, long fromID, const QString & fromConnectorID,

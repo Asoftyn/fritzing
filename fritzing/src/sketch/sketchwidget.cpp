@@ -1041,7 +1041,7 @@ void SketchWidget::deleteItem(ItemBase * itemBase, bool deleteModelPart, bool do
 
 }
 
-void SketchWidget::deleteSelected(Wire * wire, bool plus) {
+void SketchWidget::deleteSelected(Wire * wire, bool minus) {
 	QSet<ItemBase *> itemBases;
 	if (wire) {
 		itemBases << wire;
@@ -1076,7 +1076,7 @@ void SketchWidget::deleteSelected(Wire * wire, bool plus) {
 	}
 
 	if (!rats) {
-		cutDeleteAux("Delete", plus, wire);			// wire is selected in this case, so don't bother sending it along
+		cutDeleteAux("Delete", minus, wire);			// wire is selected in this case, so don't bother sending it along
 		return;
 	}
 
@@ -1087,7 +1087,7 @@ void SketchWidget::deleteSelected(Wire * wire, bool plus) {
 	m_undoStack->waitPush(parentCommand, PropChangeDelay);
 }
 
-void SketchWidget::cutDeleteAux(QString undoStackMessage, bool plus, Wire * wire) {
+void SketchWidget::cutDeleteAux(QString undoStackMessage, bool minus, Wire * wire) {
 
 	//DebugDialog::debug("before delete");
 
@@ -1096,7 +1096,7 @@ void SketchWidget::cutDeleteAux(QString undoStackMessage, bool plus, Wire * wire
 	const QList<QGraphicsItem *> sitems = scene()->selectedItems();
 
 	QSet<ItemBase *> deletedItems;
-    if (plus && wire != NULL) {
+    if (minus && wire != NULL) {
         // called from wire context menu "delete to bendpoint"
         deletedItems.insert(wire);
     }
@@ -1119,7 +1119,7 @@ void SketchWidget::cutDeleteAux(QString undoStackMessage, bool plus, Wire * wire
             }
 	    }
 
-        if (plus) {
+        if (!minus) {
             foreach (ItemBase * itemBase, deletedItems) {
                 QList<ConnectorItem *> connectorItems;
                 foreach (ConnectorItem * connectorItem, itemBase->cachedConnectorItems()) {
