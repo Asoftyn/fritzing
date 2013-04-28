@@ -266,7 +266,8 @@ void JumperItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	if (cross) cross->setRect(r);
 
 	resize();
-	ItemBase::updateConnections(m_dragItem);	
+    QList<ConnectorItem *> already;
+	ItemBase::updateConnections(m_dragItem, true, already);	
 }
 
 void JumperItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

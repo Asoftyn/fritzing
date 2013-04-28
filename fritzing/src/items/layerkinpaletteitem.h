@@ -61,7 +61,7 @@ public:
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-	void updateConnections(bool includeRatsnest);
+	void updateConnections(bool includeRatsnest, QList<ConnectorItem *> & already);
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	//void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	//void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);

@@ -105,8 +105,8 @@ public:
 	bool inactive();
 	ConnectorItem * findConnectorItemWithSharedID(const QString & connectorID, ViewLayer::ViewLayerSpec);
 	ConnectorItem * findConnectorItemWithSharedID(const QString & connectorID);
-	void updateConnections(ConnectorItem *, bool includeRatsnest);
-	virtual void updateConnections(bool includeRatsnest);
+	void updateConnections(ConnectorItem *, bool includeRatsnest, QList<ConnectorItem *> & already);
+	virtual void updateConnections(bool includeRatsnest, QList<ConnectorItem *> & already);
 	virtual const QString & title() const;
 	bool getRatsnest();
 	QList<class Bus *> buses();
@@ -156,7 +156,7 @@ public:
 	virtual bool collectFemaleConnectees(QSet<ItemBase *> & items);
 	void prepareGeometryChange();
 	virtual void resetID();
-	void updateConnectionsAux(bool includeRatsnest);
+	void updateConnectionsAux(bool includeRatsnest, QList<ConnectorItem *> & already);
 	virtual ItemBase * lowerConnectorLayerVisible(ItemBase *);
 	void hoverEnterEvent( QGraphicsSceneHoverEvent * event );
 	void hoverLeaveEvent( QGraphicsSceneHoverEvent * event );
@@ -282,7 +282,7 @@ public:
 	virtual bool acceptsMouseMoveConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
 	virtual bool acceptsMouseReleaseConnectorEvent(ConnectorItem *, QGraphicsSceneMouseEvent *);
 	virtual void connectionChange(ConnectorItem * onMe, ConnectorItem * onIt, bool connect);
-	virtual void connectedMoved(ConnectorItem * from, ConnectorItem * to);
+	virtual void connectedMoved(ConnectorItem * from, ConnectorItem * to, QList<ConnectorItem *> & already);
 	virtual ItemBase * layerKinChief();
 	virtual const QList<ItemBase *> & layerKin();
 	virtual void findConnectorsUnder() = 0;

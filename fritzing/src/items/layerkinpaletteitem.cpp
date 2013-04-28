@@ -94,9 +94,9 @@ bool LayerKinPaletteItem::ok() {
 	return m_ok;
 }
 
-void LayerKinPaletteItem::updateConnections(bool includeRatsnest) {
+void LayerKinPaletteItem::updateConnections(bool includeRatsnest, QList<ConnectorItem *> & already) {
     if (m_layerKinChief) {
-	    m_layerKinChief->updateConnections(includeRatsnest);
+	    m_layerKinChief->updateConnections(includeRatsnest, already);
     }
     else {
         DebugDialog::debug("chief deleted before layerkin");

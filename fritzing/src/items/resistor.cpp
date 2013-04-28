@@ -160,8 +160,8 @@ void Resistor::setResistance(QString resistance, QString pinSpacing, bool force)
 					resetImage(infoGraphicsView);
 					m_changingPinSpacing = false;
                     modelPart()->setImageFileName(m_viewID, original);
-
-					updateConnections(false);
+                    QList<ConnectorItem *> already;
+					updateConnections(false, already);
 				}
 
 			}

@@ -2611,8 +2611,9 @@ int PCBSketchWidget::checkLoadedTraces() {
     }
 
     foreach (Wire * wire, lines.keys()) {
-		wire->updateConnections(wire->connector0());
-		wire->updateConnections(wire->connector1());
+        QList<ConnectorItem *> already;
+		wire->updateConnections(wire->connector0(), false, already);
+		wire->updateConnections(wire->connector1(), false, already);
     }
 
     foreach (Wire * wire, lines.keys()) {

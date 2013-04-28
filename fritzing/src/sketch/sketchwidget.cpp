@@ -1096,20 +1096,9 @@ void SketchWidget::cutDeleteAux(QString undoStackMessage, bool plus, Wire * wire
 	const QList<QGraphicsItem *> sitems = scene()->selectedItems();
 
 	QSet<ItemBase *> deletedItems;
-
-    if (plus) {
-        if (wire != NULL) {
-            deletedItems.insert(wire);
-        }
-        else {
-	        m_savedItems.clear();
-	        m_savedWires.clear();
-            prepMove(NULL, false, false);
-            foreach (ItemBase * itemBase, m_savedItems) deletedItems.insert(itemBase);
-            foreach (Wire * wire, m_savedWires.keys()) deletedItems.insert(wire);
-            m_savedWires.clear();
-            m_savedItems.clear();
-        }
+    if (plus && wire != NULL) {
+        // called from wire context menu "delete to bendpoint"
+        deletedItems.insert(wire);
     }
     else {
 	    foreach (QGraphicsItem * sitem, sitems) {
@@ -1129,6 +1118,31 @@ void SketchWidget::cutDeleteAux(QString undoStackMessage, bool plus, Wire * wire
 		        deletedItems.insert(itemBase);
             }
 	    }
+
+        if (plus) {
+            foreach (ItemBase * itemBase, deletedItems) {
+                QList<ConnectorItem *> connectorItems;
+                foreach (ConnectorItem * connectorItem, itemBase->cachedConnectorItems()) {
+                    connectorItems.append(connectorItem);
+                    ConnectorItem * cross = connectorItem->getCrossLayerConnectorItem();
+                    if (cross) connectorItems.append(cross);
+                }
+                foreach (ConnectorItem * connectorItem, connectorItems) {
+                    foreach (ConnectorItem * toConnectorItem, connectorItem->connectedToItems()) {
+                        if (toConnectorItem->attachedToItemType() != ModelPart::Wire) continue;
+
+                        Wire * wire = qobject_cast<Wire *>(toConnectorItem->attachedTo());
+                        if (!wire->isTraceType(getTraceFlag())) continue;
+
+                        QList<Wire *> wires;
+                        wire->collectDirectWires(wires);
+                        foreach (Wire * w, wires) {
+                            deletedItems.insert(w);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 	if (deletedItems.count() <= 0) {
@@ -1447,8 +1461,9 @@ void SketchWidget::changeWire(long fromID, QLineF line, QPointF pos, bool update
 
 	wire->setLineAnd(line, pos, true);
 	if (updateConnections) {
-		wire->updateConnections(wire->connector0());
-		wire->updateConnections(wire->connector1());
+        QList<ConnectorItem *> already;
+		wire->updateConnections(wire->connector0(), false, already);
+		wire->updateConnections(wire->connector1(), false, already);
 	}
 
 	if (updateRatsnest) {
@@ -1506,7 +1521,8 @@ void SketchWidget::changeLegAux(long fromID, const QString & fromConnectorID, co
 		fromConnectorItem->setLeg(leg, relative, why);
 	}
 
-	fromItem->updateConnections(fromConnectorItem);
+    QList<ConnectorItem *> already;
+	fromItem->updateConnections(fromConnectorItem, false, already);
 }
 
 void SketchWidget::selectItem(long id, bool state, bool updateInfoView, bool doEmit) {
@@ -3637,7 +3653,8 @@ void SketchWidget::wireChangedSlot(Wire* wire, const QLineF & oldLine, const QLi
 	clearDragWireTempCommand();
 	if ((to != NULL) && from->connectedToItems().contains(to)) {
 		// there's no change: the wire was dragged back to its original connection
-		from->attachedTo()->updateConnections(to);
+        QList<ConnectorItem *> already;
+		from->attachedTo()->updateConnections(to, false, already);
 		return;
 	}
 
@@ -4989,8 +5006,9 @@ void SketchWidget::changeConnectionAux(long fromID, const QString & fromConnecto
 	}
 
 	if (updateConnections) {
-		fromConnectorItem->attachedTo()->updateConnections(fromConnectorItem);
-		toConnectorItem->attachedTo()->updateConnections(toConnectorItem);
+        QList<ConnectorItem *> already;
+		fromConnectorItem->attachedTo()->updateConnections(fromConnectorItem, false, already);
+		toConnectorItem->attachedTo()->updateConnections(toConnectorItem, false, already);
 	}
 }
 

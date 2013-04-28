@@ -145,7 +145,7 @@ protected slots:
 protected:
 	void syncKinSelection(bool selected, PaletteItemBase * originator);
  	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-	void updateConnections(bool includeRatsnest);
+	void updateConnections(bool includeRatsnest, QList<ConnectorItem *> & already);
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	void figureHover();
 	bool isSingleRow(const QList<ConnectorItem *> & connectorItems);

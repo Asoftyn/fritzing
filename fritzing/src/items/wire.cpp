@@ -917,7 +917,7 @@ void Wire::calcNewLine(ConnectorItem * from, ConnectorItem * to, QPointF & p1, Q
 	}
 }
 
-void Wire::connectedMoved(ConnectorItem * from, ConnectorItem * to) {
+void Wire::connectedMoved(ConnectorItem * from, ConnectorItem * to, QList<ConnectorItem *> & already) {
 	// "from" is the connector on the part
 	// "to" is the connector on the wire
 
@@ -958,7 +958,7 @@ void Wire::connectedMoved(ConnectorItem * from, ConnectorItem * to) {
 	if (chained) {
 		foreach (ConnectorItem * otherEndTo, otherEnd->connectedToItems()) {
 			if (otherEndTo->attachedToItemType() == ModelPart::Wire) {
-				otherEndTo->attachedTo()->connectedMoved(otherEnd, otherEndTo);
+				otherEndTo->attachedTo()->connectedMoved(otherEnd, otherEndTo, already);
 			}
 		}
 	}
@@ -1315,8 +1315,10 @@ void Wire::collectDirectWires(QList<Wire *> & wires) {
 void Wire::collectDirectWires(ConnectorItem * connectorItem, QList<Wire *> & wires) {
 	if (connectorItem->connectionsCount() != 1) return;
 
-	ConnectorItem * toConnectorItem = connectorItem->connectedToItems()[0];
+	ConnectorItem * toConnectorItem = connectorItem->connectedToItems().at(0);
 	if (toConnectorItem->attachedToItemType() != ModelPart::Wire) return;
+
+    if (toConnectorItem->connectionsCount() != 1) return;
 
 	Wire * nextWire = qobject_cast<Wire *>(toConnectorItem->attachedTo());
 	if (wires.contains(nextWire)) return;

@@ -350,10 +350,10 @@ void PaletteItem::setItemPos(QPointF & loc) {
 	}
 }
 
-void PaletteItem::updateConnections(bool includeRatsnest) {
-	updateConnectionsAux(includeRatsnest);
+void PaletteItem::updateConnections(bool includeRatsnest, QList<ConnectorItem *> & already) {
+	updateConnectionsAux(includeRatsnest, already);
 	foreach (ItemBase * lkpi, m_layerKin) {
-		lkpi->updateConnectionsAux(includeRatsnest);
+		lkpi->updateConnectionsAux(includeRatsnest, already);
 	}
 }
 
@@ -825,6 +825,7 @@ void PaletteItem::resetConnectors(ItemBase * otherLayer, FSvgRenderer * otherLay
 
 void PaletteItem::resetConnector(ItemBase * itemBase, SvgIdLayer * svgIdLayer) 
 {
+    QList<ConnectorItem *> already;
 	foreach (ConnectorItem * connectorItem, itemBase->cachedConnectorItems()) {
 		//DebugDialog::debug(QString("via set rect %1").arg(itemBase->viewID()), svgIdLayer->m_rect);
 
@@ -832,7 +833,7 @@ void PaletteItem::resetConnector(ItemBase * itemBase, SvgIdLayer * svgIdLayer)
 		connectorItem->setTerminalPoint(svgIdLayer->m_point);
 		connectorItem->setRadius(svgIdLayer->m_radius, svgIdLayer->m_strokeWidth);
         connectorItem->setIsPath(svgIdLayer->m_path);
-		connectorItem->attachedMoved(false);
+		connectorItem->attachedMoved(false, already);
 		break;
 	}
 }

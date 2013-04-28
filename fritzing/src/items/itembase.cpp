@@ -518,7 +518,10 @@ void ItemBase::connectionChange(ConnectorItem * onMe, ConnectorItem * onIt, bool
 	Q_UNUSED(connect);
 }
 
-void ItemBase::connectedMoved(ConnectorItem * /* from */, ConnectorItem * /* to */) {
+void ItemBase::connectedMoved(ConnectorItem * from, ConnectorItem * to,  QList<ConnectorItem *> & already) {
+    Q_UNUSED(from);
+    Q_UNUSED(to);
+    Q_UNUSED(already);
 }
 
 ItemBase * ItemBase::extractTopLevelItemBase(QGraphicsItem * item) {
@@ -667,12 +670,19 @@ void ItemBase::hoverLeaveEvent ( QGraphicsSceneHoverEvent * event ) {
 	}
 }
 
-void ItemBase::updateConnections(bool includeRatsnest) {
+void ItemBase::updateConnections(bool includeRatsnest, QList<ConnectorItem *> & already) {
+    Q_UNUSED(already)
     Q_UNUSED(includeRatsnest);
 }
 
-void ItemBase::updateConnections(ConnectorItem * connectorItem, bool includeRatsnest) {
-	connectorItem->attachedMoved(includeRatsnest);
+void ItemBase::updateConnections(ConnectorItem * connectorItem, bool includeRatsnest, QList<ConnectorItem *> & already) {
+    if (!already.contains(connectorItem)) {
+        already << connectorItem;
+	    connectorItem->attachedMoved(includeRatsnest, already);
+    }
+    else {
+        connectorItem->debugInfo("already");
+    }
 }
 
 const QString & ItemBase::title() const {
@@ -1293,7 +1303,8 @@ void ItemBase::transformItem(const QTransform & currTransf, bool includeRatsnest
 	getViewGeometry().setTransform(getViewGeometry().transform()*transf);
 	this->setTransform(getViewGeometry().transform());
 	if (!m_hasRubberBandLeg) {
-		updateConnections(includeRatsnest);
+        QList<ConnectorItem *> already;
+		updateConnections(includeRatsnest, already);
 	}
 	//QTransform t = this->transform();
 	//DebugDialog::debug(QString("matrix m11:%1 m12:%2 m21:%3 m22:%4").arg(t.m11()).arg(t.m12()).arg(t.m21()).arg(t.m22()));
@@ -1477,10 +1488,10 @@ FSvgRenderer * ItemBase::setUpImage(ModelPart * modelPart, LayerAttributes & lay
 	return newRenderer;
 }
 
-void ItemBase::updateConnectionsAux(bool includeRatsnest) {
+void ItemBase::updateConnectionsAux(bool includeRatsnest, QList<ConnectorItem *> & already) {
 	//DebugDialog::debug("update connections");
 	foreach (ConnectorItem * connectorItem, cachedConnectorItems()) {
-		updateConnections(connectorItem, includeRatsnest);
+		updateConnections(connectorItem, includeRatsnest, already);
 	}
 }
 

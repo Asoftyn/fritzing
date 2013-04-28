@@ -141,7 +141,8 @@ bool PaletteItemBase::itemMoved() {
 
 void PaletteItemBase::moveItem(ViewGeometry & viewGeometry) {
 	this->setPos(viewGeometry.loc());
-	updateConnections(false);
+    QList<ConnectorItem *> already;
+	updateConnections(false, already);
 }
 
 void PaletteItemBase::saveInstanceLocation(QXmlStreamWriter & streamWriter)
@@ -492,7 +493,7 @@ void PaletteItemBase::setUpConnectors(FSvgRenderer * renderer, bool ignoreTermin
 	}
 }
 
-void PaletteItemBase::connectedMoved(ConnectorItem * from, ConnectorItem * to) {
+void PaletteItemBase::connectedMoved(ConnectorItem * from, ConnectorItem * to,  QList<ConnectorItem *> & already) {
 	if (from->connectorType() != Connector::Female) return;
 
 	// female connectors really only operate in breadboard view
@@ -514,7 +515,7 @@ void PaletteItemBase::connectedMoved(ConnectorItem * from, ConnectorItem * to) {
 	if (fromTerminalPoint == toTerminalPoint) return;
 
 	this->setPos(this->pos() + fromTerminalPoint - toTerminalPoint);
-	updateConnections(false);
+	updateConnections(false, already);
 }
 
 void PaletteItemBase::hoverEnterEvent ( QGraphicsSceneHoverEvent * event ) {

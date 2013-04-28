@@ -860,7 +860,7 @@ int ConnectorItem::connectionsCount() {
 	return m_connectedTo.count();
 }
 
-void ConnectorItem::attachedMoved(bool includeRatsnest) {
+void ConnectorItem::attachedMoved(bool includeRatsnest, QList<ConnectorItem *> & already) {
 	//DebugDialog::debug("attached moved");
     if (!this->isVisible()) return;
 
@@ -885,7 +885,7 @@ void ConnectorItem::attachedMoved(bool includeRatsnest) {
             continue;
         }
 
-        toConnectorItem->attachedTo()->connectedMoved(this, toConnectorItem);
+        toConnectorItem->attachedTo()->connectedMoved(this, toConnectorItem, already);
     }
 }
 
