@@ -2937,18 +2937,6 @@ Go ahead and revert?</source>
         <translation>文件夹&quot;%1&quot;不是Fritzing安装文件夹</translation>
     </message>
     <message>
-        <source>Delete Plus</source>
-        <translation>增强删除</translation>
-    </message>
-    <message>
-        <source>Delete selection + attached wires</source>
-        <translation>删除选择和连接的线</translation>
-    </message>
-    <message>
-        <source>Delete Wire (up to bendpoints)</source>
-        <translation>删除线（至曲点）</translation>
-    </message>
-    <message>
         <source>Design Rules Check (DRC)</source>
         <translation>设计规则检查（DRC）</translation>
     </message>
@@ -3114,6 +3102,18 @@ Go ahead and revert?</source>
     </message>
     <message>
         <source>View the PCB from the top layers downwards</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Minus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete selection without attached wires</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Wire up to bendpoints</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

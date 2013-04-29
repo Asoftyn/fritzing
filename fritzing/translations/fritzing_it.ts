@@ -2917,18 +2917,6 @@ Go ahead and revert?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete Plus</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete selection + attached wires</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Wire (up to bendpoints)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Design Rules Check (DRC)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3094,6 +3082,18 @@ Go ahead and revert?</source>
     </message>
     <message>
         <source>View the PCB from the top layers downwards</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Minus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete selection without attached wires</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Wire up to bendpoints</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
