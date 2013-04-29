@@ -202,7 +202,7 @@ protected:
 	void collectWiresAux(QList<Wire *> & wires, ConnectorItem * start);
 	void setShadowColor(QColor &);
 	void calcNewLine(ConnectorItem * from, ConnectorItem * to, QPointF & p1, QPointF & p2);
-	void collectDirectWires(ConnectorItem * connectorItem, QList<Wire *> & wires);
+	void collectDirectWires(ConnectorItem * connectorItem, QList<Wire *> & wires, QList<ConnectorItem *> & junctions);
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 	void getConnectedColor(ConnectorItem *, QBrush * &, QPen * &, double & opacity, double & negativePenWidth, bool & negativeOffsetRect);
 	bool connectionIsAllowed(ConnectorItem *);

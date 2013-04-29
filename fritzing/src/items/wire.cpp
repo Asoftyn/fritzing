@@ -1304,27 +1304,80 @@ bool Wire::canChangeColor() {
 }
 
 void Wire::collectDirectWires(QList<Wire *> & wires) {
+    bool firstRound = false;
 	if (!wires.contains(this)) {
 		wires.append(this);
+        firstRound = true;
 	}
 
-	collectDirectWires(m_connector0, wires);
-	collectDirectWires(m_connector1, wires);
+    QList<ConnectorItem *> junctions;
+    if (firstRound) {
+        // collect up to any junction
+	    collectDirectWires(m_connector0, wires, junctions);
+	    collectDirectWires(m_connector1, wires, junctions);
+        return;
+    }
+
+    // second round: deal with junctions
+    foreach (Wire * wire, wires) {
+        junctions << wire->connector0() << wire->connector1();
+    }
+
+    int ix = 0;
+    while (ix < junctions.count()) {
+        ConnectorItem * junction = junctions.at(ix++);
+
+        QSet<Wire *> jwires;
+        foreach (ConnectorItem * toConnectorItem, junction->connectedToItems()) {
+            if (toConnectorItem->attachedToItemType() != ModelPart::Wire) break;
+
+            Wire * w = qobject_cast<Wire *>(toConnectorItem->attachedTo());
+            if (!wires.contains(w)) jwires << w;
+
+            bool onlyWiresConnected = true;
+            foreach (ConnectorItem * toToConnectorItem, toConnectorItem->connectedToItems()) {
+                if (toToConnectorItem->attachedToItemType() != ModelPart::Wire) {
+                    onlyWiresConnected = false;
+                    break;
+                }
+
+                w = qobject_cast<Wire *>(toToConnectorItem->attachedTo());
+                if (!wires.contains(w)) jwires << w;
+            }
+            if (!onlyWiresConnected) break;
+        }
+
+        if (jwires.count() == 1) {
+            // there is a junction of > 2 wires and all wires leading to it except one are already on the delete list
+            Wire * w = jwires.values().at(0);
+            wires << w;
+            w->collectDirectWires(w->connector0(), wires, junctions);
+            w->collectDirectWires(w->connector1(), wires, junctions);
+        }
+    }
 }
 
-void Wire::collectDirectWires(ConnectorItem * connectorItem, QList<Wire *> & wires) {
-	if (connectorItem->connectionsCount() != 1) return;
+
+void Wire::collectDirectWires(ConnectorItem * connectorItem, QList<Wire *> & wires, QList<ConnectorItem *> & junctions) {
+	if (connectorItem->connectionsCount() == 0) return;
+    if (connectorItem->connectionsCount() > 1) {
+        if (!junctions.contains(connectorItem)) junctions.append(connectorItem);
+        return;
+    }
 
 	ConnectorItem * toConnectorItem = connectorItem->connectedToItems().at(0);
 	if (toConnectorItem->attachedToItemType() != ModelPart::Wire) return;
 
-    if (toConnectorItem->connectionsCount() != 1) return;
+    if (toConnectorItem->connectionsCount() != 1) {
+        if (!junctions.contains(connectorItem)) junctions.append(connectorItem);
+        return;
+    }
 
 	Wire * nextWire = qobject_cast<Wire *>(toConnectorItem->attachedTo());
 	if (wires.contains(nextWire)) return;
 
 	wires.append(nextWire);
-	nextWire->collectDirectWires(nextWire->otherConnector(toConnectorItem), wires);
+	nextWire->collectDirectWires(nextWire->otherConnector(toConnectorItem), wires, junctions);
 }
 
 QVariant Wire::itemChange(GraphicsItemChange change, const QVariant &value)

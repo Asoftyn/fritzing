@@ -1120,6 +1120,7 @@ void SketchWidget::cutDeleteAux(QString undoStackMessage, bool minus, Wire * wir
 	    }
 
         if (!minus) {
+            QSet<Wire *> allWires;
             foreach (ItemBase * itemBase, deletedItems) {
                 QList<ConnectorItem *> connectorItems;
                 foreach (ConnectorItem * connectorItem, itemBase->cachedConnectorItems()) {
@@ -1137,9 +1138,16 @@ void SketchWidget::cutDeleteAux(QString undoStackMessage, bool minus, Wire * wir
                         QList<Wire *> wires;
                         wire->collectDirectWires(wires);
                         foreach (Wire * w, wires) {
-                            deletedItems.insert(w);
+                            allWires.insert(w);
                         }
                     }
+                }
+            }
+            if (allWires.count() > 0) {
+                QList<Wire *> wires = allWires.toList();
+                wires.at(0)->collectDirectWires(wires);
+                foreach (Wire * w, wires) {
+                    deletedItems.insert(w);
                 }
             }
         }
