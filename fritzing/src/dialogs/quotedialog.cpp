@@ -53,6 +53,9 @@ double hundredths(double d) {
     return h / ((double) 100);
 }
 
+QChar EuroSymbol(0x20AC);
+QChar ThinSpaceSymbol(0x2009);
+
 //////////////////////////////////////////////////////
 
 LabelThing::LabelThing(const QString & text, const QString & released, const QString & pressed, const QString & hover, QWidget * parent) : 
@@ -207,6 +210,7 @@ QuoteDialog::QuoteDialog(bool full, QWidget *parent) : QDialog(parent)
     additional += tr("For more information on pricing see <a href='http://fab.fritzing.org/pricing'>http://fab.fritzing.org/pricing</a>.");
     label = new QLabel(additional);
     label->setObjectName("quoteAdditional");
+    label->setOpenExternalLinks(true);
 	vLayout->addWidget(label);
     if (!full) label->setVisible(false);
 
@@ -281,11 +285,11 @@ void QuoteDialog::setText() {
         item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         item->setFlags(0);
         m_tableWidget->setItem(0, i + 1, item);
-        item = new QTableWidgetItem(QString("%1").arg(hundredths(cost/count), 13, 'F', 2));
+        item = new QTableWidgetItem(QString("%1%2%3").arg(hundredths(cost/count), 13, 'F', 2).arg(ThinSpaceSymbol).arg(EuroSymbol));
         item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         item->setFlags(0);
         m_tableWidget->setItem(1, i + 1, item);
-        item = new QTableWidgetItem(QString("%1").arg(hundredths(cost), 13, 'F', 2));   
+        item = new QTableWidgetItem(QString("%1%2%3").arg(hundredths(cost), 13, 'F', 2).arg(ThinSpaceSymbol).arg(EuroSymbol));   
         item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         QFont font = item->font();
         font.setBold(true);
