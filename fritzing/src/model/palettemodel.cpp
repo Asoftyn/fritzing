@@ -44,7 +44,6 @@ bool PaletteModel::CreateTempPartsBinFile = true;
 
 static bool JustAppendAllPartsInstances = false;
 static bool FirstTime = true;
-static bool FirstTimeWrite = true;
 
 QString PaletteModel::ContribPartsBinFilePath;
 
